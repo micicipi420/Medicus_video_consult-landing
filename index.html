@@ -14,103 +14,20 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- DESIGN SYSTEM DEMO -- will be replaced by real sections in Phase 2+ -->
-
-  <header class="section section--dark">
-    <div class="container">
-      <h1>Дизайн-система MedicusUnion</h1>
-      <p>Демо-страница для проверки шрифтов, цветов, отступов и адаптивности</p>
-    </div>
-  </header>
-
   <main>
-    <!-- Typography Demo -->
-    <section class="section">
-      <div class="container">
-        <h2>Типографика</h2>
-        <h1>Заголовок H1 -- Manrope 36px (2.25rem)</h1>
-        <h2>Заголовок H2 -- Manrope 32px (2rem)</h2>
-        <h3>Заголовок H3 -- Manrope 28px (1.75rem)</h3>
-        <p>Основной текст -- Inter 18px (1.125rem). Мнение европейского врача не выходя из дома. Онлайн-консультации с врачами из Германии, Израиля, Швейцарии и других стран.</p>
-        <p><a href="#">Пример ссылки в тексте</a> -- должна быть контрастной на белом фоне.</p>
-      </div>
-    </section>
-
-    <!-- Color Swatches -->
-    <section class="section" style="background-color: var(--color-light);">
-      <div class="container">
-        <h2>Цветовая палитра</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3);">
-          <div style="width: 120px; height: 80px; background: var(--color-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-on-primary); font-weight: 600;">#38C6F4</div>
-          <div style="width: 120px; height: 80px; background: var(--color-secondary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-on-secondary); font-weight: 600;">#35B678</div>
-          <div style="width: 120px; height: 80px; background: var(--color-dark); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-on-dark); font-weight: 600;">#18212C</div>
-          <div style="width: 120px; height: 80px; background: var(--color-light); border: 1px solid var(--color-dark); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-primary); font-weight: 600;">#F8FAFB</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Buttons Demo -->
-    <section class="section">
-      <div class="container">
-        <h2>Кнопки (touch target 48x48px min)</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3);">
-          <a href="#" class="button button--primary">Получить консультацию</a>
-          <a href="#" class="button button--secondary">Узнать подробнее</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Cards Demo -->
-    <section class="section" style="background-color: var(--color-light);">
-      <div class="container">
-        <h2>Карточки</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-3); margin-top: var(--space-3);">
-          <div class="card">
-            <h3 class="card__title">Второе мнение</h3>
-            <p class="card__text">Независимая оценка диагноза и плана лечения от европейского специалиста.</p>
+    <!-- Hero Section -->
+    <section class="section hero" id="hero">
+      <div class="container hero__container">
+        <div class="hero__content">
+          <h1 class="hero__title">Мнение немецкого врача&nbsp;&mdash; за&nbsp;5&nbsp;дней, без&nbsp;перелёта</h1>
+          <p class="hero__subtitle">Видеоконсультация с&nbsp;европейским специалистом&nbsp;&mdash; на&nbsp;вашем языке, с&nbsp;переводом. Загрузите документы в&nbsp;приложение&nbsp;&mdash; мы&nbsp;переведём их, передадим врачу и&nbsp;организуем встречу.</p>
+          <div class="hero__actions">
+            <a href="#form" class="button button--primary">Получить консультацию&nbsp;&mdash; от&nbsp;450&nbsp;&euro;</a>
+            <a href="#form" class="button button--outline">Узнать, подходит&nbsp;ли мой случай</a>
           </div>
-          <div class="card">
-            <h3 class="card__title">План действий</h3>
-            <p class="card__text">Конкретные рекомендации по дальнейшим шагам лечения.</p>
-          </div>
-          <div class="card">
-            <h3 class="card__title">Видеоконсультация</h3>
-            <p class="card__text">Личная беседа с врачом через защищённый видеозвонок.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Dark Section Demo -->
-    <section class="section section--dark">
-      <div class="container">
-        <h2>Тёмная секция</h2>
-        <p>Белый текст на тёмном фоне (#18212C). Контраст 16.24:1 -- превышает WCAG AA.</p>
-        <div style="margin-top: var(--space-3);">
-          <a href="#" class="button button--primary">CTA на тёмном фоне</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Spacing Demo -->
-    <section class="section">
-      <div class="container">
-        <h2>Сетка отступов (8px шаг)</h2>
-        <div style="display: flex; flex-direction: column; gap: var(--space-1); margin-top: var(--space-3);">
-          <div style="height: var(--space-1); background: var(--color-primary); border-radius: 2px; width: 8%;"></div>
-          <div style="height: var(--space-1); background: var(--color-primary); border-radius: 2px; width: 16%;"></div>
-          <div style="height: var(--space-1); background: var(--color-primary); border-radius: 2px; width: 24%;"></div>
-          <div style="height: var(--space-1); background: var(--color-primary); border-radius: 2px; width: 32%;"></div>
-          <div style="height: var(--space-1); background: var(--color-primary); border-radius: 2px; width: 40%;"></div>
         </div>
       </div>
     </section>
   </main>
-
-  <footer class="section section--dark">
-    <div class="container text-center">
-      <p>Демо дизайн-системы MedicusUnion KZ. Будет заменено реальным контентом.</p>
-    </div>
-  </footer>
 </body>
 </html>
