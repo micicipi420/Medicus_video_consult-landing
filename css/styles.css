@@ -416,6 +416,53 @@ a:hover {
   }
 }
 
+/* -- Process (How It Works) -- */
+
+.process {
+  background-color: var(--color-white);
+}
+
+.process__heading {
+  margin-bottom: var(--space-5);
+}
+
+.process__steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.process__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.process__number {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.process__title {
+  font-size: var(--font-size-lg);
+}
+
+.process__text {
+  color: var(--color-text-primary);
+  max-width: 360px;
+}
+
+@media (min-width: 768px) {
+  .process__steps {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+  }
+}
+
 /* ==========================================================================
    8. UTILITIES
    ========================================================================== */
