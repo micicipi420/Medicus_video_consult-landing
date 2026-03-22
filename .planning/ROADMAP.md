@@ -114,7 +114,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Header with click-to-call phone and smooth scroll JS
-- [ ] 06-02-PLAN.md — Sticky mobile CTA bar with phone and button
+- [x] 06-02-PLAN.md — Sticky mobile CTA bar with phone and button
 - [ ] 06-03-PLAN.md — Form placeholder, page assembly audit, and visual verification
 
 ### Phase 7: Lead Capture Form
