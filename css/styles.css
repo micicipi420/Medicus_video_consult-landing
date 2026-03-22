@@ -463,6 +463,69 @@ a:hover {
   }
 }
 
+/* -- Doctors (Who Consults) -- */
+
+.doctors {
+  background-color: var(--color-light);
+}
+
+.doctors__heading {
+  margin-bottom: var(--space-3);
+}
+
+.doctors__description {
+  font-size: var(--font-size-lg);
+  max-width: 680px;
+  margin-bottom: var(--space-5);
+}
+
+.doctors__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.doctors__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.doctors__flag {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.doctors__specializations {
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.doctors__note {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.doctors__action {
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .doctors__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctors__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* ==========================================================================
    8. UTILITIES
    ========================================================================== */
