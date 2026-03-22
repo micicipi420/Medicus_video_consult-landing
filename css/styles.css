@@ -709,6 +709,22 @@ a:hover {
   margin-top: 0.1em;
 }
 
+/* -- Form Placeholder (replaced in Phase 7) -- */
+
+.form-placeholder {
+  background-color: var(--color-light);
+}
+
+.form-placeholder__heading {
+  margin-bottom: var(--space-3);
+}
+
+.form-placeholder__text {
+  font-size: var(--font-size-lg);
+  max-width: 640px;
+  color: var(--color-text-primary);
+}
+
 /* -- FAQ (Accordion) -- */
 
 .faq {
