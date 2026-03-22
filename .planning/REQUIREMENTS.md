@@ -109,18 +109,51 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STRUC-01..12 | TBD | Pending |
-| UX-01..07 | TBD | Pending |
-| NAV-01..04 | TBD | Pending |
-| FORM-01..07 | TBD | Pending |
-| BACK-01..05 | TBD | Pending |
-| PERF-01..04 | TBD | Pending |
+| STRUC-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| STRUC-02 | Phase 2: Hero & Problem Sections | Pending |
+| STRUC-03 | Phase 2: Hero & Problem Sections | Pending |
+| STRUC-04 | Phase 3: Value & Process Sections | Pending |
+| STRUC-05 | Phase 3: Value & Process Sections | Pending |
+| STRUC-06 | Phase 4: Trust & Authority Sections | Pending |
+| STRUC-07 | Phase 4: Trust & Authority Sections | Pending |
+| STRUC-08 | Phase 4: Trust & Authority Sections | Pending |
+| STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| UX-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| UX-02 | Phase 1: Foundation & Design System | Pending |
+| UX-03 | Phase 1: Foundation & Design System | Pending |
+| UX-04 | Phase 1: Foundation & Design System | Pending |
+| UX-05 | Phase 1: Foundation & Design System | Pending |
+| UX-06 | Phase 2: Hero & Problem Sections | Pending |
+| UX-07 | Phase 1: Foundation & Design System | Pending |
+| NAV-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| NAV-02 | Phase 6: Navigation & Mobile Interaction | Pending |
+| NAV-03 | Phase 6: Navigation & Mobile Interaction | Pending |
+| NAV-04 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| FORM-01 | Phase 7: Lead Capture Form | Pending |
+| FORM-02 | Phase 7: Lead Capture Form | Pending |
+| FORM-03 | Phase 7: Lead Capture Form | Pending |
+| FORM-04 | Phase 7: Lead Capture Form | Pending |
+| FORM-05 | Phase 7: Lead Capture Form | Pending |
+| FORM-06 | Phase 7: Lead Capture Form | Pending |
+| FORM-07 | Phase 7: Lead Capture Form | Pending |
+| BACK-01 | Phase 8: Directus Backend & Integration | Pending |
+| BACK-02 | Phase 8: Directus Backend & Integration | Pending |
+| BACK-03 | Phase 8: Directus Backend & Integration | Pending |
+| BACK-04 | Phase 8: Directus Backend & Integration | Pending |
+| BACK-05 | Phase 8: Directus Backend & Integration | Pending |
+| PERF-01 | Phase 9: Performance & SEO | Pending |
+| PERF-02 | Phase 9: Performance & SEO | Pending |
+| PERF-03 | Phase 9: Performance & SEO | Pending |
+| PERF-04 | Phase 9: Performance & SEO | Pending |
 
 **Coverage:**
-- v1 requirements: 34 total
-- Mapped to phases: 0
-- Unmapped: 34 ⚠️
+- v1 requirements: 39 total
+- Mapped to phases: 39
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after initial definition*
+*Last updated: 2026-03-23 after roadmap creation*
