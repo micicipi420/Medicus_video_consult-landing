@@ -25,12 +25,12 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Design & UX
 
 - [ ] **UX-01**: Mobile-first адаптивный дизайн (мобильная, планшетная, десктоп версии)
-- [ ] **UX-02**: Шрифт тела текста минимум 18px, заголовки 28-36px (ЦА 45+)
-- [ ] **UX-03**: Touch targets минимум 48x48px на мобильных
+- [x] **UX-02**: Шрифт тела текста минимум 18px, заголовки 28-36px (ЦА 45+)
+- [x] **UX-03**: Touch targets минимум 48x48px на мобильных
 - [x] **UX-04**: Цветовая схема по брендбуку: #38C6F4 (голубой), #35B678 (зелёный), #18212C (тёмный)
 - [x] **UX-05**: Шрифты Inter + Manrope, self-hosted WOFF2
 - [ ] **UX-06**: Спокойный уверенный тон — без агрессивного маркетинга, без countdown-таймеров
-- [ ] **UX-07**: Высокий контраст текста на фоне (WCAG AA минимум)
+- [x] **UX-07**: Высокий контраст текста на фоне (WCAG AA минимум)
 
 ### Navigation & Interaction
 
@@ -122,12 +122,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | UX-01 | Phase 6: Navigation & Mobile Interaction | Pending |
-| UX-02 | Phase 1: Foundation & Design System | Pending |
-| UX-03 | Phase 1: Foundation & Design System | Pending |
+| UX-02 | Phase 1: Foundation & Design System | Complete |
+| UX-03 | Phase 1: Foundation & Design System | Complete |
 | UX-04 | Phase 1: Foundation & Design System | Complete |
 | UX-05 | Phase 1: Foundation & Design System | Complete |
 | UX-06 | Phase 2: Hero & Problem Sections | Pending |
-| UX-07 | Phase 1: Foundation & Design System | Pending |
+| UX-07 | Phase 1: Foundation & Design System | Complete |
 | NAV-01 | Phase 6: Navigation & Mobile Interaction | Pending |
 | NAV-02 | Phase 6: Navigation & Mobile Interaction | Pending |
 | NAV-03 | Phase 6: Navigation & Mobile Interaction | Pending |
