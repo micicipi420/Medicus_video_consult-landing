@@ -81,8 +81,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Doctor credentials section with country flags
-- [ ] 04-02: Advantages and consultation scenarios sections
+- [ ] 04-01-PLAN.md — Doctor credentials section with 7 country flag cards
+- [ ] 04-02-PLAN.md — Advantages (4 cards) and consultation scenarios (5 triggers) sections
 
 ### Phase 5: Pricing, FAQ, Final CTA & Footer
 **Goal**: Visitor has all remaining information and objection-handling needed to decide to submit the form
