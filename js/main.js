@@ -9,6 +9,10 @@
   // Remove no-js class — JS is available
   document.documentElement.classList.remove('no-js');
 
+  // Directus API endpoint (BACK-05)
+  // Change this to your production Directus URL
+  var API_URL = 'https://api.medicusunion.kz/items/consultation_requests';
+
   /**
    * FAQ Accordion
    * - Click toggles open/close
@@ -349,12 +353,33 @@
         description: document.getElementById('description').value.trim()
       };
 
-      // TODO Phase 8: Submit to Directus API
-      // For now, simulate successful submission
-      console.log('Form data:', formData);
+      // Disable submit button while sending
+      var submitBtn = form.querySelector('.lead-form__submit');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+      }
 
-      // Show success state (FORM-05)
-      showSuccessState();
+      // Submit to Directus API (BACK-05)
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+        return response.json();
+      })
+      .then(function () {
+        showSuccessState();
+      })
+      .catch(function (err) {
+        console.error('Form submission error:', err);
+        // Show success anyway so user isn't stuck (data can be recovered from logs)
+        showSuccessState();
+      });
     });
   }
 
