@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project scaffolding, font files, and CSS design system with all tokens
+- [x] 01-01-PLAN.md -- Project scaffolding, font files, and CSS design system with all tokens
 - [ ] 01-02-PLAN.md -- Demo page for visual verification of typography, colors, and responsiveness
 
 ### Phase 2: Hero & Problem Sections
