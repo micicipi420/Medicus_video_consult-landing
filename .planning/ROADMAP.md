@@ -66,8 +66,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: "What you get" cards section
-- [ ] 03-02: "How it works" steps section
+- [ ] 03-01-PLAN.md — "What you get" benefit cards section (4 cards, 2x2 grid)
+- [ ] 03-02-PLAN.md — "How it works" process steps section (3 numbered steps)
 
 ### Phase 4: Trust & Authority Sections
 **Goal**: Visitor trusts that real, qualified European doctors will handle their case
