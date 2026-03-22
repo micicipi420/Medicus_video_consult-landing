@@ -34,11 +34,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Body text renders at minimum 18px, headings at 28-36px on all viewports
   4. All interactive elements have minimum 48x48px touch targets on mobile
   5. Text-to-background contrast passes WCAG AA on all color combinations used
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Project scaffolding and CSS design system
-- [ ] 01-02: Font loading and responsive typography
+- [ ] 01-01-PLAN.md -- Project scaffolding, font files, and CSS design system with all tokens
+- [ ] 01-02-PLAN.md -- Demo page for visual verification of typography, colors, and responsiveness
 
 ### Phase 2: Hero & Problem Sections
 **Goal**: A visitor landing on the page immediately understands the service and feels emotionally recognized
@@ -175,7 +175,7 @@ Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Design System | 0/2 | Not started | - |
+| 1. Foundation & Design System | 0/2 | Planning complete | - |
 | 2. Hero & Problem Sections | 0/2 | Not started | - |
 | 3. Value & Process Sections | 0/2 | Not started | - |
 | 4. Trust & Authority Sections | 0/2 | Not started | - |
