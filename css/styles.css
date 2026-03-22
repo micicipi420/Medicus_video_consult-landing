@@ -671,6 +671,115 @@ a:hover {
   margin-top: 0.1em;
 }
 
+/* -- FAQ (Accordion) -- */
+
+.faq {
+  background-color: var(--color-light);
+}
+
+.faq__heading {
+  margin-bottom: var(--space-5);
+}
+
+.faq__list {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq__item {
+  border-bottom: 1px solid rgba(24, 33, 44, 0.1);
+}
+
+.faq__item:first-child {
+  border-top: 1px solid rgba(24, 33, 44, 0.1);
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  gap: var(--space-2);
+}
+
+.faq__question:hover {
+  color: var(--color-primary-dark);
+}
+
+.faq__question:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.faq__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  transition: transform var(--transition-normal);
+}
+
+.faq__icon::before,
+.faq__icon::after {
+  content: '';
+  position: absolute;
+  background-color: var(--color-text-primary);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition-normal);
+}
+
+.faq__icon::before {
+  width: 16px;
+  height: 2px;
+}
+
+.faq__icon::after {
+  width: 2px;
+  height: 16px;
+}
+
+.faq__question[aria-expanded="true"] .faq__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.faq__answer {
+  overflow: hidden;
+  transition: max-height var(--transition-normal), padding var(--transition-normal);
+}
+
+.faq__answer[hidden] {
+  display: none;
+}
+
+.faq__answer p {
+  padding-bottom: var(--space-3);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  max-width: 640px;
+}
+
+/* No-JS fallback: show all answers when JS hasn't loaded */
+.no-js .faq__answer[hidden] {
+  display: block;
+}
+
 /* ==========================================================================
    8. UTILITIES
    ========================================================================== */
