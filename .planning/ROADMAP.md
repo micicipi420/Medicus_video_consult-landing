@@ -113,7 +113,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Header with click-to-call phone and smooth scroll JS
+- [x] 06-01-PLAN.md — Header with click-to-call phone and smooth scroll JS
 - [ ] 06-02-PLAN.md — Sticky mobile CTA bar with phone and button
 - [ ] 06-03-PLAN.md — Form placeholder, page assembly audit, and visual verification
 

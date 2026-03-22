@@ -34,9 +34,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Navigation & Interaction
 
-- [ ] **NAV-01**: CTA-кнопки скроллят к секции формы (smooth scroll)
+- [x] **NAV-01**: CTA-кнопки скроллят к секции формы (smooth scroll)
 - [ ] **NAV-02**: Sticky mobile CTA bar — кнопка «Оставить заявку» + телефон видны при скролле
-- [ ] **NAV-03**: Click-to-call телефон (+7 701 532 24 78) в хедере, sticky bar и футере
+- [x] **NAV-03**: Click-to-call телефон (+7 701 532 24 78) в хедере, sticky bar и футере
 - [x] **NAV-04**: FAQ реализован как аккордеон (раскрытие/свёртывание по клику)
 
 ### Form
@@ -128,9 +128,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-05 | Phase 1: Foundation & Design System | Complete |
 | UX-06 | Phase 2: Hero & Problem Sections | Complete |
 | UX-07 | Phase 1: Foundation & Design System | Complete |
-| NAV-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| NAV-01 | Phase 6: Navigation & Mobile Interaction | Complete |
 | NAV-02 | Phase 6: Navigation & Mobile Interaction | Pending |
-| NAV-03 | Phase 6: Navigation & Mobile Interaction | Pending |
+| NAV-03 | Phase 6: Navigation & Mobile Interaction | Complete |
 | NAV-04 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | FORM-01 | Phase 7: Lead Capture Form | Pending |
 | FORM-02 | Phase 7: Lead Capture Form | Pending |
