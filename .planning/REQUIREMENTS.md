@@ -14,7 +14,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **STRUC-03**: Секция «Проблема» с тремя короткими абзацами — триггер узнавания
 - [x] **STRUC-04**: Секция «Что вы получите» — 4 карточки: второе мнение, план действий, письменное заключение, ответы на вопросы
 - [x] **STRUC-05**: Секция «Как это работает» — 3 шага: загрузка документов, изучение врачом, видеоконсультация
-- [ ] **STRUC-06**: Секция «Кто консультирует» — врачи из 7 стран, специализации, ссылка на medicusunion.com/doctors
+- [x] **STRUC-06**: Секция «Кто консультирует» — врачи из 7 стран, специализации, ссылка на medicusunion.com/doctors
 - [ ] **STRUC-07**: Секция «Почему через нас» — 4 карточки преимуществ: перевод документов, перевод на консультации, приложение, организация лечения
 - [ ] **STRUC-08**: Секция «Когда нужна консультация» — 5 сценариев-триггеров с чекбоксами/иконками
 - [ ] **STRUC-09**: Секция «Стоимость» — от 450€, список включённого в стоимость
@@ -114,7 +114,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-03 | Phase 2: Hero & Problem Sections | Complete |
 | STRUC-04 | Phase 3: Value & Process Sections | Complete |
 | STRUC-05 | Phase 3: Value & Process Sections | Complete |
-| STRUC-06 | Phase 4: Trust & Authority Sections | Pending |
+| STRUC-06 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-07 | Phase 4: Trust & Authority Sections | Pending |
 | STRUC-08 | Phase 4: Trust & Authority Sections | Pending |
 | STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
