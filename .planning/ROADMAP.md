@@ -52,7 +52,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Hero section with headline, subheading, and CTA buttons
+- [x] 02-01-PLAN.md — Hero section with headline, subheading, and CTA buttons
 - [ ] 02-02-PLAN.md — Problem section with recognition-trigger paragraphs
 
 ### Phase 3: Value & Process Sections

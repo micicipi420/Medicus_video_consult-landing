@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Structure & Content
 
 - [ ] **STRUC-01**: Лендинг содержит все 11 секций по ТЗ: Hero, Проблема, Что вы получите, Как это работает, Кто консультирует, Почему через нас, Когда нужна консультация, Стоимость, Форма заявки, FAQ, Финальный призыв + Footer
-- [ ] **STRUC-02**: Hero-секция с заголовком «Мнение немецкого врача — за 5 дней, без перелёта», подзаголовком и CTA-кнопкой «Получить консультацию — от 450€»
+- [x] **STRUC-02**: Hero-секция с заголовком «Мнение немецкого врача — за 5 дней, без перелёта», подзаголовком и CTA-кнопкой «Получить консультацию — от 450€»
 - [ ] **STRUC-03**: Секция «Проблема» с тремя короткими абзацами — триггер узнавания
 - [ ] **STRUC-04**: Секция «Что вы получите» — 4 карточки: второе мнение, план действий, письменное заключение, ответы на вопросы
 - [ ] **STRUC-05**: Секция «Как это работает» — 3 шага: загрузка документов, изучение врачом, видеоконсультация
@@ -29,7 +29,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UX-03**: Touch targets минимум 48x48px на мобильных
 - [x] **UX-04**: Цветовая схема по брендбуку: #38C6F4 (голубой), #35B678 (зелёный), #18212C (тёмный)
 - [x] **UX-05**: Шрифты Inter + Manrope, self-hosted WOFF2
-- [ ] **UX-06**: Спокойный уверенный тон — без агрессивного маркетинга, без countdown-таймеров
+- [x] **UX-06**: Спокойный уверенный тон — без агрессивного маркетинга, без countdown-таймеров
 - [x] **UX-07**: Высокий контраст текста на фоне (WCAG AA минимум)
 
 ### Navigation & Interaction
@@ -110,7 +110,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | STRUC-01 | Phase 6: Navigation & Mobile Interaction | Pending |
-| STRUC-02 | Phase 2: Hero & Problem Sections | Pending |
+| STRUC-02 | Phase 2: Hero & Problem Sections | Complete |
 | STRUC-03 | Phase 2: Hero & Problem Sections | Pending |
 | STRUC-04 | Phase 3: Value & Process Sections | Pending |
 | STRUC-05 | Phase 3: Value & Process Sections | Pending |
@@ -126,7 +126,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-03 | Phase 1: Foundation & Design System | Complete |
 | UX-04 | Phase 1: Foundation & Design System | Complete |
 | UX-05 | Phase 1: Foundation & Design System | Complete |
-| UX-06 | Phase 2: Hero & Problem Sections | Pending |
+| UX-06 | Phase 2: Hero & Problem Sections | Complete |
 | UX-07 | Phase 1: Foundation & Design System | Complete |
 | NAV-01 | Phase 6: Navigation & Mobile Interaction | Pending |
 | NAV-02 | Phase 6: Navigation & Mobile Interaction | Pending |
