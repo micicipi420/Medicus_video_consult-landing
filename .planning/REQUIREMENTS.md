@@ -18,7 +18,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **STRUC-07**: Секция «Почему через нас» — 4 карточки преимуществ: перевод документов, перевод на консультации, приложение, организация лечения
 - [x] **STRUC-08**: Секция «Когда нужна консультация» — 5 сценариев-триггеров с чекбоксами/иконками
 - [x] **STRUC-09**: Секция «Стоимость» — от 450€, список включённого в стоимость
-- [ ] **STRUC-10**: Секция FAQ — аккордеон, 6 вопросов-ответов по ТЗ
+- [x] **STRUC-10**: Секция FAQ — аккордеон, 6 вопросов-ответов по ТЗ
 - [ ] **STRUC-11**: Секция «Финальный призыв» — заголовок + 2 CTA-кнопки
 - [ ] **STRUC-12**: Footer — контакты, телефон, email, ссылки App Store / Google Play, юридическая информация
 
@@ -37,7 +37,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **NAV-01**: CTA-кнопки скроллят к секции формы (smooth scroll)
 - [ ] **NAV-02**: Sticky mobile CTA bar — кнопка «Оставить заявку» + телефон видны при скролле
 - [ ] **NAV-03**: Click-to-call телефон (+7 701 532 24 78) в хедере, sticky bar и футере
-- [ ] **NAV-04**: FAQ реализован как аккордеон (раскрытие/свёртывание по клику)
+- [x] **NAV-04**: FAQ реализован как аккордеон (раскрытие/свёртывание по клику)
 
 ### Form
 
@@ -118,7 +118,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-07 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-08 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
-| STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | UX-01 | Phase 6: Navigation & Mobile Interaction | Pending |
@@ -131,7 +131,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NAV-01 | Phase 6: Navigation & Mobile Interaction | Pending |
 | NAV-02 | Phase 6: Navigation & Mobile Interaction | Pending |
 | NAV-03 | Phase 6: Navigation & Mobile Interaction | Pending |
-| NAV-04 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| NAV-04 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | FORM-01 | Phase 7: Lead Capture Form | Pending |
 | FORM-02 | Phase 7: Lead Capture Form | Pending |
 | FORM-03 | Phase 7: Lead Capture Form | Pending |
