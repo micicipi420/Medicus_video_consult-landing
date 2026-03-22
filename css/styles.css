@@ -526,6 +526,40 @@ a:hover {
   }
 }
 
+/* -- Advantages (Why MedicusUnion) -- */
+
+.advantages {
+  background-color: var(--color-white);
+}
+
+.advantages__heading {
+  margin-bottom: var(--space-5);
+}
+
+.advantages__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.advantages__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.advantages__icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  .advantages__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
 /* ==========================================================================
    8. UTILITIES
    ========================================================================== */
