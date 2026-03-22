@@ -113,10 +113,258 @@
     });
   }
 
+  /**
+   * Phone Input Mask
+   * - Pre-fills +7 and formats as +7 (XXX) XXX-XX-XX
+   * - Only allows digits after +7
+   * - Per FORM-02
+   */
+  function initPhoneMask() {
+    var phoneInput = document.getElementById('phone');
+    if (!phoneInput) return;
+
+    // Set initial value
+    if (!phoneInput.value) {
+      phoneInput.value = '+7 ';
+    }
+
+    phoneInput.addEventListener('input', function () {
+      // Strip everything except digits
+      var digits = this.value.replace(/\D/g, '');
+
+      // Ensure starts with 7
+      if (digits.length === 0) {
+        digits = '7';
+      } else if (digits.charAt(0) !== '7') {
+        digits = '7' + digits;
+      }
+
+      // Limit to 11 digits (7 + 10)
+      if (digits.length > 11) {
+        digits = digits.substring(0, 11);
+      }
+
+      // Format: +7 (XXX) XXX-XX-XX
+      var formatted = '+7';
+      if (digits.length > 1) {
+        formatted += ' (' + digits.substring(1, 4);
+      }
+      if (digits.length >= 4) {
+        formatted += ') ';
+      }
+      if (digits.length > 4) {
+        formatted += digits.substring(4, 7);
+      }
+      if (digits.length > 7) {
+        formatted += '-' + digits.substring(7, 9);
+      }
+      if (digits.length > 9) {
+        formatted += '-' + digits.substring(9, 11);
+      }
+
+      this.value = formatted;
+    });
+
+    // Prevent deleting the +7 prefix
+    phoneInput.addEventListener('keydown', function (e) {
+      var cursorPos = this.selectionStart;
+      if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPos <= 3 && this.selectionEnd <= 3) {
+        e.preventDefault();
+      }
+    });
+
+    // On focus, ensure cursor is at end if field is just "+7 "
+    phoneInput.addEventListener('focus', function () {
+      if (this.value === '+7 ' || this.value === '+7') {
+        var self = this;
+        setTimeout(function () {
+          self.setSelectionRange(self.value.length, self.value.length);
+        }, 0);
+      }
+    });
+  }
+
+  /**
+   * Spam Protection
+   * - Records page load timestamp for timing check
+   * - Provides isSpam() check: honeypot filled OR form submitted < 3 seconds after load
+   * - Per FORM-07
+   */
+  var formLoadTime = 0;
+
+  function initSpamProtection() {
+    formLoadTime = Date.now();
+  }
+
+  function isSpamSubmission() {
+    // Check 1: Honeypot field should be empty
+    var honeypot = document.getElementById('website');
+    if (honeypot && honeypot.value.length > 0) {
+      return true;
+    }
+
+    // Check 2: Must be at least 3 seconds since page load
+    var elapsed = Date.now() - formLoadTime;
+    if (elapsed < 3000) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Form Validation and Submission
+   * - Validates required fields on submit
+   * - Shows Russian error messages (FORM-04)
+   * - On success: hides form, shows success message (FORM-05)
+   * - Submission target URL configured as data attribute or constant (wired in Phase 8)
+   */
+  function initFormValidation() {
+    var form = document.getElementById('lead-form');
+    if (!form) return;
+
+    var successEl = document.getElementById('form-success');
+
+    // Validation rules
+    var rules = {
+      name: {
+        required: true,
+        message: 'Укажите ваше имя',
+        validate: function (value) {
+          return value.trim().length >= 2;
+        }
+      },
+      phone: {
+        required: true,
+        message: 'Укажите номер телефона',
+        validate: function (value) {
+          var digits = value.replace(/\D/g, '');
+          return digits.length === 11 && digits.charAt(0) === '7';
+        }
+      },
+      specialty: {
+        required: true,
+        message: 'Выберите специализацию',
+        validate: function (value) {
+          return value !== '';
+        }
+      }
+    };
+
+    function showError(fieldId, message) {
+      var input = document.getElementById(fieldId);
+      var errorEl = document.getElementById(fieldId + '-error');
+      if (input) {
+        input.classList.add('is-invalid');
+      }
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+      }
+    }
+
+    function clearError(fieldId) {
+      var input = document.getElementById(fieldId);
+      var errorEl = document.getElementById(fieldId + '-error');
+      if (input) {
+        input.classList.remove('is-invalid');
+      }
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
+    }
+
+    function clearAllErrors() {
+      var fields = ['name', 'phone', 'specialty'];
+      fields.forEach(function (fieldId) {
+        clearError(fieldId);
+      });
+    }
+
+    function validateForm() {
+      var isValid = true;
+      clearAllErrors();
+
+      Object.keys(rules).forEach(function (fieldId) {
+        var rule = rules[fieldId];
+        var input = document.getElementById(fieldId);
+        if (!input) return;
+
+        var value = input.value;
+        if (!rule.validate(value)) {
+          showError(fieldId, rule.message);
+          isValid = false;
+        }
+      });
+
+      return isValid;
+    }
+
+    // Clear error on input change
+    ['name', 'phone', 'specialty'].forEach(function (fieldId) {
+      var input = document.getElementById(fieldId);
+      if (!input) return;
+      var eventType = fieldId === 'specialty' ? 'change' : 'input';
+      input.addEventListener(eventType, function () {
+        clearError(fieldId);
+      });
+    });
+
+    function showSuccessState() {
+      form.hidden = true;
+      if (successEl) {
+        successEl.hidden = false;
+      }
+      var subtext = form.parentElement.querySelector('.lead-form__subtext');
+      var privacy = form.parentElement.querySelector('.lead-form__privacy');
+      if (subtext) subtext.hidden = true;
+      if (privacy) privacy.hidden = true;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!validateForm()) {
+        // Focus first invalid field
+        var firstInvalid = form.querySelector('.is-invalid');
+        if (firstInvalid) {
+          firstInvalid.focus();
+        }
+        return;
+      }
+
+      // Spam protection check (FORM-07)
+      if (isSpamSubmission()) {
+        // Silently show success to not alert bots
+        showSuccessState();
+        return;
+      }
+
+      // Collect form data
+      var formData = {
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value,
+        specialty: document.getElementById('specialty').value,
+        description: document.getElementById('description').value.trim()
+      };
+
+      // TODO Phase 8: Submit to Directus API
+      // For now, simulate successful submission
+      console.log('Form data:', formData);
+
+      // Show success state (FORM-05)
+      showSuccessState();
+    });
+  }
+
   function initAll() {
     initAccordion();
     initSmoothScroll();
     initStickyBar();
+    initPhoneMask();
+    initSpamProtection();
+    initFormValidation();
   }
 
   // Initialize when DOM is ready
