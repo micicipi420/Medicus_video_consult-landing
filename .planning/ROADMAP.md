@@ -113,9 +113,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Smooth scroll CTAs and click-to-call links
-- [ ] 06-02: Sticky mobile CTA bar
-- [ ] 06-03: Full page assembly and responsive verification
+- [ ] 06-01-PLAN.md — Header with click-to-call phone and smooth scroll JS
+- [ ] 06-02-PLAN.md — Sticky mobile CTA bar with phone and button
+- [ ] 06-03-PLAN.md — Form placeholder, page assembly audit, and visual verification
 
 ### Phase 7: Lead Capture Form
 **Goal**: Visitor can fill out and submit a consultation request form with clear feedback
