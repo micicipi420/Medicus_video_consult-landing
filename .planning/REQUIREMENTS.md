@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **STRUC-01**: Лендинг содержит все 11 секций по ТЗ: Hero, Проблема, Что вы получите, Как это работает, Кто консультирует, Почему через нас, Когда нужна консультация, Стоимость, Форма заявки, FAQ, Финальный призыв + Footer
 - [x] **STRUC-02**: Hero-секция с заголовком «Мнение немецкого врача — за 5 дней, без перелёта», подзаголовком и CTA-кнопкой «Получить консультацию — от 450€»
-- [ ] **STRUC-03**: Секция «Проблема» с тремя короткими абзацами — триггер узнавания
+- [x] **STRUC-03**: Секция «Проблема» с тремя короткими абзацами — триггер узнавания
 - [ ] **STRUC-04**: Секция «Что вы получите» — 4 карточки: второе мнение, план действий, письменное заключение, ответы на вопросы
 - [ ] **STRUC-05**: Секция «Как это работает» — 3 шага: загрузка документов, изучение врачом, видеоконсультация
 - [ ] **STRUC-06**: Секция «Кто консультирует» — врачи из 7 стран, специализации, ссылка на medicusunion.com/doctors
@@ -111,7 +111,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | STRUC-01 | Phase 6: Navigation & Mobile Interaction | Pending |
 | STRUC-02 | Phase 2: Hero & Problem Sections | Complete |
-| STRUC-03 | Phase 2: Hero & Problem Sections | Pending |
+| STRUC-03 | Phase 2: Hero & Problem Sections | Complete |
 | STRUC-04 | Phase 3: Value & Process Sections | Pending |
 | STRUC-05 | Phase 3: Value & Process Sections | Pending |
 | STRUC-06 | Phase 4: Trust & Authority Sections | Pending |

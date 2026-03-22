@@ -53,7 +53,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Hero section with headline, subheading, and CTA buttons
-- [ ] 02-02-PLAN.md — Problem section with recognition-trigger paragraphs
+- [x] 02-02-PLAN.md — Problem section with recognition-trigger paragraphs
 
 ### Phase 3: Value & Process Sections
 **Goal**: Visitor understands what they receive and how the consultation process works
