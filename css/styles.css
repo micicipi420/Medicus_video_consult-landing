@@ -306,6 +306,43 @@ a:hover {
    7. SECTIONS (Hero, Problem, etc.) -- added in later phases
    ========================================================================== */
 
+/* -- Site Header -- */
+
+.site-header {
+  background-color: var(--color-white);
+  border-bottom: 1px solid rgba(24, 33, 44, 0.08);
+  padding-block: var(--space-2);
+}
+
+.site-header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header__brand {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.site-header__phone {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-header__phone:hover {
+  color: var(--color-dark);
+  text-decoration: underline;
+}
+
 /* -- Hero -- */
 
 .hero {
