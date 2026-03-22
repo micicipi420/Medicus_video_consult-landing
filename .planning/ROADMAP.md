@@ -96,7 +96,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Pricing section with price callout and included items list
+- [x] 05-01-PLAN.md — Pricing section with price callout and included items list
 - [ ] 05-02-PLAN.md — FAQ accordion with 6 questions and vanilla JS toggle
 - [ ] 05-03-PLAN.md — Final CTA section and footer with contacts and app links
 

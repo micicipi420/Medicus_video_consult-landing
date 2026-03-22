@@ -17,7 +17,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **STRUC-06**: Секция «Кто консультирует» — врачи из 7 стран, специализации, ссылка на medicusunion.com/doctors
 - [x] **STRUC-07**: Секция «Почему через нас» — 4 карточки преимуществ: перевод документов, перевод на консультации, приложение, организация лечения
 - [x] **STRUC-08**: Секция «Когда нужна консультация» — 5 сценариев-триггеров с чекбоксами/иконками
-- [ ] **STRUC-09**: Секция «Стоимость» — от 450€, список включённого в стоимость
+- [x] **STRUC-09**: Секция «Стоимость» — от 450€, список включённого в стоимость
 - [ ] **STRUC-10**: Секция FAQ — аккордеон, 6 вопросов-ответов по ТЗ
 - [ ] **STRUC-11**: Секция «Финальный призыв» — заголовок + 2 CTA-кнопки
 - [ ] **STRUC-12**: Footer — контакты, телефон, email, ссылки App Store / Google Play, юридическая информация
@@ -117,7 +117,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-06 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-07 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-08 | Phase 4: Trust & Authority Sections | Complete |
-| STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
 | STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
