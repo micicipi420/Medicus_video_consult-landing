@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Body text renders at minimum 18px, headings at 28-36px on all viewports
   4. All interactive elements have minimum 48x48px touch targets on mobile
   5. Text-to-background contrast passes WCAG AA on all color combinations used
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [x] 01-01-PLAN.md -- Project scaffolding, font files, and CSS design system with all tokens
@@ -49,7 +49,7 @@ Plans:
   2. CTA button text reads "Получить консультацию -- от 450 EUR" and is visually prominent
   3. Problem section presents three short recognition-trigger paragraphs in calm, confident medical tone
   4. Both sections render correctly on mobile (375px), tablet (768px), and desktop (1200px+)
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [x] 02-01-PLAN.md — Hero section with headline, subheading, and CTA buttons
@@ -63,7 +63,7 @@ Plans:
   1. "What you get" section displays 4 cards: second opinion, action plan, written conclusion, Q&A answers
   2. "How it works" section displays 3 sequential steps: upload documents, doctor review, video consultation
   3. Both sections are responsive -- cards stack vertically on mobile, grid on desktop
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [x] 03-01-PLAN.md — "What you get" benefit cards section (4 cards, 2x2 grid)
@@ -78,7 +78,7 @@ Plans:
   2. "Why through us" section displays 4 advantage cards: document translation, consultation translation, app, treatment organization
   3. "When you need a consultation" section presents 5 scenario triggers with visual indicators (checkboxes/icons)
   4. All three sections render correctly across mobile, tablet, and desktop
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [x] 04-01-PLAN.md — Doctor credentials section with 7 country flag cards
@@ -93,12 +93,12 @@ Plans:
   2. FAQ section has 6 questions in accordion format -- each expands/collapses on click, only one open at a time
   3. Final CTA section displays a headline with 2 CTA buttons
   4. Footer contains phone (+7 701 532 24 78), email (kz@medicusunion.com), App Store/Google Play links, and legal info
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Pricing section
-- [ ] 05-02: FAQ accordion
-- [ ] 05-03: Final CTA and footer
+- [ ] 05-01-PLAN.md — Pricing section with price callout and included items list
+- [ ] 05-02-PLAN.md — FAQ accordion with 6 questions and vanilla JS toggle
+- [ ] 05-03-PLAN.md — Final CTA section and footer with contacts and app links
 
 ### Phase 6: Navigation & Mobile Interaction
 **Goal**: All 11 sections work together as a cohesive page with smooth navigation and mobile-optimized interaction
@@ -110,7 +110,7 @@ Plans:
   3. Sticky mobile bar shows "Оставить заявку" button and phone number, visible during scroll
   4. Phone number is click-to-call (tel: link) in header, sticky bar, and footer
   5. Page is fully responsive: mobile (375px), tablet (768px), desktop (1200px+) layouts verified
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [ ] 06-01: Smooth scroll CTAs and click-to-call links
@@ -128,7 +128,7 @@ Plans:
   4. After successful submission, user sees "Спасибо, мы перезвоним в течение 24 часов" confirmation
   5. Micro-copies "Бесплатно и без обязательств" and "Ваши данные защищены" are visible near the form
   6. Honeypot field and submission timing check protect against spam bots
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [ ] 07-01: Form markup, phone mask, and dropdown
@@ -145,7 +145,7 @@ Plans:
   3. Public/website role has create-only access -- GET, PATCH, DELETE on the collection return 403
   4. CORS is configured for the production domain (not wildcard)
   5. Form submission from the landing page creates a new record visible in Directus admin panel
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [ ] 08-01: Docker Compose with Directus and PostgreSQL
@@ -161,7 +161,7 @@ Plans:
   2. All images are WebP with fallback, below-fold images use lazy loading
   3. Meta tags (title, description, Open Graph) are present and correct for social sharing
   4. HTML uses semantic elements: correct heading hierarchy, landmark regions (header, main, footer, nav), alt text on all images
-**Plans**: 2 plans
+**Plans**: 3 plans
 
 Plans:
 - [ ] 09-01: Image optimization and lazy loading
