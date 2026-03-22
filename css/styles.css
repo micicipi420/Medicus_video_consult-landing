@@ -225,6 +225,20 @@ a:hover {
   color: var(--color-text-on-dark);
 }
 
+.section--dark h1,
+.section--dark h2,
+.section--dark h3 {
+  color: var(--color-text-on-dark);
+}
+
+.section--dark a:not(.button) {
+  color: var(--color-primary);
+}
+
+.section--dark a:not(.button):hover {
+  color: var(--color-light);
+}
+
 /* ==========================================================================
    6. COMPONENTS (Buttons, Cards, etc.)
    ========================================================================== */
@@ -275,6 +289,7 @@ a:hover {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   padding: var(--space-4);
+  overflow: hidden;
 }
 
 .card__title {
