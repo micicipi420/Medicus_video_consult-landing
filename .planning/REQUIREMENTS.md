@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Structure & Content
 
-- [ ] **STRUC-01**: Лендинг содержит все 11 секций по ТЗ: Hero, Проблема, Что вы получите, Как это работает, Кто консультирует, Почему через нас, Когда нужна консультация, Стоимость, Форма заявки, FAQ, Финальный призыв + Footer
+- [x] **STRUC-01**: Лендинг содержит все 11 секций по ТЗ: Hero, Проблема, Что вы получите, Как это работает, Кто консультирует, Почему через нас, Когда нужна консультация, Стоимость, Форма заявки, FAQ, Финальный призыв + Footer
 - [x] **STRUC-02**: Hero-секция с заголовком «Мнение немецкого врача — за 5 дней, без перелёта», подзаголовком и CTA-кнопкой «Получить консультацию — от 450€»
 - [x] **STRUC-03**: Секция «Проблема» с тремя короткими абзацами — триггер узнавания
 - [x] **STRUC-04**: Секция «Что вы получите» — 4 карточки: второе мнение, план действий, письменное заключение, ответы на вопросы
@@ -24,7 +24,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Design & UX
 
-- [ ] **UX-01**: Mobile-first адаптивный дизайн (мобильная, планшетная, десктоп версии)
+- [x] **UX-01**: Mobile-first адаптивный дизайн (мобильная, планшетная, десктоп версии)
 - [x] **UX-02**: Шрифт тела текста минимум 18px, заголовки 28-36px (ЦА 45+)
 - [x] **UX-03**: Touch targets минимум 48x48px на мобильных
 - [x] **UX-04**: Цветовая схема по брендбуку: #38C6F4 (голубой), #35B678 (зелёный), #18212C (тёмный)
@@ -109,7 +109,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STRUC-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| STRUC-01 | Phase 6: Navigation & Mobile Interaction | Complete |
 | STRUC-02 | Phase 2: Hero & Problem Sections | Complete |
 | STRUC-03 | Phase 2: Hero & Problem Sections | Complete |
 | STRUC-04 | Phase 3: Value & Process Sections | Complete |
@@ -121,7 +121,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
-| UX-01 | Phase 6: Navigation & Mobile Interaction | Pending |
+| UX-01 | Phase 6: Navigation & Mobile Interaction | Complete |
 | UX-02 | Phase 1: Foundation & Design System | Complete |
 | UX-03 | Phase 1: Foundation & Design System | Complete |
 | UX-04 | Phase 1: Foundation & Design System | Complete |
