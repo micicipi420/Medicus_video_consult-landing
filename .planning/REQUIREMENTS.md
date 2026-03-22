@@ -19,8 +19,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **STRUC-08**: Секция «Когда нужна консультация» — 5 сценариев-триггеров с чекбоксами/иконками
 - [x] **STRUC-09**: Секция «Стоимость» — от 450€, список включённого в стоимость
 - [x] **STRUC-10**: Секция FAQ — аккордеон, 6 вопросов-ответов по ТЗ
-- [ ] **STRUC-11**: Секция «Финальный призыв» — заголовок + 2 CTA-кнопки
-- [ ] **STRUC-12**: Footer — контакты, телефон, email, ссылки App Store / Google Play, юридическая информация
+- [x] **STRUC-11**: Секция «Финальный призыв» — заголовок + 2 CTA-кнопки
+- [x] **STRUC-12**: Footer — контакты, телефон, email, ссылки App Store / Google Play, юридическая информация
 
 ### Design & UX
 
@@ -119,8 +119,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUC-08 | Phase 4: Trust & Authority Sections | Complete |
 | STRUC-09 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | STRUC-10 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
-| STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
-| STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Pending |
+| STRUC-11 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
+| STRUC-12 | Phase 5: Pricing, FAQ, Final CTA & Footer | Complete |
 | UX-01 | Phase 6: Navigation & Mobile Interaction | Pending |
 | UX-02 | Phase 1: Foundation & Design System | Complete |
 | UX-03 | Phase 1: Foundation & Design System | Complete |
