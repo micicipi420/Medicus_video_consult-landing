@@ -71,9 +71,52 @@
     });
   }
 
+  /**
+   * Sticky Bar visibility
+   * - Hides when the form or final-cta section is in viewport
+   * - Uses IntersectionObserver for performance
+   * - Falls back to always-visible if observer not supported
+   */
+  function initStickyBar() {
+    var stickyBar = document.getElementById('sticky-bar');
+    if (!stickyBar) return;
+
+    // Sections where sticky bar should hide (form not yet built, but ready for Phase 7)
+    var hideTargets = ['form', 'final-cta', 'footer'];
+    var targets = [];
+    hideTargets.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) targets.push(el);
+    });
+
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+
+    var visibleCount = 0;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          visibleCount++;
+        } else {
+          visibleCount = Math.max(0, visibleCount - 1);
+        }
+      });
+      if (visibleCount > 0) {
+        stickyBar.classList.add('is-hidden');
+      } else {
+        stickyBar.classList.remove('is-hidden');
+      }
+    }, { threshold: 0.1 });
+
+    targets.forEach(function (target) {
+      observer.observe(target);
+    });
+  }
+
   function initAll() {
     initAccordion();
     initSmoothScroll();
+    initStickyBar();
   }
 
   // Initialize when DOM is ready
