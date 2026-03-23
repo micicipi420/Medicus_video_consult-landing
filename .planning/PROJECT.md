@@ -27,7 +27,19 @@
 
 ### Active
 
-(Next milestone requirements to be defined via `/gsd:new-milestone`)
+## Current Milestone: v1.1 Visual Polish & Conversion Boost
+
+**Goal:** Улучшить визуальное качество и конверсионные элементы лендинга на основе визуального аудита v1.0.
+
+**Target features:**
+- Hero-секция с реальной фотографией и увеличенными CTA
+- Контрастное чередование фонов между секциями
+- Sticky header с навигацией по секциям
+- Центрированная pricing-карточка с визуальным акцентом
+- Двухколоночный layout формы на desktop
+- SVG-флаги стран вместо emoji
+- Social proof блок с ключевыми числами
+- Компактная секция «Знакомо?» с иконками
 
 ### Out of Scope
 
@@ -91,4 +103,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.0 milestone*
+*Last updated: 2026-03-23 after v1.1 milestone start*
