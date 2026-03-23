@@ -102,7 +102,10 @@ Plans:
   1. `--color-cta-hover-kz` token removed from `:root`
   2. `.pricing__card` has no box-shadow (flat design consistent with CARD-05 intent)
   3. Phase 18 SUMMARY.md `requirements_completed` frontmatter lists CARD-04, CARD-05, CARD-06, NAV-01
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 19-01-PLAN.md -- Remove orphaned token, flat pricing card, fix SUMMARY frontmatter
 
 ## Progress
 
@@ -110,4 +113,4 @@ Plans:
 |-------|----------------|--------|-----------|
 | 17. Design Tokens, Gradient Buttons & Layout | 1/1 | Complete    | 2026-03-23 |
 | 18. Cards, Badges & Navigation | 1/1 | Complete    | 2026-03-23 |
-| 19. v1.3 Cleanup | 0/TBD | Not started | - |
+| 19. v1.3 Cleanup | 0/1 | Not started | - |
