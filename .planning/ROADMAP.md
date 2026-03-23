@@ -72,7 +72,10 @@ Plans:
   2. Wave dividers between sections are more prominent than v1.0 (higher contrast, more visible)
   3. Pricing card is centered on desktop with visual emphasis (shadow, badge, or border accent)
   4. Form section on desktop shows a two-column layout (description/context on the left, form fields on the right) with a contrasting background
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — Alternating section backgrounds and enhanced wave dividers
+- [ ] 13-02-PLAN.md — Centered pricing card with badge and two-column form layout
 
 ### Phase 14: Visual Consistency
 **Goal**: Visual details are polished -- country flags are proper SVGs and pain points section is compact with icons
@@ -105,5 +108,5 @@ Plans:
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 0/1 | Not started | - |
-| 13. Section Layout & Contrast | v1.1 | 0/? | Not started | - |
+| 13. Section Layout & Contrast | v1.1 | 0/2 | Not started | - |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |
