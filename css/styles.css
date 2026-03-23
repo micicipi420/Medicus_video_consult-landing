@@ -73,7 +73,6 @@
 
   /* Colors - CTA Gradient (per TOKEN-02, matching medicusunion.kz) */
   --gradient-cta: linear-gradient(0.25turn, #1AC67E 0%, #0D9DB5 100%);
-  --color-cta-hover-kz: #00c08e;
 
   /* Colors - Darker accent variants for text on white (WCAG AA safe) */
   --color-primary-dark: #0E7490;       /* 5.36:1 on white */
