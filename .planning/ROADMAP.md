@@ -107,6 +107,6 @@ Plans:
 | 9. Performance & SEO | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 12. Sticky Navigation | v1.1 | 1/1 | Complete | 2026-03-23 |
+| 12. Sticky Navigation | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 13. Section Layout & Contrast | v1.1 | 0/2 | Not started | - |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |
