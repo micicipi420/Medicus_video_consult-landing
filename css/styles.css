@@ -268,9 +268,7 @@ a:hover {
               transform var(--transition-fast);
 }
 
-.button:active {
-  transform: scale(0.98);
-}
+/* active state handled in animations section */
 
 .button--primary {
   background-color: var(--color-primary);
@@ -804,14 +802,23 @@ a:hover {
   height: 20px;
 }
 
+.pricing__cta {
+  margin-top: var(--space-4);
+  display: inline-flex;
+}
+
 /* -- Lead Form (Phase 7) -- */
 
 .lead-form-section {
   background-color: var(--color-light);
+  position: relative;
+  overflow: hidden;
 }
 
 .lead-form__wrapper {
   max-width: 540px;
+  position: relative;
+  z-index: 1;
 }
 
 .lead-form__heading {
@@ -1047,11 +1054,6 @@ a:hover {
   opacity: 0;
 }
 
-.faq__answer {
-  overflow: hidden;
-  transition: max-height var(--transition-normal), padding var(--transition-normal);
-}
-
 .faq__answer[hidden] {
   display: none;
 }
@@ -1280,5 +1282,97 @@ a:hover {
 
   .section {
     padding-block: var(--section-padding-desktop);
+  }
+}
+
+/* ==========================================================================
+   10. ANIMATIONS (Phase 10)
+   ========================================================================== */
+
+/* -- Scroll entrance: fade-in-up -- */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children in grids (per D-11): 100ms delay per child */
+.stagger-children > .animate-on-scroll:nth-child(1) { transition-delay: 0ms; }
+.stagger-children > .animate-on-scroll:nth-child(2) { transition-delay: 100ms; }
+.stagger-children > .animate-on-scroll:nth-child(3) { transition-delay: 200ms; }
+.stagger-children > .animate-on-scroll:nth-child(4) { transition-delay: 300ms; }
+.stagger-children > .animate-on-scroll:nth-child(5) { transition-delay: 400ms; }
+.stagger-children > .animate-on-scroll:nth-child(6) { transition-delay: 500ms; }
+.stagger-children > .animate-on-scroll:nth-child(7) { transition-delay: 600ms; }
+
+/* -- Button hover lift (per D-14) -- */
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* -- FAQ smooth height transition (per D-15) -- */
+
+.faq__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease-out, padding 300ms ease-out;
+  padding-bottom: 0;
+}
+
+.faq__answer.is-open {
+  max-height: 500px;
+  padding-bottom: 0;
+}
+
+/* -- Pricing CTA pulse glow (per D-19) -- */
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(56, 198, 244, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(56, 198, 244, 0.25);
+  }
+}
+
+.pricing__card .button--primary {
+  animation: pulse-glow 2s ease-in-out 3;
+}
+
+/* -- Reduced motion override (per D-13) -- */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .faq__answer {
+    transition: none;
+  }
+
+  .pricing__card .button--primary {
+    animation: none;
+  }
+
+  .button:hover {
+    transform: none;
+  }
+
+  .card:hover {
+    transform: none;
   }
 }
