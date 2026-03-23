@@ -15,13 +15,22 @@
 
   /**
    * FAQ Accordion
-   * - Click toggles open/close
+   * - Click toggles open/close with smooth height transition
    * - Only one item open at a time
-   * - Uses aria-expanded and hidden attribute
+   * - Uses aria-expanded and .is-open CSS class (per D-15)
    */
   function initAccordion() {
     var buttons = document.querySelectorAll('.faq__question');
     if (!buttons.length) return;
+
+    // Remove hidden attribute and set initial state via CSS class
+    buttons.forEach(function (button) {
+      var answer = button.nextElementSibling;
+      if (answer && answer.hasAttribute('hidden')) {
+        answer.removeAttribute('hidden');
+        // Start closed — CSS max-height: 0 handles this
+      }
+    });
 
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
@@ -34,7 +43,7 @@
             otherButton.setAttribute('aria-expanded', 'false');
             var otherAnswer = otherButton.nextElementSibling;
             if (otherAnswer) {
-              otherAnswer.hidden = true;
+              otherAnswer.classList.remove('is-open');
             }
           }
         });
@@ -42,10 +51,10 @@
         // Toggle current item
         if (isOpen) {
           this.setAttribute('aria-expanded', 'false');
-          answer.hidden = true;
+          answer.classList.remove('is-open');
         } else {
           this.setAttribute('aria-expanded', 'true');
-          answer.hidden = false;
+          answer.classList.add('is-open');
         }
       });
     });
@@ -114,6 +123,63 @@
 
     targets.forEach(function (target) {
       observer.observe(target);
+    });
+  }
+
+  /**
+   * Scroll Animations
+   * - Adds fade-in-up animation when elements enter viewport
+   * - Uses IntersectionObserver for performance
+   * - Stagger delay on grid children (100ms per child)
+   * - Per D-10, D-11, D-12
+   */
+  function initScrollAnimations() {
+    // Bail if no IntersectionObserver support or reduced motion preferred
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Target all major content sections for animation
+    var sections = document.querySelectorAll('.benefits, .process, .doctors, .advantages, .scenarios, .pricing, .lead-form-section, .faq, .final-cta');
+
+    sections.forEach(function (section) {
+      // Find grid containers for stagger effect
+      var grids = section.querySelectorAll('.benefits__grid, .process__steps, .doctors__grid, .advantages__grid, .scenarios__list, .pricing__includes, .faq__list');
+      grids.forEach(function (grid) {
+        grid.classList.add('stagger-children');
+        // Add animate-on-scroll to each direct child
+        var children = grid.children;
+        for (var i = 0; i < children.length; i++) {
+          children[i].classList.add('animate-on-scroll');
+        }
+      });
+
+      // Also animate section headings and descriptions
+      var headings = section.querySelectorAll('h2, .doctors__description, .pricing__description, .pricing__card, .doctors__specializations, .doctors__note, .doctors__action, .final-cta__heading, .final-cta__text, .final-cta__actions, .lead-form__wrapper');
+      headings.forEach(function (el) {
+        if (!el.classList.contains('animate-on-scroll')) {
+          el.classList.add('animate-on-scroll');
+        }
+      });
+    });
+
+    // Observe all animated elements
+    var animatedElements = document.querySelectorAll('.animate-on-scroll');
+    if (!animatedElements.length) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    animatedElements.forEach(function (el) {
+      observer.observe(el);
     });
   }
 
@@ -387,6 +453,7 @@
     initAccordion();
     initSmoothScroll();
     initStickyBar();
+    initScrollAnimations();
     initPhoneMask();
     initSpamProtection();
     initFormValidation();
