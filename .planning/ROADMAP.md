@@ -21,6 +21,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 7: Lead Capture Form** - Form UI, validation, phone masking, spam protection
 - [ ] **Phase 8: Directus Backend & Integration** - Docker setup, collection schema, permissions, form-to-API wiring
 - [ ] **Phase 9: Performance & SEO** - Image optimization, lazy loading, meta tags, semantic HTML audit
+- [ ] **Phase 10: Visual Design Enhancement** - SVG icons, scroll animations, hero imagery, decorative elements
 
 ## Phase Details
 
@@ -167,10 +168,30 @@ Plans:
 - [x] 09-01-PLAN.md — SEO meta tags, Open Graph, and semantic HTML (completed)
 - [x] 09-02-PLAN.md — Final verification of all PERF requirements
 
+### Phase 10: Visual Design Enhancement
+**Goal**: The landing page has polished visual design with SVG icons, scroll animations, hero imagery, and decorative elements that create a professional, trustworthy impression without heavy assets or aggressive motion
+**Depends on**: Phase 9
+**Requirements**: D-01, D-02, D-03, D-04, D-05, D-06, D-07, D-08, D-09, D-10, D-11, D-12, D-13, D-14, D-15, D-16, D-17, D-18, D-19, D-20, D-21, D-22
+**Success Criteria** (what must be TRUE):
+  1. Hero has gradient background, dot-grid texture, and decorative SVG illustration (desktop only)
+  2. All emoji icons (except country flags) replaced with duotone inline SVG
+  3. Sections fade in on scroll with staggered grid animations
+  4. FAQ accordion uses smooth height transition
+  5. Wave SVG dividers between alternating sections
+  6. Process steps connected by dashed lines on desktop
+  7. All animations disabled when prefers-reduced-motion is set
+**Plans**: 4 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Hero gradient background, dot-grid, and decorative SVG illustration
+- [ ] 10-02-PLAN.md — SVG icons replacing emoji, card hover effects, header gradient line
+- [ ] 10-03-PLAN.md — Scroll animations, FAQ smooth toggle, button hover, pricing glow
+- [ ] 10-04-PLAN.md — Wave dividers, process connector, form halo, CTA gradient
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9
+Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9 > 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -183,13 +204,4 @@ Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9
 | 7. Lead Capture Form | 0/3 | Not started | - |
 | 8. Directus Backend & Integration | 0/3 | Not started | - |
 | 9. Performance & SEO | 1/2 | In progress | - |
-
-### Phase 10: Visual Design Enhancement — изображения, анимации, графика и визуальные элементы
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 9
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd:plan-phase 10 to break down)
+| 10. Visual Design Enhancement | 0/4 | Planning complete | - |
