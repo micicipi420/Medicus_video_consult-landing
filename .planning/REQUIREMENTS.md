@@ -59,10 +59,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Performance & SEO
 
-- [ ] **PERF-01**: Загрузка страницы < 3 секунд на 3G
-- [ ] **PERF-02**: Изображения в WebP с fallback, lazy-loading для below-fold контента
-- [ ] **PERF-03**: Meta-теги: title, description, Open Graph для шеринга
-- [ ] **PERF-04**: Семантический HTML: правильные heading levels, landmark regions, alt-тексты
+- [x] **PERF-01**: Загрузка страницы < 3 секунд на 3G
+- [x] **PERF-02**: Изображения в WebP с fallback, lazy-loading для below-fold контента
+- [x] **PERF-03**: Meta-теги: title, description, Open Graph для шеринга
+- [x] **PERF-04**: Семантический HTML: правильные heading levels, landmark regions, alt-тексты
 
 ## v2 Requirements
 
@@ -144,10 +144,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BACK-03 | Phase 8: Directus Backend & Integration | Pending |
 | BACK-04 | Phase 8: Directus Backend & Integration | Pending |
 | BACK-05 | Phase 8: Directus Backend & Integration | Pending |
-| PERF-01 | Phase 9: Performance & SEO | Pending |
-| PERF-02 | Phase 9: Performance & SEO | Pending |
-| PERF-03 | Phase 9: Performance & SEO | Pending |
-| PERF-04 | Phase 9: Performance & SEO | Pending |
+| PERF-01 | Phase 9: Performance & SEO | Complete |
+| PERF-02 | Phase 9: Performance & SEO | Complete |
+| PERF-03 | Phase 9: Performance & SEO | Complete |
+| PERF-04 | Phase 9: Performance & SEO | Complete |
 
 **Coverage:**
 - v1 requirements: 39 total
