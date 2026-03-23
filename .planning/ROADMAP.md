@@ -75,7 +75,7 @@ Plans:
 **Plans:** 2 plans
 Plans:
 - [x] 13-01-PLAN.md — Alternating section backgrounds and enhanced wave dividers
-- [ ] 13-02-PLAN.md — Centered pricing card with badge and two-column form layout
+- [x] 13-02-PLAN.md — Centered pricing card with badge and two-column form layout
 
 ### Phase 14: Visual Consistency
 **Goal**: Visual details are polished -- country flags are proper SVGs and pain points section is compact with icons
@@ -108,5 +108,5 @@ Plans:
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 13. Section Layout & Contrast | v1.1 | 1/2 | In progress | - |
+| 13. Section Layout & Contrast | v1.1 | 2/2 | Complete | 2026-03-23 |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |

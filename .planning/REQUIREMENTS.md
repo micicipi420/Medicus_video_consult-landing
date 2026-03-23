@@ -15,10 +15,10 @@ Requirements for visual polish and conversion boost. Each maps to roadmap phases
 
 ### Layout & Contrast
 
-- [ ] **LAYOUT-01**: Секции визуально чередуются (белый / светло-серый / accent фоны)
-- [ ] **LAYOUT-02**: Wave-разделители между секциями усилены (больше контраст, заметнее)
-- [ ] **LAYOUT-03**: Pricing-карточка центрирована на desktop с визуальным акцентом (тень, badge)
-- [ ] **LAYOUT-04**: Форма на desktop имеет двухколоночный layout (описание слева, форма справа) с фоновым контрастом
+- [x] **LAYOUT-01**: Секции визуально чередуются (белый / светло-серый / accent фоны)
+- [x] **LAYOUT-02**: Wave-разделители между секциями усилены (больше контраст, заметнее)
+- [x] **LAYOUT-03**: Pricing-карточка центрирована на desktop с визуальным акцентом (тень, badge)
+- [x] **LAYOUT-04**: Форма на desktop имеет двухколоночный layout (описание слева, форма справа) с фоновым контрастом
 
 ### Navigation
 
@@ -59,10 +59,10 @@ Deferred to future release.
 | HERO-01 | Phase 11 | Complete |
 | HERO-02 | Phase 11 | Complete |
 | HERO-03 | Phase 11 | Complete |
-| LAYOUT-01 | Phase 13 | Pending |
-| LAYOUT-02 | Phase 13 | Pending |
-| LAYOUT-03 | Phase 13 | Pending |
-| LAYOUT-04 | Phase 13 | Pending |
+| LAYOUT-01 | Phase 13 | Complete |
+| LAYOUT-02 | Phase 13 | Complete |
+| LAYOUT-03 | Phase 13 | Complete |
+| LAYOUT-04 | Phase 13 | Complete |
 | NAV-01 | Phase 12 | Complete |
 | NAV-02 | Phase 12 | Complete |
 | PROOF-01 | Phase 11 | Complete |
