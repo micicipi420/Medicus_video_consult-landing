@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Brand Visual Alignment
 status: unknown
-stopped_at: Completed 15-01-PLAN.md
-last_updated: "2026-03-23T10:45:30.544Z"
+stopped_at: Completed 16-01-PLAN.md
+last_updated: "2026-03-23T10:51:53.434Z"
 progress:
   total_phases: 2
-  completed_phases: 1
-  total_plans: 1
-  completed_plans: 1
+  completed_phases: 2
+  total_plans: 2
+  completed_plans: 2
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 15 — design-tokens-buttons-hero
+**Current focus:** Phase 16 — cards-spacing
 
 ## Current Position
 
-Phase: 16
-Plan: Not started
+Phase: 16 (cards-spacing) — EXECUTING
+Plan: 1 of 1
 
 ## Performance Metrics
 
@@ -39,6 +39,7 @@ Plan: Not started
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 15 | 1 | 2min | 2min |
+| Phase 16 P01 | 2min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -48,6 +49,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 - [P15-01] Keep --color-primary (#38C6F4) for accents, separate --color-cta (#35B678) for CTA buttons
 - [P15-01] White text on green CTA (AA for large text), removed .button--secondary as redundant
+- [Phase 16]: Shadow palette shifted to rgba(16,24,40) matching medicusunion.com; shadow-md same as shadow-sm for nearly flat rest state
 
 ### Blockers/Concerns
 
@@ -56,6 +58,6 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-23
-Stopped at: Completed 15-01-PLAN.md
+Last session: 2026-03-23T10:51:53.431Z
+Stopped at: Completed 16-01-PLAN.md
 Resume file: None

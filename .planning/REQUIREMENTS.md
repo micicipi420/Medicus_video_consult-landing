@@ -15,13 +15,13 @@ Requirements for brand visual alignment with medicusunion.com. Each maps to road
 
 ### Cards & Components
 
-- [ ] **CARD-01**: Карточки имеют border-radius: 20px (вместо 12px)
-- [ ] **CARD-02**: Hover-эффект карточек -- translateY(-2px) вместо scale(1.02)
-- [ ] **CARD-03**: Тени карточек облегчены до уровня основного сайта
+- [x] **CARD-01**: Карточки имеют border-radius: 20px (вместо 12px)
+- [x] **CARD-02**: Hover-эффект карточек -- translateY(-2px) вместо scale(1.02)
+- [x] **CARD-03**: Тени карточек облегчены до уровня основного сайта
 
 ### Layout & Spacing
 
-- [ ] **SPACE-01**: Секционные отступы увеличены до 100px на desktop
+- [x] **SPACE-01**: Секционные отступы увеличены до 100px на desktop
 - [x] **SPACE-02**: Hero-фон заменён на тёплый кремовый (#fffbf4) как на основном сайте
 
 ### Design Tokens
@@ -54,10 +54,10 @@ Deferred to future release.
 | BTN-02 | Phase 15 | Complete |
 | BTN-03 | Phase 15 | Complete |
 | SPACE-02 | Phase 15 | Complete |
-| CARD-01 | Phase 16 | Pending |
-| CARD-02 | Phase 16 | Pending |
-| CARD-03 | Phase 16 | Pending |
-| SPACE-01 | Phase 16 | Pending |
+| CARD-01 | Phase 16 | Complete |
+| CARD-02 | Phase 16 | Complete |
+| CARD-03 | Phase 16 | Complete |
+| SPACE-01 | Phase 16 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 9 total
