@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями и SEO-оптимизацией.
+Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -10,36 +10,38 @@
 
 Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома — и оставляет заявку.
 
+## Current State
+
+**Shipped:** v1.1 Visual Polish & Conversion Boost (2026-03-23)
+**Codebase:** 2,905 LOC (762 HTML + 1,655 CSS + 488 JS)
+**Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
+
 ## Requirements
 
 ### Validated
 
-- ✓ Лендинг из 11 секций по ТЗ — v1.0 (STRUC-01..12)
-- ✓ Mobile-first дизайн (ЦА 45+) — v1.0 (UX-01..07)
-- ✓ Форма заявки с валидацией и спам-защитой — v1.0 (FORM-01..07)
-- ✓ Directus как бэкенд: приём и хранение заявок — v1.0 (BACK-01..05)
-- ✓ Брендбук: цвета, шрифты Inter/Manrope self-hosted — v1.0 (UX-04, UX-05)
-- ✓ FAQ аккордеон со smooth-анимацией — v1.0 (NAV-04)
-- ✓ CTA-кнопки со скроллом к форме — v1.0 (NAV-01)
-- ✓ Sticky mobile bar с click-to-call — v1.0 (NAV-02, NAV-03)
-- ✓ SEO: meta tags, Open Graph, semantic HTML — v1.0 (PERF-01..04)
-- ✓ SVG-иконки, scroll-анимации, wave-разделители — v1.0 (Phase 10)
+- ✓ Лендинг из 11 секций по ТЗ — v1.0
+- ✓ Mobile-first дизайн (ЦА 45+) — v1.0
+- ✓ Форма заявки с валидацией и спам-защитой — v1.0
+- ✓ Directus как бэкенд: приём и хранение заявок — v1.0
+- ✓ Брендбук: цвета, шрифты Inter/Manrope self-hosted — v1.0
+- ✓ FAQ аккордеон со smooth-анимацией — v1.0
+- ✓ CTA-кнопки со скроллом к форме — v1.0
+- ✓ Sticky mobile bar с click-to-call — v1.0
+- ✓ SEO: meta tags, Open Graph, semantic HTML — v1.0
+- ✓ SVG-иконки, scroll-анимации, wave-разделители — v1.0
+- ✓ Hero с реальной медицинской иллюстрацией и увеличенными CTA — v1.1
+- ✓ Social proof блок с ключевыми числами — v1.1
+- ✓ Sticky header с навигацией по секциям — v1.1
+- ✓ Чередующиеся фоны секций и усиленные wave-разделители — v1.1
+- ✓ Центрированная pricing-карточка с badge — v1.1
+- ✓ Двухколоночный layout формы с trust signals — v1.1
+- ✓ SVG-флаги стран вместо emoji — v1.1
+- ✓ Компактная секция «Знакомо?» с иконками — v1.1
 
 ### Active
 
-## Current Milestone: v1.1 Visual Polish & Conversion Boost
-
-**Goal:** Улучшить визуальное качество и конверсионные элементы лендинга на основе визуального аудита v1.0.
-
-**Target features:**
-- Hero-секция с реальной фотографией и увеличенными CTA
-- Контрастное чередование фонов между секциями
-- Sticky header с навигацией по секциям
-- Центрированная pricing-карточка с визуальным акцентом
-- Двухколоночный layout формы на desktop
-- SVG-флаги стран вместо emoji
-- Social proof блок с ключевыми числами
-- Компактная секция «Знакомо?» с иконками
+(None — define next milestone via `/gsd:new-milestone`)
 
 ### Out of Scope
 
@@ -50,14 +52,17 @@
 - Профили врачей на лендинге — ссылка на medicusunion.com/doctors
 - Параллакс / тяжёлые анимации — ЦА 45+, предпочитаем простоту
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
+- Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
+- A/B тестирование — требует серверную инфраструктуру, преждевременно
 
 ## Context
 
-- Shipped v1.0 with 2,554 LOC (HTML 625 + CSS 1,461 + JS 468)
+- Shipped v1.1 with 2,905 LOC (HTML 762 + CSS 1,655 + JS 488)
 - Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 - Self-hosted Inter + Manrope variable fonts (WOFF2)
 - No build tools, no frameworks, no external dependencies
-- All 36 requirements satisfied, 10 phases, 24 plans
+- v1.0: 36 requirements, 10 phases, 24 plans
+- v1.1: 12 requirements, 4 phases, 5 plans
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -82,8 +87,11 @@
 | IIFE pattern for JS | Избегаем загрязнения global scope | ✓ Good — clean isolation |
 | BEM naming for CSS | Предсказуемые стили, нет конфликтов | ✓ Good — consistent across 11 sections |
 | IntersectionObserver for animations | Производительность лучше чем scroll events | ✓ Good — with graceful fallback |
-| Inline SVG icons (not sprite) | Простота, нет доп. HTTP запросов, кастомизация цветов | ✓ Good — 19 duotone icons |
+| Inline SVG icons (not sprite) | Простота, нет доп. HTTP запросов, кастомизация цветов | ✓ Good — 19 duotone icons + 7 flags |
 | Honeypot + timing for spam | Невидимо для пользователя, без CAPTCHA | ✓ Good — UX-friendly spam protection |
+| Duotone SVG for hero illustration | Consistent with existing icon style | ✓ Good — v1.1 |
+| Position: sticky for header | Native CSS, no JS positioning needed | ✓ Good — v1.1 |
+| 80px double-curve wave dividers | Stronger visual separation between sections | ✓ Good — v1.1 |
 
 ## Evolution
 
@@ -103,4 +111,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.1 milestone start*
+*Last updated: 2026-03-23 after v1.1 milestone completion*

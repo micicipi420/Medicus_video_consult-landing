@@ -26,3 +26,20 @@
 - Wave SVG dividers between 8 section transitions, dashed process connectors on desktop, radial gradient form halo, and gradient CTA background
 
 ---
+
+## v1.1 Visual Polish & Conversion Boost (Shipped: 2026-03-23)
+
+**Phases completed:** 4 phases, 5 plans, 10 tasks
+**Requirements:** 12/12 satisfied
+**Files:** +427 lines, -76 lines across 3 files (2,905 LOC total)
+
+**Key accomplishments:**
+
+- Professional duotone doctor-at-laptop SVG illustration in hero section with enlarged 56px CTA buttons for 45+ audience
+- Social proof numbers bar (7 countries, 50+ doctors, 15+ specializations) on dark teal background between hero and content
+- Sticky header with desktop navigation links to 4 key sections and scroll shadow effect
+- Alternating section backgrounds (white/light-gray) with enhanced 80px double-curve wave dividers and drop-shadow
+- Centered pricing card with "Все включено" badge and two-column form layout with trust signals on desktop
+- SVG country flags replacing emoji for cross-browser consistency and icon-based compact "Знакомо?" problem section
+
+---
