@@ -828,20 +828,45 @@ a:hover {
 
 .pricing__heading {
   margin-bottom: var(--space-3);
+  text-align: center;
 }
 
 .pricing__description {
   font-size: var(--font-size-lg);
   max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: var(--space-5);
+  text-align: center;
 }
 
 .pricing__card {
   background-color: var(--color-light);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  max-width: 600px;
+  max-width: 520px;
+  margin-top: var(--space-5);
+  margin-left: auto;
+  margin-right: auto;
   border: 2px solid var(--color-primary);
+  border-left: 4px solid var(--color-primary);
+  box-shadow: 0 8px 32px rgba(56, 198, 244, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.pricing__badge {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  margin-bottom: 0;
+  position: absolute;
+  top: -28px;
+  left: var(--space-5);
 }
 
 .pricing__price-block {
