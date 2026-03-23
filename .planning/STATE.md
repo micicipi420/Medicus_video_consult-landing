@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: KZ Design Alignment
 status: unknown
-stopped_at: Completed 18-01-PLAN.md
-last_updated: "2026-03-23T15:37:20.957Z"
+stopped_at: Completed 19-01-PLAN.md
+last_updated: "2026-03-23T19:05:20.770Z"
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 2
-  completed_plans: 2
+  total_phases: 3
+  completed_phases: 3
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 18 — cards-badges-navigation
+**Current focus:** Phase 19 — v1-3-cleanup
 
 ## Current Position
 
-Phase: 18
-Plan: Not started
+Phase: 19 (v1-3-cleanup) — EXECUTING
+Plan: 1 of 1
 
 ## Performance Metrics
 
@@ -42,6 +42,7 @@ Plan: Not started
 | 18 | 0/TBD | - | - |
 | Phase 17 P01 | 2min | 2 tasks | 1 files |
 | Phase 18 P01 | 8 | 3 tasks | 1 files |
+| Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -55,6 +56,8 @@ Recent decisions affecting current work:
 - [Phase 17]: Opacity hover (0.85) for gradient CTA compatibility
 - [Phase 18]: Flat card design (no shadows) matches medicusunion.kz reference — removed all card box-shadows
 - [Phase 18]: Mint badge palette (#d0fae4 bg / #007955 text) as CSS custom properties for pricing badge
+- [Phase 19-v1-3-cleanup]: Removed --color-cta-hover-kz token declared in Phase 17 but never used — hover relies on opacity: 0.85
+- [Phase 19-v1-3-cleanup]: Removed box-shadow from .pricing__card to complete flat design intent missed in Phase 18
 
 ### Blockers/Concerns
 
@@ -63,6 +66,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-23T15:35:02.786Z
-Stopped at: Completed 18-01-PLAN.md
+Last session: 2026-03-23T19:05:20.767Z
+Stopped at: Completed 19-01-PLAN.md
 Resume file: None
