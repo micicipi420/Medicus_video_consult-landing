@@ -74,7 +74,7 @@ Plans:
   4. Form section on desktop shows a two-column layout (description/context on the left, form fields on the right) with a contrasting background
 **Plans:** 2 plans
 Plans:
-- [ ] 13-01-PLAN.md — Alternating section backgrounds and enhanced wave dividers
+- [x] 13-01-PLAN.md — Alternating section backgrounds and enhanced wave dividers
 - [ ] 13-02-PLAN.md — Centered pricing card with badge and two-column form layout
 
 ### Phase 14: Visual Consistency
@@ -108,5 +108,5 @@ Plans:
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 13. Section Layout & Contrast | v1.1 | 0/2 | Not started | - |
+| 13. Section Layout & Contrast | v1.1 | 1/2 | In progress | - |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |
