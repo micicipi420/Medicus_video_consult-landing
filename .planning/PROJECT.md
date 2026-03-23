@@ -41,7 +41,18 @@
 
 ### Active
 
-(None — define next milestone via `/gsd:new-milestone`)
+## Current Milestone: v1.2 Brand Visual Alignment
+
+**Goal:** Привести визуальный дизайн лендинга в соответствие с основным сайтом medicusunion.com — единый бренд-стиль кнопок, карточек, цветов и отступов.
+
+**Target features:**
+- Pill-shape кнопки (border-radius: 100px) как на основном сайте
+- Зелёный primary CTA (#35B678) — основной цвет бренда MedicusUnion
+- Увеличенный border-radius карточек (20px) для современного вида
+- Тёплый кремовый hero-фон (#fffbf4) вместо холодного голубого
+- Hover карточек: translateY(-2px) вместо scale — как на основном сайте
+- Увеличенные секционные отступы (100px desktop) — больше воздуха
+- Более лёгкие тени карточек — ближе к стилю основного сайта
 
 ### Out of Scope
 
@@ -111,4 +122,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.1 milestone completion*
+*Last updated: 2026-03-23 after v1.2 milestone start*
