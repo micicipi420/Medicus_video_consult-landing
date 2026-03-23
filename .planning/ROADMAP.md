@@ -31,7 +31,7 @@ Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
 
 **Milestone Goal:** Improve visual quality and conversion elements based on v1.0 visual audit. Better first impression, clearer layout hierarchy, sticky navigation, and consistent visual language.
 
-- [ ] **Phase 11: Hero & First Impression** - Real hero image, enlarged CTAs, hero background contrast, and social proof numbers block
+- [x] **Phase 11: Hero & First Impression** - Real hero image, enlarged CTAs, hero background contrast, and social proof numbers block (completed 2026-03-23)
 - [ ] **Phase 12: Sticky Navigation** - Sticky header with section navigation links
 - [ ] **Phase 13: Section Layout & Contrast** - Alternating section backgrounds, enhanced wave dividers, centered pricing card, two-column form layout
 - [ ] **Phase 14: Visual Consistency** - SVG country flags and compact pain points section
@@ -47,9 +47,9 @@ Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
   2. CTA buttons in the hero are visually large and easy to tap on mobile (min-height 56px, font-size 18px)
   3. Hero background is visually distinct from the rest of the page (gradient or contrasting color separates it)
   4. A social proof block with key numbers (consultations, doctors, countries) is visible between the hero and the "Знакомо?" section
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 11-01-PLAN.md — Hero SVG illustration, enhanced gradient, enlarged CTAs, social proof numbers bar
+- [x] 11-01-PLAN.md — Hero SVG illustration, enhanced gradient, enlarged CTAs, social proof numbers bar
 
 ### Phase 12: Sticky Navigation
 **Goal**: Visitor can navigate to any key section from anywhere on the page via a persistent header
@@ -99,7 +99,7 @@ Plans:
 | 8. Directus Backend & Integration | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 9. Performance & SEO | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
-| 11. Hero & First Impression | v1.1 | 0/1 | Planning complete | - |
+| 11. Hero & First Impression | v1.1 | 1/1 | Complete   | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 0/? | Not started | - |
 | 13. Section Layout & Contrast | v1.1 | 0/? | Not started | - |
 | 14. Visual Consistency | v1.1 | 0/? | Not started | - |

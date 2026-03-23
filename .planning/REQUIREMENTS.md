@@ -9,9 +9,9 @@ Requirements for visual polish and conversion boost. Each maps to roadmap phases
 
 ### Hero & First Screen
 
-- [ ] **HERO-01**: Hero-секция содержит реальную фотографию врача или качественную медицинскую иллюстрацию вместо абстрактного SVG
-- [ ] **HERO-02**: CTA-кнопки увеличены для ЦА 45+ (min-height 56px, font-size 18px)
-- [ ] **HERO-03**: Фон hero-секции визуально отделён от остальной страницы (gradient или контрастный цвет)
+- [x] **HERO-01**: Hero-секция содержит реальную фотографию врача или качественную медицинскую иллюстрацию вместо абстрактного SVG
+- [x] **HERO-02**: CTA-кнопки увеличены для ЦА 45+ (min-height 56px, font-size 18px)
+- [x] **HERO-03**: Фон hero-секции визуально отделён от остальной страницы (gradient или контрастный цвет)
 
 ### Layout & Contrast
 
@@ -27,7 +27,7 @@ Requirements for visual polish and conversion boost. Each maps to roadmap phases
 
 ### Social Proof
 
-- [ ] **PROOF-01**: Блок с ключевыми числами (количество консультаций, врачей, стран) между hero и секцией «Знакомо?»
+- [x] **PROOF-01**: Блок с ключевыми числами (количество консультаций, врачей, стран) между hero и секцией «Знакомо?»
 
 ### Visual Consistency
 
@@ -56,16 +56,16 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| HERO-01 | Phase 11 | Pending |
-| HERO-02 | Phase 11 | Pending |
-| HERO-03 | Phase 11 | Pending |
+| HERO-01 | Phase 11 | Complete |
+| HERO-02 | Phase 11 | Complete |
+| HERO-03 | Phase 11 | Complete |
 | LAYOUT-01 | Phase 13 | Pending |
 | LAYOUT-02 | Phase 13 | Pending |
 | LAYOUT-03 | Phase 13 | Pending |
 | LAYOUT-04 | Phase 13 | Pending |
 | NAV-01 | Phase 12 | Pending |
 | NAV-02 | Phase 12 | Pending |
-| PROOF-01 | Phase 11 | Pending |
+| PROOF-01 | Phase 11 | Complete |
 | VIS-01 | Phase 14 | Pending |
 | VIS-02 | Phase 14 | Pending |
 
