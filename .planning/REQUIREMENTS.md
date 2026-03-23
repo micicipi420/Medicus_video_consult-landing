@@ -9,9 +9,9 @@ Requirements for brand visual alignment with medicusunion.com. Each maps to road
 
 ### Buttons & CTA
 
-- [ ] **BTN-01**: Все кнопки имеют pill-shape (border-radius: 100px) как на основном сайте
-- [ ] **BTN-02**: Primary CTA использует зелёный цвет бренда (#35B678) вместо голубого
-- [ ] **BTN-03**: Hover-состояние primary кнопки соответствует бренду (#25A467)
+- [x] **BTN-01**: Все кнопки имеют pill-shape (border-radius: 100px) как на основном сайте
+- [x] **BTN-02**: Primary CTA использует зелёный цвет бренда (#35B678) вместо голубого
+- [x] **BTN-03**: Hover-состояние primary кнопки соответствует бренду (#25A467)
 
 ### Cards & Components
 
@@ -22,11 +22,11 @@ Requirements for brand visual alignment with medicusunion.com. Each maps to road
 ### Layout & Spacing
 
 - [ ] **SPACE-01**: Секционные отступы увеличены до 100px на desktop
-- [ ] **SPACE-02**: Hero-фон заменён на тёплый кремовый (#fffbf4) как на основном сайте
+- [x] **SPACE-02**: Hero-фон заменён на тёплый кремовый (#fffbf4) как на основном сайте
 
 ### Design Tokens
 
-- [ ] **TOKEN-01**: CSS-переменные обновлены для согласованности с палитрой основного сайта (green primary CTA, warm background)
+- [x] **TOKEN-01**: CSS-переменные обновлены для согласованности с палитрой основного сайта (green primary CTA, warm background)
 
 ## v2 Requirements
 
@@ -49,11 +49,11 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOKEN-01 | Phase 15 | Pending |
-| BTN-01 | Phase 15 | Pending |
-| BTN-02 | Phase 15 | Pending |
-| BTN-03 | Phase 15 | Pending |
-| SPACE-02 | Phase 15 | Pending |
+| TOKEN-01 | Phase 15 | Complete |
+| BTN-01 | Phase 15 | Complete |
+| BTN-02 | Phase 15 | Complete |
+| BTN-03 | Phase 15 | Complete |
+| SPACE-02 | Phase 15 | Complete |
 | CARD-01 | Phase 16 | Pending |
 | CARD-02 | Phase 16 | Pending |
 | CARD-03 | Phase 16 | Pending |

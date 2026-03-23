@@ -46,7 +46,7 @@ Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
 
 **Milestone Goal:** Привести визуальный дизайн лендинга в соответствие с основным сайтом medicusunion.com -- единый бренд-стиль кнопок, карточек, цветов и отступов.
 
-- [ ] **Phase 15: Design Tokens, Buttons & Hero** - CSS-переменные бренда, pill-shape кнопки с зелёным CTA, тёплый hero-фон
+- [x] **Phase 15: Design Tokens, Buttons & Hero** - CSS-переменные бренда, pill-shape кнопки с зелёным CTA, тёплый hero-фон
 - [ ] **Phase 16: Cards & Spacing** - Скруглённые карточки с лёгкими тенями, увеличенные секционные отступы
 
 ## Phase Details
@@ -62,7 +62,7 @@ Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
   4. Hero-секция имеет тёплый кремовый фон (#fffbf4) вместо холодного голубого градиента
 **Plans:** 1 plan
 Plans:
-- [ ] 15-01-PLAN.md -- Design tokens, button pill-shape/green CTA, hero warm background
+- [x] 15-01-PLAN.md -- Design tokens, button pill-shape/green CTA, hero warm background
 
 ### Phase 16: Cards & Spacing
 **Goal**: Карточки и отступы между секциями соответствуют современному воздушному стилю основного сайта
@@ -78,5 +78,5 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 15. Design Tokens, Buttons & Hero | v1.2 | 0/1 | Planned | - |
+| 15. Design Tokens, Buttons & Hero | v1.2 | 1/1 | Complete | 2026-03-23 |
 | 16. Cards & Spacing | v1.2 | 0/0 | Not started | - |

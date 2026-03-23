@@ -2,13 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Brand Visual Alignment
-status: ready_to_plan
-last_updated: "2026-03-23"
+status: executing
+stopped_at: "Phase 15-01 complete, Phase 16 next"
+last_updated: "2026-03-23T10:39:07.707Z"
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 1
+  completed_plans: 1
 ---
 
 # Project State
@@ -18,35 +19,35 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** v1.2 Brand Visual Alignment -- Phase 15 ready to plan
+**Current focus:** Phase 15 — design-tokens-buttons-hero
 
 ## Current Position
 
-Phase: 15 of 16 (Design Tokens, Buttons & Hero)
-Plan: None yet (ready to plan)
-Status: Ready to plan
-Last activity: 2026-03-23 -- Roadmap created for v1.2
-
-Progress: [░░░░░░░░░░] 0%
+Phase: 15 (design-tokens-buttons-hero) — COMPLETE
+Plan: 1 of 1 (done)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: --
-- Total execution time: 0 hours
+
+- Total plans completed: 1
+- Average duration: 2min
+- Total execution time: 0.03 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 15 | 1 | 2min | 2min |
 
 ## Accumulated Context
 
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
+
+- [P15-01] Keep --color-primary (#38C6F4) for accents, separate --color-cta (#35B678) for CTA buttons
+- [P15-01] White text on green CTA (AA for large text), removed .button--secondary as redundant
 
 ### Blockers/Concerns
 
@@ -56,5 +57,5 @@ Decisions are logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-23
-Stopped at: v1.2 roadmap created, Phase 15 ready to plan
+Stopped at: Completed 15-01-PLAN.md
 Resume file: None
