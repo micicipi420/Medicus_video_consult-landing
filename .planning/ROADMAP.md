@@ -60,7 +60,9 @@ Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
   2. Все кнопки на странице имеют pill-shape (border-radius: 100px) -- визуально идентичны кнопкам на medicusunion.com
   3. Primary CTA кнопки зелёного цвета (#35B678) с корректным hover-переходом (#25A467)
   4. Hero-секция имеет тёплый кремовый фон (#fffbf4) вместо холодного голубого градиента
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 15-01-PLAN.md -- Design tokens, button pill-shape/green CTA, hero warm background
 
 ### Phase 16: Cards & Spacing
 **Goal**: Карточки и отступы между секциями соответствуют современному воздушному стилю основного сайта
@@ -76,5 +78,5 @@ Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 15. Design Tokens, Buttons & Hero | v1.2 | 0/0 | Not started | - |
+| 15. Design Tokens, Buttons & Hero | v1.2 | 0/1 | Planned | - |
 | 16. Cards & Spacing | v1.2 | 0/0 | Not started | - |
