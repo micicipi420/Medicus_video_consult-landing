@@ -5,6 +5,7 @@
 - v1.0 MedicusUnion KZ Landing -- Phases 1-10 (shipped 2026-03-23)
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
+- v1.3 KZ Design Alignment -- Phases 17-18 (in progress)
 
 ## Phases
 
@@ -53,3 +54,42 @@ Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
 Full details: `.planning/milestones/v1.2-ROADMAP.md`
 Requirements: `.planning/milestones/v1.2-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
+
+## v1.3 KZ Design Alignment (In Progress)
+
+**Milestone Goal:** Привести дизайн лендинга в соответствие с medicusunion.kz -- градиентные кнопки, увеличенный radius карточек, белый hero, убрать тени, обновить навигацию.
+
+- [ ] **Phase 17: Design Tokens, Gradient Buttons & Layout** - Gradient CTA, updated radius, white hero, 1200px container
+- [ ] **Phase 18: Cards, Badges & Navigation** - Flat cards 30px radius, mint badges, white nav 76px
+
+## Phase Details
+
+### Phase 17: Design Tokens, Gradient Buttons & Layout
+**Goal**: CTA buttons use a gradient style matching medicusunion.kz, hero background is white, and the page container is 1200px wide
+**Depends on**: Phase 16
+**Requirements**: TOKEN-02, BTN-04, BTN-05, BTN-06, LAYOUT-01, LAYOUT-02
+**Success Criteria** (what must be TRUE):
+  1. All CTA buttons display a green-to-teal gradient (#1AC67E to #0D9DB5) instead of solid green
+  2. CTA buttons have border-radius 16px (not pill-shape 100px)
+  3. Hovering a CTA button shows a visible transition (opacity shift or color change to #00c08e)
+  4. Hero section background is pure white (#ffffff), not cream
+  5. Page content container is 1200px wide on desktop viewports
+**Plans**: TBD
+
+### Phase 18: Cards, Badges & Navigation
+**Goal**: Cards are flat with larger radius, badges use mint palette, and navigation matches medicusunion.kz style
+**Depends on**: Phase 17
+**Requirements**: CARD-04, CARD-05, CARD-06, NAV-01
+**Success Criteria** (what must be TRUE):
+  1. All cards have border-radius 30px (increased from 20px)
+  2. Cards have no box-shadow in any state (flat design)
+  3. Badge/tag elements use mint background (#d0fae4) with dark green text (#007955)
+  4. Desktop navigation has white background and 76px height
+**Plans**: TBD
+
+## Progress
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 17. Design Tokens, Gradient Buttons & Layout | 0/TBD | Not started | - |
+| 18. Cards, Badges & Navigation | 0/TBD | Not started | - |

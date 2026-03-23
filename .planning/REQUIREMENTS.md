@@ -54,22 +54,22 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOKEN-02 | TBD | Pending |
-| BTN-04 | TBD | Pending |
-| BTN-05 | TBD | Pending |
-| BTN-06 | TBD | Pending |
-| CARD-04 | TBD | Pending |
-| CARD-05 | TBD | Pending |
-| CARD-06 | TBD | Pending |
-| LAYOUT-01 | TBD | Pending |
-| LAYOUT-02 | TBD | Pending |
-| NAV-01 | TBD | Pending |
+| TOKEN-02 | Phase 17 | Pending |
+| BTN-04 | Phase 17 | Pending |
+| BTN-05 | Phase 17 | Pending |
+| BTN-06 | Phase 17 | Pending |
+| LAYOUT-01 | Phase 17 | Pending |
+| LAYOUT-02 | Phase 17 | Pending |
+| CARD-04 | Phase 18 | Pending |
+| CARD-05 | Phase 18 | Pending |
+| CARD-06 | Phase 18 | Pending |
+| NAV-01 | Phase 18 | Pending |
 
 **Coverage:**
 - v1.3 requirements: 10 total
-- Mapped to phases: 0
-- Unmapped: 10
+- Mapped to phases: 10
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after initial definition*
+*Last updated: 2026-03-23 after roadmap creation*
