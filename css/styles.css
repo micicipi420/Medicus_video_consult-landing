@@ -497,6 +497,51 @@ a:hover {
   }
 }
 
+/* -- Social Proof Bar (PROOF-01) -- */
+
+.social-proof {
+  background-color: var(--color-primary-dark);  /* #0E7490 */
+  padding-block: var(--space-4);  /* 32px */
+}
+
+.social-proof__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);  /* 24px */
+  text-align: center;
+}
+
+.social-proof__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;  /* 4px */
+}
+
+.social-proof__number {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;  /* 40px */
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-white);
+}
+
+.social-proof__label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);  /* 18px */
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (min-width: 768px) {
+  .social-proof__container {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-8);  /* 64px */
+  }
+}
+
 /* -- Problem -- */
 
 .problem {
@@ -1421,6 +1466,13 @@ a:hover {
 }
 .section-divider--white-to-light svg {
   fill: var(--color-light);
+}
+
+.section-divider--dark-to-white {
+  background-color: var(--color-primary-dark);  /* #0E7490 */
+}
+.section-divider--dark-to-white svg {
+  fill: var(--color-white);
 }
 
 .section-divider svg {
