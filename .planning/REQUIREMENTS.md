@@ -1,7 +1,7 @@
 # Requirements: MedicusUnion KZ Landing
 
 **Defined:** 2026-03-23
-**Core Value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома — и оставляет заявку.
+**Core Value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
 
 ## v1.2 Requirements
 
@@ -16,7 +16,7 @@ Requirements for brand visual alignment with medicusunion.com. Each maps to road
 ### Cards & Components
 
 - [ ] **CARD-01**: Карточки имеют border-radius: 20px (вместо 12px)
-- [ ] **CARD-02**: Hover-эффект карточек — translateY(-2px) вместо scale(1.02)
+- [ ] **CARD-02**: Hover-эффект карточек -- translateY(-2px) вместо scale(1.02)
 - [ ] **CARD-03**: Тени карточек облегчены до уровня основного сайта
 
 ### Layout & Spacing
@@ -41,29 +41,29 @@ Deferred to future release.
 | Feature | Reason |
 |---------|--------|
 | Полная смена цветовой палитры на зелёную | Только primary CTA меняется на зелёный, остальные акценты (#38C6F4) остаются для визуального разнообразия |
-| Смена шрифтов на только Inter | Manrope для заголовков — осознанный выбор, отличающий лендинг от основного сайта |
-| Копирование styled-components структуры | Основной сайт на React, наш — vanilla HTML/CSS, копируем только визуальные паттерны |
+| Смена шрифтов на только Inter | Manrope для заголовков -- осознанный выбор, отличающий лендинг от основного сайта |
+| Копирование styled-components структуры | Основной сайт на React, наш -- vanilla HTML/CSS, копируем только визуальные паттерны |
 | Добавление анимаций с основного сайта | ЦА 45+, предпочитаем простоту |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BTN-01 | — | Pending |
-| BTN-02 | — | Pending |
-| BTN-03 | — | Pending |
-| CARD-01 | — | Pending |
-| CARD-02 | — | Pending |
-| CARD-03 | — | Pending |
-| SPACE-01 | — | Pending |
-| SPACE-02 | — | Pending |
-| TOKEN-01 | — | Pending |
+| TOKEN-01 | Phase 15 | Pending |
+| BTN-01 | Phase 15 | Pending |
+| BTN-02 | Phase 15 | Pending |
+| BTN-03 | Phase 15 | Pending |
+| SPACE-02 | Phase 15 | Pending |
+| CARD-01 | Phase 16 | Pending |
+| CARD-02 | Phase 16 | Pending |
+| CARD-03 | Phase 16 | Pending |
+| SPACE-01 | Phase 16 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 9 total
-- Mapped to phases: 0
-- Unmapped: 9
+- Mapped to phases: 9
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-23*
-*Last updated: 2026-03-23 after initial definition*
+*Last updated: 2026-03-23 after roadmap creation*
