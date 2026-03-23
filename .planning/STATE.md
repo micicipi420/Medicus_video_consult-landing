@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Visual Polish & Conversion Boost
-status: defining_requirements
+status: ready_to_plan
 stopped_at: null
-last_updated: "2026-03-23T08:00:00.000Z"
+last_updated: "2026-03-23T09:00:00.000Z"
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -19,22 +19,26 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Defining requirements for v1.1
+**Current focus:** Phase 11 -- Hero & First Impression
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-23 — Milestone v1.1 started
+Phase: 11 of 14 (Hero & First Impression)
+Plan: -- (not yet planned)
+Status: Ready to plan
+Last activity: 2026-03-23 -- Roadmap created for v1.1 (4 phases, 12 requirements)
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
+- Total plans completed: 0 (v1.1)
 - Average duration: -
 - Total execution time: 0 hours
+
+**v1.0 Reference:** 24 plans completed, avg ~1.5 min/plan
 
 **By Phase:**
 
@@ -48,25 +52,6 @@ Last activity: 2026-03-23 — Milestone v1.1 started
 - Trend: -
 
 *Updated after each plan completion*
-| Phase 01 P01 | 2min | 2 tasks | 6 files |
-| Phase 01 P02 | 1min | 2 tasks | 2 files |
-| Phase 02 P01 | 2min | 2 tasks | 2 files |
-| Phase 02 P02 | 1min | 2 tasks | 2 files |
-| Phase 03 P01 | 1min | 2 tasks | 2 files |
-| Phase 03 P02 | 1min | 2 tasks | 2 files |
-| Phase 04 P01 | 1min | 1 tasks | 2 files |
-| Phase 04 P02 | 1min | 2 tasks | 2 files |
-| Phase 05 P01 | 1min | 1 tasks | 2 files |
-| Phase 05 P02 | 1min | 2 tasks | 3 files |
-| Phase 05 P03 | 1min | 1 tasks | 2 files |
-| Phase 06 P01 | 1min | 2 tasks | 3 files |
-| Phase 06 P02 | 1min | 2 tasks | 3 files |
-| Phase 06 P03 | 1min | 2 tasks | 2 files |
-| Phase 09 P02 | 1min | 1 tasks | 0 files |
-| Phase 10 P01 | 1min | 2 tasks | 2 files |
-| Phase 10 P02 | 3min | 2 tasks | 2 files |
-| Phase 10 P03 | 2min | 2 tasks | 3 files |
-| Phase 10 P04 | 3min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -75,44 +60,23 @@ Last activity: 2026-03-23 — Milestone v1.1 started
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- HTML/CSS/JS (no framework) per project constraint
-- Directus as backend (replaces AmoCRM)
-- Russian only in v1
-- [Phase 01]: Fontsource CDN for self-hosted WOFF2 font downloads
-- [Phase 01]: WCAG-safe darker accent colors for text on white: --color-primary-dark (#0E7490), --color-secondary-dark (#047857)
-- [Phase 01]: Dark section heading/link color overrides for WCAG AA compliance
-- [Phase 02]: Used button--outline for secondary CTA to preserve button--secondary (green) for other uses
-- [Phase 03]: Reused existing .card BEM component for benefit cards
-- [Phase 04]: Reused existing .card BEM component for country cards, consistent with benefits section
-- [Phase 04]: Reused .card BEM component for advantage cards, consistent with benefits and doctors sections
-- [Phase 05]: ES5-compatible JS syntax for 45+ audience browser support
-- [Phase 05]: IIFE pattern for JS to avoid global scope pollution; no-js class for progressive enhancement
-- [Phase 05]: Reused section--dark pattern for Final CTA; button--outline override for white on dark
-- [Phase 06]: initAll pattern wraps all JS init functions for single DOMContentLoaded entry point
-- [Phase 06]: IntersectionObserver with graceful fallback for sticky bar auto-hide near bottom sections
-- [Phase 06]: Form placeholder uses --color-light background consistent with alternating section pattern
-- [Phase 09]: All PERF requirements verified passing -- no fixes needed
-- [Phase 10]: Inline SVG for hero illustration (no external file, no HTTP request)
-- [Phase 10]: Inline duotone SVG icons replacing emoji for cross-platform consistency
-- [Phase 10]: CSS max-height transition for FAQ accordion replacing hidden attribute toggle
-- [Phase 10]: animate-on-scroll + is-visible pattern: JS adds classes, CSS handles transitions
-- [Phase 10]: Appended decorative CSS as section 11 after parallel agent added section 10 (Animations)
+- [v1.0]: BEM naming for CSS, IntersectionObserver for animations, inline SVG icons
+- [v1.0]: ES5 syntax + IIFE pattern for JS (browser compat for 45+ audience)
+- [v1.0]: animate-on-scroll + is-visible pattern for scroll animations
 
 ### Pending Todos
 
 None yet.
 
-### Roadmap Evolution
-
-- Phase 10 added: Visual Design Enhancement — изображения, анимации, графика и визуальные элементы
-
 ### Blockers/Concerns
 
 - Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
-- Kazakhstan Personal Data Law (No. 94-V) may affect "описание случая" field -- legal review before go-live
+- Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
+- Hero photo (HERO-01): need real medical photo or high-quality stock -- client asset required
+- Social proof numbers (PROOF-01): need real statistics from client or use credible placeholder values
 
 ## Session Continuity
 
-Last session: 2026-03-23T06:02:08.526Z
-Stopped at: Completed 10-04-PLAN.md
+Last session: 2026-03-23
+Stopped at: Roadmap created for v1.1
 Resume file: None
