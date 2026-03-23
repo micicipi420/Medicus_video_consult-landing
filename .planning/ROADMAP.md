@@ -74,7 +74,10 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
   3. Hovering a CTA button shows a visible transition (opacity shift or color change to #00c08e)
   4. Hero section background is pure white (#ffffff), not cream
   5. Page content container is 1200px wide on desktop viewports
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 17-01-PLAN.md -- Gradient tokens, button styles, hero background, container verification
 
 ### Phase 18: Cards, Badges & Navigation
 **Goal**: Cards are flat with larger radius, badges use mint palette, and navigation matches medicusunion.kz style
@@ -91,5 +94,5 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 17. Design Tokens, Gradient Buttons & Layout | 0/TBD | Not started | - |
+| 17. Design Tokens, Gradient Buttons & Layout | 0/1 | Not started | - |
 | 18. Cards, Badges & Navigation | 0/TBD | Not started | - |
