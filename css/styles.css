@@ -64,6 +64,11 @@
   --color-text-on-primary: #18212C;    /* 8.16:1 on blue */
   --color-text-on-secondary: #18212C;  /* 6.28:1 on green */
 
+  /* Colors - CTA (brand green, per TOKEN-01) */
+  --color-cta: #35B678;
+  --color-cta-hover: #25A467;
+  --color-text-on-cta: #FFFFFF;    /* 3.66:1 on green, AA for large text 20px+ */
+
   /* Colors - Darker accent variants for text on white (WCAG AA safe) */
   --color-primary-dark: #0E7490;       /* 5.36:1 on white */
   --color-secondary-dark: #047857;     /* 5.48:1 on white */
@@ -423,25 +428,11 @@ a:hover {
 
 .hero {
   padding-block: var(--space-8) var(--space-6);
-  background: linear-gradient(135deg, #e0f4fb 0%, #f0fdf9 50%, var(--color-white) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, var(--color-dark) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
+  background: #fffbf4;
 }
 
 .hero__container {
-  position: relative;
-  z-index: 1;
+  /* Container for hero content */
 }
 
 .hero__content {
