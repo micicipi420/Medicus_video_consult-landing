@@ -33,7 +33,7 @@ Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
 
 - [x] **Phase 11: Hero & First Impression** - Real hero image, enlarged CTAs, hero background contrast, and social proof numbers block (completed 2026-03-23)
 - [x] **Phase 12: Sticky Navigation** - Sticky header with section navigation links (completed 2026-03-23)
-- [ ] **Phase 13: Section Layout & Contrast** - Alternating section backgrounds, enhanced wave dividers, centered pricing card, two-column form layout
+- [x] **Phase 13: Section Layout & Contrast** - Alternating section backgrounds, enhanced wave dividers, centered pricing card, two-column form layout (completed 2026-03-23)
 - [ ] **Phase 14: Visual Consistency** - SVG country flags and compact pain points section
 
 ## Phase Details
@@ -72,7 +72,7 @@ Plans:
   2. Wave dividers between sections are more prominent than v1.0 (higher contrast, more visible)
   3. Pricing card is centered on desktop with visual emphasis (shadow, badge, or border accent)
   4. Form section on desktop shows a two-column layout (description/context on the left, form fields on the right) with a contrasting background
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 13-01-PLAN.md — Alternating section backgrounds and enhanced wave dividers
 - [x] 13-02-PLAN.md — Centered pricing card with badge and two-column form layout
@@ -108,5 +108,5 @@ Plans:
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 13. Section Layout & Contrast | v1.1 | 2/2 | Complete | 2026-03-23 |
+| 13. Section Layout & Contrast | v1.1 | 2/2 | Complete    | 2026-03-23 |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |
