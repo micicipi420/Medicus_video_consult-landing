@@ -59,7 +59,9 @@ Plans:
   1. Header remains visible (sticky) when the user scrolls down the page
   2. Header contains navigation links to key sections (Как это работает / Врачи / Цена / Заявка)
   3. Clicking a navigation link smoothly scrolls to the corresponding section
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 12-01-PLAN.md — Sticky header with desktop nav links and scroll shadow
 
 ### Phase 13: Section Layout & Contrast
 **Goal**: Page sections have clear visual hierarchy with alternating backgrounds, enhanced dividers, and optimized layouts for pricing and form
@@ -70,7 +72,9 @@ Plans:
   2. Wave dividers between sections are more prominent than v1.0 (higher contrast, more visible)
   3. Pricing card is centered on desktop with visual emphasis (shadow, badge, or border accent)
   4. Form section on desktop shows a two-column layout (description/context on the left, form fields on the right) with a contrasting background
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 12-01-PLAN.md — Sticky header with desktop nav links and scroll shadow
 
 ### Phase 14: Visual Consistency
 **Goal**: Visual details are polished -- country flags are proper SVGs and pain points section is compact with icons
@@ -80,7 +84,9 @@ Plans:
   1. Country flags in the "Врачи" section are inline SVG flags instead of emoji characters
   2. "Знакомо?" section uses icon-based compact layout instead of bordered text blocks
   3. Both changes render consistently across Chrome, Safari, and Firefox on mobile and desktop
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 12-01-PLAN.md — Sticky header with desktop nav links and scroll shadow
 
 ## Progress
 
@@ -100,6 +106,6 @@ Plans:
 | 9. Performance & SEO | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 12. Sticky Navigation | v1.1 | 0/? | Not started | - |
+| 12. Sticky Navigation | v1.1 | 0/1 | Not started | - |
 | 13. Section Layout & Contrast | v1.1 | 0/? | Not started | - |
 | 14. Visual Consistency | v1.1 | 0/? | Not started | - |
