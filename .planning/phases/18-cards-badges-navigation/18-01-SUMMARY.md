@@ -23,6 +23,7 @@ metrics:
   completed_date: "2026-03-23"
   tasks_completed: 3
   files_modified: 1
+requirements_completed: [CARD-04, CARD-05, CARD-06, NAV-01]
 ---
 
 # Phase 18 Plan 01: Cards, Badges, Navigation Design Alignment Summary
