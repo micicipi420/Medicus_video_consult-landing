@@ -5,7 +5,7 @@
 - v1.0 MedicusUnion KZ Landing -- Phases 1-10 (shipped 2026-03-23)
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
-- v1.3 KZ Design Alignment -- Phases 17-18 (in progress)
+- v1.3 KZ Design Alignment -- Phases 17-19 (in progress)
 
 ## Phases
 
@@ -61,6 +61,7 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
 
 - [x] **Phase 17: Design Tokens, Gradient Buttons & Layout** - Gradient CTA, updated radius, white hero, 1200px container (completed 2026-03-23)
 - [x] **Phase 18: Cards, Badges & Navigation** - Flat cards 30px radius, mint badges, white nav 76px (completed 2026-03-23)
+- [ ] **Phase 19: v1.3 Cleanup** - Remove orphaned token, extend flat design to pricing card, fix Phase 18 SUMMARY frontmatter
 
 ## Phase Details
 
@@ -93,9 +94,20 @@ Plans:
 Plans:
 - [x] 18-01-PLAN.md -- Card radius/shadow, mint badge tokens, nav 76px height
 
+### Phase 19: v1.3 Cleanup
+**Goal**: Remove tech debt from v1.3 — orphaned token, pricing card shadow, doc fix
+**Depends on**: Phase 18
+**Requirements**: (no new requirements — gap closure only)
+**Success Criteria** (what must be TRUE):
+  1. `--color-cta-hover-kz` token removed from `:root`
+  2. `.pricing__card` has no box-shadow (flat design consistent with CARD-05 intent)
+  3. Phase 18 SUMMARY.md `requirements_completed` frontmatter lists CARD-04, CARD-05, CARD-06, NAV-01
+**Plans**: TBD
+
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 17. Design Tokens, Gradient Buttons & Layout | 1/1 | Complete    | 2026-03-23 |
 | 18. Cards, Badges & Navigation | 1/1 | Complete    | 2026-03-23 |
+| 19. v1.3 Cleanup | 0/TBD | Not started | - |
