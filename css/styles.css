@@ -68,6 +68,8 @@
   --color-cta: #35B678;
   --color-cta-hover: #25A467;
   --color-text-on-cta: #FFFFFF;    /* 3.66:1 on green, AA for large text 20px+ */
+  --color-badge-bg: #d0fae4;
+  --color-badge-text: #007955;
 
   /* Colors - CTA Gradient (per TOKEN-02, matching medicusunion.kz) */
   --gradient-cta: linear-gradient(0.25turn, #1AC67E 0%, #0D9DB5 100%);
@@ -856,8 +858,8 @@ a:hover {
 
 .pricing__badge {
   display: inline-block;
-  background-color: var(--color-primary);
-  color: var(--color-text-on-primary);
+  background-color: var(--color-badge-bg);
+  color: var(--color-badge-text);
   font-family: var(--font-heading);
   font-size: var(--font-size-sm);
   font-weight: 700;
