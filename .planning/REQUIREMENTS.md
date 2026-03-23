@@ -31,8 +31,8 @@ Requirements for visual polish and conversion boost. Each maps to roadmap phases
 
 ### Visual Consistency
 
-- [ ] **VIS-01**: SVG-флаги стран вместо emoji в секции «Врачи»
-- [ ] **VIS-02**: Секция «Знакомо?» компактнее — pain points с иконками вместо бордер-блоков
+- [x] **VIS-01**: SVG-флаги стран вместо emoji в секции «Врачи»
+- [x] **VIS-02**: Секция «Знакомо?» компактнее — pain points с иконками вместо бордер-блоков
 
 ## v2 Requirements
 
@@ -66,8 +66,8 @@ Deferred to future release.
 | NAV-01 | Phase 12 | Complete |
 | NAV-02 | Phase 12 | Complete |
 | PROOF-01 | Phase 11 | Complete |
-| VIS-01 | Phase 14 | Pending |
-| VIS-02 | Phase 14 | Pending |
+| VIS-01 | Phase 14 | Complete |
+| VIS-02 | Phase 14 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 12 total

@@ -34,7 +34,7 @@ Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
 - [x] **Phase 11: Hero & First Impression** - Real hero image, enlarged CTAs, hero background contrast, and social proof numbers block (completed 2026-03-23)
 - [x] **Phase 12: Sticky Navigation** - Sticky header with section navigation links (completed 2026-03-23)
 - [x] **Phase 13: Section Layout & Contrast** - Alternating section backgrounds, enhanced wave dividers, centered pricing card, two-column form layout (completed 2026-03-23)
-- [ ] **Phase 14: Visual Consistency** - SVG country flags and compact pain points section
+- [x] **Phase 14: Visual Consistency** - SVG country flags and compact pain points section (completed 2026-03-23)
 
 ## Phase Details
 
@@ -85,9 +85,9 @@ Plans:
   1. Country flags in the "Врачи" section are inline SVG flags instead of emoji characters
   2. "Знакомо?" section uses icon-based compact layout instead of bordered text blocks
   3. Both changes render consistently across Chrome, Safari, and Firefox on mobile and desktop
-**Plans**: 1 plan
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 14-01-PLAN.md — SVG country flags and icon-based compact problem section
+- [x] 14-01-PLAN.md — SVG country flags and icon-based compact problem section
 
 ## Progress
 
@@ -109,4 +109,4 @@ Plans:
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 12. Sticky Navigation | v1.1 | 1/1 | Complete    | 2026-03-23 |
 | 13. Section Layout & Contrast | v1.1 | 2/2 | Complete    | 2026-03-23 |
-| 14. Visual Consistency | v1.1 | 0/1 | Not started | - |
+| 14. Visual Consistency | v1.1 | 1/1 | Complete | 2026-03-23 |
