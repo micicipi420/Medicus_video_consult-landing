@@ -1066,7 +1066,7 @@ a:hover {
 /* -- FAQ (Accordion) -- */
 
 .faq {
-  background-color: var(--color-light);
+  background-color: var(--color-white);
 }
 
 .faq__heading {
@@ -1507,6 +1507,13 @@ a:hover {
 }
 .section-divider--dark-to-white svg {
   fill: var(--color-white);
+}
+
+.section-divider--white-to-dark {
+  background-color: var(--color-white);
+}
+.section-divider--white-to-dark svg {
+  fill: var(--color-dark);
 }
 
 .section-divider svg {
