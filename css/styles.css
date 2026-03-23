@@ -348,11 +348,39 @@ a:hover {
 
 .hero {
   padding-block: var(--space-8) var(--space-6);
-  background-color: var(--color-light);
+  background: linear-gradient(135deg, rgba(56, 198, 244, 0.08) 0%, rgba(53, 182, 120, 0.06) 100%), var(--color-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--color-dark) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__container {
+  position: relative;
+  z-index: 1;
 }
 
 .hero__content {
   max-width: 720px;
+}
+
+.hero__illustration {
+  display: none;
+}
+
+.hero__illustration svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
 }
 
 .hero__title {
@@ -382,6 +410,27 @@ a:hover {
 .button--outline:hover {
   background-color: var(--color-dark);
   color: var(--color-text-on-dark);
+}
+
+/* Hero responsive: 2-column layout on tablet+ */
+@media (min-width: 768px) {
+  .hero__container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .hero__content {
+    flex: 1 1 60%;
+    max-width: none;
+  }
+
+  .hero__illustration {
+    flex: 0 0 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Hero responsive: desktop left-align is default (mobile-first, text is left-aligned).
