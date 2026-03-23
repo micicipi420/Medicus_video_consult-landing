@@ -9,9 +9,9 @@ Requirements for KZ design alignment with medicusunion.kz. Each maps to roadmap 
 
 ### Buttons & CTA
 
-- [ ] **BTN-04**: CTA кнопки имеют градиентный фон green→teal (#1AC67E → #0D9DB5) вместо solid green
-- [ ] **BTN-05**: Border-radius кнопок 16px вместо pill-shape 100px
-- [ ] **BTN-06**: Hover-состояние CTA — opacity transition или shift к #00c08e
+- [x] **BTN-04**: CTA кнопки имеют градиентный фон green→teal (#1AC67E → #0D9DB5) вместо solid green
+- [x] **BTN-05**: Border-radius кнопок 16px вместо pill-shape 100px
+- [x] **BTN-06**: Hover-состояние CTA — opacity transition или shift к #00c08e
 
 ### Cards & Components
 
@@ -21,8 +21,8 @@ Requirements for KZ design alignment with medicusunion.kz. Each maps to roadmap 
 
 ### Layout & Spacing
 
-- [ ] **LAYOUT-01**: Контейнер расширен до max-width 1200px
-- [ ] **LAYOUT-02**: Hero-фон белый (#ffffff) вместо кремового (#fffbf4)
+- [x] **LAYOUT-01**: Контейнер расширен до max-width 1200px
+- [x] **LAYOUT-02**: Hero-фон белый (#ffffff) вместо кремового (#fffbf4)
 
 ### Navigation
 
@@ -30,7 +30,7 @@ Requirements for KZ design alignment with medicusunion.kz. Each maps to roadmap 
 
 ### Design Tokens
 
-- [ ] **TOKEN-02**: CSS-градиент токен для CTA (--gradient-cta) и обновлённые цветовые переменные
+- [x] **TOKEN-02**: CSS-градиент токен для CTA (--gradient-cta) и обновлённые цветовые переменные
 
 ## v2 Requirements
 
@@ -54,12 +54,12 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOKEN-02 | Phase 17 | Pending |
-| BTN-04 | Phase 17 | Pending |
-| BTN-05 | Phase 17 | Pending |
-| BTN-06 | Phase 17 | Pending |
-| LAYOUT-01 | Phase 17 | Pending |
-| LAYOUT-02 | Phase 17 | Pending |
+| TOKEN-02 | Phase 17 | Complete |
+| BTN-04 | Phase 17 | Complete |
+| BTN-05 | Phase 17 | Complete |
+| BTN-06 | Phase 17 | Complete |
+| LAYOUT-01 | Phase 17 | Complete |
+| LAYOUT-02 | Phase 17 | Complete |
 | CARD-04 | Phase 18 | Pending |
 | CARD-05 | Phase 18 | Pending |
 | CARD-06 | Phase 18 | Pending |

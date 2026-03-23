@@ -59,7 +59,7 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
 
 **Milestone Goal:** Привести дизайн лендинга в соответствие с medicusunion.kz -- градиентные кнопки, увеличенный radius карточек, белый hero, убрать тени, обновить навигацию.
 
-- [ ] **Phase 17: Design Tokens, Gradient Buttons & Layout** - Gradient CTA, updated radius, white hero, 1200px container
+- [x] **Phase 17: Design Tokens, Gradient Buttons & Layout** - Gradient CTA, updated radius, white hero, 1200px container (completed 2026-03-23)
 - [ ] **Phase 18: Cards, Badges & Navigation** - Flat cards 30px radius, mint badges, white nav 76px
 
 ## Phase Details
@@ -77,7 +77,7 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
 **Plans**: 1 plan
 
 Plans:
-- [ ] 17-01-PLAN.md -- Gradient tokens, button styles, hero background, container verification
+- [x] 17-01-PLAN.md -- Gradient tokens, button styles, hero background, container verification
 
 ### Phase 18: Cards, Badges & Navigation
 **Goal**: Cards are flat with larger radius, badges use mint palette, and navigation matches medicusunion.kz style
@@ -94,5 +94,5 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 17. Design Tokens, Gradient Buttons & Layout | 0/1 | Not started | - |
+| 17. Design Tokens, Gradient Buttons & Layout | 1/1 | Complete   | 2026-03-23 |
 | 18. Cards, Badges & Navigation | 0/TBD | Not started | - |
