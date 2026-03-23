@@ -49,7 +49,18 @@
 
 ### Active
 
-(No active requirements — define with `/gsd:new-milestone`)
+## Current Milestone: v1.3 KZ Design Alignment
+
+**Goal:** Привести дизайн лендинга в соответствие с medicusunion.kz — градиентные кнопки, увеличенный radius карточек, белый hero, убрать тени, обновить навигацию.
+
+**Target features:**
+- Градиентные CTA кнопки (green→teal) вместо solid green, radius 14-16px вместо pill
+- Увеличенный border-radius карточек до 30px
+- Белый hero-фон (#ffffff) вместо кремового
+- Убрать все тени с карточек
+- Навигация: белый фон, 76px высота
+- Мятные бейджи (#d0fae4) с текстом #007955
+- Контейнер 1200px
 
 ### Out of Scope
 
@@ -123,4 +134,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.2 milestone complete*
+*Last updated: 2026-03-23 after v1.3 milestone start*
