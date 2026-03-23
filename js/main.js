@@ -449,6 +449,25 @@
     });
   }
 
+  /**
+   * Sticky Header scroll shadow
+   * - Adds .is-scrolled class when page is scrolled down
+   * - Uses passive listener for scroll performance
+   * - Per NAV-01
+   */
+  function initStickyHeader() {
+    var header = document.getElementById('header');
+    if (!header) return;
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 0) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }, { passive: true });
+  }
+
   function initAll() {
     initAccordion();
     initSmoothScroll();
@@ -457,6 +476,7 @@
     initPhoneMask();
     initSpamProtection();
     initFormValidation();
+    initStickyHeader();
   }
 
   // Initialize when DOM is ready
