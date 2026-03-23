@@ -82,4 +82,4 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 15. Design Tokens, Buttons & Hero | v1.2 | 1/1 | Complete    | 2026-03-23 |
-| 16. Cards & Spacing | v1.2 | 1/1 | Complete   | 2026-03-23 |
+| 16. Cards & Spacing | v1.2 | 1/1 | Complete    | 2026-03-23 |
