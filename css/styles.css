@@ -69,6 +69,10 @@
   --color-cta-hover: #25A467;
   --color-text-on-cta: #FFFFFF;    /* 3.66:1 on green, AA for large text 20px+ */
 
+  /* Colors - CTA Gradient (per TOKEN-02, matching medicusunion.kz) */
+  --gradient-cta: linear-gradient(0.25turn, #1AC67E 0%, #0D9DB5 100%);
+  --color-cta-hover-kz: #00c08e;
+
   /* Colors - Darker accent variants for text on white (WCAG AA safe) */
   --color-primary-dark: #0E7490;       /* 5.36:1 on white */
   --color-secondary-dark: #047857;     /* 5.48:1 on white */
@@ -269,21 +273,23 @@ a:hover {
   line-height: 1.2;
   text-decoration: none;
   border: none;
-  border-radius: 100px;
+  border-radius: 16px;
   cursor: pointer;
   transition: background-color var(--transition-normal),
-              transform var(--transition-fast);
+              transform var(--transition-fast),
+              opacity var(--transition-normal);
 }
 
 /* active state handled in animations section */
 
 .button--primary {
-  background-color: var(--color-cta);
+  background: var(--gradient-cta);
   color: var(--color-text-on-cta);
 }
 
 .button--primary:hover {
-  background-color: var(--color-cta-hover);
+  opacity: 0.85;
+  background: var(--gradient-cta);
 }
 
 .card {
@@ -1501,10 +1507,10 @@ a:hover {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(53, 182, 120, 0.4);
+    box-shadow: 0 0 0 0 rgba(26, 198, 126, 0.4);
   }
   50% {
-    box-shadow: 0 0 20px 8px rgba(53, 182, 120, 0.25);
+    box-shadow: 0 0 20px 8px rgba(26, 198, 126, 0.25);
   }
 }
 
