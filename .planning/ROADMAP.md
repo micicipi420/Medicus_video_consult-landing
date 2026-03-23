@@ -185,7 +185,7 @@ Plans:
 Plans:
 - [x] 10-01-PLAN.md — Hero gradient background, dot-grid, and decorative SVG illustration
 - [x] 10-02-PLAN.md — SVG icons replacing emoji, card hover effects, header gradient line
-- [ ] 10-03-PLAN.md — Scroll animations, FAQ smooth toggle, button hover, pricing glow
+- [x] 10-03-PLAN.md — Scroll animations, FAQ smooth toggle, button hover, pricing glow
 - [ ] 10-04-PLAN.md — Wave dividers, process connector, form halo, CTA gradient
 
 ## Progress
@@ -204,4 +204,4 @@ Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9 > 10
 | 7. Lead Capture Form | 0/3 | Not started | - |
 | 8. Directus Backend & Integration | 0/3 | Not started | - |
 | 9. Performance & SEO | 1/2 | In progress | - |
-| 10. Visual Design Enhancement | 2/4 | In Progress|  |
+| 10. Visual Design Enhancement | 3/4 | In Progress|  |
