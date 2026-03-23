@@ -265,11 +265,11 @@ a:hover {
   padding: var(--space-2) var(--space-4);
   font-family: var(--font-heading);
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   text-decoration: none;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 100px;
   cursor: pointer;
   transition: background-color var(--transition-normal),
               transform var(--transition-fast);
@@ -278,21 +278,12 @@ a:hover {
 /* active state handled in animations section */
 
 .button--primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-on-primary);
+  background-color: var(--color-cta);
+  color: var(--color-text-on-cta);
 }
 
 .button--primary:hover {
-  background-color: #2bb5e3;
-}
-
-.button--secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-text-on-secondary);
-}
-
-.button--secondary:hover {
-  background-color: #2da36a;
+  background-color: var(--color-cta-hover);
 }
 
 .card {
@@ -1510,10 +1501,10 @@ a:hover {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(56, 198, 244, 0.4);
+    box-shadow: 0 0 0 0 rgba(53, 182, 120, 0.4);
   }
   50% {
-    box-shadow: 0 0 20px 8px rgba(56, 198, 244, 0.25);
+    box-shadow: 0 0 20px 8px rgba(53, 182, 120, 0.25);
   }
 }
 
