@@ -88,11 +88,14 @@ Plans:
   2. Cards have no box-shadow in any state (flat design)
   3. Badge/tag elements use mint background (#d0fae4) with dark green text (#007955)
   4. Desktop navigation has white background and 76px height
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 18-01-PLAN.md -- Card radius/shadow, mint badge tokens, nav 76px height
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 17. Design Tokens, Gradient Buttons & Layout | 1/1 | Complete    | 2026-03-23 |
-| 18. Cards, Badges & Navigation | 0/TBD | Not started | - |
+| 18. Cards, Badges & Navigation | 0/1 | Not started | - |
