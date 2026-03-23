@@ -12,8 +12,8 @@
 
 ## Current State
 
-**Shipped:** v1.2 Brand Visual Alignment (2026-03-23)
-**Codebase:** ~2,890 LOC (762 HTML + 1,637 CSS + 488 JS)
+**Shipped:** v1.3 KZ Design Alignment (2026-03-23)
+**Codebase:** ~2,890 LOC (762 HTML + 1,640 CSS + 488 JS)
 **Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
@@ -47,20 +47,18 @@
 - ✓ Секционные отступы 100px на desktop — v1.2
 - ✓ CSS-токены --color-cta / --color-cta-hover для green CTA — v1.2
 
+- ✓ Градиентные CTA кнопки (green→teal, #1AC67E→#0D9DB5) — v1.3
+- ✓ CTA border-radius 16px вместо pill-shape 100px — v1.3
+- ✓ Белый hero-фон (#ffffff) вместо кремового — v1.3
+- ✓ Контейнер 1200px — v1.3
+- ✓ border-radius карточек 30px (с 20px) — v1.3
+- ✓ Flat design карточек — убраны все box-shadow — v1.3
+- ✓ Мятные бейджи (#d0fae4) с текстом #007955 — v1.3
+- ✓ Навигация: белый фон, высота 76px на desktop — v1.3
+- ✓ CSS-токен --gradient-cta для gradient CTA — v1.3
+- ✓ CSS-токены --color-badge-bg / --color-badge-text — v1.3
+
 ### Active
-
-## Current Milestone: v1.3 KZ Design Alignment
-
-**Goal:** Привести дизайн лендинга в соответствие с medicusunion.kz — градиентные кнопки, увеличенный radius карточек, белый hero, убрать тени, обновить навигацию.
-
-**Target features:**
-- Градиентные CTA кнопки (green→teal) вместо solid green, radius 14-16px вместо pill
-- Увеличенный border-radius карточек до 30px
-- Белый hero-фон (#ffffff) вместо кремового
-- Убрать все тени с карточек
-- Навигация: белый фон, 76px высота
-- Мятные бейджи (#d0fae4) с текстом #007955
-- Контейнер 1200px
 
 ### Out of Scope
 
@@ -76,13 +74,14 @@
 
 ## Context
 
-- Shipped v1.1 with 2,905 LOC (HTML 762 + CSS 1,655 + JS 488)
+- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
 - Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 - Self-hosted Inter + Manrope variable fonts (WOFF2)
 - No build tools, no frameworks, no external dependencies
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
+- v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -115,6 +114,9 @@
 | Separate --color-cta from --color-primary | Green CTA for buttons, cyan for accents — visual variety | ✓ Good — v1.2 |
 | Card translateY(-2px) hover | Subtler than scale, matches medicusunion.com | ✓ Good — v1.2 |
 | Lighter rgba(16,24,40) shadow palette | Nearly flat rest-state, airy modern feel | ✓ Good — v1.2 |
+| Gradient CTA (#1AC67E→#0D9DB5) + opacity hover | Matches medicusunion.kz exactly; opacity hover avoids gradient direction reversal | ✓ Good — v1.3 |
+| Flat card design (no box-shadow) | Aligns with medicusunion.kz reference — cleaner, lighter feel for medical context | ✓ Good — v1.3 |
+| Mint badge palette as CSS tokens | Reusable tokens (#d0fae4/#007955) decouple badge style from primary palette | ✓ Good — v1.3 |
 
 ## Evolution
 
@@ -134,4 +136,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.3 milestone start*
+*Last updated: 2026-03-24 after v1.3 milestone completion*

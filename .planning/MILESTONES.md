@@ -1,5 +1,17 @@
 # Milestones
 
+## v1.3 KZ Design Alignment (Shipped: 2026-03-23)
+
+**Phases completed:** 3 phases, 3 plans, 5 tasks
+
+**Key accomplishments:**
+
+- Gradient CTA buttons (green-to-teal), 16px border-radius, opacity hover, white hero background, 1200px container verified
+- One-liner:
+- Removed orphaned CSS token (--color-cta-hover-kz), pricing card box-shadow, and fixed missing requirements_completed in Phase 18 SUMMARY — three tech-debt items closing out v1.3 cleanly.
+
+---
+
 ## v1.2 Brand Visual Alignment (Shipped: 2026-03-23)
 
 **Phases completed:** 2 phases, 2 plans, 4 tasks
