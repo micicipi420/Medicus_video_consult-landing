@@ -99,21 +99,21 @@
   /* Layout */
   --container-max: 1200px;
   --section-padding-mobile: var(--space-6);   /* 48px */
-  --section-padding-desktop: var(--space-10); /* 80px */
+  --section-padding-desktop: 6.25rem; /* 100px */
 
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(24, 33, 44, 0.06);
-  --shadow-md: 0 4px 12px rgba(24, 33, 44, 0.08);
-  --shadow-lg: 0 8px 24px rgba(24, 33, 44, 0.12);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-md: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-lg: 0 4px 6px -1px rgba(16, 24, 40, 0.1);
 
   /* Border radius */
   --radius-sm: 0.25rem;  /* 4px */
   --radius-md: 0.5rem;   /* 8px */
-  --radius-lg: 0.75rem;  /* 12px */
+  --radius-lg: 1.25rem;  /* 20px */
   --radius-full: 9999px;
 
   /* Icon sizes */
