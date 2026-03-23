@@ -586,22 +586,25 @@ a:hover {
   margin-bottom: var(--space-5);
 }
 
-.problem__items {
-  max-width: 680px;
+.problem__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
 }
 
-.problem__text {
-  font-size: var(--font-size-lg);
-  line-height: 1.7;
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-4);
-  padding-left: var(--space-3);
-  border-left: 3px solid var(--color-primary);
+.problem__card {
+  text-align: center;
 }
 
-.problem__text:last-child {
-  margin-bottom: 0;
-  font-weight: 600;
+.problem__icon {
+  margin-bottom: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .problem__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
 }
 
 /* -- Benefits (What You Get) -- */
