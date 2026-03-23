@@ -387,7 +387,7 @@ a:hover {
 
 .hero {
   padding-block: var(--space-8) var(--space-6);
-  background: linear-gradient(135deg, rgba(56, 198, 244, 0.08) 0%, rgba(53, 182, 120, 0.06) 100%), var(--color-light);
+  background: linear-gradient(135deg, #e0f4fb 0%, #f0fdf9 50%, var(--color-white) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -398,7 +398,7 @@ a:hover {
   inset: 0;
   background-image: radial-gradient(circle, var(--color-dark) 1px, transparent 1px);
   background-size: 24px 24px;
-  opacity: 0.03;
+  opacity: 0.05;
   pointer-events: none;
   z-index: 0;
 }
@@ -435,8 +435,17 @@ a:hover {
 
 .hero__actions {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: var(--space-2);
+}
+
+/* HERO-02: Enlarged hero CTAs for 45+ audience */
+.hero__actions .button {
+  min-height: 56px;
+  font-size: var(--font-size-lg);  /* 20px -- one step up from base 18px */
+  padding: var(--space-2) var(--space-4);  /* 16px 32px */
+  width: 100%;
 }
 
 /* Outline button variant for secondary CTA */
@@ -469,6 +478,14 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .hero__actions {
+    flex-direction: row;
+  }
+
+  .hero__actions .button {
+    width: auto;
   }
 }
 
