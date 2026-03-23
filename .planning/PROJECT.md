@@ -12,8 +12,8 @@
 
 ## Current State
 
-**Shipped:** v1.1 Visual Polish & Conversion Boost (2026-03-23)
-**Codebase:** 2,905 LOC (762 HTML + 1,655 CSS + 488 JS)
+**Shipped:** v1.2 Brand Visual Alignment (2026-03-23)
+**Codebase:** ~2,890 LOC (762 HTML + 1,637 CSS + 488 JS)
 **Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
@@ -39,20 +39,17 @@
 - ✓ SVG-флаги стран вместо emoji — v1.1
 - ✓ Компактная секция «Знакомо?» с иконками — v1.1
 
+- ✓ Pill-shape кнопки (border-radius: 100px) — v1.2
+- ✓ Зелёный primary CTA (#35B678) с hover #25A467 — v1.2
+- ✓ Тёплый кремовый hero-фон (#fffbf4) — v1.2
+- ✓ Карточки с border-radius 20px и лёгкими тенями — v1.2
+- ✓ Hover карточек translateY(-2px) вместо scale — v1.2
+- ✓ Секционные отступы 100px на desktop — v1.2
+- ✓ CSS-токены --color-cta / --color-cta-hover для green CTA — v1.2
+
 ### Active
 
-## Current Milestone: v1.2 Brand Visual Alignment
-
-**Goal:** Привести визуальный дизайн лендинга в соответствие с основным сайтом medicusunion.com — единый бренд-стиль кнопок, карточек, цветов и отступов.
-
-**Target features:**
-- Pill-shape кнопки (border-radius: 100px) как на основном сайте
-- Зелёный primary CTA (#35B678) — основной цвет бренда MedicusUnion
-- Увеличенный border-radius карточек (20px) для современного вида
-- Тёплый кремовый hero-фон (#fffbf4) вместо холодного голубого
-- Hover карточек: translateY(-2px) вместо scale — как на основном сайте
-- Увеличенные секционные отступы (100px desktop) — больше воздуха
-- Более лёгкие тени карточек — ближе к стилю основного сайта
+(No active requirements — define with `/gsd:new-milestone`)
 
 ### Out of Scope
 
@@ -74,6 +71,7 @@
 - No build tools, no frameworks, no external dependencies
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
+- v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -103,6 +101,9 @@
 | Duotone SVG for hero illustration | Consistent with existing icon style | ✓ Good — v1.1 |
 | Position: sticky for header | Native CSS, no JS positioning needed | ✓ Good — v1.1 |
 | 80px double-curve wave dividers | Stronger visual separation between sections | ✓ Good — v1.1 |
+| Separate --color-cta from --color-primary | Green CTA for buttons, cyan for accents — visual variety | ✓ Good — v1.2 |
+| Card translateY(-2px) hover | Subtler than scale, matches medicusunion.com | ✓ Good — v1.2 |
+| Lighter rgba(16,24,40) shadow palette | Nearly flat rest-state, airy modern feel | ✓ Good — v1.2 |
 
 ## Evolution
 
@@ -122,4 +123,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-23 after v1.2 milestone start*
+*Last updated: 2026-03-23 after v1.2 milestone complete*

@@ -1,5 +1,16 @@
 # Milestones
 
+## v1.2 Brand Visual Alignment (Shipped: 2026-03-23)
+
+**Phases completed:** 2 phases, 2 plans, 4 tasks
+
+**Key accomplishments:**
+
+- Green pill-shape CTA buttons with --color-cta/#35B678 tokens and warm cream hero background (#fffbf4)
+- Cards get 20px radius, lighter rgba(16,24,40) shadows, translateY hover lift, and 100px desktop section padding
+
+---
+
 ## v1.0 MedicusUnion KZ Landing (Shipped: 2026-03-23)
 
 **Phases completed:** 10 phases, 24 plans, 33 tasks

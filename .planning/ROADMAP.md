@@ -4,7 +4,7 @@
 
 - v1.0 MedicusUnion KZ Landing -- Phases 1-10 (shipped 2026-03-23)
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
-- v1.2 Brand Visual Alignment -- Phases 15-16 (in progress)
+- v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
 
 ## Phases
 
@@ -42,44 +42,14 @@ Full details: `.planning/milestones/v1.1-ROADMAP.md`
 Requirements: `.planning/milestones/v1.1-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
 
-### v1.2 Brand Visual Alignment
+<details>
+<summary>v1.2 Brand Visual Alignment (Phases 15-16) -- SHIPPED 2026-03-23</summary>
 
-**Milestone Goal:** Привести визуальный дизайн лендинга в соответствие с основным сайтом medicusunion.com -- единый бренд-стиль кнопок, карточек, цветов и отступов.
+- [x] Phase 15: Design Tokens, Buttons & Hero (1/1 plan) -- completed 2026-03-23
+- [x] Phase 16: Cards & Spacing (1/1 plan) -- completed 2026-03-23
 
-- [x] **Phase 15: Design Tokens, Buttons & Hero** - CSS-переменные бренда, pill-shape кнопки с зелёным CTA, тёплый hero-фон
-- [x] **Phase 16: Cards & Spacing** - Скруглённые карточки с лёгкими тенями, увеличенные секционные отступы (completed 2026-03-23)
+</details>
 
-## Phase Details
-
-### Phase 15: Design Tokens, Buttons & Hero
-**Goal**: Кнопки и цветовая палитра лендинга визуально совпадают с основным сайтом medicusunion.com
-**Depends on**: Nothing (first phase of v1.2)
-**Requirements**: TOKEN-01, BTN-01, BTN-02, BTN-03, SPACE-02
-**Success Criteria** (what must be TRUE):
-  1. CSS-переменные --color-primary и --color-primary-hover отражают зелёную палитру бренда (#35B678 / #25A467)
-  2. Все кнопки на странице имеют pill-shape (border-radius: 100px) -- визуально идентичны кнопкам на medicusunion.com
-  3. Primary CTA кнопки зелёного цвета (#35B678) с корректным hover-переходом (#25A467)
-  4. Hero-секция имеет тёплый кремовый фон (#fffbf4) вместо холодного голубого градиента
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 15-01-PLAN.md -- Design tokens, button pill-shape/green CTA, hero warm background
-
-### Phase 16: Cards & Spacing
-**Goal**: Карточки и отступы между секциями соответствуют современному воздушному стилю основного сайта
-**Depends on**: Phase 15
-**Requirements**: CARD-01, CARD-02, CARD-03, SPACE-01
-**Success Criteria** (what must be TRUE):
-  1. Все карточки имеют border-radius: 20px -- визуально мягче и современнее
-  2. При наведении карточки приподнимаются (translateY(-2px)) вместо увеличения (scale) -- как на основном сайте
-  3. Тени карточек стали легче и воздушнее, без тяжёлого визуального "веса"
-  4. Секции на desktop имеют отступы 100px сверху и снизу -- больше визуального воздуха между блоками
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 16-01-PLAN.md -- Card radius/shadows/hover update and section spacing increase
-
-## Progress
-
-| Phase | Milestone | Plans Complete | Status | Completed |
-|-------|-----------|----------------|--------|-----------|
-| 15. Design Tokens, Buttons & Hero | v1.2 | 1/1 | Complete    | 2026-03-23 |
-| 16. Cards & Spacing | v1.2 | 1/1 | Complete    | 2026-03-23 |
+Full details: `.planning/milestones/v1.2-ROADMAP.md`
+Requirements: `.planning/milestones/v1.2-REQUIREMENTS.md`
+Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
