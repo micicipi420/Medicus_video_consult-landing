@@ -117,7 +117,7 @@
   /* Border radius */
   --radius-sm: 0.25rem;  /* 4px */
   --radius-md: 0.5rem;   /* 8px */
-  --radius-lg: 1.25rem;  /* 20px */
+  --radius-lg: 1.875rem;  /* 30px */
   --radius-full: 9999px;
 
   /* Icon sizes */
@@ -295,16 +295,14 @@ a:hover {
 .card {
   background-color: var(--color-white);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
   padding: var(--space-4);
   overflow: hidden;
   border-left: 3px solid transparent;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-left-color var(--transition-normal);
+  transition: transform var(--transition-normal), border-left-color var(--transition-normal);
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
   border-left-color: var(--color-primary);
 }
 
