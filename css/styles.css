@@ -363,13 +363,6 @@ a:hover {
   display: none;
 }
 
-.site-header::after {
-  content: '';
-  display: block;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-}
-
 .site-header__container {
   display: flex;
   align-items: center;
@@ -401,6 +394,12 @@ a:hover {
 
 /* Header nav: visible on desktop */
 @media (min-width: 768px) {
+  .site-header {
+    height: 76px;
+    display: flex;
+    align-items: center;
+  }
+
   .site-header__nav {
     display: flex;
     gap: var(--space-4);
