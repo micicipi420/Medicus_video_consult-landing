@@ -516,9 +516,32 @@
     <!-- Form Section: Lead Capture (FORM-01) -->
     <section class="section lead-form-section" id="form">
       <div class="container">
-        <div class="lead-form__wrapper">
-          <h2 class="lead-form__heading">Оставить заявку на&nbsp;консультацию</h2>
-          <p class="lead-form__subtext">Заполните форму&nbsp;&mdash; мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов.</p>
+        <div class="lead-form__grid">
+          <div class="lead-form__info">
+            <h2 class="lead-form__heading">Оставить заявку на&nbsp;консультацию</h2>
+            <p class="lead-form__subtext">Заполните форму&nbsp;&mdash; мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов.</p>
+            <ul class="lead-form__trust" role="list">
+              <li class="lead-form__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
+                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Перезвоним в течение 24 часов</span>
+              </li>
+              <li class="lead-form__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
+                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Бесплатно и без обязательств</span>
+              </li>
+              <li class="lead-form__trust-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
+                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Ваши данные защищены</span>
+              </li>
+            </ul>
+          </div>
+          <div class="lead-form__wrapper">
 
           <form class="lead-form" id="lead-form" novalidate>
             <div class="lead-form__field">
@@ -561,7 +584,6 @@
 
             <button class="button button--primary lead-form__submit" type="submit">Отправить заявку</button>
 
-            <p class="lead-form__micro">Бесплатно и&nbsp;без обязательств</p>
           </form>
 
           <p class="lead-form__privacy">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
@@ -575,6 +597,7 @@
             </span>
             <p class="lead-form__success-title">Спасибо!</p>
             <p class="lead-form__success-text">Мы&nbsp;свяжемся с&nbsp;вами в&nbsp;течение 24&nbsp;часов.</p>
+          </div>
           </div>
         </div>
       </div>
