@@ -345,6 +345,18 @@ a:hover {
 .site-header {
   background-color: var(--color-white);
   padding-block: var(--space-2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: box-shadow 0.3s ease;
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.site-header__nav {
+  display: none;
 }
 
 .site-header::after {
@@ -381,6 +393,28 @@ a:hover {
 .site-header__phone:hover {
   color: var(--color-dark);
   text-decoration: underline;
+}
+
+/* Header nav: visible on desktop */
+@media (min-width: 768px) {
+  .site-header__nav {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .site-header__link {
+    font-family: var(--font-body);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .site-header__link:hover {
+    color: var(--color-primary);
+  }
 }
 
 /* -- Hero -- */
