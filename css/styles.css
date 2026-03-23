@@ -1376,3 +1376,86 @@ a:hover {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   11. DECORATIVE ELEMENTS (Phase 10)
+   ========================================================================== */
+
+/* -- Wave section dividers (per D-16) -- */
+
+.section-divider {
+  display: block;
+  width: 100%;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.section-divider--light-to-white {
+  background-color: var(--color-light);
+}
+.section-divider--light-to-white svg {
+  fill: var(--color-white);
+}
+
+.section-divider--white-to-light {
+  background-color: var(--color-white);
+}
+.section-divider--white-to-light svg {
+  fill: var(--color-light);
+}
+
+.section-divider svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* -- Process step connector (per D-18) -- */
+
+@media (min-width: 768px) {
+  .process__steps {
+    position: relative;
+  }
+
+  .process__step {
+    position: relative;
+  }
+
+  .process__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 28px;
+    right: -14%;
+    width: 28%;
+    height: 0;
+    border-top: 2px dashed var(--color-primary);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+/* -- Form section radial gradient halo (per D-20) -- */
+
+.lead-form-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(56, 198, 244, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* -- Final CTA gradient background (per D-21) -- */
+
+.final-cta {
+  background: linear-gradient(135deg, #18212C 0%, #1e2d3d 50%, #18212C 100%);
+}
