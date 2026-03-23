@@ -1,9 +1,9 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.3
-milestone_name: KZ Design Alignment
-status: shipped
-stopped_at: Milestone complete — v1.3 archived
+milestone: v1.4
+milestone_name: 2025 Visual Redesign
+status: requirements
+stopped_at: Defining requirements
 last_updated: "2026-03-24T00:00:00.000Z"
 progress:
   total_phases: 3
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 19 — v1-3-cleanup
+**Current focus:** v1.4 — Defining requirements
 
 ## Current Position
 
-Phase: 19
-Plan: Not started
+Phase: Not started (defining requirements)
+Plan: —
 
 ## Performance Metrics
 

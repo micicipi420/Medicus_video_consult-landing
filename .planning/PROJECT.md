@@ -60,6 +60,16 @@
 
 ### Active
 
+## Current Milestone: v1.4 2025 Visual Redesign
+
+**Goal:** Полный редизайн визуальной системы лендинга по трендам 2025 — liquid glass, dark mode, bold typography, micro-animations — при сохранении медицинского тона и структуры 11 секций.
+
+**Target features:**
+- Liquid glass / glassmorphism карточки (backdrop-filter blur, полупрозрачность)
+- Dark mode с переключателем в навигации (localStorage, CSS tokens)
+- Bold typography — увеличенные display-заголовки, контрастнее
+- Micro-animations — scroll-driven, hover micro-interactions, плавные переходы тем
+
 ### Out of Scope
 
 - Казахский язык — только русский в v1
@@ -136,4 +146,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.3 milestone completion*
+*Last updated: 2026-03-24 after v1.4 milestone start*
