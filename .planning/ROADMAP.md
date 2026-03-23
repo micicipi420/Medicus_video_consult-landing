@@ -161,12 +161,11 @@ Plans:
   2. All images are WebP with fallback, below-fold images use lazy loading
   3. Meta tags (title, description, Open Graph) are present and correct for social sharing
   4. HTML uses semantic elements: correct heading hierarchy, landmark regions (header, main, footer, nav), alt text on all images
-**Plans**: 3 plans
+**Plans**: 2 plans
 
 Plans:
-- [ ] 09-01: Image optimization and lazy loading
-- [ ] 09-02: Meta tags, Open Graph, and semantic HTML audit
-- [ ] 09-03: Performance testing and optimization
+- [x] 09-01-PLAN.md — SEO meta tags, Open Graph, and semantic HTML (completed)
+- [ ] 09-02-PLAN.md — Final verification of all PERF requirements
 
 ## Progress
 
@@ -183,4 +182,14 @@ Phases execute in numeric order: 1 > 2 > 3 > 4 > 5 > 6 > 7 > 8 > 9
 | 6. Navigation & Mobile Interaction | 0/3 | Not started | - |
 | 7. Lead Capture Form | 0/3 | Not started | - |
 | 8. Directus Backend & Integration | 0/3 | Not started | - |
-| 9. Performance & SEO | 0/3 | Not started | - |
+| 9. Performance & SEO | 1/2 | In progress | - |
+
+### Phase 10: Visual Design Enhancement — изображения, анимации, графика и визуальные элементы
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 9
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 10 to break down)
