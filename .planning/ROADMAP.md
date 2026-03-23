@@ -32,7 +32,7 @@ Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
 **Milestone Goal:** Improve visual quality and conversion elements based on v1.0 visual audit. Better first impression, clearer layout hierarchy, sticky navigation, and consistent visual language.
 
 - [x] **Phase 11: Hero & First Impression** - Real hero image, enlarged CTAs, hero background contrast, and social proof numbers block (completed 2026-03-23)
-- [ ] **Phase 12: Sticky Navigation** - Sticky header with section navigation links
+- [x] **Phase 12: Sticky Navigation** - Sticky header with section navigation links (completed 2026-03-23)
 - [ ] **Phase 13: Section Layout & Contrast** - Alternating section backgrounds, enhanced wave dividers, centered pricing card, two-column form layout
 - [ ] **Phase 14: Visual Consistency** - SVG country flags and compact pain points section
 
@@ -59,9 +59,9 @@ Plans:
   1. Header remains visible (sticky) when the user scrolls down the page
   2. Header contains navigation links to key sections (Как это работает / Врачи / Цена / Заявка)
   3. Clicking a navigation link smoothly scrolls to the corresponding section
-**Plans**: 1 plan
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 12-01-PLAN.md — Sticky header with desktop nav links and scroll shadow
+- [x] 12-01-PLAN.md — Sticky header with desktop nav links and scroll shadow
 
 ### Phase 13: Section Layout & Contrast
 **Goal**: Page sections have clear visual hierarchy with alternating backgrounds, enhanced dividers, and optimized layouts for pricing and form
@@ -107,6 +107,6 @@ Plans:
 | 9. Performance & SEO | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 10. Visual Design Enhancement | v1.0 | 4/4 | Complete | 2026-03-23 |
 | 11. Hero & First Impression | v1.1 | 1/1 | Complete    | 2026-03-23 |
-| 12. Sticky Navigation | v1.1 | 0/1 | Not started | - |
+| 12. Sticky Navigation | v1.1 | 1/1 | Complete | 2026-03-23 |
 | 13. Section Layout & Contrast | v1.1 | 0/2 | Not started | - |
 | 14. Visual Consistency | v1.1 | 0/1 | Not started | - |

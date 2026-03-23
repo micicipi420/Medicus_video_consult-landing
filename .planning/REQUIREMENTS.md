@@ -22,8 +22,8 @@ Requirements for visual polish and conversion boost. Each maps to roadmap phases
 
 ### Navigation
 
-- [ ] **NAV-01**: Header становится sticky при скролле
-- [ ] **NAV-02**: Header содержит навигационные ссылки на ключевые секции (Как это работает / Врачи / Цена / Заявка)
+- [x] **NAV-01**: Header становится sticky при скролле
+- [x] **NAV-02**: Header содержит навигационные ссылки на ключевые секции (Как это работает / Врачи / Цена / Заявка)
 
 ### Social Proof
 
@@ -63,8 +63,8 @@ Deferred to future release.
 | LAYOUT-02 | Phase 13 | Pending |
 | LAYOUT-03 | Phase 13 | Pending |
 | LAYOUT-04 | Phase 13 | Pending |
-| NAV-01 | Phase 12 | Pending |
-| NAV-02 | Phase 12 | Pending |
+| NAV-01 | Phase 12 | Complete |
+| NAV-02 | Phase 12 | Complete |
 | PROOF-01 | Phase 11 | Complete |
 | VIS-01 | Phase 14 | Pending |
 | VIS-02 | Phase 14 | Pending |
