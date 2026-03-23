@@ -94,8 +94,8 @@
     var stickyBar = document.getElementById('sticky-bar');
     if (!stickyBar) return;
 
-    // Sections where sticky bar should hide (form not yet built, but ready for Phase 7)
-    var hideTargets = ['form', 'final-cta', 'footer'];
+    // Sections where sticky bar should hide (form and below)
+    var hideTargets = ['form', 'faq', 'final-cta', 'footer'];
     var targets = [];
     hideTargets.forEach(function (id) {
       var el = document.getElementById(id);
