@@ -12,8 +12,8 @@
 
 ## Current State
 
-**Shipped:** v1.3 KZ Design Alignment (2026-03-23)
-**Codebase:** ~2,890 LOC (762 HTML + 1,640 CSS + 488 JS)
+**Shipped:** v1.4 2025 Visual Redesign (2026-03-24)
+**Codebase:** ~3,152 LOC (762 HTML + 1,900 CSS + 490 JS)
 **Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
@@ -58,17 +58,12 @@
 - ✓ CSS-токен --gradient-cta для gradient CTA — v1.3
 - ✓ CSS-токены --color-badge-bg / --color-badge-text — v1.3
 
+- ✓ Dark mode с переключателем в навигации (localStorage, prefers-color-scheme hint, FOUC-free) — v1.4
+- ✓ Bold display typography: h1 clamp(40px→56px)/800, h2 clamp(28px→44px)/800, text-wrap: balance — v1.4
+- ✓ Glassmorphism: hero gradient mesh, frosted header on scroll, .card--glass на pricing; @supports fallback; ≤2 glass elements — v1.4
+- ✓ Micro-animations: scroll-reveal translateY(20px)/0.4s, button :active scale(0.97)/100ms, prefers-reduced-motion guard — v1.4
+
 ### Active
-
-## Current Milestone: v1.4 2025 Visual Redesign
-
-**Goal:** Полный редизайн визуальной системы лендинга по трендам 2025 — liquid glass, dark mode, bold typography, micro-animations — при сохранении медицинского тона и структуры 11 секций.
-
-**Target features:**
-- Liquid glass / glassmorphism карточки (backdrop-filter blur, полупрозрачность)
-- Dark mode с переключателем в навигации (localStorage, CSS tokens)
-- Bold typography — увеличенные display-заголовки, контрастнее
-- Micro-animations — scroll-driven, hover micro-interactions, плавные переходы тем
 
 ### Out of Scope
 
@@ -92,6 +87,7 @@
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
+- v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -127,6 +123,12 @@
 | Gradient CTA (#1AC67E→#0D9DB5) + opacity hover | Matches medicusunion.kz exactly; opacity hover avoids gradient direction reversal | ✓ Good — v1.3 |
 | Flat card design (no box-shadow) | Aligns with medicusunion.kz reference — cleaner, lighter feel for medical context | ✓ Good — v1.3 |
 | Mint badge palette as CSS tokens | Reusable tokens (#d0fae4/#007955) decouple badge style from primary palette | ✓ Good — v1.3 |
+| [data-theme="dark"] attribute selector for dark mode | CSS token cascade, no class juggling, ES5-compatible JS toggle | ✓ Good — v1.4 |
+| Default-light policy; prefers-color-scheme as first-visit hint only | ЦА 45+ associates light interface with medical authority | ✓ Good — v1.4 |
+| Max 2 glass elements per viewport; blur ≤12px | GPU budget constraint for budget Android devices dominant in KZ market | ✓ Good — v1.4 |
+| Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
+| translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
+| prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
 
 ## Evolution
 
@@ -146,4 +148,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone start*
+*Last updated: 2026-03-24 after v1.4 milestone completion*

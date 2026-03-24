@@ -1,5 +1,20 @@
 # Milestones
 
+## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
+
+**Phases completed:** 4 phases, 6 plans, 13 tasks
+
+**Key accomplishments:**
+
+- CSS [data-theme="dark"] token cascade with navy base, glass surface tokens, @media OS hint, FOUC-prevention ES5 script, and .theme-toggle button scaffold
+- initDarkMode() function with localStorage persistence, aria-pressed management, icon switching, and WCAG AAA contrast verified for all dark token pairs
+- Manrope Variable heading scale upgraded to display standards: h1 clamp(40px→56px)/800, h2 clamp(28px→44px)/800, text-wrap: balance on all headings — verified no Cyrillic orphan lines at 320px and 390px
+- One-liner:
+- One-liner:
+- One-liner:
+
+---
+
 ## v1.3 KZ Design Alignment (Shipped: 2026-03-23)
 
 **Phases completed:** 3 phases, 3 plans, 5 tasks
