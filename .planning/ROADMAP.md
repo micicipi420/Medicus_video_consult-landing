@@ -73,7 +73,7 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
 
 - [x] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04 (completed 2026-03-24)
 - [x] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02 (completed 2026-03-24)
-- [ ] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04
+- [x] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04 (completed 2026-03-24)
 - [ ] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03
 
 ## Phase Details
@@ -119,7 +119,7 @@ Plans:
 **Plans:** 1/2 plans executed
 Plans:
 - [x] 22-01-PLAN.md — CSS glassmorphism: hero gradient mesh, header glass, pricing gradient, .card--glass modifier, @supports fallbacks, dark mode overrides; HTML card--glass wiring
-- [ ] 22-02-PLAN.md — Visual + performance verification checkpoint: 7-check sign-off including mandatory 4x CPU throttle FPS gate
+- [x] 22-02-PLAN.md — Visual + performance verification checkpoint: 7-check sign-off including mandatory 4x CPU throttle FPS gate
 **Context:** `.planning/phases/22-glassmorphism/22-CONTEXT.md`
 
 ### Phase 23: Micro-Animations Enhancement
@@ -140,5 +140,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
 | 21. Bold Typography Scale | 1/1 | Complete    | 2026-03-24 |
-| 22. Glassmorphism | 1/2 | In Progress|  |
+| 22. Glassmorphism | 2/2 | Complete    | 2026-03-24 |
 | 23. Micro-Animations Enhancement | 0/? | Not started | - |
