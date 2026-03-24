@@ -542,7 +542,7 @@ a:hover {
 
 .hero {
   padding-block: var(--space-8) var(--space-6);
-  background: #ffffff;
+  background: var(--color-white);
 }
 
 .hero__container {
