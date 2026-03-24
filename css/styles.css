@@ -125,6 +125,87 @@
   --icon-size-sm: 32px;
   --icon-size-md: 48px;
   --icon-size-lg: 64px;
+
+  /* Glass surface tokens — light mode defaults (Phase 22 glassmorphism) */
+  --glass-bg:     rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-blur:   blur(12px);
+
+  /* Colour scheme hint for browser chrome */
+  color-scheme:   light dark;
+}
+
+/* ==========================================================================
+   2b. DARK MODE TOKEN OVERRIDES
+   [data-theme="dark"] overrides the same --color-* token names defined in :root.
+   All 1,640+ existing CSS lines auto-update to dark mode via the cascade.
+   Never define parallel token names (e.g. --color-white-dark). Redefine exact names.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Backgrounds — navy-dark avoids pure #000 halation for astigmatic 45+ users */
+  --color-white:          #0F1923;
+  --color-light:          #1A2533;
+  --color-dark:           #E8F4FF;
+
+  /* Text */
+  --color-text-primary:   #E0ECF8;      /* 11.8:1 on #0F1923 — AAA */
+  --color-text-on-dark:   #18212C;      /* on light elements that flip to dark text */
+  --color-text-muted:     rgba(224, 236, 248, 0.55); /* ~5.1:1 on #0F1923 — AA ✓ verify */
+
+  /* Interactive — lightened primary/secondary for dark bg */
+  --color-primary:        #5FD5F9;      /* 5.6:1 on #0F1923 — AA */
+  --color-primary-dark:   #38C6F4;      /* 4.7:1 on #0F1923 — AA */
+  --color-secondary:      #3FCF88;      /* 5.1:1 on #0F1923 — AA */
+  --color-secondary-dark: #1AC67E;      /* 4.5:1 on #0F1923 — AA (borderline, verify) */
+
+  /* CTA colours — gradient unchanged (green→teal works on dark bg) */
+  --color-cta:            #3FCF88;
+  --color-cta-hover:      #1AC67E;
+
+  /* Badges */
+  --color-badge-bg:       #0D3324;
+  --color-badge-text:     #3FCF88;      /* 5.1:1 on #0D3324 — AA */
+
+  /* Shadows — stronger on dark bg */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
+
+  /* Glass surface tokens — dark mode variants */
+  --glass-bg:     rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-blur:   blur(12px);
+}
+
+/* System preference hint — first-visit only, activates when no localStorage choice has been made.
+   Once the user clicks the toggle, the explicit data-theme attribute wins and this block is bypassed.
+   Default-light policy: DM-04 — never default to dark; OS preference is a hint only. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-white:          #0F1923;
+    --color-light:          #1A2533;
+    --color-dark:           #E8F4FF;
+    --color-text-primary:   #E0ECF8;
+    --color-text-on-dark:   #18212C;
+    --color-text-muted:     rgba(224, 236, 248, 0.55);
+    --color-primary:        #5FD5F9;
+    --color-primary-dark:   #38C6F4;
+    --color-secondary:      #3FCF88;
+    --color-secondary-dark: #1AC67E;
+    --color-cta:            #3FCF88;
+    --color-cta-hover:      #1AC67E;
+    --color-badge-bg:       #0D3324;
+    --color-badge-text:     #3FCF88;
+    --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
+    --glass-bg:             rgba(255, 255, 255, 0.06);
+    --glass-border:         rgba(255, 255, 255, 0.12);
+  }
 }
 
 /* ==========================================================================
@@ -389,6 +470,44 @@ a:hover {
 .site-header__phone:hover {
   color: var(--color-dark);
   text-decoration: underline;
+}
+
+/* Dark mode toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.theme-toggle:hover {
+  background: var(--color-light);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.theme-toggle__label {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
 }
 
 /* Header nav: visible on desktop */
