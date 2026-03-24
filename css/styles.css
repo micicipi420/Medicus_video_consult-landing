@@ -1734,6 +1734,10 @@ a:hover {
     transform: none;
   }
 
+  .button:active {
+    transform: none;
+  }
+
   .card:hover {
     transform: none;
   }
