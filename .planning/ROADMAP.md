@@ -116,7 +116,10 @@ Plans:
   2. The pricing card has a glass surface — sits visibly over the gradient pricing section background
   3. On a browser with `backdrop-filter` disabled, the header and pricing card show solid opaque fallback colors
   4. Scrolling through the page with Chrome DevTools 4x CPU throttle shows no frame drops below 50fps
-**Plans:** TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 22-01-PLAN.md — CSS glassmorphism: hero gradient mesh, header glass, pricing gradient, .card--glass modifier, @supports fallbacks, dark mode overrides; HTML card--glass wiring
+- [ ] 22-02-PLAN.md — Visual + performance verification checkpoint: 7-check sign-off including mandatory 4x CPU throttle FPS gate
 **Context:** `.planning/phases/22-glassmorphism/22-CONTEXT.md`
 
 ### Phase 23: Micro-Animations Enhancement
@@ -137,5 +140,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
 | 21. Bold Typography Scale | 1/1 | Complete    | 2026-03-24 |
-| 22. Glassmorphism | 0/? | Not started | - |
+| 22. Glassmorphism | 0/2 | Not started | - |
 | 23. Micro-Animations Enhancement | 0/? | Not started | - |
