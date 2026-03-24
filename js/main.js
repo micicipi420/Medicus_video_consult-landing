@@ -468,6 +468,47 @@
     }, { passive: true });
   }
 
+  /**
+   * Dark Mode Toggle
+   * - Reads saved theme from localStorage on init (theme already applied by inline head script)
+   * - Clicking toggle switches between 'light' and 'dark', saves to localStorage
+   * - Updates aria-pressed and icon on every state change
+   * - Updates meta[name="theme-color"] for browser chrome (Android status bar)
+   * - Per DM-01, DM-03, DM-04
+   */
+  function initDarkMode() {
+    var toggle = document.querySelector('.theme-toggle');
+    if (!toggle) return;
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      toggle.setAttribute(
+        'aria-label',
+        theme === 'dark' ? '\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0441\u0432\u0435\u0442\u043b\u0443\u044e \u0442\u0435\u043c\u0443' : '\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0451\u043c\u043d\u0443\u044e \u0442\u0435\u043c\u0443'
+      );
+      var icon = toggle.querySelector('.theme-toggle__icon');
+      if (icon) {
+        icon.textContent = theme === 'dark' ? '\u263e' : '\u2600';
+      }
+      var metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) {
+        metaTheme.setAttribute('content', theme === 'dark' ? '#0F1923' : '#38C6F4');
+      }
+    }
+
+    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    applyTheme(currentTheme);
+
+    toggle.addEventListener('click', function() {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark'
+        ? 'light'
+        : 'dark';
+      applyTheme(next);
+    });
+  }
+
   function initAll() {
     initAccordion();
     initSmoothScroll();
@@ -477,6 +518,7 @@
     initSpamProtection();
     initFormValidation();
     initStickyHeader();
+    initDarkMode();
   }
 
   // Initialize when DOM is ready
