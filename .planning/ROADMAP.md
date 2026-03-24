@@ -72,7 +72,7 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
 ## v1.4 2025 Visual Redesign (Phases 20-23)
 
 - [x] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04 (completed 2026-03-24)
-- [ ] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02
+- [x] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02 (completed 2026-03-24)
 - [ ] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04
 - [ ] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03
 
@@ -102,9 +102,9 @@ Plans:
   1. The hero heading is visibly larger and bolder than in v1.3 — no single-word orphan lines at 390px
   2. All h1 and h2 headings scale fluidly between desktop and mobile without overflow or layout shift
   3. Bold headings are legible in both light and dark mode — no contrast regressions
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
-- [ ] 21-01-PLAN.md — Heading token update (TYPO-01 + TYPO-02) + visual verification checkpoint
+- [x] 21-01-PLAN.md — Heading token update (TYPO-01 + TYPO-02) + visual verification checkpoint
 **Context:** `.planning/phases/21-bold-typography-scale/21-CONTEXT.md`
 
 ### Phase 22: Glassmorphism
@@ -136,6 +136,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
-| 21. Bold Typography Scale | 0/? | Not started | - |
+| 21. Bold Typography Scale | 1/1 | Complete   | 2026-03-24 |
 | 22. Glassmorphism | 0/? | Not started | - |
 | 23. Micro-Animations Enhancement | 0/? | Not started | - |

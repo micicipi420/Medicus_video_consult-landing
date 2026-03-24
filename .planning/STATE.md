@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: 2025 Visual Redesign
 status: unknown
-stopped_at: Completed 20-02-PLAN.md
-last_updated: "2026-03-24T05:16:36.849Z"
+stopped_at: Completed 21-01-PLAN.md
+last_updated: "2026-03-24T05:24:58.296Z"
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 2
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 20 — Dark Mode Token Infrastructure
+**Current focus:** Phase 21 — Bold Typography Scale
 
 ## Current Position
 
-Phase: 21
-Plan: Not started
+Phase: 21 (Bold Typography Scale) — EXECUTING
+Plan: 1 of 1
 
 ## Performance Metrics
 
@@ -45,6 +45,7 @@ Plan: Not started
 | Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
 | Phase 20 P01 | 2 | 2 tasks | 2 files |
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
+| Phase 21 P01 | 15 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,7 @@ Recent decisions affecting current work:
 - [Phase 20]: initDarkMode() placed last in initAll() so all other UI is initialised before theme state reconciliation
 - [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
 - [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
+- [Phase 21]: h1/h2 weight 800 (Manrope Variable), h3 stays 700; --line-height-display: 1.1 added for display-scale headings; text-wrap: balance on all h1/h2/h3 prevents Cyrillic orphan lines
 
 ### Blockers/Concerns
 
@@ -74,6 +76,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-24T05:13:33.077Z
-Stopped at: Completed 20-02-PLAN.md
+Last session: 2026-03-24T05:24:58.293Z
+Stopped at: Completed 21-01-PLAN.md
 Resume file: None

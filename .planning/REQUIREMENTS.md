@@ -16,8 +16,8 @@
 
 ### Typography
 
-- [ ] **TYPO-01**: h1 → `clamp(40px, 5vw, 56px)` / font-weight 800; h2 → `clamp(28px, 3.5vw, 44px)` / font-weight 800 (Manrope Variable уже загружен)
-- [ ] **TYPO-02**: `text-wrap: balance` на всех заголовках секций; отсутствие однословных «сирот» в кириллических заголовках на 320px и 390px
+- [x] **TYPO-01**: h1 → `clamp(40px, 5vw, 56px)` / font-weight 800; h2 → `clamp(28px, 3.5vw, 44px)` / font-weight 800 (Manrope Variable уже загружен)
+- [x] **TYPO-02**: `text-wrap: balance` на всех заголовках секций; отсутствие однословных «сирот» в кириллических заголовках на 320px и 390px
 
 ### Glassmorphism
 
@@ -61,8 +61,8 @@ Deferred to future release.
 | DM-02 | Phase 20 | Complete |
 | DM-03 | Phase 20 | Complete |
 | DM-04 | Phase 20 | Complete |
-| TYPO-01 | Phase 21 | Pending |
-| TYPO-02 | Phase 21 | Pending |
+| TYPO-01 | Phase 21 | Complete |
+| TYPO-02 | Phase 21 | Complete |
 | GLASS-01 | Phase 22 | Pending |
 | GLASS-02 | Phase 22 | Pending |
 | GLASS-03 | Phase 22 | Pending |
