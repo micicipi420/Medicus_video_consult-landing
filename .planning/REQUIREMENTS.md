@@ -28,9 +28,9 @@
 
 ### Micro-Animations
 
-- [ ] **ANIM-01**: `translateY(20px → 0)` добавлен к начальному состоянию `.animate-on-scroll` поверх существующего fade
-- [ ] **ANIM-02**: Кнопки CTA — `:active { transform: scale(0.97) }` с 100ms transition для тактильного подтверждения клика
-- [ ] **ANIM-03**: Глобальный guard `prefers-reduced-motion` покрывает все новые анимации (включая сброс `transform: none`, не только `duration: 0`); итого различных типов анимаций на странице ≤5
+- [x] **ANIM-01**: `translateY(20px → 0)` добавлен к начальному состоянию `.animate-on-scroll` поверх существующего fade
+- [x] **ANIM-02**: Кнопки CTA — `:active { transform: scale(0.97) }` с 100ms transition для тактильного подтверждения клика
+- [x] **ANIM-03**: Глобальный guard `prefers-reduced-motion` покрывает все новые анимации (включая сброс `transform: none`, не только `duration: 0`); итого различных типов анимаций на странице ≤5
 
 ## v2+ Requirements
 
@@ -67,9 +67,9 @@ Deferred to future release.
 | GLASS-02 | Phase 22 | Complete |
 | GLASS-03 | Phase 22 | Complete |
 | GLASS-04 | Phase 22 | Complete |
-| ANIM-01 | Phase 23 | Pending |
-| ANIM-02 | Phase 23 | Pending |
-| ANIM-03 | Phase 23 | Pending |
+| ANIM-01 | Phase 23 | Complete |
+| ANIM-02 | Phase 23 | Complete |
+| ANIM-03 | Phase 23 | Complete |
 
 **Coverage:**
 - v1.4 requirements: 13 total
