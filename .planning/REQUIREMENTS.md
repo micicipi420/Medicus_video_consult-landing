@@ -21,10 +21,10 @@
 
 ### Glassmorphism
 
-- [ ] **GLASS-01**: CSS gradient mesh фон в секции hero (реализует визуальный слой под стеклянными элементами)
-- [ ] **GLASS-02**: Glassmorphism на `.site-header.is-scrolled` — `backdrop-filter: blur(8-12px) saturate(180%)`, минимальная opacity фона 0.75
-- [ ] **GLASS-03**: Glassmorphism на pricing-карточке — CSS-модификатор `.card--glass`; не более 2 стеклянных элементов на viewport
-- [ ] **GLASS-04**: Fallback через `@supports not (backdrop-filter: blur(1px))` — сплошной цвет; тест прокрутки при 4x CPU throttle ≥50fps перед сдачей фазы
+- [x] **GLASS-01**: CSS gradient mesh фон в секции hero (реализует визуальный слой под стеклянными элементами)
+- [x] **GLASS-02**: Glassmorphism на `.site-header.is-scrolled` — `backdrop-filter: blur(8-12px) saturate(180%)`, минимальная opacity фона 0.75
+- [x] **GLASS-03**: Glassmorphism на pricing-карточке — CSS-модификатор `.card--glass`; не более 2 стеклянных элементов на viewport
+- [x] **GLASS-04**: Fallback через `@supports not (backdrop-filter: blur(1px))` — сплошной цвет; тест прокрутки при 4x CPU throttle ≥50fps перед сдачей фазы
 
 ### Micro-Animations
 
@@ -63,10 +63,10 @@ Deferred to future release.
 | DM-04 | Phase 20 | Complete |
 | TYPO-01 | Phase 21 | Complete |
 | TYPO-02 | Phase 21 | Complete |
-| GLASS-01 | Phase 22 | Pending |
-| GLASS-02 | Phase 22 | Pending |
-| GLASS-03 | Phase 22 | Pending |
-| GLASS-04 | Phase 22 | Pending |
+| GLASS-01 | Phase 22 | Complete |
+| GLASS-02 | Phase 22 | Complete |
+| GLASS-03 | Phase 22 | Complete |
+| GLASS-04 | Phase 22 | Complete |
 | ANIM-01 | Phase 23 | Pending |
 | ANIM-02 | Phase 23 | Pending |
 | ANIM-03 | Phase 23 | Pending |

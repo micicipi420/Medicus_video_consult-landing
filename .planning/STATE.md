@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: 2025 Visual Redesign
 status: unknown
-stopped_at: Completed 21-01-PLAN.md
-last_updated: "2026-03-24T05:27:32.469Z"
+stopped_at: Completed 22-01-PLAN.md
+last_updated: "2026-03-24T05:36:59.090Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 21 — Bold Typography Scale
+**Current focus:** Phase 22 — Glassmorphism
 
 ## Current Position
 
-Phase: 22
-Plan: Not started
+Phase: 22 (Glassmorphism) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -46,6 +46,7 @@ Plan: Not started
 | Phase 20 P01 | 2 | 2 tasks | 2 files |
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
+| Phase 22 P01 | 2 | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,9 @@ Recent decisions affecting current work:
 - [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
 - [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
 - [Phase 21]: h1/h2 weight 800 (Manrope Variable), h3 stays 700; --line-height-display: 1.1 added for display-scale headings; text-wrap: balance on all h1/h2/h3 prevents Cyrillic orphan lines
+- [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
+- [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
+- [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
 
 ### Blockers/Concerns
 
@@ -76,6 +80,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-24T05:24:58.293Z
-Stopped at: Completed 21-01-PLAN.md
+Last session: 2026-03-24T05:36:59.088Z
+Stopped at: Completed 22-01-PLAN.md
 Resume file: None
