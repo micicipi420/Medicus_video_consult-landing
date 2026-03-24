@@ -102,7 +102,9 @@ Plans:
   1. The hero heading is visibly larger and bolder than in v1.3 — no single-word orphan lines at 390px
   2. All h1 and h2 headings scale fluidly between desktop and mobile without overflow or layout shift
   3. Bold headings are legible in both light and dark mode — no contrast regressions
-**Plans:** TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 21-01-PLAN.md — Heading token update (TYPO-01 + TYPO-02) + visual verification checkpoint
 **Context:** `.planning/phases/21-bold-typography-scale/21-CONTEXT.md`
 
 ### Phase 22: Glassmorphism
