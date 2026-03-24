@@ -501,6 +501,13 @@ a:hover {
   box-shadow: none;
 }
 
+[data-theme="dark"] .sticky-bar {
+  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
+  backdrop-filter: var(--glass-blur) saturate(150%);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .site-header__nav {
   display: none;
 }
@@ -732,6 +739,30 @@ a:hover {
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;  /* 4px */
+}
+
+.social-proof__item--glass {
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
+  backdrop-filter: var(--glass-blur) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+}
+
+[data-theme="dark"] .social-proof__item--glass {
+  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
+  backdrop-filter: var(--glass-blur) saturate(150%);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .social-proof__item--glass {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(24, 33, 44, 0.12);
+  }
 }
 
 .social-proof__number {
@@ -1188,6 +1219,10 @@ a:hover {
   max-width: 540px;
 }
 
+.lead-form__wrapper.card--glass {
+  padding: var(--space-6) var(--space-5);
+}
+
 .lead-form__heading {
   margin-bottom: var(--space-2);
 }
@@ -1574,12 +1609,19 @@ a:hover {
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(24, 33, 44, 0.1);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
+  backdrop-filter: var(--glass-blur) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
   padding-block: var(--space-1);
   transition: transform var(--transition-normal);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .sticky-bar {
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid rgba(24, 33, 44, 0.12);
+  }
 }
 
 .sticky-bar.is-hidden {
@@ -1615,12 +1657,6 @@ a:hover {
   white-space: nowrap;
 }
 
-/* Hide sticky bar on desktop */
-@media (min-width: 1024px) {
-  .sticky-bar {
-    display: none;
-  }
-}
 
 /* ==========================================================================
    8. UTILITIES
@@ -1681,6 +1717,17 @@ a:hover {
   transform: translateY(0);
 }
 
+/* -- Glass enter animation: scale + fade (Phase 24, D-05) -- */
+
+.animate-on-scroll--glass {
+  transform: translateY(20px) scale(0.98);
+}
+
+.animate-on-scroll--glass.is-visible {
+  transform: translateY(0) scale(1);
+  transition: opacity 0.4s ease-out, transform 0.2s ease-out;
+}
+
 /* Stagger children in grids (per D-11): 80ms delay per child */
 .stagger-children > .animate-on-scroll:nth-child(1) { transition-delay: 0ms; }
 .stagger-children > .animate-on-scroll:nth-child(2) { transition-delay: 80ms; }
@@ -1736,6 +1783,11 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
   .animate-on-scroll {
     opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-on-scroll--glass {
     transform: none;
     transition: none;
   }
