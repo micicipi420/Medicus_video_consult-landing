@@ -1680,7 +1680,8 @@ a:hover {
 }
 
 .button:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.97);
+  transition: transform 100ms ease;
 }
 
 /* -- FAQ smooth height transition (per D-15) -- */
