@@ -9,9 +9,9 @@
 
 ### Dark Mode
 
-- [ ] **DM-01**: Кнопка переключения темы в sticky-навигации — `aria-pressed`, touch-target ≥44px, видимая текстовая метка рядом с иконкой
-- [ ] **DM-02**: CSS-блок `[data-theme="dark"]` с токенами для всех цветовых пар; все пары прошли контраст-аудит WCAG AA до применения в компонентах
-- [ ] **DM-03**: Inline `<script>` в `<head>` (ES5) для чтения localStorage перед первым рендером — устраняет FOUC при переходе между сессиями
+- [x] **DM-01**: Кнопка переключения темы в sticky-навигации — `aria-pressed`, touch-target ≥44px, видимая текстовая метка рядом с иконкой
+- [x] **DM-02**: CSS-блок `[data-theme="dark"]` с токенами для всех цветовых пар; все пары прошли контраст-аудит WCAG AA до применения в компонентах
+- [x] **DM-03**: Inline `<script>` в `<head>` (ES5) для чтения localStorage перед первым рендером — устраняет FOUC при переходе между сессиями
 - [ ] **DM-04**: Тема по умолчанию — всегда светлая; `localStorage` управляет выбором; `prefers-color-scheme` — только подсказка при первом визите
 
 ### Typography
@@ -57,9 +57,9 @@ Deferred to future release.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DM-01 | Phase 20 | Pending |
-| DM-02 | Phase 20 | Pending |
-| DM-03 | Phase 20 | Pending |
+| DM-01 | Phase 20 | Complete |
+| DM-02 | Phase 20 | Complete |
+| DM-03 | Phase 20 | Complete |
 | DM-04 | Phase 20 | Pending |
 | TYPO-01 | Phase 21 | Pending |
 | TYPO-02 | Phase 21 | Pending |
