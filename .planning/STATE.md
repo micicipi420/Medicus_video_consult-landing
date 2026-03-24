@@ -73,6 +73,10 @@ Recent decisions affecting current work:
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
 
+### Roadmap Evolution
+
+- Phase 24 added: Liquid Glass Enhancement
+
 ### Blockers/Concerns
 
 - Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
