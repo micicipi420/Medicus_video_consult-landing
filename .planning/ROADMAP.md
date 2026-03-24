@@ -5,7 +5,8 @@
 - v1.0 MedicusUnion KZ Landing -- Phases 1-10 (shipped 2026-03-23)
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
-- v1.3 KZ Design Alignment -- Phases 17-19 (in progress)
+- v1.3 KZ Design Alignment -- Phases 17-19 (shipped 2026-03-23)
+- v1.4 2025 Visual Redesign -- Phases 20-23 (in progress)
 
 ## Phases
 
@@ -67,3 +68,69 @@ Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
 Full details: `.planning/milestones/v1.3-ROADMAP.md`
 Requirements: `.planning/milestones/v1.3-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
+
+## v1.4 2025 Visual Redesign (Phases 20-23)
+
+- [ ] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04
+- [ ] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02
+- [ ] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04
+- [ ] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03
+
+## Phase Details
+
+### Phase 20: Dark Mode Token Infrastructure
+**Goal:** Lay the complete CSS and JS foundation for dark mode. All existing components auto-update via the token cascade. No visual change in light mode. All dark token pairs pass contrast audit before any component styling proceeds.
+**Depends on:** Phase 19
+**Requirements:** DM-01, DM-02, DM-03, DM-04
+**Success Criteria** (what must be TRUE when this phase completes):
+  1. User can toggle dark mode from the sticky navigation — button is visible at all scroll positions, has text label, meets 44px touch target
+  2. Dark mode persists across page reload — closing and reopening the page restores the previously chosen theme
+  3. Hard-refresh with OS dark preference and no localStorage entry shows light mode (default-light policy holds)
+  4. Hard-refresh with saved dark preference shows dark mode immediately with no white flash (FOUC eliminated)
+  5. Every color token pair in `[data-theme="dark"]` has been checked against WCAG AA contrast (≥4.5:1); body text pairs target AAA (≥7:1)
+**Plans:** TBD
+**Context:** `.planning/phases/20-dark-mode-token-infrastructure/20-CONTEXT.md`
+
+### Phase 21: Bold Typography Scale
+**Goal:** Increase heading visual weight to display-scale 2025 standards. Every headline readable and correctly broken at 320px and 390px before this phase closes.
+**Depends on:** Phase 20
+**Requirements:** TYPO-01, TYPO-02
+**Success Criteria** (what must be TRUE when this phase completes):
+  1. The hero heading is visibly larger and bolder than in v1.3 — no single-word orphan lines at 390px
+  2. All h1 and h2 headings scale fluidly between desktop and mobile without overflow or layout shift
+  3. Bold headings are legible in both light and dark mode — no contrast regressions
+**Plans:** TBD
+**Context:** `.planning/phases/21-bold-typography-scale/21-CONTEXT.md`
+
+### Phase 22: Glassmorphism
+**Goal:** Apply selective glass effects to the sticky header and pricing card. Hero section gains gradient mesh background as the visual layer required for glass to function. Maximum 2 glass elements visible in any viewport.
+**Depends on:** Phase 20, Phase 21
+**Requirements:** GLASS-01, GLASS-02, GLASS-03, GLASS-04
+**Success Criteria** (what must be TRUE when this phase completes):
+  1. Scrolling past the hero reveals a frosted glass header — page content is visible through a translucent header
+  2. The pricing card has a glass surface — sits visibly over the gradient pricing section background
+  3. On a browser with `backdrop-filter` disabled, the header and pricing card show solid opaque fallback colors
+  4. Scrolling through the page with Chrome DevTools 4x CPU throttle shows no frame drops below 50fps
+**Plans:** TBD
+**Context:** `.planning/phases/22-glassmorphism/22-CONTEXT.md`
+
+### Phase 23: Micro-Animations Enhancement
+**Goal:** Extend scroll reveal with a vertical slide component, add tactile button active feedback, and confirm the global prefers-reduced-motion guard covers all new transforms. Total animation types on page stays at ≤5.
+**Depends on:** Phase 20, Phase 21, Phase 22
+**Requirements:** ANIM-01, ANIM-02, ANIM-03
+**Success Criteria** (what must be TRUE when this phase completes):
+  1. Scroll-reveal elements slide up from 20px while fading in — visibly more dynamic than the v1.3 opacity-only fade
+  2. Pressing and holding a CTA button shows a subtle scale-down (scale 0.97) — confirms the click registered
+  3. With OS prefers-reduced-motion enabled, no animations are visible — elements appear at their final position immediately
+  4. After waiting 10 seconds on the loaded page without interaction, nothing on the page is moving
+**Plans:** TBD
+**Context:** `.planning/phases/23-micro-animations-enhancement/23-CONTEXT.md`
+
+## Progress Table
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 20. Dark Mode Token Infrastructure | 0/? | Not started | - |
+| 21. Bold Typography Scale | 0/? | Not started | - |
+| 22. Glassmorphism | 0/? | Not started | - |
+| 23. Micro-Animations Enhancement | 0/? | Not started | - |
