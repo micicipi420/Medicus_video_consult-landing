@@ -88,7 +88,10 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
   3. Hard-refresh with OS dark preference and no localStorage entry shows light mode (default-light policy holds)
   4. Hard-refresh with saved dark preference shows dark mode immediately with no white flash (FOUC eliminated)
   5. Every color token pair in `[data-theme="dark"]` has been checked against WCAG AA contrast (≥4.5:1); body text pairs target AAA (≥7:1)
-**Plans:** TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 20-01-PLAN.md — CSS token infrastructure: [data-theme="dark"] block, glass tokens, FOUC script, toggle button HTML
+- [ ] 20-02-PLAN.md — JS initDarkMode() wiring, localStorage persistence, contrast audit checkpoint
 **Context:** `.planning/phases/20-dark-mode-token-infrastructure/20-CONTEXT.md`
 
 ### Phase 21: Bold Typography Scale
@@ -130,7 +133,7 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 20. Dark Mode Token Infrastructure | 0/? | Not started | - |
+| 20. Dark Mode Token Infrastructure | 0/2 | Planned | - |
 | 21. Bold Typography Scale | 0/? | Not started | - |
 | 22. Glassmorphism | 0/? | Not started | - |
 | 23. Micro-Animations Enhancement | 0/? | Not started | - |
