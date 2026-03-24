@@ -127,10 +127,11 @@
   --icon-size-md: 48px;
   --icon-size-lg: 64px;
 
-  /* Glass surface tokens — light mode defaults (Phase 22 glassmorphism) */
-  --glass-bg:     rgba(255, 255, 255, 0.75);
+  /* Glass surface tokens — iOS 26 liquid glass (Phase 24) */
+  --glass-bg:     rgba(255, 255, 255, 0.60);
   --glass-border: rgba(255, 255, 255, 0.9);
-  --glass-blur:   blur(12px);
+  --glass-blur:   blur(20px);
+  --glass-tint:   rgba(26, 198, 126, 0.05);
 
   /* Colour scheme hint for browser chrome */
   color-scheme:   light dark;
@@ -204,8 +205,10 @@
     --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
     --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-    --glass-bg:             rgba(255, 255, 255, 0.06);
+    --glass-bg:             rgba(15, 25, 35, 0.55);
     --glass-border:         rgba(255, 255, 255, 0.12);
+    --glass-blur:           blur(20px);
+    --glass-tint:           rgba(26, 198, 126, 0.03);
   }
 }
 
@@ -407,12 +410,13 @@ a:hover {
   color: var(--color-text-primary);
 }
 
-/* Glass modifier — applied to pricing card only; never to FAQ, benefits, or process cards */
+/* Glass modifier — applied to pricing card, form wrapper, social proof; never to FAQ/benefits/process cards */
 .card--glass {
-  background: var(--glass-bg);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
 }
 
 /* Fallback: solid card for browsers without backdrop-filter support (GLASS-04) */
@@ -469,10 +473,11 @@ a:hover {
 }
 
 .site-header.is-scrolled {
-  background: var(--glass-bg);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
   -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
   backdrop-filter: var(--glass-blur) saturate(180%);
   border-bottom: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow: none;
 }
 
