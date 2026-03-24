@@ -407,6 +407,30 @@ a:hover {
   color: var(--color-text-primary);
 }
 
+/* Glass modifier — applied to pricing card only; never to FAQ, benefits, or process cards */
+.card--glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+/* Fallback: solid card for browsers without backdrop-filter support (GLASS-04) */
+@supports not (backdrop-filter: blur(1px)) {
+  .card--glass {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+}
+
+/* Dark mode: disable glass — use opaque dark surface instead */
+[data-theme="dark"] .card--glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(30, 44, 58, 0.95);
+  border: 1px solid var(--glass-border);
+}
+
 .icon {
   display: inline-flex;
   align-items: center;
@@ -441,11 +465,32 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, backdrop-filter 0.3s ease, background 0.3s ease;
 }
 
 .site-header.is-scrolled {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
+  backdrop-filter: var(--glass-blur) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: none;
+}
+
+/* Fallback: solid header for browsers without backdrop-filter support (GLASS-04) */
+@supports not (backdrop-filter: blur(1px)) {
+  .site-header.is-scrolled {
+    background: var(--color-white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Dark mode: disable glass — backdrop-filter over dark navy renders as murky smear */
+[data-theme="dark"] .site-header.is-scrolled {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--color-white);  /* resolves to #0F1923 in dark mode */
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: none;
 }
 
 .site-header__nav {
