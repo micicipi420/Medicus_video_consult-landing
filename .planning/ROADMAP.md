@@ -71,7 +71,7 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
 
 ## v1.4 2025 Visual Redesign (Phases 20-23)
 
-- [ ] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04
+- [x] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04 (completed 2026-03-24)
 - [ ] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02
 - [ ] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04
 - [ ] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03
@@ -88,10 +88,10 @@ Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
   3. Hard-refresh with OS dark preference and no localStorage entry shows light mode (default-light policy holds)
   4. Hard-refresh with saved dark preference shows dark mode immediately with no white flash (FOUC eliminated)
   5. Every color token pair in `[data-theme="dark"]` has been checked against WCAG AA contrast (≥4.5:1); body text pairs target AAA (≥7:1)
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 20-01-PLAN.md — CSS token infrastructure: [data-theme="dark"] block, glass tokens, FOUC script, toggle button HTML
-- [ ] 20-02-PLAN.md — JS initDarkMode() wiring, localStorage persistence, contrast audit checkpoint
+- [x] 20-02-PLAN.md — JS initDarkMode() wiring, localStorage persistence, contrast audit checkpoint
 **Context:** `.planning/phases/20-dark-mode-token-infrastructure/20-CONTEXT.md`
 
 ### Phase 21: Bold Typography Scale
@@ -133,7 +133,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 20. Dark Mode Token Infrastructure | 1/2 | In Progress|  |
+| 20. Dark Mode Token Infrastructure | 2/2 | Complete   | 2026-03-24 |
 | 21. Bold Typography Scale | 0/? | Not started | - |
 | 22. Glassmorphism | 0/? | Not started | - |
 | 23. Micro-Animations Enhancement | 0/? | Not started | - |

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: 2025 Visual Redesign
 status: unknown
-stopped_at: Completed 20-01-PLAN.md
-last_updated: "2026-03-24T05:06:37.633Z"
+stopped_at: Completed 20-02-PLAN.md
+last_updated: "2026-03-24T05:13:33.080Z"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -44,6 +44,7 @@ Plan: 2 of 2
 | Phase 18 P01 | 8 | 3 tasks | 1 files |
 | Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
 | Phase 20 P01 | 2 | 2 tasks | 2 files |
+| Phase 20 P02 | 10 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,9 @@ Recent decisions affecting current work:
 - [Phase 20]: navy #0F1923 as dark mode base — avoids pure black halation for astigmatic 45+ users
 - [Phase 20]: [data-theme='dark'] redefines exact same --color-* token names — never parallel names like --color-white-dark; all component CSS auto-updates via cascade
 - [Phase 20]: Default-light policy (DM-04): @media prefers-color-scheme scoped to :root:not([data-theme='light']) — OS dark is hint-only, explicit toggle always wins
+- [Phase 20]: initDarkMode() placed last in initAll() so all other UI is initialised before theme state reconciliation
+- [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
+- [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
 
 ### Blockers/Concerns
 
@@ -70,6 +74,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-24T05:06:37.630Z
-Stopped at: Completed 20-01-PLAN.md
+Last session: 2026-03-24T05:13:33.077Z
+Stopped at: Completed 20-02-PLAN.md
 Resume file: None
