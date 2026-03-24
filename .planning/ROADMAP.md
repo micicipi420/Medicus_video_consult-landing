@@ -131,7 +131,9 @@ Plans:
   2. Pressing and holding a CTA button shows a subtle scale-down (scale 0.97) — confirms the click registered
   3. With OS prefers-reduced-motion enabled, no animations are visible — elements appear at their final position immediately
   4. After waiting 10 seconds on the loaded page without interaction, nothing on the page is moving
-**Plans:** TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 23-01-PLAN.md — CSS animation updates: scroll-reveal translateY(20px), button active scale(0.97), reduced-motion guard, stagger fix + visual verification checkpoint
 **Context:** `.planning/phases/23-micro-animations-enhancement/23-CONTEXT.md`
 
 ## Progress Table
@@ -141,4 +143,4 @@ Plans:
 | 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
 | 21. Bold Typography Scale | 1/1 | Complete    | 2026-03-24 |
 | 22. Glassmorphism | 2/2 | Complete    | 2026-03-24 |
-| 23. Micro-Animations Enhancement | 0/? | Not started | - |
+| 23. Micro-Animations Enhancement | 0/1 | In progress | - |
