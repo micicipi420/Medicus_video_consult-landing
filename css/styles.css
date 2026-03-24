@@ -176,10 +176,11 @@
   --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
 
-  /* Glass surface tokens — dark mode variants */
-  --glass-bg:     rgba(255, 255, 255, 0.06);
+  /* Glass surface tokens — dark mode: iOS liquid glass on navy (Phase 24) */
+  --glass-bg:     rgba(15, 25, 35, 0.55);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-blur:   blur(12px);
+  --glass-blur:   blur(20px);
+  --glass-tint:   rgba(26, 198, 126, 0.03);
 }
 
 /* System preference hint — first-visit only, activates when no localStorage choice has been made.
@@ -427,12 +428,13 @@ a:hover {
   }
 }
 
-/* Dark mode: disable glass — use opaque dark surface instead */
+/* Dark mode: liquid glass on navy — 20px blur works on dark backgrounds (Phase 24) */
 [data-theme="dark"] .card--glass {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  background: rgba(30, 44, 58, 0.95);
+  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
+  backdrop-filter: var(--glass-blur) saturate(150%);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
   border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .icon {
@@ -489,12 +491,13 @@ a:hover {
   }
 }
 
-/* Dark mode: disable glass — backdrop-filter over dark navy renders as murky smear */
+/* Dark mode: liquid glass on navy — 20px blur resolves Phase 22 murky smear (Phase 24) */
 [data-theme="dark"] .site-header.is-scrolled {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  background: var(--color-white);  /* resolves to #0F1923 in dark mode */
+  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
+  backdrop-filter: var(--glass-blur) saturate(150%);
+  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
   border-bottom: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: none;
 }
 
@@ -788,7 +791,17 @@ a:hover {
 /* -- Benefits (What You Get) -- */
 
 .benefits {
-  background-color: var(--color-light);
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(56, 198, 244, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(26, 198, 126, 0.07) 0%, transparent 55%),
+    var(--color-light);
+}
+
+[data-theme="dark"] .benefits {
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(56, 198, 244, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(26, 198, 126, 0.09) 0%, transparent 55%),
+    var(--color-light);
 }
 
 .benefits__heading {
@@ -1832,10 +1845,12 @@ a:hover {
   position: absolute;
   top: 50%;
   left: 25%;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(56, 198, 244, 0.08) 0%, transparent 70%);
+  background:
+    radial-gradient(circle, rgba(56, 198, 244, 0.10) 0%, transparent 65%),
+    radial-gradient(circle at 70% 60%, rgba(26, 198, 126, 0.08) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
