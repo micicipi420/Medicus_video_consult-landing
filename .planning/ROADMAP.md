@@ -150,13 +150,13 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 Requirements: `.planning/milestones/v1.4-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.4-MILESTONE-AUDIT.md`
 
-### Phase 24: Liquid Glass Enhancement
+### ✅ Phase 24: Liquid Glass Enhancement — SHIPPED 2026-03-25
 
 **Goal:** Expand glassmorphism from Phase 22 (2 elements) to full iOS 26 liquid glass treatment across the page. Three new glass surfaces (sticky bar, form wrapper, social proof stats), glass intensity upgraded site-wide (blur 20px, 60% opacity, green tint, specular highlight), dark mode glass enabled everywhere, gradient mesh backgrounds added to benefits and lead-form sections.
-**Requirements**: D-01 through D-17
+**Requirements**: D-01 through D-17 (17/17 verified)
 **Depends on:** Phase 23
 **Plans:** 2 plans
 
 Plans:
-- [ ] 24-01-PLAN.md — Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
-- [ ] 24-02-PLAN.md — New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
+- [x] 24-01-PLAN.md — Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
+- [x] 24-02-PLAN.md — New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
