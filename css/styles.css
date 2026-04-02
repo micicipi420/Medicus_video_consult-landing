@@ -3471,3 +3471,210 @@ a:hover {
     transition: none;
   }
 }
+
+/* =========================================================================
+   16f. Typography Utility Classes
+   Consume tokens from T01. Prefix: .au-
+   ========================================================================= */
+
+/* Eyebrow — small uppercase label above headings */
+.au-eyebrow {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5em;
+}
+
+/* Caption — small descriptive text */
+.au-caption {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-body);
+  color: var(--color-text-muted);
+}
+
+/* Display Text — oversized numbers, hero emphasis */
+.au-display-text {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-display);
+  color: var(--color-text);
+}
+
+/* Pull Quote — large italic with decorative gradient left border */
+.au-pull-quote {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h3);
+  font-style: italic;
+  line-height: var(--line-height-heading);
+  color: var(--color-text);
+  border-left: 4px solid transparent;
+  border-image: var(--gradient-cta) 1;
+  padding: 0.75em 1.25em;
+  margin: 1.5em 0;
+}
+
+/* Gradient Text — gradient fill on text via background-clip */
+.au-text-gradient {
+  background: var(--gradient-cta);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* fallback for non-webkit */
+}
+
+/* Highlight — inline text with subtle tinted background */
+.au-highlight {
+  background-color: var(--color-tint-teal);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* =========================================================================
+   16g. Layout Component Classes
+   Grid layouts, section tints, callouts. Prefix: .au-
+   ========================================================================= */
+
+/* Split Layout — asymmetric 60/40 grid, stacks on mobile */
+.au-layout-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .au-layout-split {
+    grid-template-columns: 3fr 2fr; /* 60 / 40 */
+  }
+}
+
+/* Split Layout Reverse — 40/60 grid */
+.au-layout-split--reverse {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .au-layout-split--reverse {
+    grid-template-columns: 2fr 3fr; /* 40 / 60 */
+  }
+}
+
+/* Featured Layout — 1 large + 2-3 smaller cards */
+.au-layout-featured {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .au-layout-featured {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+  }
+  .au-layout-featured > :first-child {
+    grid-row: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .au-layout-featured {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .au-layout-featured > :first-child {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+}
+
+/* Offset Layout — staggered cards via nth-child transforms */
+.au-layout-offset {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .au-layout-offset {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .au-layout-offset > :nth-child(even) {
+    transform: translateY(2rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .au-layout-offset {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tinted Section — subtle teal background for section differentiation */
+.au-section--tinted {
+  background-color: var(--color-tint-teal);
+}
+
+/* Tinted Section Green variant */
+.au-section--tinted-green {
+  background-color: var(--color-tint-green);
+}
+
+/* Accent Border Section — gradient top border */
+.au-section--accent-border {
+  border-top: 3px solid transparent;
+  border-image: var(--gradient-cta) 1;
+}
+
+/* Callout Box — important information block with gradient left border */
+.au-callout {
+  background: var(--gradient-soft);
+  border-left: 4px solid transparent;
+  border-image: var(--gradient-cta) 1;
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-size: var(--font-size-body, 1rem);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+}
+
+/* -------------------------------------------------------------------------
+   16h. Dark Mode — typography & layout overrides
+   Tokens adapt automatically via custom properties; explicit overrides
+   only where needed (gradient-text contrast, tint intensity).
+   ------------------------------------------------------------------------- */
+
+/* Gradient text needs stronger contrast in dark mode */
+[data-theme="dark"] .au-text-gradient {
+  filter: brightness(1.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .au-text-gradient {
+    filter: brightness(1.3);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   16i. Reduced Motion — typography & layout au-* classes
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .au-text-gradient,
+  .au-highlight,
+  .au-callout,
+  .au-pull-quote {
+    transition: none;
+  }
+}
