@@ -2807,6 +2807,16 @@ a:hover {
     gap: var(--space-4);
   }
 
+  /* Featured override: first card spans left column, other two stack right */
+  .hub-services__grid.au-layout-featured {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .hub-services__grid.au-layout-featured > :first-child {
+    grid-row: 1 / -1;
+  }
+
   .hub-service__cta {
     width: auto;
   }
