@@ -295,7 +295,8 @@
 
     var successEl = document.getElementById('form-success');
 
-    // Validation rules
+    // Validation rules — dynamic: name and phone always required,
+    // plus the first required <select> in the form (specialty, interest, checkup-direction, etc.)
     var rules = {
       name: {
         required: true,
@@ -311,15 +312,20 @@
           var digits = value.replace(/\D/g, '');
           return digits.length === 11 && digits.charAt(0) === '7';
         }
-      },
-      specialty: {
+      }
+    };
+
+    // Find all required selects in the form and add them to rules
+    var requiredSelects = form.querySelectorAll('select[required]');
+    requiredSelects.forEach(function (sel) {
+      rules[sel.id] = {
         required: true,
-        message: 'Выберите специализацию',
+        message: 'Выберите вариант',
         validate: function (value) {
           return value !== '';
         }
-      }
-    };
+      };
+    });
 
     function showError(fieldId, message) {
       var input = document.getElementById(fieldId);
@@ -346,8 +352,7 @@
     }
 
     function clearAllErrors() {
-      var fields = ['name', 'phone', 'specialty'];
-      fields.forEach(function (fieldId) {
+      Object.keys(rules).forEach(function (fieldId) {
         clearError(fieldId);
       });
     }
@@ -371,11 +376,11 @@
       return isValid;
     }
 
-    // Clear error on input change
-    ['name', 'phone', 'specialty'].forEach(function (fieldId) {
+    // Clear error on input change — dynamically for all rule fields
+    Object.keys(rules).forEach(function (fieldId) {
       var input = document.getElementById(fieldId);
       if (!input) return;
-      var eventType = fieldId === 'specialty' ? 'change' : 'input';
+      var eventType = (input.tagName === 'SELECT') ? 'change' : 'input';
       input.addEventListener(eventType, function () {
         clearError(fieldId);
       });
@@ -411,13 +416,14 @@
         return;
       }
 
-      // Collect form data
-      var formData = {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value,
-        specialty: document.getElementById('specialty').value,
-        description: document.getElementById('description').value.trim()
-      };
+      // Collect form data — gather all named inputs dynamically
+      var formData = {};
+      var inputs = form.querySelectorAll('input:not([type="hidden"]):not([name="website"]), select, textarea');
+      inputs.forEach(function (el) {
+        if (el.name && el.name !== 'website') {
+          formData[el.name] = el.value.trim ? el.value.trim() : el.value;
+        }
+      });
 
       // Disable submit button while sending
       var submitBtn = form.querySelector('.lead-form__submit');
@@ -519,6 +525,133 @@
     initFormValidation();
     initStickyHeader();
     initDarkMode();
+    initAnimatedCounters();
+    initScrollProgress();
+    initCardTilt();
+  }
+
+  /**
+   * Animated Counters
+   * - Counts up numbers in .social-proof__number elements
+   * - Triggers when element enters viewport
+   * - Handles numbers with +, K, and plain integers
+   */
+  function initAnimatedCounters() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var numbers = document.querySelectorAll('.social-proof__number');
+    if (!numbers.length) return;
+
+    numbers.forEach(function (el) {
+      el.dataset.finalText = el.textContent;
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateNumber(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    numbers.forEach(function (el) { observer.observe(el); });
+
+    function animateNumber(el) {
+      var finalText = el.dataset.finalText;
+      // Extract numeric part: "43" → 43, "500+" → 500, "15+" → 15, "10 000+" → 10000, "ISO" → skip
+      var cleaned = finalText.replace(/\s/g, '').replace(/[+,]/g, '');
+      var num = parseInt(cleaned, 10);
+      if (isNaN(num)) return; // skip non-numeric like "ISO"
+
+      var suffix = '';
+      if (finalText.indexOf('+') !== -1) suffix = '+';
+
+      // Preserve space formatting (e.g. "10 000+")
+      var hasSpaces = /\d\s\d/.test(finalText);
+
+      var duration = 1200;
+      var startTime = null;
+      el.setAttribute('data-counting', '');
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        // Ease-out cubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.round(eased * num);
+
+        if (hasSpaces && current >= 1000) {
+          el.textContent = current.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + suffix;
+        } else {
+          el.textContent = current + suffix;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = finalText;
+          el.removeAttribute('data-counting');
+        }
+      }
+
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    }
+  }
+
+  /**
+   * Scroll Progress Bar
+   * - Shows a gradient progress bar at the top of the page
+   * - Uses passive scroll listener
+   */
+  function initScrollProgress() {
+    var bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    window.addEventListener('scroll', function () {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        bar.style.transform = 'scaleX(' + (scrollTop / docHeight) + ')';
+      }
+    }, { passive: true });
+  }
+
+  /**
+   * 3D Card Tilt
+   * - Subtle 3D rotation on mouse move over .card--tilt elements
+   * - Uses requestAnimationFrame for performance
+   * - Resets on mouse leave
+   */
+  function initCardTilt() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Skip on touch devices
+    if ('ontouchstart' in window) return;
+
+    var cards = document.querySelectorAll('.card--tilt');
+    if (!cards.length) return;
+
+    cards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var centerX = rect.width / 2;
+        var centerY = rect.height / 2;
+
+        var rotateX = ((y - centerY) / centerY) * -4; // max 4deg
+        var rotateY = ((x - centerX) / centerX) * 4;  // max 4deg
+
+        card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+      });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
   }
 
   // Initialize when DOM is ready

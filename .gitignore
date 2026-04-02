@@ -13,3 +13,23 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# ── GSD baseline (auto-generated) ──
+.gsd
+*~
+*.code-workspace
+.env.*
+!.env.example
+.next/
+dist/
+build/
+__pycache__/
+*.pyc
+.venv/
+venv/
+target/
+vendor/
+*.log
+coverage/
+.cache/
+tmp/

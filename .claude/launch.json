@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Landing Page",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-3000}"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "Directus API",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "up"],
+      "port": 8055
+    }
+  ]
+}
