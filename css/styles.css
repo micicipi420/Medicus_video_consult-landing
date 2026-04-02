@@ -3205,3 +3205,269 @@ a:hover {
   .why-us__card:hover .why-us__number { transform: none; }
   .advantages__card:hover .advantages__icon svg { transform: none; }
 }
+
+/* ==========================================================================
+   16. AUTHORIAL DESIGN SYSTEM (M005/S01)
+   Organic SVG decorative elements for visual differentiation.
+   All elements use mask-image + currentColor for automatic dark mode support.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   16a. Organic Section Dividers (.au-divider)
+   Usage: <div class="au-divider au-divider--flow"></div>
+   Parent element sets `color` to control the divider fill color.
+   Technique: SVG data URI as mask-image, background-color: currentColor.
+   ------------------------------------------------------------------------- */
+
+.au-divider {
+  display: block;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  line-height: 0;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: bottom center;
+  mask-position: bottom center;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .au-divider {
+    height: 120px;
+  }
+}
+
+/* Variant 1: Flowing asymmetric curve */
+.au-divider--flow {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C200 100 400 10 600 50 C800 90 1000 20 1200 60 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C200 100 400 10 600 50 C800 90 1000 20 1200 60 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Variant 2: Soft mountain ridge with organic peaks */
+.au-divider--ridge {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 C100 40 250 50 350 20 C450 0 550 30 650 10 C750 0 900 40 1000 20 C1100 5 1150 40 1200 30 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 C100 40 250 50 350 20 C450 0 550 30 650 10 C750 0 900 40 1000 20 C1100 5 1150 40 1200 30 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Variant 3: Gentle single hill */
+.au-divider--hill {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C300 100 400 0 600 0 C800 0 900 100 1200 100 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C300 100 400 0 600 0 C800 0 900 100 1200 100 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Variant 4: Double-curve organic wave */
+.au-divider--dualwave {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C150 100 300 0 500 50 C700 100 850 0 1050 50 C1150 80 1200 30 1200 50 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C150 100 300 0 500 50 C700 100 850 0 1050 50 C1150 80 1200 30 1200 50 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Divider utility: vertical flip for bottom-of-section placement */
+.au-divider--flip {
+  transform: scaleY(-1);
+}
+
+/* -------------------------------------------------------------------------
+   16b. Decorative Blob Shapes (.au-blob)
+   Usage: Add .au-blob--{variant} to a section or container.
+   Blob appears as ::before pseudo-element with low opacity.
+   Parent `color` controls the blob tint.
+   ------------------------------------------------------------------------- */
+
+.au-blob--soft,
+.au-blob--ribbon,
+.au-blob--cluster {
+  position: relative;
+  overflow: hidden;
+}
+
+.au-blob--soft::before,
+.au-blob--ribbon::before,
+.au-blob--cluster::before {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  background-color: currentColor;
+  opacity: var(--accent-opacity-10, 0.1);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* Soft organic blob — positioned top-right */
+.au-blob--soft::before {
+  width: 320px;
+  height: 320px;
+  top: -60px;
+  right: -80px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M120 30 C160 10 195 50 185 95 C175 140 155 175 115 185 C75 195 35 165 25 120 C15 75 35 45 75 30 C95 22 105 38 120 30Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M120 30 C160 10 195 50 185 95 C175 140 155 175 115 185 C75 195 35 165 25 120 C15 75 35 45 75 30 C95 22 105 38 120 30Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Flowing ribbon — positioned bottom-left */
+.au-blob--ribbon::before {
+  width: 450px;
+  height: 180px;
+  bottom: -30px;
+  left: -60px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200'%3E%3Cpath d='M0 100 C50 40 100 160 175 100 C250 40 300 160 375 100 C450 40 500 100 500 100 L500 140 C450 80 400 200 325 140 C250 80 200 200 125 140 C50 80 0 140 0 140Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200'%3E%3Cpath d='M0 100 C50 40 100 160 175 100 C250 40 300 160 375 100 C450 40 500 100 500 100 L500 140 C450 80 400 200 325 140 C250 80 200 200 125 140 C50 80 0 140 0 140Z' fill='white'/%3E%3C/svg%3E");
+}
+
+/* Circular cluster — positioned center-right */
+.au-blob--cluster::before {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  right: -50px;
+  transform: translateY(-50%);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='70' cy='80' r='55' fill='white'/%3E%3Ccircle cx='130' cy='65' r='45' fill='white'/%3E%3Ccircle cx='105' cy='135' r='50' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='70' cy='80' r='55' fill='white'/%3E%3Ccircle cx='130' cy='65' r='45' fill='white'/%3E%3Ccircle cx='105' cy='135' r='50' fill='white'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 768px) {
+  .au-blob--soft::before  { width: 420px; height: 420px; }
+  .au-blob--ribbon::before { width: 600px; height: 240px; }
+  .au-blob--cluster::before { width: 400px; height: 400px; }
+}
+
+/* -------------------------------------------------------------------------
+   16c. Abstract Decorative Elements (.au-decor)
+   Usage: Add .au-decor--{variant} to a container.
+   Decorative element appears as ::after pseudo-element.
+   Parent `color` controls the element tint.
+   ------------------------------------------------------------------------- */
+
+.au-decor--heartline,
+.au-decor--leaf,
+.au-decor--circles,
+.au-decor--dots {
+  position: relative;
+}
+
+.au-decor--heartline::after,
+.au-decor--leaf::after,
+.au-decor--circles::after,
+.au-decor--dots::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  background-color: currentColor;
+  opacity: var(--accent-opacity-10, 0.1);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* Abstract heartbeat/pulse line — flowing, not clinical EKG */
+.au-decor--heartline::after {
+  width: 280px;
+  height: 56px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80' fill='none'%3E%3Cpath d='M0 40 C30 40 60 40 80 40 C90 40 95 38 100 32 C110 18 125 5 140 5 C155 5 165 55 175 70 C182 55 188 22 198 40 C208 58 215 40 240 40 C270 40 300 36 340 38 C370 40 390 40 400 40' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80' fill='none'%3E%3Cpath d='M0 40 C30 40 60 40 80 40 C90 40 95 38 100 32 C110 18 125 5 140 5 C155 5 165 55 175 70 C182 55 188 22 198 40 C208 58 215 40 240 40 C270 40 300 36 340 38 C370 40 390 40 400 40' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Organic leaf with stem and veins — warmth, growth, care */
+.au-decor--leaf::after {
+  width: 100px;
+  height: 170px;
+  top: 10px;
+  right: 24px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200'%3E%3Cpath d='M60 10 C90 30 110 70 105 120 C100 160 80 190 60 195 C40 190 20 160 15 120 C10 70 30 30 60 10Z' fill='white' opacity='0.7'/%3E%3Cpath d='M60 25 Q62 80 58 175' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M60 65 C75 52 88 58 92 68' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 95 C45 82 32 88 28 98' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 125 C73 115 84 118 88 128' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200'%3E%3Cpath d='M60 10 C90 30 110 70 105 120 C100 160 80 190 60 195 C40 190 20 160 15 120 C10 70 30 30 60 10Z' fill='white' opacity='0.7'/%3E%3Cpath d='M60 25 Q62 80 58 175' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M60 65 C75 52 88 58 92 68' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 95 C45 82 32 88 28 98' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 125 C73 115 84 118 88 128' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
+}
+
+/* Overlapping circle composition — connection, wholeness */
+.au-decor--circles::after {
+  width: 180px;
+  height: 180px;
+  top: -20px;
+  left: -30px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Ccircle cx='75' cy='75' r='55' stroke='white' stroke-width='2'/%3E%3Ccircle cx='130' cy='85' r='45' stroke='white' stroke-width='2'/%3E%3Ccircle cx='95' cy='140' r='38' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Ccircle cx='75' cy='75' r='55' stroke='white' stroke-width='2'/%3E%3Ccircle cx='130' cy='85' r='45' stroke='white' stroke-width='2'/%3E%3Ccircle cx='95' cy='140' r='38' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* Dot grid pattern — subtle texture background */
+.au-decor--dots::after {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  opacity: calc(var(--accent-opacity-10, 0.1) * 0.7);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='2.5' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='2.5' fill='white'/%3E%3C/svg%3E");
+  -webkit-mask-size: 24px 24px;
+  mask-size: 24px 24px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+@media (min-width: 768px) {
+  .au-decor--heartline::after { width: 360px; height: 72px; }
+  .au-decor--leaf::after      { width: 130px; height: 220px; }
+  .au-decor--circles::after   { width: 240px; height: 240px; }
+  .au-decor--dots::after       { width: 300px; height: 300px; }
+}
+
+/* -------------------------------------------------------------------------
+   16d. Dark Mode — opacity adjustments
+   currentColor adapts colors automatically; reduce opacity to stay subtle
+   on dark backgrounds (per T01 pattern: tint opacities reduced for dark bg).
+   ------------------------------------------------------------------------- */
+
+[data-theme="dark"] .au-blob--soft::before,
+[data-theme="dark"] .au-blob--ribbon::before,
+[data-theme="dark"] .au-blob--cluster::before {
+  opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
+}
+
+[data-theme="dark"] .au-decor--heartline::after,
+[data-theme="dark"] .au-decor--leaf::after,
+[data-theme="dark"] .au-decor--circles::after,
+[data-theme="dark"] .au-decor--dots::after {
+  opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .au-blob--soft::before,
+  .au-blob--ribbon::before,
+  .au-blob--cluster::before {
+    opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
+  }
+
+  .au-decor--heartline::after,
+  .au-decor--leaf::after,
+  .au-decor--circles::after,
+  .au-decor--dots::after {
+    opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   16e. Reduced Motion — disable any future au-* animations
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .au-divider,
+  .au-blob--soft::before,
+  .au-blob--ribbon::before,
+  .au-blob--cluster::before,
+  .au-decor--heartline::after,
+  .au-decor--leaf::after,
+  .au-decor--circles::after,
+  .au-decor--dots::after {
+    animation: none;
+    transition: none;
+  }
+}
