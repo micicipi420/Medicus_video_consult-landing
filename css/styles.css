@@ -2122,6 +2122,14 @@ a:hover {
   font-weight: 600;
   font-size: var(--font-size-base);
   color: var(--color-text-primary);
+  display: block;
+}
+
+.reviews__context {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: 2px;
 }
 
 .reviews__card .card__text {
@@ -2138,7 +2146,7 @@ a:hover {
 
 @media (min-width: 1024px) {
   .reviews__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
