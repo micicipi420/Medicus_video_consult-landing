@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 27-01-PLAN.md
-last_updated: "2026-04-04T16:41:34.988Z"
+stopped_at: Completed 27-02-PLAN.md
+last_updated: "2026-04-04T16:49:00.904Z"
 progress:
   total_phases: 9
   completed_phases: 8
@@ -47,7 +47,7 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
 | Phase 22 P01 | 2 | 3 tasks | 2 files |
-| Phase 27 P01 | 5 | 2 tasks | 1 files |
+| Phase 27 P02 | 4 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -73,7 +73,7 @@ Recent decisions affecting current work:
 - [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
-- [Phase 27]: Reused .problem section pattern for for-whom cards; created .comparison BEM component with --them/--us modifiers
+- [Phase 27]: Inserted Platform section between About Us and Clinics; removed specialist counts from clinic cards; changed reviews grid to 2-column for 4 cards
 
 ### Roadmap Evolution
 
@@ -86,6 +86,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-04T16:41:34.984Z
-Stopped at: Completed 27-01-PLAN.md
+Last session: 2026-04-04T16:49:00.901Z
+Stopped at: Completed 27-02-PLAN.md
 Resume file: None
