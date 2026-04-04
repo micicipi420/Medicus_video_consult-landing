@@ -1,682 +1,394 @@
 <!DOCTYPE html>
-<html lang="ru" class="no-js" data-theme="light">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Preload critical fonts (cyrillic first) -->
-  <link rel="preload" href="assets/fonts/inter-cyrillic-wght-normal.woff2"
-        as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2"
-        as="font" type="font/woff2" crossorigin>
-
-  <title>Лечение за рубежом — MedicusUnion KZ</title>
-  <meta name="description" content="Организуем лечение за границей под ключ: подбор клиники, оформление документов, перевод, логистика и сопровождение. 100+ клиник в 6 странах. 15+ лет опыта.">
-
-  <!-- Open Graph -->
+  <title>Лечение за рубежом -- MedicusUnion KZ</title>
+  <meta name="description" content="Организуем лечение под ключ: от подбора клиники до реабилитации. 43 клиники в 11 странах. Визовая поддержка, сопровождение.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="Лечение за рубежом — MedicusUnion KZ">
-  <meta property="og:description" content="Организуем лечение за границей под ключ: от первой консультации до полного восстановления. 100+ клиник, 500+ врачей, 15+ лет опыта.">
-  <meta property="og:url" content="https://medicusunion.kz/treatment-abroad">
+  <meta property="og:title" content="Лечение за рубежом -- MedicusUnion KZ">
+  <meta property="og:description" content="Организуем лечение под ключ: от подбора клиники до реабилитации. 43 клиники в 11 странах. Визовая поддержка, сопровождение.">
+  <meta property="og:url" content="https://medicusunion.kz/treatment-abroad.html">
   <meta property="og:site_name" content="MedicusUnion">
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://medicusunion.kz/treatment-abroad">
-
-  <!-- Theme Color -->
+  <link rel="canonical" href="https://medicusunion.kz/treatment-abroad.html">
   <meta name="theme-color" content="#38C6F4">
-
-  <script>
-    (function() {
-      var saved = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-  <header class="site-header" id="header">
-    <div class="container site-header__container">
-      <a href="index.html" class="site-header__brand-link">
-        <span class="site-header__brand">MedicusUnion</span>
-      </a>
-      <nav class="site-header__nav">
-        <a href="consultations.html" class="site-header__link">Консультации</a>
-        <a href="treatment-abroad.html" class="site-header__link">Лечение</a>
-        <a href="checkup.html" class="site-header__link">Чек-ап</a>
-        <a href="#faq-abroad" class="site-header__link">FAQ</a>
+  <!-- Animated Mesh Background -->
+  <div class="mesh-bg" aria-hidden="true">
+    <div class="mesh-bg__blob mesh-bg__blob--1"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--2"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--3"></div>
+    <div class="mesh-bg__overlay"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">MedicusUnion</a>
+
+      <nav class="header__nav">
+        <a href="index.html#services" class="header__nav-link header__nav-link--active">Услуги</a>
+        <a href="index.html#why-us" class="header__nav-link">Почему мы</a>
+        <a href="contacts.html" class="header__nav-link">Контакты</a>
       </nav>
-      <a href="tel:+77015322478" class="site-header__phone">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <button
-        class="theme-toggle"
-        aria-pressed="false"
-        aria-label="Включить тёмную тему"
-        type="button"
-      >
-        <span class="theme-toggle__icon" aria-hidden="true">☀</span>
-        <span class="theme-toggle__label">Тёмная тема</span>
+
+      <div class="header__actions">
+        <a href="tel:+77015322478" class="header__phone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7 701 532 24 78
+        </a>
+        <a href="contacts.html" class="header__cta">Оставить заявку</a>
+      </div>
+
+      <button class="header__menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
     </div>
   </header>
 
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay" aria-hidden="true">
+    <div class="mobile-menu">
+      <nav class="mobile-menu__nav">
+        <a href="index.html#services" class="mobile-menu__link">Услуги</a>
+        <a href="index.html#why-us" class="mobile-menu__link">Почему мы</a>
+        <a href="contacts.html" class="mobile-menu__link">Контакты</a>
+        <div class="mobile-menu__divider"></div>
+        <a href="tel:+77015322478" class="mobile-menu__phone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-blue)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7 701 532 24 78
+        </a>
+        <a href="contacts.html" class="mobile-menu__cta">Оставить заявку</a>
+      </nav>
+    </div>
+  </div>
+
   <main>
-    <!-- Hero Section -->
-    <section class="section hero hero--abroad" id="hero-abroad">
-      <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
-      <div class="container hero__container">
-        <div class="hero__content">
-          <p class="hero__eyebrow">Медицинский туризм</p>
-          <h1 class="hero__title">Организуем лечение за&nbsp;границей</h1>
-          <p class="hero__subtitle">Без очередей, переплат и&nbsp;языкового барьера. Подберём врача, оформим документы, переведём анализы и&nbsp;организуем перелёт. Вам остаётся только поправляться&nbsp;&mdash; остальное мы&nbsp;берём на&nbsp;себя.</p>
-          <div class="hero__actions">
-            <a href="#form-abroad" class="button button--primary">Получить бесплатную консультацию</a>
-            <a href="#steps" class="button button--outline">Как это работает</a>
-          </div>
-        </div>
-        <div class="hero__illustration" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
-            <!-- Airplane + globe scene -->
-            <!-- Globe -->
-            <circle cx="200" cy="200" r="90" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.06)"/>
-            <ellipse cx="200" cy="200" rx="40" ry="90" stroke="#38C6F4" stroke-width="1.5" fill="none"/>
-            <line x1="110" y1="175" x2="290" y2="175" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="110" y1="225" x2="290" y2="225" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Equator -->
-            <line x1="110" y1="200" x2="290" y2="200" stroke="#38C6F4" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-
-            <!-- Airplane -->
-            <g transform="translate(120, 100) rotate(-20)">
-              <path d="M0 15 L30 0 L60 15 L30 12 Z" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)" stroke-linejoin="round"/>
-              <path d="M25 12 L30 25 L35 12" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-              <!-- Trail -->
-              <path d="M-5 15 C-15 18, -25 14, -40 16" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="4 4" opacity="0.4"/>
-            </g>
-
-            <!-- Location pins on globe -->
-            <!-- Pin 1 - Europe -->
-            <g transform="translate(180, 155)">
-              <path d="M0 -12 C-6 -12, -10 -6, -10 0 C-10 8, 0 16, 0 16 C0 16, 10 8, 10 0 C10 -6, 6 -12, 0 -12Z" fill="rgba(53,182,120,0.3)" stroke="#35B678" stroke-width="1.5"/>
-              <circle cx="0" cy="-2" r="3" fill="#35B678"/>
-            </g>
-            <!-- Pin 2 - Middle East -->
-            <g transform="translate(230, 190)">
-              <path d="M0 -10 C-5 -10, -8 -5, -8 0 C-8 6, 0 13, 0 13 C0 13, 8 6, 8 0 C8 -5, 5 -10, 0 -10Z" fill="rgba(53,182,120,0.2)" stroke="#35B678" stroke-width="1.5"/>
-              <circle cx="0" cy="-2" r="2.5" fill="#35B678"/>
-            </g>
-            <!-- Pin 3 - Asia -->
-            <g transform="translate(260, 170)">
-              <path d="M0 -10 C-5 -10, -8 -5, -8 0 C-8 6, 0 13, 0 13 C0 13, 8 6, 8 0 C8 -5, 5 -10, 0 -10Z" fill="rgba(53,182,120,0.2)" stroke="#35B678" stroke-width="1.5"/>
-              <circle cx="0" cy="-2" r="2.5" fill="#35B678"/>
-            </g>
-
-            <!-- Medical cross -->
-            <g transform="translate(200, 200)">
-              <rect x="-6" y="-2" width="12" height="4" rx="1" fill="rgba(53,182,120,0.25)"/>
-              <rect x="-2" y="-6" width="4" height="12" rx="1" fill="rgba(53,182,120,0.25)"/>
-            </g>
-
-            <!-- Dashed route -->
-            <path d="M180 160 Q160 130, 145 115" stroke="#35B678" stroke-width="1.5" fill="none" stroke-dasharray="4 3" opacity="0.5"/>
-
-            <!-- Decorative dots -->
-            <circle cx="340" cy="130" r="4" fill="rgba(56,198,244,0.15)"/>
-            <circle cx="60" cy="280" r="3" fill="rgba(53,182,120,0.12)"/>
-            <circle cx="350" cy="300" r="3" fill="rgba(56,198,244,0.1)"/>
-            <circle cx="50" cy="120" r="4" fill="rgba(53,182,120,0.12)"/>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Bar -->
-    <section class="social-proof" aria-label="Ключевые цифры">
-      <div class="container social-proof__container">
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
-          <span class="social-proof__number">100+</span>
-          <span class="social-proof__label">клиник</span>
-        </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
-          <span class="social-proof__number">500+</span>
-          <span class="social-proof__label">врачей-экспертов</span>
-        </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
-          <span class="social-proof__number">15+</span>
-          <span class="social-proof__label">лет практики</span>
-        </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
-          <span class="social-proof__number">10 000+</span>
-          <span class="social-proof__label">пациентов</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider section-divider--dark-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- About Us Section -->
-    <section class="section about-us" id="about-us">
+    <!-- Page Hero -->
+    <section class="page-hero">
       <div class="container">
-        <h2 class="about-us__heading">MedicusUnion&nbsp;&mdash; ваш надёжный партнёр в&nbsp;лечении за&nbsp;границей</h2>
-        <p class="about-us__description">Организуем лечение под ключ: от&nbsp;согласования с&nbsp;клиникой до&nbsp;выбора страны и&nbsp;решения всех формальностей. За&nbsp;счёт опыта и&nbsp;партнёрских связей экономим ваши деньги и&nbsp;время.</p>
+        <div class="page-hero__grid">
 
-        <div class="about-us__grid">
-          <div class="card card--glass about-us__card animate-on-scroll animate-on-scroll--glass">
-            <div class="about-us__icon icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
-                <polyline points="16,24 22,30 32,18" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+          <!-- Left Content -->
+          <div class="page-hero__content animate-fade-up">
+            <div class="glass-badge">
+              <!-- Lucide Globe2 icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-blue)"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              <span class="glass-badge__text">100+ клиник</span>
             </div>
-            <h3 class="card__title">15+ лет практики</h3>
-            <p class="card__text">10&nbsp;000+ пациентов доверили нам лечение за&nbsp;рубежом&nbsp;&mdash; устойчивые процессы и&nbsp;проверенные партнёры.</p>
-          </div>
-          <div class="card card--glass about-us__card animate-on-scroll animate-on-scroll--glass">
-            <div class="about-us__icon icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
-                <ellipse cx="24" cy="24" rx="8" ry="18" stroke="#38C6F4" stroke-width="1.5" fill="none"/>
-                <line x1="6" y1="18" x2="42" y2="18" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="6" y1="30" x2="42" y2="30" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+
+            <h1 class="page-hero__title">
+              <span>Лечение </span>
+              <br>
+              <span class="text-gradient">за рубежом</span>
+            </h1>
+
+            <p class="page-hero__subtitle">Организуем лечение под ключ: от&nbsp;подбора клиники до&nbsp;реабилитации. Визовая поддержка, перелёт, проживание, переводчик, сопровождение на&nbsp;каждом этапе.</p>
+
+            <div class="page-hero__buttons">
+              <a href="contacts.html" class="btn-primary">
+                Получить план лечения
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
             </div>
-            <h3 class="card__title">Выбор страны под задачу</h3>
-            <p class="card__text">Австрия, Швейцария, Германия, Индия, ОАЭ, Израиль&nbsp;&mdash; обоснуем клинические и&nbsp;бюджетные плюсы каждого варианта.</p>
           </div>
-          <div class="card card--glass about-us__card animate-on-scroll animate-on-scroll--glass">
-            <div class="about-us__icon icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-                <rect x="8" y="10" width="32" height="28" rx="4" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
-                <path d="M16 10V6" stroke="#38C6F4" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M32 10V6" stroke="#38C6F4" stroke-width="2.5" stroke-linecap="round"/>
-                <line x1="8" y1="18" x2="40" y2="18" stroke="#38C6F4" stroke-width="2"/>
-                <circle cx="24" cy="28" r="4" stroke="#35B678" stroke-width="2" fill="rgba(53,182,120,0.15)"/>
-              </svg>
+
+          <!-- Right Content - Image -->
+          <div class="page-hero__image animate-scale-in">
+            <div class="page-hero__image-frame">
+              <img src="https://images.unsplash.com/photo-1720180244462-648c13ee01e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBob3NwaXRhbCUyMHJvb20lMjBwYXRpZW50fGVufDF8fHx8MTc3NTE5NjI1MXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Современная клиника" loading="lazy" width="1080" height="720">
             </div>
-            <h3 class="card__title">Прямые партнёрства</h3>
-            <p class="card__text">Rudolfinerhaus, Ichilov, Hirslanden и&nbsp;другие&nbsp;&mdash; быстрые слоты и&nbsp;согласованные протоколы лечения.</p>
           </div>
-          <div class="card card--glass about-us__card animate-on-scroll animate-on-scroll--glass">
-            <div class="about-us__icon icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-                <rect x="10" y="8" width="28" height="34" rx="3" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
-                <rect x="17" y="4" width="14" height="8" rx="2" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
-                <line x1="16" y1="22" x2="32" y2="22" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="28" x2="28" y2="28" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
-                <line x1="16" y1="34" x2="24" y2="34" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 class="card__title">Медицинская экспертиза</h3>
-            <p class="card__text">Наш координатор сверяет показания и&nbsp;документы&nbsp;&mdash; не&nbsp;&laquo;просто туризм&raquo;, а&nbsp;обоснованное лечение.</p>
-          </div>
+
         </div>
       </div>
     </section>
 
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- Clinics / Countries Section -->
-    <section class="section clinics" id="clinics">
+    <!-- Countries Grid -->
+    <section class="section">
       <div class="container">
-        <h2 class="clinics__heading">Лучшие клиники мира</h2>
-        <p class="clinics__description">14&nbsp;ведущих медицинских центров с&nbsp;мировой репутацией. Партнёрские клиники в&nbsp;6&nbsp;странах.</p>
+        <h2 class="section-heading" style="text-align: center;"><span class="text-gradient">Страны и клиники</span></h2>
 
-        <div class="clinics__grid">
-          <!-- Germany -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#000"/><rect y="11" width="48" height="10" fill="#DD0000"/><rect y="21" width="48" height="11" rx="0 0 3 3" fill="#FFCC00"/></svg>
-            </div>
-            <h3 class="card__title">Германия</h3>
-            <p class="clinics__stats">2&nbsp;800+ специалистов</p>
-            <p class="clinics__directions">Педиатрия &middot; Ортопедия &middot; Кардиология</p>
-            <ul class="clinics__list">
-              <li>M1 Pediatric Center</li>
-              <li>ATOS Orthopedic Center</li>
-            </ul>
+        <div class="countries-grid animate-stagger">
+
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1E9;&#x1F1EA;</div>
+            <h3 class="country-card__name">Германия</h3>
+            <p class="country-card__clinics">8 клиник</p>
           </div>
 
-          <!-- UAE -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#000"/><rect x="12" width="36" height="11" fill="#00732F"/><rect x="12" y="11" width="36" height="10" fill="#fff"/><rect x="12" y="21" width="36" height="11" fill="#000"/><rect width="12" height="32" rx="3 0 0 3" fill="#FF0000"/></svg>
-            </div>
-            <h3 class="card__title">ОАЭ</h3>
-            <p class="clinics__stats">950+ специалистов</p>
-            <p class="clinics__directions">Кардиология &middot; Онкология &middot; Ортопедия</p>
-            <ul class="clinics__list">
-              <li>Dubai London Clinic</li>
-            </ul>
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1E6;&#x1F1F9;</div>
+            <h3 class="country-card__name">Австрия</h3>
+            <p class="country-card__clinics">4 клиники</p>
           </div>
 
-          <!-- Austria -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#ED2939"/><rect y="11" width="48" height="10" fill="#fff"/></svg>
-            </div>
-            <h3 class="card__title">Австрия</h3>
-            <p class="clinics__stats">1&nbsp;900+ специалистов</p>
-            <p class="clinics__directions">Кардиология &middot; Онкология &middot; Хирургия</p>
-            <ul class="clinics__list">
-              <li>Rudolfinerhaus Hospital</li>
-              <li>Döbling Private Clinic</li>
-              <li>Goldenes Kreuz Hospital</li>
-            </ul>
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1E8;&#x1F1ED;</div>
+            <h3 class="country-card__name">Швейцария</h3>
+            <p class="country-card__clinics">3 клиники</p>
           </div>
 
-          <!-- Switzerland -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#DA291C"/><rect x="20" y="8" width="8" height="16" fill="#fff"/><rect x="16" y="12" width="16" height="8" fill="#fff"/></svg>
-            </div>
-            <h3 class="card__title">Швейцария</h3>
-            <p class="clinics__stats">1&nbsp;200+ специалистов</p>
-            <p class="clinics__directions">Кардиология &middot; Онкология &middot; Пластическая хирургия</p>
-            <ul class="clinics__list">
-              <li>Hirslanden Hospital Group</li>
-            </ul>
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1EE;&#x1F1F1;</div>
+            <h3 class="country-card__name">Израиль</h3>
+            <p class="country-card__clinics">6 клиник</p>
           </div>
 
-          <!-- Israel -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><rect y="4" width="48" height="4" fill="#0038B8"/><rect y="24" width="48" height="4" fill="#0038B8"/><polygon points="24,9 27.5,18 20.5,18" fill="none" stroke="#0038B8" stroke-width="1.5"/><polygon points="24,23 20.5,14 27.5,14" fill="none" stroke="#0038B8" stroke-width="1.5"/></svg>
-            </div>
-            <h3 class="card__title">Израиль</h3>
-            <p class="clinics__stats">2&nbsp;400+ специалистов</p>
-            <p class="clinics__directions">Онкология &middot; Кардиохирургия &middot; Неврология</p>
-            <ul class="clinics__list">
-              <li>Sourasky Medical Center</li>
-              <li>Assuta Private Clinic</li>
-              <li>Beilinson Hospital</li>
-            </ul>
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1E6;&#x1F1EA;</div>
+            <h3 class="country-card__name">ОАЭ</h3>
+            <p class="country-card__clinics">4 клиники</p>
           </div>
 
-          <!-- India -->
-          <div class="card card--glass clinics__card animate-on-scroll animate-on-scroll--glass">
-            <div class="clinics__flag" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><rect width="48" height="11" rx="3 3 0 0" fill="#FF9933"/><rect y="21" width="48" height="11" rx="0 0 3 3" fill="#138808"/><circle cx="24" cy="16" r="4" stroke="#000080" stroke-width="1" fill="none"/></svg>
-            </div>
-            <h3 class="card__title">Индия</h3>
-            <p class="clinics__stats">3&nbsp;500+ специалистов</p>
-            <p class="clinics__directions">Кардиохирургия &middot; Онкология &middot; Трансплантология</p>
-            <ul class="clinics__list">
-              <li>Marengo CIMS Hospitals</li>
-              <li>Shalby Multispecialty Hospital</li>
-              <li>HCG Hospital</li>
-              <li>Medicover Hospitals</li>
-            </ul>
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1F0;&#x1F1F7;</div>
+            <h3 class="country-card__name">Южная Корея</h3>
+            <p class="country-card__clinics">5 клиник</p>
           </div>
+
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1F9;&#x1F1F7;</div>
+            <h3 class="country-card__name">Турция</h3>
+            <p class="country-card__clinics">7 клиник</p>
+          </div>
+
+          <div class="country-card glass-card">
+            <div class="country-card__flag">&#x1F1EE;&#x1F1F3;</div>
+            <h3 class="country-card__name">Индия</h3>
+            <p class="country-card__clinics">6 клиник</p>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- 4 Steps Section -->
-    <section class="section steps" id="steps">
+    <!-- What's Included -->
+    <section class="section">
       <div class="container">
-        <h2 class="steps__heading">Ваш путь к&nbsp;здоровью за&nbsp;4&nbsp;простых шага</h2>
-        <p class="steps__description">Мы&nbsp;сопровождаем вас на&nbsp;каждом этапе медицинского путешествия&nbsp;&mdash; от&nbsp;первой консультации до&nbsp;полного восстановления.</p>
+        <h2 class="section-heading" style="text-align: center;">
+          <span>Что </span><span class="text-gradient">включено</span>
+        </h2>
 
-        <div class="steps__grid">
-          <div class="steps__item animate-on-scroll">
-            <div class="steps__number" aria-hidden="true">01</div>
-            <div class="steps__content">
-              <h3 class="steps__title">Планирование</h3>
-              <span class="steps__duration">2–4 дня</span>
-              <p class="steps__text">Анализ медицинской истории, подбор лучших клиник и&nbsp;врачей, организация онлайн-консультаций с&nbsp;экспертами.</p>
-              <ul class="steps__details" role="list">
-                <li>Анализ медкарты</li>
-                <li>Подбор клиники</li>
-                <li>Онлайн-консультации</li>
-                <li>Расчёт стоимости</li>
-              </ul>
+        <div class="features-grid animate-stagger">
+
+          <!-- Included 1: Building2 -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-blue); background: rgba(56,198,244,0.1);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
             </div>
+            <h3 class="feature-card__title">Подбор клиники</h3>
+            <p class="feature-card__desc">Анализ диагноза, подбор 2&ndash;3&nbsp;клиник, сравнение цен и&nbsp;результатов</p>
           </div>
 
-          <div class="steps__item animate-on-scroll">
-            <div class="steps__number" aria-hidden="true">02</div>
-            <div class="steps__content">
-              <h3 class="steps__title">Логистика</h3>
-              <span class="steps__duration">7–10 дней</span>
-              <p class="steps__text">Помощь с&nbsp;оформлением виз, бронирование перелётов и&nbsp;отелей, организация трансферов.</p>
-              <ul class="steps__details" role="list">
-                <li>Визовая поддержка</li>
-                <li>Авиабилеты</li>
-                <li>Проживание</li>
-                <li>Трансферы</li>
-              </ul>
+          <!-- Included 2: Plane -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-accent-teal); background: var(--mu-accent-teal-bg);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
             </div>
+            <h3 class="feature-card__title">Визовая поддержка</h3>
+            <p class="feature-card__desc">Медицинское приглашение, помощь с&nbsp;документами, бронирование</p>
           </div>
 
-          <div class="steps__item animate-on-scroll">
-            <div class="steps__number" aria-hidden="true">03</div>
-            <div class="steps__content">
-              <h3 class="steps__title">Координация лечения</h3>
-              <span class="steps__duration">По&nbsp;плану лечения</span>
-              <p class="steps__text">Координация с&nbsp;медперсоналом, услуги переводчика, постоянная поддержка на&nbsp;всех этапах лечения.</p>
-              <ul class="steps__details" role="list">
-                <li>Постоянная связь</li>
-                <li>Медицинские переводчики</li>
-                <li>Экстренная поддержка</li>
-              </ul>
+          <!-- Included 3: Users -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-accent-blue); background: rgba(79,132,232,0.1);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
+            <h3 class="feature-card__title">Сопровождение</h3>
+            <p class="feature-card__desc">Личный координатор в&nbsp;стране лечения, переводчик, трансфер</p>
           </div>
 
-          <div class="steps__item animate-on-scroll">
-            <div class="steps__number" aria-hidden="true">04</div>
-            <div class="steps__content">
-              <h3 class="steps__title">Реабилитация</h3>
-              <span class="steps__duration">Долгосрочно</span>
-              <p class="steps__text">Мониторинг восстановления, координация с&nbsp;врачами на&nbsp;родине, долгосрочное наблюдение.</p>
-              <ul class="steps__details" role="list">
-                <li>Мониторинг здоровья</li>
-                <li>Связь с&nbsp;врачами</li>
-                <li>Реабилитационные программы</li>
-                <li>Постоянное наблюдение</li>
-              </ul>
+          <!-- Included 4: HeartPulse -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-accent-red); background: var(--mu-accent-red-bg);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
             </div>
+            <h3 class="feature-card__title">Лечение</h3>
+            <p class="feature-card__desc">Организация приёмов, операций, реабилитации&nbsp;&mdash; полная координация</p>
           </div>
+
+          <!-- Included 5: FileCheck -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-green-600); background: var(--mu-green-50);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+            </div>
+            <h3 class="feature-card__title">Документация</h3>
+            <p class="feature-card__desc">Перевод, заверение, хранение всех медицинских документов</p>
+          </div>
+
+          <!-- Included 6: Languages -->
+          <div class="feature-card">
+            <div class="feature-card__icon" style="color: var(--mu-accent-orange); background: var(--mu-accent-orange-bg);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+            </div>
+            <h3 class="feature-card__title">Переводчик</h3>
+            <p class="feature-card__desc">Профессиональный медицинский переводчик на&nbsp;всех этапах</p>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- Reviews Section -->
-    <section class="section reviews" id="reviews">
+    <!-- How It Works -->
+    <section class="section">
       <div class="container">
-        <h2 class="reviews__heading">Что говорят наши пациенты</h2>
-        <p class="reviews__description">Более 10&nbsp;000 пациентов доверили нам своё здоровье. Их&nbsp;истории&nbsp;&mdash; лучшее подтверждение качества нашего сервиса.</p>
+        <h2 class="section-heading" style="text-align: center;"><span class="text-gradient">Как это работает</span></h2>
 
-        <div class="reviews__grid">
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">Р</span>
-              <span class="reviews__name">Ренат</span>
-            </div>
-            <p class="card__text">Уже на&nbsp;протяжении 10&nbsp;лет я&nbsp;приезжаю в&nbsp;Рудольфинерхаус на&nbsp;лечение, пользуясь услугами MedicusUnion. Это команда профессионалов, которые решают любой вопрос на&nbsp;месте, для них нет ничего невозможного.</p>
+        <div class="steps__grid animate-stagger">
+
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-card__number" style="color: var(--mu-accent-blue);">01</div>
+            <h3 class="step-card__title">Консультация</h3>
+            <p class="step-card__desc">Расскажите о&nbsp;вашей ситуации. Мы&nbsp;изучим документы и&nbsp;определим оптимальное направление.</p>
           </div>
 
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">Ж</span>
-              <span class="reviews__name">Жанна</span>
-            </div>
-            <p class="card__text">Хочу выразить благодарность за&nbsp;организацию моего лечения, всё было сделано настолько оперативно и&nbsp;без проволочек, что заслуживает отдельного внимания! Вы&nbsp;не&nbsp;просто лечите людей, вы&nbsp;спасаете жизни.</p>
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-card__number" style="color: var(--mu-green-500);">02</div>
+            <h3 class="step-card__title">Подбор клиники</h3>
+            <p class="step-card__desc">Предложим 2&ndash;3&nbsp;клиники с&nbsp;ценами, сроками и&nbsp;прогнозами. Вы&nbsp;выбираете.</p>
           </div>
 
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">А</span>
-              <span class="reviews__name">Андрей</span>
-            </div>
-            <p class="card__text">Уже несколько лет обращаемся к&nbsp;компании MedicusUnion, потому что услуги медицинского обслуживания оказываются на&nbsp;превосходном уровне в&nbsp;минимальные сроки. Индивидуальный подход к&nbsp;каждому пациенту.</p>
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-card__number" style="color: var(--mu-accent-teal);">03</div>
+            <h3 class="step-card__title">Организация</h3>
+            <p class="step-card__desc">Виза, перелёт, трансфер, проживание, переводчик&nbsp;&mdash; всё берём на&nbsp;себя.</p>
           </div>
 
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">А</span>
-              <span class="reviews__name">Арина</span>
-            </div>
-            <p class="card__text">Я&nbsp;познакомилась с&nbsp;компанией MedicusUnion в&nbsp;2008 году. Для команды MedicusUnion не&nbsp;существует неразрешимой задачи, они всегда решат любой вопрос немедленно.</p>
+          <!-- Step 4 -->
+          <div class="step-card">
+            <div class="step-card__number" style="color: var(--mu-accent-orange);">04</div>
+            <h3 class="step-card__title">Лечение</h3>
+            <p class="step-card__desc">Координируем весь процесс, на&nbsp;связи 24/7. После&nbsp;&mdash; помощь с&nbsp;реабилитацией.</p>
           </div>
 
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">P</span>
-              <span class="reviews__name">Paul Fischer</span>
-            </div>
-            <p class="card__text">Возможность передать снимки МРТ в&nbsp;режиме онлайн и&nbsp;впоследствии получить чёткую и&nbsp;понятную оценку врача-радиолога придало мне уверенности.</p>
-          </div>
-
-          <div class="card card--glass reviews__card animate-on-scroll animate-on-scroll--glass">
-            <div class="reviews__header">
-              <span class="reviews__avatar" aria-hidden="true">N</span>
-              <span class="reviews__name">Nargiza Tursunova</span>
-            </div>
-            <p class="card__text">Онлайн-консультация через платформу помогла мне быстрее получить медицинскую помощь. Врач оказался очень компетентным и&nbsp;отзывчивым. Спасибо за&nbsp;такую ценную поддержку!</p>
-          </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- FAQ Section -->
-    <section class="section faq" id="faq-abroad">
+    <!-- Page CTA -->
+    <section class="section cta-section">
       <div class="container">
-        <h2 class="faq__heading">Частые вопросы</h2>
-        <div class="faq__list">
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">С&nbsp;какими заболеваниями можно обратиться?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Мы&nbsp;охватываем широкий спектр медицинских направлений: онкология, кардиология, неврология, ортопедия, офтальмология, пластическая хирургия, стоматология, лечение бесплодия, детская медицина и&nbsp;многие другие. Наша команда поможет подобрать лучших специалистов для вашего конкретного случая.</p>
-            </div>
-          </div>
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Как выбрать подходящую страну для лечения?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Выбор страны зависит от&nbsp;типа заболевания, бюджета, языковых предпочтений и&nbsp;сроков лечения. Наши медицинские консультанты проанализируют ваш случай и&nbsp;порекомендуют оптимальные варианты с&nbsp;учётом клинических и&nbsp;бюджетных факторов.</p>
-            </div>
-          </div>
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Какие документы нужны для лечения за&nbsp;рубежом?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Базовый пакет: медицинские документы с&nbsp;переводом, загранпаспорт, виза (при необходимости), справка о&nbsp;финансовой состоятельности. Мы&nbsp;поможем подготовить все необходимые документы и&nbsp;переводы, а&nbsp;также получить медицинскую визу через официальные каналы клиник-партнёров.</p>
-            </div>
-          </div>
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Сколько стоят ваши услуги?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Первая консультация&nbsp;&mdash; бесплатно. Каждый случай мы&nbsp;рассматриваем индивидуально. В&nbsp;стоимость входит полное сопровождение: от&nbsp;планирования до&nbsp;завершения лечения. Окончательная стоимость зависит от&nbsp;сложности случая и&nbsp;выбранной страны.</p>
-            </div>
-          </div>
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Предоставляете&nbsp;ли вы&nbsp;услуги переводчика?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Да, мы&nbsp;обеспечиваем профессиональных медицинских переводчиков на&nbsp;всех этапах лечения. Наши переводчики имеют медицинское образование и&nbsp;опыт работы в&nbsp;клиниках. Также предоставляем письменный перевод всех медицинских документов.</p>
-            </div>
-          </div>
-          <div class="faq__item">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Что включает послеоперационное сопровождение?</span>
-              <span class="faq__icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq__answer" hidden>
-              <p>Координация с&nbsp;лечащими врачами на&nbsp;родине, перевод всех медицинских документов, организация контрольных обследований, консультации по&nbsp;реабилитации, мониторинг состояния здоровья. Поддержка продолжается до&nbsp;полного восстановления.</p>
+        <div class="cta-card animate-scale-in">
+          <div class="cta-card__inner" style="display: block; text-align: center;">
+            <div class="cta-card__content" style="max-width: 100%;">
+              <div class="cta-card__glow" aria-hidden="true"></div>
+
+              <h2 class="cta-card__heading">Начните с&nbsp;бесплатной консультации</h2>
+              <p class="cta-card__text" style="max-width: 42rem; margin-left: auto; margin-right: auto;">Расскажите о&nbsp;вашей ситуации&nbsp;&mdash; мы&nbsp;предложим оптимальный план лечения с&nbsp;ценами и&nbsp;сроками.</p>
+
+              <div class="cta-card__buttons" style="justify-content: center;">
+                <a href="contacts.html" class="btn-primary">
+                  Оставить заявку
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- Lead Form Section -->
-    <section class="section lead-form-section" id="form-abroad">
-      <div class="container">
-        <div class="lead-form__grid">
-          <div class="lead-form__info">
-            <h2 class="lead-form__heading">Готовы начать лечение?</h2>
-            <p class="lead-form__subtext">Получите бесплатную консультацию с&nbsp;нашими медицинскими экспертами. Мы&nbsp;проанализируем ваш случай и&nbsp;предложим оптимальный план лечения за&nbsp;рубежом.</p>
-            <ul class="lead-form__trust" role="list">
-              <li class="lead-form__trust-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
-                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Бесплатная консультация и план лечения</span>
-              </li>
-              <li class="lead-form__trust-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
-                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Подбор лучших клиник и врачей</span>
-              </li>
-              <li class="lead-form__trust-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
-                  <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>Полное сопровождение 24/7</span>
-              </li>
-            </ul>
-          </div>
-          <div class="lead-form__wrapper card--glass animate-on-scroll animate-on-scroll--glass">
-
-          <form class="lead-form" id="lead-form" novalidate>
-            <div class="lead-form__field">
-              <label class="lead-form__label" for="name">Ваше имя</label>
-              <input class="lead-form__input" type="text" id="name" name="name" autocomplete="name" required placeholder="Например, Айгуль">
-              <span class="lead-form__error" id="name-error" role="alert" hidden></span>
-            </div>
-
-            <div class="lead-form__field">
-              <label class="lead-form__label" for="phone">Телефон</label>
-              <input class="lead-form__input" type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="+7 (___) ___-__-__" inputmode="numeric">
-              <span class="lead-form__error" id="phone-error" role="alert" hidden></span>
-            </div>
-
-            <div class="lead-form__field">
-              <label class="lead-form__label" for="contact-method">Предпочтительный вид связи</label>
-              <select class="lead-form__input lead-form__select" id="contact-method" name="contact_method">
-                <option value="" disabled selected>Выберите вид связи</option>
-                <option value="phone">Телефон</option>
-                <option value="whatsapp">WhatsApp</option>
-                <option value="telegram">Telegram</option>
-              </select>
-            </div>
-
-            <div class="lead-form__field">
-              <label class="lead-form__label" for="description">Кратко о&nbsp;вашем случае <span class="lead-form__optional">(необязательно)</span></label>
-              <textarea class="lead-form__input lead-form__textarea" id="description" name="description" rows="3" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
-            </div>
-
-            <!-- Honeypot -->
-            <div class="visually-hidden" aria-hidden="true">
-              <label for="website">Website</label>
-              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-            </div>
-
-            <button class="button button--primary lead-form__submit" type="submit">Записаться на&nbsp;консультацию</button>
-
-          </form>
-
-          <p class="lead-form__privacy">Отправляя данные, вы&nbsp;даёте согласие на&nbsp;их&nbsp;обработку и&nbsp;подтверждаете, что ознакомились с&nbsp;Политикой конфиденциальности ТОО&nbsp;&laquo;Medicus Union KZ&raquo;.</p>
-
-          <div class="lead-form__success" id="form-success" hidden>
-            <span class="lead-form__success-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" width="64" height="64">
-                <circle cx="32" cy="32" r="26" stroke="#35B678" stroke-width="3" fill="rgba(53,182,120,0.1)"/>
-                <path d="M20 32l8 8 16-16" stroke="#35B678" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <p class="lead-form__success-title">Спасибо!</p>
-            <p class="lead-form__success-text">Мы&nbsp;свяжемся с&nbsp;вами в&nbsp;ближайшее время.</p>
-          </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
-    <!-- Cross-sell CTA: Video Consultations -->
-    <section class="section section--dark final-cta" id="cross-sell">
-      <div class="container final-cta__container">
-        <h2 class="final-cta__heading">Пока не&nbsp;готовы к&nbsp;поездке?</h2>
-        <p class="final-cta__text">Проконсультируйтесь с&nbsp;европейскими врачами онлайн, чтобы обсудить ваши проблемы со&nbsp;здоровьем и&nbsp;получить профессиональное заключение. От&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней, из&nbsp;дома.</p>
-        <div class="final-cta__actions">
-          <a href="consultations.html" class="button button--primary">Онлайн-консультации</a>
-          <a href="#form-abroad" class="button button--outline final-cta__outline-btn">Оставить заявку на&nbsp;лечение</a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="footer" id="footer">
-    <div class="container footer__container">
-      <div class="footer__main">
-        <div class="footer__company">
-          <p class="footer__brand">MedicusUnion</p>
-          <p class="footer__tagline">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+    <div class="container">
+      <div class="footer__wrapper">
+        <div class="footer__grid">
+
+          <!-- Column 1: Company -->
+          <div>
+            <h3 class="footer__logo text-brand-gradient">MedicusUnion</h3>
+            <p class="footer__desc">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+          </div>
+
+          <!-- Column 2: Services -->
+          <div>
+            <h4 class="footer__heading">Услуги</h4>
+            <ul class="footer__links">
+              <li><a href="online-consultations.html" class="footer__link">Онлайн-консультации</a></li>
+              <li><a href="treatment-abroad.html" class="footer__link">Лечение за&nbsp;рубежом</a></li>
+              <li><a href="checkups.html" class="footer__link">Чек-ап</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Navigation -->
+          <div>
+            <h4 class="footer__heading">Навигация</h4>
+            <ul class="footer__links">
+              <li><a href="index.html" class="footer__link">Главная</a></li>
+              <li><a href="contacts.html" class="footer__link">Контакты</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Contacts -->
+          <div>
+            <h4 class="footer__heading">Контакты</h4>
+            <ul class="footer__links">
+              <li>
+                <a href="tel:+77015322478" class="footer__contact-item">
+                  <span class="footer__contact-icon glass-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </span>
+                  +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
+                </a>
+              </li>
+              <li>
+                <a href="mailto:kz@medicusunion.com" class="footer__contact-item">
+                  <span class="footer__contact-icon glass-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  </span>
+                  kz@medicusunion.com
+                </a>
+              </li>
+            </ul>
+          </div>
+
         </div>
-        <div class="footer__contacts">
-          <p class="footer__contact-item">
-            <a href="tel:+77015322478" class="footer__link">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+
+        <!-- Bottom bar -->
+        <div class="footer__bottom">
+          <p class="footer__copyright">&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
+          <p class="footer__badges">
+            <span class="footer__badge-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+              </svg>
+              ISO 27001 Certified
+            </span>
+            <span class="footer__badge-dot" aria-hidden="true"></span>
+            <span>Astana Hub Resident</span>
           </p>
-          <p class="footer__contact-item">
-            <a href="mailto:kz@medicusunion.com" class="footer__link">kz@medicusunion.com</a>
-          </p>
         </div>
-        <div class="footer__nav">
-          <a href="consultations.html" class="footer__link">Онлайн-консультации</a>
-          <a href="treatment-abroad.html" class="footer__link">Лечение за&nbsp;рубежом</a>
-          <a href="checkup.html" class="footer__link">Чек-ап за&nbsp;рубежом</a>
-        </div>
-      </div>
-      <div class="footer__legal">
-        <p>&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
       </div>
     </div>
   </footer>
 
   <!-- Sticky Mobile CTA Bar -->
-  <div class="sticky-bar" id="sticky-bar" role="complementary" aria-label="Quick actions">
+  <div class="sticky-bar" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
     <div class="container sticky-bar__container">
       <a href="tel:+77015322478" class="sticky-bar__phone" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <a href="#form-abroad" class="button button--primary sticky-bar__cta">Оставить заявку</a>
+      <a href="contacts.html" class="btn-primary sticky-bar__cta">Оставить заявку</a>
     </div>
   </div>
 
-  <script src="js/main.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/motion@12.23.24/dist/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
 </body>
 </html>
