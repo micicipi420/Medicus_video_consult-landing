@@ -85,6 +85,7 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 24 added: Liquid Glass Enhancement
+- Phase 25 added: Migrate to Tailwind CSS v4
 
 ### Blockers/Concerns
 

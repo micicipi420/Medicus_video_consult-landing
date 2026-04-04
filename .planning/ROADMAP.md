@@ -176,3 +176,13 @@ Plans:
 - [x] 01-05-PLAN.md — Service pages: online-consultations.html + treatment-abroad.html
 - [x] 01-06-PLAN.md — Service pages: checkups.html + contacts.html
 - [x] 01-07-PLAN.md — Link audit, old file cleanup, visual verification checkpoint
+
+### Phase 25: Migrate to Tailwind CSS v4
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 24
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 25 to break down)
