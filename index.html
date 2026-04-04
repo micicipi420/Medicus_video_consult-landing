@@ -159,10 +159,244 @@
       </div>
     </section>
 
-    <!-- PLACEHOLDER: Stats, Services, Guide sections added in Task 2 -->
+    <!-- Stats -->
+    <section class="stats" id="stats">
+      <div class="container">
+        <div class="stats__grid animate-stagger">
+          <!-- Stat 1: Clinics -->
+          <div class="stat-card">
+            <div class="stat-card__glow stat-card__glow--blue"></div>
+            <div class="stat-card__number stat-card__number--blue" data-target="43">0</div>
+            <div class="stat-card__label">клиники</div>
+          </div>
+          <!-- Stat 2: Countries -->
+          <div class="stat-card">
+            <div class="stat-card__glow stat-card__glow--teal"></div>
+            <div class="stat-card__number stat-card__number--teal" data-target="11">0</div>
+            <div class="stat-card__label">стран</div>
+          </div>
+          <!-- Stat 3: Doctors -->
+          <div class="stat-card">
+            <div class="stat-card__glow stat-card__glow--orange"></div>
+            <div class="stat-card__number stat-card__number--orange" data-target="500" data-suffix="+">0</div>
+            <div class="stat-card__label">врачей</div>
+          </div>
+          <!-- Stat 4: Experience -->
+          <div class="stat-card">
+            <div class="stat-card__glow stat-card__glow--green"></div>
+            <div class="stat-card__number stat-card__number--green" data-target="15" data-suffix="+">0</div>
+            <div class="stat-card__label">лет опыта</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Services -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="services__header">
+          <div class="section-badge section-badge--blue">Наши Услуги</div>
+          <h2 class="section-heading"><span class="text-gradient">Выберите то, что нужно вам</span></h2>
+        </div>
+
+        <div class="services__grid animate-stagger">
+          <!-- Service 1: Online Consultations -->
+          <div class="service-card">
+            <div class="service-card__image">
+              <img src="https://images.unsplash.com/photo-1612944095914-33fd0a85fcfc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMGZlbWFsZSUyMGRvY3RvciUyMHNtaWxpbmd8ZW58MXx8fHwxNzc1MTk2NDE2fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Врач онлайн-консультация">
+              <div class="service-card__icon-overlay service-card__icon-overlay--blue">
+                <!-- Lucide Video icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.934a.5.5 0 0 0-.777-.416L16 11"/><rect x="2" y="7" width="14" height="10" rx="2" ry="2"/></svg>
+              </div>
+            </div>
+            <div class="service-card__content">
+              <div class="service-card__badge service-card__badge--blue">от 450 EUR</div>
+              <h3 class="service-card__title">Онлайн-консультации</h3>
+              <p class="service-card__desc">Видеоконсультации с ведущими специалистами Европы. Второе мнение, расшифровка диагнозов, план лечения.</p>
+              <ul class="service-card__features">
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Видеосвязь в HD-качестве
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Перевод на русский язык
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Запись консультации
+                </li>
+              </ul>
+              <a href="online-consultations.html" class="service-card__cta">
+                Получить консультацию
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Service 2: Treatment Abroad -->
+          <div class="service-card">
+            <div class="service-card__image">
+              <img src="https://images.unsplash.com/photo-1720180244462-648c13ee01e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBob3NwaXRhbCUyMHJvb218ZW58MXx8fHwxNzc1MTk2NDM3fDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Современная клиника">
+              <div class="service-card__icon-overlay service-card__icon-overlay--teal">
+                <!-- Lucide Globe2 icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              </div>
+            </div>
+            <div class="service-card__content">
+              <div class="service-card__badge service-card__badge--teal">100+ клиник</div>
+              <h3 class="service-card__title">Лечение за рубежом</h3>
+              <p class="service-card__desc">Организуем лечение в ведущих клиниках Германии, Израиля, Турции и Южной Кореи. Полное сопровождение.</p>
+              <ul class="service-card__features">
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Подбор клиники и врача
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Организация поездки
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Сопровождение на месте
+                </li>
+              </ul>
+              <a href="treatment-abroad.html" class="service-card__cta">
+                Узнать подробнее
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Service 3: Checkups -->
+          <div class="service-card">
+            <div class="service-card__image">
+              <img src="https://images.unsplash.com/photo-1758691462774-f01ed567f2c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb2N0b3IlMjBsb29raW5nJTIwYXQlMjBNUkkrJTIwdGFibGV0fGVufDF8fHx8MTc3NTE5NjQ1NHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Чек-ап обследование">
+              <div class="service-card__icon-overlay service-card__icon-overlay--green">
+                <!-- Lucide ClipboardCheck icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+              </div>
+            </div>
+            <div class="service-card__content">
+              <div class="service-card__badge service-card__badge--green">от $350</div>
+              <h3 class="service-card__title">Чек-апы</h3>
+              <p class="service-card__desc">Комплексные программы обследования в клиниках мирового уровня. Ранняя диагностика спасает жизни.</p>
+              <ul class="service-card__features">
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Индивидуальная программа
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Результаты за 1-2 дня
+                </li>
+                <li class="service-card__feature">
+                  <span class="service-card__check">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-green-600)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  </span>
+                  Рекомендации специалистов
+                </li>
+              </ul>
+              <a href="checkups.html" class="service-card__cta">
+                Подобрать программу
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guide -->
+    <section class="guide" id="guide">
+      <div class="container">
+        <h2 class="section-heading">Не знаете, с чего начать?</h2>
+
+        <div class="guide__grid animate-stagger">
+          <!-- Guide 1: Diagnosis opinion -->
+          <div class="guide-card">
+            <div class="guide-card__image">
+              <img src="https://images.unsplash.com/photo-1551076805-e18690c5e53b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb2N0b3IlMjB0YWxraW5nJTIwdG8lMjBwYXRpZW50fGVufDF8fHx8MTc3NTE5NjQ3M3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Консультация врача с пациентом">
+              <div class="guide-card__icon guide-card__icon--blue">
+                <!-- Lucide HelpCircle icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+              </div>
+            </div>
+            <div class="guide-card__content">
+              <h3 class="guide-card__title">Есть диагноз, нужно мнение</h3>
+              <p class="guide-card__desc">Получите второе мнение от европейского специалиста по вашему диагнозу</p>
+              <a href="online-consultations.html" class="guide-card__link">
+                Онлайн-консультация
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Guide 2: Treatment abroad -->
+          <div class="guide-card">
+            <div class="guide-card__image">
+              <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3NwaXRhbCUyMGV4dGVyaW9yfGVufDF8fHx8MTc3NTE5NjQ5MHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Современная клиника снаружи">
+              <div class="guide-card__icon guide-card__icon--teal">
+                <!-- Lucide FileText icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+              </div>
+            </div>
+            <div class="guide-card__content">
+              <h3 class="guide-card__title">Нужно лечение за границей</h3>
+              <p class="guide-card__desc">Подберем клинику и организуем весь процесс лечения за рубежом</p>
+              <a href="treatment-abroad.html" class="guide-card__link">
+                Лечение за рубежом
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Guide 3: Health check -->
+          <div class="guide-card">
+            <div class="guide-card__image">
+              <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwY2hlY2t1cHxlbnwxfHx8fDE3NzUxOTY1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинское обследование">
+              <div class="guide-card__icon guide-card__icon--red">
+                <!-- Lucide Heart icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              </div>
+            </div>
+            <div class="guide-card__content">
+              <h3 class="guide-card__title">Хочу проверить здоровье</h3>
+              <p class="guide-card__desc">Пройдите полное обследование в ведущих клиниках мира</p>
+              <a href="checkups.html" class="guide-card__link">
+                Чек-ап программы
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WhyUs section: added in Plan 04 -->
+    <!-- Contact section: added in Plan 04 -->
+    <!-- CTA section: added in Plan 04 -->
   </main>
+  <!-- Footer: added in Plan 04 -->
 
-  <script src="js/main.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/motion@12.23.24/dist/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
 </body>
 </html>
