@@ -179,10 +179,20 @@ Plans:
 
 ### Phase 25: Migrate to Tailwind CSS v4
 
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 24
-**Plans:** 0 plans
+**Goal:** Replace hand-written vanilla css/styles.css with Tailwind CSS v4 utility classes copied from the Redesign/ TSX components. Set up Tailwind CLI standalone binary for CSS compilation. Copy theme tokens from Redesign/src/styles/ as the Tailwind theme config. Rewrite all 5 HTML pages' class attributes to use Tailwind utilities matching the Redesign source 1:1. Delete old css/styles.css. Result: pixel-perfect visual match with the React+Tailwind Redesign prototype.
+**Requirements**: TW-SETUP, TW-THEME, TW-INDEX-TOP, TW-INDEX-BOTTOM, TW-SERVICE-PAGES, TW-CONTACTS-PAGE, TW-BUILD, TW-CLEANUP, TW-VERIFY
+**Depends on:** Phase 1
+**Success Criteria** (what must be TRUE when this phase completes):
+  1. Tailwind CLI standalone binary compiles src/styles/tailwind.css to css/styles.css without errors
+  2. All 5 HTML pages use Tailwind utility classes from Redesign TSX components (not hand-written BEM CSS)
+  3. All JS functionality works: header scroll, mobile menu, FAQ accordion, form submission, counter animations
+  4. Visual output matches the Redesign React+Tailwind prototype
+  5. Old hand-written css/styles.css content is gone, replaced by Tailwind compiled output
+**Plans:** 5 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 25 to break down)
+- [ ] 25-01-PLAN.md — Tailwind CLI setup: download binary, create src/styles/ with theme.css, tailwind.css, fonts.css from Redesign
+- [ ] 25-02-PLAN.md — index.html top half: mesh bg, header, hero, stats, services, guide Tailwind class migration
+- [ ] 25-03-PLAN.md — index.html bottom half: WhyUs, contact, FAQ, CTA, footer Tailwind class migration
+- [ ] 25-04-PLAN.md — Service pages: all 4 non-index pages Tailwind class migration
+- [ ] 25-05-PLAN.md — Build, JS selector audit, cleanup, visual verification checkpoint
