@@ -14,8 +14,8 @@
   <link rel="canonical" href="https://medicusunion.kz/contacts.html">
   <meta name="theme-color" content="#38C6F4">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/tw-output.css">
   <style>
+    /* Header scroll state */
     .header--scrolled {
       background: rgba(255,255,255,0.5);
       backdrop-filter: blur(60px) saturate(180%);
@@ -23,9 +23,20 @@
       padding-top: 0.75rem;
       padding-bottom: 0.75rem;
     }
+    /* Mobile menu toggle */
     .mobile-menu-overlay { display: none; }
     .mobile-menu-overlay.is-open { display: block; }
+    /* Form validation */
     .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
+    /* Form success/error messages */
+    .form__success, .form__error { display: none; }
+    .form__success.is-visible, .form__error.is-visible { display: block; }
+    /* Form field-level errors */
+    .form__field-error { display: none; color: var(--mu-accent-red, #ef4444); font-size: 0.875rem; margin-top: 0.25rem; }
+    .is-invalid + .form__field-error,
+    .is-invalid ~ .form__field-error { display: block; }
+    /* Visually hidden (honeypot) */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   </style>
 </head>
 <body class="relative min-h-screen bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-hidden">
@@ -192,11 +203,13 @@
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
                 <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]" placeholder="Например, Айгуль" required autocomplete="name">
+                <span class="form__field-error" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
                 <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+                <span class="form__field-error" hidden></span>
               </div>
 
               <div class="form__group">
@@ -208,6 +221,7 @@
                   <option value="checkup">Чек-ап</option>
                   <option value="not-sure">Пока не определился</option>
                 </select>
+                <span class="form__field-error" hidden></span>
               </div>
 
               <div class="form__group">

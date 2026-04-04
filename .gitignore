@@ -17,8 +17,8 @@ Thumbs.db
 # Tailwind CSS standalone CLI binary (~73MB, download with curl)
 tailwindcss
 
-# Tailwind compiled output (regenerated from src/styles/)
-css/tw-output.css
+# Backup of old hand-written CSS (safety net during migration)
+css/styles.css.bak
 
 # ── GSD baseline (auto-generated) ──
 .gsd
