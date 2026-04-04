@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 01-07-PLAN.md (Task 1 done, Task 2 checkpoint pending)
-last_updated: "2026-04-04T06:12:22.635Z"
+status: executing
+stopped_at: Completed 25-01-PLAN.md
+last_updated: "2026-04-04T07:34:42Z"
 progress:
   total_phases: 2
   completed_phases: 2
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 10
+  completed_plans: 10
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 24 — liquid-glass-enhancement
+**Current focus:** Phase 25 — migrate-to-tailwind-css-v4
 
 ## Current Position
 
-Phase: 24
-Plan: Not started
+Phase: 25 (migrate-to-tailwind-css-v4)
+Plan: 1 of 5 complete
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: Not started
 | Phase 01 P04 | 6 | 2 tasks | 1 files |
 | Phase 01 P06 | 7 | 2 tasks | 2 files |
 | Phase 01 P07 | 2 | 1 tasks | 5 files |
+| Phase 25 P01 | 3 | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,9 @@ Recent decisions affecting current work:
 - [Phase 01]: Used index.html as page shell template for checkups/contacts pages (online-consultations.html not yet created)
 - [Phase 01]: Pricing card popular badge implemented with inline styles (absolute positioning, gradient bg) since no CSS class existed
 - [Phase 01]: Fixed 4 broken nav links (consultations.html -> online-consultations.html) in checkups.html and contacts.html
+- [Phase 25]: Tailwind standalone CLI (no npm/Node.js) keeps stack constraint of no build tooling dependencies
+- [Phase 25]: source(none) with explicit @source glob for *.html scans only root HTML files
+- [Phase 25]: Removed tw-animate-css import -- animations handled by js/animations.js + Motion CDN
 
 ### Roadmap Evolution
 
@@ -94,6 +98,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-04T05:02:15.166Z
-Stopped at: Completed 01-07-PLAN.md (Task 1 done, Task 2 checkpoint pending)
+Last session: 2026-04-04T07:34:42Z
+Stopped at: Completed 25-01-PLAN.md
 Resume file: None

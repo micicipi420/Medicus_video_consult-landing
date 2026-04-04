@@ -191,7 +191,7 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 25-01-PLAN.md — Tailwind CLI setup: download binary, create src/styles/ with theme.css, tailwind.css, fonts.css from Redesign
+- [x] 25-01-PLAN.md — Tailwind CLI setup: download binary, create src/styles/ with theme.css, tailwind.css, fonts.css from Redesign
 - [ ] 25-02-PLAN.md — index.html top half: mesh bg, header, hero, stats, services, guide Tailwind class migration
 - [ ] 25-03-PLAN.md — index.html bottom half: WhyUs, contact, FAQ, CTA, footer Tailwind class migration
 - [ ] 25-04-PLAN.md — Service pages: all 4 non-index pages Tailwind class migration
