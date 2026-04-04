@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" class="no-js" data-theme="light">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,21 +25,10 @@
   <link rel="canonical" href="https://medicusunion.kz">
 
   <!-- Theme Color -->
-  <meta name="theme-color" content="#38C6F4">
-
-  <script>
-    (function() {
-      var saved = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
+  <meta name="theme-color" content="#1A365D">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   <header class="site-header" id="header">
     <div class="container site-header__container">
       <a href="index.html" class="site-header__brand-link">
@@ -52,27 +41,15 @@
         <a href="#contact" class="site-header__link">Контакты</a>
       </nav>
       <a href="tel:+77015322478" class="site-header__phone">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <button
-        class="theme-toggle"
-        aria-pressed="false"
-        aria-label="Включить тёмную тему"
-        type="button"
-      >
-        <span class="theme-toggle__icon" aria-hidden="true">☀</span>
-        <span class="theme-toggle__label">Тёмная тема</span>
-      </button>
     </div>
   </header>
 
   <main>
     <!-- HERO — Hub -->
-    <section class="section hero hero--hub au-blob--soft au-decor--heartline" id="hero-hub">
-      <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
+    <section class="section hero hero--hub" id="hero-hub">
       <div class="container">
         <div class="hub-hero__content">
-          <h1 class="hero__title au-display-text">Медицина мирового уровня&nbsp;&mdash; для&nbsp;Казахстана</h1>
+          <h1 class="hero__title">Медицина мирового уровня&nbsp;&mdash; для&nbsp;Казахстана</h1>
           <p class="hero__subtitle">Консультации с&nbsp;европейскими врачами онлайн, лечение в&nbsp;лучших клиниках мира, комплексные чек-апы в&nbsp;Южной Корее и&nbsp;Турции. Одна платформа&nbsp;&mdash; 43&nbsp;клиники в&nbsp;11&nbsp;странах.</p>
           <div class="hero__actions hero__actions--center">
             <a href="#services" class="button button--primary">Выбрать услугу</a>
@@ -83,39 +60,35 @@
     </section>
 
     <!-- Stats Bar -->
-    <section class="social-proof au-section--accent-border au-decor--dots" aria-label="Ключевые цифры">
+    <section class="social-proof" aria-label="Ключевые цифры">
       <div class="container social-proof__container">
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item">
           <span class="social-proof__number">43</span>
           <span class="social-proof__label">клиники</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item">
           <span class="social-proof__number">11</span>
           <span class="social-proof__label">стран</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item">
           <span class="social-proof__number">500+</span>
           <span class="social-proof__label">врачей</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item">
           <span class="social-proof__number">15+</span>
           <span class="social-proof__label">лет опыта</span>
         </div>
       </div>
     </section>
 
-    <div style="background-color: var(--color-primary-dark);" aria-hidden="true">
-      <div class="au-divider au-divider--flow" style="color: var(--color-white);"></div>
-    </div>
-
     <!-- 3 Products -->
-    <section class="section hub-services au-blob--ribbon" id="services">
+    <section class="section hub-services" id="services">
       <div class="container">
-        <h2 class="hub-services__heading au-text-gradient">Выберите, что вам нужно</h2>
-        <div class="hub-services__grid au-layout-featured">
+        <h2 class="hub-services__heading">Выберите, что вам нужно</h2>
+        <div class="hub-services__grid">
 
           <!-- Product 1: Online Consultations -->
-          <div class="card card--glass card--tilt hub-service animate-on-scroll animate-on-scroll--glass">
+          <div class="card hub-service animate-on-scroll">
             <div class="hub-service__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
                 <rect x="12" y="8" width="40" height="32" rx="4" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.08)"/>
@@ -125,9 +98,9 @@
                 <path d="M24 34c0-4 3.5-7 8-7s8 3 8 7" stroke="#35B678" stroke-width="2" fill="none" stroke-linecap="round"/>
               </svg>
             </div>
-            <div class="hub-service__badge"><span class="au-highlight">от&nbsp;450&nbsp;&euro;</span></div>
+            <div class="hub-service__badge"><span>от&nbsp;450&nbsp;&euro;</span></div>
             <h3 class="hub-service__title">Онлайн-консультации</h3>
-            <p class="hub-service__text">Видеоконсультация с&nbsp;европейским специалистом на&nbsp;вашем языке. Второе мнение по&nbsp;диагнозу, план лечения, письменное заключение. <span class="au-highlight">За&nbsp;5&nbsp;дней</span>, без&nbsp;перелёта.</p>
+            <p class="hub-service__text">Видеоконсультация с&nbsp;европейским специалистом на&nbsp;вашем языке. Второе мнение по&nbsp;диагнозу, план лечения, письменное заключение. <span>За&nbsp;5&nbsp;дней</span>, без&nbsp;перелёта.</p>
             <ul class="hub-service__features" role="list">
               <li>Перевод документов и&nbsp;консультации</li>
               <li>Врачи из&nbsp;7 стран</li>
@@ -137,7 +110,7 @@
           </div>
 
           <!-- Product 2: Treatment Abroad -->
-          <div class="card card--glass card--tilt hub-service animate-on-scroll animate-on-scroll--glass">
+          <div class="card hub-service animate-on-scroll">
             <div class="hub-service__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
                 <circle cx="32" cy="32" r="22" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.06)"/>
@@ -150,7 +123,7 @@
                 </g>
               </svg>
             </div>
-            <div class="hub-service__badge"><span class="au-highlight">100+ клиник</span></div>
+            <div class="hub-service__badge"><span>100+ клиник</span></div>
             <h3 class="hub-service__title">Лечение за&nbsp;рубежом</h3>
             <p class="hub-service__text">Организуем лечение под ключ: от&nbsp;подбора клиники до&nbsp;реабилитации. Визовая поддержка, перелёт, проживание, переводчик, сопровождение на&nbsp;каждом этапе.</p>
             <ul class="hub-service__features" role="list">
@@ -162,7 +135,7 @@
           </div>
 
           <!-- Product 3: Checkup -->
-          <div class="card card--glass card--tilt hub-service animate-on-scroll animate-on-scroll--glass">
+          <div class="card hub-service animate-on-scroll">
             <div class="hub-service__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
                 <rect x="16" y="6" width="32" height="44" rx="4" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.06)"/>
@@ -173,7 +146,7 @@
                 <polyline points="36,54 42,60 54,48" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="hub-service__badge"><span class="au-highlight">от&nbsp;$350</span></div>
+            <div class="hub-service__badge"><span>от&nbsp;$350</span></div>
             <h3 class="hub-service__title">Чек-ап за&nbsp;рубежом</h3>
             <p class="hub-service__text">Комплексное обследование в&nbsp;Samsung Medical Center, Severance Hospital и&nbsp;клиниках Стамбула за&nbsp;1&ndash;2&nbsp;дня. Виза, трансфер, переводчик, результаты в&nbsp;приложении.</p>
             <ul class="hub-service__features" role="list">
@@ -188,15 +161,11 @@
       </div>
     </section>
 
-    <div style="background-color: var(--color-white);" aria-hidden="true">
-      <div class="au-divider au-divider--ridge" style="color: var(--color-light);"></div>
-    </div>
-
     <!-- How to choose -->
-    <section class="section hub-guide au-section--tinted-green au-decor--leaf" id="guide">
+    <section class="section hub-guide" id="guide">
       <div class="container">
         <h2 class="hub-guide__heading">Не&nbsp;знаете, с&nbsp;чего начать?</h2>
-        <div class="hub-guide__grid au-layout-offset">
+        <div class="hub-guide__grid">
           <div class="hub-guide__item animate-on-scroll">
             <div class="hub-guide__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
@@ -236,12 +205,8 @@
       </div>
     </section>
 
-    <div style="background-color: var(--color-light);" aria-hidden="true">
-      <div class="au-divider au-divider--hill" style="color: var(--color-white);"></div>
-    </div>
-
     <!-- Why MedicusUnion -->
-    <section class="section advantages au-section--accent-border au-blob--cluster au-decor--circles" id="why-mu">
+    <section class="section advantages" id="why-mu">
       <div class="container">
         <h2 class="advantages__heading">Почему MedicusUnion</h2>
         <div class="advantages__grid">
@@ -254,7 +219,7 @@
                 <line x1="6" y1="30" x2="42" y2="30" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
-            <h3 class="card__title"><span class="au-highlight">43</span>&nbsp;клиники в&nbsp;<span class="au-highlight">11</span>&nbsp;странах</h3>
+            <h3 class="card__title"><span>43</span>&nbsp;клиники в&nbsp;<span>11</span>&nbsp;странах</h3>
             <p class="card__text">Германия, Австрия, Швейцария, Израиль, ОАЭ, Южная Корея, Турция, Индия&nbsp;&mdash; подберём клинику под задачу и&nbsp;бюджет.</p>
           </div>
           <div class="card advantages__card">
@@ -275,7 +240,7 @@
                 <path d="M24 6l-4 8h-10l8 6-3 9 9-6 9 6-3-9 8-6h-10z" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)" stroke-linejoin="round"/>
               </svg>
             </div>
-            <h3 class="card__title"><span class="au-highlight">15+</span> лет, <span class="au-highlight">10&nbsp;000+</span> пациентов</h3>
+            <h3 class="card__title"><span>15+</span> лет, <span>10&nbsp;000+</span> пациентов</h3>
             <p class="card__text">Устойчивые процессы, проверенные партнёры, прямые контракты с&nbsp;клиниками. Не&nbsp;посредник&nbsp;&mdash; медицинская платформа.</p>
           </div>
           <div class="card advantages__card">
@@ -292,18 +257,14 @@
       </div>
     </section>
 
-    <div style="background-color: var(--color-white);" aria-hidden="true">
-      <div class="au-divider au-divider--dualwave" style="color: var(--color-light);"></div>
-    </div>
-
     <!-- Contact Section -->
-    <section class="section lead-form-section au-decor--heartline" id="contact">
+    <section class="section lead-form-section" id="contact">
       <div class="container">
         <div class="lead-form__grid">
           <div class="lead-form__info">
-            <h2 class="lead-form__heading au-text-gradient">Свяжитесь с&nbsp;нами</h2>
+            <h2 class="lead-form__heading">Свяжитесь с&nbsp;нами</h2>
             <p class="lead-form__subtext">Не&nbsp;знаете, какой сервис подходит? Оставьте заявку&nbsp;&mdash; мы&nbsp;перезвоним, выслушаем вашу ситуацию и&nbsp;подскажем оптимальный путь. Бесплатно и&nbsp;без обязательств.</p>
-            <ul class="lead-form__trust au-callout" role="list">
+            <ul class="lead-form__trust" role="list">
               <li class="lead-form__trust-item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true">
                   <path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -324,7 +285,7 @@
               </li>
             </ul>
           </div>
-          <div class="lead-form__wrapper card--glass animate-on-scroll animate-on-scroll--glass">
+          <div class="lead-form__wrapper">
 
           <form class="lead-form" id="lead-form" novalidate>
             <div class="lead-form__field">
@@ -382,14 +343,10 @@
       </div>
     </section>
 
-    <div style="background-color: var(--color-light);" aria-hidden="true">
-      <div class="au-divider au-divider--flow au-divider--flip" style="color: var(--color-dark);"></div>
-    </div>
-
     <!-- Final CTA -->
-    <section class="section section--dark final-cta au-blob--soft au-decor--dots" id="final-cta">
+    <section class="section final-cta" id="final-cta">
       <div class="container final-cta__container">
-        <h2 class="final-cta__heading au-display-text">Начните с&nbsp;бесплатной консультации</h2>
+        <h2 class="final-cta__heading">Начните с&nbsp;бесплатной консультации</h2>
         <p class="final-cta__text">Расскажите о&nbsp;вашей ситуации&nbsp;&mdash; мы&nbsp;подберём оптимальное решение. Без обязательств.</p>
         <div class="final-cta__actions">
           <a href="#contact" class="button button--primary">Оставить заявку</a>

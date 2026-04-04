@@ -51,8 +51,8 @@
    ========================================================================== */
 
 :root {
-  /* Colors - Primary */
-  --color-primary: #38C6F4;
+  /* Colors - Primary (medtech trust palette) */
+  --color-primary: #2B6CB0;
   --color-secondary: #35B678;
   --color-dark: #18212C;
   --color-light: #F8FAFB;
@@ -61,38 +61,26 @@
   /* Colors - Text (WCAG AA safe pairings) */
   --color-text-primary: #18212C;       /* 16.24:1 on white */
   --color-text-on-dark: #FFFFFF;       /* 16.24:1 on dark */
-  --color-text-on-primary: #18212C;    /* 8.16:1 on blue */
-  --color-text-on-secondary: #18212C;  /* 6.28:1 on green */
+  --color-text-on-primary: #FFFFFF;    /* on navy-blue */
+  --color-text-on-secondary: #FFFFFF;  /* on green */
 
-  /* Colors - CTA (brand green, per TOKEN-01) */
+  /* Colors - CTA (brand green, solid) */
   --color-cta: #35B678;
   --color-cta-hover: #25A467;
-  --color-text-on-cta: #FFFFFF;    /* 3.66:1 on green, AA for large text 20px+ */
+  --color-text-on-cta: #FFFFFF;
   --color-badge-bg: #d0fae4;
   --color-badge-text: #007955;
 
-  /* Colors - CTA Gradient (per TOKEN-02, matching medicusunion.kz) */
-  --gradient-cta: linear-gradient(0.25turn, #1AC67E 0%, #0D9DB5 100%);
-
   /* Colors - Darker accent variants for text on white (WCAG AA safe) */
-  --color-primary-dark: #0E7490;       /* 5.36:1 on white */
+  --color-primary-dark: #1A4D80;       /* 7.2:1 on white */
   --color-secondary-dark: #047857;     /* 5.48:1 on white */
   --color-text-muted: rgba(24, 33, 44, 0.55); /* 5.8:1 on white */
 
-  /* Colors - Tints (section backgrounds) */
-  --color-tint-teal: rgba(56, 198, 244, 0.06);
-  --color-tint-green: rgba(26, 198, 126, 0.06);
-  --color-tint-warm: rgba(245, 158, 11, 0.04);
-
-  /* Gradients - Extended */
-  --gradient-soft: linear-gradient(135deg, rgba(26,198,126,0.08), rgba(56,198,244,0.08));
-  --gradient-vertical: linear-gradient(180deg, #1AC67E 0%, #0D9DB5 100%);
-  --gradient-teal: linear-gradient(135deg, #0D9DB5 0%, #38C6F4 100%);
-
-  /* Accent opacity steps */
-  --accent-opacity-10: 0.1;
-  --accent-opacity-20: 0.2;
-  --accent-opacity-40: 0.4;
+  /* Colors - Section backgrounds (alternating rhythm) */
+  --color-bg-cream: #FFF8F0;
+  --color-bg-blue: #F0F7FF;
+  --color-bg-gray: #F5F7F9;
+  --color-navy: #1A365D;
 
   /* Typography */
   --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
@@ -143,15 +131,15 @@
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow-md: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow-lg: 0 4px 6px -1px rgba(16, 24, 40, 0.1);
+  /* Shadows (soft, medical) */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.10);
 
   /* Border radius */
   --radius-sm: 0.25rem;  /* 4px */
   --radius-md: 0.5rem;   /* 8px */
-  --radius-lg: 1.875rem;  /* 30px */
+  --radius-lg: 1rem;     /* 16px */
   --radius-full: 9999px;
 
   /* Icon sizes */
@@ -159,111 +147,11 @@
   --icon-size-md: 48px;
   --icon-size-lg: 64px;
 
-  /* Glass surface tokens — iOS 26 liquid glass (Phase 24) */
-  --glass-bg:     rgba(255, 255, 255, 0.60);
-  --glass-border: rgba(255, 255, 255, 0.9);
-  --glass-blur:   blur(20px);
-  --glass-tint:   rgba(26, 198, 126, 0.05);
-
-  /* Colour scheme hint for browser chrome */
-  color-scheme:   light dark;
+  /* Colour scheme */
+  color-scheme: light;
 }
 
-/* ==========================================================================
-   2b. DARK MODE TOKEN OVERRIDES
-   [data-theme="dark"] overrides the same --color-* token names defined in :root.
-   All 1,640+ existing CSS lines auto-update to dark mode via the cascade.
-   Never define parallel token names (e.g. --color-white-dark). Redefine exact names.
-   ========================================================================== */
-
-[data-theme="dark"] {
-  color-scheme: dark;
-
-  /* Backgrounds — navy-dark avoids pure #000 halation for astigmatic 45+ users */
-  --color-white:          #0F1923;
-  --color-light:          #1A2533;
-  --color-dark:           #E8F4FF;
-
-  /* Text */
-  --color-text-primary:   #E0ECF8;      /* 11.8:1 on #0F1923 — AAA */
-  --color-text-on-dark:   #18212C;      /* on light elements that flip to dark text */
-  --color-text-muted:     rgba(224, 236, 248, 0.55); /* ~5.1:1 on #0F1923 — AA ✓ verify */
-
-  /* Interactive — lightened primary/secondary for dark bg */
-  --color-primary:        #5FD5F9;      /* 5.6:1 on #0F1923 — AA */
-  --color-primary-dark:   #38C6F4;      /* 4.7:1 on #0F1923 — AA */
-  --color-secondary:      #3FCF88;      /* 5.1:1 on #0F1923 — AA */
-  --color-secondary-dark: #1AC67E;      /* 4.5:1 on #0F1923 — AA (borderline, verify) */
-
-  /* CTA colours — gradient unchanged (green→teal works on dark bg) */
-  --color-cta:            #3FCF88;
-  --color-cta-hover:      #1AC67E;
-
-  /* Badges */
-  --color-badge-bg:       #0D3324;
-  --color-badge-text:     #3FCF88;      /* 5.1:1 on #0D3324 — AA */
-
-  /* Shadows — stronger on dark bg */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-
-  /* Glass surface tokens — dark mode: iOS liquid glass on navy (Phase 24) */
-  --glass-bg:     rgba(15, 25, 35, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-blur:   blur(20px);
-  --glass-tint:   rgba(26, 198, 126, 0.03);
-
-  /* Tints — lower opacity on dark bg */
-  --color-tint-teal: rgba(56, 198, 244, 0.04);
-  --color-tint-green: rgba(26, 198, 126, 0.04);
-  --color-tint-warm: rgba(245, 158, 11, 0.03);
-
-  /* Gradients — subtler on dark bg */
-  --gradient-soft: linear-gradient(135deg, rgba(26,198,126,0.05), rgba(56,198,244,0.05));
-
-  /* Accent opacity — unchanged in dark mode */
-  --accent-opacity-10: 0.1;
-  --accent-opacity-20: 0.2;
-  --accent-opacity-40: 0.4;
-}
-
-/* System preference hint — first-visit only, activates when no localStorage choice has been made.
-   Once the user clicks the toggle, the explicit data-theme attribute wins and this block is bypassed.
-   Default-light policy: DM-04 — never default to dark; OS preference is a hint only. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --color-white:          #0F1923;
-    --color-light:          #1A2533;
-    --color-dark:           #E8F4FF;
-    --color-text-primary:   #E0ECF8;
-    --color-text-on-dark:   #18212C;
-    --color-text-muted:     rgba(224, 236, 248, 0.55);
-    --color-primary:        #5FD5F9;
-    --color-primary-dark:   #38C6F4;
-    --color-secondary:      #3FCF88;
-    --color-secondary-dark: #1AC67E;
-    --color-cta:            #3FCF88;
-    --color-cta-hover:      #1AC67E;
-    --color-badge-bg:       #0D3324;
-    --color-badge-text:     #3FCF88;
-    --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
-    --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-    --glass-bg:             rgba(15, 25, 35, 0.55);
-    --glass-border:         rgba(255, 255, 255, 0.12);
-    --glass-blur:           blur(20px);
-    --glass-tint:           rgba(26, 198, 126, 0.03);
-    --color-tint-teal:      rgba(56, 198, 244, 0.04);
-    --color-tint-green:     rgba(26, 198, 126, 0.04);
-    --color-tint-warm:      rgba(245, 158, 11, 0.03);
-    --gradient-soft:        linear-gradient(135deg, rgba(26,198,126,0.05), rgba(56,198,244,0.05));
-    --accent-opacity-10:    0.1;
-    --accent-opacity-20:    0.2;
-    --accent-opacity-40:    0.4;
-  }
-}
+/* Dark mode removed — light-only medical design for 45+ audience */
 
 /* ==========================================================================
    3. RESET & BASE
@@ -338,14 +226,14 @@ h1, h2, h3, h4 {
 
 h1 {
   font-size: var(--font-size-h1);
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--line-height-display, 1.1);
   text-wrap: balance;   /* TYPO-02: prevent single-word Cyrillic orphan lines */
 }
 
 h2 {
   font-size: var(--font-size-h2);
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--line-height-display, 1.1);
   text-wrap: balance;   /* TYPO-02 */
 }
@@ -420,7 +308,7 @@ a:hover {
   line-height: 1.2;
   text-decoration: none;
   border: none;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: background-color var(--transition-normal),
               transform var(--transition-fast),
@@ -430,13 +318,12 @@ a:hover {
 /* active state handled in animations section */
 
 .button--primary {
-  background: var(--gradient-cta);
+  background: var(--color-cta);
   color: var(--color-text-on-cta);
 }
 
 .button--primary:hover {
-  opacity: 0.85;
-  background: var(--gradient-cta);
+  background: var(--color-cta-hover);
 }
 
 .card {
@@ -444,13 +331,13 @@ a:hover {
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   overflow: hidden;
-  border-left: 3px solid transparent;
-  transition: transform var(--transition-normal), border-left-color var(--transition-normal);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-normal);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  border-left-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
 }
 
 .card__title {
@@ -461,32 +348,6 @@ a:hover {
 
 .card__text {
   color: var(--color-text-primary);
-}
-
-/* Glass modifier — applied to pricing card, form wrapper, social proof; never to FAQ/benefits/process cards */
-.card--glass {
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
-}
-
-/* Fallback: solid card for browsers without backdrop-filter support (GLASS-04) */
-@supports not (backdrop-filter: blur(1px)) {
-  .card--glass {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-  }
-}
-
-/* Dark mode: liquid glass on navy — 20px blur works on dark backgrounds (Phase 24) */
-[data-theme="dark"] .card--glass {
-  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
-  backdrop-filter: var(--glass-blur) saturate(150%);
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .icon {
@@ -523,41 +384,11 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: box-shadow 0.3s ease, backdrop-filter 0.3s ease, background 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .site-header.is-scrolled {
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
-  backdrop-filter: var(--glass-blur) saturate(180%);
-  border-bottom: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: none;
-}
-
-/* Fallback: solid header for browsers without backdrop-filter support (GLASS-04) */
-@supports not (backdrop-filter: blur(1px)) {
-  .site-header.is-scrolled {
-    background: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Dark mode: liquid glass on navy — 20px blur resolves Phase 22 murky smear (Phase 24) */
-[data-theme="dark"] .site-header.is-scrolled {
-  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
-  backdrop-filter: var(--glass-blur) saturate(150%);
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  border-bottom: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: none;
-}
-
-[data-theme="dark"] .sticky-bar {
-  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
-  backdrop-filter: var(--glass-blur) saturate(150%);
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .site-header__nav {
@@ -591,52 +422,6 @@ a:hover {
 .site-header__phone:hover {
   color: var(--color-dark);
   text-decoration: underline;
-}
-
-/* Dark mode toggle button */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid var(--color-text-muted);
-  border-radius: var(--radius-md);
-  background: transparent;
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  font-family: var(--font-body);
-  color: var(--color-text-primary);
-  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-  white-space: nowrap;
-}
-
-.theme-toggle:hover {
-  background: var(--color-light);
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.theme-toggle__icon {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.theme-toggle__label {
-  font-size: 0.8125rem; /* 13px */
-  font-weight: 500;
-  display: none;
-}
-
-/* Show label on tablet+ where there's room */
-@media (min-width: 768px) {
-  .theme-toggle__label {
-    display: inline;
-  }
 }
 
 /* Header nav: visible on desktop */
@@ -673,19 +458,7 @@ a:hover {
   padding-block: var(--space-8) var(--space-6);
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(56, 198, 244, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(26, 198, 126, 0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 60% 80%, rgba(13, 157, 181, 0.06) 0%, transparent 50%),
-    var(--color-white);
-}
-
-[data-theme="dark"] .hero {
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(56, 198, 244, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(26, 198, 126, 0.10) 0%, transparent 55%),
-    radial-gradient(ellipse at 60% 80%, rgba(13, 157, 181, 0.09) 0%, transparent 50%),
-    var(--color-white);
+  background: linear-gradient(180deg, var(--color-bg-blue) 0%, #FFFFFF 100%);
 }
 
 .hero__container {
@@ -784,19 +557,8 @@ a:hover {
 /* -- Social Proof Bar (PROOF-01) -- */
 
 .social-proof {
-  background-color: var(--color-primary-dark);  /* #0E7490 */
-  padding-block: var(--space-4);  /* 32px */
-}
-
-/* Social proof dark mode: toned-down background for better contrast */
-[data-theme="dark"] .social-proof {
-  background-color: #0c2535;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .social-proof {
-    background-color: #0c2535;
-  }
+  background-color: var(--color-navy);
+  padding-block: var(--space-4);
 }
 .social-proof__container {
   display: flex;
@@ -813,31 +575,8 @@ a:hover {
   gap: 0.25rem;  /* 4px */
 }
 
-.social-proof__item--glass {
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
-  backdrop-filter: var(--glass-blur) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-4);
-}
-
-[data-theme="dark"] .social-proof__item--glass {
-  -webkit-backdrop-filter: var(--glass-blur) saturate(150%);
-  backdrop-filter: var(--glass-blur) saturate(150%);
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .social-proof__item--glass {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(24, 33, 44, 0.12);
-  }
-}
-
 .social-proof__number {
+  color: #FFFFFF;
   font-family: var(--font-heading);
   font-size: 2.5rem;  /* 40px */
   font-weight: 700;
@@ -969,7 +708,7 @@ a:hover {
 .process__number {
   font-family: var(--font-heading);
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: var(--color-primary);
   margin-bottom: var(--space-1);
@@ -1066,7 +805,7 @@ a:hover {
 /* -- Advantages (Why MedicusUnion) -- */
 
 .advantages {
-  background-color: var(--color-white);
+  background-color: var(--color-bg-blue);
 }
 
 .advantages__heading {
@@ -1212,7 +951,7 @@ a:hover {
 .pricing__amount {
   font-family: var(--font-heading);
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-primary-dark);
   line-height: 1;
 }
@@ -1258,7 +997,7 @@ a:hover {
 /* -- Lead Form (Phase 7) -- */
 
 .lead-form-section {
-  background-color: var(--color-light);
+  background-color: var(--color-bg-gray);
   position: relative;
   overflow: hidden;
 }
@@ -1299,9 +1038,10 @@ a:hover {
 
 .lead-form__wrapper {
   max-width: 540px;
-}
-
-.lead-form__wrapper.card--glass {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   padding: var(--space-6) var(--space-5);
 }
 
@@ -1345,7 +1085,7 @@ a:hover {
   font-size: var(--font-size-base);
   color: var(--color-text-primary);
   background-color: var(--color-white);
-  border: 2px solid rgba(24, 33, 44, 0.15);
+  border: 2px solid #D1D5DB;
   border-radius: var(--radius-md);
   transition: border-color var(--transition-fast);
   min-height: 48px;
@@ -1358,7 +1098,7 @@ a:hover {
 .lead-form__input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
 }
 
 .lead-form__input.is-invalid {
@@ -1605,8 +1345,8 @@ a:hover {
 /* -- Footer -- */
 
 .footer {
-  background-color: var(--color-dark);
-  color: var(--color-text-on-dark);
+  background-color: var(--color-navy);
+  color: #FFFFFF;
   padding-block: var(--space-6) var(--space-4);
 }
 
@@ -1691,19 +1431,11 @@ a:hover {
   left: 0;
   right: 0;
   z-index: 100;
-  background: linear-gradient(var(--glass-tint), var(--glass-tint)), var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur) saturate(180%);
-  backdrop-filter: var(--glass-blur) saturate(180%);
-  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  background: #FFFFFF;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
   padding-block: var(--space-1);
   transition: transform var(--transition-normal);
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .sticky-bar {
-    background: rgba(255, 255, 255, 0.97);
-    border-top: 1px solid rgba(24, 33, 44, 0.12);
-  }
 }
 
 .sticky-bar.is-hidden {
@@ -1992,7 +1724,24 @@ a:hover {
 /* -- Final CTA gradient background (per D-21) -- */
 
 .final-cta {
-  background: linear-gradient(135deg, #18212C 0%, #1e2d3d 50%, #18212C 100%);
+  background-color: var(--color-navy);
+  color: #FFFFFF;
+}
+
+.final-cta h1,
+.final-cta h2,
+.final-cta h3 {
+  color: #FFFFFF;
+}
+
+.final-cta .button--outline {
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+.final-cta .button--outline:hover {
+  background-color: #FFFFFF;
+  color: var(--color-navy);
 }
 
 /* ==========================================================================
@@ -2187,7 +1936,7 @@ a:hover {
 .steps__number {
   font-family: var(--font-heading);
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: var(--color-primary);
   flex-shrink: 0;
@@ -2378,7 +2127,7 @@ a:hover {
 .why-us__number {
   font-family: var(--font-heading);
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: var(--color-primary);
   position: absolute;
@@ -2657,19 +2406,7 @@ a:hover {
 .hero--hub {
   text-align: center;
   padding-block: var(--space-10) var(--space-6);
-  background:
-    radial-gradient(ellipse at 30% 40%, rgba(56, 198, 244, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 60%, rgba(26, 198, 126, 0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 20%, rgba(13, 157, 181, 0.06) 0%, transparent 50%),
-    var(--color-white);
-}
-
-[data-theme="dark"] .hero--hub {
-  background:
-    radial-gradient(ellipse at 30% 40%, rgba(56, 198, 244, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 60%, rgba(26, 198, 126, 0.10) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 20%, rgba(13, 157, 181, 0.09) 0%, transparent 50%),
-    var(--color-white);
+  background: linear-gradient(180deg, var(--color-bg-blue) 0%, #FFFFFF 100%);
 }
 
 .hub-hero__content {
@@ -2825,7 +2562,7 @@ a:hover {
 /* -- Hub Guide (navigation helper) -- */
 
 .hub-guide {
-  background-color: var(--color-light);
+  background-color: var(--color-bg-cream);
 }
 
 .hub-guide__heading {
@@ -2895,179 +2632,21 @@ a:hover {
 }
 
 /* ==========================================================================
-   15. AWARD-LEVEL VISUAL UPGRADES
+   15. INTERACTION POLISH
    ========================================================================== */
-
-/* -- 15a. 3D Card Tilt on Hover -- */
-
-.card-3d-wrap {
-  perspective: 800px;
-}
-
-.card.card--tilt {
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              box-shadow 0.4s ease;
-  will-change: transform;
-}
-
-.card.card--tilt:hover {
-  transform: rotateY(-3deg) rotateX(2deg) translateY(-6px);
-  box-shadow: 8px 12px 30px rgba(0, 0, 0, 0.12);
-  border-left-color: var(--color-primary);
-}
-
-[data-theme="dark"] .card.card--tilt:hover {
-  box-shadow: 8px 12px 30px rgba(0, 0, 0, 0.4);
-}
-
-/* -- 15b. Animated Counter Numbers -- */
 
 .social-proof__number {
   font-variant-numeric: tabular-nums;
 }
 
-/* Counter in-progress state */
 .social-proof__number[data-counting] {
   transition: none;
 }
 
-/* -- 15c. Gradient Accent Borders on Cards -- */
-
-.card--accent-border {
-  border-left: 3px solid transparent;
-  border-image: var(--gradient-cta) 1;
-  border-image-slice: 1;
-}
-
-.card--accent-border:hover {
-  border-left: 3px solid transparent;
-  border-image: var(--gradient-cta) 1;
-  border-image-slice: 1;
-}
-
-/* -- 15d. Floating Gradient Orbs (hero background enhancement) -- */
-
-@keyframes float-orb {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.05); }
-  66% { transform: translate(-20px, 15px) scale(0.95); }
-}
-
-@keyframes float-orb-reverse {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-25px, 20px) scale(0.95); }
-  66% { transform: translate(20px, -15px) scale(1.05); }
-}
-
-.hero--hub,
-.hero--checkup,
-.hero--abroad {
-  position: relative;
-  overflow: hidden;
-}
-
-.hero__orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-}
-
-.hero__orb--1 {
-  width: 500px;
-  height: 500px;
-  background: rgba(56, 198, 244, 0.15);
-  top: -150px;
-  right: -100px;
-  animation: float-orb 12s ease-in-out infinite;
-}
-
-.hero__orb--2 {
-  width: 400px;
-  height: 400px;
-  background: rgba(26, 198, 126, 0.12);
-  bottom: -100px;
-  left: -80px;
-  animation: float-orb-reverse 15s ease-in-out infinite;
-}
-
-.hero__orb--3 {
-  width: 300px;
-  height: 300px;
-  background: rgba(13, 157, 181, 0.10);
-  top: 30%;
-  left: 50%;
-  animation: float-orb 18s ease-in-out infinite;
-}
-
-[data-theme="dark"] .hero__orb--1 { background: rgba(56, 198, 244, 0.08); }
-[data-theme="dark"] .hero__orb--2 { background: rgba(26, 198, 126, 0.06); }
-[data-theme="dark"] .hero__orb--3 { background: rgba(13, 157, 181, 0.05); }
-
-.hero__container,
 .hub-hero__content {
   position: relative;
   z-index: 1;
 }
-
-/* -- 15e. Enhanced Hub Service Cards -- */
-
-.hub-service {
-  position: relative;
-  overflow: hidden;
-}
-
-.hub-service::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-cta);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.hub-service:hover::before {
-  transform: scaleX(1);
-}
-
-/* Numbered cards in the icon */
-.hub-service__icon {
-  transition: transform 0.4s ease;
-}
-
-.hub-service:hover .hub-service__icon {
-  transform: scale(1.1) translateY(-4px);
-}
-
-/* -- 15f. Process Steps - Animated Number Pulse -- */
-
-.process__number {
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.process__step:hover .process__number {
-  transform: scale(1.15);
-  color: var(--color-secondary);
-}
-
-/* -- 15g. FAQ Hover Enhancement -- */
-
-.faq__question {
-  transition: color 0.2s ease, padding-left 0.3s ease;
-}
-
-.faq__question:hover {
-  padding-left: var(--space-2);
-}
-
-/* -- 15h. Hub Guide Cards - Arrow Animation -- */
 
 .hub-guide__link {
   display: inline-flex;
@@ -3075,616 +2654,17 @@ a:hover {
   gap: 4px;
 }
 
-.hub-guide__link::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  transition: width 0.3s ease;
-}
-
-.hub-guide__item:hover .hub-guide__link {
-  gap: 8px;
-}
-
-/* -- 15i. Smooth Gradient Shift on Hero -- */
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.hero--hub {
-  background-size: 200% 200%;
-  animation: gradient-shift 20s ease infinite;
-}
-
-/* -- 15j. Social Proof - Glass Shimmer on Scroll -- */
-
-@keyframes glass-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.social-proof__item--glass.is-visible {
-  position: relative;
-  overflow: hidden;
-}
-
-.social-proof__item--glass.is-visible::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 60%
-  );
-  background-size: 200% 100%;
-  animation: glass-shimmer 1.5s ease-out 0.3s 1 forwards;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-/* -- 15k. Pricing Card Highlight Enhancement -- */
-
-.programs__card--highlight {
-  position: relative;
-}
-
-.programs__card--highlight::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: var(--gradient-cta);
-  z-index: -1;
-  opacity: 0.3;
-  filter: blur(8px);
-}
-
-/* -- 15l. Smooth Icon Hover for Advantages -- */
-
-.advantages__card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.advantages__card:hover .advantages__icon svg,
-.about-us__card:hover .about-us__icon svg {
-  transform: scale(1.15);
-  transition: transform 0.3s ease;
-}
-
 .advantages__icon svg,
 .about-us__icon svg {
   transition: transform 0.3s ease;
 }
 
-/* -- 15m. Why-Us Numbered Cards - Number Animation -- */
-
-.why-us__number {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+.advantages__card:hover .advantages__icon svg,
+.about-us__card:hover .about-us__icon svg {
+  transform: scale(1.1);
 }
-
-.why-us__card:hover .why-us__number {
-  opacity: 0.5;
-  transform: scale(1.2);
-}
-
-/* -- 15n. B2B Cards - Gradient Overlay on Hover -- */
-
-.b2b__card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.b2b__card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* -- 15o. Scroll Progress Indicator -- */
-
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: var(--gradient-cta);
-  z-index: 200;
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: none;
-  pointer-events: none;
-}
-
-/* -- 15p. Reduced Motion -- all new animations -- */
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__orb { animation: none; }
-  .hero--hub { animation: none; }
-  .social-proof__item--glass.is-visible::after { animation: none; display: none; }
-  .card.card--tilt:hover { transform: translateY(-2px); }
-  .hub-service::before { transition: none; }
-  .hub-service:hover .hub-service__icon { transform: none; }
-  .process__step:hover .process__number { transform: none; }
-  .faq__question:hover { padding-left: 0; }
-  .why-us__card:hover .why-us__number { transform: none; }
   .advantages__card:hover .advantages__icon svg { transform: none; }
 }
 
-/* ==========================================================================
-   16. AUTHORIAL DESIGN SYSTEM (M005/S01)
-   Organic SVG decorative elements for visual differentiation.
-   All elements use mask-image + currentColor for automatic dark mode support.
-   ========================================================================== */
-
-/* -------------------------------------------------------------------------
-   16a. Organic Section Dividers (.au-divider)
-   Usage: <div class="au-divider au-divider--flow"></div>
-   Parent element sets `color` to control the divider fill color.
-   Technique: SVG data URI as mask-image, background-color: currentColor.
-   ------------------------------------------------------------------------- */
-
-.au-divider {
-  display: block;
-  width: 100%;
-  height: 80px;
-  overflow: hidden;
-  line-height: 0;
-  background-color: currentColor;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-position: bottom center;
-  mask-position: bottom center;
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .au-divider {
-    height: 120px;
-  }
-}
-
-/* Variant 1: Flowing asymmetric curve */
-.au-divider--flow {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C200 100 400 10 600 50 C800 90 1000 20 1200 60 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C200 100 400 10 600 50 C800 90 1000 20 1200 60 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Variant 2: Soft mountain ridge with organic peaks */
-.au-divider--ridge {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 C100 40 250 50 350 20 C450 0 550 30 650 10 C750 0 900 40 1000 20 C1100 5 1150 40 1200 30 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 80 C100 40 250 50 350 20 C450 0 550 30 650 10 C750 0 900 40 1000 20 C1100 5 1150 40 1200 30 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Variant 3: Gentle single hill */
-.au-divider--hill {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C300 100 400 0 600 0 C800 0 900 100 1200 100 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 100 C300 100 400 0 600 0 C800 0 900 100 1200 100 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Variant 4: Double-curve organic wave */
-.au-divider--dualwave {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C150 100 300 0 500 50 C700 100 850 0 1050 50 C1150 80 1200 30 1200 50 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 50 C150 100 300 0 500 50 C700 100 850 0 1050 50 C1150 80 1200 30 1200 50 L1200 120 L0 120Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Divider utility: vertical flip for bottom-of-section placement */
-.au-divider--flip {
-  transform: scaleY(-1);
-}
-
-/* -------------------------------------------------------------------------
-   16b. Decorative Blob Shapes (.au-blob)
-   Usage: Add .au-blob--{variant} to a section or container.
-   Blob appears as ::before pseudo-element with low opacity.
-   Parent `color` controls the blob tint.
-   ------------------------------------------------------------------------- */
-
-.au-blob--soft,
-.au-blob--ribbon,
-.au-blob--cluster {
-  position: relative;
-  overflow: hidden;
-}
-
-.au-blob--soft::before,
-.au-blob--ribbon::before,
-.au-blob--cluster::before {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  background-color: currentColor;
-  opacity: var(--accent-opacity-10, 0.1);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-/* Soft organic blob — positioned top-right */
-.au-blob--soft::before {
-  width: 320px;
-  height: 320px;
-  top: -60px;
-  right: -80px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M120 30 C160 10 195 50 185 95 C175 140 155 175 115 185 C75 195 35 165 25 120 C15 75 35 45 75 30 C95 22 105 38 120 30Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M120 30 C160 10 195 50 185 95 C175 140 155 175 115 185 C75 195 35 165 25 120 C15 75 35 45 75 30 C95 22 105 38 120 30Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Flowing ribbon — positioned bottom-left */
-.au-blob--ribbon::before {
-  width: 450px;
-  height: 180px;
-  bottom: -30px;
-  left: -60px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200'%3E%3Cpath d='M0 100 C50 40 100 160 175 100 C250 40 300 160 375 100 C450 40 500 100 500 100 L500 140 C450 80 400 200 325 140 C250 80 200 200 125 140 C50 80 0 140 0 140Z' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 200'%3E%3Cpath d='M0 100 C50 40 100 160 175 100 C250 40 300 160 375 100 C450 40 500 100 500 100 L500 140 C450 80 400 200 325 140 C250 80 200 200 125 140 C50 80 0 140 0 140Z' fill='white'/%3E%3C/svg%3E");
-}
-
-/* Circular cluster — positioned center-right */
-.au-blob--cluster::before {
-  width: 300px;
-  height: 300px;
-  top: 50%;
-  right: -50px;
-  transform: translateY(-50%);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='70' cy='80' r='55' fill='white'/%3E%3Ccircle cx='130' cy='65' r='45' fill='white'/%3E%3Ccircle cx='105' cy='135' r='50' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='70' cy='80' r='55' fill='white'/%3E%3Ccircle cx='130' cy='65' r='45' fill='white'/%3E%3Ccircle cx='105' cy='135' r='50' fill='white'/%3E%3C/svg%3E");
-}
-
-@media (min-width: 768px) {
-  .au-blob--soft::before  { width: 420px; height: 420px; }
-  .au-blob--ribbon::before { width: 600px; height: 240px; }
-  .au-blob--cluster::before { width: 400px; height: 400px; }
-}
-
-/* -------------------------------------------------------------------------
-   16c. Abstract Decorative Elements (.au-decor)
-   Usage: Add .au-decor--{variant} to a container.
-   Decorative element appears as ::after pseudo-element.
-   Parent `color` controls the element tint.
-   ------------------------------------------------------------------------- */
-
-.au-decor--heartline,
-.au-decor--leaf,
-.au-decor--circles,
-.au-decor--dots {
-  position: relative;
-}
-
-.au-decor--heartline::after,
-.au-decor--leaf::after,
-.au-decor--circles::after,
-.au-decor--dots::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  background-color: currentColor;
-  opacity: var(--accent-opacity-10, 0.1);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-/* Abstract heartbeat/pulse line — flowing, not clinical EKG */
-.au-decor--heartline::after {
-  width: 280px;
-  height: 56px;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80' fill='none'%3E%3Cpath d='M0 40 C30 40 60 40 80 40 C90 40 95 38 100 32 C110 18 125 5 140 5 C155 5 165 55 175 70 C182 55 188 22 198 40 C208 58 215 40 240 40 C270 40 300 36 340 38 C370 40 390 40 400 40' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80' fill='none'%3E%3Cpath d='M0 40 C30 40 60 40 80 40 C90 40 95 38 100 32 C110 18 125 5 140 5 C155 5 165 55 175 70 C182 55 188 22 198 40 C208 58 215 40 240 40 C270 40 300 36 340 38 C370 40 390 40 400 40' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
-}
-
-/* Organic leaf with stem and veins — warmth, growth, care */
-.au-decor--leaf::after {
-  width: 100px;
-  height: 170px;
-  top: 10px;
-  right: 24px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200'%3E%3Cpath d='M60 10 C90 30 110 70 105 120 C100 160 80 190 60 195 C40 190 20 160 15 120 C10 70 30 30 60 10Z' fill='white' opacity='0.7'/%3E%3Cpath d='M60 25 Q62 80 58 175' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M60 65 C75 52 88 58 92 68' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 95 C45 82 32 88 28 98' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 125 C73 115 84 118 88 128' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 200'%3E%3Cpath d='M60 10 C90 30 110 70 105 120 C100 160 80 190 60 195 C40 190 20 160 15 120 C10 70 30 30 60 10Z' fill='white' opacity='0.7'/%3E%3Cpath d='M60 25 Q62 80 58 175' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M60 65 C75 52 88 58 92 68' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 95 C45 82 32 88 28 98' fill='none' stroke='white' stroke-width='1.5'/%3E%3Cpath d='M60 125 C73 115 84 118 88 128' fill='none' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E");
-}
-
-/* Overlapping circle composition — connection, wholeness */
-.au-decor--circles::after {
-  width: 180px;
-  height: 180px;
-  top: -20px;
-  left: -30px;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Ccircle cx='75' cy='75' r='55' stroke='white' stroke-width='2'/%3E%3Ccircle cx='130' cy='85' r='45' stroke='white' stroke-width='2'/%3E%3Ccircle cx='95' cy='140' r='38' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Ccircle cx='75' cy='75' r='55' stroke='white' stroke-width='2'/%3E%3Ccircle cx='130' cy='85' r='45' stroke='white' stroke-width='2'/%3E%3Ccircle cx='95' cy='140' r='38' stroke='white' stroke-width='2'/%3E%3C/svg%3E");
-}
-
-/* Dot grid pattern — subtle texture background */
-.au-decor--dots::after {
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  opacity: calc(var(--accent-opacity-10, 0.1) * 0.7);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='2.5' fill='white'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='2.5' fill='white'/%3E%3C/svg%3E");
-  -webkit-mask-size: 24px 24px;
-  mask-size: 24px 24px;
-  -webkit-mask-repeat: repeat;
-  mask-repeat: repeat;
-}
-
-@media (min-width: 768px) {
-  .au-decor--heartline::after { width: 360px; height: 72px; }
-  .au-decor--leaf::after      { width: 130px; height: 220px; }
-  .au-decor--circles::after   { width: 240px; height: 240px; }
-  .au-decor--dots::after       { width: 300px; height: 300px; }
-}
-
-/* -------------------------------------------------------------------------
-   16d. Dark Mode — opacity adjustments
-   currentColor adapts colors automatically; reduce opacity to stay subtle
-   on dark backgrounds (per T01 pattern: tint opacities reduced for dark bg).
-   ------------------------------------------------------------------------- */
-
-[data-theme="dark"] .au-blob--soft::before,
-[data-theme="dark"] .au-blob--ribbon::before,
-[data-theme="dark"] .au-blob--cluster::before {
-  opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
-}
-
-[data-theme="dark"] .au-decor--heartline::after,
-[data-theme="dark"] .au-decor--leaf::after,
-[data-theme="dark"] .au-decor--circles::after,
-[data-theme="dark"] .au-decor--dots::after {
-  opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
-}
-
-@media (prefers-color-scheme: dark) {
-  .au-blob--soft::before,
-  .au-blob--ribbon::before,
-  .au-blob--cluster::before {
-    opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
-  }
-
-  .au-decor--heartline::after,
-  .au-decor--leaf::after,
-  .au-decor--circles::after,
-  .au-decor--dots::after {
-    opacity: calc(var(--accent-opacity-10, 0.1) * 0.5);
-  }
-}
-
-/* -------------------------------------------------------------------------
-   16e. Reduced Motion — disable any future au-* animations
-   ------------------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .au-divider,
-  .au-blob--soft::before,
-  .au-blob--ribbon::before,
-  .au-blob--cluster::before,
-  .au-decor--heartline::after,
-  .au-decor--leaf::after,
-  .au-decor--circles::after,
-  .au-decor--dots::after {
-    animation: none;
-    transition: none;
-  }
-}
-
-/* =========================================================================
-   16f. Typography Utility Classes
-   Consume tokens from T01. Prefix: .au-
-   ========================================================================= */
-
-/* Eyebrow — small uppercase label above headings */
-.au-eyebrow {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-wider);
-  text-transform: uppercase;
-  color: var(--color-primary-dark);
-  margin-bottom: 0.5em;
-}
-
-/* Caption — small descriptive text */
-.au-caption {
-  font-size: var(--font-size-xs);
-  line-height: var(--line-height-body);
-  color: var(--color-text-muted);
-}
-
-/* Display Text — oversized numbers, hero emphasis */
-.au-display-text {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-display);
-  font-weight: var(--font-weight-extrabold);
-  letter-spacing: var(--letter-spacing-tight);
-  line-height: var(--line-height-display);
-  color: var(--color-text);
-}
-
-/* Pull Quote — large italic with decorative gradient left border */
-.au-pull-quote {
-  font-family: var(--font-heading);
-  font-size: var(--font-size-h3);
-  font-style: italic;
-  line-height: var(--line-height-heading);
-  color: var(--color-text);
-  border-left: 4px solid transparent;
-  border-image: var(--gradient-cta) 1;
-  padding: 0.75em 1.25em;
-  margin: 1.5em 0;
-}
-
-/* Gradient Text — gradient fill on text via background-clip */
-.au-text-gradient {
-  background: var(--gradient-cta);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent; /* fallback for non-webkit */
-}
-
-/* Highlight — inline text with subtle tinted background */
-.au-highlight {
-  background-color: var(--color-tint-teal);
-  padding: 0.1em 0.4em;
-  border-radius: 4px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
-/* =========================================================================
-   16g. Layout Component Classes
-   Grid layouts, section tints, callouts. Prefix: .au-
-   ========================================================================= */
-
-/* Split Layout — asymmetric 60/40 grid, stacks on mobile */
-.au-layout-split {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .au-layout-split {
-    grid-template-columns: 3fr 2fr; /* 60 / 40 */
-  }
-}
-
-/* Split Layout Reverse — 40/60 grid */
-.au-layout-split--reverse {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .au-layout-split--reverse {
-    grid-template-columns: 2fr 3fr; /* 40 / 60 */
-  }
-}
-
-/* Featured Layout — 1 large + 2-3 smaller cards */
-.au-layout-featured {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .au-layout-featured {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto auto;
-  }
-  .au-layout-featured > :first-child {
-    grid-row: 1 / -1;
-  }
-}
-
-@media (min-width: 1024px) {
-  .au-layout-featured {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  .au-layout-featured > :first-child {
-    grid-column: 1;
-    grid-row: 1 / -1;
-  }
-}
-
-/* Offset Layout — staggered cards via nth-child transforms */
-.au-layout-offset {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .au-layout-offset {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-  .au-layout-offset > :nth-child(even) {
-    transform: translateY(2rem);
-  }
-}
-
-@media (min-width: 1024px) {
-  .au-layout-offset {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Tinted Section — subtle teal background for section differentiation */
-.au-section--tinted {
-  background-color: var(--color-tint-teal);
-}
-
-/* Tinted Section Green variant */
-.au-section--tinted-green {
-  background-color: var(--color-tint-green);
-}
-
-/* Accent Border Section — gradient top border */
-.au-section--accent-border {
-  border-top: 3px solid transparent;
-  border-image: var(--gradient-cta) 1;
-}
-
-/* Callout Box — important information block with gradient left border */
-.au-callout {
-  background: var(--gradient-soft);
-  border-left: 4px solid transparent;
-  border-image: var(--gradient-cta) 1;
-  border-radius: 0 8px 8px 0;
-  padding: 1.25rem 1.5rem;
-  margin: 1.5rem 0;
-  font-size: var(--font-size-body, 1rem);
-  line-height: var(--line-height-body);
-  color: var(--color-text);
-}
-
-/* -------------------------------------------------------------------------
-   16h. Dark Mode — typography & layout overrides
-   Tokens adapt automatically via custom properties; explicit overrides
-   only where needed (gradient-text contrast, tint intensity).
-   ------------------------------------------------------------------------- */
-
-/* Gradient text needs stronger contrast in dark mode */
-[data-theme="dark"] .au-text-gradient {
-  filter: brightness(1.3);
-}
-
-@media (prefers-color-scheme: dark) {
-  .au-text-gradient {
-    filter: brightness(1.3);
-  }
-}
-
-/* -------------------------------------------------------------------------
-   16i. Reduced Motion — typography & layout au-* classes
-   ------------------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  .au-text-gradient,
-  .au-highlight,
-  .au-callout,
-  .au-pull-quote {
-    transition: none;
-  }
-}
