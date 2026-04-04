@@ -60,7 +60,7 @@ Source: MedicusUnion_Checkup_Page_Copy.md
 ## Out of Scope
 
 - Отзывы с верификацией (нужны реальные кейсы от клиента)
-- Интерактивная карта клиник (Секция 6 treatment-abroad — рекомендация дизайнера, не MVP)
+- Интерактивная карта клиник (Секция 6 treatment-abroad -- рекомендация дизайнера, не MVP)
 - Скриншоты платформы/приложения (нужны реальные скриншоты от клиента)
 - Детальный состав Silver/Gold/Platinum Турции (помечено TODO в документе)
 
@@ -68,7 +68,38 @@ Source: MedicusUnion_Checkup_Page_Copy.md
 
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| CONSULT-01..11 | TBD | TBD | pending |
-| TREAT-01..10 | TBD | TBD | pending |
-| CHECK-01..11 | TBD | TBD | pending |
-| CROSS-01..03 | TBD | TBD | pending |
+| CONSULT-01 | Phase 26 | TBD | pending |
+| CONSULT-02 | Phase 26 | TBD | pending |
+| CONSULT-03 | Phase 26 | TBD | pending |
+| CONSULT-04 | Phase 26 | TBD | pending |
+| CONSULT-05 | Phase 26 | TBD | pending |
+| CONSULT-06 | Phase 26 | TBD | pending |
+| CONSULT-07 | Phase 26 | TBD | pending |
+| CONSULT-08 | Phase 26 | TBD | pending |
+| CONSULT-09 | Phase 26 | TBD | pending |
+| CONSULT-10 | Phase 26 | TBD | pending |
+| CONSULT-11 | Phase 26 | TBD | pending |
+| CROSS-01 | Phase 26 | TBD | pending |
+| CROSS-02 | Phase 26 | TBD | pending |
+| CROSS-03 | Phase 26 | TBD | pending |
+| TREAT-01 | Phase 27 | TBD | pending |
+| TREAT-02 | Phase 27 | TBD | pending |
+| TREAT-03 | Phase 27 | TBD | pending |
+| TREAT-04 | Phase 27 | TBD | pending |
+| TREAT-05 | Phase 27 | TBD | pending |
+| TREAT-06 | Phase 27 | TBD | pending |
+| TREAT-07 | Phase 27 | TBD | pending |
+| TREAT-08 | Phase 27 | TBD | pending |
+| TREAT-09 | Phase 27 | TBD | pending |
+| TREAT-10 | Phase 27 | TBD | pending |
+| CHECK-01 | Phase 28 | TBD | pending |
+| CHECK-02 | Phase 28 | TBD | pending |
+| CHECK-03 | Phase 28 | TBD | pending |
+| CHECK-04 | Phase 28 | TBD | pending |
+| CHECK-05 | Phase 28 | TBD | pending |
+| CHECK-06 | Phase 28 | TBD | pending |
+| CHECK-07 | Phase 28 | TBD | pending |
+| CHECK-08 | Phase 28 | TBD | pending |
+| CHECK-09 | Phase 28 | TBD | pending |
+| CHECK-10 | Phase 28 | TBD | pending |
+| CHECK-11 | Phase 28 | TBD | pending |
