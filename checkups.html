@@ -14,37 +14,49 @@
   <link rel="canonical" href="https://medicusunion.kz/checkups.html">
   <meta name="theme-color" content="#38C6F4">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tw-output.css">
+  <style>
+    .header--scrolled {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(60px) saturate(180%);
+      -webkit-backdrop-filter: blur(60px) saturate(180%);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    .mobile-menu-overlay { display: none; }
+    .mobile-menu-overlay.is-open { display: block; }
+    .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
+  </style>
 </head>
-<body>
+<body class="relative min-h-screen bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-hidden">
   <!-- Animated Mesh Background -->
-  <div class="mesh-bg" aria-hidden="true">
-    <div class="mesh-bg__blob mesh-bg__blob--1"></div>
-    <div class="mesh-bg__blob mesh-bg__blob--2"></div>
-    <div class="mesh-bg__blob mesh-bg__blob--3"></div>
-    <div class="mesh-bg__overlay"></div>
+  <div class="mesh-bg fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="mesh-bg__blob mesh-bg__blob--1 absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-mu-blue/30 mix-blend-multiply blur-[120px]"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--2 absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-mu-green-300/20 mix-blend-multiply blur-[120px]"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--3 absolute bottom-[-10%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-mu-accent-blue/15 mix-blend-multiply blur-[120px]"></div>
+    <div class="mesh-bg__overlay absolute inset-0 bg-white/40 backdrop-blur-[40px] backdrop-saturate-[180%]"></div>
   </div>
 
   <!-- Header -->
-  <header class="header" id="header">
-    <div class="header__inner">
-      <a href="index.html" class="header__logo">MedicusUnion</a>
+  <header class="header fixed z-50 transition-all duration-500 top-4 left-4 right-4 mx-auto max-w-7xl rounded-[2.5rem] px-4 md:px-8 border-[0.5px] border-white/50 shadow-glass-header bg-white/30 backdrop-blur-[40px] backdrop-saturate-[150%] py-5" id="header">
+    <div class="header__inner flex items-center justify-between">
+      <a href="index.html" class="header__logo text-2xl font-bold tracking-tight bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">MedicusUnion</a>
 
-      <nav class="header__nav">
-        <a href="online-consultations.html" class="header__nav-link">Консультации</a>
-        <a href="treatment-abroad.html" class="header__nav-link">Лечение</a>
-        <a href="checkups.html" class="header__nav-link header__nav-link--active">Чек-ап</a>
-        <a href="contacts.html" class="header__nav-link">Контакты</a>
+      <nav class="header__nav hidden lg:flex items-center gap-8">
+        <a href="index.html#services" class="header__nav-link text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Услуги</a>
+        <a href="index.html#why-us" class="header__nav-link text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Почему мы</a>
+        <a href="contacts.html" class="header__nav-link text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Контакты</a>
       </nav>
 
-      <div class="header__actions">
-        <a href="tel:+77015322478" class="header__phone">
+      <div class="header__actions hidden lg:flex items-center gap-4">
+        <a href="tel:+77015322478" class="header__phone flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           +7 701 532 24 78
         </a>
-        <a href="contacts.html" class="header__cta">Оставить заявку</a>
+        <a href="contacts.html" class="header__cta bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow inline-block tracking-tight">Оставить заявку</a>
       </div>
 
-      <button class="header__menu-btn" aria-label="Toggle menu" aria-expanded="false">
+      <button class="header__menu-btn lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50" aria-label="Toggle menu" aria-expanded="false">
         <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
         <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
@@ -52,394 +64,332 @@
   </header>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu-overlay" aria-hidden="true">
-    <div class="mobile-menu">
-      <nav class="mobile-menu__nav">
-        <a href="online-consultations.html" class="mobile-menu__link">Консультации</a>
-        <a href="treatment-abroad.html" class="mobile-menu__link">Лечение</a>
-        <a href="checkups.html" class="mobile-menu__link">Чек-ап</a>
-        <a href="contacts.html" class="mobile-menu__link">Контакты</a>
-        <div class="mobile-menu__divider"></div>
-        <a href="tel:+77015322478" class="mobile-menu__phone">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--mu-blue)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  <div class="mobile-menu-overlay fixed inset-0 z-40 lg:hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="mobile-menu absolute top-24 left-4 right-4 bg-white/60 backdrop-blur-[80px] backdrop-saturate-[200%] shadow-glass-lg rounded-3xl overflow-hidden border-[0.5px] border-white/50">
+      <nav class="mobile-menu__nav flex flex-col p-6 gap-2">
+        <a href="index.html#services" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Услуги</a>
+        <a href="index.html#why-us" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Почему мы</a>
+        <a href="contacts.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Контакты</a>
+        <div class="mobile-menu__divider h-[0.5px] bg-white/40 my-2"></div>
+        <a href="tel:+77015322478" class="mobile-menu__phone flex items-center gap-3 text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           +7 701 532 24 78
         </a>
-        <a href="contacts.html" class="mobile-menu__cta">Оставить заявку</a>
+        <a href="contacts.html" class="mobile-menu__cta bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-semibold tracking-tight shadow-lg mt-4 w-full text-center block">Оставить заявку</a>
       </nav>
     </div>
   </div>
 
-  <main>
+  <main class="relative z-10 pt-32 pb-16">
     <!-- Page Hero -->
-    <section class="section page-hero" id="hero">
-      <div class="container">
-        <div class="hero__grid">
+    <section class="container mx-auto px-4 lg:px-6 mb-16">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-          <!-- Left Content -->
-          <div class="hero__content animate-fade-up">
-            <div class="glass-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                <path d="m9 14 2 2 4-4"/>
-              </svg>
-              <span>от $350</span>
-            </div>
-            <h1 class="page-hero__title">
-              <span>Чек-ап </span><br>
-              <span class="text-gradient">за&nbsp;рубежом</span>
-            </h1>
-            <p class="page-hero__subtitle">Комплексное обследование в&nbsp;лучших клиниках Южной Кореи и&nbsp;Турции за&nbsp;1&ndash;2&nbsp;дня. Виза, трансфер, переводчик, результаты в&nbsp;приложении.</p>
-            <div class="hero__actions">
-              <a href="contacts.html" class="btn-primary">
-                Подобрать программу
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </a>
-            </div>
+        <!-- Left Content -->
+        <div class="hero__content animate-fade-up">
+          <div class="glass-badge inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue" aria-hidden="true">
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              <path d="m9 14 2 2 4-4"/>
+            </svg>
+            <span class="text-sm font-bold text-mu-blue uppercase tracking-wider">от $350</span>
           </div>
-
-          <!-- Right Image -->
-          <div class="hero__image animate-scale-in">
-            <div class="hero__image-frame">
-              <img src="https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwY2hlY2t1cCUyMGhlYWx0aCUyMHNjcmVlbmluZ3xlbnwxfHx8fDE3NzUyMzgyODZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинское обследование" loading="eager" width="1080" height="720">
-            </div>
-          </div>
-
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-[1.1]">
+            <span class="text-mu-text-900">Чек-ап </span><br>
+            <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">за&nbsp;рубежом</span>
+          </h1>
+          <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Комплексное обследование в&nbsp;лучших клиниках Южной Кореи и&nbsp;Турции за&nbsp;1&ndash;2&nbsp;дня. Виза, трансфер, переводчик, результаты в&nbsp;приложении.</p>
+          <a href="contacts.html" class="btn-primary bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-8 py-4 rounded-3xl font-semibold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center gap-2 group text-lg w-fit">
+            Подобрать программу
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
         </div>
+
+        <!-- Right Image -->
+        <div class="hero__image animate-scale-in relative">
+          <div class="rounded-[3rem] overflow-hidden shadow-2xl border-[8px] border-white/40 bg-white/20">
+            <img src="https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwY2hlY2t1cCUyMGhlYWx0aCUyMHNjcmVlbmluZ3xlbnwxfHx8fDE3NzUyMzgyODZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинское обследование" loading="eager" width="1080" height="720" class="w-full h-[400px] lg:h-[500px] object-cover">
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- Features Grid -->
-    <section class="section" id="features">
-      <div class="container">
-        <div class="features-grid animate-stagger">
+    <section class="container mx-auto px-4 lg:px-6 mb-16">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <!-- Feature 1: Clock -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">За 1&ndash;2 дня</h3>
-            <p class="feature-card__desc">Полное обследование без очередей и&nbsp;ожиданий</p>
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-
-          <!-- Feature 2: MapPin -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">Южная Корея и&nbsp;Турция</h3>
-            <p class="feature-card__desc">Лучшие диагностические центры мирового уровня</p>
-          </div>
-
-          <!-- Feature 3: Stethoscope -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M4.8 2.62 3.13 4.29a.75.75 0 0 0 0 1.06l5.03 5.03a.75.75 0 0 0 1.06 0L10.9 8.7"/>
-                <path d="m14 15.05.63-.63a2 2 0 0 0 0-2.83L9.15 6.1a2 2 0 0 0-2.83 0l-.63.63"/>
-                <path d="M18 13a3 3 0 0 1-3 3"/>
-                <circle cx="18" cy="16" r="3"/>
-                <path d="m21 19-1.5-1.5"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">Передовое оборудование</h3>
-            <p class="feature-card__desc">AI-диагностика, ПЭТ-КТ, МРТ 3Т нового поколения</p>
-          </div>
-
-          <!-- Feature 4: Smartphone -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
-                <path d="M12 18h.01"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">Результаты в&nbsp;приложении</h3>
-            <p class="feature-card__desc">Все результаты и&nbsp;заключения&nbsp;&mdash; в&nbsp;личном кабинете</p>
-          </div>
-
-          <!-- Feature 5: Users -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">Корпоративные чек-апы</h3>
-            <p class="feature-card__desc">Программы для компаний&nbsp;&mdash; от&nbsp;10 сотрудников</p>
-          </div>
-
-          <!-- Feature 6: CheckCircle2 -->
-          <div class="feature-card">
-            <div class="feature-card__icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="m9 12 2 2 4-4"/>
-              </svg>
-            </div>
-            <h3 class="feature-card__title">Все включено</h3>
-            <p class="feature-card__desc">Виза, трансфер, переводчик, проживание рядом с&nbsp;клиникой</p>
-          </div>
-
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">За 1&ndash;2 дня</h3>
+          <p class="text-mu-text-700 font-medium">Полное обследование без очередей и&nbsp;ожиданий</p>
         </div>
+
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Южная Корея и&nbsp;Турция</h3>
+          <p class="text-mu-text-700 font-medium">Лучшие диагностические центры мирового уровня</p>
+        </div>
+
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.8 2.62 3.13 4.29a.75.75 0 0 0 0 1.06l5.03 5.03a.75.75 0 0 0 1.06 0L10.9 8.7"/><path d="m14 15.05.63-.63a2 2 0 0 0 0-2.83L9.15 6.1a2 2 0 0 0-2.83 0l-.63.63"/><path d="M18 13a3 3 0 0 1-3 3"/><circle cx="18" cy="16" r="3"/><path d="m21 19-1.5-1.5"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Передовое оборудование</h3>
+          <p class="text-mu-text-700 font-medium">AI-диагностика, ПЭТ-КТ, МРТ 3Т нового поколения</p>
+        </div>
+
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Результаты в&nbsp;приложении</h3>
+          <p class="text-mu-text-700 font-medium">Все результаты и&nbsp;заключения&nbsp;&mdash; в&nbsp;личном кабинете</p>
+        </div>
+
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Корпоративные чек-апы</h3>
+          <p class="text-mu-text-700 font-medium">Программы для компаний&nbsp;&mdash; от&nbsp;10 сотрудников</p>
+        </div>
+
+        <div class="feature-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div class="feature-card__icon w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Все включено</h3>
+          <p class="text-mu-text-700 font-medium">Виза, трансфер, переводчик, проживание рядом с&nbsp;клиникой</p>
+        </div>
+
       </div>
     </section>
 
     <!-- Programs / Pricing -->
-    <section class="section pricing" id="programs">
-      <div class="container">
-        <h2 class="section-heading" style="text-align: center;">
-          <span class="text-gradient">Программы чек-апов</span>
-        </h2>
-        <div class="pricing__grid animate-stagger">
+    <section class="container mx-auto px-4 lg:px-6 mb-16">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Программы чек-апов</span>
+      </h2>
+      <div class="pricing__grid grid md:grid-cols-3 gap-6">
 
-          <!-- Card 1: Basic -->
-          <div class="pricing__card">
-            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem; color: var(--mu-text-900); margin-bottom: var(--space-2);">Базовый чек-ап</h3>
-            <div style="margin-bottom: var(--space-1);">
-              <span class="text-gradient" style="font-size: 1.875rem; font-weight: 800;">от $350</span>
-            </div>
-            <div style="display: flex; gap: var(--space-4); font-size: 0.875rem; color: var(--mu-text-700); font-weight: 700; margin-bottom: var(--space-6);">
-              <span>1 день</span>
-              <span style="color: var(--mu-blue);">Турция</span>
-            </div>
-            <ul style="list-style: none; padding: 0; margin: 0 0 var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-3); flex-grow: 1;">
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Общий анализ крови и&nbsp;мочи</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">УЗИ органов брюшной полости</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">ЭКГ</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Консультация терапевта</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Заключение на&nbsp;русском языке</span>
-              </li>
-            </ul>
-            <a href="contacts.html" class="btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; text-align: center;">
-              Выбрать программу
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
+        <!-- Card 1: Basic -->
+        <div class="pricing__card bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass flex flex-col">
+          <h3 class="text-2xl font-extrabold text-mu-text-900 mb-2">Базовый чек-ап</h3>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-3xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">от $350</span>
           </div>
-
-          <!-- Card 2: Expanded (Popular) -->
-          <div class="pricing__card pricing__card--popular" style="border-color: rgba(56, 198, 244, 0.4); box-shadow: 0 16px 48px color-mix(in oklch, #38C6F4 15%, transparent); position: relative;">
-            <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(to right, var(--mu-blue), var(--mu-accent-blue, #0D9DB5)); color: #fff; padding: 6px 24px; border-radius: 9999px; font-size: 0.875rem; font-weight: 700; box-shadow: var(--shadow-glass);">Популярный</div>
-            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem; color: var(--mu-text-900); margin-bottom: var(--space-2);">Расширенный чек-ап</h3>
-            <div style="margin-bottom: var(--space-1);">
-              <span class="text-gradient" style="font-size: 1.875rem; font-weight: 800;">от $800</span>
-            </div>
-            <div style="display: flex; gap: var(--space-4); font-size: 0.875rem; color: var(--mu-text-700); font-weight: 700; margin-bottom: var(--space-6);">
-              <span>1&ndash;2 дня</span>
-              <span style="color: var(--mu-blue);">Южная Корея</span>
-            </div>
-            <ul style="list-style: none; padding: 0; margin: 0 0 var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-3); flex-grow: 1;">
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Полный анализ крови (60+ показателей)</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">КТ грудной клетки</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">УЗИ всех органов</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Гастроскопия</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Консультация 3 специалистов</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Онкомаркеры</span>
-              </li>
-            </ul>
-            <a href="contacts.html" class="btn-primary" style="display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; text-align: center;">
-              Выбрать программу
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
+          <div class="flex gap-4 text-sm text-mu-text-700 font-bold mb-6">
+            <span>1 день</span>
+            <span class="text-mu-blue">Турция</span>
           </div>
-
-          <!-- Card 3: Premium -->
-          <div class="pricing__card">
-            <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem; color: var(--mu-text-900); margin-bottom: var(--space-2);">Премиум чек-ап</h3>
-            <div style="margin-bottom: var(--space-1);">
-              <span class="text-gradient" style="font-size: 1.875rem; font-weight: 800;">от $2 500</span>
-            </div>
-            <div style="display: flex; gap: var(--space-4); font-size: 0.875rem; color: var(--mu-text-700); font-weight: 700; margin-bottom: var(--space-6);">
-              <span>2 дня</span>
-              <span style="color: var(--mu-blue);">Южная Корея</span>
-            </div>
-            <ul style="list-style: none; padding: 0; margin: 0 0 var(--space-8) 0; display: flex; flex-direction: column; gap: var(--space-3); flex-grow: 1;">
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Все из&nbsp;расширенного</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">МРТ головного мозга</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">ПЭТ-КТ</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Колоноскопия</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Кардио-стресс тест</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">Генетический скрининг</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span style="color: var(--mu-text-900); font-weight: 500;">VIP-палата</span>
-              </li>
-            </ul>
-            <a href="contacts.html" class="btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%; text-align: center;">
-              Выбрать программу
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </div>
-
+          <ul class="space-y-3 mb-8 flex-grow">
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Общий анализ крови и&nbsp;мочи</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">УЗИ органов брюшной полости</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">ЭКГ</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Консультация терапевта</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Заключение на&nbsp;русском языке</span>
+            </li>
+          </ul>
+          <a href="contacts.html" class="btn-secondary w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all bg-white/50 backdrop-blur-xl border border-white/60 text-mu-text-900 shadow-glass-inner">
+            Выбрать программу
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
         </div>
+
+        <!-- Card 2: Expanded (Popular) -->
+        <div class="pricing__card pricing__card--popular bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-glass flex flex-col relative" style="box-shadow: 0 16px 48px color-mix(in oklch, #38C6F4 15%, transparent);">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-1.5 rounded-full text-sm font-bold shadow-lg">Популярный</div>
+          <h3 class="text-2xl font-extrabold text-mu-text-900 mb-2">Расширенный чек-ап</h3>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-3xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">от $800</span>
+          </div>
+          <div class="flex gap-4 text-sm text-mu-text-700 font-bold mb-6">
+            <span>1&ndash;2 дня</span>
+            <span class="text-mu-blue">Южная Корея</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-grow">
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Полный анализ крови (60+ показателей)</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">КТ грудной клетки</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">УЗИ всех органов</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Гастроскопия</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Консультация 3 специалистов</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Онкомаркеры</span>
+            </li>
+          </ul>
+          <a href="contacts.html" class="btn-primary w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white shadow-lg shadow-mu-blue/30">
+            Выбрать программу
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <!-- Card 3: Premium -->
+        <div class="pricing__card bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass flex flex-col">
+          <h3 class="text-2xl font-extrabold text-mu-text-900 mb-2">Премиум чек-ап</h3>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-3xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">от $2 500</span>
+          </div>
+          <div class="flex gap-4 text-sm text-mu-text-700 font-bold mb-6">
+            <span>2 дня</span>
+            <span class="text-mu-blue">Южная Корея</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-grow">
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Все из&nbsp;расширенного</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">МРТ головного мозга</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">ПЭТ-КТ</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Колоноскопия</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Кардио-стресс тест</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">Генетический скрининг</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span class="text-mu-text-900 font-medium">VIP-палата</span>
+            </li>
+          </ul>
+          <a href="contacts.html" class="btn-secondary w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all bg-white/50 backdrop-blur-xl border border-white/60 text-mu-text-900 shadow-glass-inner">
+            Выбрать программу
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+
       </div>
     </section>
 
     <!-- Page CTA -->
-    <section class="section">
-      <div class="container">
-        <div class="cta-card animate-fade-up">
-          <div class="cta-card__inner">
-            <div class="cta-card__glow" aria-hidden="true"></div>
-            <div class="cta-card__content" style="text-align: center; max-width: 42rem; margin: 0 auto;">
-              <h2 class="cta-card__heading">Не&nbsp;знаете, какой чек-ап выбрать?</h2>
-              <p class="cta-card__text">Оставьте заявку&nbsp;&mdash; координатор подберет программу, исходя из&nbsp;вашего возраста, анамнеза и&nbsp;пожеланий.</p>
-              <div class="cta-card__buttons" style="justify-content: center;">
-                <a href="contacts.html" class="btn-primary">
-                  Подобрать программу
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section class="container mx-auto px-4 lg:px-6">
+      <div class="cta-card bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 text-center border border-white/60 shadow-glass-lg relative overflow-hidden animate-scale-in">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Не&nbsp;знаете, какой чек-ап выбрать?</h2>
+        <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Оставьте заявку&nbsp;&mdash; координатор подберёт программу, исходя из&nbsp;вашего возраста, анамнеза и&nbsp;пожеланий.</p>
+        <a href="contacts.html" class="btn-primary bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2 mx-auto">
+          Подобрать программу
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </div>
     </section>
 
   </main>
 
-  <footer class="footer" id="footer">
-    <div class="container">
-      <div class="footer__wrapper">
-        <div class="footer__grid">
-
-          <!-- Column 1: Company -->
+  <footer class="footer relative overflow-hidden z-10 py-16" id="footer">
+    <div class="container mx-auto px-4 lg:px-6 relative z-10">
+      <div class="footer__wrapper bg-white/60 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/60 shadow-glass-lg">
+        <div class="footer__grid grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div>
-            <h3 class="footer__logo text-brand-gradient">MedicusUnion</h3>
-            <p class="footer__desc">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+            <h3 class="footer__logo text-brand-gradient text-3xl font-extrabold bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent mb-4 drop-shadow-sm">MedicusUnion</h3>
+            <p class="footer__desc text-mu-text-700 font-medium leading-relaxed">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
           </div>
-
-          <!-- Column 2: Services -->
           <div>
-            <h4 class="footer__heading">Услуги</h4>
-            <ul class="footer__links">
-              <li><a href="online-consultations.html" class="footer__link">Онлайн-консультации</a></li>
-              <li><a href="treatment-abroad.html" class="footer__link">Лечение за&nbsp;рубежом</a></li>
-              <li><a href="checkups.html" class="footer__link">Чек-ап</a></li>
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Услуги</h4>
+            <ul class="footer__links space-y-3">
+              <li><a href="online-consultations.html" class="footer__link text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Онлайн-консультации</a></li>
+              <li><a href="treatment-abroad.html" class="footer__link text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Лечение за&nbsp;рубежом</a></li>
+              <li><a href="checkups.html" class="footer__link text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Чек-ап</a></li>
             </ul>
           </div>
-
-          <!-- Column 3: Navigation -->
           <div>
-            <h4 class="footer__heading">Навигация</h4>
-            <ul class="footer__links">
-              <li><a href="index.html" class="footer__link">Главная</a></li>
-              <li><a href="contacts.html" class="footer__link">Контакты</a></li>
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Навигация</h4>
+            <ul class="footer__links space-y-3">
+              <li><a href="index.html" class="footer__link text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Главная</a></li>
+              <li><a href="contacts.html" class="footer__link text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Контакты</a></li>
             </ul>
           </div>
-
-          <!-- Column 4: Contacts -->
           <div>
-            <h4 class="footer__heading">Контакты</h4>
-            <ul class="footer__links">
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Контакты</h4>
+            <ul class="footer__links space-y-3">
               <li>
-                <a href="tel:+77015322478" class="footer__contact-item">
-                  <span class="footer__contact-icon glass-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
+                <a href="tel:+77015322478" class="footer__contact-item flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors font-semibold">
+                  <span class="footer__contact-icon glass-icon bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                   </span>
                   +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
                 </a>
               </li>
               <li>
-                <a href="mailto:kz@medicusunion.com" class="footer__contact-item">
-                  <span class="footer__contact-icon glass-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <rect width="20" height="16" x="2" y="4" rx="2"/>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                    </svg>
+                <a href="mailto:kz@medicusunion.com" class="footer__contact-item flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors font-semibold">
+                  <span class="footer__contact-icon glass-icon bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                   </span>
                   kz@medicusunion.com
                 </a>
               </li>
             </ul>
           </div>
-
         </div>
-
-        <!-- Bottom bar -->
-        <div class="footer__bottom">
-          <p class="footer__copyright">&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
-          <p class="footer__badges">
+        <div class="footer__bottom border-t border-mu-text-300/30 pt-8 mt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="footer__copyright text-mu-text-700 font-medium text-sm">&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
+          <p class="footer__badges text-mu-text-700 font-medium text-sm flex items-center gap-2">
             <span class="footer__badge-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
               ISO 27001 Certified
             </span>
-            <span class="footer__badge-dot" aria-hidden="true"></span>
+            <span class="footer__badge-dot w-1.5 h-1.5 bg-mu-text-300/30 rounded-full" aria-hidden="true"></span>
             <span>Astana Hub Resident</span>
           </p>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- Sticky Mobile CTA Bar -->
-  <div class="sticky-bar" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
-    <div class="container sticky-bar__container">
-      <a href="tel:+77015322478" class="sticky-bar__phone" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <a href="contacts.html" class="btn-primary sticky-bar__cta">Оставить заявку</a>
+  <div class="sticky-bar fixed bottom-4 left-4 right-4 z-50 bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/60 shadow-glass-lg p-3 lg:hidden" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
+    <div class="container sticky-bar__container flex items-center justify-between gap-3">
+      <a href="tel:+77015322478" class="sticky-bar__phone text-mu-text-900 font-semibold text-sm" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+      <a href="contacts.html" class="btn-primary sticky-bar__cta bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-mu-blue/30 text-sm">Оставить заявку</a>
     </div>
   </div>
 
