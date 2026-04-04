@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: Milestone complete
-stopped_at: Completed 25-04-PLAN.md
-last_updated: "2026-04-04T10:57:57.879Z"
+milestone: v2.0
+milestone_name: Service Pages Copywriting Rewrite
+status: Defining requirements
+stopped_at: Milestone v2.0 started
+last_updated: "2026-04-04T12:00:00.000Z"
 progress:
-  total_phases: 3
-  completed_phases: 2
-  total_plans: 14
-  completed_plans: 13
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
