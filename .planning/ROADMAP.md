@@ -160,3 +160,13 @@ Audit: `.planning/milestones/v1.4-MILESTONE-AUDIT.md`
 Plans:
 - [x] 24-01-PLAN.md — Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
 - [x] 24-02-PLAN.md — New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
+
+### Phase 1: Apply Redesign from Redesign folder to main project
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 0
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 1 to break down)
