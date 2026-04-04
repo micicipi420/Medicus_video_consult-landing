@@ -14,6 +14,12 @@ Thumbs.db
 *.swp
 *.swo
 
+# Tailwind CSS standalone CLI binary (~73MB, download with curl)
+tailwindcss
+
+# Tailwind compiled output (regenerated from src/styles/)
+css/tw-output.css
+
 # ── GSD baseline (auto-generated) ──
 .gsd
 *~
