@@ -173,6 +173,6 @@ Plans:
 - [x] 01-02-PLAN.md — JS rewrite: main.js (form, accordion, phone mask, header, mobile menu) + animations.js (motion-powered entrance animations)
 - [x] 01-03-PLAN.md — index.html top half: head, header, mesh bg, hero, stats, services, guide sections
 - [x] 01-04-PLAN.md — index.html bottom half: WhyUs, contact form, FAQ, pricing, CTA, footer, sticky bar
-- [ ] 01-05-PLAN.md — Service pages: online-consultations.html + treatment-abroad.html
+- [x] 01-05-PLAN.md — Service pages: online-consultations.html + treatment-abroad.html
 - [x] 01-06-PLAN.md — Service pages: checkups.html + contacts.html
-- [ ] 01-07-PLAN.md — Link audit, old file cleanup, visual verification checkpoint
+- [x] 01-07-PLAN.md — Link audit, old file cleanup, visual verification checkpoint
