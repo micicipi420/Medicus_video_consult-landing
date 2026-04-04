@@ -123,7 +123,7 @@ Plans:
 **Milestone Goal:** Rewrite all 3 service pages (online consultations, treatment abroad, checkups) using original copywriting documents as the single source of truth. Each page gets completely new content, new sections, and proper SEO -- while preserving the shared Tailwind glassmorphism design system, Directus form integration, and FAQ accordion behavior.
 
 - [x] **Phase 26: Online Consultations Page Rewrite** - Full content rewrite of online-consultations.html from copywriting document (11 sections + shared cross-page infra) (completed 2026-04-04)
-- [ ] **Phase 27: Treatment Abroad Page Rewrite** - Full content rewrite of treatment-abroad.html from copywriting document (10 sections)
+- [x] **Phase 27: Treatment Abroad Page Rewrite** - Full content rewrite of treatment-abroad.html from copywriting document (10 sections) (completed 2026-04-04)
 - [ ] **Phase 28: Checkups Page Rewrite** - Full content rewrite of checkups.html from copywriting document (11 sections + B2B block)
 
 ## Phase Details
@@ -173,5 +173,5 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 26. Online Consultations Page Rewrite | 0/2 | Complete    | 2026-04-04 |
-| 27. Treatment Abroad Page Rewrite | 0/TBD | Not started | - |
+| 27. Treatment Abroad Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
 | 28. Checkups Page Rewrite | 0/TBD | Not started | - |
