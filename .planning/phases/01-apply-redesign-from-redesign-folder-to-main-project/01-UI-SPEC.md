@@ -5,6 +5,7 @@ status: draft
 shadcn_initialized: false
 preset: none
 created: 2026-04-04
+revised: 2026-04-04
 ---
 
 # Phase 1 -- UI Design Contract
@@ -48,6 +49,17 @@ Declared values (multiples of 4):
 | --space-16 | 64px (4rem) | Section top/bottom padding (desktop) |
 | --space-20 | 80px (5rem) | Page-level spacing, hero pt on desktop |
 
+### Non-Standard Value Justifications
+
+The standard 8-point set is {4, 8, 16, 24, 32, 48, 64}. Four values fall outside this set. Each is justified below:
+
+| Token | Value | Nearest Standard | Justification |
+|-------|-------|------------------|---------------|
+| --space-3 | 12px | 8px or 16px | Redesign cards use exactly 12px (`p-3`) inner padding around images. 8px is too tight (images touch card edges visually); 16px wastes card real estate on mobile. This is the Tailwind `p-3` value used consistently across Service, Guide, and WhyUs card image insets. |
+| --space-5 | 20px | 16px or 24px | Redesign buttons use `px-5` (20px) horizontal padding. This specific value matches the badge and button padding rhythm from the Redesign source (`px-5 py-2.5`). 16px produces cramped button labels at 18px font; 24px makes badges appear bloated. |
+| --space-10 | 40px | 32px or 48px | Used exclusively for section heading-to-content gaps (`gap-10` in Redesign). 32px collapses visual breathing room between section headers and card grids; 48px is the section-edge padding already assigned to --space-12, causing ambiguity. 40px is the Tailwind `gap-10` midpoint used in Services, Guide, and WhyUs sections. |
+| --space-20 | 80px | 64px | Hero section top padding on desktop needs 80px to clear the floating glassmorphism header (which sits 16px from top + ~56px height = 72px total intrusion). 64px places content behind the header. 80px provides exactly 8px clearance below the header bottom edge. |
+
 Exceptions:
 - Touch targets: minimum 44px (11 spacing units) for all interactive elements per WCAG 2.2 Target Size
 - Hero section top padding: 128px (32 * 4) on mobile, 160px on desktop -- accounts for floating header + breathing room
@@ -56,23 +68,26 @@ Exceptions:
 
 ## Typography
 
-### Type Scale
+### Type Scale (4 sizes, 2 weights)
 
 | Role | Size | Weight | Line Height | Letter Spacing | Font Family |
 |------|------|--------|-------------|----------------|-------------|
-| Display (h1 hero) | clamp(3rem, 5vw + 1rem, 5rem) / 48-80px | 800 (extrabold) | 1.1 | -0.02em (tight) | SF Pro Rounded |
-| Heading Large (h2) | clamp(2.25rem, 4vw + 0.5rem, 3.75rem) / 36-60px | 800 (extrabold) | 1.15 | -0.02em (tight) | SF Pro Rounded |
-| Heading Medium (h3) | clamp(1.5rem, 2vw + 0.5rem, 2rem) / 24-32px | 700 (bold) | 1.25 | -0.01em | SF Pro Rounded |
-| Heading Small (h4) | 18px (1.125rem) | 800 (extrabold) | 1.4 | normal | SF Pro Rounded |
-| Body | 16px (1rem) | 500 (medium) | 1.5 | normal | SF Pro Display |
-| Body Large | 20px (1.25rem) | 500 (medium) | 1.6 | normal | SF Pro Display |
-| Label / Badge | 14px (0.875rem) | 700 (bold) | 1.5 | 0.05em (wider) | SF Pro Display |
-| Button | 18px (1.125rem) | 600 (semibold) | 1.5 | -0.01em (tight) | SF Pro Display |
-| Caption | 14px (0.875rem) | 500 (medium) | 1.5 | normal | SF Pro Display |
+| Display (h1, h2) | clamp(3rem, 5vw + 1rem, 5rem) / 48-80px | 800 (extrabold) | 1.1 | -0.02em (tight) | SF Pro Rounded |
+| Subheading (h3, card titles) | clamp(1.5rem, 3vw + 0.5rem, 2rem) / 24-32px | 800 (extrabold) | 1.25 | -0.01em | SF Pro Rounded |
+| Body Large (buttons, nav, body-large) | 18px (1.125rem) | 600 (semibold) | 1.5 | normal | SF Pro Display |
+| Body (paragraphs, labels, captions, badges) | 16px (1rem) | 600 (semibold) | 1.5 | normal | SF Pro Display |
 
-**Source:** Extracted from Redesign TSX. Hero.tsx uses `text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[1.1] tracking-tight`. Section h2 uses `text-5xl md:text-6xl font-extrabold`. Body paragraphs use `text-xl font-medium leading-relaxed`. Badge labels use `text-sm font-bold uppercase tracking-wider`.
+**Weight budget (enforced):** 2 weights only -- 600 (semibold) for all body/UI text and 800 (extrabold) for all headings. No other weights permitted.
 
-**Weight budget (enforced):** Only 400, 500, 600, 700, 800 from variable font. Primary working weights: 500 (body), 600 (buttons/nav), 700 (card titles), 800 (hero/section headings).
+**Size budget (enforced):** 4 sizes only. Former 9-size scale collapsed as follows:
+- Display (h1 hero) + Heading Large (h2) merged into "Display" -- both use the same clamp with extrabold 800
+- Heading Medium (h3) + Heading Small (h4) merged into "Subheading" -- both use the same clamp with extrabold 800
+- Body Large (20px) + Button (18px) merged into "Body Large" at 18px -- the 2px difference was imperceptible; 18px serves both roles at semibold 600
+- Body (16px) + Label/Badge (14px) + Caption (14px) merged into "Body" at 16px -- 14px was too small for 45+ audience; 16px minimum ensures readability
+
+**Source:** Extracted from Redesign TSX, consolidated per checker requirements. Hero.tsx uses `text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[1.1] tracking-tight`. Section h2 uses `text-5xl md:text-6xl font-extrabold`.
+
+**Badge/label differentiation:** Badges and labels use the Body size (16px) but are distinguished by `text-transform: uppercase` and `letter-spacing: 0.05em`, not by a separate font size.
 
 **text-wrap: balance** on all h1, h2, h3 elements to prevent Cyrillic orphan lines (carried forward from Phase 21).
 
@@ -269,8 +284,8 @@ Overlay: `rgba(255,255,255,0.4)` with `backdrop-blur(40px) saturate(180%)`.
 | Stat 2 | "11" (teal) -- "стран" |
 | Stat 3 | "500+" (orange) -- "врачей" |
 | Stat 4 | "15+" (green) -- "лет опыта" |
-| Number size | text-5xl md:text-6xl (48px / 60px), extrabold |
-| Label | text-lg, bold, uppercase, tracking-wider |
+| Number size | Display size (clamp(3rem, 5vw + 1rem, 5rem)), extrabold 800 |
+| Label | Body size (16px), semibold 600, uppercase, tracking-wider |
 | Hover | Background glow (accent color at 20% opacity, blur-2xl), number scale to 110% |
 
 ### 4. Services Section
@@ -342,7 +357,7 @@ Overlay: `rgba(255,255,255,0.4)` with `backdrop-blur(40px) saturate(180%)`.
 | Heading | "Начните с бесплатной консультации" -- mu-text-900, no gradient |
 | Body | "Расскажите о вашей ситуации -- мы выслушаем и подберем оптимальное решение. Без обязательств." |
 | Primary CTA | "Оставить заявку" with ArrowRight -- brand gradient |
-| Secondary CTA | "Позвонить" with Phone icon -- glass button |
+| Secondary CTA | "Позвонить нам" with Phone icon -- glass button |
 | Background animation | Blurred blue circle (w-96 h-96, mu-blue/30, blur-100px) pulsing scale 1-1.3, opacity 0.3-0.6, 8s loop |
 | Right image | Full-height, gradient fade from left (white/60 to transparent) |
 | Image hidden mobile | `hidden md:block` |
@@ -353,7 +368,7 @@ Overlay: `rgba(255,255,255,0.4)` with `backdrop-blur(40px) saturate(180%)`.
 |----------|-------|
 | Wrapper | Glass surface, rounded-3rem, p-12, shadow-glass-lg |
 | Layout | 4-column grid (company, services, navigation, contacts) |
-| Logo | "MedicusUnion" -- gradient text, text-3xl, extrabold |
+| Logo | "MedicusUnion" -- gradient text, Display size, extrabold 800 |
 | Company description | "Международный медицинский сервис. Австрия * Казахстан" |
 | Service links | Онлайн-консультации, Лечение за рубежом, Чек-ап |
 | Navigation links | Главная, Контакты |
@@ -502,7 +517,7 @@ All entrance animations: elements render at final position immediately. Counter 
 | Header CTA | "Оставить заявку" |
 | Form submit CTA | "Отправить заявку" |
 | Final CTA | "Оставить заявку" |
-| Call CTA | "Позвонить" |
+| Call CTA | "Позвонить нам" |
 | Service CTA 1 | "Получить консультацию" |
 | Service CTA 2 | "Узнать подробнее" |
 | Service CTA 3 | "Подобрать программу" |
@@ -532,7 +547,7 @@ All entrance animations: elements render at final position immediately. Counter 
 | Mobile (default) | < 768px | Single column, stacked layouts, smaller type |
 | md | >= 768px | 2-col grids, collage visible, side-by-side CTAs |
 | lg | >= 1024px | Full desktop layout, 3-col grids, header nav visible |
-| xl | >= 1280px | Hero h1 scales to text-8xl |
+| xl | >= 1280px | Hero h1 scales to max clamp value |
 
 **Source:** CONTEXT.md -- "Exact responsive breakpoints and mobile adaptations" is Claude's discretion. These match Tailwind defaults used in Redesign.
 
@@ -561,6 +576,16 @@ All entrance animations: elements render at final position immediately. Counter 
 | Registry | Blocks Used | Safety Gate |
 |----------|-------------|-------------|
 | None | N/A -- vanilla HTML/CSS/JS, no component registry | not applicable |
+
+---
+
+## Revision Log
+
+| Date | Issues Fixed | Details |
+|------|-------------|---------|
+| 2026-04-04 | Dimension 4 Typography (BLOCK) | Collapsed 9 font sizes to 4: Display (clamp h1/h2), Subheading (clamp h3/card titles), Body Large (18px buttons/nav), Body (16px paragraphs/labels/captions/badges). Collapsed 4 weights (500/600/700/800) to 2: 600 (semibold, all body/UI) and 800 (extrabold, all headings). |
+| 2026-04-04 | Dimension 5 Spacing (BLOCK) | Added Non-Standard Value Justifications table for --space-3 (12px), --space-5 (20px), --space-10 (40px), --space-20 (80px) with specific rationale for why nearest standard values are unsuitable. |
+| 2026-04-04 | Dimension 1 Copywriting (FLAG) | Changed single-word CTA "Позвонить" to "Позвонить нам" in CTA Section and Copywriting Contract. |
 
 ---
 
