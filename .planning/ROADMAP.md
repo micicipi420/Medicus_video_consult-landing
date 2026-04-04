@@ -124,7 +124,7 @@ Plans:
 
 - [x] **Phase 26: Online Consultations Page Rewrite** - Full content rewrite of online-consultations.html from copywriting document (11 sections + shared cross-page infra) (completed 2026-04-04)
 - [x] **Phase 27: Treatment Abroad Page Rewrite** - Full content rewrite of treatment-abroad.html from copywriting document (10 sections) (completed 2026-04-04)
-- [ ] **Phase 28: Checkups Page Rewrite** - Full content rewrite of checkups.html from copywriting document (11 sections + B2B block)
+- [x] **Phase 28: Checkups Page Rewrite** - Full content rewrite of checkups.html from copywriting document (11 sections + B2B block) (completed 2026-04-04)
 
 ## Phase Details
 
@@ -174,4 +174,4 @@ Plans:
 |-------|----------------|--------|-----------|
 | 26. Online Consultations Page Rewrite | 0/2 | Complete    | 2026-04-04 |
 | 27. Treatment Abroad Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
-| 28. Checkups Page Rewrite | 0/TBD | Not started | - |
+| 28. Checkups Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
