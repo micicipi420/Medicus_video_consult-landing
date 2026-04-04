@@ -150,7 +150,7 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 Requirements: `.planning/milestones/v1.4-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.4-MILESTONE-AUDIT.md`
 
-### ✅ Phase 24: Liquid Glass Enhancement — SHIPPED 2026-03-25
+### Phase 24: Liquid Glass Enhancement -- SHIPPED 2026-03-25
 
 **Goal:** Expand glassmorphism from Phase 22 (2 elements) to full iOS 26 liquid glass treatment across the page. Three new glass surfaces (sticky bar, form wrapper, social proof stats), glass intensity upgraded site-wide (blur 20px, 60% opacity, green tint, specular highlight), dark mode glass enabled everywhere, gradient mesh backgrounds added to benefits and lead-form sections.
 **Requirements**: D-01 through D-17 (17/17 verified)
@@ -163,10 +163,16 @@ Plans:
 
 ### Phase 1: Apply Redesign from Redesign folder to main project
 
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 0
-**Plans:** 0 plans
+**Goal:** Migrate the visual design, layout, content structure, and interaction patterns from the Redesign/ folder (React + Tailwind + Framer Motion prototype) into the main vanilla HTML/CSS/JS project. Replace the current single-page landing with a 5-page static site using the redesign's glassmorphism visual language, new color palette (mu-blue, mu-green, accent colors), SF Pro system fonts, Lucide SVG icons, motion-powered animations, and 3-service content model (online consultations, treatment abroad, checkups). Preserve existing form submission to Directus, FAQ accordion, and phone mask functionality.
+**Requirements**: TOKENS-01, TOKENS-02, TOKENS-03, TOKENS-04, ANIM-01, ANIM-02, ANIM-03, JS-01, JS-02, LAYOUT-01, LAYOUT-02, HERO-01, STATS-01, SERVICES-01, GUIDE-01, WHYUS-01, CONTACT-01, CTA-01, FOOTER-01, FAQ-01, PRICING-01, PAGE-01, PAGE-02, PAGE-03, PAGE-04, NAV-01, CLEANUP-01
+**Depends on:** Phase 24
+**Plans:** 7 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 1 to break down)
+- [ ] 01-01-PLAN.md — Complete CSS rewrite: design tokens, glass components, buttons, section-specific styles, animation keyframes
+- [ ] 01-02-PLAN.md — JS rewrite: main.js (form, accordion, phone mask, header, mobile menu) + animations.js (motion-powered entrance animations)
+- [ ] 01-03-PLAN.md — index.html top half: head, header, mesh bg, hero, stats, services, guide sections
+- [ ] 01-04-PLAN.md — index.html bottom half: WhyUs, contact form, FAQ, pricing, CTA, footer, sticky bar
+- [ ] 01-05-PLAN.md — Service pages: online-consultations.html + treatment-abroad.html
+- [ ] 01-06-PLAN.md — Service pages: checkups.html + contacts.html
+- [ ] 01-07-PLAN.md — Link audit, old file cleanup, visual verification checkpoint
