@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 25
-stopped_at: Completed 01-07-PLAN.md (Task 1 done, Task 2 checkpoint pending)
-last_updated: "2026-04-04T07:30:12.634Z"
+status: Ready to execute
+stopped_at: Completed 25-02-PLAN.md
+last_updated: "2026-04-04T07:50:37.341Z"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 14
-  completed_plans: 9
+  completed_plans: 11
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Position
 
 Phase: 25 (migrate-to-tailwind-css-v4) — EXECUTING
-Plan: 1 of 5
+Plan: 2 of 5
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: 1 of 5
 | Phase 01 P04 | 6 | 2 tasks | 1 files |
 | Phase 01 P06 | 7 | 2 tasks | 2 files |
 | Phase 01 P07 | 2 | 1 tasks | 5 files |
+| Phase 25 P02 | 9 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,8 @@ Recent decisions affecting current work:
 - [Phase 01]: Used index.html as page shell template for checkups/contacts pages (online-consultations.html not yet created)
 - [Phase 01]: Pricing card popular badge implemented with inline styles (absolute positioning, gradient bg) since no CSS class existed
 - [Phase 01]: Fixed 4 broken nav links (consultations.html -> online-consultations.html) in checkups.html and contacts.html
+- [Phase 25]: BEM-first class ordering: BEM class name first, Tailwind utilities follow, preserving JS querySelector compatibility
+- [Phase 25]: Inline style block for JS-toggled states (header--scrolled, mobile-menu-overlay.is-open) since JS toggles BEM classes not Tailwind utilities
 
 ### Roadmap Evolution
 
@@ -94,6 +97,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-04T05:02:15.166Z
-Stopped at: Completed 01-07-PLAN.md (Task 1 done, Task 2 checkpoint pending)
+Last session: 2026-04-04T07:50:37.336Z
+Stopped at: Completed 25-02-PLAN.md
 Resume file: None
