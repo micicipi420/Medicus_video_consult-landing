@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" class="no-js" data-theme="light">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,21 +25,10 @@
   <link rel="canonical" href="https://medicusunion.kz/checkup">
 
   <!-- Theme Color -->
-  <meta name="theme-color" content="#38C6F4">
-
-  <script>
-    (function() {
-      var saved = localStorage.getItem('theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
+  <meta name="theme-color" content="#1A365D">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   <header class="site-header" id="header">
     <div class="container site-header__container">
       <a href="index.html" class="site-header__brand-link">
@@ -53,24 +42,12 @@
         <a href="#faq-checkup" class="site-header__link">FAQ</a>
       </nav>
       <a href="tel:+77015322478" class="site-header__phone">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <button
-        class="theme-toggle"
-        aria-pressed="false"
-        aria-label="Включить тёмную тему"
-        type="button"
-      >
-        <span class="theme-toggle__icon" aria-hidden="true">☀</span>
-        <span class="theme-toggle__label">Тёмная тема</span>
-      </button>
     </div>
   </header>
 
   <main>
     <!-- СЕКЦИЯ 1 — HERO -->
     <section class="section hero hero--checkup" id="hero-checkup">
-      <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
-      <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
       <div class="container hero__container">
         <div class="hero__content">
           <p class="hero__eyebrow">Чек-ап за&nbsp;рубежом</p>
@@ -84,7 +61,6 @@
         </div>
         <div class="hero__illustration" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
-            <!-- Medical checkup scene: stethoscope + clipboard + heartbeat -->
             <!-- Clipboard -->
             <rect x="120" y="80" width="160" height="220" rx="10" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.06)" stroke-linecap="round" stroke-linejoin="round"/>
             <rect x="170" y="68" width="60" height="24" rx="6" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
@@ -138,30 +114,24 @@
     <!-- Stats Bar -->
     <section class="social-proof" aria-label="Ключевые цифры">
       <div class="container social-proof__container">
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item animate-on-scroll">
           <span class="social-proof__number">43</span>
           <span class="social-proof__label">клиники</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item animate-on-scroll">
           <span class="social-proof__number">11</span>
           <span class="social-proof__label">стран</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
-          <span class="social-proof__number">1–2</span>
+        <div class="social-proof__item animate-on-scroll">
+          <span class="social-proof__number">1&ndash;2</span>
           <span class="social-proof__label">дня обследование</span>
         </div>
-        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+        <div class="social-proof__item animate-on-scroll">
           <span class="social-proof__number">ISO</span>
           <span class="social-proof__label">27001</span>
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--dark-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 2 — ПРОБЛЕМА -->
     <section class="section problem" id="why-checkup">
@@ -169,7 +139,7 @@
         <h2 class="problem__heading">Почему не&nbsp;стоит ждать симптомов</h2>
         <p class="checkup-intro__text">Большинство серьёзных заболеваний&nbsp;&mdash; онкология, сердечно-сосудистые, эндокринные нарушения&nbsp;&mdash; на&nbsp;ранних стадиях никак себя не&nbsp;проявляют. Комплексный чек-ап проверяет все ключевые системы организма за&nbsp;1&ndash;2&nbsp;дня и&nbsp;выявляет проблемы тогда, когда с&nbsp;ними ещё можно справиться.</p>
         <div class="problem__grid">
-          <div class="card card--glass problem__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card problem__card animate-on-scroll">
             <div class="problem__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -180,7 +150,7 @@
             <h3 class="card__title">&laquo;Я&nbsp;нормально себя чувствую&raquo;</h3>
             <p class="card__text">Именно так говорит большинство людей, у&nbsp;которых потом находят проблему. Чек-ап&nbsp;&mdash; это не&nbsp;про ощущения, а&nbsp;про данные: анализы крови, УЗИ, КТ, МРТ видят то, что вы&nbsp;не&nbsp;чувствуете.</p>
           </div>
-          <div class="card card--glass problem__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card problem__card animate-on-scroll">
             <div class="problem__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -190,7 +160,7 @@
             <h3 class="card__title">&laquo;У&nbsp;меня нет времени&raquo;</h3>
             <p class="card__text">Чек-ап за&nbsp;рубежом&nbsp;&mdash; это не&nbsp;месяцы хождения по&nbsp;кабинетам. Это 1&ndash;2&nbsp;дня по&nbsp;заранее спланированному расписанию: вы&nbsp;приехали, прошли всё, получили результат. Без очередей.</p>
           </div>
-          <div class="card card--glass problem__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card problem__card animate-on-scroll">
             <div class="problem__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -205,19 +175,13 @@
       </div>
     </section>
 
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
     <!-- СЕКЦИЯ 3 — ПОЧЕМУ ЗА РУБЕЖОМ -->
     <section class="section advantages" id="why-abroad">
       <div class="container">
         <h2 class="advantages__heading">Что даёт чек-ап в&nbsp;клинике мирового уровня</h2>
         <p class="checkup-intro__text">Качество чек-апа определяется тремя вещами: оборудование, квалификация врачей и&nbsp;полнота программы. Samsung Medical Center и&nbsp;Severance Hospital&nbsp;&mdash; клиники, которые входят в&nbsp;мировые рейтинги и&nbsp;ежегодно принимают тысячи международных пациентов.</p>
         <div class="advantages__grid">
-          <div class="card advantages__card">
+          <div class="card advantages__card animate-on-scroll">
             <div class="advantages__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <rect x="8" y="12" width="32" height="24" rx="4" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -229,7 +193,7 @@
             <h3 class="card__title">Оборудование последнего поколения</h3>
             <p class="card__text">Низкодозированная КТ, 3D&nbsp;КТ сосудов сердца, ПЭТ&nbsp;КТ, МРТ/МРА головного мозга&nbsp;&mdash; методы, которые выявляют патологии на&nbsp;самых ранних стадиях.</p>
           </div>
-          <div class="card advantages__card">
+          <div class="card advantages__card animate-on-scroll">
             <div class="advantages__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="16" r="8" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -240,7 +204,7 @@
             <h3 class="card__title">Врачи с&nbsp;международной репутацией</h3>
             <p class="card__text">Обследование проводят профессора и&nbsp;ведущие специалисты. По&nbsp;результатам&nbsp;&mdash; личная консультация врача: что в&nbsp;норме, что требует внимания, что делать дальше.</p>
           </div>
-          <div class="card advantages__card">
+          <div class="card advantages__card animate-on-scroll">
             <div class="advantages__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <rect x="10" y="8" width="28" height="34" rx="3" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -253,7 +217,7 @@
             <h3 class="card__title">Программы, а&nbsp;не&nbsp;отдельные анализы</h3>
             <p class="card__text">Каждая программа&nbsp;&mdash; это комплекс обследований, составленный так, чтобы ничего не&nbsp;пропустить. От&nbsp;базового скрининга до&nbsp;углублённого обследования с&nbsp;колоноскопией и&nbsp;МРТ.</p>
           </div>
-          <div class="card advantages__card">
+          <div class="card advantages__card animate-on-scroll">
             <div class="advantages__icon icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
                 <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
@@ -267,39 +231,33 @@
       </div>
     </section>
 
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
     <!-- СЕКЦИЯ 4 — ПОЧЕМУ ЧЕРЕЗ MEDICUSUNION -->
     <section class="section why-us" id="why-us">
       <div class="container">
         <h2 class="why-us__heading">Не&nbsp;просто посредник&nbsp;&mdash; медицинская платформа</h2>
         <p class="checkup-intro__text">Можно обратиться в&nbsp;клинику напрямую. Но&nbsp;тогда вы&nbsp;сами организуете визу, перелёт, трансфер, проживание, переписку с&nbsp;клиникой на&nbsp;английском, перевод результатов. И&nbsp;если обследование выявит проблему&nbsp;&mdash; вы&nbsp;с&nbsp;ней один на&nbsp;один. MedicusUnion&nbsp;&mdash; это другой подход.</p>
         <div class="why-us__grid">
-          <div class="card card--glass why-us__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card why-us__card animate-on-scroll">
             <div class="why-us__number" aria-hidden="true">01</div>
             <h3 class="card__title">Организация от&nbsp;А&nbsp;до&nbsp;Я</h3>
             <p class="card__text">Запись в&nbsp;клинику, визовая поддержка, авиабилеты, трансфер из&nbsp;аэропорта, проживание, личный переводчик-сопровождающий на&nbsp;всех этапах.</p>
           </div>
-          <div class="card card--glass why-us__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card why-us__card animate-on-scroll">
             <div class="why-us__number" aria-hidden="true">02</div>
             <h3 class="card__title">Личный кабинет и&nbsp;приложение</h3>
             <p class="card__text">Все результаты обследования&nbsp;&mdash; в&nbsp;вашем личном кабинете: на&nbsp;русском языке, в&nbsp;цифровом виде. DICOM-просмотрщик для снимков, переведённые заключения врачей.</p>
           </div>
-          <div class="card card--glass why-us__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card why-us__card animate-on-scroll">
             <div class="why-us__number" aria-hidden="true">03</div>
             <h3 class="card__title">Страховочная сетка: 43&nbsp;клиники, 11&nbsp;стран</h3>
             <p class="card__text">Если чек-ап выявит проблему&nbsp;&mdash; вам не&nbsp;нужно начинать поиск с&nbsp;нуля. Мы&nbsp;организуем лечение в&nbsp;той&nbsp;же клинике или в&nbsp;любой другой из&nbsp;нашей сети.</p>
           </div>
-          <div class="card card--glass why-us__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card why-us__card animate-on-scroll">
             <div class="why-us__number" aria-hidden="true">04</div>
             <h3 class="card__title">Юридическая надёжность</h3>
             <p class="card__text">MedicusUnion GmbH зарегистрирована в&nbsp;Австрии. Офис в&nbsp;Казахстане&nbsp;&mdash; резидент Astana Hub. Договор, чеки, прозрачные условия. Сертификация ISO&nbsp;27001.</p>
           </div>
-          <div class="card card--glass why-us__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card why-us__card animate-on-scroll">
             <div class="why-us__number" aria-hidden="true">05</div>
             <h3 class="card__title">Два направления&nbsp;&mdash; под ваш бюджет</h3>
             <p class="card__text">Южная Корея&nbsp;&mdash; максимально глубокое обследование в&nbsp;клиниках мирового топ-уровня. Турция&nbsp;&mdash; качественный чек-ап ближе и&nbsp;доступнее по&nbsp;цене.</p>
@@ -307,12 +265,6 @@
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 5 — ПРОГРАММЫ. ЮЖНАЯ КОРЕЯ -->
     <section class="section programs" id="programs-korea">
@@ -323,43 +275,43 @@
 
         <h3 class="programs__section-title">Комплексные программы</h3>
         <div class="programs__grid">
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Базовая</span>
             <div class="programs__price">от&nbsp;~$760 <span class="programs__price-note">(муж.) / ~$810 (жен.)</span></div>
             <p class="card__text">Анализы крови (метаболизм, онкомаркеры, гепатит, инфекции), анализ мочи и&nbsp;кала, офтальмолог, аудиометрия, ЭКГ, флюорография, УЗИ брюшной полости, стоматолог, маммография (жен.&nbsp;35+), гинекология (жен.), консультация врача.</p>
           </div>
 
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Primary</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;400 <span class="programs__price-note">(муж.) / ~$1&nbsp;750 (жен.) &middot; 3&nbsp;часа</span></div>
             <p class="card__text">Всё из&nbsp;базовой + расширенные анализы крови (щитовидная железа, липидный профиль, диабет, анемия, половые гормоны, витамин&nbsp;D), гастроскопия с&nbsp;седацией, УЗИ сонных артерий, анализ состава тела.</p>
           </div>
 
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Executive</span>
             <div class="programs__price">от&nbsp;~$2&nbsp;270 <span class="programs__price-note">(муж.) / ~$2&nbsp;600 (жен.) &middot; 4&nbsp;часа</span></div>
             <p class="card__text">Всё из&nbsp;Primary + колоноскопия с&nbsp;седацией, УЗИ сердца, детальные анализы крови (электролиты, маркеры костной ткани, B12, фолиевая кислота, NT-pro BNP), денситометрия (35+).</p>
           </div>
 
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge programs__badge--accent">Executive on&nbsp;Cancer</span>
             <div class="programs__price">от&nbsp;~$2&nbsp;150 <span class="programs__price-note">(муж.) / ~$2&nbsp;690 (жен.) &middot; 5&nbsp;часов</span></div>
             <p class="card__text">Всё из&nbsp;Executive + КТ&nbsp;брюшной полости и&nbsp;малого таза, низкодозированная КТ&nbsp;лёгких, расширенные анализы на&nbsp;онкомаркеры, УЗИ щитовидной железы. Углублённая проверка на&nbsp;онкологию.</p>
           </div>
 
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Премиум</span>
             <div class="programs__price">от&nbsp;~$2&nbsp;410 <span class="programs__price-note">(муж.) / ~$2&nbsp;990 (жен.)</span></div>
             <p class="card__text">Базовая + всё из&nbsp;Executive, КТ&nbsp;на кальциноз коронарных артерий, КТ&nbsp;брюшной полости, низкодозированная КТ&nbsp;лёгких, колоноскопия с&nbsp;седацией, денситометрия, Exbody (костно-мышечный дисбаланс).</p>
           </div>
 
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Платинум</span>
             <div class="programs__price">от&nbsp;~$4&nbsp;280 <span class="programs__price-note">(муж.) / ~$4&nbsp;860 (жен.)</span></div>
             <p class="card__text">Всё из&nbsp;Премиум + МРТ/МРА головного мозга, УЗИ сонных артерий, УЗИ сердца.</p>
           </div>
 
-          <div class="card card--glass programs__card programs__card--highlight animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card programs__card--highlight animate-on-scroll">
             <span class="programs__badge programs__badge--accent">Ноблесс</span>
             <div class="programs__price">от&nbsp;~$6&nbsp;100 <span class="programs__price-note">(муж.) / ~$6&nbsp;420 (жен.) &middot; 8&nbsp;часов</span></div>
             <p class="card__text">Максимальная программа. Всё из&nbsp;Платинум + МРТ&nbsp;брюшной полости, 3D&nbsp;КТ сосудов сердца, МРТ&nbsp;предстательной железы (муж.), ПЭТ&nbsp;КТ (40+), стоматологический осмотр, панорамный снимок зубов, аудиометрия.</p>
@@ -368,7 +320,7 @@
 
         <h3 class="programs__section-title">Для подростков (13&ndash;18 лет)</h3>
         <div class="programs__grid programs__grid--single">
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Подростковая</span>
             <div class="programs__price">от&nbsp;~$440 <span class="programs__price-note">(муж.) / ~$475 (жен.)</span></div>
             <p class="card__text">Анализы крови (анемия, метаболизм, функция печени/почек/щитовидной железы, гепатит, инфекции), измерение давления, анализ мочи, острота зрения и&nbsp;слуха, ЭКГ, флюорография, УЗИ брюшной полости.</p>
@@ -378,32 +330,32 @@
         <h3 class="programs__section-title">Узкоспециализированные пакеты</h3>
         <p class="programs__note">Базовая программа включена во&nbsp;все пакеты.</p>
         <div class="programs__grid">
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Пищеварительная система</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;500 <span class="programs__price-note">(муж.) / ~$1&nbsp;560 (жен.)</span></div>
             <p class="card__text">КТ&nbsp;брюшной полости, колоноскопия с&nbsp;седацией.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Сердечно-сосудистая система</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;800 <span class="programs__price-note">(муж.) / ~$1&nbsp;850 (жен.)</span></div>
             <p class="card__text">3D&nbsp;КТ сосудов сердца, УЗИ сердца и&nbsp;сонных артерий, измерение стеноза и&nbsp;эластичности артерий, центральное аортальное давление.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Дыхательная система</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;260 <span class="programs__price-note">(муж.) / ~$1&nbsp;350 (жен.)</span></div>
             <p class="card__text">Низкодозированная КТ&nbsp;лёгких, онкомаркер рака лёгких, анализ на&nbsp;аллергию (MAST/61), функция лёгких.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Головной мозг</span>
             <div class="programs__price">от&nbsp;~$2&nbsp;400 <span class="programs__price-note">(муж.) / ~$2&nbsp;450 (жен.)</span></div>
             <p class="card__text">МРТ + МРА головного мозга, УЗИ сонных артерий, измерение стеноза и&nbsp;эластичности артерий.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Для будущих мам</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;200 <span class="programs__price-note">(жен.)</span></div>
             <p class="card__text">УЗИ малого таза, антимюллеров гормон, антитела к&nbsp;краснухе, тесты на&nbsp;рак яичников (HE4, ROMA).</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Для женщин</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;735 <span class="programs__price-note">(жен.)</span></div>
             <p class="card__text">УЗИ щитовидной железы, молочных желёз, малого таза, ВПЧ, денситометрия, женские гормоны, тесты на&nbsp;рак яичников.</p>
@@ -411,12 +363,6 @@
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 6 — ПРОГРАММЫ. ТУРЦИЯ -->
     <section class="section programs programs--turkey" id="programs-turkey">
@@ -434,6 +380,10 @@
             </li>
             <li class="programs__included-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Расширенная программа анализов</span>
+            </li>
+            <li class="programs__included-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <span>Всё за&nbsp;1&ndash;2&nbsp;дня, без очередей</span>
             </li>
             <li class="programs__included-item">
@@ -442,28 +392,36 @@
             </li>
             <li class="programs__included-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>Личный сопровождающий и&nbsp;переводчик 24/7</span>
+              <span>Личный сопровождающий на&nbsp;всех этапах</span>
+            </li>
+            <li class="programs__included-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>24/7 поддержка и&nbsp;переводчик</span>
+            </li>
+            <li class="programs__included-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Забор анализов прямо в&nbsp;отеле</span>
             </li>
           </ul>
         </div>
 
         <div class="programs__grid">
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Лабораторный</span>
             <div class="programs__price">от&nbsp;~$350</div>
             <p class="card__text">Расширенные анализы крови.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Silver</span>
             <div class="programs__price">от&nbsp;~$1&nbsp;100 <span class="programs__price-note">(муж.) / ~$1&nbsp;200 (жен.)</span></div>
             <p class="card__text">Анализы + УЗИ + базовые обследования.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge">Gold</span>
             <div class="programs__price">от&nbsp;~$2&nbsp;100 <span class="programs__price-note">(муж.) / ~$2&nbsp;200 (жен.)</span></div>
             <p class="card__text">Silver + расширенная диагностика.</p>
           </div>
-          <div class="card card--glass programs__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card programs__card animate-on-scroll">
             <span class="programs__badge programs__badge--accent">Platinum</span>
             <div class="programs__price">от&nbsp;~$3&nbsp;100 <span class="programs__price-note">(муж.) / ~$3&nbsp;200 (жен.)</span></div>
             <p class="card__text">Полный комплекс обследований.</p>
@@ -475,12 +433,6 @@
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 7 — КАК ЭТО РАБОТАЕТ -->
     <section class="section process" id="how-it-works">
@@ -509,18 +461,12 @@
           </div>
           <div class="process__step">
             <div class="process__number" aria-hidden="true">05</div>
-            <h3 class="process__title">Результаты</h3>
+            <h3 class="process__title">Результаты и&nbsp;дальнейшие шаги</h3>
             <p class="process__text">Все заключения, снимки и&nbsp;анализы&nbsp;&mdash; в&nbsp;личном кабинете и&nbsp;приложении MedicusUnion, с&nbsp;переводом на&nbsp;русский. Если нужно лечение&nbsp;&mdash; организуем.</p>
           </div>
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 8 — B2B -->
     <section class="section b2b" id="b2b">
@@ -530,11 +476,11 @@
         <p class="checkup-intro__text">Здоровье ключевых людей&nbsp;&mdash; это бизнес-риск, который можно контролировать. MedicusUnion организует корпоративные чек-апы в&nbsp;Samsung Medical Center, Severance Hospital и&nbsp;клиниках Стамбула с&nbsp;полным сопровождением.</p>
 
         <div class="b2b__grid">
-          <div class="card card--glass b2b__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card b2b__card animate-on-scroll">
             <h3 class="card__title">Для ваших сотрудников</h3>
             <p class="card__text">Чек-ап для топ-менеджмента и&nbsp;ключевых специалистов&nbsp;&mdash; как часть корпоративной программы заботы о&nbsp;здоровье. Покрывает то, что не&nbsp;покрывает стандартный ДМС: онкоскрининг, кардиодиагностику, МРТ, колоноскопию.</p>
           </div>
-          <div class="card card--glass b2b__card animate-on-scroll animate-on-scroll--glass">
+          <div class="card b2b__card animate-on-scroll">
             <h3 class="card__title">Для ваших клиентов</h3>
             <p class="card__text">Чек-ап в&nbsp;клинике мирового уровня&nbsp;&mdash; как статусный корпоративный подарок. Запоминается, ценится и&nbsp;работает на&nbsp;лояльность сильнее любого стандартного бонуса.</p>
           </div>
@@ -553,7 +499,7 @@
             </li>
             <li class="b2b__trust-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>ISO&nbsp;27001&nbsp;&mdash; медицинские данные сотрудников защищены</span>
+              <span>ISO&nbsp;27001&nbsp;&mdash; медицинские данные сотрудников защищены по&nbsp;международным стандартам</span>
             </li>
             <li class="b2b__trust-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -561,7 +507,7 @@
             </li>
             <li class="b2b__trust-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M4 10l4 4 8-8" stroke="#047857" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>Личный кабинет для каждого участника&nbsp;&mdash; компания не&nbsp;видит результатов</span>
+              <span>Личный кабинет для каждого участника&nbsp;&mdash; компания не&nbsp;видит результатов, сотрудник/клиент видит свои</span>
             </li>
           </ul>
         </div>
@@ -571,12 +517,6 @@
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 9 — FAQ -->
     <section class="section faq" id="faq-checkup">
@@ -639,7 +579,7 @@
           </div>
           <div class="faq__item">
             <button class="faq__question" type="button" aria-expanded="false">
-              <span class="faq__question-text">Можно&nbsp;ли добавить отдельные обследования?</span>
+              <span class="faq__question-text">Можно&nbsp;ли добавить отдельные обследования к&nbsp;программе?</span>
               <span class="faq__icon" aria-hidden="true"></span>
             </button>
             <div class="faq__answer" hidden>
@@ -649,12 +589,6 @@
         </div>
       </div>
     </section>
-
-    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
 
     <!-- СЕКЦИЯ 10 — ФОРМА -->
     <section class="section lead-form-section" id="form-checkup">
@@ -684,7 +618,7 @@
               </li>
             </ul>
           </div>
-          <div class="lead-form__wrapper card--glass animate-on-scroll animate-on-scroll--glass">
+          <div class="lead-form__wrapper">
 
           <form class="lead-form" id="lead-form" novalidate>
             <div class="lead-form__field">
@@ -742,14 +676,8 @@
       </div>
     </section>
 
-    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
-        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
-      </svg>
-    </div>
-
     <!-- Cross-sell CTA -->
-    <section class="section section--dark final-cta" id="final-cta-checkup">
+    <section class="section final-cta" id="final-cta-checkup">
       <div class="container final-cta__container">
         <h2 class="final-cta__heading">Нужна консультация врача, а&nbsp;не&nbsp;чек-ап?</h2>
         <p class="final-cta__text">Получите второе мнение европейского специалиста по&nbsp;видео&nbsp;&mdash; без перелёта, от&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней.</p>
