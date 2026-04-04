@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-04-04T04:41:17.672Z"
+stopped_at: Completed 01-05-PLAN.md
+last_updated: "2026-04-04T04:57:21.431Z"
 progress:
   total_phases: 9
   completed_phases: 8
@@ -47,7 +47,7 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
 | Phase 22 P01 | 2 | 3 tasks | 2 files |
-| Phase 01 P04 | 6 | 2 tasks | 1 files |
+| Phase 01 P05 | 9 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -73,9 +73,7 @@ Recent decisions affecting current work:
 - [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
-- [Phase 01]: Used contact- prefix for form IDs to avoid collision with top-half elements
-- [Phase 01]: FAQ answers use CSS max-height:0 approach (not hidden attr), JS toggles .is-open class
-- [Phase 01]: CTA buttons link to contacts.html (not #contact anchor) matching Redesign router pattern
+- [Phase 01]: Service pages reuse exact index.html page shell for cross-page consistency
 
 ### Roadmap Evolution
 
@@ -88,6 +86,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-04T04:41:17.668Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-04-04T04:57:21.426Z
+Stopped at: Completed 01-05-PLAN.md
 Resume file: None
