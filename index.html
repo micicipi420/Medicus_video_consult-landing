@@ -445,96 +445,108 @@
       </div>
     </section>
 
-    <section class="section whyus" id="why-us">
-      <div class="container">
-        <div class="whyus__grid">
+    <section class="section whyus py-16 relative z-10" id="why-us">
+      <div class="container mx-auto px-4 lg:px-6">
+        <div class="whyus__grid grid lg:grid-cols-2 gap-16 items-center">
 
           <!-- Left: advantages -->
           <div class="animate-fade-left">
-            <div class="section-badge section-badge--green">О компании</div>
-            <h2 class="section-heading">Почему выбирают <span class="text-brand-gradient">MedicusUnion</span></h2>
-            <p class="whyus__desc">Мы&nbsp;&mdash; не&nbsp;просто медицинский агрегатор. Мы&nbsp;берем на&nbsp;себя ответственность за&nbsp;ваше здоровье на&nbsp;каждом этапе лечения.</p>
+            <div class="mb-12">
+              <div class="section-badge section-badge--green inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-glass-border px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+                <span class="text-sm font-bold text-mu-green-600 uppercase tracking-wider">О компании</span>
+              </div>
+              <h2 class="section-heading text-5xl md:text-6xl font-extrabold mb-6 text-mu-text-900 drop-shadow-sm">Почему выбирают <span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">MedicusUnion</span></h2>
+              <p class="whyus__desc text-mu-text-700 font-medium text-xl">Мы&nbsp;&mdash; не&nbsp;просто медицинский агрегатор. Мы&nbsp;берем на&nbsp;себя ответственность за&nbsp;ваше здоровье на&nbsp;каждом этапе лечения.</p>
+            </div>
 
-            <div class="whyus__advantages">
+            <div class="whyus__advantages space-y-12">
               <!-- Card 1: Globe -->
-              <div class="advantage">
-                <div class="advantage__icon" style="color: var(--mu-accent-teal); background: var(--mu-accent-teal-bg);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                    <path d="M2 12h20"/>
-                  </svg>
+              <div class="advantage relative flex gap-5 group">
+                <div class="flex-shrink-0">
+                  <div class="advantage__icon w-16 h-16 bg-mu-accent-teal-bg backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center shadow-glass-sm border border-glass-border text-mu-accent-teal transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                      <path d="M2 12h20"/>
+                    </svg>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="advantage__title"><span style="color: var(--mu-accent-teal)">43</span> клиники в&nbsp;<span style="color: var(--mu-accent-teal)">11</span> странах</h3>
-                  <p class="advantage__desc">Германия, Австрия, Швейцария, Израиль, ОАЭ, Южная Корея, Турция, Индия&nbsp;&mdash; подберём клинику под задачу и&nbsp;бюджет.</p>
+                <div class="pt-2">
+                  <h3 class="advantage__title text-xl font-extrabold text-mu-text-900 mb-2 leading-snug drop-shadow-sm group-hover:text-mu-blue transition-colors"><span class="text-mu-accent-teal">43</span> клиники в&nbsp;<span class="text-mu-accent-teal">11</span> странах</h3>
+                  <p class="advantage__desc text-mu-text-700 font-medium leading-relaxed text-sm md:text-base">Германия, Австрия, Швейцария, Израиль, ОАЭ, Южная Корея, Турция, Индия&nbsp;&mdash; подберём клинику под задачу и&nbsp;бюджет.</p>
                 </div>
               </div>
 
               <!-- Card 2: Smartphone -->
-              <div class="advantage">
-                <div class="advantage__icon" style="color: var(--mu-accent-blue); background: rgba(56,198,244,0.1);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
-                    <path d="M12 18h.01"/>
-                  </svg>
+              <div class="advantage relative flex gap-5 group">
+                <div class="flex-shrink-0">
+                  <div class="advantage__icon w-16 h-16 bg-mu-blue/10 backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center shadow-glass-sm border border-glass-border text-mu-accent-blue transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                      <path d="M12 18h.01"/>
+                    </svg>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="advantage__title">Всё в&nbsp;одном приложении</h3>
-                  <p class="advantage__desc">Документы, расписание, видеоконсультации, результаты обследований, заключения врачей&nbsp;&mdash; в&nbsp;личном кабинете. Ничего не&nbsp;потеряется.</p>
+                <div class="pt-2">
+                  <h3 class="advantage__title text-xl font-extrabold text-mu-text-900 mb-2 leading-snug drop-shadow-sm group-hover:text-mu-blue transition-colors">Всё в&nbsp;одном приложении</h3>
+                  <p class="advantage__desc text-mu-text-700 font-medium leading-relaxed text-sm md:text-base">Документы, расписание, видеоконсультации, результаты обследований, заключения врачей&nbsp;&mdash; в&nbsp;личном кабинете. Ничего не&nbsp;потеряется.</p>
                 </div>
               </div>
 
               <!-- Card 3: Award -->
-              <div class="advantage">
-                <div class="advantage__icon" style="color: var(--mu-accent-orange); background: var(--mu-accent-orange-bg);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="8" r="6"/>
-                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                  </svg>
+              <div class="advantage relative flex gap-5 group">
+                <div class="flex-shrink-0">
+                  <div class="advantage__icon w-16 h-16 bg-mu-accent-orange-bg backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center shadow-glass-sm border border-glass-border text-mu-accent-orange transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="8" r="6"/>
+                      <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                    </svg>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="advantage__title"><span style="color: var(--mu-accent-orange)">15+</span> лет, <span style="color: var(--mu-accent-orange)">10&nbsp;000+</span> пациентов</h3>
-                  <p class="advantage__desc">Устойчивые процессы, проверенные партнёры, прямые контракты с&nbsp;клиниками. Не&nbsp;посредник&nbsp;&mdash; медицинская платформа.</p>
+                <div class="pt-2">
+                  <h3 class="advantage__title text-xl font-extrabold text-mu-text-900 mb-2 leading-snug drop-shadow-sm group-hover:text-mu-blue transition-colors"><span class="text-mu-accent-orange">15+</span> лет, <span class="text-mu-accent-orange">10&nbsp;000+</span> пациентов</h3>
+                  <p class="advantage__desc text-mu-text-700 font-medium leading-relaxed text-sm md:text-base">Устойчивые процессы, проверенные партнёры, прямые контракты с&nbsp;клиниками. Не&nbsp;посредник&nbsp;&mdash; медицинская платформа.</p>
                 </div>
               </div>
 
               <!-- Card 4: Shield -->
-              <div class="advantage">
-                <div class="advantage__icon" style="color: var(--mu-green-600); background: var(--mu-green-50);">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
-                  </svg>
+              <div class="advantage relative flex gap-5 group">
+                <div class="flex-shrink-0">
+                  <div class="advantage__icon w-16 h-16 bg-mu-green-50 backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center shadow-glass-sm border border-glass-border text-mu-green-600 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+                    </svg>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="advantage__title">Абсолютная надежность</h3>
-                  <p class="advantage__desc">MedicusUnion GmbH, Австрия. Офис в&nbsp;Казахстане&nbsp;&mdash; резидент Astana Hub. ISO&nbsp;27001. Договор, чеки, прозрачные условия.</p>
+                <div class="pt-2">
+                  <h3 class="advantage__title text-xl font-extrabold text-mu-text-900 mb-2 leading-snug drop-shadow-sm group-hover:text-mu-blue transition-colors">Абсолютная надежность</h3>
+                  <p class="advantage__desc text-mu-text-700 font-medium leading-relaxed text-sm md:text-base">MedicusUnion GmbH, Австрия. Офис в&nbsp;Казахстане&nbsp;&mdash; резидент Astana Hub. ISO&nbsp;27001. Договор, чеки, прозрачные условия.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Right: image collage (hidden mobile) -->
-          <div class="whyus__collage animate-fade-right">
-            <div class="whyus__collage-grid">
-              <div class="whyus__collage-col whyus__collage-col--offset">
-                <div class="whyus__collage-img">
-                  <img src="https://images.unsplash.com/photo-1666886573590-5815157da865?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwbWVkaWNhbCUyMHRlYW0lMjBkb2N0b3JzfGVufDF8fHx8MTc3NTE5NjUzOXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинская команда" loading="lazy" width="1080" height="720">
+          <div class="whyus__collage relative h-[600px] hidden md:block animate-fade-right">
+            <div class="whyus__collage-grid grid grid-cols-2 gap-6 h-full">
+              <div class="whyus__collage-col whyus__collage-col--offset space-y-6 pt-12">
+                <div class="whyus__collage-img h-64 rounded-[3rem] overflow-hidden shadow-glass-lg border-[6px] border-white/50 backdrop-blur-2xl bg-white/20">
+                  <img src="https://images.unsplash.com/photo-1666886573590-5815157da865?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwbWVkaWNhbCUyMHRlYW0lMjBkb2N0b3JzfGVufDF8fHx8MTc3NTE5NjUzOXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинская команда" loading="lazy" width="1080" height="720" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
-                <div class="whyus__collage-img">
-                  <img src="https://images.unsplash.com/photo-1686771416282-3888ddaf249b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb2N0b3IlMjBzaGFraW5nJTIwaGFuZHMlMjBwYXRpZW50fGVufDF8fHx8MTc3NTE5NjU0M3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Врач и пациент" loading="lazy" width="1080" height="720">
+                <div class="whyus__collage-img h-80 rounded-[3rem] overflow-hidden shadow-glass-lg border-[6px] border-white/50 backdrop-blur-2xl bg-white/20">
+                  <img src="https://images.unsplash.com/photo-1686771416282-3888ddaf249b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb2N0b3IlMjBzaGFraW5nJTIwaGFuZHMlMjBwYXRpZW50fGVufDF8fHx8MTc3NTE5NjU0M3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Врач и пациент" loading="lazy" width="1080" height="720" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
               </div>
-              <div class="whyus__collage-col">
-                <div class="whyus__collage-img">
-                  <img src="https://images.unsplash.com/photo-1690306816872-91063f6de36b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3NwaXRhbCUyMGRvY3RvcnxlbnwxfHx8fDE3NzUxOTY1ODF8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Врач в клинике" loading="lazy" width="1080" height="720">
+              <div class="whyus__collage-col space-y-6">
+                <div class="whyus__collage-img h-80 rounded-[3rem] overflow-hidden shadow-glass-lg border-[6px] border-white/50 backdrop-blur-2xl bg-white/20">
+                  <img src="https://images.unsplash.com/photo-1690306816872-91063f6de36b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3NwaXRhbCUyMGRvY3RvcnxlbnwxfHx8fDE3NzUxOTY1ODF8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Врач в клинике" loading="lazy" width="1080" height="720" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                 </div>
-                <div class="whyus__stat-card">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <div class="whyus__stat-card h-64 rounded-[3rem] overflow-hidden border border-white/60 bg-white/40 backdrop-blur-2xl p-8 flex flex-col justify-center shadow-glass-inner">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 mb-4 text-mu-blue drop-shadow-sm" aria-hidden="true">
                     <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
                   </svg>
-                  <div class="whyus__stat-number">100%</div>
-                  <div class="whyus__stat-label">Конфиденциальность медицинских данных</div>
+                  <div class="whyus__stat-number text-4xl font-extrabold mb-2 text-mu-text-900">100%</div>
+                  <div class="whyus__stat-label text-mu-text-700 font-bold leading-tight">Конфиденциальность медицинских данных</div>
                 </div>
               </div>
             </div>
@@ -545,34 +557,34 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="section contact" id="contact">
-      <div class="container">
-        <div class="contact__grid">
+    <section class="section contact py-16 relative z-10" id="contact">
+      <div class="container mx-auto px-4 lg:px-6 relative z-10">
+        <div class="contact__grid grid lg:grid-cols-2 gap-12 items-start">
 
           <!-- Left: info + coordinator -->
-          <div class="contact__info animate-fade-left">
-            <h2 class="section-heading"><span class="text-brand-gradient">Остались вопросы?</span></h2>
-            <p class="contact__desc">Оставьте заявку&nbsp;&mdash; наш медицинский координатор свяжется с&nbsp;вами, выслушает вашу ситуацию и&nbsp;подскажет оптимальный путь. Бесплатно и&nbsp;без обязательств.</p>
+          <div class="contact__info flex flex-col h-full animate-fade-left">
+            <h2 class="section-heading text-5xl md:text-6xl font-extrabold mb-6"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Остались вопросы?</span></h2>
+            <p class="contact__desc text-mu-text-700 font-medium text-lg mb-8 leading-relaxed max-w-lg">Оставьте заявку&nbsp;&mdash; наш медицинский координатор свяжется с&nbsp;вами, выслушает вашу ситуацию и&nbsp;подскажет оптимальный путь. Бесплатно и&nbsp;без обязательств.</p>
 
             <!-- Coordinator Card -->
-            <div class="coordinator-card">
-              <div class="coordinator-card__avatar">
-                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmZW1hbGUlMjBtZWRpY2FsJTIwY29vcmRpbmF0b3IlMjBzbWlsaW5nfGVufDF8fHx8MTc3NTE5NzQ0NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинский координатор Айгерим" loading="lazy" width="128" height="128">
+            <div class="coordinator-card mt-auto bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-6 border border-white/60 flex flex-col sm:flex-row gap-6 items-center shadow-glass">
+              <div class="coordinator-card__avatar w-32 h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-white/60 bg-white/50 backdrop-blur-sm shadow-glass-sm">
+                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmZW1hbGUlMjBtZWRpY2FsJTIwY29vcmRpbmF0b3IlMjBzbWlsaW5nfGVufDF8fHx8MTc3NTE5NzQ0NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Медицинский координатор Айгерим" loading="lazy" width="128" height="128" class="w-full h-full object-cover">
               </div>
               <div>
-                <h4 class="coordinator-card__name">Айгерим</h4>
-                <p class="coordinator-card__title">Старший медицинский координатор</p>
-                <div class="coordinator-card__contacts">
-                  <a href="tel:+77015322478" class="coordinator-card__link">
-                    <span class="glass-icon">
+                <h4 class="coordinator-card__name text-2xl font-extrabold text-mu-text-900 mb-1">Айгерим</h4>
+                <p class="coordinator-card__title text-mu-blue font-bold text-sm mb-4">Старший медицинский координатор</p>
+                <div class="coordinator-card__contacts space-y-3">
+                  <a href="tel:+77015322478" class="coordinator-card__link flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors text-sm font-semibold">
+                    <span class="glass-icon w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center border border-white/60 shadow-glass-inner-strong">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                       </svg>
                     </span>
                     +7 701 532 24 78
                   </a>
-                  <a href="mailto:kz@medicusunion.com" class="coordinator-card__link">
-                    <span class="glass-icon">
+                  <a href="mailto:kz@medicusunion.com" class="coordinator-card__link flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors text-sm font-semibold">
+                    <span class="glass-icon w-8 h-8 rounded-full bg-white/60 backdrop-blur-md flex items-center justify-center border border-white/60 shadow-glass-inner-strong">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect width="20" height="16" x="2" y="4" rx="2"/>
                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -585,15 +597,15 @@
             </div>
 
             <!-- Trust Badges -->
-            <div class="contact__badges">
-              <div class="contact__trust-badge">
+            <div class="contact__badges mt-8 flex flex-wrap gap-4">
+              <div class="contact__trust-badge inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="10"/>
                   <path d="m9 12 2 2 4-4"/>
                 </svg>
                 На связи 24/7
               </div>
-              <div class="contact__trust-badge">
+              <div class="contact__trust-badge inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="10"/>
                   <path d="m9 12 2 2 4-4"/>
@@ -604,9 +616,9 @@
           </div>
 
           <!-- Right: form -->
-          <div class="form-wrapper animate-fade-right">
+          <div class="form-wrapper bg-white/60 backdrop-blur-3xl rounded-[3rem] p-8 border border-white/60 relative overflow-hidden shadow-glass-lg animate-fade-right">
             <!-- Success overlay -->
-            <div class="form__success" id="form-success" hidden>
+            <div class="form__success absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8" id="form-success" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="form__success-icon" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="m9 12 2 2 4-4"/>
@@ -615,20 +627,20 @@
               <p class="form__success-text">Мы&nbsp;свяжемся с&nbsp;вами в&nbsp;течение 24&nbsp;часов.</p>
             </div>
 
-            <form class="contact-form" novalidate>
+            <form class="contact-form space-y-6" novalidate>
               <div class="form__group">
-                <label class="form__label" for="contact-name">Ваше имя</label>
-                <input type="text" id="contact-name" name="name" class="form__input" placeholder="Например, Айгуль" required autocomplete="name">
+                <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
+                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
               </div>
 
               <div class="form__group">
-                <label class="form__label" for="contact-phone">Телефон</label>
-                <input type="tel" id="contact-phone" name="phone" class="form__input" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+                <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
+                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
               </div>
 
               <div class="form__group">
-                <label class="form__label" for="contact-interest">Что вас интересует</label>
-                <select id="contact-interest" name="interest" class="form__select" required>
+                <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-interest">Что вас интересует</label>
+                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none" required>
                   <option value="" disabled selected>Выберите направление</option>
                   <option value="consultation">Онлайн-консультация</option>
                   <option value="treatment">Лечение за рубежом</option>
@@ -638,8 +650,8 @@
               </div>
 
               <div class="form__group">
-                <label class="form__label" for="contact-description">Кратко о&nbsp;вашем случае <span style="color: var(--mu-text-500); font-weight: 500;">(необязательно)</span></label>
-                <textarea id="contact-description" name="description" class="form__textarea" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
+                <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-description">Кратко о&nbsp;вашем случае <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
+                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
               </div>
 
               <!-- Honeypot -->
@@ -648,7 +660,7 @@
                 <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
               </div>
 
-              <button class="form__submit btn-primary" type="submit">
+              <button class="form__submit btn-primary w-full bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white py-4 rounded-2xl font-bold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
                 Отправить заявку
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m22 2-7 20-4-9-9-4Z"/>
@@ -656,7 +668,7 @@
                 </svg>
               </button>
 
-              <p class="form__privacy">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
+              <p class="form__privacy text-sm text-mu-text-700 font-medium text-center mt-4">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
               <div class="form__error" hidden></div>
             </form>
           </div>
