@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Preload critical fonts (cyrillic first -- primary content language) -->
+  <link rel="preload" href="assets/fonts/inter-cyrillic-wght-normal.woff2"
+        as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2"
+        as="font" type="font/woff2" crossorigin>
+
+  <title>Онлайн-консультации с европейскими врачами — MedicusUnion KZ</title>
+  <meta name="description" content="Видеоконсультация с европейским специалистом — на вашем языке, с переводом. Загрузите документы в приложение — мы переведём их, передадим врачу и организуем встречу.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Онлайн-консультации с европейскими врачами — MedicusUnion KZ">
+  <meta property="og:description" content="Видеоконсультация с европейским специалистом — на вашем языке, с переводом. Загрузите документы — мы переведём их, передадим врачу и организуем встречу. От 450EUR.">
+  <meta property="og:url" content="https://medicusunion.kz/online-consultations">
+  <meta property="og:site_name" content="MedicusUnion">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Онлайн-консультации с европейскими врачами — MedicusUnion KZ">
+  <meta name="twitter:description" content="Видеоконсультация с европейским врачом из дома. Второе мнение, перевод, заключение. От 450EUR.">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://medicusunion.kz/online-consultations">
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#38C6F4">
+
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header" id="header">
+    <div class="container site-header__container">
+      <a href="index.html" class="site-header__brand-link">
+        <span class="site-header__brand">MedicusUnion</span>
+      </a>
+      <nav class="site-header__nav">
+        <a href="online-consultations.html" class="site-header__link">Консультации</a>
+        <a href="treatment-abroad.html" class="site-header__link">Лечение</a>
+        <a href="checkup.html" class="site-header__link">Чек-ап</a>
+        <a href="#consultation-form" class="site-header__link">Заявка</a>
+      </nav>
+      <a href="tel:+77015322478" class="site-header__phone">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+      <button
+        class="theme-toggle"
+        aria-pressed="false"
+        aria-label="Включить тёмную тему"
+        type="button"
+      >
+        <span class="theme-toggle__icon" aria-hidden="true">&#9788;</span>
+        <span class="theme-toggle__label">Тёмная тема</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 1: HERO (CONSULT-01) -->
+    <section class="section hero" id="hero">
+      <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+      <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+      <div class="container hero__container">
+        <div class="hero__content">
+          <span class="hero__badge">от&nbsp;450&nbsp;&euro;</span>
+          <h1 class="hero__title">Мнение немецкого врача&nbsp;&mdash; за&nbsp;5&nbsp;дней, без&nbsp;перелёта</h1>
+          <p class="hero__subtitle">Видеоконсультация с&nbsp;европейским специалистом&nbsp;&mdash; на&nbsp;вашем языке, с&nbsp;переводом. Загрузите документы в&nbsp;приложение&nbsp;&mdash; мы&nbsp;переведём их, передадим врачу и&nbsp;организуем встречу.</p>
+          <div class="hero__actions">
+            <a href="#consultation-form" class="button button--primary">Получить консультацию&nbsp;&mdash; от&nbsp;450&nbsp;&euro;</a>
+            <a href="#triggers" class="button button--outline">Узнать, подходит&nbsp;ли мой случай</a>
+          </div>
+        </div>
+        <div class="hero__illustration" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+            <!-- Doctor at laptop — video consultation scene -->
+
+            <!-- Desk surface -->
+            <rect x="60" y="260" width="280" height="12" rx="4" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Laptop base -->
+            <rect x="120" y="245" width="160" height="15" rx="3" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Laptop screen frame -->
+            <rect x="130" y="145" width="140" height="100" rx="6" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Laptop screen inner -->
+            <rect x="140" y="155" width="120" height="80" rx="3" fill="rgba(56,198,244,0.15)"/>
+
+            <!-- Video call: patient face outline on screen -->
+            <circle cx="200" cy="185" r="16" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.08)" stroke-linecap="round"/>
+            <!-- Patient shoulders on screen -->
+            <path d="M175 210 C175 200, 185 195, 200 195 C215 195, 225 200, 225 210" stroke="#38C6F4" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Video call indicator dot -->
+            <circle cx="250" cy="162" r="4" fill="rgba(53,182,120,0.3)"/>
+            <!-- Video call status bar -->
+            <rect x="145" y="225" width="110" height="5" rx="2" fill="rgba(53,182,120,0.12)"/>
+
+            <!-- Doctor figure — torso -->
+            <path d="M65 370 L65 300 C65 280, 80 270, 95 270 L95 370" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Doctor head -->
+            <circle cx="80" cy="248" r="22" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.08)" stroke-linecap="round"/>
+            <!-- Doctor arm reaching to laptop -->
+            <path d="M95 290 C110 290, 115 270, 125 260" stroke="#38C6F4" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Doctor other arm -->
+            <path d="M65 290 C50 290, 45 300, 42 310" stroke="#38C6F4" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- White coat collar detail -->
+            <path d="M72 270 L80 280 L88 270" stroke="#38C6F4" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Medical cross on doctor coat -->
+            <rect x="74" y="295" width="12" height="4" rx="1" fill="rgba(53,182,120,0.3)"/>
+            <rect x="78" y="291" width="4" height="12" rx="1" fill="rgba(53,182,120,0.3)"/>
+
+            <!-- Stethoscope around neck -->
+            <path d="M72 266 C68 278, 70 285, 75 290" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <circle cx="75" cy="292" r="3" stroke="#38C6F4" stroke-width="1.5" fill="rgba(56,198,244,0.15)"/>
+
+            <!-- Chair back -->
+            <path d="M50 275 C48 290, 48 340, 50 370" stroke="#38C6F4" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M100 275 C102 290, 102 340, 100 370" stroke="#38C6F4" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+            <!-- Desk legs -->
+            <line x1="80" y1="272" x2="80" y2="395" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="320" y1="272" x2="320" y2="395" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
+
+            <!-- Notepad on desk -->
+            <rect x="270" y="240" width="50" height="20" rx="3" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.08)" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="278" y1="247" x2="310" y2="247" stroke="#38C6F4" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+            <line x1="278" y1="253" x2="305" y2="253" stroke="#38C6F4" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+
+            <!-- Pen on desk -->
+            <line x1="265" y1="255" x2="275" y2="242" stroke="#38C6F4" stroke-width="1.5" stroke-linecap="round"/>
+
+            <!-- Decorative dots -->
+            <circle cx="340" cy="130" r="4" fill="rgba(56,198,244,0.15)"/>
+            <circle cx="360" cy="170" r="3" fill="rgba(53,182,120,0.12)"/>
+            <circle cx="30" cy="180" r="4" fill="rgba(56,198,244,0.15)"/>
+            <circle cx="20" cy="320" r="3" fill="rgba(53,182,120,0.12)"/>
+            <circle cx="370" cy="300" r="3" fill="rgba(56,198,244,0.1)"/>
+            <circle cx="350" cy="350" r="4" fill="rgba(53,182,120,0.12)"/>
+
+            <!-- WiFi signal arcs above laptop -->
+            <path d="M195 130 C195 125, 205 125, 205 130" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M190 123 C190 115, 210 115, 210 123" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M185 116 C185 105, 215 105, 215 116" stroke="#38C6F4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof Numbers Bar -->
+    <section class="social-proof" aria-label="Ключевые цифры">
+      <div class="container social-proof__container">
+        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+          <span class="social-proof__number">7</span>
+          <span class="social-proof__label">стран</span>
+        </div>
+        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+          <span class="social-proof__number">50+</span>
+          <span class="social-proof__label">врачей</span>
+        </div>
+        <div class="social-proof__item social-proof__item--glass animate-on-scroll animate-on-scroll--glass">
+          <span class="social-proof__number">15+</span>
+          <span class="social-proof__label">специализаций</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--dark-to-white" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 2: PROBLEM "Знакомо?" (CONSULT-02) -->
+    <section class="section problem" id="problem">
+      <div class="container">
+        <h2 class="problem__heading">Знакомо?</h2>
+        <div class="problem__content card card--glass">
+          <p class="problem__text">Получили диагноз&nbsp;&mdash; и&nbsp;не&nbsp;уверены, что он&nbsp;правильный. Разные врачи говорят разное. Хочется услышать мнение врача, которому можно верить.</p>
+          <p class="problem__text">Слышали, что за&nbsp;границей лечат лучше&nbsp;&mdash; но&nbsp;лететь дорого, долго и&nbsp;страшно. А&nbsp;вдруг можно получить ответ, не&nbsp;выходя из&nbsp;дома?</p>
+          <p class="problem__text">Время идёт&nbsp;&mdash; а&nbsp;решение всё ещё не&nbsp;принято.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 3: VALUE "Что вы получите за одну консультацию" (CONSULT-03) -->
+    <section class="section benefits" id="benefits">
+      <div class="container">
+        <h2 class="benefits__heading">Что вы получите за&nbsp;одну консультацию</h2>
+        <div class="benefits__grid">
+          <div class="card card--glass benefits__card animate-on-scroll animate-on-scroll--glass">
+            <div class="benefits__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <circle cx="20" cy="20" r="14" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <line x1="30" y1="30" x2="40" y2="40" stroke="#38C6F4" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Второе мнение по&nbsp;вашему диагнозу</h3>
+            <p class="card__text">Врач изучит ваши документы до&nbsp;встречи и&nbsp;даст оценку вашего случая. Не&nbsp;общие слова, а&nbsp;конкретное заключение по&nbsp;вашим анализам и&nbsp;снимкам.</p>
+          </div>
+          <div class="card card--glass benefits__card animate-on-scroll animate-on-scroll--glass">
+            <div class="benefits__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <rect x="10" y="8" width="28" height="34" rx="3" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <rect x="17" y="4" width="14" height="8" rx="2" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <line x1="16" y1="22" x2="32" y2="22" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="28" x2="28" y2="28" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="34" x2="24" y2="34" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Понятный план действий</h3>
+            <p class="card__text">Что делать дальше: какие обследования пройти, какое лечение рекомендуется, какие есть варианты. Вы&nbsp;уходите с&nbsp;консультации с&nbsp;ясностью, а&nbsp;не&nbsp;с&nbsp;новыми вопросами.</p>
+          </div>
+          <div class="card card--glass benefits__card animate-on-scroll animate-on-scroll--glass">
+            <div class="benefits__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <path d="M12 6h18l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <path d="M30 6v10h10" stroke="#38C6F4" stroke-width="2.5" fill="none"/>
+                <line x1="16" y1="24" x2="32" y2="24" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="30" x2="28" y2="30" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Письменное заключение</h3>
+            <p class="card__text">После консультации вы&nbsp;получите документ с&nbsp;рекомендациями врача. Его можно показать своему лечащему врачу или использовать для принятия решения.</p>
+          </div>
+          <div class="card card--glass benefits__card animate-on-scroll animate-on-scroll--glass">
+            <div class="benefits__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="18" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <path d="M18 18a6 6 0 0112 0c0 4-6 4-6 8" stroke="#38C6F4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="24" cy="34" r="1.5" fill="#38C6F4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Ответы на&nbsp;ваши вопросы</h3>
+            <p class="card__text">Консультация&nbsp;&mdash; это не&nbsp;монолог врача. Вы&nbsp;задаёте вопросы, врач отвечает. Переводчик обеспечивает полное понимание.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 4: PROCESS "Три шага до мнения европейского врача" (CONSULT-04) -->
+    <section class="section process" id="process">
+      <div class="container">
+        <h2 class="process__heading">Три шага до&nbsp;мнения европейского врача</h2>
+        <div class="process__steps">
+          <div class="process__step">
+            <div class="process__number" aria-hidden="true">01</div>
+            <h3 class="process__title">Загрузите документы</h3>
+            <p class="process__text">Снимки, анализы, заключения&nbsp;&mdash; в&nbsp;любом формате, на&nbsp;любом языке. Мы&nbsp;переведём всё сами и&nbsp;подготовим для врача.</p>
+          </div>
+          <div class="process__step">
+            <div class="process__number" aria-hidden="true">02</div>
+            <h3 class="process__title">Врач изучает ваш случай</h3>
+            <p class="process__text">Специалист готовится к&nbsp;встрече: изучает документы, снимки, историю болезни. На&nbsp;консультации он&nbsp;уже в&nbsp;курсе вашего случая.</p>
+          </div>
+          <div class="process__step">
+            <div class="process__number" aria-hidden="true">03</div>
+            <h3 class="process__title">Видеоконсультация</h3>
+            <p class="process__text">Встреча по&nbsp;видео с&nbsp;переводчиком. Врач даёт оценку, отвечает на&nbsp;вопросы. После&nbsp;&mdash; письменное заключение в&nbsp;личном кабинете.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 5: DOCTORS (CONSULT-05) -->
+    <section class="section doctors" id="doctors">
+      <div class="container">
+        <h2 class="doctors__heading">Врачи из&nbsp;Германии, Израиля, Швейцарии и&nbsp;ещё 4&nbsp;стран</h2>
+        <div class="doctors__content card card--glass">
+          <p class="doctors__description">На&nbsp;платформе MedicusUnion&nbsp;&mdash; врачи из&nbsp;клиник и&nbsp;медицинских университетов Германии, Израиля, Швейцарии, Австрии, ОАЭ, Южной Кореи и&nbsp;Турции.</p>
+          <p class="doctors__description">Основные специализации: онкология, кардиология, нейрохирургия, ортопедия, радиология, ЭКО и&nbsp;другие.</p>
+          <p class="doctors__description">Каждый врач&nbsp;&mdash; с&nbsp;профилем на&nbsp;платформе: специализация, опыт, клиника, языки консультации, стоимость.</p>
+        </div>
+
+        <div class="doctors__grid">
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#000"/><rect y="11" width="48" height="10" fill="#DD0000"/><rect y="21" width="48" height="11" rx="0 0 3 3" fill="#FFCC00"/></svg></div>
+            <h3 class="card__title">Германия</h3>
+            <p class="card__text">Онкология, кардиология, нейрохирургия</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#fff"/><rect y="4" width="48" height="4" fill="#0038B8"/><rect y="24" width="48" height="4" fill="#0038B8"/><polygon points="24,9 27.5,18 20.5,18" fill="none" stroke="#0038B8" stroke-width="1.5"/><polygon points="24,23 20.5,14 27.5,14" fill="none" stroke="#0038B8" stroke-width="1.5"/></svg></div>
+            <h3 class="card__title">Израиль</h3>
+            <p class="card__text">Онкология, ортопедия, ЭКО</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#DA291C"/><rect x="20" y="8" width="8" height="16" fill="#fff"/><rect x="16" y="12" width="16" height="8" fill="#fff"/></svg></div>
+            <h3 class="card__title">Швейцария</h3>
+            <p class="card__text">Кардиология, нейрохирургия</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#ED2939"/><rect y="11" width="48" height="10" fill="#fff"/></svg></div>
+            <h3 class="card__title">Австрия</h3>
+            <p class="card__text">Ортопедия, радиология</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#000"/><rect x="12" width="36" height="11" fill="#00732F"/><rect x="12" y="11" width="36" height="10" fill="#fff"/><rect x="12" y="21" width="36" height="11" fill="#000"/><rect width="12" height="32" rx="3 0 0 3" fill="#FF0000"/></svg></div>
+            <h3 class="card__title">ОАЭ</h3>
+            <p class="card__text">Кардиология, ортопедия</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#fff"/><circle cx="24" cy="16" r="8" fill="#CD2E3A"/><path d="M16 16a8 8 0 0 0 16 0" fill="#0047A0"/></svg></div>
+            <h3 class="card__title">Южная Корея</h3>
+            <p class="card__text">Онкология, радиология</p>
+          </div>
+          <div class="card doctors__card">
+            <div class="doctors__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#E30A17"/><circle cx="19" cy="16" r="8" fill="#fff"/><circle cx="21.5" cy="16" r="6.5" fill="#E30A17"/><polygon points="27,16 30,13.5 28,16 30,18.5" fill="#fff"/></svg></div>
+            <h3 class="card__title">Турция</h3>
+            <p class="card__text">Ортопедия, ЭКО</p>
+          </div>
+        </div>
+
+        <div class="doctors__badges">
+          <span class="doctors__badge">Онкология</span>
+          <span class="doctors__badge">Кардиология</span>
+          <span class="doctors__badge">Нейрохирургия</span>
+          <span class="doctors__badge">Ортопедия</span>
+          <span class="doctors__badge">Радиология</span>
+          <span class="doctors__badge">ЭКО</span>
+        </div>
+
+        <div class="doctors__action">
+          <a href="https://medicusunion.com/doctors" class="button button--outline" target="_blank" rel="noopener noreferrer">Все врачи</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--light-to-white" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 6: WHY MEDICUSUNION (CONSULT-06) -->
+    <section class="section advantages" id="why-medicusunion">
+      <div class="container">
+        <h2 class="advantages__heading">Почему через MedicusUnion</h2>
+        <div class="advantages__grid">
+          <div class="card advantages__card">
+            <div class="advantages__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <path d="M12 6h18l10 10v26a2 2 0 01-2 2H12a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <path d="M30 6v10h10" stroke="#38C6F4" stroke-width="2.5" fill="none"/>
+                <line x1="16" y1="24" x2="32" y2="24" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="30" x2="28" y2="30" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Документы переведены и&nbsp;подготовлены</h3>
+            <p class="card__text">Вы&nbsp;загружаете на&nbsp;русском&nbsp;&mdash; врач получает на&nbsp;своём языке. Не&nbsp;нужно искать переводчика медицинских документов.</p>
+          </div>
+          <div class="card advantages__card">
+            <div class="advantages__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <path d="M8 12a4 4 0 014-4h24a4 4 0 014 4v16a4 4 0 01-4 4H20l-8 6v-6H12a4 4 0 01-4-4V12z" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <line x1="16" y1="18" x2="32" y2="18" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+                <line x1="16" y1="24" x2="26" y2="24" stroke="#38C6F4" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Перевод прямо во&nbsp;время консультации</h3>
+            <p class="card__text">Вы&nbsp;говорите на&nbsp;русском, врач&nbsp;&mdash; на&nbsp;своём. Переводчик обеспечивает полное понимание&nbsp;&mdash; включая медицинскую терминологию.</p>
+          </div>
+          <div class="card advantages__card">
+            <div class="advantages__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <rect x="12" y="4" width="24" height="40" rx="4" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+                <line x1="12" y1="12" x2="36" y2="12" stroke="#38C6F4" stroke-width="2"/>
+                <line x1="12" y1="36" x2="36" y2="36" stroke="#38C6F4" stroke-width="2"/>
+                <circle cx="24" cy="40" r="2" fill="#38C6F4"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Всё в&nbsp;одном приложении</h3>
+            <p class="card__text">Документы, расписание, видеозвонок, заключение врача&nbsp;&mdash; в&nbsp;личном кабинете. Ничего не&nbsp;потеряется, всё под рукой.</p>
+          </div>
+          <div class="card advantages__card">
+            <div class="advantages__icon icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <path d="M24 4L8 20h10v16h12V20h10L24 4z" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)" stroke-linejoin="round"/>
+                <rect x="20" y="36" width="8" height="8" rx="1" stroke="#38C6F4" stroke-width="2.5" fill="rgba(56,198,244,0.1)"/>
+              </svg>
+            </div>
+            <h3 class="card__title">Нужно больше&nbsp;&mdash; организуем</h3>
+            <p class="card__text">Если после консультации нужно лечение за&nbsp;рубежом&nbsp;&mdash; мы&nbsp;организуем всё: клинику, документы, логистику, сопровождение. Но&nbsp;это уже следующий шаг.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider section-divider--white-to-light" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,0 C240,80 480,10 720,50 C960,90 1200,20 1440,60 L1440,80 L0,80 Z"/>
+      </svg>
+    </div>
+
+    <!-- Section 7: TRIGGERS (CONSULT-07) -->
+    <section class="section scenarios" id="triggers">
+      <div class="container">
+        <h2 class="scenarios__heading">Когда имеет смысл получить второе мнение</h2>
+        <div class="scenarios__content card card--glass">
+          <ul class="scenarios__list" role="list">
+            <li class="scenarios__item">
+              <span class="scenarios__check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)"/>
+                  <path d="M10 16l4 4 8-8" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="scenarios__text">Вам поставили серьёзный диагноз и&nbsp;вы&nbsp;хотите убедиться, что он&nbsp;верный</span>
+            </li>
+            <li class="scenarios__item">
+              <span class="scenarios__check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)"/>
+                  <path d="M10 16l4 4 8-8" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="scenarios__text">Разные врачи дают противоречивые рекомендации</span>
+            </li>
+            <li class="scenarios__item">
+              <span class="scenarios__check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)"/>
+                  <path d="M10 16l4 4 8-8" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="scenarios__text">Нужно понять, какое лечение подходит именно вам</span>
+            </li>
+            <li class="scenarios__item">
+              <span class="scenarios__check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)"/>
+                  <path d="M10 16l4 4 8-8" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="scenarios__text">Рассматриваете лечение за&nbsp;рубежом, но&nbsp;хотите сначала поговорить с&nbsp;врачом</span>
+            </li>
+            <li class="scenarios__item">
+              <span class="scenarios__check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="#38C6F4" stroke-width="2" fill="rgba(56,198,244,0.1)"/>
+                  <path d="M10 16l4 4 8-8" stroke="#35B678" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="scenarios__text">Хотите показать снимки или анализы специалисту узкого профиля</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="container footer__container">
+      <div class="footer__main">
+        <div class="footer__company">
+          <p class="footer__brand">MedicusUnion</p>
+          <p class="footer__tagline">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+        </div>
+        <div class="footer__contacts">
+          <p class="footer__contact-item">
+            <a href="tel:+77015322478" class="footer__link">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+          </p>
+          <p class="footer__contact-item">
+            <a href="mailto:kz@medicusunion.com" class="footer__link">kz@medicusunion.com</a>
+          </p>
+        </div>
+        <div class="footer__apps">
+          <a href="#" class="footer__app-link" aria-label="Скачать в App Store">App&nbsp;Store</a>
+          <span class="footer__app-divider" aria-hidden="true">&middot;</span>
+          <a href="#" class="footer__app-link" aria-label="Скачать в Google Play">Google&nbsp;Play</a>
+        </div>
+        <div class="footer__nav">
+          <a href="online-consultations.html" class="footer__link">Онлайн-консультации</a>
+          <a href="treatment-abroad.html" class="footer__link">Лечение за&nbsp;рубежом</a>
+          <a href="checkup.html" class="footer__link">Чек-ап за&nbsp;рубежом</a>
+        </div>
+      </div>
+      <div class="footer__legal">
+        <p>&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky Mobile CTA Bar -->
+  <div class="sticky-bar" id="sticky-bar" role="complementary" aria-label="Quick actions">
+    <div class="container sticky-bar__container">
+      <a href="tel:+77015322478" class="sticky-bar__phone" aria-label="Call +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+      <a href="#consultation-form" class="button button--primary sticky-bar__cta">Оставить заявку</a>
+    </div>
+  </div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
