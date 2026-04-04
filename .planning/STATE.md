@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Service Pages Copywriting Rewrite
-status: Ready to plan
-stopped_at: Completed 27-02-PLAN.md
-last_updated: "2026-04-04T16:55:50.966Z"
+milestone: v1.0
+milestone_name: milestone
+status: Phase complete — ready for verification
+stopped_at: Completed 28-01-PLAN.md
+last_updated: "2026-04-04T17:02:44.934Z"
 progress:
-  total_phases: 3
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 4
+  total_phases: 9
+  completed_phases: 8
+  total_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 
 ## Current Position
 
-Phase: 28
-Plan: Not started
+Phase: 24 (liquid-glass-enhancement) — COMPLETE ✅
+Plan: 2 of 2 (all done, 17/17 decisions verified)
 
 ## Performance Metrics
 
@@ -47,7 +47,7 @@ Plan: Not started
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
 | Phase 22 P01 | 2 | 3 tasks | 2 files |
-| Phase 27 P02 | 4 | 2 tasks | 2 files |
+| Phase 28 P01 | 5 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -73,7 +73,8 @@ Recent decisions affecting current work:
 - [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
-- [Phase 27]: Inserted Platform section between About Us and Clinics; removed specialist counts from clinic cards; changed reviews grid to 2-column for 4 cards
+- [Phase 28]: Removed all old design patterns from checkup.html (glass, orbs, dividers, dark mode) to match new clean medtech design
+- [Phase 28]: Checkup page copywriting: verbatim text from copywriting doc, card titles expanded to full form
 
 ### Roadmap Evolution
 
@@ -86,6 +87,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-04T16:49:00.901Z
-Stopped at: Completed 27-02-PLAN.md
+Last session: 2026-04-04T17:02:44.930Z
+Stopped at: Completed 28-01-PLAN.md
 Resume file: None
