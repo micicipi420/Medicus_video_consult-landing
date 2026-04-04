@@ -138,7 +138,10 @@ Plans:
   3. User can fill out the consultation request form (name, phone, specialization dropdown, description) and submit it to Directus -- form validation and spam protection work identically to the main page form
   4. User can expand/collapse all 6 FAQ items with smooth accordion animation -- each answer matches the copywriting document text
   5. Page uses the same Tailwind glassmorphism design language as the main site (glass header, mesh backgrounds, glass cards, gradient CTAs)
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 26-01-PLAN.md -- Sections 1-7: Hero, Problem, Value, Process, Doctors, Why MedicusUnion, Triggers
+- [ ] 26-02-PLAN.md -- Sections 8-11: Pricing, Consultation Form, FAQ accordion, Final CTA + visual checkpoint
 **UI hint**: yes
 
 ### Phase 27: Treatment Abroad Page Rewrite
@@ -169,6 +172,6 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 26. Online Consultations Page Rewrite | 0/TBD | Not started | - |
+| 26. Online Consultations Page Rewrite | 0/2 | Planned | - |
 | 27. Treatment Abroad Page Rewrite | 0/TBD | Not started | - |
 | 28. Checkups Page Rewrite | 0/TBD | Not started | - |
