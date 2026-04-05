@@ -25,8 +25,8 @@
   --mu-text-100: #F5F6F8;
   --mu-text-200: #D8DDE2;
   --mu-text-300: #C6C9D1;
-  --mu-text-500: #A4A8B5;
-  --mu-text-700: #63687A;
+  --mu-text-500: #6B6F80;
+  --mu-text-700: #4A4E5C;
   --mu-text-900: #1B212C;
 
   /* Element / UI accent colors */
@@ -37,6 +37,18 @@
   --mu-accent-orange-bg: #FFF5ED;
   --mu-accent-teal: #78C3BF;
   --mu-accent-teal-bg: #EBFAF9;
+
+  /* Accessible text variants (WCAG AA on #FBFBFB) */
+  --mu-blue-text: #0E8FB5;
+  --mu-accent-blue-text: #3B6DD0;
+  --mu-accent-teal-text: #3D7E7A;
+  --mu-accent-orange-text: #B5621D;
+  --mu-green-text: #1F7A4F;
+
+  /* Accessible CTA gradient */
+  --mu-cta-from: #0E8FB5;
+  --mu-cta-to: #3B6DD0;
+
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -140,6 +152,14 @@
   --color-mu-accent-orange-bg: var(--mu-accent-orange-bg);
   --color-mu-accent-teal: var(--mu-accent-teal);
   --color-mu-accent-teal-bg: var(--mu-accent-teal-bg);
+  --color-mu-blue-text: var(--mu-blue-text);
+  --color-mu-accent-blue-text: var(--mu-accent-blue-text);
+  --color-mu-accent-teal-text: var(--mu-accent-teal-text);
+  --color-mu-accent-orange-text: var(--mu-accent-orange-text);
+  --color-mu-green-text: var(--mu-green-text);
+  --color-mu-cta-from: var(--mu-cta-from);
+  --color-mu-cta-to: var(--mu-cta-to);
+  --shadow-form-inset: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
