@@ -77,12 +77,26 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
+## Current Milestone: v2.0 Service Pages Copywriting Rewrite
+
+**Goal:** Переписать все 3 сервисные страницы по оригинальным копирайтинг-документам — полная замена текста, добавление недостающих секций.
+
+**Target features:**
+- online-consultations.html — 11 секций по medicusunion_kz_landing_final.md
+- treatment-abroad.html — 10 секций по medicusunion_medical_tourism_copy.md
+- checkups.html — 10 секций по MedicusUnion_Checkup_Page_Copy.md
+
+**Copywriting sources:**
+- /Users/mikhail/Downloads/medicusunion_kz_landing_final.md
+- /Users/mikhail/Downloads/medicusunion_medical_tourism_copy.md
+- /Users/mikhail/Downloads/MedicusUnion_Checkup_Page_Copy.md
+
 ## Context
 
-- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
-- Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
-- Self-hosted Inter + Manrope variable fonts (WOFF2)
-- No build tools, no frameworks, no external dependencies
+- Shipped v1.0 redesign with 5 pages, Tailwind CSS v4, Motion CDN animations
+- Stack: HTML + Tailwind CSS v4 (CLI standalone) + JS, Directus 11 + PostgreSQL 16 via Docker
+- SF Pro Display/Rounded system fonts with fallback chain
+- Tailwind CLI standalone binary for CSS compilation
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
@@ -94,7 +108,7 @@
 
 ## Constraints
 
-- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
+- **Stack**: HTML + Tailwind CSS v4 (CLI standalone) + JS — Tailwind для pixel-perfect match с Redesign прототипом
 - **Backend**: Directus (self-hosted) — приём заявок с формы
 - **Language**: Только русский
 - **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст

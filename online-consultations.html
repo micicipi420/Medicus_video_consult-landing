@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Онлайн-консультации с европейскими врачами -- MedicusUnion KZ</title>
+  <meta name="description" content="Видеоконсультация с европейским специалистом -- на вашем языке, с переводом. Загрузите документы в приложение -- мы переведём их, передадим врачу и организуем встречу.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Онлайн-консультации с европейскими врачами -- MedicusUnion KZ">
+  <meta property="og:description" content="Видеоконсультация с европейским специалистом -- на вашем языке, с переводом. Загрузите документы -- мы переведём их, передадим врачу и организуем встречу. От 450EUR.">
+  <meta property="og:url" content="https://medicusunion.kz/online-consultations">
+  <meta property="og:site_name" content="MedicusUnion">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Онлайн-консультации с европейскими врачами -- MedicusUnion KZ">
+  <meta name="twitter:description" content="Видеоконсультация с европейским врачом из дома. Второе мнение, перевод, заключение. От 450EUR.">
+  <link rel="canonical" href="https://medicusunion.kz/online-consultations">
+  <meta name="theme-color" content="#38C6F4">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Header scroll state */
+    .header--scrolled {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(60px) saturate(180%);
+      -webkit-backdrop-filter: blur(60px) saturate(180%);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    /* Mobile menu toggle */
+    .mobile-menu-overlay { display: none; }
+    .mobile-menu-overlay.is-open { display: block; }
+    /* Form validation */
+    .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
+    /* FAQ accordion */
+    .faq__answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .faq__item.is-open .faq__answer,
+    .faq__answer.is-open { max-height: 500px; }
+    /* Form success/error messages */
+    .form__success, .form__error { display: none; }
+    .form__success.is-visible, .form__error.is-visible { display: block; }
+    /* Form field-level errors */
+    .form__field-error { display: none; color: var(--mu-accent-red, #ef4444); font-size: 0.875rem; margin-top: 0.25rem; }
+    .is-invalid + .form__field-error,
+    .is-invalid ~ .form__field-error { display: block; }
+    /* Visually hidden (honeypot) */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body class="relative min-h-screen bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-hidden">
+  <!-- Animated Mesh Background -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-mu-blue/30 mix-blend-multiply blur-[120px]"></div>
+    <div class="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-mu-green-300/20 mix-blend-multiply blur-[120px]"></div>
+    <div class="absolute bottom-[-10%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-mu-accent-blue/15 mix-blend-multiply blur-[120px]"></div>
+    <div class="absolute inset-0 bg-white/40 backdrop-blur-[40px] backdrop-saturate-[180%]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed z-50 transition-all duration-500 top-4 left-4 right-4 mx-auto max-w-7xl rounded-[2.5rem] px-4 md:px-8 border-[0.5px] border-white/50 shadow-glass-header bg-white/30 backdrop-blur-[40px] backdrop-saturate-[150%] py-5" id="header">
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-bold tracking-tight bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">MedicusUnion</a>
+
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="online-consultations.html" class="text-mu-blue font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Лечение</a>
+        <a href="checkup.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Чек-ап</a>
+        <a href="#consultation-form" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Заявка</a>
+      </nav>
+
+      <div class="hidden lg:flex items-center gap-4">
+        <a href="tel:+77015322478" class="flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7 701 532 24 78
+        </a>
+        <a href="#consultation-form" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow inline-block tracking-tight">Оставить заявку</a>
+      </div>
+
+      <button class="lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50" aria-label="Toggle menu" aria-expanded="false">
+        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu-overlay fixed inset-0 z-40 lg:hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute top-24 left-4 right-4 bg-white/60 backdrop-blur-[80px] backdrop-saturate-[200%] shadow-glass-lg rounded-3xl overflow-hidden border-[0.5px] border-white/50">
+      <nav class="flex flex-col p-6 gap-2">
+        <a href="online-consultations.html" class="text-mu-blue hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Лечение</a>
+        <a href="checkup.html" class="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Чек-ап</a>
+        <div class="h-[0.5px] bg-white/40 my-2"></div>
+        <a href="tel:+77015322478" class="flex items-center gap-3 text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7 701 532 24 78
+        </a>
+        <a href="#consultation-form" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-semibold tracking-tight shadow-lg mt-4 w-full text-center block">Оставить заявку</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="relative z-10 flex flex-col gap-8 md:gap-16 pb-8">
+
+    <!-- Section 1: HERO -->
+    <section class="pt-32 pb-16" id="hero">
+      <div class="container mx-auto px-4 lg:px-6">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+          <!-- Left Content -->
+          <div>
+            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-glass-inner mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-accent-red"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg>
+              <span class="text-sm font-bold text-mu-text-900 uppercase tracking-wider">от&nbsp;450&nbsp;&euro;</span>
+            </div>
+
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-[1.1]">
+              <span class="text-mu-text-900">Мнение немецкого врача&nbsp;&mdash; </span>
+              <br>
+              <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">за&nbsp;5&nbsp;дней, без&nbsp;перелёта</span>
+            </h1>
+
+            <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Видеоконсультация с&nbsp;европейским специалистом&nbsp;&mdash; на&nbsp;вашем языке, с&nbsp;переводом. Загрузите документы в&nbsp;приложение&nbsp;&mdash; мы&nbsp;переведём их, передадим врачу и&nbsp;организуем встречу.</p>
+
+            <div class="flex flex-col sm:flex-row gap-4 mb-12">
+              <a href="#consultation-form" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-8 py-4 rounded-3xl font-semibold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 group text-lg">
+                Получить консультацию&nbsp;&mdash; от&nbsp;450&nbsp;&euro;
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+              <a href="#triggers" class="bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg text-center">
+                Узнать, подходит&nbsp;ли мой случай
+              </a>
+            </div>
+
+            <div class="flex items-center gap-8 text-base text-mu-text-700 font-semibold flex-wrap">
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>7 стран</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>50+ врачей</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>15+ специализаций</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Content - Hero Image -->
+          <div class="relative">
+            <div class="rounded-[3rem] overflow-hidden shadow-glass-lg border-[8px] border-white/40 bg-white/20">
+              <img
+                src="https://images.unsplash.com/photo-1758691463620-188ca7c1a04f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkb2N0b3IlMjB2aWRlbyUyMGNhbGwlMjB0ZWxlbWVkaWNpbmUlMjBsYXB0b3B8ZW58MXx8fHwxNzc1MjM4Mjg0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Видеоконсультация с врачом"
+                class="w-full h-[400px] lg:h-[500px] object-cover"
+              />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: FEATURES GRID -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="features">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Feature 1: За 5 рабочих дней -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">За 5 рабочих дней</h3>
+          <p class="text-mu-text-700 font-medium">От заявки до заключения&nbsp;&mdash; без перелёта и&nbsp;ожидания</p>
+        </div>
+        <!-- Feature 2: Врачи из 7 стран -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Врачи из 7 стран</h3>
+          <p class="text-mu-text-700 font-medium">Германия, Австрия, Швейцария, Израиль, ОАЭ, Корея, Турция</p>
+        </div>
+        <!-- Feature 3: Перевод документов -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Перевод документов</h3>
+          <p class="text-mu-text-700 font-medium">Профессиональный медицинский перевод включён в&nbsp;стоимость</p>
+        </div>
+        <!-- Feature 4: На вашем языке -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-orange shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">На вашем языке</h3>
+          <p class="text-mu-text-700 font-medium">Консультация с&nbsp;переводчиком&nbsp;&mdash; русский, казахский, английский</p>
+        </div>
+        <!-- Feature 5: ISO 27001 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-accent-red-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-red shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">ISO 27001</h3>
+          <p class="text-mu-text-700 font-medium">Полная конфиденциальность медицинских данных</p>
+        </div>
+        <!-- Feature 6: Второе мнение -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Второе мнение</h3>
+          <p class="text-mu-text-700 font-medium">Независимая оценка вашего диагноза и&nbsp;плана лечения</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: PROBLEM "Знакомо?" -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="problem">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-8">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Знакомо?</span>
+      </h2>
+      <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto space-y-6">
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Получили диагноз&nbsp;&mdash; и&nbsp;не&nbsp;уверены, что он&nbsp;правильный. Разные врачи говорят разное. Хочется услышать мнение врача, которому можно верить.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Слышали, что за&nbsp;границей лечат лучше&nbsp;&mdash; но&nbsp;лететь дорого, долго и&nbsp;страшно. А&nbsp;вдруг можно получить ответ, не&nbsp;выходя из&nbsp;дома?</p>
+        <p class="text-mu-text-900 font-bold text-lg leading-relaxed">Время идёт&nbsp;&mdash; а&nbsp;решение всё ещё не&nbsp;принято.</p>
+      </div>
+    </section>
+
+    <!-- Section 4: VALUE "Что вы получите за одну консультацию" -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="benefits">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-extrabold">
+          <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Что вы получите за&nbsp;одну консультацию</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <!-- Benefit 1 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Второе мнение по&nbsp;вашему диагнозу</h3>
+          <p class="text-mu-text-700 font-medium">Врач изучит ваши документы до&nbsp;встречи и&nbsp;даст оценку вашего случая. Не&nbsp;общие слова, а&nbsp;конкретное заключение по&nbsp;вашим анализам и&nbsp;снимкам.</p>
+        </div>
+        <!-- Benefit 2 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Понятный план действий</h3>
+          <p class="text-mu-text-700 font-medium">Что делать дальше: какие обследования пройти, какое лечение рекомендуется, какие есть варианты. Вы&nbsp;уходите с&nbsp;консультации с&nbsp;ясностью, а&nbsp;не&nbsp;с&nbsp;новыми вопросами.</p>
+        </div>
+        <!-- Benefit 3 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Письменное заключение</h3>
+          <p class="text-mu-text-700 font-medium">После консультации вы&nbsp;получите документ с&nbsp;рекомендациями врача. Его можно показать своему лечащему врачу или использовать для принятия решения.</p>
+        </div>
+        <!-- Benefit 4 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-orange shadow-glass-sm border border-white/60 mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Ответы на&nbsp;ваши вопросы</h3>
+          <p class="text-mu-text-700 font-medium">Консультация&nbsp;&mdash; это не&nbsp;монолог врача. Вы&nbsp;задаёте вопросы, врач отвечает. Переводчик обеспечивает полное понимание.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: HOW IT WORKS -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="process">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-teal to-mu-green-600 bg-clip-text text-transparent">Три шага до&nbsp;мнения европейского врача</span>
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Step 1 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="text-6xl font-extrabold text-mu-accent-blue opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500">01</div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Загрузите документы</h3>
+          <p class="text-mu-text-700 font-medium">Снимки, анализы, заключения&nbsp;&mdash; в&nbsp;любом формате, на&nbsp;любом языке. Мы&nbsp;переведём всё сами и&nbsp;подготовим для врача.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="text-6xl font-extrabold text-mu-green-500 opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500">02</div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Врач изучает ваш случай</h3>
+          <p class="text-mu-text-700 font-medium">Специалист готовится к&nbsp;встрече: изучает документы, снимки, историю болезни. На&nbsp;консультации он&nbsp;уже в&nbsp;курсе вашего случая.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="text-6xl font-extrabold text-mu-accent-teal opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500">03</div>
+          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Видеоконсультация</h3>
+          <p class="text-mu-text-700 font-medium">Встреча по&nbsp;видео с&nbsp;переводчиком. Врач даёт оценку, отвечает на&nbsp;вопросы. После&nbsp;&mdash; письменное заключение в&nbsp;личном кабинете.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: DOCTORS -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="doctors">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-extrabold">
+          <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Врачи из&nbsp;Германии, Израиля, Швейцарии и&nbsp;ещё 4&nbsp;стран</span>
+        </h2>
+      </div>
+
+      <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-4xl mx-auto mb-12 space-y-4">
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">На&nbsp;платформе MedicusUnion&nbsp;&mdash; врачи из&nbsp;клиник и&nbsp;медицинских университетов Германии, Израиля, Швейцарии, Австрии, ОАЭ, Южной Кореи и&nbsp;Турции.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Основные специализации: онкология, кардиология, нейрохирургия, ортопедия, радиология, ЭКО и&nbsp;другие.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Каждый врач&nbsp;&mdash; с&nbsp;профилем на&nbsp;платформе: специализация, опыт, клиника, языки консультации, стоимость.</p>
+      </div>
+
+      <!-- Country cards -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#000"/><rect y="11" width="48" height="10" fill="#DD0000"/><rect y="21" width="48" height="11" rx="0 0 3 3" fill="#FFCC00"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Германия</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Онкология, кардиология, нейрохирургия</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#fff"/><rect y="4" width="48" height="4" fill="#0038B8"/><rect y="24" width="48" height="4" fill="#0038B8"/><polygon points="24,9 27.5,18 20.5,18" fill="none" stroke="#0038B8" stroke-width="1.5"/><polygon points="24,23 20.5,14 27.5,14" fill="none" stroke="#0038B8" stroke-width="1.5"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Израиль</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Онкология, ортопедия, ЭКО</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#DA291C"/><rect x="20" y="8" width="8" height="16" fill="#fff"/><rect x="16" y="12" width="16" height="8" fill="#fff"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Швейцария</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Кардиология, нейрохирургия</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#ED2939"/><rect y="11" width="48" height="10" fill="#fff"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Австрия</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Ортопедия, радиология</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#000"/><rect x="12" width="36" height="11" fill="#00732F"/><rect x="12" y="11" width="36" height="10" fill="#fff"/><rect x="12" y="21" width="36" height="11" rx="0 0 3 3" fill="#000"/><rect width="12" height="32" rx="3 0 0 3" fill="#FF0000"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">ОАЭ</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Кардиология, ортопедия</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#fff"/><circle cx="24" cy="16" r="8" fill="#CD2E3A"/><path d="M16 16a8 8 0 0 0 16 0" fill="#0047A0"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Южная Корея</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Онкология, радиология</p>
+        </div>
+        <div class="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+          <div class="mb-2" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-10 h-7 mx-auto" aria-hidden="true"><rect width="48" height="32" rx="3" fill="#E30A17"/><circle cx="19" cy="16" r="8" fill="#fff"/><circle cx="21.5" cy="16" r="6.5" fill="#E30A17"/><polygon points="27,16 30,13.5 28,16 30,18.5" fill="#fff"/></svg></div>
+          <h3 class="font-bold text-mu-text-900 mb-1">Турция</h3>
+          <p class="text-sm text-mu-text-700 font-medium">Ортопедия, ЭКО</p>
+        </div>
+      </div>
+
+      <!-- Specialization badges (TSX pattern: bg-white/50 backdrop-blur-md border border-white/60 rounded-full) -->
+      <div class="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/60 shadow-glass-lg max-w-4xl mx-auto mb-8">
+        <h3 class="text-3xl md:text-4xl font-extrabold text-mu-text-900 mb-8 text-center">Доступные специализации</h3>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Онкология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Кардиология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Нейрохирургия</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Ортопедия</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Радиология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">ЭКО</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Гинекология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Урология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Гастроэнтерология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Эндокринология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Офтальмология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Дерматология</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Педиатрия</span>
+          <span class="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">Пульмонология</span>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="https://medicusunion.com/doctors" class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg" target="_blank" rel="noopener noreferrer">
+          Все врачи
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 7: WHY MEDICUSUNION -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="why-medicusunion">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-extrabold">
+          <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Почему через MedicusUnion</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <!-- Advantage 1 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="flex gap-5">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Документы переведены и&nbsp;подготовлены</h3>
+              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;загружаете на&nbsp;русском&nbsp;&mdash; врач получает на&nbsp;своём языке. Не&nbsp;нужно искать переводчика медицинских документов.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Advantage 2 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="flex gap-5">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Перевод прямо во&nbsp;время консультации</h3>
+              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;говорите на&nbsp;русском, врач&nbsp;&mdash; на&nbsp;своём. Переводчик обеспечивает полное понимание&nbsp;&mdash; включая медицинскую терминологию.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Advantage 3 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="flex gap-5">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-orange shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Всё в&nbsp;одном приложении</h3>
+              <p class="text-mu-text-700 font-medium text-sm">Документы, расписание, видеозвонок, заключение врача&nbsp;&mdash; в&nbsp;личном кабинете. Ничего не&nbsp;потеряется, всё под рукой.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Advantage 4 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+          <div class="flex gap-5">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Офис в&nbsp;Казахстане, договор, документы</h3>
+              <p class="text-mu-text-700 font-medium text-sm">MedicusUnion GmbH, Австрия. Офис в&nbsp;Казахстане&nbsp;&mdash; резидент Astana Hub. ISO&nbsp;27001.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Advantage 5 -->
+        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500 md:col-span-2 lg:col-span-1">
+          <div class="flex gap-5">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Нужно больше&nbsp;&mdash; организуем</h3>
+              <p class="text-mu-text-700 font-medium text-sm">Если после консультации нужно лечение за&nbsp;рубежом&nbsp;&mdash; мы&nbsp;организуем всё: клинику, документы, логистику, сопровождение. Но&nbsp;это уже следующий шаг.</p>
+              <a href="treatment-abroad.html" class="inline-flex items-center gap-1 text-mu-accent-blue font-bold mt-3 text-sm hover:gap-2 transition-all">
+                Лечение за&nbsp;рубежом
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: TRIGGERS "Когда имеет смысл получить второе мнение" -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="triggers">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-8">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Когда имеет смысл получить второе мнение</span>
+      </h2>
+      <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto">
+        <ul class="space-y-5" role="list">
+          <li class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+              <svg class="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-mu-text-900 font-medium text-lg">Вам поставили серьёзный диагноз и&nbsp;вы&nbsp;хотите убедиться, что он&nbsp;верный</span>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+              <svg class="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-mu-text-900 font-medium text-lg">Разные врачи дают противоречивые рекомендации</span>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+              <svg class="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-mu-text-900 font-medium text-lg">Нужно понять, какое лечение подходит именно вам</span>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+              <svg class="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-mu-text-900 font-medium text-lg">Рассматриваете лечение за&nbsp;рубежом, но&nbsp;хотите сначала поговорить с&nbsp;врачом</span>
+          </li>
+          <li class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+              <svg class="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-mu-text-900 font-medium text-lg">Хотите показать снимки или анализы специалисту узкого профиля</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 9: PRICING -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="pricing">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-4">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Прозрачная цена, никаких сюрпризов</span>
+      </h2>
+      <p class="text-mu-text-700 font-medium text-lg text-center mb-10 max-w-2xl mx-auto">Стоимость зависит от&nbsp;специализации врача и&nbsp;сложности случая. Вы&nbsp;узнаете точную цену до&nbsp;оплаты.</p>
+
+      <div class="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-8 md:p-12 border border-white/60 shadow-glass-lg max-w-xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-glass-inner mb-6 text-sm font-bold text-mu-text-900">Все включено</div>
+        <div class="mb-8">
+          <span class="text-mu-text-700 font-medium text-lg">от</span>
+          <span class="text-5xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">450&nbsp;&euro;</span>
+          <span class="text-mu-text-700 font-medium text-lg block mt-1">видеоконсультация</span>
+        </div>
+        <ul class="space-y-4 mb-8">
+          <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Перевод ваших медицинских документов
+          </li>
+          <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Подготовка врача к&nbsp;консультации (изучение вашего кейса)
+          </li>
+          <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Видеовстреча с&nbsp;переводчиком
+          </li>
+          <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Письменное заключение врача
+          </li>
+          <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Доступ к&nbsp;личному кабинету
+          </li>
+        </ul>
+        <a href="#consultation-form" class="w-full bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white py-4 rounded-2xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 text-lg">Получить консультацию</a>
+      </div>
+    </section>
+
+    <!-- Section 10: CONSULTATION FORM -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="consultation-form">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+
+        <!-- Left: info -->
+        <div class="flex flex-col h-full">
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+            <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Записаться на&nbsp;консультацию</span>
+          </h2>
+          <p class="text-mu-text-700 font-medium text-lg mb-8 leading-relaxed max-w-lg">Оставьте заявку&nbsp;&mdash; мы&nbsp;свяжемся в&nbsp;течение 24&nbsp;часов, обсудим ваш случай и&nbsp;подберём врача. Бесплатно и&nbsp;без обязательств.</p>
+
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Перезвоним в течение 24 часов
+            </li>
+            <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Бесплатно и без обязательств
+            </li>
+            <li class="flex items-center gap-3 text-mu-text-900 font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600 flex-shrink-0" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Ваши данные защищены (ISO 27001)
+            </li>
+          </ul>
+
+          <!-- Trust Badges -->
+          <div class="flex flex-wrap gap-4 mt-auto">
+            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-glass-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              На связи 24/7
+            </div>
+            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-glass-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              ISO 27001
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-8 border border-white/60 relative overflow-hidden shadow-glass-lg">
+          <!-- Success overlay -->
+          <div class="form__success absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8" id="form-success" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <h3 class="text-2xl font-bold text-mu-text-900 mt-6 mb-2">Спасибо!</h3>
+            <p class="text-mu-text-700 font-medium">Мы&nbsp;свяжемся с&nbsp;вами в&nbsp;течение 24&nbsp;часов.</p>
+          </div>
+
+          <form class="contact-form space-y-6" novalidate>
+            <div>
+              <label class="block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
+              <input type="text" id="contact-name" name="name" class="w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
+              <span class="form__field-error" hidden></span>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
+              <input type="tel" id="contact-phone" name="phone" class="w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+              <span class="form__field-error" hidden></span>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-mu-text-900 mb-2" for="contact-interest">Специализация</label>
+              <select id="contact-interest" name="interest" class="w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none" required>
+                <option value="" disabled selected>Выберите специализацию</option>
+                <option value="oncology">Онкология</option>
+                <option value="cardiology">Кардиология</option>
+                <option value="neurosurgery">Нейрохирургия</option>
+                <option value="other">Другое</option>
+              </select>
+              <span class="form__field-error" hidden></span>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-mu-text-900 mb-2" for="contact-description">Кратко о&nbsp;вашем случае <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
+              <textarea id="contact-description" name="description" class="w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="3" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
+            </div>
+
+            <!-- Honeypot -->
+            <div class="visually-hidden" aria-hidden="true">
+              <label for="contact-website">Website</label>
+              <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <button class="w-full bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white py-4 rounded-2xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
+              Отправить заявку
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m22 2-7 20-4-9-9-4Z"/>
+                <path d="M22 2 11 13"/>
+              </svg>
+            </button>
+
+            <p class="text-sm text-mu-text-700 font-medium text-center mt-4">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
+            <div class="form__error" hidden></div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Section 11: FAQ -->
+    <section class="container mx-auto px-4 lg:px-6 mb-16" id="faq">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-8">
+        <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Частые вопросы</span>
+      </h2>
+
+      <div class="faq__list max-w-3xl mx-auto space-y-4">
+        <!-- FAQ 1 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            Как проходит консультация технически?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Видеозвонок через приложение MedicusUnion. Работает на&nbsp;телефоне, планшете и&nbsp;компьютере. Нужен только интернет.</div>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            Сколько длится консультация?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Обычно 30&ndash;60 минут. Врач не&nbsp;торопится&nbsp;&mdash; это не&nbsp;поликлиника с&nbsp;10-минутным приёмом.</div>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            А если я не говорю по-английски?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Не&nbsp;нужно. Мы&nbsp;обеспечиваем перевод во&nbsp;время консультации. Документы тоже переводим сами.</div>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            Можно показать заключение своему врачу?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Конечно. Вы&nbsp;получите письменное заключение&nbsp;&mdash; его можно скачать, распечатать, показать любому врачу.</div>
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            Консультация обязывает к лечению?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Нет. Это ваше решение. Консультация даёт информацию для принятия решения, а&nbsp;не&nbsp;обязательство.</div>
+          </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+          <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
+            Можно выбрать конкретного врача?
+            <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
+            <div class="faq__answer-inner">Да. Вы&nbsp;можете выбрать врача на&nbsp;платформе сами, или мы&nbsp;подберём подходящего специалиста под ваш случай.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 12: FINAL CTA -->
+    <section class="container mx-auto px-4 lg:px-6" id="final-cta">
+      <div class="bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 text-center border border-white/60 shadow-glass-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-mu-accent-teal-bg rounded-full blur-[100px] -z-10" aria-hidden="true"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-mu-accent-orange-bg rounded-full blur-[100px] -z-10" aria-hidden="true"></div>
+
+        <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Не&nbsp;откладывайте решение</h2>
+        <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Второе мнение&nbsp;&mdash; это не&nbsp;роскошь, а&nbsp;возможность принять правильное решение. От&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней, из&nbsp;дома.</p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#consultation-form" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-10 py-5 rounded-3xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] text-lg flex items-center gap-2">
+            Получить консультацию
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="#consultation-form" class="bg-white/60 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-bold border border-white/60 hover:bg-white/80 transition-all flex items-center justify-center gap-2 shadow-glass-sm text-lg">
+            Оставить заявку
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="relative overflow-hidden z-10 py-16" id="footer">
+    <div class="container mx-auto px-4 lg:px-6 relative z-10">
+      <div class="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/60 shadow-glass-lg">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+
+          <!-- Column 1: Company -->
+          <div>
+            <h3 class="text-3xl font-extrabold bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent mb-4 drop-shadow-sm">MedicusUnion</h3>
+            <p class="text-mu-text-700 font-medium leading-relaxed">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+          </div>
+
+          <!-- Column 2: Services -->
+          <div>
+            <h4 class="font-extrabold text-lg text-mu-text-900 mb-4">Услуги</h4>
+            <ul class="space-y-3">
+              <li><a href="online-consultations.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Онлайн-консультации</a></li>
+              <li><a href="treatment-abroad.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Лечение за&nbsp;рубежом</a></li>
+              <li><a href="checkup.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Чек-ап</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Navigation -->
+          <div>
+            <h4 class="font-extrabold text-lg text-mu-text-900 mb-4">Навигация</h4>
+            <ul class="space-y-3">
+              <li><a href="index.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Главная</a></li>
+              <li><a href="contacts.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium">Контакты</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Contacts -->
+          <div>
+            <h4 class="font-extrabold text-lg text-mu-text-900 mb-4">Контакты</h4>
+            <ul class="space-y-4">
+              <li>
+                <a href="tel:+77015322478" class="flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors font-semibold">
+                  <div class="bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </div>
+                  +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
+                </a>
+              </li>
+              <li>
+                <a href="mailto:kz@medicusunion.com" class="flex items-center gap-3 text-mu-text-900 hover:text-mu-blue transition-colors break-all font-semibold">
+                  <div class="bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue flex-shrink-0" aria-hidden="true">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  </div>
+                  kz@medicusunion.com
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="border-t border-mu-text-300/30 pt-8 mt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-mu-text-700 font-medium text-sm">&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
+            <p class="text-mu-text-700 font-medium text-sm flex items-center gap-2">
+              <span class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-green-600" aria-hidden="true">
+                  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+                </svg>
+                ISO 27001 Certified
+              </span>
+              <span class="w-1.5 h-1.5 bg-mu-text-300/30 rounded-full" aria-hidden="true"></span>
+              <span>Astana Hub Resident</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky Mobile CTA Bar -->
+  <div class="fixed bottom-4 left-4 right-4 z-50 bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/60 shadow-glass-lg p-3 lg:hidden" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
+    <div class="flex items-center justify-between gap-3">
+      <a href="tel:+77015322478" class="text-mu-text-900 font-semibold text-sm" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+      <a href="#consultation-form" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] text-sm">Оставить заявку</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/motion@12.23.24/dist/motion.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>

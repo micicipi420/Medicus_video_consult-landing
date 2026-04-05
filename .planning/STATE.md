@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: unknown
-stopped_at: Completed 22-01-PLAN.md
-last_updated: "2026-03-24T14:25:11.004Z"
+milestone: v2.0
+milestone_name: Service Pages Copywriting Rewrite
+status: Milestone complete
+stopped_at: Completed 28-01-PLAN.md
+last_updated: "2026-04-04T17:27:23.393Z"
 progress:
-  total_phases: 1
-  completed_phases: 0
-  total_plans: 2
-  completed_plans: 0
+  total_phases: 3
+  completed_phases: 1
+  total_plans: 7
+  completed_plans: 5
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 
 ## Current Position
 
-Phase: 24 (liquid-glass-enhancement) — COMPLETE ✅
-Plan: 2 of 2 (all done, 17/17 decisions verified)
+Phase: 28
+Plan: Not started
 
 ## Performance Metrics
 
@@ -47,6 +47,7 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
 | Phase 22 P01 | 2 | 3 tasks | 2 files |
+| Phase 28 P01 | 5 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
+- [Phase 28]: Removed all old design patterns from checkup.html (glass, orbs, dividers, dark mode) to match new clean medtech design
+- [Phase 28]: Checkup page copywriting: verbatim text from copywriting doc, card titles expanded to full form
 
 ### Roadmap Evolution
 
@@ -84,6 +87,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-03-25T03:14:10Z
-Stopped at: Phase 24 complete — ad-hoc glass on problem/benefits cards added post-verification
-Resume file: .planning/HANDOFF.json
+Last session: 2026-04-04T17:02:44.930Z
+Stopped at: Completed 28-01-PLAN.md
+Resume file: None

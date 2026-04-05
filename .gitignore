@@ -14,6 +14,12 @@ Thumbs.db
 *.swp
 *.swo
 
+# Tailwind CSS standalone CLI binary (~73MB, download with curl)
+tailwindcss
+
+# Backup of old hand-written CSS (safety net during migration)
+css/styles.css.bak
+
 # ── GSD baseline (auto-generated) ──
 .gsd
 *~
@@ -33,3 +39,4 @@ vendor/
 coverage/
 .cache/
 tmp/
+.claude/worktrees/

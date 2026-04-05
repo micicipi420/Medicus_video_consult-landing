@@ -6,7 +6,8 @@
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
 - v1.3 KZ Design Alignment -- Phases 17-19 (shipped 2026-03-23)
-- ✅ v1.4 2025 Visual Redesign -- Phases 20-23 (shipped 2026-03-24)
+- v1.4 2025 Visual Redesign -- Phases 20-23 (shipped 2026-03-24)
+- v2.0 Service Pages Copywriting Rewrite -- Phases 26-28
 
 ## Phases
 
@@ -70,79 +71,12 @@ Requirements: `.planning/milestones/v1.3-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
 
 <details>
-<summary>✅ v1.4 2025 Visual Redesign (Phases 20-23) -- SHIPPED 2026-03-24</summary>
+<summary>v1.4 2025 Visual Redesign (Phases 20-23) -- SHIPPED 2026-03-24</summary>
 
 - [x] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04 (completed 2026-03-24)
 - [x] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02 (completed 2026-03-24)
 - [x] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04 (completed 2026-03-24)
 - [x] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03 (completed 2026-03-24)
-
-### Phase 20: Dark Mode Token Infrastructure
-**Goal:** Lay the complete CSS and JS foundation for dark mode. All existing components auto-update via the token cascade. No visual change in light mode. All dark token pairs pass contrast audit before any component styling proceeds.
-**Depends on:** Phase 19
-**Requirements:** DM-01, DM-02, DM-03, DM-04
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. User can toggle dark mode from the sticky navigation — button is visible at all scroll positions, has text label, meets 44px touch target
-  2. Dark mode persists across page reload — closing and reopening the page restores the previously chosen theme
-  3. Hard-refresh with OS dark preference and no localStorage entry shows light mode (default-light policy holds)
-  4. Hard-refresh with saved dark preference shows dark mode immediately with no white flash (FOUC eliminated)
-  5. Every color token pair in `[data-theme="dark"]` has been checked against WCAG AA contrast (≥4.5:1); body text pairs target AAA (≥7:1)
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 20-01-PLAN.md — CSS token infrastructure: [data-theme="dark"] block, glass tokens, FOUC script, toggle button HTML
-- [x] 20-02-PLAN.md — JS initDarkMode() wiring, localStorage persistence, contrast audit checkpoint
-**Context:** `.planning/phases/20-dark-mode-token-infrastructure/20-CONTEXT.md`
-
-### Phase 21: Bold Typography Scale
-**Goal:** Increase heading visual weight to display-scale 2025 standards. Every headline readable and correctly broken at 320px and 390px before this phase closes.
-**Depends on:** Phase 20
-**Requirements:** TYPO-01, TYPO-02
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. The hero heading is visibly larger and bolder than in v1.3 — no single-word orphan lines at 390px
-  2. All h1 and h2 headings scale fluidly between desktop and mobile without overflow or layout shift
-  3. Bold headings are legible in both light and dark mode — no contrast regressions
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 21-01-PLAN.md — Heading token update (TYPO-01 + TYPO-02) + visual verification checkpoint
-**Context:** `.planning/phases/21-bold-typography-scale/21-CONTEXT.md`
-
-### Phase 22: Glassmorphism
-**Goal:** Apply selective glass effects to the sticky header and pricing card. Hero section gains gradient mesh background as the visual layer required for glass to function. Maximum 2 glass elements visible in any viewport.
-**Depends on:** Phase 20, Phase 21
-**Requirements:** GLASS-01, GLASS-02, GLASS-03, GLASS-04
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. Scrolling past the hero reveals a frosted glass header — page content is visible through a translucent header
-  2. The pricing card has a glass surface — sits visibly over the gradient pricing section background
-  3. On a browser with `backdrop-filter` disabled, the header and pricing card show solid opaque fallback colors
-  4. Scrolling through the page with Chrome DevTools 4x CPU throttle shows no frame drops below 50fps
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 22-01-PLAN.md — CSS glassmorphism: hero gradient mesh, header glass, pricing gradient, .card--glass modifier, @supports fallbacks, dark mode overrides; HTML card--glass wiring
-- [x] 22-02-PLAN.md — Visual + performance verification checkpoint: 7-check sign-off including mandatory 4x CPU throttle FPS gate
-**Context:** `.planning/phases/22-glassmorphism/22-CONTEXT.md`
-
-### Phase 23: Micro-Animations Enhancement
-**Goal:** Extend scroll reveal with a vertical slide component, add tactile button active feedback, and confirm the global prefers-reduced-motion guard covers all new transforms. Total animation types on page stays at ≤5.
-**Depends on:** Phase 20, Phase 21, Phase 22
-**Requirements:** ANIM-01, ANIM-02, ANIM-03
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. Scroll-reveal elements slide up from 20px while fading in — visibly more dynamic than the v1.3 opacity-only fade
-  2. Pressing and holding a CTA button shows a subtle scale-down (scale 0.97) — confirms the click registered
-  3. With OS prefers-reduced-motion enabled, no animations are visible — elements appear at their final position immediately
-  4. After waiting 10 seconds on the loaded page without interaction, nothing on the page is moving
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 23-01-PLAN.md — CSS animation updates: scroll-reveal translateY(20px), button active scale(0.97), reduced-motion guard, stagger fix + visual verification checkpoint
-**Context:** `.planning/phases/23-micro-animations-enhancement/23-CONTEXT.md`
-
-## Progress Table
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
-| 21. Bold Typography Scale | 1/1 | Complete    | 2026-03-24 |
-| 22. Glassmorphism | 2/2 | Complete    | 2026-03-24 |
-| 23. Micro-Animations Enhancement | 1/1 | Complete    | 2026-03-24 |
 
 </details>
 
@@ -150,13 +84,94 @@ Full details: `.planning/milestones/v1.4-ROADMAP.md`
 Requirements: `.planning/milestones/v1.4-REQUIREMENTS.md`
 Audit: `.planning/milestones/v1.4-MILESTONE-AUDIT.md`
 
-### ✅ Phase 24: Liquid Glass Enhancement — SHIPPED 2026-03-25
+<details>
+<summary>Phase 24: Liquid Glass Enhancement -- SHIPPED 2026-03-25</summary>
 
-**Goal:** Expand glassmorphism from Phase 22 (2 elements) to full iOS 26 liquid glass treatment across the page. Three new glass surfaces (sticky bar, form wrapper, social proof stats), glass intensity upgraded site-wide (blur 20px, 60% opacity, green tint, specular highlight), dark mode glass enabled everywhere, gradient mesh backgrounds added to benefits and lead-form sections.
-**Requirements**: D-01 through D-17 (17/17 verified)
-**Depends on:** Phase 23
-**Plans:** 2 plans
+- [x] 24-01-PLAN.md -- Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
+- [x] 24-02-PLAN.md -- New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
+
+</details>
+
+<details>
+<summary>Phase 1 (Redesign): Apply Redesign from Redesign folder to main project -- SHIPPED</summary>
 
 Plans:
-- [x] 24-01-PLAN.md — Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
-- [x] 24-02-PLAN.md — New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
+- [x] 01-01-PLAN.md -- Complete CSS rewrite: design tokens, glass components, buttons, section-specific styles, animation keyframes
+- [x] 01-02-PLAN.md -- JS rewrite: main.js (form, accordion, phone mask, header, mobile menu) + animations.js (motion-powered entrance animations)
+- [x] 01-03-PLAN.md -- index.html top half: head, header, mesh bg, hero, stats, services, guide sections
+- [x] 01-04-PLAN.md -- index.html bottom half: WhyUs, contact form, FAQ, pricing, CTA, footer, sticky bar
+- [x] 01-05-PLAN.md -- Service pages: online-consultations.html + treatment-abroad.html
+- [x] 01-06-PLAN.md -- Service pages: checkups.html + contacts.html
+- [x] 01-07-PLAN.md -- Link audit, old file cleanup, visual verification checkpoint
+
+</details>
+
+<details>
+<summary>Phase 25: Migrate to Tailwind CSS v4 -- IN PROGRESS</summary>
+
+Plans:
+- [x] 25-01-PLAN.md -- Tailwind CLI setup: download binary, create src/styles/ with theme.css, tailwind.css, fonts.css from Redesign
+- [x] 25-02-PLAN.md -- index.html top half: mesh bg, header, hero, stats, services, guide Tailwind class migration
+- [x] 25-03-PLAN.md -- index.html bottom half: WhyUs, contact, FAQ, CTA, footer Tailwind class migration
+- [x] 25-04-PLAN.md -- Service pages: all 4 non-index pages Tailwind class migration
+- [ ] 25-05-PLAN.md -- Build, JS selector audit, cleanup, visual verification checkpoint
+
+</details>
+
+### v2.0 Service Pages Copywriting Rewrite
+
+**Milestone Goal:** Rewrite all 3 service pages (online consultations, treatment abroad, checkups) using original copywriting documents as the single source of truth. Each page gets completely new content, new sections, and proper SEO -- while preserving the shared Tailwind glassmorphism design system, Directus form integration, and FAQ accordion behavior.
+
+- [x] **Phase 26: Online Consultations Page Rewrite** - Full content rewrite of online-consultations.html from copywriting document (11 sections + shared cross-page infra) (completed 2026-04-04)
+- [x] **Phase 27: Treatment Abroad Page Rewrite** - Full content rewrite of treatment-abroad.html from copywriting document (10 sections) (completed 2026-04-04)
+- [x] **Phase 28: Checkups Page Rewrite** - Full content rewrite of checkups.html from copywriting document (11 sections + B2B block) (completed 2026-04-04)
+
+## Phase Details
+
+### Phase 26: Online Consultations Page Rewrite
+**Goal**: Users visiting online-consultations.html see the complete MedicusUnion online consultation service story -- from problem recognition through process explanation to pricing and lead capture -- written in the voice and structure of the approved copywriting document.
+**Depends on**: Phase 25
+**Requirements**: CONSULT-01, CONSULT-02, CONSULT-03, CONSULT-04, CONSULT-05, CONSULT-06, CONSULT-07, CONSULT-08, CONSULT-09, CONSULT-10, CONSULT-11, CROSS-01, CROSS-02, CROSS-03
+**Success Criteria** (what must be TRUE):
+  1. User opening online-consultations.html sees a hero with the exact H1 from the copywriting doc and a CTA button that scrolls to the consultation request form
+  2. User scrolling through the page encounters all 11 content sections in the order specified by the copywriting document (hero, problem, value, process, doctors, advantages, triggers, pricing, form, FAQ, final CTA)
+  3. User can fill out the consultation request form (name, phone, specialization dropdown, description) and submit it to Directus -- form validation and spam protection work identically to the main page form
+  4. User can expand/collapse all 6 FAQ items with smooth accordion animation -- each answer matches the copywriting document text
+  5. Page uses the same Tailwind glassmorphism design language as the main site (glass header, mesh backgrounds, glass cards, gradient CTAs)
+**Plans**: 2 plans
+Plans:
+- [ ] 26-01-PLAN.md -- Sections 1-7: Hero, Problem, Value, Process, Doctors, Why MedicusUnion, Triggers
+- [ ] 26-02-PLAN.md -- Sections 8-11: Pricing, Consultation Form, FAQ accordion, Final CTA + visual checkpoint
+**UI hint**: yes
+
+### Phase 27: Treatment Abroad Page Rewrite
+**Goal**: Users visiting treatment-abroad.html see the complete MedicusUnion medical tourism service story -- from situation recognition through comparison with alternatives to clinic geography and social proof -- written in the voice and structure of the approved copywriting document.
+**Depends on**: Phase 26
+**Requirements**: TREAT-01, TREAT-02, TREAT-03, TREAT-04, TREAT-05, TREAT-06, TREAT-07, TREAT-08, TREAT-09, TREAT-10
+**Success Criteria** (what must be TRUE):
+  1. User opening treatment-abroad.html sees a hero with the exact H1 from the copywriting doc, a primary CTA, and social proof indicators
+  2. User scrolling through the page encounters all 10 content sections in document order (hero, situations, process steps, comparison tables, platform, clinics/geography, reviews, FAQ, final CTA, SEO meta)
+  3. User can read 3 comparison tables (vs self-organized, vs Instagram agency, vs clinic department) and understand the MedicusUnion differentiation at a glance
+  4. User can expand/collapse all 8 FAQ items with smooth accordion animation -- each answer matches the copywriting document text
+  5. Page has correct SEO meta tags (title, description) matching the copywriting document specification
+**UI hint**: yes
+
+### Phase 28: Checkups Page Rewrite
+**Goal**: Users visiting checkups.html see the complete MedicusUnion health checkup service story -- from prevention motivation through program comparison (Korea and Turkey) to B2B offerings -- written in the voice and structure of the approved copywriting document.
+**Depends on**: Phase 26
+**Requirements**: CHECK-01, CHECK-02, CHECK-03, CHECK-04, CHECK-05, CHECK-06, CHECK-07, CHECK-08, CHECK-09, CHECK-10, CHECK-11
+**Success Criteria** (what must be TRUE):
+  1. User opening checkups.html sees a hero with the exact H1 from the copywriting doc, a CTA button, and a trust indicator line
+  2. User scrolling through the page encounters all checkup content sections in document order (hero, prevention, advantages, platform, Korea programs, Turkey programs, process steps, B2B, FAQ, final CTA, SEO meta)
+  3. User can compare checkup programs: 7 Korean programs (from Базовая ~$760 to Ноблесс ~$6,100) and 4 Turkish programs (from Лабораторный ~$350 to Platinum ~$3,200) with clear pricing and inclusions
+  4. User sees a dedicated B2B block (checkups for employees and clients) with clear value propositions for companies
+  5. Page has correct SEO meta tags (title, description) matching the copywriting document specification
+**UI hint**: yes
+
+## Progress
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 26. Online Consultations Page Rewrite | 0/2 | Complete    | 2026-04-04 |
+| 27. Treatment Abroad Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
+| 28. Checkups Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
