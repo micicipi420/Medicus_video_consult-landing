@@ -178,6 +178,10 @@ Plans:
   3. The `<head>` of every page preloads critical CSS and font files with `<link rel="preload">`
   4. The Motion CDN script tag uses `defer` or `async` attribute so it does not block initial page render
   5. Running Lighthouse on any page shows no critical performance warnings related to unoptimized images, render-blocking resources, or missing lazy loading
+**Plans:** 2 plans
+Plans:
+- [ ] 31-01-PLAN.md -- Download 11 Unsplash images, convert to WebP, replace URLs in HTML, add lazy loading + width/height
+- [ ] 31-02-PLAN.md -- Add preload tags to all pages, defer Motion CDN + JS scripts, rebuild Tailwind CSS
 
 ## Progress
 
@@ -185,4 +189,4 @@ Plans:
 |-------|----------------|--------|-----------|
 | 29. 404 Page & UI Polish | 0/2 | Planned | - |
 | 30. SEO Optimization | 0/1 | Planned | - |
-| 31. Performance Optimization | 0/TBD | Not started | - |
+| 31. Performance Optimization | 0/2 | Planned | - |
