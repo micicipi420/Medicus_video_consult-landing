@@ -197,7 +197,7 @@
 
         <!-- Right: Form -->
         <div class="form-wrapper animate-fade-right">
-          <div class="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-8 shadow-glass-lg border border-white/60 relative overflow-hidden shadow-glass-inner">
+          <div class="bg-white/70 backdrop-blur-3xl rounded-[3rem] p-8 shadow-glass-lg border border-white/60 relative overflow-hidden shadow-glass-inner">
             <!-- Success overlay -->
             <div class="form__success" id="form-success" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="form__success-icon" aria-hidden="true">
@@ -214,13 +214,13 @@
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
                 <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль" required autocomplete="name">
-                <span class="form__field-error" hidden></span>
+                <span class="form__field-error" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
                 <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
-                <span class="form__field-error" hidden></span>
+                <span class="form__field-error" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
@@ -232,7 +232,7 @@
                   <option value="checkup">Чек-ап</option>
                   <option value="not-sure">Пока не определился</option>
                 </select>
-                <span class="form__field-error" hidden></span>
+                <span class="form__field-error" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
@@ -255,7 +255,7 @@
               </button>
 
               <p class="form__privacy text-sm text-mu-text-700 font-medium text-center">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
-              <div class="form__error" hidden></div>
+              <div class="form__error" role="alert" aria-live="polite" hidden></div>
             </form>
           </div>
         </div>
