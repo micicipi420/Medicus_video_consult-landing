@@ -148,7 +148,10 @@ Plans:
   3. All 6 pages (index, 4 service pages, 404) share identical header navigation, footer, mobile menu, and sticky bar markup and behavior
   4. Every form across all pages includes honeypot spam protection and validates correctly before submission
   5. All FAQ accordions on every page open and close with smooth animation, and all CTA buttons link to the correct destinations
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 29-01-PLAN.md -- Create branded 404.html page from Redesign NotFoundPage.tsx with shared site shell
+- [ ] 29-02-PLAN.md -- Fix header/footer/script inconsistencies, audit CTA links, verify honeypot and FAQ across all pages
 **UI hint**: yes
 
 ### Phase 30: SEO Optimization
@@ -180,6 +183,6 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 29. 404 Page & UI Polish | 0/TBD | Not started | - |
+| 29. 404 Page & UI Polish | 0/2 | Planned | - |
 | 30. SEO Optimization | 0/1 | Planned | - |
 | 31. Performance Optimization | 0/TBD | Not started | - |
