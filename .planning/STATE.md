@@ -1,30 +1,30 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Service Pages Copywriting Rewrite
-status: Milestone complete
-stopped_at: Completed 28-01-PLAN.md
-last_updated: "2026-04-04T17:27:23.393Z"
+milestone: v3.0
+milestone_name: SEO, Performance & Polish
+status: Defining requirements
+stopped_at: Milestone v3.0 started
+last_updated: "2026-04-05T05:00:00.000Z"
 progress:
-  total_phases: 3
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 5
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-23)
+See: .planning/PROJECT.md (updated 2026-04-05)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 24 — liquid-glass-enhancement
+**Current focus:** v3.0 SEO, Performance & Polish
 
 ## Current Position
 
-Phase: 28
-Plan: Not started
+Phase: Not started (defining requirements)
+Plan: —
 
 ## Performance Metrics
 

@@ -77,19 +77,20 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
-## Current Milestone: v2.0 Service Pages Copywriting Rewrite
+## Current Milestone: v3.0 SEO, Performance & Polish
 
-**Goal:** Переписать все 3 сервисные страницы по оригинальным копирайтинг-документам — полная замена текста, добавление недостающих секций.
+**Goal:** Оптимизировать сайт для поисковиков и производительности, добавить 404-страницу, исправить UI-баги.
 
 **Target features:**
-- online-consultations.html — 11 секций по medicusunion_kz_landing_final.md
-- treatment-abroad.html — 10 секций по medicusunion_medical_tourism_copy.md
-- checkups.html — 10 секций по MedicusUnion_Checkup_Page_Copy.md
+- 404.html — страница ошибки с gradient "404" и кнопкой "На главную"
+- SEO мета-теги — title, description, OG для каждой страницы
+- WebP/AVIF конвертация изображений
+- Core Web Vitals оптимизация (LCP, CLS, FID)
+- UI polish — мелкие баги верстки, консистентность между страницами
 
-**Copywriting sources:**
-- /Users/mikhail/Downloads/medicusunion_kz_landing_final.md
-- /Users/mikhail/Downloads/medicusunion_medical_tourism_copy.md
-- /Users/mikhail/Downloads/MedicusUnion_Checkup_Page_Copy.md
+## Shipped: v2.0 Service Pages Copywriting Rewrite (2026-04-05)
+- 4 страницы переписаны по копирайтинг-документам (35 requirements)
+- Pixel-perfect Tailwind из Redesign TSX
 
 ## Context
 
