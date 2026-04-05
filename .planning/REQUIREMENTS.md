@@ -2,8 +2,8 @@
 
 ## 404 Page
 
-- [ ] **404-01**: 404.html с gradient "404", текстом "Страница не найдена", кнопкой "На главную" (из Redesign NotFoundPage.tsx)
-- [ ] **404-02**: Общий header/footer/mesh/scripts как на остальных страницах
+- [x] **404-01**: 404.html с gradient "404", текстом "Страница не найдена", кнопкой "На главную" (из Redesign NotFoundPage.tsx)
+- [x] **404-02**: Общий header/footer/mesh/scripts как на остальных страницах
 
 ## SEO
 
