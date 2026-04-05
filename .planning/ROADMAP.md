@@ -7,7 +7,8 @@
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
 - v1.3 KZ Design Alignment -- Phases 17-19 (shipped 2026-03-23)
 - v1.4 2025 Visual Redesign -- Phases 20-23 (shipped 2026-03-24)
-- v2.0 Service Pages Copywriting Rewrite -- Phases 26-28
+- v2.0 Service Pages Copywriting Rewrite -- Phases 26-28 (shipped 2026-04-05)
+- v3.0 SEO, Performance & Polish -- Phases 29-31
 
 ## Phases
 
@@ -107,71 +108,75 @@ Plans:
 </details>
 
 <details>
-<summary>Phase 25: Migrate to Tailwind CSS v4 -- IN PROGRESS</summary>
+<summary>Phase 25: Migrate to Tailwind CSS v4 -- SHIPPED</summary>
 
 Plans:
 - [x] 25-01-PLAN.md -- Tailwind CLI setup: download binary, create src/styles/ with theme.css, tailwind.css, fonts.css from Redesign
 - [x] 25-02-PLAN.md -- index.html top half: mesh bg, header, hero, stats, services, guide Tailwind class migration
 - [x] 25-03-PLAN.md -- index.html bottom half: WhyUs, contact, FAQ, CTA, footer Tailwind class migration
 - [x] 25-04-PLAN.md -- Service pages: all 4 non-index pages Tailwind class migration
-- [ ] 25-05-PLAN.md -- Build, JS selector audit, cleanup, visual verification checkpoint
+- [x] 25-05-PLAN.md -- Build, JS selector audit, cleanup, visual verification checkpoint
 
 </details>
 
-### v2.0 Service Pages Copywriting Rewrite
+<details>
+<summary>v2.0 Service Pages Copywriting Rewrite (Phases 26-28) -- SHIPPED 2026-04-05</summary>
 
-**Milestone Goal:** Rewrite all 3 service pages (online consultations, treatment abroad, checkups) using original copywriting documents as the single source of truth. Each page gets completely new content, new sections, and proper SEO -- while preserving the shared Tailwind glassmorphism design system, Directus form integration, and FAQ accordion behavior.
+- [x] **Phase 26: Online Consultations Page Rewrite** (2/2 plans) -- completed 2026-04-04
+- [x] **Phase 27: Treatment Abroad Page Rewrite** (1/1 plan) -- completed 2026-04-04
+- [x] **Phase 28: Checkups Page Rewrite** (1/1 plan) -- completed 2026-04-04
 
-- [x] **Phase 26: Online Consultations Page Rewrite** - Full content rewrite of online-consultations.html from copywriting document (11 sections + shared cross-page infra) (completed 2026-04-04)
-- [x] **Phase 27: Treatment Abroad Page Rewrite** - Full content rewrite of treatment-abroad.html from copywriting document (10 sections) (completed 2026-04-04)
-- [x] **Phase 28: Checkups Page Rewrite** - Full content rewrite of checkups.html from copywriting document (11 sections + B2B block) (completed 2026-04-04)
+</details>
+
+### v3.0 SEO, Performance & Polish
+
+**Milestone Goal:** Optimize the site for search engines and performance, add a 404 error page, fix UI inconsistencies across all pages.
+
+- [ ] **Phase 29: 404 Page & UI Polish** - Create 404 page, fix cross-page consistency and interactive element bugs
+- [ ] **Phase 30: SEO Optimization** - Unique meta tags, Open Graph, canonical URLs, Schema.org structured data on every page
+- [ ] **Phase 31: Performance Optimization** - Local WebP images, lazy loading, critical resource preloading, async scripts
 
 ## Phase Details
 
-### Phase 26: Online Consultations Page Rewrite
-**Goal**: Users visiting online-consultations.html see the complete MedicusUnion online consultation service story -- from problem recognition through process explanation to pricing and lead capture -- written in the voice and structure of the approved copywriting document.
-**Depends on**: Phase 25
-**Requirements**: CONSULT-01, CONSULT-02, CONSULT-03, CONSULT-04, CONSULT-05, CONSULT-06, CONSULT-07, CONSULT-08, CONSULT-09, CONSULT-10, CONSULT-11, CROSS-01, CROSS-02, CROSS-03
+### Phase 29: 404 Page & UI Polish
+**Goal**: Every page on the site shares a consistent header/footer/navigation experience, all interactive elements (forms, accordions, links) work correctly, and users who hit a broken URL see a branded 404 page that guides them back.
+**Depends on**: Phase 28
+**Requirements**: 404-01, 404-02, UI-01, UI-02, UI-03, UI-04
 **Success Criteria** (what must be TRUE):
-  1. User opening online-consultations.html sees a hero with the exact H1 from the copywriting doc and a CTA button that scrolls to the consultation request form
-  2. User scrolling through the page encounters all 11 content sections in the order specified by the copywriting document (hero, problem, value, process, doctors, advantages, triggers, pricing, form, FAQ, final CTA)
-  3. User can fill out the consultation request form (name, phone, specialization dropdown, description) and submit it to Directus -- form validation and spam protection work identically to the main page form
-  4. User can expand/collapse all 6 FAQ items with smooth accordion animation -- each answer matches the copywriting document text
-  5. Page uses the same Tailwind glassmorphism design language as the main site (glass header, mesh backgrounds, glass cards, gradient CTAs)
-**Plans**: 2 plans
-Plans:
-- [ ] 26-01-PLAN.md -- Sections 1-7: Hero, Problem, Value, Process, Doctors, Why MedicusUnion, Triggers
-- [ ] 26-02-PLAN.md -- Sections 8-11: Pricing, Consultation Form, FAQ accordion, Final CTA + visual checkpoint
+  1. User navigating to a non-existent URL sees a 404.html page with a gradient "404" heading, "Stranitsa ne naidena" message, and a working "Na glavnuyu" button that returns to index.html
+  2. The 404 page has the same header, footer, mesh background, and shared scripts as all other pages on the site
+  3. All 6 pages (index, 4 service pages, 404) share identical header navigation, footer, mobile menu, and sticky bar markup and behavior
+  4. Every form across all pages includes honeypot spam protection and validates correctly before submission
+  5. All FAQ accordions on every page open and close with smooth animation, and all CTA buttons link to the correct destinations
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 27: Treatment Abroad Page Rewrite
-**Goal**: Users visiting treatment-abroad.html see the complete MedicusUnion medical tourism service story -- from situation recognition through comparison with alternatives to clinic geography and social proof -- written in the voice and structure of the approved copywriting document.
-**Depends on**: Phase 26
-**Requirements**: TREAT-01, TREAT-02, TREAT-03, TREAT-04, TREAT-05, TREAT-06, TREAT-07, TREAT-08, TREAT-09, TREAT-10
+### Phase 30: SEO Optimization
+**Goal**: Every page on the site is fully discoverable by search engines with unique metadata, correct canonical URLs, and the main page carries structured data that identifies MedicusUnion as a medical business.
+**Depends on**: Phase 29
+**Requirements**: SEO-01, SEO-02, SEO-03, SEO-04, SEO-05
 **Success Criteria** (what must be TRUE):
-  1. User opening treatment-abroad.html sees a hero with the exact H1 from the copywriting doc, a primary CTA, and social proof indicators
-  2. User scrolling through the page encounters all 10 content sections in document order (hero, situations, process steps, comparison tables, platform, clinics/geography, reviews, FAQ, final CTA, SEO meta)
-  3. User can read 3 comparison tables (vs self-organized, vs Instagram agency, vs clinic department) and understand the MedicusUnion differentiation at a glance
-  4. User can expand/collapse all 8 FAQ items with smooth accordion animation -- each answer matches the copywriting document text
-  5. Page has correct SEO meta tags (title, description) matching the copywriting document specification
-**UI hint**: yes
+  1. Each of the 6 pages has a unique `<title>` tag sourced from the copywriting documents (not duplicated across pages)
+  2. Each of the 6 pages has a unique `<meta name="description">` tag with a page-specific description
+  3. Each page has Open Graph tags (og:title, og:description, og:url, og:type, og:image) with page-specific values
+  4. Each page has a `<link rel="canonical">` pointing to its own absolute URL on medicusunion.kz
+  5. The main page (index.html) contains a JSON-LD script with Schema.org Organization and MedicalBusiness structured data
 
-### Phase 28: Checkups Page Rewrite
-**Goal**: Users visiting checkups.html see the complete MedicusUnion health checkup service story -- from prevention motivation through program comparison (Korea and Turkey) to B2B offerings -- written in the voice and structure of the approved copywriting document.
-**Depends on**: Phase 26
-**Requirements**: CHECK-01, CHECK-02, CHECK-03, CHECK-04, CHECK-05, CHECK-06, CHECK-07, CHECK-08, CHECK-09, CHECK-10, CHECK-11
+### Phase 31: Performance Optimization
+**Goal**: The site loads fast on mobile connections typical for Kazakhstan (3G/4G) by serving optimized local images, lazy-loading below-fold content, preloading critical resources, and loading scripts non-blockingly.
+**Depends on**: Phase 29
+**Requirements**: PERF-01, PERF-02, PERF-03, PERF-04, PERF-05
 **Success Criteria** (what must be TRUE):
-  1. User opening checkups.html sees a hero with the exact H1 from the copywriting doc, a CTA button, and a trust indicator line
-  2. User scrolling through the page encounters all checkup content sections in document order (hero, prevention, advantages, platform, Korea programs, Turkey programs, process steps, B2B, FAQ, final CTA, SEO meta)
-  3. User can compare checkup programs: 7 Korean programs (from Базовая ~$760 to Ноблесс ~$6,100) and 4 Turkish programs (from Лабораторный ~$350 to Platinum ~$3,200) with clear pricing and inclusions
-  4. User sees a dedicated B2B block (checkups for employees and clients) with clear value propositions for companies
-  5. Page has correct SEO meta tags (title, description) matching the copywriting document specification
-**UI hint**: yes
+  1. All Unsplash/external image URLs are replaced with locally hosted WebP files at appropriate dimensions (no external image requests)
+  2. All images below the fold have `loading="lazy"` attribute; hero/above-fold images load eagerly
+  3. The `<head>` of every page preloads critical CSS and font files with `<link rel="preload">`
+  4. The Motion CDN script tag uses `defer` or `async` attribute so it does not block initial page render
+  5. Running Lighthouse on any page shows no critical performance warnings related to unoptimized images, render-blocking resources, or missing lazy loading
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 26. Online Consultations Page Rewrite | 0/2 | Complete    | 2026-04-04 |
-| 27. Treatment Abroad Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
-| 28. Checkups Page Rewrite | 0/TBD | Complete    | 2026-04-04 |
+| 29. 404 Page & UI Polish | 0/TBD | Not started | - |
+| 30. SEO Optimization | 0/TBD | Not started | - |
+| 31. Performance Optimization | 0/TBD | Not started | - |

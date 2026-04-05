@@ -46,7 +46,19 @@
 
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| 404-01..02 | TBD | TBD | pending |
-| SEO-01..05 | TBD | TBD | pending |
-| PERF-01..05 | TBD | TBD | pending |
-| UI-01..04 | TBD | TBD | pending |
+| 404-01 | Phase 29 | TBD | pending |
+| 404-02 | Phase 29 | TBD | pending |
+| SEO-01 | Phase 30 | TBD | pending |
+| SEO-02 | Phase 30 | TBD | pending |
+| SEO-03 | Phase 30 | TBD | pending |
+| SEO-04 | Phase 30 | TBD | pending |
+| SEO-05 | Phase 30 | TBD | pending |
+| PERF-01 | Phase 31 | TBD | pending |
+| PERF-02 | Phase 31 | TBD | pending |
+| PERF-03 | Phase 31 | TBD | pending |
+| PERF-04 | Phase 31 | TBD | pending |
+| PERF-05 | Phase 31 | TBD | pending |
+| UI-01 | Phase 29 | TBD | pending |
+| UI-02 | Phase 29 | TBD | pending |
+| UI-03 | Phase 29 | TBD | pending |
+| UI-04 | Phase 29 | TBD | pending |
