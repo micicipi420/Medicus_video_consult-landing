@@ -131,8 +131,8 @@
       if (e.target === overlay) toggleMenu();
     });
 
-    // Close on nav link click
-    overlay.querySelectorAll('.mobile-menu__link, .mobile-menu__cta').forEach(function (link) {
+    // Close on any link click inside mobile menu
+    overlay.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         if (overlay.classList.contains('is-open')) toggleMenu();
       });

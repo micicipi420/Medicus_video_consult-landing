@@ -35,6 +35,8 @@
     .is-invalid ~ .form__field-error { display: block; }
     /* Visually hidden (honeypot) */
     .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    /* Active nav link */
+    a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
   </style>
 </head>
 <body class="relative min-h-screen bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-hidden">
@@ -52,43 +54,47 @@
       <a href="index.html" class="text-2xl font-bold tracking-tight bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent">MedicusUnion</a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center gap-8">
-        <a href="index.html#services" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Услуги</a>
-        <a href="index.html#why-us" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Почему мы</a>
+      <nav class="header__nav hidden lg:flex items-center gap-6" aria-label="Основная навигация">
+        <a href="online-consultations.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Лечение за рубежом</a>
+        <a href="checkup.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Чек-ап</a>
+        <a href="index.html#why-us" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">О нас</a>
         <a href="contacts.html" class="text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">Контакты</a>
       </nav>
 
       <!-- Desktop Phone & CTA -->
-      <div class="hidden lg:flex items-center gap-4">
-        <a href="tel:+77015322478" class="flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">
+      <div class="header__actions hidden lg:flex items-center gap-4">
+        <a href="tel:+77015322478" class="header__phone flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           +7 701 532 24 78
         </a>
-        <a href="index.html#contact" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow inline-block tracking-tight">Обсудить случай</a>
+        <a href="contacts.html" class="header__cta bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow inline-block tracking-tight">Оставить заявку</a>
       </div>
 
       <!-- Mobile Menu Button -->
-      <button class="header__menu-btn lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50" aria-label="Toggle menu" aria-expanded="false">
+      <button class="header__menu-btn lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50" aria-label="Открыть меню" aria-expanded="false">
         <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
         <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- Mobile Menu (Header.tsx) -->
+  <!-- Mobile Menu -->
   <div class="mobile-menu-overlay fixed inset-0 z-40 lg:hidden" aria-hidden="true">
     <div class="absolute inset-0 bg-black/50"></div>
     <div class="mobile-menu absolute top-24 left-4 right-4 bg-white/60 backdrop-blur-[80px] backdrop-saturate-[200%] shadow-glass-lg rounded-3xl overflow-hidden border-[0.5px] border-white/50">
-      <nav class="flex flex-col p-6 gap-2">
-        <a href="index.html#services" class="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Услуги</a>
-        <a href="index.html#why-us" class="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Почему мы</a>
-        <a href="contacts.html" class="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Контакты</a>
-        <div class="h-[0.5px] bg-white/40 my-2"></div>
-        <a href="tel:+77015322478" class="flex items-center gap-3 text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">
+      <nav class="mobile-menu__nav flex flex-col p-6 gap-2" aria-label="Мобильная навигация">
+        <a href="online-consultations.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Лечение за рубежом</a>
+        <a href="checkup.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Чек-ап</a>
+        <a href="index.html#why-us" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">О нас</a>
+        <a href="contacts.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">Контакты</a>
+        <div class="mobile-menu__divider h-[0.5px] bg-white/40 my-2"></div>
+        <a href="tel:+77015322478" class="mobile-menu__phone flex items-center gap-3 text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           +7 701 532 24 78
         </a>
-        <a href="index.html#contact" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-semibold tracking-tight shadow-lg mt-4 w-full text-center block">Обсудить случай</a>
+        <a href="contacts.html" class="mobile-menu__cta bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-semibold tracking-tight shadow-lg mt-4 w-full text-center block">Оставить заявку</a>
       </nav>
     </div>
   </div>
@@ -197,7 +203,7 @@
   <div class="fixed bottom-4 left-4 right-4 z-50 bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/60 shadow-glass-lg p-3 lg:hidden" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
     <div class="flex items-center justify-between gap-3">
       <a href="tel:+77015322478" class="text-mu-text-900 font-semibold text-sm" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
-      <a href="index.html#contact" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-mu-blue/30 text-sm">Обсудить случай</a>
+      <a href="contacts.html" class="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-mu-blue/30 text-sm">Оставить заявку</a>
     </div>
   </div>
 
