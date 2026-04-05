@@ -66,6 +66,10 @@
     if (!links.length) return;
 
     links.forEach(function (link) {
+      // Avoid duplicate bindings on persistent elements (header, footer)
+      if (link.dataset.muSmooth) return;
+      link.dataset.muSmooth = '1';
+
       link.addEventListener('click', function (e) {
         var targetId = this.getAttribute('href');
         if (!targetId || targetId === '#') return;
@@ -496,6 +500,25 @@
     initFormValidation();
     initAnimatedCounters();
   }
+
+  /**
+   * Re-initialize only page-content-dependent modules
+   * Called by router after swapping <main> content
+   * Header and mobile menu are persistent -- no re-init needed
+   */
+  function reinitPageContent() {
+    initSmoothScroll();
+    initAccordion();
+    initPhoneMask();
+    initSpamProtection();
+    initFormValidation();
+    initAnimatedCounters();
+  }
+
+  // Expose for SPA router
+  window.MU = window.MU || {};
+  window.MU.initAll = initAll;
+  window.MU.reinitPageContent = reinitPageContent;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
