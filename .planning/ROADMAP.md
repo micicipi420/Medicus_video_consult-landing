@@ -161,6 +161,9 @@ Plans:
   3. Each page has Open Graph tags (og:title, og:description, og:url, og:type, og:image) with page-specific values
   4. Each page has a `<link rel="canonical">` pointing to its own absolute URL on medicusunion.kz
   5. The main page (index.html) contains a JSON-LD script with Schema.org Organization and MedicalBusiness structured data
+**Plans**: 1 plan
+Plans:
+- [ ] 30-01-PLAN.md -- Add og:image to all pages, fix contacts.html canonical, add Schema.org JSON-LD to index.html
 
 ### Phase 31: Performance Optimization
 **Goal**: The site loads fast on mobile connections typical for Kazakhstan (3G/4G) by serving optimized local images, lazy-loading below-fold content, preloading critical resources, and loading scripts non-blockingly.
@@ -178,5 +181,5 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 29. 404 Page & UI Polish | 0/TBD | Not started | - |
-| 30. SEO Optimization | 0/TBD | Not started | - |
+| 30. SEO Optimization | 0/1 | Planned | - |
 | 31. Performance Optimization | 0/TBD | Not started | - |
