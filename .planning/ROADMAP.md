@@ -133,7 +133,7 @@ Plans:
 **Milestone Goal:** Optimize the site for search engines and performance, add a 404 error page, fix UI inconsistencies across all pages.
 
 - [x] **Phase 29: 404 Page & UI Polish** - Create 404 page, fix cross-page consistency and interactive element bugs (completed 2026-04-05)
-- [ ] **Phase 30: SEO Optimization** - Unique meta tags, Open Graph, canonical URLs, Schema.org structured data on every page
+- [x] **Phase 30: SEO Optimization** - Unique meta tags, Open Graph, canonical URLs, Schema.org structured data on every page (completed 2026-04-05)
 - [ ] **Phase 31: Performance Optimization** - Local WebP images, lazy loading, critical resource preloading, async scripts
 
 ## Phase Details
@@ -166,7 +166,7 @@ Plans:
   5. The main page (index.html) contains a JSON-LD script with Schema.org Organization and MedicalBusiness structured data
 **Plans**: 1 plan
 Plans:
-- [ ] 30-01-PLAN.md -- Add og:image to all pages, fix contacts.html canonical, add Schema.org JSON-LD to index.html
+- [x] 30-01-PLAN.md -- Add og:image to all pages, fix contacts.html canonical, add Schema.org JSON-LD to index.html
 
 ### Phase 31: Performance Optimization
 **Goal**: The site loads fast on mobile connections typical for Kazakhstan (3G/4G) by serving optimized local images, lazy-loading below-fold content, preloading critical resources, and loading scripts non-blockingly.
@@ -178,7 +178,7 @@ Plans:
   3. The `<head>` of every page preloads critical CSS and font files with `<link rel="preload">`
   4. The Motion CDN script tag uses `defer` or `async` attribute so it does not block initial page render
   5. Running Lighthouse on any page shows no critical performance warnings related to unoptimized images, render-blocking resources, or missing lazy loading
-**Plans:** 2 plans
+**Plans:** 1/1 plans complete
 Plans:
 - [ ] 31-01-PLAN.md -- Download 11 Unsplash images, convert to WebP, replace URLs in HTML, add lazy loading + width/height
 - [ ] 31-02-PLAN.md -- Add preload tags to all pages, defer Motion CDN + JS scripts, rebuild Tailwind CSS
@@ -188,5 +188,5 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 29. 404 Page & UI Polish | 2/2 | Complete    | 2026-04-05 |
-| 30. SEO Optimization | 0/1 | Planned | - |
+| 30. SEO Optimization | 1/1 | Complete   | 2026-04-05 |
 | 31. Performance Optimization | 0/2 | Planned | - |

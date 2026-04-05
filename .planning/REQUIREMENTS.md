@@ -7,11 +7,11 @@
 
 ## SEO
 
-- [ ] **SEO-01**: Каждая страница имеет уникальный title из копирайтинг-документов
-- [ ] **SEO-02**: Каждая страница имеет уникальный meta description из копирайтинг-документов
-- [ ] **SEO-03**: Open Graph теги (og:title, og:description, og:url, og:type, og:image) на каждой странице
-- [ ] **SEO-04**: Canonical URL на каждой странице
-- [ ] **SEO-05**: Структурированные данные Schema.org (Organization, MedicalBusiness) в JSON-LD на главной
+- [x] **SEO-01**: Каждая страница имеет уникальный title из копирайтинг-документов
+- [x] **SEO-02**: Каждая страница имеет уникальный meta description из копирайтинг-документов
+- [x] **SEO-03**: Open Graph теги (og:title, og:description, og:url, og:type, og:image) на каждой странице
+- [x] **SEO-04**: Canonical URL на каждой странице
+- [x] **SEO-05**: Структурированные данные Schema.org (Organization, MedicalBusiness) в JSON-LD на главной
 
 ## Performance
 
