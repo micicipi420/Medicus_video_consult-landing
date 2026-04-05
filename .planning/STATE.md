@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: SEO, Performance & Polish
-status: executing
-stopped_at: Completed 31-01-PLAN.md (image optimization)
-last_updated: "2026-04-05T07:54:27.782Z"
-last_activity: 2026-04-05 -- Completed 31-01 image optimization
+status: verifying
+stopped_at: Completed 31-02-PLAN.md (preload hints, script deferral, CSS minification)
+last_updated: "2026-04-05T07:58:32.527Z"
+last_activity: 2026-04-05
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
   percent: 80
 ---
 
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-05)
 
 Phase: 31 (performance-optimization) -- EXECUTING
 Plan: 2 of 2
-Status: Executing Phase 31
-Last activity: 2026-04-05 -- Completed 31-01 image optimization
+Status: Phase complete — ready for verification
+Last activity: 2026-04-05
 
 Progress: [████████░░] 80%
 
@@ -52,6 +52,7 @@ Progress: [████████░░] 80%
 | Phase 29 P02 | 3min | 2 tasks | 4 files |
 | Phase 30 P01 | 2min | 2 tasks | 5 files |
 | Phase 31 P01 | 5min | 2 tasks | 14 files |
+| Phase 31 P02 | 2min | 2 tasks | 7 files |
 
 ### Decisions
 
@@ -66,6 +67,7 @@ Recent decisions affecting current work:
 - [Phase 30]: Removed iso6523Code from JSON-LD (incorrect semantic usage); used shared og-cover.jpg for all pages pending Phase 31 image pipeline
 - [Phase 31]: Used cwebp (brew webp) instead of sips for WebP conversion -- sips on macOS does not support WebP output
 - [Phase 31]: All images stored as local WebP in img/ with lazy loading on below-fold images and explicit dimensions for CLS prevention
+- [Phase 31]: Applied preload/defer optimizations to all 6 HTML pages including 404.html; checkup.html had Motion CDN contrary to plan
 
 ### Blockers/Concerns
 
@@ -74,6 +76,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-05T07:54:27.779Z
-Stopped at: Completed 31-01-PLAN.md (image optimization)
+Last session: 2026-04-05T07:58:32.524Z
+Stopped at: Completed 31-02-PLAN.md (preload hints, script deferral, CSS minification)
 Resume file: None

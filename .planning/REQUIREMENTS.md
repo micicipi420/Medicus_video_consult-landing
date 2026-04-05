@@ -17,9 +17,9 @@
 
 - [x] **PERF-01**: Unsplash изображения заменены на локальные WebP файлы с оптимизированным размером
 - [x] **PERF-02**: Lazy loading (loading="lazy") на всех изображениях ниже fold
-- [ ] **PERF-03**: Preload критичных ресурсов (CSS, шрифты) в head
-- [ ] **PERF-04**: Motion CDN скрипт загружается с defer/async
-- [ ] **PERF-05**: CSS минифицирован через Tailwind --minify (уже есть)
+- [x] **PERF-03**: Preload критичных ресурсов (CSS, шрифты) в head
+- [x] **PERF-04**: Motion CDN скрипт загружается с defer/async
+- [x] **PERF-05**: CSS минифицирован через Tailwind --minify (уже есть)
 
 ## UI Polish
 
