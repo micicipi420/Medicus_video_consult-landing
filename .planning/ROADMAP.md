@@ -190,3 +190,22 @@ Plans:
 | 29. 404 Page & UI Polish | 2/2 | Complete    | 2026-04-05 |
 | 30. SEO Optimization | 1/1 | Complete    | 2026-04-05 |
 | 31. Performance Optimization | 2/2 | Complete    | 2026-04-05 |
+
+### Phase 32: Design system compliance: accessible tokens, focus-visible, CTA gradient fix across all pages
+
+**Goal:** All 6 HTML pages are fully compliant with DESIGN-SYSTEM.md -- accessible color tokens in theme.css, WCAG-failing text colors replaced, focus-visible keyboard navigation working, CTA gradient contrast fixed, ARIA attributes on form errors, and prefers-reduced-motion support.
+**Requirements**: A11Y-01, A11Y-02, A11Y-03, A11Y-04, A11Y-05, A11Y-06, A11Y-07, A11Y-08
+**Depends on:** Phase 31
+**Success Criteria** (what must be TRUE):
+  1. theme.css contains all 9 accessible color tokens (7 text + 2 CTA) in both :root and @theme inline
+  2. Keyboard users see a visible blue focus ring when tabbing through any interactive element on any page
+  3. All CTA buttons use the accessible gradient (from-mu-cta-from to-mu-cta-to), not the WCAG-failing original
+  4. No readable text uses bright accent colors -- only *-text variants with 4.5:1+ contrast
+  5. All form error containers have role="alert" aria-live="polite" for screen reader announcements
+  6. Users with prefers-reduced-motion see no animations or transitions
+  7. Form containers use bg-white/70 (Glass-5 spec)
+**Plans:** 2 plans
+
+Plans:
+- [ ] 32-01-PLAN.md -- Add accessible color tokens to theme.css, global focus-visible rule, prefers-reduced-motion CSS
+- [ ] 32-02-PLAN.md -- Replace CTA gradient and text colors across all 6 HTML files, add ARIA to form errors, fix Glass-5, recompile Tailwind

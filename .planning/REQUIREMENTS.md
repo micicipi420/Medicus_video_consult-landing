@@ -28,6 +28,17 @@
 - [x] **UI-03**: Все FAQ аккордеоны работают корректно (открытие/закрытие)
 - [x] **UI-04**: Все CTA-кнопки ведут на правильные страницы (проверка всех ссылок)
 
+## Accessibility & Design System Compliance (Phase 32)
+
+- [ ] **A11Y-01**: Accessible text color tokens (--mu-blue-text, --mu-accent-blue-text, --mu-accent-teal-text, --mu-accent-orange-text, --mu-green-text) добавлены в theme.css :root и @theme inline
+- [ ] **A11Y-02**: Neutral text tokens обновлены до WCAG AA: --mu-text-700 (#4A4E5C, 5.89:1), --mu-text-500 (#6B6F80, 4.50:1)
+- [ ] **A11Y-03**: Focus-visible ring на всех интерактивных элементах (a, button, input, select, textarea) через глобальное CSS правило
+- [ ] **A11Y-04**: CTA gradient использует accessible цвета (from-mu-cta-from to-mu-cta-to, 4.5:1+ для белого текста)
+- [ ] **A11Y-05**: Яркие акцентные цвета на readable text заменены на *-text варианты (text-mu-blue-text, hover:text-mu-blue-text и т.д.)
+- [ ] **A11Y-06**: Form error containers имеют role="alert" aria-live="polite" для screen reader анонсов
+- [ ] **A11Y-07**: @media (prefers-reduced-motion: reduce) правило отключает анимации и переходы
+- [ ] **A11Y-08**: Form containers используют bg-white/70 (Glass-5 spec) и shadow-form-inset token
+
 ## Future Requirements
 
 - Dark mode для всех страниц
@@ -46,19 +57,27 @@
 
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| 404-01 | Phase 29 | TBD | pending |
-| 404-02 | Phase 29 | TBD | pending |
-| SEO-01 | Phase 30 | TBD | pending |
-| SEO-02 | Phase 30 | TBD | pending |
-| SEO-03 | Phase 30 | TBD | pending |
-| SEO-04 | Phase 30 | TBD | pending |
-| SEO-05 | Phase 30 | TBD | pending |
-| PERF-01 | Phase 31 | TBD | pending |
-| PERF-02 | Phase 31 | TBD | pending |
-| PERF-03 | Phase 31 | TBD | pending |
-| PERF-04 | Phase 31 | TBD | pending |
-| PERF-05 | Phase 31 | TBD | pending |
-| UI-01 | Phase 29 | TBD | pending |
-| UI-02 | Phase 29 | TBD | pending |
-| UI-03 | Phase 29 | TBD | pending |
-| UI-04 | Phase 29 | TBD | pending |
+| 404-01 | Phase 29 | 29-01 | done |
+| 404-02 | Phase 29 | 29-01 | done |
+| SEO-01 | Phase 30 | 30-01 | done |
+| SEO-02 | Phase 30 | 30-01 | done |
+| SEO-03 | Phase 30 | 30-01 | done |
+| SEO-04 | Phase 30 | 30-01 | done |
+| SEO-05 | Phase 30 | 30-01 | done |
+| PERF-01 | Phase 31 | 31-01 | done |
+| PERF-02 | Phase 31 | 31-01 | done |
+| PERF-03 | Phase 31 | 31-02 | done |
+| PERF-04 | Phase 31 | 31-02 | done |
+| PERF-05 | Phase 31 | 31-02 | done |
+| UI-01 | Phase 29 | 29-02 | done |
+| UI-02 | Phase 29 | 29-02 | done |
+| UI-03 | Phase 29 | 29-02 | done |
+| UI-04 | Phase 29 | 29-02 | done |
+| A11Y-01 | Phase 32 | 32-01 | pending |
+| A11Y-02 | Phase 32 | 32-01 | pending |
+| A11Y-03 | Phase 32 | 32-01 | pending |
+| A11Y-04 | Phase 32 | 32-02 | pending |
+| A11Y-05 | Phase 32 | 32-02 | pending |
+| A11Y-06 | Phase 32 | 32-02 | pending |
+| A11Y-07 | Phase 32 | 32-01 | pending |
+| A11Y-08 | Phase 32 | 32-02 | pending |
