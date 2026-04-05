@@ -33,11 +33,11 @@
 - [x] **A11Y-01**: Accessible text color tokens (--mu-blue-text, --mu-accent-blue-text, --mu-accent-teal-text, --mu-accent-orange-text, --mu-green-text) добавлены в theme.css :root и @theme inline
 - [x] **A11Y-02**: Neutral text tokens обновлены до WCAG AA: --mu-text-700 (#4A4E5C, 5.89:1), --mu-text-500 (#6B6F80, 4.50:1)
 - [x] **A11Y-03**: Focus-visible ring на всех интерактивных элементах (a, button, input, select, textarea) через глобальное CSS правило
-- [ ] **A11Y-04**: CTA gradient использует accessible цвета (from-mu-cta-from to-mu-cta-to, 4.5:1+ для белого текста)
-- [ ] **A11Y-05**: Яркие акцентные цвета на readable text заменены на *-text варианты (text-mu-blue-text, hover:text-mu-blue-text и т.д.)
-- [ ] **A11Y-06**: Form error containers имеют role="alert" aria-live="polite" для screen reader анонсов
+- [x] **A11Y-04**: CTA gradient использует accessible цвета (from-mu-cta-from to-mu-cta-to, 4.5:1+ для белого текста)
+- [x] **A11Y-05**: Яркие акцентные цвета на readable text заменены на *-text варианты (text-mu-blue-text, hover:text-mu-blue-text и т.д.)
+- [x] **A11Y-06**: Form error containers имеют role="alert" aria-live="polite" для screen reader анонсов
 - [x] **A11Y-07**: @media (prefers-reduced-motion: reduce) правило отключает анимации и переходы
-- [ ] **A11Y-08**: Form containers используют bg-white/70 (Glass-5 spec) и shadow-form-inset token
+- [x] **A11Y-08**: Form containers используют bg-white/70 (Glass-5 spec) и shadow-form-inset token
 
 ## Future Requirements
 

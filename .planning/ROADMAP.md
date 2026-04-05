@@ -204,8 +204,8 @@ Plans:
   5. All form error containers have role="alert" aria-live="polite" for screen reader announcements
   6. Users with prefers-reduced-motion see no animations or transitions
   7. Form containers use bg-white/70 (Glass-5 spec)
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 32-01-PLAN.md -- Add accessible color tokens to theme.css, global focus-visible rule, prefers-reduced-motion CSS
-- [ ] 32-02-PLAN.md -- Replace CTA gradient and text colors across all 6 HTML files, add ARIA to form errors, fix Glass-5, recompile Tailwind
+- [x] 32-02-PLAN.md -- Replace CTA gradient and text colors across all 6 HTML files, add ARIA to form errors, fix Glass-5, recompile Tailwind
