@@ -1,5 +1,21 @@
 # Milestones
 
+## v3.0 SEO, Performance & Polish (Shipped: 2026-04-06)
+
+**Phases completed:** 4 phases, 7 plans, 13 tasks
+
+**Key accomplishments:**
+
+- Branded 404 error page with gradient heading, shared site shell (header, footer, mesh, sticky bar), and home navigation link
+- Normalized header/footer classes, added missing scripts to checkup.html, fixed footer service links, and verified honeypot + FAQ across all pages
+- Complete OG tags with og:image on all 5 pages, clean canonical URLs, and Schema.org MedicalBusiness JSON-LD on index.html
+- Downloaded 11 Unsplash images, converted to local WebP (283KB total vs 660KB JPEG), added lazy loading and CLS-preventing dimensions across 3 HTML files
+- Preload hints for CSS and hero images on all pages, defer on all scripts, Tailwind CSS rebuilt with minification
+- WCAG AA color tokens, focus-visible keyboard ring, and prefers-reduced-motion rule added to theme.css -- foundation for design system compliance across all pages
+- WCAG AA color contrast on 77 CTA buttons, 88 hover states, 62 text elements; ARIA live regions on 20 form errors; Glass-5 form containers across all 6 pages
+
+---
+
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks

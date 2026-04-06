@@ -12,9 +12,9 @@
 
 ## Current State
 
-**Shipped:** v1.4 2025 Visual Redesign (2026-03-24)
-**Codebase:** ~3,152 LOC (762 HTML + 1,900 CSS + 490 JS)
-**Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
+**Shipped:** v3.0 SEO, Performance & Polish (2026-04-06)
+**Codebase:** ~4,714 LOC (4,370 HTML + 344 CSS) + JS, 5 production pages + 404
+**Stack:** HTML + Tailwind CSS v4 (CLI standalone) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
 
@@ -63,6 +63,34 @@
 - ✓ Glassmorphism: hero gradient mesh, frosted header on scroll, .card--glass на pricing; @supports fallback; ≤2 glass elements — v1.4
 - ✓ Micro-animations: scroll-reveal translateY(20px)/0.4s, button :active scale(0.97)/100ms, prefers-reduced-motion guard — v1.4
 
+- ✓ Service-page копирайт rewrite по копирайтинг-документам (online-consultations, treatment-abroad, checkup) — v2.0
+- ✓ Pixel-perfect Tailwind v4 миграция из Redesign TSX-прототипа — v2.0
+- ✓ Migrate-to-Tailwind-CSS-v4: standalone CLI binary, theme.css токены — v2.0
+
+- ✓ Branded 404.html с gradient "404", «Страница не найдена» и кнопкой «На главную» — v3.0
+- ✓ Консистентный header/footer/mobile-menu/sticky-bar на всех 6 страницах — v3.0
+- ✓ Honeypot spam protection на всех формах — v3.0
+- ✓ FAQ accordions работают корректно на всех страницах — v3.0
+- ✓ Все CTA-ссылки проверены и ведут на правильные страницы — v3.0
+- ✓ Уникальные title + meta description на каждой странице из копирайтинг-документов — v3.0
+- ✓ Open Graph теги (og:title/description/url/type/image) на каждой странице — v3.0
+- ✓ Canonical URLs на каждой странице — v3.0
+- ✓ Schema.org MedicalBusiness JSON-LD на index.html — v3.0
+- ✓ 11 Unsplash изображений → локальные WebP (660KB → 283KB, -57%) — v3.0
+- ✓ Lazy loading + width/height на всех below-fold изображениях (CLS prevention) — v3.0
+- ✓ Preload критичных ресурсов (CSS, шрифты, hero images) в head — v3.0
+- ✓ Motion CDN + JS scripts с defer — v3.0
+- ✓ Tailwind CSS минифицирован через --minify — v3.0
+- ✓ WCAG AA accessible color tokens (7 text + 2 CTA gradient) в theme.css :root и @theme inline — v3.0
+- ✓ Neutral text tokens обновлены: --mu-text-700 (5.89:1), --mu-text-500 (4.50:1) — v3.0
+- ✓ Focus-visible keyboard ring на всех интерактивных элементах — v3.0
+- ✓ Accessible CTA gradient (from-mu-cta-from → to-mu-cta-to) на 77 кнопках — v3.0
+- ✓ Bright accent colors на readable text заменены на *-text варианты (88 hover states, 62 text elements) — v3.0
+- ✓ ARIA role="alert" aria-live="polite" на 20 form error containers — v3.0
+- ✓ @media (prefers-reduced-motion: reduce) отключает анимации и transitions — v3.0
+- ✓ Glass-5 form containers (bg-white/70 + shadow-form-inset) на всех 6 страницах — v3.0
+- ✓ Russian typography polish: nbsp binding для subject+verb pairs, orphan prevention, responsive br на hero headings — v3.0
+
 ### Active
 
 ### Out of Scope
@@ -77,16 +105,20 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
-## Current Milestone: v3.0 SEO, Performance & Polish
+## Next Milestone: v3.1 Design Polish & Audit Fixes (planning)
 
-**Goal:** Оптимизировать сайт для поисковиков и производительности, добавить 404-страницу, исправить UI-баги.
+**Source:** `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` — full-site 6-pillar audit (2026-04-06, score 17/24)
 
-**Target features:**
-- 404.html — страница ошибки с gradient "404" и кнопкой "На главную"
-- SEO мета-теги — title, description, OG для каждой страницы
-- WebP/AVIF конвертация изображений
-- Core Web Vitals оптимизация (LCP, CLS, FID)
-- UI polish — мелкие баги верстки, консистентность между страницами
+**Top focus areas:**
+- 🔴 Mobile sticky-bar overlap (main padding-bottom on all 5 pages)
+- 🔴 Data drift unification (Vienna address, ТОО name spelling — credibility blocker)
+- 🔴 H1 overflow on `checkup.html` 1024–1440px (gradient phrase clips behind hero image)
+- 🟡 Cross-cutting visual consistency findings (8 items)
+- 🔵 Per-page polish (24 items catalogued, ROI-ranked)
+
+## Shipped: v3.0 SEO, Performance & Polish (2026-04-06)
+- 4 phases (29-32), 7 plans, 24 requirements
+- 404 page + cross-page consistency, full SEO + Schema.org, local WebP + lazy loading + preload, WCAG AA tokens + focus-visible + ARIA + reduced-motion
 
 ## Shipped: v2.0 Service Pages Copywriting Rewrite (2026-04-05)
 - 4 страницы переписаны по копирайтинг-документам (35 requirements)
@@ -103,6 +135,8 @@
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
+- v2.0: 35 requirements, 4 phases (25-28), 8 plans — Tailwind v4 migration + service pages copywriting rewrite (online-consultations, treatment-abroad, checkup, contacts)
+- v3.0: 24 requirements, 4 phases (29-32), 7 plans — 404 page + cross-page consistency, full SEO + Schema.org, local WebP + lazy loading + preload, WCAG AA accessible tokens + focus-visible + ARIA + prefers-reduced-motion
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -144,6 +178,14 @@
 | Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
 | translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
 | prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
+| Tailwind CSS v4 standalone CLI binary | Pixel-perfect parity with Redesign/ TSX prototype, no Node.js runtime, single executable for CI/deploy | ✓ Good — v2.0 |
+| Service-page rewrite from копирайтинг-документы first, then code | Locks brand voice and conversion framing before HTML — prevents cosmetic-only refactors | ✓ Good — v2.0 |
+| Local WebP over Unsplash CDN | Data sovereignty (medical imagery), -57% bytes, no third-party SLA risk on KZ 3G/4G | ✓ Good — v3.0 |
+| Schema.org MedicalBusiness JSON-LD on index only | Single source of truth — service pages aren't separate businesses | ✓ Good — v3.0 |
+| Two-token CTA gradient (mu-cta-from / mu-cta-to) | Allows accessible-contrast variant without breaking visual brand identity | ✓ Good — v3.0 |
+| Global focus-visible CSS rule (not per-component) | Single override propagates to all 6 pages without component churn | ✓ Good — v3.0 |
+| nbsp binding for Russian subject+verb pairs (rather than CSS only) | CSS `text-wrap: balance` is unreliable for Cyrillic; explicit nbsp guarantees orphan prevention across browsers | ✓ Good — v3.0 |
+| Responsive `<br class="md:hidden">` for hero headings | Lets Russian compound phrases break correctly on mobile without JS | ✓ Good — v3.0 |
 
 ## Evolution
 
@@ -163,4 +205,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone completion*
+*Last updated: 2026-04-06 after v3.0 milestone completion*

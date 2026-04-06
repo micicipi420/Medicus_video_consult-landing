@@ -1,36 +1,35 @@
 ---
 gsd_state_version: 1.0
-milestone: v3.0
-milestone_name: SEO, Performance & Polish
-status: executing
-stopped_at: Completed 32-02-PLAN.md (accessible colors, ARIA, Glass-5 -- Phase 32 complete)
-last_updated: "2026-04-05T18:51:12.094Z"
-last_activity: 2026-04-05
+milestone: v3.1
+milestone_name: Design Polish & Audit Fixes (planning)
+status: between_milestones
+stopped_at: v3.0 milestone shipped (4 phases, 7 plans, 24 requirements). Awaiting v3.1 kickoff via /gsd-new-milestone.
+last_updated: "2026-04-06T16:02:34.270Z"
+last_activity: 2026-04-06
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-05)
+See: .planning/PROJECT.md (updated 2026-04-06 after v3.0 milestone)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 32 — design-system-compliance
+**Current focus:** Planning v3.1 — Design Polish & Audit Fixes (sourced from `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md`)
 
 ## Current Position
 
-Phase: 32
-Plan: 2 of 2 complete
-Status: Ready to execute
-Last activity: 2026-04-05
+Milestone: v3.0 → v3.1 transition
+Status: v3.0 shipped, v3.1 not yet started
+Last activity: 2026-04-06
 
-Progress: [█████████░] 86%
+Progress: [██████████] 100% (v3.0)
 
 ## Performance Metrics
 
