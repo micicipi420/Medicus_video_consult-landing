@@ -1,13 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v3.1
-milestone_name: Design Polish & Audit Fixes (planning)
-status: between_milestones
-stopped_at: v3.0 milestone shipped (4 phases, 7 plans, 24 requirements). Awaiting v3.1 kickoff via /gsd-new-milestone.
-last_updated: "2026-04-06T16:02:34.270Z"
-last_activity: 2026-04-06
+milestone_name: Site Foundation & Audit Fixes
+status: active
+stopped_at: Defining requirements for v3.1 (6 phases locked: 33 Audit Quick Wins, 34 Treatment Abroad Overhaul, 35 Checkup + Form UX, 36 Shared Layout Primitives, 37 Site Metadata & Hygiene, 38 Vertical Rhythm & Section Sizing).
+last_updated: "2026-04-07T00:00:00.000Z"
+last_activity: 2026-04-07
 progress:
-  total_phases: 0
+  total_phases: 6
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,18 +18,19 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-06 after v3.0 milestone)
+See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — project renamed "MedicusUnion KZ Landing" → "MedicusUnion KZ")
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Planning v3.1 — Design Polish & Audit Fixes (sourced from `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md`)
+**Current focus:** v3.1 Site Foundation & Audit Fixes — ship 14 audit fixes + shared layout primitives + researched vertical-rhythm system. Bridge from "polished landing" to "scalable multi-page site".
 
 ## Current Position
 
-Milestone: v3.0 → v3.1 transition
-Status: v3.0 shipped, v3.1 not yet started
-Last activity: 2026-04-06
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-07 — Milestone v3.1 started
 
-Progress: [██████████] 100% (v3.0)
+Progress: [░░░░░░░░░░] 0% (v3.1, 0/6 phases)
 
 ## Performance Metrics
 
@@ -85,6 +86,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-07
-Stopped at: v3.1 kickoff notes written and approved by user. Rename (Landing → MedicusUnion KZ) + 5-phase scope locked. Ready to run `/gsd-new-milestone v3.1` in a fresh session.
-Resume file: `.planning/v3.1-KICKOFF-NOTES.md` — `/gsd-new-milestone v3.1` should consume this as input and delete it after milestone is opened. Do NOT re-ask the user about rename or phase structure; those are locked.
-Next command: `/clear` then `/gsd-new-milestone v3.1`
+Stopped at: v3.1 milestone opened. Rename applied (PROJECT.md + ROADMAP.md H1 + STATE.md). Phase structure expanded from 5 → 6 phases after user flagged section sizing as out-of-place across all 5 pages — new Phase 38 "Vertical Rhythm & Section Sizing" added with research-first approach. REQUIREMENTS.md + ROADMAP.md v3.1 block written by roadmapper. Ready to start Phase 33.
+Next command: `/clear` then `/gsd-discuss-phase 33` (or `/gsd-plan-phase 33` to skip discussion)

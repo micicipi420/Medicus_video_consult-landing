@@ -1,4 +1,4 @@
-# Roadmap: MedicusUnion KZ Landing
+# Roadmap: MedicusUnion KZ
 
 ## Milestones
 

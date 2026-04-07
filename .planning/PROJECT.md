@@ -1,8 +1,8 @@
-# MedicusUnion KZ Landing
+# MedicusUnion KZ
 
 ## What This Is
 
-Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
+Многостраничный сайт medicusunion.kz — веб-представительство международного медицинского сервиса в Казахстане. 6 страниц (главная, онлайн-консультации, лечение за рубежом, чекапы, контакты, 404), форма заявки, Directus-бэкенд, полная SEO-оптимизация, WCAG AA доступность, дизайн-система на Tailwind v4. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -105,16 +105,21 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
-## Next Milestone: v3.1 Design Polish & Audit Fixes (planning)
+## Current Milestone: v3.1 Site Foundation & Audit Fixes
 
-**Source:** `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` — full-site 6-pillar audit (2026-04-06, score 17/24)
+**Goal:** Ship all 14 audit fixes from the full-site review AND establish shared layout primitives + a researched vertical-rhythm system so v3.2+ page additions become cheap. Bridge from "polished landing" to "scalable multi-page site".
 
-**Top focus areas:**
-- 🔴 Mobile sticky-bar overlap (main padding-bottom on all 5 pages)
-- 🔴 Data drift unification (Vienna address, ТОО name spelling — credibility blocker)
-- 🔴 H1 overflow on `checkup.html` 1024–1440px (gradient phrase clips behind hero image)
-- 🟡 Cross-cutting visual consistency findings (8 items)
-- 🔵 Per-page polish (24 items catalogued, ROI-ranked)
+**Source:** `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` (full-site 6-pillar audit, 2026-04-06, score 17/24) + user-driven vertical-rhythm concern (2026-04-07).
+
+**Target features (6 phases, 33–38):**
+- **Phase 33 — Audit Quick Wins:** sticky-bar overlap fix, Vienna + ТОО unification, emoji→SVG stats, Astana↔Алматы canonical, H1 em-dash fix
+- **Phase 34 — Treatment Abroad Overhaul:** 25× hardcoded SVG hex → currentColor/tokens, `--` → `&ndash;`, hero photo swap, stat bar hierarchy rework
+- **Phase 35 — Checkup Fix + Form UX Polish:** H1 overflow fix, H2 hierarchy, gender-neutral form labels, valid-state feedback on all 5 forms
+- **Phase 36 — Shared Layout Primitives (architectural centerpiece):** extract footer/header/sticky-bar to `partials/`, `aria-current="page"` active-state, dedupe 5× duplicates
+- **Phase 37 — Site Metadata & Hygiene:** `sitemap.xml`, `robots.txt`, canonical URL audit, 404 H1 + copy upgrade, meta-description consistency, real flag icon set
+- **Phase 38 — Vertical Rhythm & Section Sizing (research-first):** research canonical hero/section heights for medical landing pages, define global rhythm system (tokens/utilities), apply across all 5 pages, verify on 320/390/768/1024/1440/1920px viewports
+
+**Re-audit target:** site score ≥20/24 (from 17/24).
 
 ## Shipped: v3.0 SEO, Performance & Polish (2026-04-06)
 - 4 phases (29-32), 7 plans, 24 requirements
@@ -186,6 +191,8 @@
 | Global focus-visible CSS rule (not per-component) | Single override propagates to all 6 pages without component churn | ✓ Good — v3.0 |
 | nbsp binding for Russian subject+verb pairs (rather than CSS only) | CSS `text-wrap: balance` is unreliable for Cyrillic; explicit nbsp guarantees orphan prevention across browsers | ✓ Good — v3.0 |
 | Responsive `<br class="md:hidden">` for hero headings | Lets Russian compound phrases break correctly on mobile without JS | ✓ Good — v3.0 |
+| Renamed project "MedicusUnion KZ Landing" → "MedicusUnion KZ" at v3.1 kickoff | By v3.0 the product was 6 pages, full design system, SEO/a11y baseline — "landing" framing undersold the artifact and limited how future growth was scoped. Directory name kept unchanged to avoid breaking git/CI/bookmarks | Expected good — unblocks multi-page architecture thinking (v3.1) |
+| Phase 38 vertical-rhythm system over ad-hoc `min-h` values | User identified hero + section heights as "out of place" across all 5 pages; picking numbers per-page produces drift. A researched canonical system (benchmarks, 45+ audience viewport considerations) + tokens is the only fix that survives future page additions | Expected good — prerequisite for v3.2+ page additions (v3.1) |
 
 ## Evolution
 
@@ -205,4 +212,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-06 after v3.0 milestone completion*
+*Last updated: 2026-04-07 at v3.1 milestone kickoff*
