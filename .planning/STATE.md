@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
 status: shipped
-stopped_at: All 6 phases complete. 44/52 requirements delivered; 7 deferred to v3.2 Phase 36b (partials extraction + build pipeline + Netlify deploy); 1 (RHYTHM-10 manual viewport verification) pending user sign-off. 44 commits across 6 phases. Milestone audit at .planning/milestones/v3.1-MILESTONE-AUDIT.md.
+stopped_at: All 6 phases complete. 44/52 requirements delivered; 7 deferred to v3.2 Phase 36b (partials extraction + build pipeline + build-script invocation mechanism); 1 (RHYTHM-10 manual viewport verification) pending user sign-off. 44 commits across 6 phases. Milestone audit at .planning/milestones/v3.1-MILESTONE-AUDIT.md.
 last_updated: "2026-04-07T08:55:00.000Z"
 last_activity: "2026-04-07 — Phase 38 UI audit (20/24) + quick task 260407-j79 fixed 3 findings"
 progress:
@@ -76,7 +76,7 @@ Recent decisions affecting current work:
 - [Phase 32]: Accessible text tokens use -text suffix (mu-blue-text vs mu-blue) to separate WCAG-safe text colors from bright icon/bg colors
 - [Phase 32]: Icon containers and SVGs keep bright original colors; only text elements get *-text accessible variants for WCAG AA compliance
 - [v3.1 roadmap]: Phase order locked numerically (33→34→35→36→37→38); Phase 35's CHKPOL-01 typography-only constraint resolves the cross-phase conflict with Phase 38 min-h ownership (CRIT-03)
-- [v3.1 roadmap]: Phase 36 partials approach is build-time shell splice (NOT runtime fetch, NOT nginx SSI) — preserves existing js/router.js swap contract, works with Netlify deploy target
+- [v3.1 roadmap]: Phase 36 partials approach is build-time shell splice (NOT runtime fetch) — preserves existing js/router.js swap contract, deploy-target-agnostic, works with `file://` preview. Chosen over nginx SSI for preview compatibility.
 - [Phase 33]: 404.html Vienna address fixed as Rule 2 deviation — was not in plan scope but had stale Bruno-Marek-Allee footer
 - [Phase 33]: Gate 1/2 intent achieved despite count discrepancy: Wiener Privatklinik hospital name and HTML entity &laquo; make exact counts unachievable but all stale company refs are gone
 - [Phase 38]: Tailwind v4 requires --min-height-* (not --height-*) to generate min-h-* utilities — confirmed via smoke test
@@ -96,7 +96,7 @@ Recent decisions affecting current work:
 - [Phase 36a]: Footer navigation column normalized to 2 links (Главная + Контакты) to enable Phase 36b single-source extraction
 - [Phase 36a]: LAYOUT-07 verified no-op — router.js already calls updateActiveNav() on SPA nav; static baked aria-current covers first-load
 - [Phase 36a]: Mobile menu toggleMenu() re-queries .header__menu-btn on each call for full router-swap robustness
-- Phase 36 prerequisite spike: Netlify test deploy with checked-in 76 MB tailwindcss binary (Open Verification Item #2)
+- Phase 36 prerequisite spike: local `./build.sh` byte-identity verification — run build, `diff` against checked-in pages, confirm zero drift (Open Verification Item #2, rewritten 2026-04-07 after nginx pivot)
 - Phase 38 prerequisite spike: Tailwind v4 token-to-utility smoke test (Open Verification Item #3)
 
 ## Session Continuity

@@ -153,7 +153,7 @@ Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
 - [x] **Phase 33: Audit Quick Wins** -- 7 credibility fixes (sticky-bar pb, Vienna+ТОО unification, emoji→SVG, Astana→Алматы, em-dash); pre-flight gate for Phase 36 (completed 2026-04-07)
 - [ ] **Phase 34: Treatment Abroad Overhaul** -- 25× hardcoded SVG hex → tokens, em-dash typography fix, stat bar rework, hero photo swap; restore worst page (14/24 → ≥17/24)
 - [ ] **Phase 35: Checkup Fix + Form UX Polish** -- Checkup H1 typography fix (NO min-h), gender-neutral labels, `:user-valid` blur-first feedback across all 5 forms
-- [ ] **Phase 36: Shared Layout Primitives** -- ARCHITECTURAL CENTERPIECE. Build-time shell splice (`partials/` + `scripts/build-pages.sh` + `build.sh` + `netlify.toml`); preserves existing `js/router.js` swap contract
+- [ ] **Phase 36: Shared Layout Primitives** -- ARCHITECTURAL CENTERPIECE. Build-time shell splice (`partials/` + `scripts/build-pages.sh` + `build.sh`); preserves existing `js/router.js` swap contract. Invocation mechanism (Makefile / pre-commit / CI) to be decided in v3.2 Phase 36b planning.
 - [ ] **Phase 37: Site Metadata & Hygiene** -- `sitemap.xml` allowlist, `robots.txt` (must NOT block /css/ /js/), canonical audit, 404 H1 + copy upgrade, vendored circle-flags
 - [ ] **Phase 38: Vertical Rhythm & Section Sizing** -- RESEARCH-FIRST. `svh`-based hero tokens (rich/medium/compact), page-shell flex wrapper, content-density tier per page, viewport verification 320-1920
 
@@ -197,12 +197,12 @@ Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
 **UI hint**: yes
 
 ### Phase 36: Shared Layout Primitives — ARCHITECTURAL CENTERPIECE
-**Goal**: Eliminate 5-way header/footer/sticky-bar/mobile-menu drift by extracting to `partials/` via build-time shell-script splice — wired into Netlify deploy via `[build] command = "./build.sh"`. NOT runtime fetch (would fight existing `js/router.js`). NOT nginx SSI (Netlify doesn't support it). Adding a hypothetical 7th page must require 0 edits to existing pages' chrome.
+**Goal**: Eliminate 5-way header/footer/sticky-bar/mobile-menu drift by extracting to `partials/` via build-time shell-script splice — invocation mechanism (Makefile target / pre-commit hook / CI step) to be decided in v3.2 Phase 36b planning. NOT runtime fetch (would fight existing `js/router.js`). Build-time splice chosen over nginx SSI for `file://` preview compatibility and deploy-target-agnostic output. Adding a hypothetical 7th page must require 0 edits to existing pages' chrome.
 **Depends on**: Phase 33 (HARD — data unification must merge first; CRIT-02). Phase 34 (SOFT — treatment-abroad footer normalized so byte-identity diff is clean)
 **Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03, LAYOUT-04, LAYOUT-05, LAYOUT-06, LAYOUT-07, LAYOUT-08, LAYOUT-09, LAYOUT-10, LAYOUT-11, LAYOUT-12
 **Success Criteria** (what must be TRUE):
   1. `partials/{header,footer,sticky-bar,mobile-menu}.html` exist as single source of truth; `scripts/build-pages.sh` + `build.sh` splice them into all 6 pages via `<!-- BUILD:partial NAME --> ... <!-- BUILD:end NAME -->` markers; running `./build.sh` produces byte-identical output to current files on first run (verified via `diff` before removing inlined chrome)
-  2. `.netlify/netlify.toml` has `[build] command = "./build.sh"` AND a Netlify test deploy succeeds with the checked-in 76 MB `tailwindcss` binary executing under build image permissions (LAYOUT-12 / Open Verification Item #2)
+  2. `./build.sh` runs locally and produces HTML output byte-identical to checked-in pages (no drift) — verified via `diff` (LAYOUT-12). Invocation mechanism (Makefile / pre-commit / CI) shipped per LAYOUT-04 decision. nginx serves compiled `css/styles.css` directly; the 76 MB `tailwindcss` binary runs only locally during dev.
   3. `aria-current="page"` is baked into static HTML by `build-pages.sh --page=<name>` for each page's own nav link (MOD-01 — no first-paint screen-reader race) AND `js/router.js init()` calls `updateActiveNav(window.location.pathname)` on first load (LAYOUT-07 dual-layer)
   4. Mobile menu hamburger uses event delegation on `document` (not direct attach) — robust to router swap lifecycle; `pageshow` listener handles bfcache restoration via `e.persisted` re-init (CRIT-10, MOD-02)
   5. `MedicalBusiness` JSON-LD on `index.html` remains in static inline HTML — `git grep 'application/ld+json' partials/` returns 0 matches AND `git grep 'application/ld+json' index.html` still returns 1 match (CRIT-06 — Yandex reliability)

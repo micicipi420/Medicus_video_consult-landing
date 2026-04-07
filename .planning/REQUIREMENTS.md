@@ -6,7 +6,7 @@
 
 **Goal:** Ship 14 audit fixes from `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` AND establish shared layout primitives + a researched vertical-rhythm system so v3.2+ page additions become cheap. Bridge from "polished landing" to "scalable multi-page site".
 
-**Research context:** `.planning/research/SUMMARY.md` — 6 critical corrections to PROJECT.md assumptions. Key findings: `js/router.js` SPA router already ships; Netlify deploy target (not nginx); hero must use `svh`; dark mode claim is stale.
+**Research context:** `.planning/research/SUMMARY.md` — 6 critical corrections to PROJECT.md assumptions. Key findings: `js/router.js` SPA router already ships; hero must use `svh`; dark mode claim is stale. (Note: the research doc also flagged a non-nginx deploy-target assumption, which was reverted 2026-04-07 — canonical deploy target is nginx per CLAUDE.md; see supersession banner at the top of the research SUMMARY.)
 
 ---
 
@@ -42,12 +42,12 @@
 
 ## Shared Layout Primitives (Phase 36a / 36b) — ARCHITECTURAL CENTERPIECE
 
-**Scope decision 2026-04-07 (user):** Phase 36a ships drift normalization + JS wiring; Phase 36b (partials extraction + build pipeline + Netlify deploy) deferred to v3.2.
+**Scope decision 2026-04-07 (user):** Phase 36a ships drift normalization + JS wiring; Phase 36b (partials extraction + build pipeline + build-script invocation mechanism) deferred to v3.2.
 
 - [ ] **LAYOUT-01** _(DEFERRED to v3.2 Phase 36b)_: `partials/` directory with single-source files
 - [ ] **LAYOUT-02** _(DEFERRED to v3.2 Phase 36b)_: `scripts/build-pages.sh` marker-based splice
 - [ ] **LAYOUT-03** _(DEFERRED to v3.2 Phase 36b)_: `build.sh` wrapper at repo root
-- [ ] **LAYOUT-04** _(DEFERRED to v3.2 Phase 36b)_: `.netlify/netlify.toml` `[build] command`
+- [ ] **LAYOUT-04** _(DEFERRED to v3.2 Phase 36b)_: Build-script invocation mechanism (Makefile target, pre-commit hook, or CI step — exact mechanism to be decided when Phase 36b is planned). MUST be reproducible and idempotent.
 - [ ] **LAYOUT-05** _(DEFERRED to v3.2 Phase 36b)_: BUILD markers + byte-identical splice verification
 - [x] **LAYOUT-06**: `aria-current="page"` baked in static HTML — 9 placements across 5 pages (drift normalized in Phase 36a)
 - [x] **LAYOUT-07**: Verified no-op — `router.js:updateActiveNav()` already fires on SPA navigation; static baked HTML covers first-load
@@ -55,7 +55,7 @@
 - [x] **LAYOUT-09**: `pageshow` listener handles bfcache restoration via `e.persisted` in `js/main.js`
 - [x] **LAYOUT-10**: `MedicalBusiness` JSON-LD stays in static inline HTML on `index.html` (verified: 1 script tag, not extracted)
 - [ ] **LAYOUT-11** _(DEFERRED to v3.2 Phase 36b)_: 7th-page 0-edit invariant verification
-- [ ] **LAYOUT-12** _(DEFERRED to v3.2 Phase 36b)_: Netlify test deploy smoke-test with checked-in 76 MB `tailwindcss` binary
+- [ ] **LAYOUT-12** _(DEFERRED to v3.2 Phase 36b)_: Smoke-test `./build.sh` locally and verify resulting HTML matches checked-in pages byte-for-byte (no drift). The 76 MB checked-in `tailwindcss` binary runs only locally during dev — nginx serves the already-compiled `css/styles.css`.
 
 **Bonus work in Phase 36a (not in original reqs but implicit from audit CRIT-02):**
 - Header + footer + sticky-bar drift normalized across 5 pages (BEM classes unified, copy unified, nav links consistent)
@@ -110,7 +110,7 @@
 - **Node.js runtime or npm dependencies** — Tailwind CLI standalone binary is the only build tool; Phase 36 introduces shell scripts, not a Node pipeline
 - **CSS-in-JS, Sass/SCSS, PostCSS full pipeline** — Tailwind v4 @theme inline handles everything
 - **Constraint Validation API rewrite of form** — would risk OS-localized error messages instead of Russian
-- **Server-Side Includes (nginx SSI)** — deploy target is Netlify; SSI not supported
+- **Server-Side Includes (nginx SSI)** — deploy target is nginx (SSI technically valid), but Phase 36b keeps build-time shell splice for `file://` preview compatibility and deploy-target-agnostic output
 - **Yandex/Google analytics integration** — separate initiative
 - **A/B testing infrastructure** — requires server-side, premature
 - **`changefreq` and `priority` tags in sitemap** — Google ignores both

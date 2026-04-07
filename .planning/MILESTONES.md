@@ -14,7 +14,7 @@
 - Chrome drift eliminated across 5 pages: BEM classes normalized, canonical footer/header/sticky-bar structure, `aria-current="page"` baked in static HTML for each page's own nav link, event delegation for mobile menu, bfcache `pageshow` listener
 - Site metadata: `sitemap.xml` (5 URLs, NO 404, NO changefreq/priority), Yandex-safe `robots.txt` (does NOT block /css/ /js/), canonical URL audit confirmed 0 drift, 404.html H1 upgraded + body copy rewritten, meta descriptions trimmed to 150–160 chars, 10 circle-flags SVGs vendored to `img/flags/` (~6KB)
 - Vertical rhythm system (research-first): canonical `svh`-based hero tokens (rich/medium/compact content-density tiers) in `theme.css :root` + `@theme inline` — smoke test caught Tailwind v4's `--min-height-*` key pattern (not `--height-*`), prevented broken bulk migration. `<body class="min-h-screen">` removed across 6 pages. `scroll-margin-top: 6rem` + `prefers-reduced-motion` guards. Counter animations cached via `sessionStorage` to avoid SPA-nav re-run.
-- Deferred to v3.2 Phase 36b: `partials/` extraction, `scripts/build-pages.sh`, `build.sh`, `netlify.toml [build] command`, Netlify deploy smoke-test (prerequisite: user triggers test deploy with checked-in 76 MB `tailwindcss` binary)
+- Deferred to v3.2 Phase 36b: `partials/` extraction, `scripts/build-pages.sh`, `build.sh`, build-script invocation mechanism (Makefile / pre-commit / CI — exact mechanism TBD in 36b planning), local `./build.sh` byte-identity smoke-test. Deploy target reverted to nginx 2026-04-07; `tailwindcss` binary runs only locally during dev.
 
 ---
 
