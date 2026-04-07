@@ -347,14 +347,36 @@
         return isValid;
       }
 
-      // Clear error on input change
+      // Per-field listeners: blur-first validation (CHKPOL-05)
       Object.keys(rules).forEach(function (key) {
         var rule = rules[key];
         if (!rule.el) return;
-        var eventType = (rule.el.tagName === 'SELECT') ? 'change' : 'input';
-        rule.el.addEventListener(eventType, function () {
-          clearFieldError(key);
+        var blurEvent = (rule.el.tagName === 'SELECT') ? 'change' : 'blur';
+        var inputEvent = (rule.el.tagName === 'SELECT') ? 'change' : 'input';
+
+        // Mark field as touched + validate on blur/change
+        rule.el.addEventListener(blurEvent, function () {
+          rule.el.dataset.touched = '1';
+          if (!rule.validate(rule.el.value)) {
+            showFieldError(key, rule.message);
+            rule.el.setAttribute('aria-invalid', 'true');
+          } else {
+            clearFieldError(key);
+            rule.el.setAttribute('aria-invalid', 'false');
+          }
         });
+
+        // Input listener: only re-validate if already touched
+        if (blurEvent !== inputEvent) {
+          rule.el.addEventListener(inputEvent, function () {
+            if (rule.el.dataset.touched === '1') {
+              if (rule.validate(rule.el.value)) {
+                clearFieldError(key);
+                rule.el.setAttribute('aria-invalid', 'false');
+              }
+            }
+          });
+        }
       });
 
       function showSuccessState() {

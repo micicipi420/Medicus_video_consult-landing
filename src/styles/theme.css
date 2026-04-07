@@ -299,6 +299,16 @@
   }
 }
 
+/* Form: native :user-valid feedback — green left border after blur, not on every keystroke */
+@layer base {
+  .contact-form input:user-valid,
+  .contact-form select:user-valid,
+  .contact-form textarea:user-valid {
+    border-left: 3px solid var(--mu-green-600);
+    transition: border-color 200ms ease-out;
+  }
+}
+
 /* Accessibility: disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
