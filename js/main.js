@@ -479,8 +479,16 @@
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // RHYTHM-12: Skip re-animation on SPA back-navigation within same session
+    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('counters-animated') === '1') return;
+
     var numbers = document.querySelectorAll('.stat-card__number[data-target]');
     if (!numbers.length) return;
+
+    // Mark as animated before observer fires to prevent double-run on SPA re-init
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('counters-animated', '1');
+    }
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
