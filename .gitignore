@@ -14,9 +14,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Deploy tools (Netlify CLI linked-site state)
-.netlify/
-
 # Tailwind CSS standalone CLI binary (~73MB, download with curl)
 tailwindcss
 
