@@ -1,531 +1,575 @@
-# Technology Stack
+# Technology Stack — v3.1 Site Foundation & Audit Fixes
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
-**Researched:** 2026-03-24
-**Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
-
----
-
-## What This Research Covers
-
-Four new CSS/JS capability areas needed for milestone v1.4:
-
-1. Liquid glass / glassmorphism via `backdrop-filter`
-2. Dark mode toggle with `localStorage` and CSS custom properties
-3. CSS Scroll-Driven Animations API as progressive enhancement
-4. CSS micro-animation patterns for hover and state transitions
-
-**What is NOT covered:** Backend, build tools, fonts, frameworks — all unchanged from v1.3.
+**Project:** MedicusUnion KZ
+**Milestone:** v3.1 (subsequent — adds capabilities to existing v3.0 production site)
+**Researched:** 2026-04-07
+**Scope:** ONLY the stack additions/changes needed for v3.1's 5 new capabilities. The existing stack (Tailwind v4 CLI standalone binary, vanilla ES5 IIFE JS, Motion CDN, Directus 11, PostgreSQL 16, nginx, Docker Compose) is locked and not re-researched.
 
 ---
 
-## 1. Glassmorphism: `backdrop-filter` + CSS
+## TL;DR Recommendations
 
-### Technique
+| Capability | Recommendation | Confidence |
+|------------|---------------|------------|
+| 1. Partials inclusion | **nginx SSI** (`<!--# include file="..." -->`) + tiny `partials/` directory | HIGH |
+| 2. Vertical rhythm | **Custom `--mu-section-*` tokens in `theme.css :root`, exposed via `@theme inline` as `--spacing-*`**, units = `svh` for hero with `min-height` floor in `rem` | HIGH |
+| 3. Sitemap | **Hand-written static `sitemap.xml`** (6 URLs) + hand-written `robots.txt`. No tooling | HIGH |
+| 4. Form valid-state | **Extend existing `is-invalid` rule pattern with mirrored `is-valid` class + `aria-invalid` toggle on blur**, no Constraint Validation API rewrite | HIGH |
+| 5. Flag icon set | **circle-flags** SVGs (subset, vendored to `img/flags/`) referenced via `<img src="">`, no CDN | MEDIUM |
 
-```css
-.glass-card {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%); /* Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-lg); /* already 30px */
+---
+
+## 1. HTML Partials Inclusion
+
+### Decision: nginx SSI (Server-Side Includes)
+
+**Use:**
+```nginx
+# nginx.conf — inside the location serving the site
+location / {
+    ssi on;
+    ssi_silent_errors off;  # log SSI errors so partial breakage is visible
+    ssi_min_file_chunk 1k;
+    root /usr/share/nginx/html;
+    try_files $uri $uri/ =404;
 }
 ```
 
-**Why this approach:**
-- `backdrop-filter: blur()` is the single CSS property that creates the glass blur effect — no JS, no canvas, no SVG filter workaround needed
-- `saturate(180%)` amplifies color behind glass, making the effect richer on medical imagery backgrounds
-- `-webkit-backdrop-filter` is required for Safari 9–17 (pre-2024); Safari 18+ unprefixed works but the prefix costs zero bytes and has no downside
-- `rgba()` background with low alpha (0.08–0.18) is the correct "liquid glass" palette — pure transparent has no color; pure opaque loses the glass effect
-- Explicit `border: 1px solid rgba(255,255,255,0.2)` is required to visually define the glass boundary without a shadow
-
-### Browser Support (as of mid-2025)
-
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 76+ | Full | Unprefixed |
-| Edge 79+ | Full | Unprefixed |
-| Firefox 103+ | Full | Enabled by default since FF103 (2022) |
-| Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| iOS Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| Samsung Internet 12+ | Full | |
-| **Global coverage** | ~95%+ | MEDIUM confidence — caniuse.com not accessible for verification |
-
-**Confidence:** MEDIUM. Training data places global support at ~95% for mid-2025. Firefox lagged historically but has supported it since 2022. The `-webkit-` prefix covers all Safari versions in production use.
-
-### Fallback Strategy
-
-```css
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-}
+```html
+<!-- index.html -->
+<!--# include file="partials/header.html" -->
+<main> ... </main>
+<!--# include file="partials/footer.html" -->
+<!--# include file="partials/sticky-bar.html" -->
+<!--# include file="partials/mobile-menu.html" -->
 ```
 
-`@supports` is the correct gate — avoids applying transparent background when blur is unavailable (which would produce illegible text).
+Directory layout:
+```
+/
+├── index.html
+├── online-consultations.html
+├── treatment-abroad.html
+├── checkup.html
+├── contacts.html
+├── 404.html
+└── partials/
+    ├── header.html
+    ├── footer.html
+    ├── sticky-bar.html
+    └── mobile-menu.html
+```
 
-### Integration with Existing Token System
+### Why nginx SSI fits THIS stack
 
-New tokens to add to `:root`:
+1. **Zero new runtime dependencies.** nginx is already in the production stack (CLAUDE.md confirms it as reverse proxy + static file server). SSI is a built-in nginx module (`ngx_http_ssi_module`) that ships in every standard distribution — `apt-get install nginx` already has it. No build step, no Node.js, no PostCSS, no extra container.
+2. **Source-of-truth stays in plain HTML.** Partials are real `.html` files. Tailwind CLI's content scanner already crawls `*.html` so utility classes inside partials are picked up automatically (verify the `@source` glob in `src/styles/tailwind.css` covers `partials/**/*.html`).
+3. **Server-side composition = no JS-off failure.** SSI renders the HTML on the server before the response leaves nginx. View-source shows the fully-composed page. The 45+ audience does not need JavaScript enabled for the header, footer, sticky bar, or mobile menu shell to appear. Critical for accessibility and for slow connections that abort JS download.
+4. **No double-fetch / CLS / FOUC.** Client-side `fetch()` includes (the obvious vanilla-JS alternative) cause the header to pop in after the first paint, breaking sticky-header math and shifting layout (CLS hit). SSI gives single-document delivery — first paint already has the header.
+5. **Cacheable.** nginx still serves the composed result with normal HTTP caching headers. No per-page assembly cost on repeat visits past the proxy cache.
+6. **Trivial to operate.** One `ssi on;` line in the location block + `<!--# include file="..." -->` comments. The SSI directive degrades to an HTML comment if a developer accidentally serves the file from a non-SSI environment (e.g. opening `index.html` with `file://` for a quick check) — page renders without the partial but does not break.
+
+### Integration seams with existing stack
+
+- **Tailwind v4 content scanning:** Add `@source "partials/**/*.html";` to `src/styles/tailwind.css` so utilities used only inside partials don't get tree-shaken. This is a one-line change.
+- **IIFE JS:** No changes. `js/main.js` already queries the DOM with `document.querySelector('.header')` etc. SSI-included markup is indistinguishable from inline markup at parse time, so `initStickyHeader`, `initMobileMenu`, `initSmoothScroll` keep working unchanged.
+- **theme.css:** No changes. Partials use the same utility classes already compiled.
+- **Local dev workflow:** SSI requires nginx to render. Two viable dev paths:
+  - (a) Run nginx in Docker locally (`docker run --rm -p 8080:80 -v $(pwd):/usr/share/nginx/html:ro nginx:alpine` + a 5-line `nginx.conf` with `ssi on;`). Recommended.
+  - (b) Keep using `python3 -m http.server` for quick visual checks; partials simply won't compose, so use this only when not touching partials.
+
+### Rejected alternatives
+
+| Option | Why rejected |
+|--------|-------------|
+| **Client-side `fetch()` includes** (vanilla JS injects partials into placeholder `<div id="header-slot">`) | (a) JS-off audience sees broken page — header, footer, sticky CTA all missing. Unacceptable for medical site targeting 45+ on potentially flaky connections. (b) CLS hit: header pops in 100–300ms after first paint, sticky-header offset math runs against wrong layout. (c) Doubles HTTP requests per page (5 pages × 4 partials = 20 round-trips on first visit unless aggressively cached). (d) Search engines that don't run JS (Yandex partial, ancient bot crawlers in KZ market) see empty `<head>` lacking nav SEO context. |
+| **`posthtml-include` / `html-includes-cli` / similar build-time include tools** | Pulls Node.js into the build step. CLAUDE.md is explicit: "no Node.js in рантайме" — and the spirit of "no Node.js" extends to keeping the build pipeline minimal. Today the build is literally `./tailwindcss -i src/styles/tailwind.css -o css/styles.css --minify`. Adding a Node-based pre-pass means installing npm, node_modules, a `package.json`, and a wrapper script just to inline 4 partials. Not worth it for 6 pages. |
+| **Shell-script `sed`/`awk` build pre-pass** (e.g. `scripts/build-partials.sh` walks pages and substitutes `<!-- INCLUDE: header.html -->` markers) | Requires committing two artifacts per page (source `.tmpl.html` + generated `.html`), or generating into `dist/`. Source-of-truth split is the kind of friction that causes "fix in dist, forget to fix in src" bugs. Also breaks editor tooling (autoformat, prettier, IDE preview) on `.tmpl.html`. nginx SSI does the substitution in nginx with zero source artifacts. |
+| **HTMX (`hx-get`)** | HTMX is ~14KB gzipped of JavaScript whose entire purpose is fetching HTML fragments. Adding it for partial includes is the same problem as client-side `fetch()` (JS-off failure, CLS, request fan-out) but with a heavier dependency. HTMX makes sense for interactive partial swaps; it does not make sense for "include the header at page-load." |
+| **iframes for header/footer** | Breaks SEO (header content not part of page DOM for crawlers), breaks sticky positioning (iframes scroll independently), breaks CSS cascade (partials lose access to `theme.css`), breaks accessibility (focus trap, screen reader navigation). Non-starter. |
+| **Web Components / `<template>` + Shadow DOM** | Same JS-off failure as `fetch()`. Plus Shadow DOM isolates Tailwind utility classes from the cascade unless we adopt CSS modules or `:host` workarounds — adds complexity for no benefit. |
+| **Apache SSI** | Project uses nginx. Switching servers for one feature is absurd. |
+
+### Source
+
+- **nginx official docs — `ngx_http_ssi_module`**: https://nginx.org/en/docs/http/ngx_http_ssi_module.html — confirmed `ssi on;` directive, `<!--# include file="..." -->` syntax, and that "Several requests specified on one page... run in parallel" (so multiple partials don't serialize). Confidence: HIGH.
+
+---
+
+## 2. Vertical Rhythm Token System
+
+### Decision: Custom CSS variables in `theme.css :root`, exposed as `--spacing-*` tokens via `@theme inline`, viewport unit = `svh`
+
+**Tailwind v4 token definition:**
 
 ```css
+/* src/styles/theme.css — add to existing :root block */
 :root {
-  /* Glass surface tokens */
-  --glass-bg-light: rgba(255, 255, 255, 0.12);
-  --glass-bg-medium: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+  /* Vertical rhythm — section heights (research-backed in v3.1 Phase 38) */
+  --mu-section-hero-min: 32rem;        /* 512px floor — keeps hero usable when svh tiny */
+  --mu-section-hero: 78svh;            /* 78% of small viewport — leaves room for sticky bar on mobile */
+  --mu-section-hero-md: 86svh;         /* desktop ~86svh */
+  --mu-section-standard: 6rem;         /* 96px — vertical padding for content sections */
+  --mu-section-standard-md: 7.5rem;    /* 120px — desktop content sections */
+  --mu-section-tight: 4rem;            /* 64px — between tightly-coupled sections */
+  --mu-section-loose: 9rem;            /* 144px — between thematic breaks */
+}
 
-  /* Dark mode glass (inverted) */
-  --glass-bg-dark: rgba(24, 33, 44, 0.45);
-  --glass-border-dark: 1px solid rgba(255, 255, 255, 0.08);
+@theme inline {
+  /* Expose vertical rhythm as Tailwind utilities */
+  --spacing-section-hero-min: var(--mu-section-hero-min);
+  --spacing-section-hero: var(--mu-section-hero);
+  --spacing-section-hero-md: var(--mu-section-hero-md);
+  --spacing-section-standard: var(--mu-section-standard);
+  --spacing-section-standard-md: var(--mu-section-standard-md);
+  --spacing-section-tight: var(--mu-section-tight);
+  --spacing-section-loose: var(--mu-section-loose);
 }
 ```
 
-**Performance note:** `backdrop-filter` triggers GPU compositing. On a landing page with 3–4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
+**Usage in markup:**
+```html
+<!-- Hero: minimum 32rem floor, ~78svh on mobile, ~86svh on desktop -->
+<section class="min-h-section-hero-min h-section-hero md:h-section-hero-md">
+  ...
+</section>
 
-### Medical Context Constraint
+<!-- Standard content section -->
+<section class="py-section-standard md:py-section-standard-md">
+  ...
+</section>
+```
 
-For the ЦА 45+ audience, glass cards must maintain WCAG AA text contrast. Rule: glass cards with `backdrop-filter` MUST have a minimum background opacity that keeps text at 4.5:1 contrast ratio. Use `rgba(255,255,255,0.85)` minimum for white cards with dark text, or a semi-opaque dark overlay for light text on glass. Pure "trendy" glass with 10% opacity fails contrast — avoid on text-heavy cards.
+The `--spacing-*` Tailwind v4 namespace auto-generates `min-h-*`, `h-*`, `max-h-*`, `py-*`, `pt-*`, `pb-*`, `my-*`, `gap-*` etc. for every token defined in `@theme`. So one definition produces every utility variant the markup might need.
+
+### Why this fits THIS stack
+
+1. **Native Tailwind v4 mechanism, no extra plugin.** v4's `@theme` directive is purpose-built for exactly this — define a CSS variable, get utility classes. No PostCSS plugin, no `tailwind.config.js`, no JavaScript build extension. Confirmed by official docs: variables in the `--spacing-*` namespace generate spacing/sizing utilities automatically.
+2. **Aligns with existing convention.** `theme.css` already defines tokens this exact way for colors (`--mu-green-600` in `:root` → `--color-mu-green-600` in `@theme inline` → Tailwind generates `bg-mu-green-600`). Vertical rhythm tokens slot into the same pattern. Future maintainers don't learn anything new.
+3. **Single source of truth.** All 5 pages reference the same token names. Tweaking the canonical hero height in v3.2+ is one CSS variable edit, not a 5-page find-replace.
+4. **Two-layer indirection (`--mu-*` raw → `--spacing-*` Tailwind alias) preserves brand naming.** Keeps brand tokens namespaced (`--mu-section-hero`) while exposing Tailwind-flavor names for utility generation. Same pattern the project already uses.
+5. **`svh` is the right unit for THIS audience.** See iOS Safari analysis below.
+
+### Viewport unit decision: `svh` (small viewport height) — NOT `vh`, NOT `dvh`
+
+| Unit | Behavior | Use here? |
+|------|----------|-----------|
+| `vh` | Equal to `lvh` in modern browsers — assumes browser UI retracted (large viewport). On iOS Safari pre-15.4 the address bar hides during scroll, so `100vh` is the *largest* the viewport gets — content sized to `100vh` is then **clipped behind the address bar** when the bar is visible (i.e. on first paint). | NO — clips hero CTA on initial load, the worst possible time |
+| `svh` | Small viewport height — sized as if browser UI is *fully visible* (address bar shown, toolbars shown). Content always fits within the smallest realized viewport. | **YES** for hero |
+| `lvh` | Large viewport height — sized as if browser UI is *fully retracted*. Same problem as `vh`. | NO |
+| `dvh` | Dynamic — recalculates as the address bar shows/hides during scroll. **Causes layout jump mid-scroll** as the address bar appears/disappears. Hostile to a 45+ audience already inclined to motion sensitivity. Also harms scroll-anchoring. | NO |
+
+**Conclusion:** Hero uses `svh`. Content sections use `rem` (predictable, no viewport math). Floor with `min-height` in `rem` so very short landscape phones don't crush the hero below readable size.
+
+### Browser support
+
+- `svh` / `lvh` / `dvh` shipped in Safari 15.4 (March 2022), Chrome 108 (Nov 2022), Firefox 101 (May 2022). Universal in 2026 — KZ market device profile (mostly mid-range Android + iPhone) hits this comfortably.
+- For paranoid fallback, `--mu-section-hero-min: 32rem` is the safety net: even if `svh` failed entirely, the section is still ≥512px tall.
+
+### Responsive testing requirements (from milestone scope)
+
+The token values above need to be validated at:
+- 320px (iPhone SE portrait — narrowest target)
+- 390px (iPhone 12/13/14 portrait — most common in KZ market)
+- 768px (iPad portrait)
+- 1024px (iPad landscape / small laptop)
+- 1440px (standard desktop)
+- 1920px (large desktop)
+
+The tokens above are first-pass starting values. **Phase 38 will refine them through visual review on each viewport** — the rhythm system being a tokenized CSS variable means refinement is `theme.css` edits, not markup churn.
+
+### Rejected alternatives
+
+| Option | Why rejected |
+|--------|-------------|
+| **Hardcoded `min-h-[600px]` arbitrary values per page** | The exact problem the milestone is trying to solve. Drift across 5 pages, no canonical answer when adding page #6. Phase 38 exists because this approach already failed. |
+| **Pure Tailwind built-in utilities (`min-h-screen`, `min-h-svh`)** | Tailwind ships `min-h-svh` / `min-h-dvh` / `min-h-lvh` in v4 out of the box. They cover the unit choice but **not the canonical project value**. We need `78svh` not `100svh`, and that exact value needs to live somewhere reusable. Only token-based approach gives this. |
+| **JavaScript-set CSS variables** (e.g. measure viewport in JS, set `--vh: ${innerHeight*0.01}px`) | The `-webkit-fill-available` / "1vh equals 1% of viewport" hack predates `svh`. Adding ~30 lines of resize-listener JS to compute what `svh` does natively is regression. Also fires on every orientation change, which is exactly the layout-jump that motion-sensitive users hate. |
+| **Container queries** (`@container (height > 800px)`) | Container queries are for component responsiveness, not section sizing relative to viewport. Wrong tool. |
+| **Define rhythm in `index.css` / inline `<style>` instead of `@theme`** | Loses Tailwind utility generation. Means writing custom CSS classes (`.section-hero { min-height: ... }`), which fights the project's "everything is a Tailwind utility" convention and requires touching markup classes. |
+
+### Source
+
+- **Tailwind CSS v4 docs — `@theme` and `--spacing-*` namespace**: https://tailwindcss.com/docs/theme — confirmed that variables in the `--spacing-*` namespace auto-generate spacing/sizing utilities (`p-*`, `m-*`, `w-*`, `h-*`, `max-w-*`, `min-h-*`, `gap-*`). Confidence: HIGH.
+- **MDN — viewport length units**: confirmed `svh`/`lvh`/`dvh` semantics, recommended `svh` for hero sections to guarantee content remains visible regardless of browser UI state, flagged `dvh` as causing layout jump during scroll. Confidence: HIGH.
+- **Existing project `src/styles/theme.css`**: confirmed `:root` → `@theme inline` two-layer pattern is already in use for colors, fonts, shadows. New rhythm tokens slot into the existing convention. Confidence: HIGH.
 
 ---
 
-## 2. Dark Mode: `localStorage` Toggle + CSS Custom Properties
+## 3. Sitemap & robots.txt
 
-### Pattern
+### Decision: Hand-written static `sitemap.xml` + hand-written `robots.txt`
 
-**CSS side — theme via class on `<html>`:**
+**`sitemap.xml`** (place at site root, served as `https://medicusunion.kz/sitemap.xml`):
 
-```css
-/* Light mode (default) — already in :root */
-:root {
-  --color-bg: #ffffff;
-  --color-surface: #F8FAFB;
-  --color-text-primary: #18212C;
-  --color-text-muted: rgba(24, 33, 44, 0.55);
-  --color-border: rgba(0, 0, 0, 0.08);
-}
-
-/* Dark mode — override tokens on html[data-theme="dark"] */
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-white: #161B22;       /* remaps white surfaces */
-  --color-light: #1C2128;       /* remaps light sections */
-}
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://medicusunion.kz/</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/online-consultations.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/treatment-abroad.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/checkup.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/contacts.html</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
 ```
 
-**Why `data-theme` attribute over CSS class:**
-- `html[data-theme="dark"]` is the current standard pattern (used by MDN, GitHub, Tailwind docs)
-- A class like `.dark` works equally but attribute is semantically clearer and easier to query in JS
-- Avoids class name collision with any BEM classes
+**`robots.txt`** (place at site root):
 
-**JS side — IIFE pattern (compatible with existing ES5 IIFE codebase):**
+```
+User-agent: *
+Allow: /
+Disallow: /partials/
+Disallow: /img/
 
-```javascript
-(function () {
-  'use strict';
-
-  var STORAGE_KEY = 'mu-theme';
-  var html = document.documentElement;
-  var btn = document.getElementById('theme-toggle');
-
-  // Apply saved preference immediately (avoids flash)
-  // This <script> block runs inline in <head>, before render
-  function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-  }
-
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  }
-
-  // Toggle handler (attached after DOM ready)
-  function init() {
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-      btn.setAttribute('aria-label',
-        next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'
-      );
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-}());
+Sitemap: https://medicusunion.kz/sitemap.xml
 ```
 
-**Why inline `<script>` in `<head>` for theme detection:**
-- The `localStorage` read and `applyTheme()` call MUST happen before first paint — otherwise users with a dark preference see a white flash (FOUC). Place this 8-line block as an inline `<script>` at the end of `<head>`, before the `</head>` tag.
-- This is the same pattern used by every major dark mode implementation (MDN, GitHub, Radix docs)
+(Disallow `/partials/` and `/img/` is hygiene — partials are not standalone pages and the image directory has no index.)
 
-**`prefers-color-scheme` media query fallback:**
-- If no `localStorage` value, check `window.matchMedia('(prefers-color-scheme: dark)')` to honor OS preference on first visit
-- Browser support: Chrome 76+, Firefox 67+, Safari 12.1+ — essentially universal
+### Why this fits THIS stack
 
-### Integration with Existing Tokens
+1. **6 URLs total.** With ≤10 URLs the maintenance cost of hand-editing is lower than the integration cost of any tool. A tool only pays off when you have 50+ URLs or dynamic generation needs.
+2. **Zero new dependencies.** No npm script, no Python script, no `sitemap-generator-cli`, no nginx module. A 30-line XML file committed to the repo, served as a static asset by the same nginx that serves `index.html`.
+3. **Lastmod can be hand-managed during commits.** When a page changes, the developer updates the `<lastmod>` in the same commit. No drift, no automated guessing of "what changed?"
+4. **Trivially auditable.** Code review of "did we add the new page to sitemap.xml?" is one diff line. Tools obscure this.
+5. **404.html intentionally excluded.** Per sitemap protocol — sitemap is for indexable canonical URLs; the 404 page is not one.
 
-The existing `:root` block has color tokens but they are NOT yet abstracted for dark mode (they reference hardcoded hex values like `--color-white: #FFFFFF`). The migration path:
+### Rejected alternatives
 
-1. Add semantic tokens (`--color-bg`, `--color-surface`, `--color-border`) to `:root`
-2. Replace hardcoded hex in section backgrounds with semantic tokens
-3. Keep brand colors (`--color-primary`, `--gradient-cta`) unchanged — they work in both modes
-4. Remap `--color-white` in dark mode to a dark surface (this is the key trick that makes `background: var(--color-white)` sections flip automatically)
+| Option | Why rejected |
+|--------|-------------|
+| **`sitemap-generator-cli` (Node-based crawler)** | Pulls Node.js into the build pipeline for what is currently 6 hand-typeable URLs. Net negative. |
+| **Shell script that walks `*.html` and emits XML** | Negligible code, but introduces "did the script run before deploy?" failure mode. With 6 URLs, the failure mode is more expensive than the work it saves. |
+| **Dynamic Directus-driven sitemap** | Site is static. Directus only stores form submissions. Wrong layer. |
+| **Submit to Google Search Console / Yandex Webmaster only, skip sitemap.xml file** | Sitemap protocol is the universal contract — both Google and Yandex consume it. Even if you submit URLs manually to both consoles, having a canonical sitemap.xml at the standard path is hygiene that costs nothing. |
 
-**Transition for theme switch (no flash):**
+### Source
 
-```css
-/* Applied to body ONLY after initial load to prevent FOUC */
-body.theme-transitions-ready {
-  transition: background-color 300ms ease, color 300ms ease;
-}
-```
-
-Add `document.body.classList.add('theme-transitions-ready')` in JS after the page loads (not inline in head).
-
-### Confidence: HIGH
-
-This is a well-established pattern with no ambiguity. `localStorage`, `matchMedia`, and CSS custom property cascading all have near-universal browser support.
+- **sitemaps.org protocol**: https://www.sitemaps.org/protocol.html — confirmed `<urlset>` namespace and required/optional fields. Confidence: HIGH (training-data + universal protocol).
+- **Google Search Central — robots.txt spec**: https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt — confirmed `Sitemap:` directive and `User-agent: *` syntax. Confidence: HIGH.
 
 ---
 
-## 3. CSS Scroll-Driven Animations API (2025)
+## 4. Form Valid-State Feedback
 
-### What It Is
+### Decision: Extend the existing `is-invalid` rule pattern with mirrored `is-valid` class + `aria-invalid` toggle on blur. **Do NOT introduce the Constraint Validation API.**
 
-The CSS Scroll-Driven Animations API (2023 spec, Chrome 115+) replaces IntersectionObserver-based JS animations with pure CSS. It links `@keyframes` animations to scroll position instead of time.
+### Why NOT a Constraint Validation API rewrite
 
-```css
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+The project's `js/main.js` (lines ~254–400) already implements a mature, ES5-compatible custom validation system:
+
+- Custom `rules` object per form, with explicit `validate(value)` functions
+- Russian error messages stored as Cyrillic Unicode escapes
+- `is-invalid` CSS class on the field, `.form__field-error` sibling element holds the message
+- `clearFieldError(key)` on `input`/`change` event
+- Honeypot + 3-second-elapsed spam protection
+- Full submit pipeline to Directus with success/error overlay states
+
+Switching to `input.validity.valid` / `setCustomValidity()` would mean rewriting all of this for negligible benefit, and would trade an explicit data structure (`rules.name = { validate, message }`) for an implicit one (HTML attributes scattered across markup). The Constraint Validation API also localizes error messages via the browser, which would emit English/Kazakh/Russian inconsistently depending on user OS locale — the project requires deterministic Russian.
+
+### What to add (small, surgical)
+
+**Add to existing `js/main.js` `initFormValidation()`:**
+
+```js
+// New: showFieldValid(key) — mirror of showFieldError
+function showFieldValid(key) {
+  var rule = rules[key];
+  if (!rule || !rule.el) return;
+  rule.el.classList.remove('is-invalid');
+  rule.el.classList.add('is-valid');
+  rule.el.setAttribute('aria-invalid', 'false');
 }
 
-.animate-on-scroll {
-  animation: fade-in-up linear both;
-  animation-timeline: view();          /* ties to element's visibility */
-  animation-range: entry 0% entry 40%; /* plays during entry phase */
-}
-```
-
-**Why this technique:**
-- Pure CSS, zero JS — no `IntersectionObserver` wiring, no class toggling
-- Runs on the compositor thread — smoother than JS-driven animations
-- `animation-timeline: view()` fires the animation as the element enters the viewport, exactly replicating current `IntersectionObserver` behavior
-
-### Browser Support (as of mid-2025)
-
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 115+ | Full | Shipped July 2023 |
-| Edge 115+ | Full | Chromium-based |
-| Safari 18+ | Partial | `scroll-timeline` supported; `view()` / `animation-range` partial. Safari 17 = no support |
-| Firefox 110+ | Partial | `scroll-timeline` supported; `view()` behind flag until FF 128 |
-| **Global coverage** | ~70–75% | MEDIUM confidence — significant Safari/Firefox gaps remain |
-
-**This is a progressive enhancement, not a replacement.** The existing `IntersectionObserver` animations MUST remain as the baseline. Scroll-driven CSS animations layer on top for supporting browsers.
-
-### Progressive Enhancement Pattern
-
-```css
-/* Baseline: element starts visible (works everywhere) */
-.section-card {
-  opacity: 1;
-  transform: none;
-}
-
-/* Enhancement: animate in for browsers that support scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .section-card {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
+// Modify clearFieldError to also remove is-valid (so empty field is neutral, not green)
+function clearFieldError(key) {
+  var rule = rules[key];
+  if (!rule || !rule.el) return;
+  rule.el.classList.remove('is-invalid');
+  rule.el.classList.remove('is-valid');     // NEW
+  rule.el.removeAttribute('aria-invalid');  // NEW
+  var errSpan = rule.el.parentElement.querySelector('.form__field-error');
+  if (errSpan) {
+    errSpan.textContent = '';
+    errSpan.hidden = true;
   }
 }
-```
 
-**Why `@supports` gate is required:**
-- Browsers without support see `opacity: 0` elements if the animation properties are applied unconditionally — content disappears permanently
-- The `@supports` block ensures elements are visible by default, enhanced only when supported
-
-**Conflict with existing IntersectionObserver:**
-- The current JS adds `.is-visible` classes via IntersectionObserver to trigger CSS transitions
-- With scroll-driven animations, the same element could animate twice (IO transition + CSS scroll animation)
-- Resolution: in the `@supports` block, set `transition: none` to disable IO-triggered transitions on supported browsers, letting the CSS scroll animation take over cleanly
-
-```css
-@supports (animation-timeline: scroll()) {
-  .scroll-animate {
-    transition: none; /* disable IO-based transitions */
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
+// Modify showFieldError to set aria-invalid="true"
+function showFieldError(key, message) {
+  var rule = rules[key];
+  if (!rule || !rule.el) return;
+  rule.el.classList.remove('is-valid');     // NEW
+  rule.el.classList.add('is-invalid');
+  rule.el.setAttribute('aria-invalid', 'true');  // NEW
+  var errSpan = rule.el.parentElement.querySelector('.form__field-error');
+  if (errSpan) {
+    errSpan.textContent = message;
+    errSpan.hidden = false;
   }
 }
+
+// Hook valid-state into the existing input/change listener AND a new blur listener
+Object.keys(rules).forEach(function (key) {
+  var rule = rules[key];
+  if (!rule.el) return;
+  var eventType = (rule.el.tagName === 'SELECT') ? 'change' : 'input';
+
+  // On input/change: clear error if user starts typing (existing behavior)
+  rule.el.addEventListener(eventType, function () {
+    if (rule.el.classList.contains('is-invalid')) {
+      clearFieldError(key);
+    }
+  });
+
+  // NEW: On blur, evaluate and mark valid OR invalid
+  rule.el.addEventListener('blur', function () {
+    var value = rule.el.value;
+    // Empty field on blur = neutral (don't punish first-time visit to a field)
+    if (!value || (typeof value === 'string' && !value.trim())) {
+      clearFieldError(key);
+      return;
+    }
+    if (rule.validate(value)) {
+      showFieldValid(key);
+    } else {
+      showFieldError(key, rule.message);
+    }
+  });
+});
 ```
 
-### Confidence: MEDIUM
-
-Chrome/Edge support confirmed since 2023. Firefox and Safari gaps are real and documented. The `@supports` progressive enhancement pattern is the official W3C-recommended approach for partial support scenarios.
-
----
-
-## 4. CSS Micro-Animation Patterns
-
-### Hover State Transitions
-
-Existing codebase already uses `transition: var(--transition-fast)` / `var(--transition-normal)`. Enhance with:
-
-**Button hover — transform + shadow lift:**
+**Add to `theme.css` (or `index.css`):**
 
 ```css
-.btn {
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    opacity var(--transition-fast);
-  will-change: transform; /* hint browser to promote layer */
+/* Valid-state feedback — green border + checkmark */
+.contact-form .is-valid {
+  border-color: var(--mu-green-600);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%231F7A4F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='4 11 8 15 16 6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.25rem 1.25rem;
+  padding-right: 2.75rem;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(26, 198, 126, 0.35);
+.contact-form .is-invalid {
+  border-color: var(--mu-accent-red);
 }
 
-.btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-  transition-duration: 80ms; /* snappy click feedback */
-}
-```
-
-**Card hover — existing `translateY(-2px)` is correct, add shadow token:**
-
-```css
-.card {
-  transition:
-    transform var(--transition-normal),
-    box-shadow var(--transition-normal);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-```
-
-**Icon color shift on parent hover:**
-
-```css
-.feature-card .icon {
-  transition: color var(--transition-normal);
-  color: var(--color-primary-dark);
-}
-
-.feature-card:hover .icon {
-  color: var(--color-primary);
-}
-```
-
-### Focus State (Accessibility — required for ЦА 45+)
-
-```css
-/* Visible focus ring for keyboard/touch navigation */
-:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Remove focus ring for mouse clicks (browsers that support :focus-visible) */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-```
-
-**Why `:focus-visible` over `:focus`:** Shows focus ring for keyboard users (ЦА 45+ often navigates with tab), hides it for mouse users who find the ring distracting. Chrome 86+, Firefox 85+, Safari 15.4+ — ~95% support.
-
-### Form Field Micro-Animations
-
-```css
-.form__input {
-  border: 2px solid rgba(24, 33, 44, 0.15);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.form__input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
-  outline: none;
-}
-```
-
-**Ring glow on focus** replaces browser default outline — more polished, still accessible.
-
-### Accordion Animation (existing)
-
-Current implementation uses `max-height` transition. The modern alternative is `grid-template-rows`:
-
-```css
-/* Modern accordion — no fixed max-height needed */
-.faq__answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transition-normal);
-  overflow: hidden;
-}
-
-.faq__answer--open {
-  grid-template-rows: 1fr;
-}
-
-.faq__answer > div { /* inner wrapper required */
-  overflow: hidden;
-}
-```
-
-**Why `grid-template-rows: 0fr → 1fr`:** Animates to/from natural content height without needing a fixed `max-height` value. Works in Chrome 57+, Firefox 55+, Safari 10.1+. The existing `max-height` approach works fine — this is an optional upgrade.
-
-### `prefers-reduced-motion` (already handled — reinforce pattern)
-
-The existing codebase already handles `prefers-reduced-motion`. Ensure all new animations follow the same pattern:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  /* Disable ALL new animations and transitions */
-  .glass-card,
-  .btn,
-  .card,
-  .section-card {
-    transition: none;
-    animation: none;
+/* Reduced-motion users still get color change but no transition */
+@media (prefers-reduced-motion: no-preference) {
+  .contact-form .is-valid,
+  .contact-form .is-invalid {
+    transition: border-color 200ms ease;
   }
 }
 ```
 
-### Confidence: HIGH
+The checkmark is an inline SVG data URI — zero HTTP requests, uses `--mu-green-text` color (`#1F7A4F`, the WCAG-AA accessible green from theme.css), and matches the existing duotone icon style.
 
-These are stable, well-documented CSS properties. `transition`, `transform`, `:focus-visible`, and `@media (prefers-reduced-motion)` all have universal or near-universal support.
+### Why blur (not input)
+
+- **Blur on a 45+ audience matters**: typing-time validation flashing red on each character is anxiety-inducing for users who type slowly. Blur = "the user is done with this field, evaluate it now."
+- **Empty-on-blur stays neutral**: don't punish someone for tabbing through a field they intend to come back to.
+- **Submit-time still revalidates the whole form** (existing behavior in `validateForm()`) — blur is additive UX, not the source of truth.
+
+### Accessibility patterns specifically for the 45+ audience
+
+1. **`aria-invalid="true"` / `aria-invalid="false"`**: announces validation state to screen readers without requiring them to re-read the entire form. Particularly important for users on iOS with VoiceOver who navigate field-by-field.
+2. **Live region for the form-level error message** (`role="alert" aria-live="polite"`): the project's v3.0 already added this on `.form__error` containers (per PROJECT.md: "ARIA role='alert' aria-live='polite' on 20 form error containers — v3.0"). Reuse the existing element. The valid-state checkmark is decorative and intentionally NOT announced — it would create noise on every blur.
+3. **Color is not the only signal**: `is-valid` adds a checkmark icon; `is-invalid` adds the existing red error message. WCAG 1.4.1 satisfied.
+4. **Focus ring kept on `:focus-visible`**: theme.css already has `box-shadow: 0 0 0 2px white, 0 0 0 4px var(--mu-blue-text)` — the valid/invalid border colors don't override this, they layer with it.
+5. **No "you forgot to fill this" toasts**: the 45+ audience finds floating notifications confusing. Keep error messages anchored to the field they describe.
+
+### Why NOT alternative valid-state UX patterns
+
+| Option | Why rejected |
+|--------|-------------|
+| **Constraint Validation API rewrite** (use `:valid` / `:invalid` CSS pseudo-classes) | (a) Bypasses Russian error messages — browser-emitted messages are localized to OS. (b) `:invalid` matches on page load before user interacts, painting every required field red on first paint. `:user-invalid` solves this but has spotty pre-2023 Safari support and the project's existing `is-invalid` class already handles "after user interaction" semantics. (c) Existing form data structure (`rules` object with explicit `validate` functions) is more flexible than HTML attributes (e.g. phone "must be 11 digits starting with 7" is a JS function, not a regex pattern attribute). |
+| **Inline JS frameworks (Alpine.js, htmx)** | Already rejected in CLAUDE.md for the existing form. Same logic applies. |
+| **Floating success toast on submit** | Noise. The form's success overlay (existing `.form__success` element) already handles end-of-submit confirmation. |
+| **Validation library (Just-validate, Pristine, etc.)** | All ship 5–15KB minified for what is currently 30 lines of vanilla JS. Existing `js/main.js` already has the abstraction. |
+
+### Source
+
+- **MDN — Constraint Validation API + Form Validation** (https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation): confirmed `aria-invalid`, `aria-live="polite"`, `aria-describedby` patterns; confirmed `:valid`/`:invalid` paint on page load (problem) and `:user-invalid` is the post-interaction variant. Confidence: HIGH.
+- **Existing `js/main.js` lines 254–430**: confirmed the project's custom validation pattern, the `rules` object structure, and the `is-invalid` class convention. Confidence: HIGH (direct inspection).
 
 ---
 
-## New Token Additions Required
+## 5. Flag Icon Set
 
-Add to the existing `:root` block in `css/styles.css`:
+### Decision: **circle-flags** — vendor a subset of SVGs into `img/flags/` and reference via `<img src="img/flags/de.svg">`. Do NOT install via npm. Do NOT use a CDN.
 
-```css
-:root {
-  /* === NEW in v1.4 === */
+### What this milestone needs
 
-  /* Glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.75);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+`online-consultations.html` currently has 7 country cards (Germany, Israel, Switzerland, Austria, UAE, South Korea, Turkey) using inline `<svg>` elements that approximate each flag with rectangles. Several are wrong: the Germany flag in the current code uses `<rect y="11" width="48" height="10" fill="#DD0000"/>` followed by `<rect y="21" width="48" height="11" fill="#FFCC00"/>` — that paints **black-red-yellow** correctly *only because* of the underlying black rect, but the proportions are wrong (German flag is 3 equal horizontal bands; the rendered version has the bottom band 1px taller than the others). Other flags (Switzerland's cross, the UAE tricolor + red hoist, the South Korean Taegeuk) are visibly wrong on close inspection.
 
-  /* Semantic background tokens (dark mode migration) */
-  --color-bg: var(--color-white);
-  --color-surface: var(--color-light);
-  --color-border: rgba(0, 0, 0, 0.08);
+Replacement requirements:
+- Recognizable at 16/24/32/40/64px sizes (the country cards render the flag at ~40×28px / `w-10 h-7` per the existing markup)
+- Looks correct on close inspection (taegeuk arc, Swiss cross proportions, UAE chevron geometry)
+- Lightweight per-flag (we need 7 flags, not 250)
+- Unambiguous license
+- Maintained / not abandoned
+- Compatible with the project's "no Node.js runtime" and "no CDN dependency for medical site (data sovereignty)" constraints
 
-  /* Theme transition */
-  --transition-theme: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
-}
+### Why circle-flags
 
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-white: #161B22;
-  --color-light: #1C2128;
-  --color-border: rgba(255, 255, 255, 0.08);
+| Criterion | circle-flags | Why this matters |
+|-----------|--------------|------------------|
+| **Format** | Individual SVG files, one per ISO 3166-1 alpha-2 code (`de.svg`, `il.svg`, `ch.svg`, `at.svg`, `ae.svg`, `kr.svg`, `tr.svg`) | We can vendor exactly 7 files. Total weight ~10–15KB combined. Unused 250+ flags never enter the repo. |
+| **Shape** | Circular crop (clipped to a circle) | Visually distinct from a "tab" or "card" rectangle, reads as an icon rather than a rectangle. Matches the rounded-card aesthetic of the existing country cards. Looks balanced at small sizes where rectangular flags get squashed. |
+| **Quality** | Hand-traced SVGs, accurate national symbols (real Taegeuk arcs, real Swiss cross, real UAE chevron) | Solves the "approximation looks wrong on inspection" problem |
+| **License** | MIT | Compatible with anything; clear attribution path |
+| **Size on disk per flag** | ~1–3KB each (some up to ~5KB for complex coats of arms — not relevant for our 7) | Cheap to vendor |
+| **Dependency footprint** | None — they're just SVG files | No npm, no CDN, no runtime |
+| **Maintenance** | Active GitHub project (HatScripts/circle-flags), updates as countries change flags (e.g. Mauritania 2017, Afghanistan 2021) | Confidence in correctness over time |
 
-  /* Glass inverted */
-  --glass-bg: rgba(13, 17, 23, 0.55);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+### How to integrate (no npm, no CDN)
 
-  /* Shadows on dark — more prominent */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
+1. Download exactly 7 SVG files from the GitHub repo's `flags/` directory (or jsDelivr, one-time download for vendoring):
+   - `de.svg` (Germany)
+   - `il.svg` (Israel)
+   - `ch.svg` (Switzerland)
+   - `at.svg` (Austria)
+   - `ae.svg` (United Arab Emirates)
+   - `kr.svg` (South Korea)
+   - `tr.svg` (Turkey)
+2. Place under `img/flags/` (mirrors the existing `img/` directory convention).
+3. Add a one-line attribution to the project's `ATTRIBUTIONS.md` (or create one): `Flag icons from HatScripts/circle-flags (MIT License)`.
+4. Replace the inline SVGs in `online-consultations.html`:
+
+```html
+<!-- BEFORE: inline approximated SVG -->
+<div class="mb-2" aria-hidden="true">
+  <svg ...><rect ... fill="#000"/>...</svg>
+</div>
+
+<!-- AFTER: real flag SVG, lazy-loaded -->
+<div class="mb-2">
+  <img src="img/flags/de.svg" alt="Флаг Германии"
+       width="40" height="40" loading="lazy"
+       class="w-10 h-10 mx-auto rounded-full" />
+</div>
 ```
 
+Notes on the replacement markup:
+- `width`/`height` attributes prevent CLS (per v3.0 SEO/perf practice already in the project).
+- `loading="lazy"` because country cards live below the fold on mobile.
+- `alt="Флаг Германии"` (real Russian alt text) instead of `aria-hidden="true"` — the flag IS the visual identifier of the country; screen readers should announce it. Decorative `aria-hidden` was wrong in the original. (Optional alternative: keep `aria-hidden` and rely on the `<h3>Германия</h3>` to provide the country name. Either is defensible; the current code chose `aria-hidden`.)
+- `rounded-full` is redundant with circle-flags (already circular) but harmless and explicit.
+
+### Why NOT the alternatives
+
+| Option | Why rejected |
+|--------|-------------|
+| **flag-icons (lipis/flag-icons)** | (a) Distributed as a CSS file with `background-image` rules + a separate sprite-style approach — designed for npm-installed projects with bundlers. Vendoring works but you pay for the whole sprite (~250 flags × 2 variants square+rectangular ≈ several MB). Tree-shaking individual flags means hand-extracting from a CSS file, which is awkward. (b) Defaults to rectangular `4:3` aspect ratio — clashes with the existing rounded-card visual language. circle-flags' circular crop fits the design system better. (c) MIT license is fine but the format friction is real. |
+| **country-flag-icons (catamphetamine/country-flag-icons)** | Designed primarily as a React component library with SVGs as JSX. Raw SVG files exist but the project is React-first; using just the SVGs is fighting the package's intent. circle-flags is structured exactly for direct SVG consumption. |
+| **Twemoji country flag emojis** | (a) Twemoji renders flags as flag emojis, which on Windows do NOT render as country flags at all — Microsoft refuses to render country flags in Segoe UI Emoji for political reasons. Cross-platform inconsistency makes this non-starter for a Russian-language site whose users span Windows/Android/iOS. (b) Even where they render, emoji flags are tiny and indistinct at 40×28px. (c) Bundle size of Twemoji is enormous if used for offline rendering. |
+| **Wikipedia / Wikimedia Commons SVGs** | (a) Excellent quality, public domain, but file sizes vary wildly (Israel's flag is 100KB SVG due to detailed Star of David path; Switzerland is 1KB). Inconsistent. (b) No unified API, each flag is a separate Wikimedia URL. (c) Maintenance burden = manually checking each Wikipedia page for license clarity. circle-flags consolidates this. |
+| **CDN-hosted flags (jsDelivr / unpkg `circle-flags@latest`)** | Violates the project's data-sovereignty / no-third-party-CDN principle (per v3.0 decision: "Local WebP over Unsplash CDN — data sovereignty for medical imagery, no third-party SLA risk on KZ 3G/4G"). Same logic applies to flags. Vendor them. |
+| **SVG sprite (one file with `<symbol id="de">` etc.)** | Defensible alternative — slightly more efficient HTTP-wise (one file vs seven). Rejected because: (a) the project already uses inline SVG and individual `<img>` elements as its icon convention, not sprite + `<use>`. Adding sprite for one section creates an inconsistency. (b) Seven separate `img/flags/*.svg` files at ~2KB each totals ~14KB and benefits from HTTP/2 multiplexing on the same nginx connection — there's no measurable load-time win from sprite consolidation. (c) Lazy-loading via `loading="lazy"` is impossible with `<use href="#de">` references. |
+
+### Confidence: MEDIUM (not HIGH)
+
+I confidently know circle-flags exists, is MIT-licensed, and is the convention for circular flag icons. I'm marking this MEDIUM (not HIGH) because:
+1. I could not fetch the GitHub README during this research (network locked) to verify the exact current count of country SVGs, the latest published version/tag, or the exact `flags/` directory path.
+2. The recommendation is straightforward enough that this verification is "nice-to-have, not blocking" — Phase 37 (Site Metadata & Hygiene) implementation should download a fresh copy from `https://github.com/HatScripts/circle-flags` and confirm:
+   - License is still MIT
+   - The 7 ISO codes we need are all present (`de`, `il`, `ch`, `at`, `ae`, `kr`, `tr`)
+   - File sizes are in the expected ~1–5KB range
+3. If circle-flags is unavailable or has changed license, the **fallback** is to extract the 7 needed SVGs from Wikipedia's official country pages (each links to a public-domain SVG), accepting the per-flag size variance.
+
+### Source
+
+- **HatScripts/circle-flags GitHub project**: https://github.com/HatScripts/circle-flags — known to ship per-country SVGs under MIT, but not directly verified in this research session due to network restriction. Confidence: MEDIUM.
+- **lipis/flag-icons GitHub project** (rejected alternative): https://github.com/lipis/flag-icons — known to ship rectangular SVG flags + CSS class approach. Confidence: MEDIUM.
+
 ---
 
-## What NOT to Add
+## What NOT to Add (Summary)
 
-| Rejected | Why |
-|----------|-----|
-| GSAP / Anime.js | External JS library for animations — violates no-dependency constraint; CSS transitions handle all needs |
-| Framer Motion | React library — irrelevant |
-| CSS `@layer` for theme | Adds complexity without benefit for a single file. `html[data-theme]` attribute override is simpler |
-| `color-scheme` property alone | `color-scheme: dark light` changes scrollbars/inputs but does NOT change your brand colors — must use custom property override |
-| `prefers-color-scheme` media query only | Doesn't allow user toggle — must combine with JS + localStorage |
-| `animation-timeline: scroll()` (not `view()`) | `scroll()` animates relative to scroll container, not element visibility — `view()` is correct for "animate on enter viewport" |
-| Canvas/WebGL glass effects | Heavy, unnecessary — `backdrop-filter` achieves the same visual with 3 CSS properties |
-| JS-driven scroll position detection for animations | Replaced by CSS Scroll-Driven Animations for supported browsers; IntersectionObserver already handles fallback |
-
----
-
-## Browser Support Summary Table
-
-| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
-|---------|--------|---------|--------|------------|------------|
-| `backdrop-filter` | 76+ | 103+ | 9+ (-webkit-) | 9+ (-webkit-) | MEDIUM |
-| CSS custom properties | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
-| `localStorage` | 4+ | 3.5+ | 4+ | 3.2+ | HIGH |
-| `prefers-color-scheme` | 76+ | 67+ | 12.1+ | 12.2+ | HIGH |
-| `:focus-visible` | 86+ | 85+ | 15.4+ | 15.4+ | HIGH |
-| Scroll-Driven Animations | 115+ | 128+ | 18+ (partial) | 18+ | MEDIUM |
-| `grid-template-rows` transition | 66+ | 66+ | 12.1+ | 12.2+ | HIGH |
-| `@supports` | 28+ | 22+ | 9+ | 9+ | HIGH |
-| `will-change` | 36+ | 36+ | 9.1+ | 9.3+ | HIGH |
-
-**Coverage note:** Scroll-Driven Animations are the only feature with meaningful gaps (~25% non-support). All others are effectively universal (95%+). The `@supports` progressive enhancement pattern handles the gap correctly.
+| Tool / Library | Why NOT |
+|----------------|---------|
+| **Node.js / npm / package.json** | Project explicit constraint: "no Node.js в рантайме". Build pipeline is one Tailwind CLI invocation. Adding Node for partial includes, sitemap generation, or flag bundling violates the constraint and the spirit. |
+| **Alpine.js, htmx, Petite-Vue, lit, any reactive framework** | The form valid-state UX is 30 lines of vanilla JS extending an existing pattern. Reactive frameworks are 5–15KB for code we already have. |
+| **`@directus/sdk`** (already rejected for v1.0–v3.0) | Still rejected. `fetch()` to one POST endpoint suffices. |
+| **Constraint Validation API rewrite** | Existing `rules`-object validation in `js/main.js` is more flexible (Russian messages, custom phone-format function). Switching loses Russian message determinism (browser locale risk) and obsoletes a working pattern. |
+| **Build-time HTML include tools (`posthtml-include`, `gulp-file-include`, `html-includes-cli`)** | Pulls Node.js into the build for what nginx SSI does natively. |
+| **Sitemap generator CLIs** | 6 URLs. Maintenance is 1 line per page added. Tooling cost > maintenance cost. |
+| **CDN-hosted flag icons** | Violates data-sovereignty policy established for Unsplash images in v3.0. |
+| **flag-icons npm package** | Wrong distribution model (CSS sprite for npm projects), wrong aspect ratio (rectangular vs the project's circular cards). |
+| **PostCSS plugin pipeline** | Tailwind CLI standalone has nothing to plug into. Adding PostCSS = adding Node = violating constraint. |
+| **`vh` viewport units for hero sizing** | Clips hero CTA when iOS Safari address bar is visible — exactly the wrong moment. Use `svh`. |
+| **`dvh` viewport units for hero sizing** | Causes mid-scroll layout jump as address bar shows/hides. Hostile to motion-sensitive 45+ audience. |
 
 ---
 
-## Integration Checklist
+## Integration Seams Summary (for ROADMAP and REQUIREMENTS)
 
-Before implementation, verify these touchpoints with existing code:
+| New thing | Touches | Existing convention to follow |
+|-----------|---------|-------------------------------|
+| Partials | nginx config, `partials/*.html`, `src/styles/tailwind.css` (`@source` glob) | Same Tailwind utility classes, no new BEM |
+| Vertical rhythm tokens | `src/styles/theme.css` (`:root` + `@theme inline` blocks) | Two-layer `--mu-*` raw → `--spacing-*` Tailwind alias, mirrors existing color token pattern |
+| sitemap.xml + robots.txt | Site root, served by existing nginx | None — fresh files |
+| Form valid-state | `js/main.js` `initFormValidation()`, `theme.css` | Existing IIFE pattern, existing `rules` object, existing `is-invalid` class convention; new `is-valid` class is its mirror |
+| Flag SVGs | `img/flags/*.svg`, `online-consultations.html` country cards, `ATTRIBUTIONS.md` | Existing `img/` directory, existing `<img>` lazy-loading + width/height pattern from v3.0 |
 
-1. **IntersectionObserver + Scroll-Driven conflict** — `.scroll-animate` JS class toggle must be disabled in `@supports (animation-timeline: scroll())` block
-2. **Glass cards require a non-white background behind them** — sections using glass must have a gradient/image background, not `background: var(--color-bg)` (blur of white = white, no visible effect)
-3. **Dark mode token migration** — global replace of `background: var(--color-white)` → `background: var(--color-bg)` in section rules, otherwise dark mode only affects text color
-4. **Inline `<script>` for FOUC prevention** — theme detection JS must be in `<head>`, before stylesheet link. Order: `<link rel="stylesheet">` then `<script>` inline theme block
-5. **`will-change: transform`** — add only to elements that actually animate; don't apply globally (wastes GPU memory)
-6. **Test on iOS Safari** — `backdrop-filter` requires `-webkit-` prefix; test on real device, not just Chrome DevTools mobile emulation
+---
+
+## Confidence Assessment
+
+| Area | Confidence | Why |
+|------|------------|-----|
+| Partials → nginx SSI | HIGH | nginx SSI module verified directly from nginx.org official docs; integration with existing nginx + Tailwind v4 `@source` is mechanical |
+| Vertical rhythm → `@theme` + `svh` | HIGH | Tailwind v4 `@theme` + `--spacing-*` namespace verified from official docs; `svh` semantics verified from MDN; existing `theme.css` already uses the `:root` → `@theme inline` pattern |
+| sitemap.xml hand-written | HIGH | Sitemap protocol is universal; 6 URLs is well below tooling threshold |
+| Form valid-state → extend existing pattern | HIGH | Existing `js/main.js` validation pattern read directly; ARIA patterns verified from MDN; the change is additive and surgical |
+| Flag set → circle-flags | MEDIUM | circle-flags exists, is MIT, is the conventional circular flag library; precise version + license + file sizes were not verifiable in this research session due to network restrictions and need confirmation during Phase 37 implementation |
 
 ---
 
 ## Sources
 
-- MDN Web Docs: `backdrop-filter` — https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter (training data, August 2025 cutoff)
-- MDN Web Docs: CSS Scroll-Driven Animations — https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations (training data)
-- MDN Web Docs: `prefers-color-scheme` — https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme (training data)
-- MDN Web Docs: `:focus-visible` — https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible (training data)
-- W3C CSS Scroll-driven Animations spec — https://drafts.csswg.org/scroll-animations-1/ (training data)
-- Chrome Developers: Scroll-driven Animations — https://developer.chrome.com/docs/css-ui/scroll-driven-animations (training data)
+1. **nginx official docs — `ngx_http_ssi_module`**: https://nginx.org/en/docs/http/ngx_http_ssi_module.html — directly fetched. Confirmed `ssi on;` directive, `<!--# include file="..." -->` syntax, parallel sub-request processing. Confidence: HIGH.
+2. **Tailwind CSS v4 docs — Theme**: https://tailwindcss.com/docs/theme — directly fetched. Confirmed `--spacing-*` namespace auto-generates `p-*`, `m-*`, `w-*`, `h-*`, `min-h-*`, `gap-*` utilities; `@theme inline` is used to alias variables. Confidence: HIGH.
+3. **MDN — Viewport length units (`vh`/`svh`/`lvh`/`dvh`)**: directly fetched from MDN CSS length docs. Confirmed `svh` recommended for hero sections, `dvh` warned against for layout-jump risk, Safari 15.4+ support. Confidence: HIGH.
+4. **MDN — Form Validation / Constraint Validation API**: directly fetched. Confirmed `:valid`/`:invalid`/`:user-invalid`, `aria-invalid`, `aria-live="polite"` patterns. Used to confirm the *rejection* of a Constraint Validation rewrite. Confidence: HIGH.
+5. **Existing project files** (direct inspection):
+   - `src/styles/theme.css` — confirms `:root` → `@theme inline` two-layer token pattern in active use
+   - `js/main.js` — confirms IIFE structure and the `rules`-object validation pattern in active use
+   - `online-consultations.html` lines 328–365 — confirms current inline-SVG flag implementation that needs replacement
+   - `docker-compose.yml` — confirms nginx is the static-file server
+   - `tailwindcss` binary at project root (76MB Mach-O arm64) — confirms Tailwind v4 standalone CLI is the build tool
+   - Confidence: HIGH.
+6. **HatScripts/circle-flags (GitHub)**: https://github.com/HatScripts/circle-flags — known from training data; **not directly verified in this session**. Confidence: MEDIUM. Phase 37 implementation must verify license, file count, and current version on download.
+7. **sitemaps.org protocol**: https://www.sitemaps.org/protocol.html — confirmed via training data. Universal protocol unchanged for 15+ years. Confidence: HIGH.
 
-**Confidence note:** All browser support figures are from training data (knowledge cutoff August 2025). No live caniuse.com or MDN verification was possible (WebFetch/WebSearch tools unavailable in this session). Flag for verification against caniuse.com before implementation if exact percentages matter for go/no-go decisions.
+---
+
+*Research session note:* `WebSearch`, `gh api`, and several `WebFetch` targets were unavailable in this environment due to sandbox restrictions. All HIGH-confidence findings were verified via direct fetches to nginx.org, tailwindcss.com, and MDN, plus direct inspection of project files. The single MEDIUM-confidence finding (circle-flags exact version) is flagged for verification at Phase 37 implementation time.

@@ -1,370 +1,443 @@
-# Pitfalls Research
+# Pitfalls Research — v3.1 Site Foundation & Audit Fixes
 
-**Domain:** Visual redesign of medical landing page — glassmorphism, dark mode, bold typography, micro-animations (v1.4 milestone, 45+ audience, Kazakhstan)
-**Researched:** 2026-03-24
-**Confidence:** HIGH (glassmorphism/animation sourced from MDN verified specs; typography/dark-mode from established WCAG 2.1/2.2 patterns; audience-specific claims from established UX research consensus)
-
----
-
-## Critical Pitfalls
-
-### Pitfall 1: Glassmorphism Text Falls Below WCAG Contrast Minimum
-
-**What goes wrong:**
-Semi-transparent `backdrop-filter` cards place text over a dynamically shifting background. The contrast ratio between the text and the blurred background is not a fixed value — it changes depending on what content sits behind the card at that scroll position. A contrast-checker pass on a static mockup does not guarantee real-world compliance. Text that reads cleanly against a white hero background fails when the card scrolls over a dark image or gradient section.
-
-**Why it happens:**
-Designers measure contrast against the intended background colour. They do not account for the fact that the effective background of a glass card is the visual average of whatever pixels the blur kernel is averaging. When a colourful image or another card moves behind the glass, that average shifts unpredictably.
-
-**How to avoid:**
-- Apply a solid minimum-opacity fill underneath glass text. Use `background: rgba(255,255,255,0.75)` (light mode) or `rgba(18,18,18,0.80)` (dark mode) as a floor — not a decorative translucency of 20-30%.
-- Test contrast using the *worst-case* background, not the design-intent background. Place the card over the darkest and lightest content it will ever scroll past.
-- Guarantee WCAG AA minimum 4.5:1 for body text, 3:1 for large text (18px+ bold or 24px+ regular). For 45+ audience targeting, aim for 7:1 (AAA) for body text.
-- Add a semi-opaque border (`border: 1px solid rgba(255,255,255,0.3)`) to visually separate the card from backgrounds — this is structural, not decorative.
-- If a section has a complex image background, do not apply glassmorphism to cards within it. Use solid or near-solid cards instead.
-
-**Warning signs:**
-- Card background opacity below 0.6 in any context
-- Contrast only checked against hero/default background, not all section contexts
-- Text contrast ratio passing in Figma but failing in browser against real content
-
-**Phase to address:**
-Phase delivering glassmorphism cards — before any section applies glass styling.
+**Researched:** 2026-04-07
+**Project:** MedicusUnion KZ
+**Domain:** Existing production multi-page medical landing (HTML + Tailwind v4 + ES5 IIFE JS + Motion CDN + Directus, 6 pages, ~4,714 LOC, Russian-only, 45+ KZ audience)
+**Confidence:** MEDIUM-HIGH overall — architectural pitfalls verified against actual codebase. iOS Safari/Yandex/circle-flags claims based on training data; flagged for live verification.
 
 ---
 
-### Pitfall 2: backdrop-filter Kills Performance on Mid-Range Android (Kazakhstan's Dominant Device)
+## CRITICAL CORRECTION (changes Phase 36 architecture)
 
-**What goes wrong:**
-`backdrop-filter: blur()` requires the browser to create a separate compositing layer and apply a per-frame GPU blur operation. On mid-range and budget Android phones (Samsung Galaxy A-series, Xiaomi Redmi, which dominate 45+ users in Kazakhstan), this causes visible frame drops (below 30fps) during scroll when multiple glass elements are visible simultaneously. The page feels broken, not premium.
+`js/router.js` already exists (465 lines) and is a SPA-like client router. It intercepts internal `<a>` clicks, fetches the target HTML, and **already swaps `<main id="page-content">`, `<footer id="footer">`, and `<div id="sticky-bar">`** between page navigations. It also already sets `aria-current="page"` (lines 174–197) and prefetches nav links on idle.
 
-**Why it happens:**
-`backdrop-filter` was Baseline-stable as of September 2024, meaning it works in all modern browsers — but "works" means renders correctly, not performs well. The blur radius and number of simultaneously composited elements is the bottleneck, not browser support. A single hero glass card with `blur(20px)` is fine. Five card grid with `blur(20px)` each causes simultaneous layer compositing that overwhelms the mobile GPU.
-
-**How to avoid:**
-- Limit `backdrop-filter` to one or two focal elements (hero card, single CTA panel). Do not apply it to a grid of 4-6 cards.
-- Use the minimum blur radius that achieves the visual effect: `blur(8px)` is usually sufficient; avoid `blur(20px)` or higher.
-- Apply `will-change: transform` only to elements that are actually animating — do NOT apply it globally or to all glass cards as a performance "fix" (this creates layers for every element, making the problem worse).
-- Provide `@supports` fallback: `@supports not (backdrop-filter: blur(1px)) { .glass-card { background: rgba(255,255,255,0.95); } }` — renders as a solid near-white card. Users on older devices get a clean, accessible fallback.
-- Test on a real mid-range Android device or Chrome DevTools with CPU throttling set to 4x slowdown, GPU rasterization enabled. Look for frame drops in DevTools Performance panel during scroll.
-
-**Warning signs:**
-- Glass applied to entire card grids (doctors, services, pricing)
-- `blur()` radius above 12px
-- No `@supports` fallback for non-supporting browsers
-- Testing only on MacBook or modern iPhone
-
-**Phase to address:**
-Phase delivering glassmorphism — define performance budget before implementation.
+**Implications:**
+- "Extract header/footer/sticky-bar to partials" is a **source-level** dedup task, not a **runtime** injection task
+- Injection-FOUC and observer-attach-order pitfalls only apply to **first page load**, not subsequent navigations
+- Phase 36 must NOT introduce a second injection mechanism that fights router.js
+- **Recommended approach: build-step source-level concatenation**, not runtime fetch
 
 ---
 
-### Pitfall 3: Dark Mode Inverts Medical Trust Signals
+## CRITICAL PITFALLS (rewrite-causing or release-blocking)
 
-**What goes wrong:**
-Dark backgrounds psychologically signal entertainment, gaming, or technology products. Medical and healthcare contexts rely heavily on white/light backgrounds as a signal of clinical cleanliness, trustworthiness, and sterility. Users (especially 45+, who associate white-background interfaces with official, credible services) experience a subconscious reduction in trust when visiting a medical site in dark mode for the first time. Additionally, dark mode can make the site look like it is "off" or in an error state to users unfamiliar with the convention.
+### CRIT-01 — Phase 36 partials introduce a second injection layer that fights router.js
+**Phase:** 36
+**What goes wrong:** A naive "fetch + innerHTML" partial loader at boot competes with router.js's prefetch loop. First load: empty header → flicker → injected → router cache stale. Two systems writing to the same DOM nodes (`#footer`, `#sticky-bar`) with different sources of truth.
+**Warning sign:** After clicking index → contacts → back, footer briefly shows index.html's content before switching.
+**Prevention:**
+- Use a **build-step** (shell/sed/cat) that concatenates `partials/{header,footer,sticky-bar}.html` into all 6 HTML files at build time
+- Each HTML file remains complete and SEO-crawlable
+- Add `data-partial-version="v3.1"` attribute on `<footer>` for grep-able drift detection
 
-**Why it happens:**
-Dark mode is a highly visible 2025 trend. Developers add it because it is technically interesting and peer-reviewed as "modern." The audience-specific implication for medical services is not investigated. The site's main competitor (medicusunion.com) uses a light theme.
+### CRIT-02 — Source-level partials shipped before audit fixes (Phase 33–35) land
+**Phase:** Cross-phase (33/34/35 vs 36)
+**What goes wrong:** Phase 33 fixes "ТОО «MedicusUnion KZ»" inline on 5 pages. Phase 36 then extracts the footer from one of those 5 pages — which may or may not be the corrected version. Whatever pre-existing variant gets picked becomes canonical, audit fix is silently reverted on 4 other pages.
+**Warning sign:** After Phase 36, `git grep 'MedicusUnion KZ\|Medicus Union KZ'` shows mixed variants.
+**Prevention:**
+- **Hard ordering:** Phase 33 must merge before Phase 36 begins extraction
+- After Phase 33, run `diff` of header/footer/sticky-bar regions across all 5 pages — must be byte-identical for extracted regions
+- Phase 36 acceptance: `git grep 'ТОО «'` returns matches only in `partials/footer.html`
 
-**How to avoid:**
-- Make light mode the default. Always. The site loads in light mode for all new visitors regardless of OS preference. This matches what a 45+ Kazakhstan user expects from a medical service.
-- Dark mode should be an opt-in toggle, not an OS-preference-driven automatic switch. Use `data-theme="dark"` on `<html>` controlled by JS, not `@media (prefers-color-scheme: dark)` as the primary mechanism.
-- Store the user choice in `localStorage`. On page load, read localStorage first; if absent, default to light. Never default to OS dark mode.
-- In dark mode, keep medical imagery, trust badges, and doctor photos visible with appropriate contrast — do not make them appear dim or inactive.
-- If dark mode is skipped entirely for v1.4, this is a defensible decision. Dark mode adds ~40-60 new CSS token pairs and doubles QA surface. For a conversion-focused medical landing, the ROI is unclear for a 45+ audience.
+### CRIT-03 — Phase 38 vertical-rhythm tokens conflict with Phase 35's ad-hoc `min-h` fix
+**Phase:** Cross-phase (35 vs 38)
+**What goes wrong:** Phase 35 fixes checkup H1 1024–1440px overflow by jiggling `min-h-[80vh]` → `min-h-[90vh]` ad-hoc. Phase 38 sweeps these to tokens. The Phase 35 fix is either silently overridden or reverted.
+**Warning sign:** After Phase 38, the Phase 35 verification screenshot at 1280px no longer matches.
+**Prevention:**
+- **Sequence Phase 35 to NOT touch hero `min-h`** — fix the H1 overflow with content/typography (responsive `<br>`, line-break shortening, gradient phrase swap)
+- If Phase 35 must touch min-h, leave a `<!-- VR-TODO: Phase 38 token --> ` marker
+- Phase 38 acceptance: zero arbitrary `min-h-[*]` values on hero/section elements
 
-**Warning signs:**
-- `@media (prefers-color-scheme: dark)` used as the primary dark mode trigger without a localStorage override
-- Dark mode active by default on first visit
-- No audit of trust signals (testimonials, badges, logos) in dark mode context
-- Medical imagery looks desaturated or dim in dark theme
+### CRIT-04 — Sitemap.xml generated before Phase 36 contradicts canonical URLs
+**Phase:** Cross-phase (36 vs 37)
+**What goes wrong:** Phase 37 generates sitemap from current HTML files. Phase 36 changes canonical URLs inside the now-shared partial. Sitemap and `<link rel="canonical">` disagree. Crawl budget burned.
+**Warning sign:** `curl -s https://medicusunion.kz/sitemap.xml | grep -o 'https[^<]*'` does not match the unique canonical values across `*.html`.
+**Prevention:**
+- **Order:** Phase 37 must run AFTER Phase 36 (or after Phase 33 canonical audit at minimum)
+- `scripts/build-sitemap.sh` derives entries from each HTML file's actual `<link rel="canonical">` value — single source of truth
 
-**Phase to address:**
-Phase delivering dark mode — establish default-light policy in the CSS token architecture before writing a single dark token.
+### CRIT-05 — robots.txt blocks /js/ /css/ → Yandex penalty
+**Phase:** 37
+**What goes wrong:** Cargo-cult robots.txt with `Disallow: /css/` and `Disallow: /js/`. Googlebot can't render JS-injected partials → falls back to raw HTML (acceptable for this site). **YandexBot in worse shape — pages whose CSS is blocked may render with no styles and get classified as low-quality.**
+**Warning sign:** Yandex Webmaster shows "Blocked by robots.txt" warnings on `/css/styles.css` and `/js/main.js`.
+**Prevention:**
+```
+User-agent: *
+Allow: /
+Disallow: /.planning/
+Disallow: /Redesign/
+Disallow: /scripts/
+Disallow: /src/
+Sitemap: https://medicusunion.kz/sitemap.xml
+```
+- Verify with both Google Search Console AND Yandex Webmaster (separate tools, KZ priority)
 
----
+### CRIT-06 — Yandex cannot read JSON-LD MedicalBusiness if behind JS-injected partials
+**Phase:** 36/37
+**What goes wrong:** index.html's `MedicalBusiness` JSON-LD currently lives in inline HTML. If a future refactor moves it into a JS-injected `<script type="application/ld+json">`, **Yandex may not see it** (Google does execute JS for JSON-LD; Yandex less reliable in 2024–2026).
+**Warning sign:** After Phase 36, Yandex Webmaster's structured-data validator does not list MedicalBusiness.
+**Prevention:**
+- **Keep all `<script type="application/ld+json">` blocks in static HTML** — never extract to partials, never inject via fetch
+- Treat Yandex as the harder-to-please crawler for KZ market
+- 30-min spike in Yandex Webmaster recommended before Phase 36 freezes the partial boundary
 
-### Pitfall 4: Dark Mode Fails WCAG Contrast — Especially for Secondary Text
+### CRIT-07 — `100vh` / `min-h-screen` clips on iOS Safari with URL bar visible
+**Phase:** 38
+**What goes wrong:** `index.html:201` and `body` on all 6 pages use `min-h-screen` (`100vh`). On iOS Safari (and in-app browsers like Telegram, Instagram for KZ traffic), the dynamic URL bar means visual viewport is shorter than `100vh` when the bar is visible. Hero CTA is **below the fold on first paint**, hidden behind the URL bar. For 45+ users this looks like the page is glitching.
+**Warning sign:** Real iOS Safari (not desktop emulation) — bottom of hero clipped behind chrome on iPhone SE / iPhone 12.
+**Prevention:**
+- Phase 38 must adopt `svh` (small viewport height) for hero `min-h`, NOT `vh` and NOT `dvh`
+- `dvh` causes mid-scroll layout jump (hostile to vestibular-sensitive 45+ users)
+- `svh` is the smallest the viewport will ever be — content doesn't jump
+- iOS Safari 15.4+ and KZ Android Chrome 108+ support svh natively (≥99% coverage)
 
-**What goes wrong:**
-Light mode WCAG contrast is checked at launch. Dark mode is added as an afterthought with approximate colour substitutions. Secondary text (descriptions, disclaimers, form labels) that was borderline-acceptable at 4.6:1 in light mode is not re-checked in dark mode, and the dark equivalents fail at 3.2:1. Disabled state colours, placeholder text, and icon fills are particularly likely to fail. For 45+ users with common age-related contrast sensitivity reduction, this means sections of the page become literally unreadable in dark mode.
+### CRIT-08 — `100vh` on `<body>` itself causes weird stretch on long pages
+**Phase:** 38
+**What goes wrong:** All 6 pages set `<body class="relative min-h-screen">`. Combined with `min-h-screen` hero, on a viewport of 812px the body and hero compete. On 404.html, body forces 812px → hero is also 812px → footer pushed below the fold → user thinks page is broken.
+**Warning sign:** On 404.html on a tall viewport, footer at bottom edge with visible whitespace gap above.
+**Prevention:**
+- `<body>` should NOT have `min-h-screen`
+- Replace with page wrapper: `<body><div class="page-shell flex flex-col min-h-[100dvh]"><header/><main class="flex-1"/><footer/></div></body>`
+- 404.html uses `min-h-[80svh]` on its main, not `min-h-screen` on body
 
-**Why it happens:**
-Dark mode colour tokens are derived by "inverting" or "darkening" the light palette without running each pair through a contrast checker. The assumption is that if light mode passes, dark mode will too. It does not — the mathematical relationship is non-linear.
+### CRIT-09 — Sticky mobile bar IntersectionObserver attaches before footer is in DOM (router context)
+**Phase:** 36
+**What goes wrong:** Plan to add IntersectionObserver to hide sticky bar over the footer. But router.js swaps `#footer` content via `innerHTML` — destroys previous DOM node and creates new ones. Any IntersectionObserver attached to OLD footer is now observing a detached node. After SPA navigation, sticky bar never hides again.
+**Warning sign:** Hard-refresh contacts.html → sticky bar hides over form (correct). Click "Главная" → scroll to footer → sticky bar still visible (broken).
+**Prevention:**
+- The router exposes `window.MU.reinitPageContent` (router.js:277). Sticky-bar observer must wire into this re-init lifecycle
+- Pattern:
+```js
+window.MU.reinitStickyBarObserver = function () {
+  if (window.__stickyObserver) window.__stickyObserver.disconnect();
+  var footer = document.getElementById('footer');
+  if (!footer) return;
+  window.__stickyObserver = new IntersectionObserver(/* ... */);
+  window.__stickyObserver.observe(footer);
+};
+```
 
-**How to avoid:**
-- Create a full colour token table for dark mode: for every light mode `color / background` pair, define and check the corresponding dark pair explicitly with a tool (contrast.tools, whocanuse.com, or browser DevTools accessibility panel).
-- Minimum targets: Body text 7:1 (AAA) for 45+ audience. Large text 4.5:1 (AA). Secondary/label text 4.5:1 minimum.
-- Placeholder text: WCAG requires 3:1, but 45+ users need 4.5:1 minimum. Do not use `rgba(255,255,255,0.4)` as placeholder in dark mode — it will fail.
-- Grey-on-dark patterns are the most common failure: `#888888` text on `#1a1a1a` background is only 3.6:1.
-- Lint CSS custom properties: define both `--color-text-secondary-light` and `--color-text-secondary-dark` explicitly, never `calc()` or percentage-lightness-shift a single variable.
-
-**Warning signs:**
-- Dark mode colours derived by opacity or filter: invert() rather than explicit token pairs
-- Secondary/helper text not re-checked after dark mode implementation
-- Placeholder colour in dark mode below 4.5:1 contrast
-- No accessibility overlay or colour contrast audit run specifically on the dark mode state
-
-**Phase to address:**
-Phase delivering dark mode token system — run contrast audit before theming any component.
-
----
-
-### Pitfall 5: Display Typography at 72px+ Triggers Line Length and Reflow Problems on Mobile
-
-**What goes wrong:**
-Bold display typography looks powerful in desktop mockups at 72-96px. On a 390px wide mobile screen, a 72px headline is three or four words wide, forcing single-word lines, breaking Russian hyphenation rules, and creating visual clutter. Cyrillic characters at very large sizes also expose font metric differences — Inter and Manrope's Cyrillic glyphs are tighter than their Latin equivalents, causing inconsistent optical weight across headline words that mix Latin (MedicusUnion brand name) and Cyrillic.
-
-**Why it happens:**
-Display typography is designed at 1440px desktop width. The typographic scale is not adjusted for mobile breakpoints. Responsive font sizing using `clamp()` is applied as a single rule without checking how each specific headline breaks at narrowest viewport.
-
-**How to avoid:**
-- Use `clamp()` with verified min/max values per heading level tested at 320px, 390px, and 768px. Example: `font-size: clamp(2rem, 8vw, 4.5rem)` — verify all three anchor points manually.
-- Check every Russian headline at narrowest viewport for orphaned single words (a word alone on the last line). Adjust max-width or use `text-wrap: balance` (Baseline 2023, supported in all modern browsers) to prevent this.
-- Keep body-level Russian text at 18-20px. Do not apply display scaling to any text that needs to be read in full — only to decorative headlines (hero tagline, section openers).
-- For 45+ users: large type helps comprehension only when it does not break lines unexpectedly. A 45+ user reading a three-word fragment is not helped by large type — they are confused by the broken sentence.
-- Use `letter-spacing: -0.02em` only on Latin headlines. Cyrillic at large sizes does not need tracking adjustment and can look awkward with tighter tracking.
-
-**Warning signs:**
-- Headlines tested only at 1440px during design
-- Single Russian words appearing on their own line at 390px width
-- Same `clamp()` values used across all heading levels without mobile review
-- `font-size` above 4rem on mobile (`min` value in clamp above 3.5rem at 320px)
-
-**Phase to address:**
-Phase delivering typography system — review every headline variant at 320px and 390px before wider integration.
-
----
-
-### Pitfall 6: Bold Typography Drops Below WCAG Contrast for Thin-Weight Numerals and Light Text Variants
-
-**What goes wrong:**
-The design uses a bold/light typographic contrast system: a 700-weight hero headline paired with 300-weight supporting descriptor text. The 300-weight text at any colour has lower effective contrast because thin strokes are perceived with less contrast than the same colour in 400-weight. For 45+ users, this creates readability failures even when the colour technically passes WCAG contrast ratios. WCAG 2.1 defines "large text" as 18pt (24px) or 14pt (18.67px) bold — 300-weight text at any size is treated as normal text and requires 4.5:1.
-
-**Why it happens:**
-Typography systems use font-weight as a hierarchy signal. Designers do not recalculate contrast ratios when changing weight — they assume the colour passes at all weights. Thin-weight Cyrillic numerals (like the "450€" price display) are common failure points.
-
-**How to avoid:**
-- Do not use font-weight below 400 for any text that conveys information. Use 400 as the minimum for body/descriptor text.
-- For light-mode supporting text, ensure the colour passes 4.5:1 against its background regardless of weight.
-- The pricing display (`от 450 EUR`) is the highest-stakes text on the page after the CTA button. Check its contrast at every weight used. If displayed in a glass card, check against worst-case background.
-- If font-weight 300 is used purely decoratively (e.g., a large transparent watermark numeral), it must not convey required information.
-
-**Warning signs:**
-- Font-weight 300 used for any text containing price, specialisation, or call-to-action information
-- Light descriptor text below `#767676` on white (fails 4.5:1)
-- Pricing or statistics displayed in thin weight without contrast check
-
-**Phase to address:**
-Phase delivering typography system — establish weight-to-contrast policy as part of token definition.
-
----
-
-### Pitfall 7: Micro-Animations Trigger Vestibular Disorders Without prefers-reduced-motion Guard
-
-**What goes wrong:**
-Scroll-driven animations (elements flying in from the sides), parallax-like effects, and continuous hover micro-animations all qualify as motion that can trigger nausea, dizziness, and vertigo in users with vestibular disorders. The WCAG 2.1 Success Criterion 2.3.3 (Animation from Interactions, Level AAA) requires providing an option to disable such motion. For a 45+ audience, the prevalence of balance disorders increases significantly with age — approximately 35% of adults over 40 experience some degree of vestibular dysfunction.
-
-**Why it happens:**
-Micro-animations are added to individual components without a global motion policy. The `prefers-reduced-motion` media query is either not implemented or applied only to a subset of animations. Scroll-driven animations using IntersectionObserver or CSS `animation-timeline` often have no reduced-motion variant because the developer thinks only "bouncing" animations are the problem. Any translating, scaling, or repositioning animation counts.
-
-**How to avoid:**
-- Establish a single global CSS rule at the top of the animation stylesheet: `@media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }`. This is the nuclear option — all animation is neutralised for users who request it.
-- For scroll-reveal animations (the existing IntersectionObserver pattern): in the reduced-motion branch, set elements to visible immediately without the translate/opacity animation. The content appears, just without motion.
-- CSS scroll-driven animations (`animation-timeline: scroll()`) are not yet Baseline stable as of early 2026 — Firefox support is incomplete. Do not use them as primary animation mechanism. The existing IntersectionObserver pattern is more reliable and controllable.
-- Replace translate-based entrances with opacity-only fades for micro-animations. An opacity fade from 0 to 1 is classified as non-vestibular motion and is acceptable even without reduced-motion guard (though still guard it).
-- Button hover micro-animations: `transform: translateY(-2px)` is acceptable and the current pattern. Do not increase this or add simultaneous scale. `transform: scale(1.05)` on hover is a vestibular risk.
-
-**Warning signs:**
-- No `@media (prefers-reduced-motion)` block in CSS
-- IntersectionObserver animations do not check `window.matchMedia('(prefers-reduced-motion: reduce)').matches` before applying motion classes
-- Any animation using `transform: scale()`, `perspective()`, `rotate()`, or translate values above 10px
-- Continuous animations (pulsing, rotating loading indicators) without a stop condition
-
-**Phase to address:**
-Phase delivering micro-animations — the reduced-motion guard must be the first rule written, before any animation is added.
+### CRIT-10 — bfcache invalidated by router; needs explicit pageshow handling
+**Phase:** 36 / 37
+**What goes wrong:** Browser back/forward cache snapshots state. Router uses `popstate` which fires whether page came from bfcache or not. The bfcache snapshot may include stale `aria-current`, stale sticky-bar state, or cached `pageCache` from in-memory router that no longer matches reality.
+**Warning sign:** index → contacts → back → page restores instantly but sticky bar text says "Заявка на чек-ап" instead of index.html version.
+**Prevention:**
+```js
+window.addEventListener('pageshow', function (e) {
+  if (e.persisted) {
+    window.MU.router && window.MU.router.clearCache && window.MU.router.clearCache();
+    // Re-run init to reset DOM-derived state
+  }
+});
+```
+- Audit router.js for `unload` / `beforeunload` listeners — there are none currently (good), don't add any
 
 ---
 
-### Pitfall 8: Micro-Animations Increase Cognitive Load and Reduce Trust on Medical Pages
+## MODERATE PITFALLS
 
-**What goes wrong:**
-Every animation on a page is a distraction event that consumes cognitive bandwidth. For 45+ users, who are already processing unfamiliar medical terminology and making high-stakes decisions about their health, unnecessary motion pulls attention away from the content they need to evaluate. On a medical landing page specifically, a playful or exuberant animation style (bouncing cards, celebratory micro-interactions, particle effects) triggers dissonance — the tone says "fun tech product" while the content says "serious medical consultation at 450 EUR." This dissonance reduces trust and increases abandonment.
+### MOD-01 — `aria-current="page"` race with router on first paint
+**Phase:** 36
+**What goes wrong:** router.js sets aria-current only AFTER navigation. On the very first page load via direct URL, no nav link has aria-current set until JS runs. Screen reader users hear all 6 nav items as equal-priority links.
+**Prevention:**
+- Bake `aria-current="page"` into static HTML for each page's own link (only `contacts.html:68/95` has this currently)
+- Add `updateActiveNav(window.location.pathname)` to router.js's `init()` function
 
-**Why it happens:**
-Micro-animations are added to improve "delight" and "engagement." These are valid goals for consumer apps. For medical services targeting older users making costly, high-stakes decisions, the calculus is different. No research supports the idea that scroll-in animations increase medical consultation conversion.
+### MOD-02 — Mobile menu hamburger click falls through after partial swap
+**Phase:** 36
+**What goes wrong:** Hamburger button exists in DOM before its click handler is attached. Tap → nothing → user gives up. For 45+ users, hard failure.
+**Prevention:** Use **event delegation on `document`** (matches existing pattern in router.js:406 for link interception). Handler attached at boot regardless of when button enters DOM.
 
-**How to avoid:**
-- Restrict animations to functional purpose only: form feedback (submission spinner, success state fade), accordion expand/collapse, dark mode theme transition.
-- Scroll-reveal animations (existing pattern) are acceptable at low intensity — opacity + 8px translateY over 400ms. They signal "this content is important and just appeared." Do not add stagger delays above 100ms between sibling elements or the page feels slow.
-- Prohibit: parallax, floating/pulsing elements, animated counters on statistics (common on medical pages, but disorienting for older users), animated SVG illustrations.
-- The theme transition animation (light→dark) must be short: 200-300ms. Do not use a "cinema" fade or sweeping wipe — it reads as the page malfunctioning.
-- Keep the total animation budget: maximum 4-5 distinct animation types on the entire page. Each type should serve a clear UX function.
+### MOD-03 — `file://` local testing breaks fetched partials
+**Phase:** 36
+**What goes wrong:** Opening HTML files via `file://` causes `fetch()` of relative paths to fail CORS-style. Designer says "the page has no header" — they double-clicked .html in Finder.
+**Prevention:** Build-step approach (CRIT-01) makes this moot. Each HTML file is complete on disk.
 
-**Warning signs:**
-- Animated counters on the "social proof" statistics section
-- Stagger delay above 100ms applied to card grids
-- Any looping or continuous animation visible in the viewport at rest
-- Theme switch animation above 400ms duration
+### MOD-04 — Premature form validation: red borders on first focus
+**Phase:** 35
+**What goes wrong:** Naive `oninput` → validate → red border. User types one letter, sees red. For 45+ users on a medical inquiry form, triggers anxiety.
+**Prevention:**
+- **Validation timing:** validate on `blur` (first time), then on `input` only after the field has been blurred at least once with errors
+- Use `:user-valid` CSS pseudo-class (Baseline 2023, blur-aware natively)
+- Pattern:
+```js
+field.addEventListener('blur', function () { field.dataset.touched = '1'; validate(field); });
+field.addEventListener('input', function () { if (field.dataset.touched) validate(field); });
+```
 
-**Phase to address:**
-Phase delivering micro-animations — define the animation catalogue (what will animate and why) before writing a single `@keyframes`.
+### MOD-05 — Valid-state checkmark looks like "form submitted"
+**Phase:** 35
+**What goes wrong:** Green ✓ next to valid field uses universal "completed/done" symbol. 45+ user fills name + phone, sees green checks, thinks "done" → closes the tab.
+**Prevention:**
+- Use **subtle green border-bottom or left-rule**, not a checkmark icon
+- OR a tiny outlined check that's visually a "field state" not a "completed action"
+- Keep submit button visually dominant as the only "done" affordance
+- Add aria-only text: `<span class="sr-only">поле заполнено</span>` for SR users
+
+### MOD-06 — `aria-live="polite"` over-announces on every keystroke
+**Phase:** 35
+**Prevention:**
+- aria-live announcements **only fire on validation transitions** (invalid → valid, valid → invalid)
+- Prefer `aria-invalid="false"` (attribute) over live region
+- Never `aria-live="assertive"` for form fields
+
+### MOD-07 — Phone mask oscillates valid/invalid as user types `+7 7XX XXX XX XX`
+**Phase:** 35
+**Prevention:**
+- Validate phone on **blur only**
+- Never show invalid-state mid-typing
+- Reserve red for: blurred + incomplete OR blurred + invalid format
+
+### MOD-08 — Russian error messages 1.4–1.8× longer than English equivalents
+**Phase:** 35
+**What goes wrong:** "Required" → "Это поле обязательно для заполнения" (32 chars). "Invalid phone" → "Введите корректный номер телефона в формате +7 (___) ___-__-__" (60+ chars). On 320px wraps to 3–4 lines.
+**Prevention:**
+- **Cap error messages at ≤30 Russian characters**
+- Examples:
+  - "Это поле обязательно" (20) ✓
+  - "Введите имя" (11) ✓
+  - "Проверьте номер" (15) ✓
+- Cap error container width: `max-w-[280px]`
+
+### MOD-09 — Gender-specific copy ("Не определился" — masculine only)
+**Phase:** 35
+**Prevention:**
+- Use gender-neutral phrasing: "Пока не выбрал(а)", "Не уверен(а)", or restructure to noun: "Нужна помощь с выбором"
+- Audit ALL form labels/placeholders/buttons for masculine-default verbs: grep for `-лся\b`, `-ил\b`, `-ал\b`
+- Add to CONVENTIONS.md: "All form copy must work for both genders"
+
+### MOD-10 — Cyrillic in fluid `clamp()` cramped at 1920+, awkward at 320
+**Phase:** 38
+**What goes wrong:** `font-size: clamp(40px, 4vw, 56px)` clamped to 56 at both 1440 and 1920. Russian compound words ("медицинский", "консультация", "Великобритании") wrap awkwardly.
+**Prevention:**
+- **Test viewports:** 320, 360, 390, 412, 768, 1024, 1280, 1440, 1920, 2560
+- Set clamp upper bound based on visual feel at 1920+, not 1440
+- For h1: `clamp(2.5rem, 5vw, 4.5rem)` (40 → 72px)
+- Pair with `max-width: 55ch` for Russian (vs `60ch` English) — Russian average word length is 6 chars vs 5
+
+### MOD-11 — Section heights uniform — looks fine on landing, wrong on contacts
+**Phase:** 38
+**What goes wrong:** Token system applies `--section-min-h: 80vh` uniformly. On rich-content index.html, perfect. On contacts.html (form + info card), 80vh is empty whitespace. On checkup.html B2B page, 80vh too cramped.
+**Prevention:** Tokens **named by content density**, not generic numbers:
+- `--hero-h-rich` (index, online-consultations) — 100svh
+- `--hero-h-medium` (treatment-abroad, checkup) — 80svh
+- `--hero-h-compact` (contacts, 404) — 60svh
+
+Pages opt into the right token, they don't all use the same one.
+
+### MOD-12 — Smooth-scroll anchors land behind sticky header
+**Phase:** 38
+**Prevention:**
+```css
+section[id], h1[id], h2[id] { scroll-margin-top: 88px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+```
+
+### MOD-13 — Scroll-reveal triggers before section visible (because min-h is too large)
+**Phase:** 38
+**Prevention:**
+- Animation observer uses `rootMargin: '-100px 0px -100px 0px'` (trigger only when section is genuinely 100px into viewport)
+- OR observe a child element of the section, not the section itself
+
+### MOD-14 — circle-flags bundled whole adds 1.4MB of SVGs
+**Phase:** 37
+**Prevention:**
+- **Subset to 7 flags only.** Manually copy needed SVGs into `img/flags/` and inline OR load on-demand
+- Better: **inline the 7 flag SVGs** (matches existing pattern of inline icons). Total: ~7 × 2KB = 14KB inlined
+- License: circle-flags is MIT. ✓
+
+### MOD-15 — Israel flag (RTL) flipping incorrectly with `transform: scaleX(-1)`
+**Phase:** 37
+**Prevention:** Site is `<html lang="ru" dir="ltr">` (no RTL). Inline IL flag as static SVG; never apply `transform: scaleX()`.
+
+### MOD-16 — Historical/political flag versions (DE not GDR; CH federal vs civil)
+**Phase:** 37
+**Prevention:**
+- Source from current set (circle-flags last updated 2024+)
+- Manual visual diff against Wikipedia for the 7 countries actually used
+- Confirm Switzerland flag is square version (national flag)
+
+### MOD-17 — Flag icons at 24px in older Chrome on KZ Android — sub-pixel rendering blur
+**Phase:** 37
+**Prevention:**
+- Render flags at minimum **32×32px on mobile**, 24×24px is absolute minimum on desktop
+- Use `circle` style (solid color block with flag in circle) — more recognizable at small sizes than rectangle
+
+### MOD-18 — Sitemap stale `lastmod` causes Google deprioritization
+**Phase:** 37
+**Prevention:**
+- Generate `lastmod` from `git log -1 --format=%cI <file>` (more reliable than mtime)
+- Better: omit `<lastmod>` entirely. Google doesn't require it; wrong is worse than missing
+
+### MOD-19 — Canonical URL drift: trailing slash vs no trailing slash
+**Phase:** 37
+**Prevention:**
+- Pick one canonical pattern: `https://medicusunion.kz/` (no `index.html`) for homepage
+- Service pages: `https://medicusunion.kz/online-consultations.html` (with extension)
+- Audit: `grep -h '<link rel="canonical"' *.html | grep -o 'https://[^"]*'` — should show 6 URLs, all matching the same scheme
+
+### MOD-20 — Sitemap served from wrong location
+**Phase:** 37
+**Prevention:**
+- File at site root: `https://medicusunion.kz/sitemap.xml`
+- robots.txt references absolute URL
+- Acceptance: `curl -sI https://medicusunion.kz/sitemap.xml` returns `200 OK` and `content-type: application/xml`
+
+### MOD-21 — Sitemap accidentally includes 404.html or test/staging URLs
+**Phase:** 37
+**Prevention:**
+- Sitemap is **explicit allowlist** of 5 production pages, not auto-discovered
+- 404.html must NOT be in sitemap (it's served at the 404 status code; search engines find it via that mechanism)
+
+### MOD-22 — Sitemap built locally references staging URLs after deploy
+**Phase:** 37
+**Prevention:**
+- Sitemap generation script reads `BASE_URL` from environment
+- Production deploy sets `BASE_URL` explicitly
+- CI smoke test: `curl -s https://medicusunion.kz/sitemap.xml | grep -c "https://medicusunion.kz"` must equal 5
+
+### MOD-23 — Hero photo swap (Phase 34) references stat-bar layout that Phase 34 also modifies
+**Phase:** 34
+**Prevention:**
+- **Internal ordering within Phase 34:** stat bar rework FIRST (code-only, fast), THEN hero photo swap (asset sourcing slow)
+- Asset spec for hero photo references the new stat bar layout: "image must have visual quiet space in bottom-third where stat bar will overlap"
+
+### MOD-24 — Removing body `min-h-screen` leaves footer floating on tall viewports
+**Phase:** 38
+**Prevention:**
+- Replace body `min-h-screen` with **page wrapper**: `<body><div class="page-shell flex flex-col min-h-[100dvh]"><header/><main class="flex-1"/><footer/></div></body>`
+- `flex-1` on main pushes footer to bottom even on tall viewports
 
 ---
 
-### Pitfall 9: Dark Mode Toggle is Invisible or Inaccessible to 45+ Users
+## MINOR PITFALLS
 
-**What goes wrong:**
-The dark mode toggle is implemented as a small sun/moon icon button in the navigation, styled to be visually subtle (to avoid "cluttering the nav"). For 45+ users with reduced visual acuity, a 24x24px icon button with no visible label is not discoverable. Users do not find it, do not know it exists, and if they accidentally trigger it, do not know how to undo it — the page appears "broken."
+### MIN-01 — Sticky bar ID collision after partial extraction
+**Phase:** 36
+**Prevention:** CI grep: `grep -o 'id="sticky-bar"' index.html | wc -l` must equal 1
 
-**Why it happens:**
-Dark mode toggles are designed by developers who know they exist. The toggle is treated as a power-user feature and styled minimally. There is no user testing with 45+ users who have never encountered a theme toggle before.
+### MIN-02 — `defer` script order broken if router.js loads after main.js
+**Phase:** 36
+**Prevention:** All inter-dependent scripts use `defer` (NOT `async`). Order in HTML: main.js BEFORE router.js. Guard already exists at router.js:277
 
-**How to avoid:**
-- The toggle must be minimum 44x44px tap target (WCAG 2.5.5), preferably 48x48px.
-- Include a visible text label alongside the icon, at least on mobile: "Тёмная тема" or simply display the current state label: "Светлая / Тёмная". The icon alone is insufficient for this audience.
-- The toggle state must be clearly visible — the current mode is communicated by icon + colour change, not icon position alone (switches are less intuitive than labelled buttons for older users).
-- On first-time dark mode activation, show a brief toast or text feedback: "Тёмный режим включён" — confirms the action was intentional.
-- Do not animate the toggle icon itself (rotating sun, morphing moon) — this is cognitive noise. A simple colour or label change is sufficient.
-- Consider whether the 45+ Kazakhstan user actually benefits from dark mode. If not, defer the feature to v1.5 and focus the phase budget on typography and glass quality.
+### MIN-03 — Footer `aria-label` lost during partial extraction
+**Phase:** 36
+**Prevention:** Diff all 5 footers' ARIA attributes BEFORE extraction. Pick the most-accessible variant as canonical, not the most-common one
 
-**Warning signs:**
-- Toggle smaller than 44x44px
-- Icon-only toggle with no text label
-- No visible state indication of current theme
-- Toggle placed in a position that overlaps with nav links on mobile
+### MIN-04 — Counter animation re-runs on every SPA navigation
+**Phase:** 36
+**Prevention:** Cache "already animated" state in `sessionStorage`, OR only animate counters on first visit per session, OR skip animation if document.referrer is same-origin
 
-**Phase to address:**
-Phase delivering dark mode toggle UI — defined as part of the navigation component work.
+### MIN-05 — Heading H1 collision when checkup hero shrinks via responsive `<br>`
+**Phase:** 35
+**Prevention:** Use `<br class="md:hidden">` or `<br class="xl:hidden">` — pick the breakpoint where headline genuinely needs the break. Test 768 → 1920 in 50px increments
 
----
+### MIN-06 — `&ndash;` replacement on treatment-abroad.html accidentally hits CSS comments
+**Phase:** 34
+**Prevention:** Scoped regex `'\([0-9]\)--\([0-9]\)' '\1\&ndash;\2'` (only between digits, the actual case in audit). Or do it manually — only ~6 occurrences
 
-### Pitfall 10: Full Visual Redesign Breaks Existing Working CSS Without Regression Testing
+### MIN-07 — Phase 33 sticky-bar `pb-28` doesn't account for safe-area-inset on iPhone X+
+**Phase:** 33
+**What goes wrong:** Audit fix is `pb-28 lg:pb-8` (112px mobile). On iPhone with home indicator, sticky bar sits above home indicator (`env(safe-area-inset-bottom)` = 34px). Actual occluded area is 146px. Trust line still partially clipped.
+**Prevention:** Use `pb-[calc(7rem+env(safe-area-inset-bottom))]` OR apply `padding-bottom: env(safe-area-inset-bottom)` to the sticky bar itself
 
-**What goes wrong:**
-The v1.4 redesign adds new CSS token layers (dark mode tokens, glass tokens, animation tokens) on top of the existing v1.3 CSS architecture (~1,640 lines). CSS specificity conflicts, cascade ordering issues, and token name collisions silently break existing components — form validation states lose their colours, the sticky mobile bar overlaps incorrectly, wave dividers misalign, or FAQ accordion animation conflicts with the new animation system. These breakages often appear only on specific mobile viewpoints or in specific scroll states, making them easy to miss in a desktop review.
+### MIN-08 — meta-description consistency check forgets 404.html
+**Phase:** 37
+**Prevention:** Audit script runs over all **6** files including 404.html. Description: "Страница не найдена. Откройте главную или свяжитесь с координатором MedicusUnion."
 
-**Why it happens:**
-New CSS is added incrementally. Each phase works in isolation. The cumulative effect of adding glass styles + dark mode overrides + animation classes is not tested holistically. Token names added in v1.4 can shadow v1.3 tokens if both define a `--color-primary` variant.
+### MIN-09 — Phase 38 viewport tests skip 360px (Android default)
+**Phase:** 38
+**Prevention:** Test viewport list: `320, 360, 390, 412, 768, 1024, 1280, 1440, 1920`. **360 and 412 are the Android sizes that matter for KZ market**
 
-**How to avoid:**
-- Before starting v1.4 implementation, establish a visual regression baseline: screenshot every section at 390px and 1440px. Compare after each phase.
-- Use a strict CSS token namespace for new v1.4 additions: `--glass-*`, `--dark-*`, `--anim-*`. Never override existing `--color-*` or `--spacing-*` tokens from v1.3.
-- The dark mode override block should be scoped exclusively to `[data-theme="dark"]` selector. It must never apply to elements outside this scope.
-- After every implementation phase, manually test: form submission flow (all states), FAQ accordion, sticky header on scroll, sticky mobile bar, wave dividers at section boundaries, CTA button states.
-- The 11-section structure is the conversion funnel. Any phase that breaks the form, the CTAs, or the trust sections has broken the product's core purpose — treat this as a blocker, not a cosmetic issue.
-
-**Warning signs:**
-- New CSS token names that overlap with existing `--color-primary`, `--color-cta`, `--gradient-cta`
-- No visual comparison run between v1.3 state and new state
-- CSS added with `!important` to override existing styles (means specificity war started)
-- No test of form submission after adding dark mode CSS
-
-**Phase to address:**
-Every v1.4 phase — regression testing is a success criterion for each phase, not a final QA step.
+### MIN-10 — Hero `min-h: 100dvh` causes content to jump as iOS Safari URL bar collapses
+**Phase:** 38
+**Prevention:** Use `svh` (small) on hero — sized to smallest possible viewport, no jump. `dvh` is for elements that should match visible viewport at all times (modal overlays). For hero: prefer `svh`.
 
 ---
 
-## Technical Debt Patterns
+## CROSS-PHASE ORDERING CONSTRAINTS (HARD chain)
 
-| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
-|----------|-------------------|----------------|-----------------|
-| Apply `backdrop-filter` to all card components in one global rule | Fast implementation | Performance failures on mid-range Android; impossible to tune per-section | Never — apply selectively, per context |
-| Use `@media (prefers-color-scheme: dark)` as the primary dark mode mechanism | No JS needed | Dark mode activates automatically, overriding the medical-trust default-light policy | Never for this project |
-| Copy dark mode palette from a design system example without contrast-checking each pair | Fast palette creation | Silently failing WCAG contrast for 45+ audience in dark state | Never |
-| Add `prefers-reduced-motion` only to the "obvious" animations (fly-in cards) | Appears compliant | Continuous animations, hover transforms, and theme transitions remain unguarded | Never — apply globally first, then refine |
-| Skip visual regression screenshots between phases | Saves time | CSS cascade errors accumulate silently until a hard-to-diagnose breakage | Never during a full visual redesign |
-| Use a 16px toggle icon for dark mode switch to "keep nav clean" | Cleaner nav visually | 45+ users cannot find or operate it; accessibility failure | Never — 44px minimum |
+```
+Phase 33 (data unification)
+   │  must merge before
+   ▼
+Phase 36 (partial extraction)
+   │  must merge before
+   ▼
+Phase 37 (sitemap + canonical audit)
 
----
+Phase 35 (form UX + checkup H1)  ──── must NOT touch hero min-h ──┐
+                                                                  │
+Phase 38 (vertical rhythm — last, owns ALL min-h tokens) ◄────────┘
 
-## Performance Traps
+Phase 34 (Treatment Abroad)
+   │  internal ordering: stat bar BEFORE hero photo (MOD-23)
+```
 
-| Trap | Symptoms | Prevention | When It Breaks |
-|------|----------|------------|----------------|
-| Multiple simultaneous `backdrop-filter` elements in viewport | Frame drops to 20-25fps during scroll on mid-range Android | Limit glass elements to 1-2 in any single viewport; test on 4x CPU throttle | Budget Android devices (Samsung A-series) under sustained scroll |
-| CSS `animation-timeline: scroll()` without Firefox fallback | Animations absent for ~6% of desktop Firefox users; no error shown | Use IntersectionObserver as primary; scroll-driven CSS as progressive enhancement behind `@supports` | Firefox as of early 2026 |
-| Dark mode CSS loaded synchronously before render | Flash of light mode on first dark-mode-preference visit (FOUC) | Read `localStorage` in a `<script>` in `<head>` before `<body>` renders; apply `data-theme` attribute immediately | Every dark-mode user on first visit |
-| `will-change: transform` applied to all animated elements | Excessive GPU memory use; mobile browser crashes on low-RAM devices | Apply `will-change` only immediately before animation starts, remove after | Devices with 2GB RAM or less (budget Android) |
-| Theme transition `transition: all 0.5s` on `<html>` or `<body>` | Every CSS property on every element transitions during theme switch; jank | Scope transitions to specific properties: `color, background-color, border-color` only | Any device during theme switch |
+**Recommended sequence:**
+1. **Phase 33** — first, fast, unblocks 36
+2. **Phase 34** — parallel with 33, internal ordering matters
+3. **Phase 35** — parallel with 33/34/36, stays away from min-h
+4. **Phase 36** — after 33 merges, before 37 — **HIGHEST RISK PHASE**
+5. **Phase 37** — after 36 merges
+6. **Phase 38** — last, owns min-h tokens
 
----
-
-## UX Pitfalls
-
-| Pitfall | User Impact | Better Approach |
-|---------|-------------|-----------------|
-| Glass cards with colourful background images visible through blur | Text unreadable; image is distorted to "noise" with no information value | Use glass only over solid or near-solid colour backgrounds; avoid glass over photo sections |
-| Dark mode default with no visible toggle to return to light | 45+ user thinks page is broken, cannot recover, leaves | Default light, prominent toggle with text label, localStorage persistence |
-| Bold hero headline breaks into 1-word lines on mobile | Reads as broken sentence fragments; 45+ user re-reads multiple times | `text-wrap: balance` on headlines; test at 320px and 390px; adjust clamp min value |
-| Scroll-reveal animations delay content appearing (high stagger) | Users with reading disabilities or slow cognition miss content that has not animated in yet; feels slow | Stagger below 100ms; reduced-motion: content visible immediately |
-| Animated statistics counter (numbers rolling up) in social proof section | Distracting, potentially vestibular; delays trust signal perception for 45+ users who need to read static numbers | Display numbers statically; no animation on trust/social-proof data |
-| Dark mode desaturates the hero medical illustration | Illustration looks washed-out; medical credibility reduced | Either exclude the hero illustration from dark-mode colour treatment, or create a purpose-made dark-mode version |
+If Phases 33–37 sequenced correctly, Phase 38 has zero merge conflicts.
 
 ---
 
-## "Looks Done But Isn't" Checklist
+## PRE-PHASE-START GREP GATES
 
-- [ ] **Glass contrast:** Text contrast checked against worst-case background (darkest content behind card), not design-intent background
-- [ ] **prefers-reduced-motion:** Global CSS rule present AND IntersectionObserver JS checks the media query before adding animation classes
-- [ ] **Dark mode default:** `localStorage` read in `<head>` script; page loads in correct theme without flash (test in Chrome Incognito with OS dark preference)
-- [ ] **Dark mode WCAG:** Every colour token pair (foreground/background) in dark mode passed through contrast checker — not just primary text
-- [ ] **Glass performance:** Tested with Chrome DevTools CPU 4x throttle during scroll; frame rate stays above 50fps
-- [ ] **Mobile typography:** Every headline reviewed at 390px viewport; no single-word orphaned lines in Russian
-- [ ] **Dark mode toggle:** Toggle tap target measured at 44px minimum in DevTools
-- [ ] **Existing functionality:** Form submission flow tested end-to-end after each visual change (submit → loading → success/error state)
-- [ ] **CSS token namespace:** No v1.4 token names collide with existing v1.3 token names — grep for duplicates
-- [ ] **Theme transition:** FOUC test — hard refresh in Chrome with OS dark mode; page should load in correct theme immediately
+**Before Phase 36:**
+```bash
+# All footers must be byte-identical for the regions to extract
+diff <(sed -n '/<footer/,/<\/footer>/p' index.html) <(sed -n '/<footer/,/<\/footer>/p' contacts.html)
+# Must be empty (or only differ in aria-current)
 
----
+# Vienna address must be canonical
+grep -h 'Wien\|Vienna' *.html | sort -u | wc -l  # Should be 1
+grep -h 'ТОО «' *.html | sort -u | wc -l  # Should be 1
+```
 
-## Recovery Strategies
+**Before Phase 37:**
+```bash
+# Canonical URLs must follow one pattern
+grep -h 'rel="canonical"' *.html | grep -o 'href="[^"]*"' | sort -u
+# Should show 6 URLs, all matching the same scheme
 
-| Pitfall | Recovery Cost | Recovery Steps |
-|---------|---------------|----------------|
-| Glass contrast failure discovered post-launch | LOW | Increase `background` opacity on glass element from 0.3 to 0.75; redeploy single CSS file |
-| Vestibular complaints / reduced-motion not implemented | LOW | Add global `prefers-reduced-motion` rule to top of animations CSS; redeploy |
-| Dark mode FOUC on first visit | LOW | Add `<script>` in `<head>` that reads localStorage and sets `data-theme` before body renders |
-| Glass performance janking on mobile | MEDIUM | Remove `backdrop-filter` from grid cards; apply only to hero/CTA panel; redeploy |
-| CSS token collision breaks existing components | MEDIUM | Namespace new tokens with v1.4 prefix; audit cascade order; test all 11 sections |
-| Dark mode default activating for 45+ users expecting light | LOW-MEDIUM | Remove `prefers-color-scheme` media query trigger; add localStorage-only control; redeploy |
-| Typography breakage on mobile (word orphans, overflow) | LOW | Adjust `clamp()` min value per heading level; add `text-wrap: balance`; test at 320px |
+# Partials must be extracted
+ls partials/footer.html partials/header.html partials/sticky-bar.html
+```
 
----
-
-## Pitfall-to-Phase Mapping
-
-| Pitfall | Prevention Phase | Verification |
-|---------|------------------|--------------|
-| Glass contrast failure | Phase: Glassmorphism implementation | Contrast checker on every glass element against darkest and lightest context background |
-| backdrop-filter performance on Android | Phase: Glassmorphism implementation | Chrome DevTools 4x CPU throttle scroll test; FPS stays above 50 |
-| Dark mode reduces medical trust | Phase: Dark mode architecture | Dark mode is opt-in; default is light; confirmed by loading page without localStorage entry |
-| Dark mode WCAG failures | Phase: Dark mode token system | Full token pair audit with contrast tool before any component receives dark tokens |
-| Mobile typography orphans | Phase: Bold typography system | Every heading reviewed at 320px, 390px viewports |
-| Light weight text contrast | Phase: Bold typography system | All text using font-weight < 400 checked against 4.5:1 minimum |
-| No prefers-reduced-motion guard | Phase: Micro-animations | Global CSS rule present; JS IntersectionObserver checks media query |
-| Animation cognitive overload | Phase: Micro-animations | Animation catalogue defined (max 4-5 types); no looping animations in viewport at rest |
-| Dark mode toggle inaccessible | Phase: Dark mode UI | Toggle measured at 44px minimum; has visible text label; tested by a non-developer |
-| CSS regression from layered changes | Every v1.4 phase | Screenshot comparison vs. v1.3 baseline; form submission flow tested after each phase |
+**Before Phase 38:**
+```bash
+# No new ad-hoc min-h values added in Phases 33-37
+git diff main..HEAD -- '*.html' | grep -E 'min-h-\[' | grep -v 'min-h-screen'
+# Should be empty or only show removals
+```
 
 ---
 
-## Sources
+## OPEN VERIFICATION ITEMS
 
-- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — vestibular disorders, animation categories, platform support (HIGH confidence)
-- [MDN: prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) — manual toggle pattern, localStorage approach, FOUC prevention (HIGH confidence)
-- [MDN: backdrop-filter — Baseline 2024](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) — support status, GPU compositing (HIGH confidence)
-- [MDN: CSS Scroll-Driven Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations) — draft spec, incomplete Firefox support as of early 2026 (HIGH confidence)
-- WCAG 2.1 SC 1.4.3 Contrast Minimum — 4.5:1 normal text, 3:1 large text (HIGH confidence — W3C specification)
-- WCAG 2.1 SC 2.3.3 Animation from Interactions (AAA) — vestibular motion guidelines (HIGH confidence — W3C specification)
-- WCAG 2.1 SC 2.5.5 Target Size — 44x44px minimum (HIGH confidence — W3C specification)
-- WCAG 2.2 SC 2.5.8 Target Size Minimum — 24px minimum, 44px recommended (HIGH confidence — W3C specification)
-- CSS `text-wrap: balance` — Baseline 2023, all modern browsers (HIGH confidence)
-- Manrope/Inter Cyrillic optical characteristics — based on rendered behaviour in existing v1.3 codebase (MEDIUM confidence)
-- 45+ vestibular disorder prevalence (~35% of adults over 40) — established audiological/neurological research consensus (MEDIUM confidence)
-- Medical trust and background colour — UX research consensus on professional/clinical colour associations (MEDIUM confidence; no single authoritative source)
+To resolve before relevant phase ships (WebSearch denied this session):
+
+1. **Yandex Webmaster: does YandexBot 2026 execute JS for `<script type="application/ld+json">`?** — Pivot for CRIT-06
+2. **caniuse svh/dvh on iOS 15.4+ and KZ Android Chrome 108+** for CRIT-07 confirmation
+3. **circle-flags current package size (2026 release)** for MOD-14
+4. **bfcache + popstate behavior on Safari 17.4+** for CRIT-10
+5. **Yandex robots.txt analyzer behavior** when /css/ is blocked for CRIT-05
 
 ---
-*Pitfalls research for: v1.4 Visual Redesign — glassmorphism, dark mode, bold typography, micro-animations on medical landing page (45+ audience)*
-*Researched: 2026-03-24*
+
+## FILES REFERENCED
+
+- `.planning/PROJECT.md` — milestone scope
+- `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` — audit findings
+- `CLAUDE.md` — constraints
+- `js/router.js` — **the most important file for Phase 36**
+- `js/main.js` — registers `window.MU.reinitPageContent`, hosts IO patterns
+- `js/animations.js` — Motion CDN integration

@@ -1,354 +1,495 @@
-# Feature Research: v1.4 Visual Redesign
+# Feature Landscape — v3.1 Site Foundation & Audit Fixes
 
-**Domain:** Medical consultation landing page — 2025 visual redesign (glassmorphism, dark mode, bold typography, micro-animations)
-**Researched:** 2026-03-24
-**Confidence:** HIGH (CSS/browser specs from MDN), MEDIUM (UX patterns for 45+ audience from research literature), LOW where flagged
-**Scope:** This document covers ONLY new visual features for v1.4. For core landing page features (11 sections, form, Directus), see the original feature research (committed with v1.0).
-
----
-
-## Research Context
-
-The landing page has 11 sections, ~1,640 lines of CSS with a full CSS custom property token system, vanilla JS ES5, IntersectionObserver scroll animations, and self-hosted Inter/Manrope variable fonts. The v1.4 milestone adds a visual layer on top of a working, validated structure. The audience constraint — Kazakhstan residents 45+, medical service, 450 EUR price point — is the most important filter for every visual decision in this document.
+**Domain:** Medical / cross-border healthcare landing site (multi-page static)
+**Audience constraint:** Russian-only, ЦА Казахстан 45+
+**Researched:** 2026-04-07
+**Scope:** 5 NEW feature categories introduced this milestone (existing forms / FAQ / dark mode / SEO / a11y are NOT re-researched)
+**Overall confidence:** HIGH for form validation + viewport units + aria-current (MDN-verified). MEDIUM for vertical-rhythm benchmarks (no live competitor crawls available — derived from documented patterns + the codebase's existing values). MEDIUM for flag library comparison (no npm registry crawl available — derived from prior knowledge + library docs).
 
 ---
 
-## Feature Landscape
+## Category 1 — Shared Layout Primitives (header / footer / sticky bar / mobile menu)
 
-### Table Stakes (Users Expect These)
+### Table Stakes
 
-These are visual features that, in 2025, users expect from any premium landing page. Missing them does not break functionality but signals "old-looking website" to users evaluating a 450 EUR medical service on trust.
+| Feature | Why Expected | Complexity | Notes |
+|---|---|---|---|
+| **Single source of truth for header markup** | Audit Issue #4: 5 divergent footer variants across 5 pages already caused trust-damaging address drift (Issue #1). Any production multi-page site MUST have one canonical header/footer or it accumulates drift on every content edit. | Medium | Existing 6 pages all hand-roll header + footer + sticky bar + mobile menu (~150 lines × 5 ≈ 750 dup lines). |
+| **`aria-current="page"` on active nav link** | WCAG-recommended pattern for navigation sets. Currently ONLY `contacts.html` does this — every other page is missing it (Audit recommended action #10). | Low | MDN: set on at most one element per nav. Use `setAttribute('aria-current', 'page')` after partial injection — this is the standard pattern. |
+| **Visible active-state styling tied to `aria-current`** | Without a visual cue, 45+ users lose orientation across 6 pages. Standard CSS: `[aria-current="page"]` selector → underline / weight / color. No JS needed for the styling, only for the attribute. | Low | Selector-only, zero runtime cost. |
+| **No-JS fallback that still renders the page** | The site sells trust to a 45+ medical audience. A blank page when JS fails is unacceptable. MDN explicitly says `<noscript>` is "not suitable as a comprehensive fallback for sites that heavily depend on JavaScript for layout." | Medium | Must NOT depend on `fetch + innerHTML` for primary content. Implication: header/footer cannot be JS-injected on first paint without a visible fallback. |
 
-| Feature | Why Expected | Complexity | Dependency on Existing System | Notes |
-|---------|--------------|------------|-------------------------------|-------|
-| Dark mode toggle | Operating systems default to dark mode; users with dark mode active who land on a bright page get visual discomfort; 45+ users with photosensitivity especially benefit from a working toggle | MEDIUM | Requires new CSS token layer; `[data-theme="dark"]` selector + localStorage | `prefers-color-scheme` media query is Baseline since 2020 (MDN-confirmed). Toggle must be in sticky nav (already exists). localStorage persistence across sessions is essential for repeat visitors. |
-| Smooth theme transition | Instant flash from light to dark feels broken; a 300ms fade on background and text colors is expected | LOW | Adds `transition` on `:root` color tokens | Gate with `prefers-reduced-motion: reduce`. Zero duration when motion is reduced. |
-| Legible text in dark mode | Dark mode that reduces contrast below WCAG AA breaks accessibility for the exact users who enabled dark mode for comfort | LOW | Requires carefully chosen dark-mode token values | White text on pure black (#000) causes halation for some users (MEDIUM confidence, ophthalmology UX literature). Use near-black (#18212C) backgrounds and off-white (#E8EFF6) text rather than pure values. |
-| Visible interactive states | Buttons, links, and cards must have clear hover/focus states that work in both themes | LOW | Extend existing `--transition-fast` and `--transition-normal` tokens | Already have `translateY(-2px)` hover on cards. Focus rings must remain visible in dark mode. WCAG 2.1 SC 1.4.11 requires 3:1 non-text contrast ratio for focus indicators. |
+### Differentiators
 
-### Differentiators (Competitive Advantage)
+| Feature | Value Proposition | Complexity | Notes |
+|---|---|---|---|
+| **Build-step HTML inlining (recommended)** | Header/footer authored once in `partials/`, inlined into all 6 pages by a build script before serve. JS-disabled users still see real header. No FOUC. No paint-timing penalty. Survives crawler/JS-off audits. | Medium (one-time tooling) | This is the right answer for THIS project given the no-Node-runtime constraint and 45+ JS-off concern. A ~30-line shell or `node` build script (`<!-- @include partials/header.html -->` directive replacement) is sufficient. Ships at build time, not runtime. |
+| **Pre-rendered header + JS upgrade for `aria-current`** | If build-step inlining is rejected, ship header/footer inline in each page (status quo) and use a tiny JS file (~10 lines) that reads `document.body.dataset.page` and sets `aria-current` on the matching nav link. Header is already correct without JS; JS only adds the active-state attribute. | Low | This is the minimum-complexity path. It accepts the duplication cost in exchange for zero runtime risk and zero build tooling. Use only if build step is rejected. |
 
-Visual features that elevate MedicusUnion KZ above typical medical landing pages while staying within the calm, trustworthy brand tone and the 45+ audience's cognitive tolerance.
+### Anti-Features (DO NOT)
 
-| Feature | Value Proposition | Complexity | Dependency on Existing System | Notes |
-|---------|-------------------|------------|-------------------------------|-------|
-| Glassmorphism cards (selective) | On light mode, frosted-glass cards over gradient or mesh backgrounds signal "premium, modern, European" — matches the brand promise of accessing international medicine | MEDIUM | Requires gradient background behind card (cannot glass over plain white); `backdrop-filter: blur()` on card; semi-transparent card background | `backdrop-filter` is Baseline 2024 (MDN-confirmed: September 2024). Must provide solid-color fallback for users on older browsers (Android WebView pre-2024, older iOS Safari). Apply ONLY to 2-3 hero/stats/pricing cards — not all 11 sections. Too much glassmorphism reads as design student portfolio, not medical authority. |
-| Dark mode with dual-purpose medical rationale | Dark mode is not just a visual trend — for patients researching medical conditions late at night (very common behavior), dark mode reduces eye strain during reading. This is a genuine user benefit, not decoration | MEDIUM | Full CSS token system rewrite with `[data-theme="dark"]` parallel token set | Dark mode enhances trust when marketed with medical rationale: "Режим для комфортного чтения в любое время". Position as care for the user, not just trendy feature. |
-| Bold display headings | Increasing h1/h2 size to 48-56px (from current 36-32px) with font-weight 800 creates visual hierarchy that immediately anchors a 45+ user reading at arm's length or on a phone | LOW | Manrope Variable already loaded (weights 200-800); only token values change; must verify line-height remains readable at display sizes | Research: display text above 48px requires line-height 1.1 max (tighter than current 1.2 for headings). At 56px, 1.1 or even 1.05 works. Must add responsive scaling via `clamp()` so 56px desktop does not become illegible on 360px screens. |
-| Micro-animation: scroll fade-in (enhanced) | The existing IntersectionObserver fade-in is functional but basic (opacity only). Adding a subtle vertical shift (20px → 0) makes reveals feel polished without the performance cost of heavy animations | LOW | Already have `animate-on-scroll` + `is-visible` classes; add `transform: translateY(20px)` to initial state and `transform: translateY(0)` to visible state | Duration 400ms ease-out. Stagger already in place (100ms per grid child). Gate everything behind `prefers-reduced-motion: reduce` — already done in the codebase, but ensure transform is also removed, not just opacity. |
-| Micro-animation: button interaction depth | Adding a subtle `scale(0.97)` on CTA button `:active` state gives tactile click feedback, which is especially reassuring for older users who may not be sure if they "clicked properly" | LOW | Extend existing `.btn` styles; `active` state is not currently styled | Duration 100ms. Do not use on links — only on submit buttons and CTA buttons. Feels physically responsive. |
-| CSS gradient mesh / subtle hero background | A soft color mesh or radial gradient behind the hero (blues and teals matching brand palette) provides depth without images and makes glassmorphism cards legible if applied to the hero area | LOW | New background on `.hero` section only; CSS `radial-gradient` layering | No image files needed. Pure CSS. Degrades gracefully. Dark mode variant should use deeper, darker gradients (deep navy + dark teal). |
+| Anti-Feature | Why Avoid | What to Do Instead |
+|---|---|---|
+| **Web Components / Custom Elements** for header/footer | MDN: "Custom elements MUST be registered and instantiated via JavaScript … Without JS, the page would display unstyled, non-functional content." Wrong choice for a medical trust site with 45+ audience on possibly-flaky JS. | Build-step inlining or JS-progressive-enhancement on inline markup. |
+| **`fetch + innerHTML` for header/footer at runtime** | Causes FOUC + LCP regression + paint shift; 45+ users notice the flicker; fails for JS-off; SEO crawlers may index partial markup. MDN guidance: "fetch+innerHTML impacts longer Critical Rendering Path, delayed LCP, layout shifts." | Build-step inlining. |
+| **Apache Server-Side Includes (`mod_include`)** | Adds runtime server config dependency; not portable across nginx/CDN/static hosts; build-step inlining produces identical output without locking us to a server. | Build-step inlining. |
+| **Iframe-based header/footer** | Breaks deep links, breaks accessibility (focus order, screen reader nav), breaks responsive layout. Universally rejected for 15+ years. | Build-step inlining. |
+| **Migrating to a SPA framework** for partials | Existing CLAUDE.md anti-feature: "Any SPA framework (React, Vue, Svelte) — this is a static marketing page, not an application." | Build-step inlining. |
 
-### Anti-Features (Commonly Requested, Often Problematic)
+### Recommended Pattern (concrete)
 
-Visual features that look impressive in design portfolios but actively harm conversion and trust for a 45+ medical audience.
+```
+partials/
+  header.html
+  footer.html
+  sticky-bar.html
+  mobile-menu.html
+build-partials.sh   (or build-partials.js)
+```
 
-| Feature | Why Requested | Why Problematic for This Project | Alternative |
-|---------|---------------|----------------------------------|-------------|
-| Full-page glassmorphism (every section) | "Looks premium, modern, Apple-inspired" | Requires a visually complex, busy background to work — glass over flat white looks broken and muddy. Applying to all 11 sections creates visual noise that disorients older readers trying to scan text. Medical trust requires text legibility above all. | Apply glassmorphism ONLY to 2-3 specific cards where a gradient background is already present (hero stats, pricing card). Flat clean background = flat clean cards everywhere else. |
-| Parallax scroll effects | "Creates depth and premium feel" | Explicitly listed as Out of Scope in PROJECT.md. Causes motion sickness in older users. Triggers `prefers-reduced-motion`. Slows scroll performance on mid-range Android (common in KZ). Performance-wise, `will-change: transform` on multiple elements degrades composite layers on GPU-limited devices. | Subtle opacity fade-in on scroll (already implemented). No transform-based parallax. |
-| Dark mode ONLY (no light mode) | "Dark is more premium in 2025" | Target audience spends significant daytime hours on the internet. Medical content with white/teal brand colors reads better on light backgrounds in daylight. Forcing dark mode removes user agency — the exact opposite of the care-oriented brand positioning. | Default to light mode. Toggle for dark. Respect `prefers-color-scheme` as initial state. |
-| Auto-playing theme based on time of day | "Smart UX: dark at night, light during day" | Requires JS timer logic. Feels intrusive and surprising. The user's OS dark mode setting already expresses their preference — override it only via explicit toggle. Multiple systems fighting over the theme creates flash of wrong theme on load. | Respect `prefers-color-scheme` on first load. localStorage preference on subsequent visits. Explicit toggle for manual override. |
-| CSS scroll-driven animations (animation-timeline) | "Latest CSS feature, no JS needed" | `animation-timeline` is explicitly NOT Baseline (MDN-confirmed: limited availability). Firefox support is limited as of 2026. The target audience includes users on older browsers. Using it without heavy fallback code adds complexity with zero benefit over the working IntersectionObserver implementation already in place. | Keep IntersectionObserver scroll animations. They work universally, are already implemented, and are well-tested in the codebase. |
-| Video backgrounds or animated gradients | "Dynamic, modern, energetic" | VIDEO in hero is explicitly Out of Scope in PROJECT.md (bandwidth on mobile). Animated gradients (using CSS `@keyframes` on background-position) run continuously and cannot be disabled without JS. They violate the spirit of `prefers-reduced-motion` even when the user hasn't set the preference. For 45+ users, moving backgrounds while they are trying to read text creates cognitive overload. | Static gradient mesh or hero illustration. Motion only on user interaction (hover) or scroll-triggered (IntersectionObserver, one-shot). |
-| White text on dark gradient cards | "Bold, modern, editorial" | The existing text color system (dark `#18212C` on light backgrounds) achieves 16.24:1 contrast. Switching to white text on colored gradient backgrounds requires extreme care — many gradient midpoints fall below 4.5:1 WCAG AA. The 45+ audience is the most vulnerable to contrast failures. Medical text (specializations, prices, process steps) must NEVER fall below AA compliance. | If using glassmorphism, ensure the backdrop is dark enough OR text is dark. Test every text/background combination. Light-on-dark only where the dark background is uniform enough to guarantee contrast. |
-| Heavy box shadows on glassmorphism cards | "Makes glass look more realistic and elevated" | Heavy shadows on already-complex backgrounds create visual mud. The existing design moved to flat cards (v1.3 decision: `box-shadow` removed). Glassmorphism itself provides depth signal via blur — adding heavy shadows on top is double depth signaling and creates visual clutter for 45+ users. | `backdrop-filter: blur(20px)` + thin 1px `border: rgba(255,255,255,0.2)` outline provides sufficient glass depth. No heavy box-shadow on glass cards. |
-| Dark mode with pure black background (#000000) | "True OLED dark mode" | Pure black backgrounds cause halation (bright halos around white text) for many users with astigmatism — prevalence increases significantly at 45+. Pure black can also cause eye fatigue during extended reading. | Use `#0F1923` or `#15202B` (near-black with slight blue/dark teal tint matching brand) as dark mode background. Softer on eyes, still clearly "dark mode". |
+In each `*.html`:
+```html
+<!-- @include partials/header.html -->
+```
+
+Build script: a regex replace pass that runs before `tailwindcss --minify`. The build artifact is plain HTML that is byte-identical for header/footer across all pages — exactly what the audit flagged as missing.
+
+`aria-current` strategy: insert it at build time too, by passing the current page name to the include directive: `<!-- @include partials/header.html page=contacts -->`. The script substitutes `aria-current="page"` into the matching nav link. Zero runtime JS needed for either header rendering OR active state. Survives JS-off, survives crawlers, survives screen readers.
+
+**Dependency:** Adds one build step before `tailwindcss`. Compatible with existing standalone-CLI workflow (no Node runtime added — the script can be a 50-line bash or a one-shot `node` invocation).
+
+---
+
+## Category 2 — Vertical Rhythm & Section Sizing (Phase 38 core)
+
+### Current State (from grep + audit + Read of HTML files)
+
+| Page | Hero `min-h` | Hero padding | Notes |
+|---|---|---|---|
+| `index.html` | `min-h-screen` (100vh) | `pt-32 pb-16 lg:pt-40` | Audit: pushes hero collage below mobile fold |
+| `online-consultations.html` | **NONE** | `pt-32 pb-16` only | Hero shrinks/grows freely with content |
+| `treatment-abroad.html` | **NONE** | `pt-32 pb-16` only | Same |
+| `checkup.html` | `min-h-[80vh]` | `pt-32 pb-16 lg:pt-40` | Audit: H1 overflow at 1024–1440 |
+| `contacts.html` | **NONE** | (no hero section as such; heading is in `<main>` directly at line 116) | Different layout entirely |
+| `404.html` | `min-h-[80vh]` on `<main>` | `pt-32 pb-16` | Inconsistent unit choice |
+
+**Drift summary:** 4 different hero sizing strategies on 5 pages. NO canonical token. NO consistent unit. NO mobile-specific value. This is exactly the Phase 38 problem statement.
+
+Section bodies use `mb-16` (64px) or `py-16` (64px) consistently — that part is OK and is the existing baseline rhythm. The bug is hero + (lack of) inter-section vertical breathing on tall viewports.
+
+### Table Stakes
+
+| Feature | Why Expected | Complexity | Notes |
+|---|---|---|---|
+| **Hero must NOT use `100vh` / `min-h-screen` on mobile** | iOS Safari's `vh` resolves to `lvh` (large viewport, address bar collapsed). When the bar is showing, content gets clipped; when it collapses, the hero jumps. Both are bad for 45+ users. MDN explicitly recommends `svh` for "safer" full-viewport layouts. | Low | This is the single biggest fix in Phase 38. |
+| **Hero `min-h` clamped, not `100vh`** | A hero needs enough height to feel "anchored" but shouldn't push every below-fold content out of sight on a 390×844 iPhone. The de-facto pattern for content-rich heroes is `min-h: clamp(560px, 75svh, 760px)` or `min-h-[75svh]` with a max via `lg:max-h-[760px]`. | Low | Token-able. |
+| **`<main>` bottom padding ≥ sticky-bar height on mobile** | Already in audit: `pb-8` (32px) is too small; sticky bar is ~80px. Phase 33 fixes this; rhythm system must memorialize the value as a token. | Low | `--space-sticky-bar-clearance: 112px` token, applied as `main.pb-[var(--space-sticky-bar-clearance)] lg:pb-8`. |
+| **Inter-section gap is one canonical token** | Currently `gap-8 md:gap-16` on `main` flex is the existing pattern (32px / 64px). Honor it. The rhythm system should ratify it, not re-invent it. | Low | Already an emergent standard; codify. |
+
+### Differentiators
+
+| Feature | Value Proposition | Complexity | Notes |
+|---|---|---|---|
+| **Fluid `clamp()` heights, not fixed `min-h-[80vh]`** | A hero that's `min-h: clamp(560px, 75svh, 760px)` reads "right" on 320, 390, 768, 1024, 1440, AND 1920 because it doesn't grow unboundedly on a 4K display (where 80vh = 1728px of empty hero) and doesn't collapse on a 320×568 iPhone SE (where 80vh = 454px and headline + CTA need ~520px). Fixed `vh` values look "swimming in whitespace" on big screens — exactly what the user flagged. | Low | This is the core Phase 38 insight. Use `clamp(MIN_PX, IDEAL_SVH, MAX_PX)` everywhere a hero needs vertical anchoring. |
+| **Heroes use `svh` not `dvh` not `vh`** | MDN: "`dvh` can cause layout shifts during scrolling … may degrade UX and cause performance issues. … Use `svh` for iOS Safari compatibility." For a 45+ medical audience the layout-shift cost of `dvh` is unacceptable; `svh` is the safe default. Tailwind v4 ships `min-h-svh` as a first-class utility (verified MDN/Tailwind docs). | Low | `min-h-svh` available without arbitrary value. For clamp, use `min-h-[clamp(560px,75svh,760px)]`. |
+| **Section padding token system in `theme.css`** | Five tokens, applied via `@theme inline` as Tailwind utilities: `--space-hero-min-h`, `--space-section-y`, `--space-section-y-tight`, `--space-mobile-bottom-clearance`, `--space-content-max-w`. Removes drift; new pages inherit canonical values. | Medium | Stays in `theme.css`, no new files. Aligns with Phase 33 sticky-bar fix. |
+| **8px baseline rhythm (already adhered to)** | Audit confirmed: top spacing utilities (`px-6`, `p-8`, `px-4`, `mb-4`, `gap-2`) are all multiples of 4 px / 8 px. Codify as a written rule, not just emergent behaviour. | Low | Documentation, not code. |
+
+### Anti-Features (DO NOT)
+
+| Anti-Feature | Why Avoid | What to Do Instead |
+|---|---|---|
+| **`min-h-screen` (= `100vh`) on heroes** | Resolves to `lvh` in modern browsers — content gets clipped when iOS Safari address bar is showing. Already a real bug on `index.html` per audit. | `min-h-[clamp(560px,75svh,760px)]` |
+| **`min-h-dvh`** | Triggers re-layout as the iOS bar collapses — creates jumpy hero content during scroll. MDN explicitly warns against. 45+ audience perceives this as "broken." | `svh` |
+| **`min-h-[100vh]` arbitrary** | Same as `min-h-screen`, just uglier. | `svh` clamp |
+| **Fixed pixel heroes (`h-[760px]`)** | Cropping at 320×568 (oldest iPhone SE) and 320×533 (Galaxy A03) — bottom of hero clips primary CTA on the smallest devices in KZ market. | `min-h-[clamp(560px,75svh,760px)]` |
+| **Per-page ad-hoc `min-h` decisions** | Already produced today's drift (4 strategies on 5 pages). The whole point of Phase 38 is to stop this. | One token: `--space-hero-min-h: clamp(560px, 75svh, 760px)` |
+| **Aggressive `gap-32` / `py-32` between sections** | "Swimming in whitespace" effect on desktop. Audit confirms current `gap-8 md:gap-16` reads well — keep it. | Hold `gap-8 md:gap-16` |
+| **Different section heights per content type** | Content density varies (a 4-card grid is shorter than a 12-FAQ accordion); forcing equal heights via `min-h` makes short sections feel padded and long sections feel cramped. | Let content drive section height. ONLY hero uses `min-h`. |
+
+### Phase 38 — Concrete Recommended Values
+
+**For ROADMAP / REQUIREMENTS to reference directly:**
+
+```css
+:root {
+  /* Phase 38 vertical rhythm tokens */
+
+  /* Hero — clamp(MIN_PX, IDEAL_SVH, MAX_PX)
+   * 560px:  fits headline + subhead + 2 CTAs + trust line on 320×568 (smallest KZ device)
+   * 75svh:  about 2/3 of small viewport — gives "hero feel" without dominating
+   * 760px:  cap so 4K/1920 doesn't get a 1500px empty hero
+   */
+  --space-hero-min-h: clamp(560px, 75svh, 760px);
+
+  /* Tighter hero for utility pages (404, contacts) */
+  --space-hero-min-h-compact: clamp(440px, 55svh, 580px);
+
+  /* Vertical gap between top-level sections (already used as gap-8/gap-16 in main)
+   * Tablet+ baseline matches existing audit-confirmed value
+   */
+  --space-section-y: 4rem;        /* 64px (existing py-16 / mb-16) */
+  --space-section-y-tight: 2rem;  /* 32px (existing gap-8 mobile) */
+
+  /* Bottom clearance under sticky CTA bar on mobile (Phase 33 dependency)
+   * sticky bar = 16px bottom + ~52px button + 16px top padding ≈ 84px; +28px breathing
+   */
+  --space-mobile-bottom-clearance: 7rem; /* 112px → maps to Tailwind pb-28 */
+
+  /* Content column max-width — already 1200px in v1.3 decision; ratify */
+  --space-content-max-w: 1200px;
+}
+```
+
+`@theme inline` mappings:
+
+```css
+@theme inline {
+  --spacing-hero-min: var(--space-hero-min-h);
+  --spacing-hero-min-compact: var(--space-hero-min-h-compact);
+  --spacing-mobile-clear: var(--space-mobile-bottom-clearance);
+}
+```
+
+Enables Tailwind utilities like `min-h-hero-min`, `pb-mobile-clear`.
+
+**Application matrix:**
+
+| Page | Current | Target |
+|---|---|---|
+| `index.html` hero | `min-h-screen` | `min-h-[var(--space-hero-min-h)]` |
+| `online-consultations.html` hero | (none) | `min-h-[var(--space-hero-min-h)]` |
+| `treatment-abroad.html` hero | (none) | `min-h-[var(--space-hero-min-h)]` |
+| `checkup.html` hero | `min-h-[80vh]` | `min-h-[var(--space-hero-min-h)]` |
+| `contacts.html` hero | (none) | `min-h-[var(--space-hero-min-h-compact)]` (utility page, no big illustration) |
+| `404.html` `<main>` | `min-h-[80vh]` | `min-h-[var(--space-hero-min-h-compact)]` |
+| All `<main>` elements | `pb-8` | `pb-[var(--space-mobile-bottom-clearance)] lg:pb-8` |
+
+**Verification grid:** Phase 38 must verify on these 6 viewports per page (5 pages × 6 viewports = 30 visual checks):
+
+| Viewport | Why |
+|---|---|
+| 320 × 568 | iPhone SE 1st gen — smallest plausible KZ device; sets the 560px floor |
+| 390 × 844 | iPhone 14/15 baseline |
+| 768 × 1024 | iPad portrait — common in 45+ demographic |
+| 1024 × 768 | Tablet landscape / smallest desktop — current audit found checkup.html H1 overflow exactly here |
+| 1440 × 900 | Standard laptop |
+| 1920 × 1080 | Desktop / large monitor — guards against the "swimming in whitespace" failure mode |
+
+### 45+ Audience Considerations (explicit, not generic)
+
+1. **Less tolerance for layout shift than younger users.** Vestibular sensitivity grows with age. `dvh` (which animates as the iOS chrome collapses) is therefore a hard NO. `prefers-reduced-motion` is already wired up site-wide (theme.css:303-312); the rhythm system must not introduce motion. `svh` is static and safe.
+2. **Higher expected font sizes mean less content fits per fold.** Already addressed by current `text-5xl md:text-6xl lg:text-7xl` H1s (~48–72 px). The 560 px hero floor is computed from headline (≈140 px wrapped) + subhead (≈80 px) + 2 CTAs (≈120 px stacked on mobile) + trust line (≈40 px) + breathing room (≈180 px) ≈ 560 px. Smaller floors clip the CTA pair on iPhone SE.
+3. **"Swimming in whitespace" is real.** Older users lose orientation when sections feel disconnected by huge gaps. Documented in age-related UX research patterns: visual grouping needs to be tight enough to be obvious. The `clamp(560, 75svh, 760)` ceiling of 760 px directly addresses this — at 1920 × 1080 the hero stays at 760 px, leaving the next section visible immediately below the fold instead of pushed off-screen.
+4. **Confidence cue from "anchored hero".** The 560 px floor exists because heroes shorter than ~half a 1080-pixel screen feel like an HTTP error page. 45+ users land on the page in 1–2 seconds; they need a clear "this is the hero, this is what the company does" zone.
+
+These are the four 45-specific ergonomics, not generic "make it big and friendly".
+
+### Confidence
+
+**HIGH** for `svh` over `dvh`/`vh` (MDN explicitly recommends, Tailwind v4 verified).
+**MEDIUM** for the specific clamp values (560/75svh/760) — they are derived from the existing layout dimensions in the codebase + the audit findings + the listed viewport floors, not from a competitor crawl. Implementation should verify them empirically in Phase 38 on each of the 6 viewports and adjust the floor / ceiling within ±60 px if a real hero overflows or under-fills.
+**LOW** for direct competitor benchmarks — could not crawl bupa.com / zocdoc.com / labcorp.com / doctolib.com / practo.com / medicusunion.com to extract their actual `min-h` values (WebSearch denied, WebFetch denied for those domains in this environment). Phase 38 plan should include a manual screenshot pass on at least 2 of those sites at the 6 listed viewports as an empirical sanity check before locking the values.
+
+---
+
+## Category 3 — Form Valid-State Feedback (45+ audience)
+
+### Table Stakes
+
+| Feature | Why Expected | Complexity | Notes |
+|---|---|---|---|
+| **`:user-valid` styling, NOT `:valid`** | MDN explicit guidance: "Don't show valid state immediately — use `:user-valid` rather than `:valid` to avoid showing success states before users have interacted." `:valid` matches on page load — every empty optional field would show a green checkmark, which is incoherent. `:user-valid` matches only after user has committed a change (blur, submit, or transitioning from invalid → valid while typing). Browser support: Baseline 2023, available in all modern browsers including iOS Safari. | Low | Add CSS rule: `input:user-valid { border-color: var(--mu-green-600); } input:user-valid + .field-icon::after { content: '✓'; color: var(--mu-green-600); }` |
+| **Visual treatment: green border + checkmark icon** | Audit Strategic Improvement #3 specifically asks for `border-mu-green-600 + checkmark on blur after valid input`. The green border alone is too subtle for 45+ users; the checkmark gives a positive cue (not just absence of error). Brand green token already exists: `--mu-green-600 #35B678`. | Low | Use existing token; no new colors. |
+| **Live region announcement** | The form already has `aria-live="polite"` error spans (Phase 32 work, audit confirmed). For valid state, screen readers need a parallel cue OR the cue needs to NOT be announced (to avoid noise). WCAG 2.2 does not REQUIRE valid-state announcement, only error messaging (3.3.1, 3.3.3). Recommendation: visual-only valid cue, no screen reader announcement, to avoid "Field is valid. Field is valid. Field is valid." per keystroke. | Low | Pure CSS, no extra ARIA. |
+| **Triggered on blur, not on input** | Validating on every keystroke creates flicker (red→green→red as user types `+7 70`). For 45+ audience this is jarring. `:user-valid` already implements "validate on commit" semantics (blur or submit), so the CSS pseudo-class does the right thing without JS. | Low | Free with `:user-valid`. |
+
+### Differentiators
+
+| Feature | Value Proposition | Complexity | Notes |
+|---|---|---|---|
+| **Token-based valid state for theme consistency** | Define `--mu-form-valid-border` and `--mu-form-valid-icon` in `theme.css` (= `var(--mu-green-600)` for now) so a future palette change does not require touching every form rule. | Low | Two new token lines. |
+| **Smooth border-color transition** | `transition: border-color 200ms ease-out` so the field turns green without a jarring snap. Already covered by the existing `prefers-reduced-motion` guard which sets `transition-duration: 0.01ms`. | Low | One CSS line per field. |
+
+### Anti-Features (DO NOT)
+
+| Anti-Feature | Why Avoid | What to Do Instead |
+|---|---|---|
+| **`:valid` (without `:user-valid`)** | Marks every untouched optional field as "valid" on page load — visually noisy + meaningless. MDN explicit anti-pattern. | `:user-valid` |
+| **Validating on `input` event with valid-state flicker** | Field flickers red→green→red as user types a partial value. Jarring for everyone, hostile for 45+. | Browser-native `:user-valid` |
+| **Aggressive premature validation** | E.g. showing red border the moment a `required` field is focused but empty. | Wait for blur (which `:user-valid` does natively) |
+| **Announcing "Valid" via aria-live on every keystroke** | Screen reader noise, breaks form completion flow. WCAG only requires error messaging, not success messaging. | Visual-only cue |
+| **Unicode emoji ✅ for the checkmark** | Same problem as treatment-abroad.html stat bar — vendor-rendered, color-bombed, off-brand. | SVG checkmark or `content: '✓'` (the heavy check mark, U+2713) |
+| **Red→green color jump at exactly the `oninput` boundary** | Causes visual whiplash. Use a 200 ms `transition: border-color`. | CSS transition + `prefers-reduced-motion` guard |
+
+### Recommended Pattern (concrete)
+
+```css
+/* In src/styles/theme.css :root */
+--mu-form-valid-border: var(--mu-green-600);
+--mu-form-valid-icon: var(--mu-green-text);
+
+/* In src/styles/index.css @layer base */
+input:user-valid,
+textarea:user-valid,
+select:user-valid {
+  border-color: var(--mu-form-valid-border);
+  transition: border-color 200ms ease-out;
+}
+
+/* Visible checkmark via wrapper element */
+.field {
+  position: relative;
+}
+
+.field input:user-valid ~ .field__valid-icon {
+  opacity: 1;
+}
+
+.field__valid-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  color: var(--mu-form-valid-icon);
+  pointer-events: none;
+}
+```
+
+HTML:
+```html
+<div class="field">
+  <label for="form-name">Имя</label>
+  <input id="form-name" name="name" required aria-describedby="form-name-error" />
+  <span class="field__valid-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  <span id="form-name-error" role="alert" aria-live="polite"></span>
+</div>
+```
+
+Apply across all 5 forms (existing form structure already has `role="alert" aria-live="polite"` from Phase 32 — only the visual valid-state and the icon span are new).
+
+**Dependency:** Existing forms use a similar structure already (audit confirmed `aria-live="polite"` error spans on all 20 form errors). The new pattern is additive — no JS changes required because `:user-valid` is browser-native.
+
+### Confidence
+
+**HIGH.** MDN-verified for `:user-valid` semantics, browser support (Baseline 2023), and pseudo-class behaviour. WCAG 2.2 verified that valid-state announcement is not required. The 45+ "blur not input" choice is implicit in the `:user-valid` semantics so no separate research needed.
+
+---
+
+## Category 4 — `sitemap.xml` & `robots.txt`
+
+### Table Stakes
+
+| Feature | Why Expected | Complexity | Notes |
+|---|---|---|---|
+| **`sitemap.xml` at site root** | Standard Google/Bing convention. URL: `https://medicusunion.kz/sitemap.xml`. The protocol spec (sitemaps.org) requires the file be at or above the path of the URLs it lists, so `/sitemap.xml` is the only correct location for a 6-page site. | Low | Static file, hand-maintained. |
+| **`robots.txt` at site root** | Universal crawler convention. Must include `Sitemap:` directive pointing at the absolute sitemap URL. Optional but standard `User-agent: *` + `Disallow:` (empty = allow all) + explicit disallow for any future admin/preview routes. | Low | Static file, hand-maintained. |
+| **Each URL listed once with `<loc>`** | Required by sitemaps.org spec. The 6 production URLs: `/`, `/online-consultations.html`, `/treatment-abroad.html`, `/checkup.html`, `/contacts.html`, plus `/404.html` is conventionally NOT listed (it's an error page, not a content page). So 5 URLs total in the sitemap. | Low | |
+| **Match the `<link rel="canonical">` tag exactly** | Existing audit confirms canonical URLs are present on every page (Phase 31 work). The sitemap URLs MUST match those canonicals byte-for-byte (same scheme, same host, same trailing-slash policy) or Google logs a "duplicate URL" warning. | Low | Verify in Phase 37. |
+
+### Differentiators
+
+| Feature | Value Proposition | Complexity | Notes |
+|---|---|---|---|
+| **`<lastmod>` tag using ISO 8601** | Google has explicitly stated `lastmod` IS used as a signal for re-crawl prioritization (in contrast with `changefreq`/`priority` which are ignored). For a 6-page site that updates rarely, an honest `lastmod` helps recrawl after content edits. | Low | Set to git commit date of the page file. Can be templated by build script: `git log -1 --format=%cI -- {file}`. |
+| **OMIT `<changefreq>` and `<priority>`** | Google has publicly confirmed it ignores both. They are clutter that adds maintenance burden with zero SEO benefit. | Low | The "outdated advice" the question asks about is to keep them — modern guidance is to drop them. |
+
+### Anti-Features (DO NOT)
+
+| Anti-Feature | Why Avoid | What to Do Instead |
+|---|---|---|
+| **`<changefreq>weekly</changefreq>`** | Google ignores. | Drop |
+| **`<priority>0.8</priority>`** | Google ignores. Adds drift risk (developer cargo-cults numbers). | Drop |
+| **Listing 404.html in the sitemap** | Search engines should not be told to crawl your error page. | Omit |
+| **Forgetting to add `Sitemap:` to robots.txt** | Some crawlers (Bing, Yandex — relevant for KZ market) discover sitemaps via robots.txt, not auto-detection. | Always include the `Sitemap:` line |
+| **Wildcard `Disallow: /*.css$`** | Blocks crawler rendering, breaks Google's mobile-friendly check, and tanks rankings. | Default `Disallow:` (empty) = allow all |
+
+### Recommended Files (concrete)
+
+`/sitemap.xml`:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://medicusunion.kz/</loc>
+    <lastmod>2026-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/online-consultations.html</loc>
+    <lastmod>2026-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/treatment-abroad.html</loc>
+    <lastmod>2026-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/checkup.html</loc>
+    <lastmod>2026-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://medicusunion.kz/contacts.html</loc>
+    <lastmod>2026-04-07</lastmod>
+  </url>
+</urlset>
+```
+
+`/robots.txt`:
+```
+User-agent: *
+Disallow:
+
+Sitemap: https://medicusunion.kz/sitemap.xml
+```
+
+Five lines. That is the entire correct content for a 6-page static site in 2026.
+
+### Confidence
+
+**HIGH** for `sitemaps.org` schema (canonical, never changes).
+**HIGH** for "drop changefreq and priority" — this is documented Google behaviour that has been stable since 2017+.
+**MEDIUM** for `lastmod` being actively used — Google's public statements vary by year; the current consensus (verified through training data + last public Search Central statements) is that it IS used when it's accurate, ignored when it's bogus (e.g., if every URL has the same lastmod). Honest values give a small recrawl benefit; lying gives nothing.
+
+---
+
+## Category 5 — Real Flag Icon Set
+
+### Required country coverage (from `online-consultations.html` and `treatment-abroad.html`)
+
+| Country | Code | Notes |
+|---|---|---|
+| Austria | AT | Headquarters + parent brand origin |
+| Germany | DE | Primary doctor source |
+| France | FR | EU clinic network |
+| Switzerland | CH | EU clinic network |
+| Italy | IT | EU clinic network |
+| Spain | ES | EU clinic network |
+| Israel | IL | Specialty referrals |
+
+(Plus possibly KR, TR for `checkup.html` Korean/Turkish clinics — verify in Phase 37.)
+
+### Library Comparison
+
+| Library | Style | Bundle Approach | Coverage | Render at 24-32px | Notes |
+|---|---|---|---|---|---|
+| **`circle-flags` (HatScripts)** | Round SVG flags with built-in border | Per-country SVG files; no CSS framework needed | ~200 countries | Excellent — designed specifically for small avatar-style sizes, has built-in 1px stroke border so flags don't blend into the background | **RECOMMENDED.** Each flag is a self-contained SVG you `<img src="flags/at.svg">` or inline. Per-country file means you load only the 7 you need (~14 KB total). MIT license. Maintained. |
+| **`flag-icons` (lipis)** | Rectangular SVG flags | npm package + CSS (`flag-icons.min.css` ≈ 200 KB if loaded whole) OR per-flag SVG | ~250 countries | Good for 32 px+; rectangular shape can look "tucked in" against rounded UI cards | Requires CSS classes (`fi fi-at`); CSS bundle is heavy unless you cherry-pick. Often used with `<span class="fi fi-at"></span>`. License: MIT. Best when you need ALL flags. |
+| **`country-flag-icons`** | Rectangular OR rounded React/Vue components, also raw SVG | npm package, opinionated (1×1 / 3×2 / 4×3 aspect variants) | ~250 countries | Good | More framework-tied; overkill for vanilla HTML. |
+| **Twemoji flags (`🇦🇹`)** | Twitter's emoji set | Single CSS link or per-emoji SVG | All ISO-3166 | OK at 32 px+, fuzzy below | RU+KZ Windows users frequently see no emoji or wrong emoji because Windows ships with no native flag glyphs. Hard NO for KZ market. Same anti-pattern as the existing `treatment-abroad.html` emoji stat bar that the audit flagged. |
+
+### Recommendation
+
+**`circle-flags` by HatScripts.** Reasons:
+
+1. **Per-flag SVG download** — load 7 files (~14 KB), not 200. Matches the data-frugal approach already chosen for v3.0 (local WebP, no CDN dependency).
+2. **Self-bordered round style** — the existing site is rounded everywhere (cards `rounded-[2.5rem]`, badges `rounded-full`, CTAs `rounded-[1rem]`). Round flags fit. Rectangular flags (`flag-icons`) look out of place against rounded card backgrounds.
+3. **Excellent at 24–32 px** — designed for it. The current inline SVG flags in `online-consultations.html` are 48 × 32 rectangles that the audit specifically called out as "geometric shapes you don't recognize unless you already know the flag." `circle-flags` look like flags at 24 px because they were drawn for that size.
+4. **No CSS bundle** — works with the existing Tailwind workflow without adding `flag-icons.min.css`.
+5. **MIT licensed, actively maintained** — last release in the public-knowledge window. No abandoned-package risk.
+
+**Bundle strategy:** Copy the 7 needed SVGs into `/images/flags/` at build time (or commit them directly — they're ~2 KB each and won't churn). Reference as:
+```html
+<img src="/images/flags/at.svg" width="24" height="24" alt="Австрия" loading="lazy" />
+```
+
+**Anti-pattern to fix:** The 25 inline SVG flag rectangles in `online-consultations.html:331-361` and `treatment-abroad.html:326-420` get replaced with `<img>` references. This deletes ~150 lines of inline SVG and produces visibly better flags.
+
+### Confidence
+
+**MEDIUM-HIGH.** The library names, formats, license status, and approximate coverage are well-known facts in the front-end ecosystem and verified against my training data. Could not crawl npm registry directly in this environment to confirm latest version numbers — Phase 37 plan should run `npm view circle-flags version` (or check the GitHub release page) to lock the exact version before vendoring. Render-quality claim ("excellent at 24 px") is from the library's stated design intent and from common usage in production sites; sanity-check with a screenshot at 24 px on each of the 7 flags during Phase 37 implementation.
 
 ---
 
 ## Feature Dependencies
 
 ```
-[Dark Mode Toggle (nav button)]
-    └──writes-to──> [localStorage "theme"]
-    └──sets-attribute──> [document.documentElement data-theme="dark"]
-                             └──activates──> [CSS [data-theme="dark"] token block]
-                                                └──overrides──> [:root light token values]
+Phase 33 audit fixes (sticky-bar pb fix)
+       │
+       ▼
+Phase 38 vertical rhythm tokens  ◄── needs the sticky-bar clearance value from Phase 33
+       │
+       ▼
+Phase 36 shared layout primitives ◄── reuses --space-mobile-bottom-clearance token
+       │
+       ▼
+Phase 36 aria-current pattern ◄── needs page identifier (passed by build script)
 
-[Glassmorphism Cards]
-    └──requires──> [Gradient/Mesh Background behind card]
-    └──requires──> [backdrop-filter browser support OR solid fallback]
-    └──degrades-to──> [Flat card with border on older browsers]
 
-[Dark Mode] ──conflicts-with──> [Glassmorphism (light mode only)]
-    └── In dark mode: replace glass effect with opaque dark card (#1E2C3A)
-        Glass over dark background renders poorly — the blur has nothing visually
-        interesting to filter
+Phase 35 form valid-state ────► uses :user-valid (no dependency on other phases)
 
-[Bold Display Typography]
-    └──requires-validation-with──> [Manrope Variable font weight 800]
-    └──requires-responsive-scaling-via──> [clamp() for font-size]
-    └──requires-line-height-adjustment-at-display-sizes]
 
-[Micro-animations (enhanced)]
-    └──gates-on──> [prefers-reduced-motion: no-preference]
-    └──extends──> [existing .animate-on-scroll / .is-visible system]
-    └──no-conflict-with──> [Dark Mode] (purely visual layer, theme-independent)
-
-[Theme Transition (CSS)]
-    └──requires──> [transition property on :root OR body]
-    └──conflicts-with──> [FOUC prevention]
-        └── solution: add data-theme to <html> synchronously before paint (inline script
-            reading localStorage, runs before CSS loads)
+Phase 37 sitemap.xml + robots.txt ────► (no dependency)
+Phase 37 flag library ────► overlaps Phase 34 treatment-abroad SVG cleanup
+                            (replace inline SVG flags as part of the 25× SVG cleanup pass)
 ```
 
-### Dependency Notes
+**Critical-path observation for the orchestrator:** Phase 33 → Phase 38 → Phase 36 is a hard chain. The sticky-bar clearance value computed in Phase 33 becomes `--space-mobile-bottom-clearance` in Phase 38, which then gets baked into `partials/sticky-bar.html` in Phase 36. Doing them out of order means re-doing the partial.
 
-- **Dark mode requires a synchronous inline script in `<head>`** to read localStorage before the first paint. Without it, users with a saved dark preference see a flash of light mode before JS loads. This is a critical implementation detail, not an optional optimization. The script must be `<script>` (not `type="module"`) to run synchronously.
-
-- **Glassmorphism is incompatible with dark mode** applied to the same element. In dark mode, glass effect over dark backgrounds looks muddy and loses its visual purpose. The CSS must conditionally disable `backdrop-filter` on glass cards when `[data-theme="dark"]` is active and replace with a solid semi-dark card style.
-
-- **Bold display typography requires `clamp()` responsive sizing** — a heading scaled to 56px on desktop becomes 56px on a 375px screen if only a fixed value is set. This is a regression risk for the 45+ mobile audience. Minimum readable size must be explicitly defined in the clamp lower bound (40px minimum for h1, 28px minimum for h2 at 375px width).
-
-- **Enhanced micro-animations must not conflict with existing stagger system** — the existing `stagger-children` + `animate-on-scroll` + `is-visible` system works. Adding `transform: translateY(20px)` to the initial state of `.animate-on-scroll` must also be guarded by `prefers-reduced-motion` in the existing media query block (line 182-189 in styles.css). Check that the existing block removes `transform` not just `animation-duration`.
+Phase 35 (form valid-state) and Phase 37 (sitemap + flags) are independent and can run in parallel with the chain.
 
 ---
 
-## MVP Definition (for v1.4 milestone)
+## MVP Recommendation
 
-### Launch With (v1.4)
+**Must-ship in v3.1 (table-stakes only):**
 
-Minimum feature set to constitute a visual redesign that meets the milestone goal.
+1. **Vertical rhythm tokens + 5 hero `min-h` rewrites** — fixes the user's "out of place" pain. Phase 38.
+2. **`pb-mobile-clear` on all 5 `<main>`** — fixes audit Issue #3. Phase 33.
+3. **`:user-valid` form feedback (CSS only)** — fixes audit Strategic Improvement #3. Phase 35.
+4. **`sitemap.xml` + `robots.txt`** — table-stakes SEO hygiene. Phase 37.
+5. **`aria-current="page"` on all nav links** — fixes audit Action #10. Phase 36.
 
-- [ ] Dark mode toggle in navigation — the anchor feature of the redesign; all other features enhance light/dark
-- [ ] CSS token expansion with `[data-theme="dark"]` parallel token set — prerequisite for all dark mode styling
-- [ ] FOUC-prevention inline script for localStorage theme persistence — without this, dark mode toggle is broken for return visitors
-- [ ] Bold display typography: h1 56px/800w, h2 44px/800w with `clamp()` responsive scaling — higher-impact, lower-risk than glassmorphism
-- [ ] Enhanced scroll animations: `translateY(20px → 0)` on `.animate-on-scroll` — extends existing system, low risk
-- [ ] Button `:active` micro-interaction: `scale(0.97)` on CTA buttons — tactile feedback, 100ms, tiny scope
-- [ ] Hero section gradient mesh background — enables glassmorphism on hero stats and provides visual richness
-- [ ] Glassmorphism on hero stats block and pricing card only (2 elements maximum) — selective, high-impact, avoids over-application
-- [ ] Smooth theme transition: 300ms fade on color tokens (disabled under `prefers-reduced-motion`) — polish
+**Should-ship if budget allows (differentiators):**
 
-### Add After Validation (v1.4.x)
+6. **Build-step header/footer inlining via `partials/`** — Phase 36 main work. The biggest long-term-maintenance win, but if Phase 36 runs over, fall back to Pre-rendered + JS-progressive enhancement (item below).
+7. **Real flag icon set (circle-flags vendored)** — Phase 37. Cosmetic but visible.
+8. **Compact-hero variant token** for contacts.html and 404.html — Phase 38.
 
-- [ ] Glassmorphism on nav bar in light mode (frosted header) — evaluate after seeing hero glass in production; depends on visual coherence
-- [ ] Card hover micro-interaction refinement — existing `translateY(-2px)` works; evaluate adding a subtle shadow increase on hover for depth in light mode
-- [ ] Dark mode color refinement pass — real-device testing on OLED and LCD screens at 45+ typical distances
+**Defer to v3.2+ (anti-features for v3.1):**
 
-### Defer to v2+
-
-- [ ] CSS scroll-driven animations (animation-timeline + view()) — NOT Baseline, Firefox gap; defer until widely supported
-- [ ] View Transitions API for theme switch animation — interesting but adds complexity for marginal gain; not worth testing on this audience
-- [ ] @starting-style entrance animations for dynamic content — Baseline 2024 but this page has no dynamic DOM insertion patterns
-
----
-
-## Feature Prioritization Matrix (v1.4 scope only)
-
-| Feature | User Value | Implementation Cost | Priority | Risk for 45+ Audience |
-|---------|------------|---------------------|----------|-----------------------|
-| Dark mode toggle + tokens | HIGH | MEDIUM | P1 | LOW — pure user benefit, opt-in |
-| Bold display typography (h1/h2) | HIGH | LOW | P1 | LOW — increases readability |
-| FOUC prevention inline script | HIGH (retention) | LOW | P1 | LOW — invisible to user when working |
-| Enhanced scroll animations | MEDIUM | LOW | P1 | LOW — `prefers-reduced-motion` already gated |
-| Hero gradient mesh background | MEDIUM | LOW | P1 | LOW — static, no motion |
-| Glassmorphism on hero stats + pricing (2 elements) | MEDIUM | MEDIUM | P1 | LOW if applied selectively with proper contrast |
-| Button `:active` scale micro-interaction | MEDIUM | LOW | P1 | LOW — 100ms, tactile, not disorienting |
-| Smooth theme transition | LOW | LOW | P2 | LOW — gated under prefers-reduced-motion |
-| Nav bar glassmorphism | LOW | LOW | P2 | LOW if contrast maintained |
-| Dark mode OLED refinement | LOW | LOW | P3 | MEDIUM — requires physical device testing |
-
-**Priority key:**
-- P1: In v1.4 initial release
-- P2: In v1.4 follow-up patch after review
-- P3: Future milestone
-
----
-
-## Domain-Specific Research Findings
-
-### 1. Glassmorphism / Liquid Glass in 2025
-
-**What it actually requires (not what tutorials show):**
-
-Glassmorphism requires THREE things simultaneously to work: (a) `backdrop-filter: blur(Npx)` on the element, (b) a semi-transparent background on the element (e.g., `rgba(255,255,255,0.15)`), and (c) a visually complex background BEHIND the element (a gradient, mesh, image, or blur-able content). Without (c), the glass effect is invisible — there is nothing to blur through.
-
-**Browser support:** `backdrop-filter` is Baseline 2024 (newly available since September 2024, per MDN). Works across Chrome/Edge/Safari/Firefox latest. Older devices (pre-2024 Android WebView, very old iOS Safari) may not support it. Provide fallback: `@supports not (backdrop-filter: blur(1px)) { .glass { background: rgba(255,255,255,0.9); } }`.
-
-**Blur value guidance (confidence: MEDIUM, from design community patterns):**
-- `blur(8px)` — subtle, barely noticeable, appropriate for nav bars
-- `blur(16-20px)` — the sweet spot for cards; clearly glassy without heavy performance cost
-- `blur(40px+)` — heavy, used in Apple-style "liquid glass"; GPU-intensive on mobile; avoid
-
-**Background needed:**
-- For light mode: radial gradient with brand colors (teal #38C6F4, green #1AC67E) at 10-15% opacity on white creates sufficient visual complexity. This is the recommended approach — pure CSS, no images.
-- For dark mode: disable the glass effect entirely. Replace with opaque dark card. Glass on dark backgrounds renders as a murky smear.
-
-**Performance:** `backdrop-filter` creates a new composite layer and forces GPU compositing. On mid-range Android (common in KZ), more than 3-4 glass elements visible simultaneously can cause scroll jank. Limit to 2 glass elements per viewport.
-
-**Confidence:** HIGH for browser support facts (MDN-verified). MEDIUM for visual guidance (design community patterns, not official standards).
-
-### 2. Dark Mode UX for Medical/Health 45+ Audience
-
-**Key findings from UX literature and WCAG (MEDIUM confidence overall):**
-
-Dark mode reduces blue light emission, which benefits evening/night reading. For 45+ users with presbyopia or early cataracts (both increase with age), reduced glare from a dark background can reduce eyestrain during extended reading sessions — precisely the behavior of a patient researching a medical consultation late at night.
-
-**What DOES work for 45+:**
-- Near-black background with slight color tint (not pure black) — e.g., `#0F1923` or `#15202B`. Pure `#000000` creates halation around light text for astigmatic users (HIGH prevalence at 45+).
-- Off-white text (e.g., `#E8EFF6`) rather than pure `#FFFFFF`. Reduces contrast harshness.
-- Reduced contrast differential in dark mode is acceptable and often preferable — WCAG AA (4.5:1) is the floor, not the ceiling; going much higher than 7:1 in dark mode can cause eye strain for 45+ users.
-- Semantic color preservation: the green CTA (`#1AC67E`) should become slightly desaturated and brighter in dark mode to maintain the same visual "call to action" weight without burning on a dark background.
-
-**What to AVOID:**
-- Red/orange accent colors for errors or warnings in dark mode — these produce strong blue-light contrast that is especially uncomfortable for older eyes.
-- Images that were optimized for light backgrounds look washed-out in dark mode. Any white-bg photos/illustrations need dark-mode-specific treatment or a dark overlay.
-- The existing SVG hero illustration uses duotone colors — in dark mode it must either be recolored via CSS `filter` or inverted intelligently.
-
-**Toggle positioning:** The 45+ audience needs to be able to FIND the toggle. Place it in the sticky navigation, with a recognizable sun/moon icon (not just a label), at a minimum 44x44px touch target. Label it "Тёмная тема" as a tooltip/aria-label for accessibility.
-
-**Confidence:** MEDIUM. Derived from WCAG 2.1 spec, NNGroup's dark mode research, and ophthalmology UX literature. No Kazakhstan-specific study found.
-
-### 3. Bold/Display Typography on Health Landing Pages
-
-**Current state:** h1: 2.25rem (36px), h2: 2rem (32px), font-weight: 700. Manrope Variable loaded with weights 200-800.
-
-**Research finding:** The "bold editorial" trend in 2025 (Vercel, Linear, Stripe landing pages) uses 700-800 weight at 56-72px for h1. For a medical landing page targeting 45+, 56px/800w h1 is the appropriate ceiling — bolder than current, but not the extreme 80px+ editorial style that would feel out of place on a medical site.
-
-**Recommended scale:**
-- h1: `clamp(40px, 5vw, 56px)`, font-weight: 800
-- h2: `clamp(28px, 3.5vw, 44px)`, font-weight: 800
-- h3: `clamp(22px, 2.5vw, 32px)`, font-weight: 700 (unchanged category, bump value)
-- Body: 18px (unchanged — already correct for 45+)
-
-**Line height for display sizes:** At 48px+, line-height of 1.2 (current) begins to feel spacious. The display-text convention is 1.0-1.15. For Cyrillic text, 1.1 works well at 48px+ without letters touching ascenders/descenders.
-
-**Color:** In light mode, h1/h2 in `#18212C` (current `--color-text-primary`, 16.24:1 contrast) is correct. Avoid colored headings (teal/green) for body headings — acceptable for section labels or badges but not for multi-word headings where scanning is needed by older users.
-
-**Dark mode:** h1/h2 in `#E8EFF6` on `#0F1923` maintains approximately 12:1 contrast — well above WCAG AAA, appropriate for the audience.
-
-**Confidence:** MEDIUM for the specific size recommendations (design community consensus, not a clinical standard). HIGH for the clamp() technique and Manrope Variable weight availability.
-
-### 4. Micro-Animations: What Works for 45+ Audience
-
-**Core principle:** For 45+ medical audience, animations must CONFIRM, not ENTERTAIN. Every animation should make the user more confident in what is happening, not add visual complexity.
-
-**Recommended animations (all gated by `prefers-reduced-motion: reduce`):**
-
-| Animation | Element | Duration | Easing | Why It Helps 45+ |
-|-----------|---------|---------|--------|------------------|
-| Fade + slide-up on scroll reveal | Cards, section headings | 400ms | ease-out | Shows content is loading/appearing in a natural direction; confirms the page is interactive |
-| Scale-down on button active | CTA buttons | 100ms | ease | Confirms the tap/click registered — critical for users uncertain about touch inputs |
-| Color change on input focus | Form fields | 150ms | ease | Confirms which field is active — visual affordance for users less familiar with digital forms |
-| Accordion expand/collapse | FAQ items | 250ms | ease-in-out | Already implemented; confirms action and shows content relationship |
-| Theme fade transition | Background + text colors | 300ms | ease | Smooth transition confirms the toggle worked and shows the theme shift is intentional |
-| Nav underline on hover | Navigation links | 150ms | ease | Hover state affordance |
-
-**Timing guidance:**
-- 100ms: tactile feedback (button active, checkbox tick)
-- 150-250ms: hover states, focus transitions
-- 300-400ms: scroll reveals, theme transitions
-- 500ms+: transitions that feel "laggy" for this audience — avoid
-
-**What NOT to animate for 45+:**
-- Numbers counting up (counters) — visually noisy, can be disorienting for users with any cognitive variation
-- Typing effects — patronizing, adds perceived wait time
-- Floating/bouncing elements — constant motion in peripheral vision is tiring; more so for older users
-- Hover-triggered transforms on text — reading-in-progress should not be visually disrupted
-
-**Stagger timing:** The existing 100ms-per-child stagger on grid cards is correct. Increase the stagger to 120ms for the 45+ audience — slightly slower is more reassuring than slightly faster.
-
-**`prefers-reduced-motion` implementation:** The existing codebase already gates animations with `prefers-reduced-motion: reduce` at lines 182-189 (styles.css) and in `initScrollAnimations()` (main.js). Ensure that any new `transform: translateY()` animations added in v1.4 are also suppressed. The existing block sets `animation-duration: 0.01ms` and `transition-duration: 0.01ms` globally — but `transform` changes applied via class addition (`.is-visible`) also need to reset the transform via `transform: none` in the reduced-motion block, not just duration-zero it.
-
-**Confidence:** HIGH for timing values and `prefers-reduced-motion` implementation (web standards). MEDIUM for the 45+-specific behavioral notes (UX literature, not clinical research).
-
----
-
-## Accessibility Requirements (Non-Negotiable for v1.4)
-
-These are not features — they are prerequisites that all v1.4 features must satisfy:
-
-1. **WCAG AA contrast in ALL states:** Light mode, dark mode, hover state, focus state, button active state, glassmorphism cards, gradient backgrounds. Every text/background combination must achieve 4.5:1 minimum. Use a contrast checker on every new token pair.
-
-2. **`prefers-reduced-motion: reduce` compliance:** ALL new animations (scroll reveal enhancement, button scale, theme transition) must produce no transform or opacity transition under reduced motion. Not just duration-zero — the start and end state must be identical (no visual change).
-
-3. **Dark mode toggle keyboard accessible:** The toggle button must have `role="button"` or be a `<button>`, must have `aria-pressed="true/false"` state, and must be focusable with visible focus ring in both themes.
-
-4. **No contrast regression from glassmorphism:** Glass cards must maintain text contrast against the blurred background. Test with `backdrop-filter: blur(0)` disabled (fallback state) and with blur active. If any blur midpoint creates a light zone under dark text, increase text shadow or adjust glass opacity.
-
-5. **Touch targets remain 48x48px minimum:** The dark mode toggle, navigation links, and any new interactive elements must meet this. Do not reduce touch target size for visual design reasons.
-
----
-
-## Implementation Notes for the Existing CSS Architecture
-
-The current CSS uses a single `:root` token block. The recommended implementation for dark mode is:
-
-```css
-/* Existing :root = light mode (unchanged) */
-:root { --color-background: #ffffff; ... }
-
-/* Dark mode override */
-[data-theme="dark"] {
-  --color-background: #0F1923;
-  --color-text-primary: #E8EFF6;
-  /* ... all tokens that change in dark mode */
-}
-
-/* System preference (no saved preference) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-background: #0F1923;
-    /* ... */
-  }
-}
-```
-
-The `color-scheme` property should be declared:
-```css
-:root { color-scheme: light dark; }
-[data-theme="dark"] { color-scheme: dark; }
-```
-
-This ensures browser-native form controls and scrollbars adapt to the active theme.
-
-The FOUC-prevention inline script (synchronous, in `<head>`, before CSS `<link>`):
-```html
-<script>
-  (function() {
-    var saved = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  })();
-</script>
-```
-
-This must run synchronously (not `type="module"`, not `defer`, not `async`).
+- Migrating to a static site generator (11ty, Hugo) — even though SSGs solve the partial problem natively, this is too big a stack change for this milestone. Build-step inlining gets 80% of the value at 5% of the migration cost.
+- Container queries for hero (`@container`) — all 5 heroes can be solved with viewport units. Container queries add complexity for no current win.
+- Replacing Motion CDN with `View Transitions API` — out of scope.
 
 ---
 
 ## Sources
 
-### Confirmed (HIGH confidence — primary sources)
+- [MDN: `:user-valid` CSS pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid) — Baseline 2023, "use `:user-valid` rather than `:valid` to avoid showing success states before user interaction" (HIGH)
+- [MDN: Form validation tutorial](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation) — confirms `:user-valid` over `:valid`, validates on input + submit, browser-native pseudo-class is preferred over JS (HIGH)
+- [MDN: viewport length units (`vh`/`svh`/`dvh`/`lvh`)](https://developer.mozilla.org/en-US/docs/Web/CSS/length) — "`svh` is safer for iOS … `dvh` can cause layout shifts during scrolling, may degrade UX" (HIGH)
+- [Tailwind CSS v4: `min-height` documentation](https://tailwindcss.com/docs/min-height) — confirms `min-h-svh`, `min-h-dvh`, `min-h-lvh` ship as first-class utilities; `min-h-screen` = `100vh` (HIGH)
+- [MDN: `aria-current` attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) — "only mark one element as current," dynamic-set via `Element.ariaCurrent` or `setAttribute` (HIGH)
+- [MDN: `<noscript>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/noscript) — "not suitable as a comprehensive fallback for sites that heavily depend on JavaScript for layout" (HIGH)
+- [MDN: Web Components / custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) — "custom elements MUST be registered and instantiated via JavaScript … without JS the page would display unstyled, non-functional content" (HIGH)
+- [MDN: `<template>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template) — "client-side only, no cross-file sharing, not a server-side feature; cannot be shared across multiple pages at the server level" (HIGH)
+- [MDN: lazy loading guide](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading) — fetch+innerHTML "longer Critical Rendering Path, delayed LCP, layout shifts" (HIGH)
+- [Sitemaps.org protocol 0.9](https://www.sitemaps.org/protocol.html) — canonical schema for `<urlset>`, `<url>`, `<loc>`, `<lastmod>`, `<changefreq>`, `<priority>` (HIGH; spec is stable since 2008)
+- Existing project files (verified by direct Read):
+  - `/Users/mikhail/Projects/Medicus_video_consult-landing/.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` — full audit baseline
+  - `/Users/mikhail/Projects/Medicus_video_consult-landing/src/styles/theme.css` — token system, existing `--mu-green-600`, `prefers-reduced-motion` rule
+  - `/Users/mikhail/Projects/Medicus_video_consult-landing/index.html`, `online-consultations.html`, `treatment-abroad.html`, `checkup.html`, `contacts.html`, `404.html` — current `min-h` and `pt-32 pb-16` patterns confirmed
 
-- MDN Web Docs: `backdrop-filter` — Baseline 2024, confirmed September 2024 availability
-- MDN Web Docs: `animation-timeline` — confirmed NOT Baseline, limited availability as of research date
-- MDN Web Docs: `prefers-reduced-motion` — Baseline Widely Available since January 2020
-- MDN Web Docs: `prefers-color-scheme` — Baseline Widely Available since January 2020
-- MDN Web Docs: `color-scheme` property — Baseline Widely Available since January 2022
-- MDN Web Docs: `@starting-style` — Baseline 2024, available since August 2024 (not used in v1.4)
-- MedicusUnion KZ codebase: styles.css `:root` token block, existing animation implementation, `prefers-reduced-motion` gate at lines 182-189
-- PROJECT.md: 45+ audience constraint, mobile-first constraint, "без маркетинговой агрессии" tone, Out of Scope list (parallax, video, heavy animations)
+### Confidence summary
 
-### Referenced (MEDIUM confidence — design and UX literature)
+| Feature | Confidence | Verified by |
+|---|---|---|
+| Shared layout primitives (build-step inlining recommendation, `aria-current` pattern, no-JS implications) | HIGH | MDN ×4 + project files |
+| Vertical rhythm — `svh` over `dvh`/`vh`, Tailwind v4 utilities | HIGH | MDN + Tailwind docs |
+| Vertical rhythm — specific clamp values (560 / 75svh / 760) | MEDIUM | Derived from existing layout + audit findings; should be validated empirically in Phase 38 |
+| Vertical rhythm — direct competitor benchmarks (bupa, zocdoc, doctolib) | LOW | Could not crawl those sites in this environment; Phase 38 plan should include manual screenshot pass on 2 competitors |
+| Form valid-state (`:user-valid` + checkmark) | HIGH | MDN ×2 + WCAG 2.2 |
+| `sitemap.xml` schema + drop changefreq/priority | HIGH | sitemaps.org spec + documented Google behaviour |
+| `lastmod` is actively used by Google | MEDIUM | Documented Google statements; Phase 37 plan should use honest git-derived dates, not synthetic |
+| `circle-flags` library recommendation | MEDIUM-HIGH | Known library characteristics; lock exact version in Phase 37 implementation |
 
-- W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
-- WCAG 2.1 SC 1.4.3 (Contrast Minimum), 1.4.11 (Non-text Contrast) — accessibility standards
-- Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading research
-- Web.dev + Chrome for Developers: CSS glassmorphism and backdrop-filter usage patterns
-- Design community consensus on 2025 display typography scales (Vercel, Stripe, Linear landing pages) — LOW individual source confidence, MEDIUM as converging consensus
+### Open questions for Phase 38 plan (NOT for this research)
 
-### Not Found / Unable to Verify
-
-- Kazakhstan-specific data on 45+ user dark mode preference rates — no authoritative source found; relied on general aging UX literature
-- Clinical ophthalmology studies on web dark mode for presbyopic users — mentioned in design literature but primary clinical sources not located; halation claim is MEDIUM confidence
-
----
-
-*Feature research for: MedicusUnion KZ Landing — v1.4 Visual Redesign*
-*Researched: 2026-03-24*
-*Downstream consumer: v1.4 roadmap phase planning*
+1. Should `contacts.html` use a hero at all, or should the heading-in-`<main>` pattern be preserved? (Currently it's inconsistent with the other 4 service pages — Phase 38 should make a deliberate call.)
+2. The clamp ceiling of 760 px assumes the hero illustration on `index.html` does not need more than 760 px to render fully. If it does (verify on 1920 × 1080 in Phase 38 visual pass), bump to 820 px.
+3. Should Phase 36's build script also strip the `<!-- @include -->` comment from output? (Cosmetic, but the comment will be visible in View Source if not.)

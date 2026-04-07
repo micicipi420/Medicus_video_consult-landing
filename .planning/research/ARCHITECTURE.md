@@ -1,510 +1,341 @@
-# Architecture Patterns: v1.4 Visual Redesign Integration
+# Architecture Research — v3.1 Site Foundation & Audit Fixes
 
-**Domain:** Visual enhancement integration into existing vanilla CSS single-file architecture
-**Researched:** 2026-03-24
-**Milestone:** v1.4 — Dark mode, glassmorphism, bold typography, micro-animations
-
----
-
-## Context: What We Are Working With
-
-The existing codebase is a single-file architecture that is fully operational:
-
-- `css/styles.css` — ~1,640 lines, 11 numbered sections, CSS custom properties at `:root`
-- `index.html` — ~762 lines, single page, `<html lang="ru" class="no-js">`
-- `js/main.js` — ~488 lines, IIFE pattern, ES5 syntax, IntersectionObserver for scroll animations
-
-Key existing patterns that constrain integration:
-
-1. All color references are already CSS tokens (`--color-*`, `--gradient-cta`, etc.)
-2. Animation states use `.is-visible` / `.is-open` class toggles, not inline styles
-3. JS uses `document.documentElement.classList` for the `no-js` toggle — the same mechanism dark mode will use
-4. `prefers-reduced-motion` is already handled at the CSS level (section 10 of styles.css)
-5. Section backgrounds alternate between `--color-white` (#ffffff) and `--color-light` (#F8FAFB) with one dark section (`.section--dark` using `--color-dark` #18212C)
+**Researched:** 2026-04-07
+**Mode:** Project Architecture (subsequent milestone, integration-focused)
+**Confidence:** HIGH (all claims verified against existing source files)
 
 ---
 
-## Question 1: Dark Mode Token Architecture
+## CRITICAL CORRECTIONS TO MILESTONE BRIEF
 
-### The Strategy: `data-theme` Attribute on `<html>`
+Four reality checks that change the recommended architecture:
 
-Do NOT use `@media (prefers-color-scheme: dark)` as the primary mechanism. The v1.4 requirement is a **user toggle** (stored in localStorage), not a system-automatic toggle. The correct pattern:
+### 1. An SPA-style client router already ships (`js/router.js`, 465 lines)
 
-```
-<html lang="ru" data-theme="light">    <!-- default -->
-<html lang="ru" data-theme="dark">     <!-- after user toggle -->
-```
+- Intercepts internal link clicks, fetches the target HTML, parses with `DOMParser`
+- Already swaps `<main id="page-content">`, `<footer id="footer">`, and `<div id="sticky-bar">` on every navigation (lines 238–253)
+- Already re-runs `MU.reinitPageContent()` and `MU.initAnimations(false)` after swap (lines 277–282)
+- Already has `updateActiveNav(pathname)` setting `aria-current="page"` (line 174)
+- Already prefetches other pages on `requestIdleCallback`
 
-**How to extend `:root` tokens without refactoring everything:**
+**Implication:** The "5 duplicated copies" of header/footer/sticky-bar across 6 HTML files are the **canonical source the router reads from**. Any client-side fetch+inject approach would break `parsePageHTML` (which would see `null` footer/sticky-bar in fetched docs) and destroy the SPA routing.
 
-Step 1 — Add dark-mode overrides as a second token block, scoped to `[data-theme="dark"]`. The existing `:root` block stays completely unchanged.
+### 2. There is no dark-mode FOUC-prevention script in the codebase
 
-```css
-/* In styles.css, immediately AFTER the existing :root block — insert new block */
+`theme.css:1` declares `@custom-variant dark (&:is(.dark *));` and lines 91–126 define `.dark` token overrides, but no JS toggles `.dark`, no `localStorage` read happens, and no inline `<head>` script exists. PROJECT.md's "v1.4 dark mode shipped" claim is stale — toggle was either reverted or never landed. **Dark-mode is not a v3.1 concern.**
 
-[data-theme="dark"] {
-  /* Backgrounds */
-  --color-white:          #0F1923;   /* page background */
-  --color-light:          #1A2533;   /* alternating section background */
-  --color-dark:           #E8F4FF;   /* inverted: was dark text, now light */
+### 3. There is no build pipeline
 
-  /* Text */
-  --color-text-primary:   #E0ECF8;
-  --color-text-on-dark:   #18212C;   /* inverted: text on "dark" (now light) sections */
-  --color-text-muted:     rgba(224, 236, 248, 0.55);
+No `Makefile`, no `package.json`, no `scripts/build.sh`. Only build step is manual `./tailwindcss -i src/styles/tailwind.css -o css/styles.css --minify`. The standalone `tailwindcss` binary (~76 MB) is checked into git at repo root.
 
-  /* Interactive */
-  --color-primary:        #5FD5F9;   /* brighter cyan for dark bg contrast */
-  --color-primary-dark:   #38C6F4;   /* restore original as "dark variant" on dark bg */
-  --color-secondary:      #3FCF88;
-  --color-secondary-dark: #1AC67E;
+### 4. Deploy target is Netlify, not nginx
 
-  /* CTA remains gradient — works on both themes */
-  /* --gradient-cta: unchanged */
+`.netlify/netlify.toml` publishes the directory as-is with no build command. **This kills any nginx SSI (`<!--# include -->`) recommendation** because Netlify does not support SSI. Any partials solution must work as a build-time transformation, not a server-side include.
 
-  /* Badges */
-  --color-badge-bg:       #0D3324;
-  --color-badge-text:     #3FCF88;
+### 5. No `IntersectionObserver` hide-near-footer on sticky-bar
 
-  /* Shadows (less visible on dark bg — use glow instead) */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-
-  /* Glass surface tokens (new, dark mode only) */
-  --glass-bg:             rgba(255, 255, 255, 0.06);
-  --glass-border:         rgba(255, 255, 255, 0.12);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Why this works without refactoring:** Every existing CSS rule that references `var(--color-white)`, `var(--color-text-primary)`, etc. automatically gets the dark value when `data-theme="dark"` is on `<html>`. Zero existing rules need to change.
-
-**Light mode glass tokens (also add to `:root`):**
-
-```css
-:root {
-  /* ... existing tokens ... */
-
-  /* Glass surface tokens (light mode) */
-  --glass-bg:             rgba(255, 255, 255, 0.65);
-  --glass-border:         rgba(255, 255, 255, 0.9);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Theme color meta tag:** Update to use JS — on dark mode activation, set:
-```html
-<meta name="theme-color" content="#0F1923">
-```
-
-### System Preference Respect (bonus — no extra code)
-
-Add this at the END of the `[data-theme="dark"]` block:
-
-```css
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    /* same token overrides as [data-theme="dark"] */
-  }
-}
-```
-
-This means: if no explicit choice has been made yet, follow the OS. Once the user clicks the toggle (localStorage sets `data-theme`), the explicit attribute wins.
-
-### What NOT to do
-
-- Do NOT use CSS variables with `-light` / `-dark` suffixes (e.g., `--color-white-dark`). This requires touching every existing rule.
-- Do NOT use a `.dark` class on `<body>`. The `data-theme` attribute on `<html>` covers the full cascade including `<body>` default styles.
-- Do NOT try to scope dark mode per-section. The token cascade handles it globally.
+Sticky bar is a static `class="fixed bottom-4 left-4 right-4 z-50 ... lg:hidden"` at `index.html:1156`. Never hides, disappears at `lg:` breakpoint. The only `IntersectionObserver` usage is for animated counters at `main.js:457`.
 
 ---
 
-## Question 2: Glassmorphism — Where to Apply It
+## Existing File State (verified)
 
-### Browser Support Note
-
-`backdrop-filter: blur()` is supported in Chrome 76+, Firefox 70+, Safari 9+ (with `-webkit-` prefix). **Confidence: HIGH** (well-established by 2026). Must add `-webkit-backdrop-filter` alongside `backdrop-filter`. Always provide a solid fallback background for browsers that don't support it.
-
-### Sections That Benefit Most
-
-Glassmorphism only creates visual depth when there is something behind the glass element to blur. In the current page:
-
-| Component | Current Background Behind | Glass Viable? | Priority |
-|-----------|--------------------------|---------------|----------|
-| `.pricing__card` | `.pricing` section (white/light) | Low contrast | MEDIUM — add gradient to section first |
-| `.site-header` (scrolled) | Page content scrolling behind | YES | HIGH — header glass on scroll |
-| Hero stat badges (social proof numbers) | Hero background | YES if hero gets gradient | HIGH |
-| `.doctors__card` | `.doctors` section (light bg) | MEDIUM — subtle | LOW |
-| `.lead-form__wrapper` | `.lead-form-section` with existing radial halo | YES | HIGH |
-| FAQ items | Plain white — nothing behind | NO | Skip |
-| `.final-cta` (dark section) | Gradient dark bg | YES — light glass | MEDIUM |
-| Process step cards | White — nothing behind | NO unless bg changes | LOW |
-
-**Recommended glass targets (in priority order):**
-
-**1. Sticky header when scrolled (`.site-header.is-scrolled`)**
-The `.is-scrolled` state already exists in JS. Currently adds `box-shadow`. Replace that with glass:
-
-```css
-/* MODIFY existing .site-header.is-scrolled */
-.site-header.is-scrolled {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: none;  /* remove the old shadow */
-}
-
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .site-header.is-scrolled {
-    background: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-```
-
-**2. Pricing card**
-The pricing section needs a gradient background first, then the card gets glass:
-
-```css
-/* ADD to pricing section */
-.pricing {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
-}
-
-[data-theme="dark"] .pricing {
-  background: linear-gradient(135deg, #0c1a2e 0%, #0f2137 50%, #0c1f18 100%);
-}
-
-/* ADD .pricing__card--glass modifier */
-.pricing__card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-```
-
-**3. Lead form wrapper**
-The form section already has a radial gradient halo (`.lead-form-section::before`). Glass the form wrapper:
-
-```css
-/* ADD .lead-form__wrapper--glass modifier */
-.lead-form__wrapper--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-}
-```
-
-**4. Social proof stats on the hero (if hero gets gradient)**
-If the hero background is changed to a gradient (part of bold typography redesign), the social proof numbers can float as glass pills.
-
-### What NOT to glass
-
-- FAQ items — no background content to blur, looks broken
-- `.section--dark` text paragraphs — glass on text containers hurts readability for 45+ audience
-- The sticky mobile bar at the bottom — always needs high contrast for CTA readability
-
-### Glass Token Implementation Pattern
-
-Use the `--glass-*` tokens established in `:root` and `[data-theme="dark"]`. Never hardcode `rgba(255,255,255,0.65)` directly in component rules — this breaks dark mode.
-
-```css
-/* Good */
-.card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-
-/* Bad — hardcoded, breaks in dark mode */
-.card--glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px);
-}
-```
+| File | Relevance to v3.1 |
+|------|-------------------|
+| `js/router.js` | SPA router — swap targets: `#page-content`, `#footer`, `#sticky-bar`. MUST preserve these IDs. |
+| `js/main.js` | IIFE pattern, initFormValidation at lines 254–430 (rules object, Russian error messages, custom phone format). Extendable for valid-state. |
+| `js/animations.js` | Motion CDN integration. No interaction with v3.1 changes. |
+| `src/styles/theme.css` | Two-layer tokens: `:root` (brand `--mu-*`) + `@theme inline` (Tailwind `--color-mu-*`). Existing pattern for shadow/font/color. |
+| `src/styles/tailwind.css` | Declares `@source '../../*.html'` at line 3 — Tailwind scans repo-root HTML for utilities. |
+| `.netlify/netlify.toml` | No build command currently. Phase 36 must add `[build] command = "./build.sh"`. |
+| `tailwindcss` (76 MB) | Standalone binary, checked in, executable, gitignored elsewhere. |
 
 ---
 
-## Question 3: Scroll-Driven Animations Alongside IntersectionObserver
+## Hero Drift — Phase 38 source of truth
 
-### Browser Support Assessment
+| Page | Current hero classes |
+|------|---------------------|
+| `index.html:201` | `min-h-screen flex items-center justify-center pt-32 pb-16 lg:pt-40` |
+| `checkup.html:113` | `min-h-[80vh] flex items-center justify-center pt-32 pb-16 lg:pt-40` |
+| `online-consultations.html:116` | `pt-32 pb-16` (NO min-h) |
+| `treatment-abroad.html:120` | `pt-32 pb-16` (NO min-h) |
+| `contacts.html` | smaller layout |
+| `404.html` | smaller centered layout |
 
-CSS Scroll-Driven Animations (`animation-timeline: scroll()`) — Chrome 115+, Edge 115+. **Firefox support was behind a flag until Firefox 129 (August 2024) where it shipped.** Safari support shipped in Safari 18 (September 2024). As of early 2026, baseline support is solid in modern browsers. **Confidence: MEDIUM** (confirmed in training data through mid-2025, assume stable in 2026).
-
-The existing IntersectionObserver animations are **class-toggle based** (add `.is-visible` to trigger a CSS transition). Scroll-driven animations are **pure CSS keyframe** based. They do not conflict — they operate on different CSS properties through different mechanisms.
-
-### How to Layer Without Conflict
-
-**Rule 1: Don't touch existing `.animate-on-scroll` / `.is-visible` patterns.** The IntersectionObserver adds `.is-visible` which triggers a `transition`. Leave that intact. It works and has IE11-era compatibility.
-
-**Rule 2: Use Scroll-Driven Animations only for NEW visual effects** that are additive, not replacements. Good candidates:
-
-- Progress bar in the header (shows how far down the page you are)
-- Parallax-style fade on section dividers (subtle opacity shift as you scroll past)
-- Hero title scale effect that plays once as page loads and user begins scrolling
-
-**Rule 3: Gate scroll-driven animations with `@supports`:**
-
-```css
-/* Only applies if browser supports scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    animation: grow-width linear;
-    animation-timeline: scroll(root);
-    animation-range: 0 100%;
-  }
-
-  @keyframes grow-width {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
-}
-```
-
-**Rule 4: Respect existing `prefers-reduced-motion` — it already blanket-disables all animations.** The existing rule at section 10 of styles.css covers both transition-based AND keyframe-based animations:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
-This already handles CSS scroll-driven animations too. No change needed.
-
-### Practical Scroll-Driven Additions for v1.4
-
-| Effect | Mechanism | Where |
-|--------|-----------|-------|
-| Scroll progress bar in header | `animation-timeline: scroll(root)` on a 3px bar | Inside `.site-header` |
-| Section background parallax | `animation-timeline: view()` on section `::before` pseudo-elements | Hero, social-proof |
-| Counter number animation (social proof) | `animation-timeline: view()` — triggered when element enters viewport | `.social-proof__number` |
-
-**The counter animation is particularly high-value:** The social proof section shows "200+ врачей", "15 стран", etc. Animating these numbers counting up as the section enters viewport is high-impact for ЦА 45+. The scroll-driven version is cleaner than IntersectionObserver for this because it ties the animation timing to viewport entry:
-
-```css
-@supports (animation-timeline: scroll()) {
-  @keyframes count-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .social-proof__number {
-    animation: count-up 0.4s ease-out both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
-  }
-}
-```
-
-Without `@supports`, `.social-proof__number` falls through to the existing IntersectionObserver pattern which already adds `animate-on-scroll` to section children.
-
-### Interaction Between IntersectionObserver and Scroll-Driven Animations
-
-No conflict exists because:
-- IntersectionObserver mutates `.classList` → triggers CSS `transition`
-- Scroll-driven animations are `@keyframe` based, no JS involvement
-- They can both apply to the same element if needed (different properties)
-
-The only case to watch: if IntersectionObserver adds `.is-visible` which changes `opacity: 0 → 1` via transition, AND a scroll-driven animation also animates `opacity`, the last applied wins. **Avoid targeting the same property with both mechanisms on the same element.**
+Three different hero strategies across four content pages. This is exactly what Phase 38 needs to systematize.
 
 ---
 
-## Question 4: Build Order (Minimum Risk Sequence)
+## Recommended Architecture (v3.1 deltas)
 
-Each step is independently deployable and does not break the step before it.
+### 1. Partials integration — build-time shell splice (NOT runtime fetch, NOT nginx SSI)
 
-### Step 1: Dark Mode Token Infrastructure (Zero Visual Change)
+**Why not client-side fetch+inject:**
+- Breaks the router's `parsePageHTML()` — it requires header/footer/sticky-bar in the parsed doc. If they're runtime-injected only, footer/sticky-bar are `null` on fetch → navigation swap breaks.
+- 100–500 ms headerless flash on slow connections — wrong for 45+ medical audience.
+- Googlebot executes JS but Yandex (KZ market) is unreliable on JS-rendered chrome. Trust signals + legal entity in footer are SEO-relevant.
+- `<noscript>` fallback means duplicating header inline anyway, defeating the purpose.
 
-**Risk: NONE — no existing styles change.**
+**Why not nginx SSI:**
+- Netlify does not support SSI. STACK.md's recommendation is inapplicable to this deploy target.
+- Would couple source-of-truth to server config, breaking local `file://` preview.
 
-- Add `--glass-bg`, `--glass-border`, `--glass-blur` to existing `:root` block
-- Add `[data-theme="dark"] { ... }` block immediately after `:root`
-- Add `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ... } }` at end
-- Add `initDarkMode()` to `js/main.js` inside the existing IIFE (reads localStorage, sets `data-theme`, wires toggle button)
-- Add dark mode toggle button to `index.html` (inside `.site-header__container`, after nav)
+**Why not naive `cat` concat:**
+- Forces page body files to contain literally nothing of the surrounding chrome — much bigger refactor than in-place marker replacement.
 
-Deliverable: Fully functional dark mode toggle. All existing colors correct in both themes. No visual change in light mode.
-
-### Step 2: Bold Typography Scale
-
-**Risk: LOW — token changes, no structural changes.**
-
-- Update font size tokens in `:root`: increase `--font-size-h1`, `--font-size-h2`, `--font-size-h3`
-- Optionally add display heading variant: `--font-size-display: clamp(2.5rem, 5vw, 4rem)`
-- Apply `--font-size-display` to `.hero__title` only (hero is the high-impact area)
-- Increase font weight on headings from 700 to 800 (Manrope Variable supports 800)
-
-Deliverable: Visually bolder hero and section headings. No structural HTML changes.
-
-### Step 3: Glassmorphism (Header First, Then Cards)
-
-**Risk: MEDIUM — modifies visual surface of 2-3 components.**
-
-- **Header glass (lowest risk):** Modify `.site-header.is-scrolled` to use glass tokens. Add `@supports` fallback. Test in Firefox, Safari, Chrome.
-- **Section gradient backgrounds:** Add gradient backgrounds to `.pricing` and `.lead-form-section` (the sections that will host glass cards). These sections currently have flat background colors, so this is purely additive.
-- **Glass cards:** Add `.card--glass` modifier class to pricing card and form wrapper in HTML. Add CSS for the modifier. Do NOT change the base `.card` rule — glass is a modifier only.
-
-Deliverable: Header glass effect on scroll, pricing card and form wrapper with glass surface. All other cards unchanged.
-
-### Step 4: Micro-Animations Enhancement
-
-**Risk: LOW — purely additive CSS, gated by `@supports`.**
-
-- Add scroll progress bar to header (CSS only, no JS)
-- Add social proof counter animation via scroll-driven API (inside `@supports` gate)
-- Add hover micro-interactions: `scale(1.02)` on card hover (replace current `translateY(-2px)` — or add scale on top)
-- Add `transition` on dark mode toggle (smooth color shift): add `transition: background-color 0.3s ease, color 0.3s ease` to `body`
-
-**Important:** All scroll-driven additions go inside `@supports (animation-timeline: scroll())`. They are invisible to browsers that don't support it, and the existing IntersectionObserver animations remain the fallback.
-
-Deliverable: Page feels noticeably more alive without any breaking changes to existing behavior.
-
----
-
-## Component Boundaries for New Features
-
-| New Feature | Where in CSS | Where in HTML | Where in JS | What to MODIFY vs ADD |
-|-------------|-------------|----------------|-------------|----------------------|
-| Dark mode tokens | After `:root` block | `<html data-theme>` attribute | New `initDarkMode()` in IIFE | ADD token block; MODIFY `<html>` tag |
-| Glass header | Modify `.site-header.is-scrolled` | No change | No change | MODIFY existing rule |
-| Glass card modifier | ADD `.card--glass` rule | ADD class to 2 elements | No change | ADD rule; MODIFY 2 HTML elements |
-| Bold typography | Modify token values in `:root` | No change | No change | MODIFY token values |
-| Scroll progress | ADD `.scroll-progress` in section 11 | ADD element in header | No change | ADD only |
-| Scroll-driven animations | ADD inside `@supports` block in section 10 | No change | No change | ADD only |
-| Dark mode toggle button | No change | ADD `<button>` in header | ADD `initDarkMode()` | ADD only |
-
----
-
-## CSS File Organization for New Code
-
-The existing `styles.css` uses numbered sections. New code for v1.4 goes:
+**Recommended: marker-based splice via `scripts/build-pages.sh`**
 
 ```
-Section 2 (Design Tokens)  → ADD glass tokens to :root, ADD [data-theme="dark"] block
-Section 6 (Components)     → ADD .card--glass modifier
-Section 7 (Sections)       → MODIFY .site-header.is-scrolled, ADD gradient to .pricing
-Section 10 (Animations)    → ADD @supports block for scroll-driven animations
-Section 11 (Decorative)    → ADD .scroll-progress element styles
+partials/
+  header.html
+  footer.html
+  sticky-bar.html
+  mobile-menu.html
+scripts/
+  build-pages.sh           (~40 lines of sh/awk)
+build.sh                   (wraps build-pages.sh + tailwindcss)
 ```
 
-Do NOT create a separate CSS file. The constraint is single-file delivery with no build step. Adding a separate `dark.css` or `glass.css` creates a sequencing problem (flash of unstyled content if the file loads late) and splits the token context.
-
-**Size impact estimate:** Dark mode tokens ~40 lines, glass modifiers ~30 lines, animation additions ~50 lines. Total addition: ~120 lines bringing the file to ~1,760 lines. Well within maintainable range for a single-file approach.
-
----
-
-## Patterns to Follow
-
-### Pattern 1: Token Override Architecture for Themes
-
-**What:** Define all theme variants as overrides of the same token names, not as parallel naming schemes.
-**When:** Any theming feature.
-**Why it works here:** All 1,640 existing lines already use `var(--color-*)`. No search-and-replace needed.
-
-```css
-:root { --color-white: #ffffff; }
-[data-theme="dark"] { --color-white: #0F1923; }
-/* Every rule using var(--color-white) now respects theme automatically */
-```
-
-### Pattern 2: Modifier Classes for Visual Variants (Never Change Base)
-
-**What:** Add `.component--glass` as an opt-in modifier. Never modify the base `.card` rule to add glass.
-**When:** Any time glass or visual variant applies to only some instances of a component.
-**Why:** The card component is used in benefits, doctors, advantages, process steps. Only pricing and form get glass. Using a modifier keeps all other cards untouched.
-
-### Pattern 3: `@supports` Gating for New CSS APIs
-
-**What:** Wrap scroll-driven animations and advanced backdrop-filter effects in `@supports`.
-**When:** Any CSS feature with partial browser support.
-**Why:** The target audience (Kazakhstan, 45+) may be on older browsers or older Android WebViews. `@supports` provides the fallback naturally.
-
-### Pattern 4: `initDarkMode()` Registration Pattern (JS)
-
-**What:** Dark mode JS function reads localStorage, sets `data-theme` on `document.documentElement` before DOM paint to prevent flash.
-**When:** Page load — must run before first paint.
-**Why:** If `initDarkMode()` runs at DOMContentLoaded (as all other init functions do), there will be a flash of light mode. The fix: extract just the `data-theme` setter into an inline `<script>` in `<head>`, before the CSS link.
+Each page gains build markers:
 
 ```html
-<head>
-  <!-- Run BEFORE CSS loads to prevent flash -->
-  <script>
-    (function() {
-      var theme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
+<!-- BUILD:partial header -->
+<header class="header fixed z-50 ..." id="header">...</header>
+<!-- BUILD:end header -->
 ```
 
-The toggle button wiring and localStorage update can live in `initDarkMode()` inside the IIFE as normal. The inline script is only for the initial load state.
+`build-pages.sh` does awk replacement between matched markers with `partials/<name>.html`, in-place across all 6 pages. Also accepts `--page=index.html` arg to set `aria-current="page"` on matching nav link.
+
+**Build order integration with Tailwind:**
+
+```bash
+# build.sh
+#!/bin/sh
+set -e
+./scripts/build-pages.sh
+./tailwindcss -i src/styles/tailwind.css -o css/styles.css --minify
+```
+
+Order matters: splice must happen before Tailwind runs, because `@source '../../*.html'` scans the post-splice files. Classes that only appear in `partials/header.html` would be tree-shaken out if Tailwind ran first.
+
+**Netlify integration:** Add to `.netlify/netlify.toml`:
+```toml
+[build]
+command = "./build.sh"
+```
+
+The checked-in `tailwindcss` binary (76 MB) is executable — Netlify's Linux build image should run it (MEDIUM confidence; requires smoke-test deploy before relying on it in production).
+
+**FOUC risk:** None. Splice at build time, output byte-identical to current files.
+**JS-off fallback:** Same as today — full HTML works without JS, router no-ops, links navigate normally.
+
+**Active state sync (`aria-current="page"`):** Dual-layer:
+- **Build time:** `build-pages.sh --page=index.html` sets attribute on matching nav link. Handles first paint + JS-off.
+- **Runtime:** Router's existing `updateActiveNav(pathname)` at `router.js:174` continues to work on SPA navigation. No new code.
+
+### 2. Vertical rhythm token integration — extend `theme.css` (no new file)
+
+Follow existing two-layer pattern in `src/styles/theme.css`:
+1. Declare brand value in `:root` as `--mu-*` or `--section-*` (lines 7–47 area)
+2. Re-export to Tailwind via `@theme inline` as `--spacing-*` / `--height-*` (lines 128–161 area)
+
+**Proposed additions to `:root`:**
+
+```css
+--section-h-hero: 100svh;           /* svh avoids iOS address-bar clip + mid-scroll jump */
+--section-h-hero-mobile: 88svh;     /* avoid covering trust line on 320–414px */
+--section-pt: 8rem;                 /* current pt-32 */
+--section-pt-lg: 10rem;             /* current lg:pt-40 */
+--section-pb: 4rem;                 /* current pb-16 */
+--section-gap-y: 4rem;
+--section-gap-y-mobile: 2rem;
+```
+
+**Proposed additions to `@theme inline`:**
+
+```css
+--spacing-section-pt: var(--section-pt);
+--spacing-section-pt-lg: var(--section-pt-lg);
+--spacing-section-pb: var(--section-pb);
+--height-section-hero: var(--section-h-hero);
+--height-section-hero-mobile: var(--section-h-hero-mobile);
+```
+
+Tailwind v4 auto-generates utilities: `h-section-hero`, `min-h-section-hero`, `pt-section-pt-lg`, etc.
+
+**Why svh (not vh, not dvh) for hero:**
+- `vh` clips on iOS Safari first paint (address bar subtraction bug)
+- `dvh` causes mid-scroll layout jump as address bar shrinks — hostile to motion-sensitive 45+ users and prefers-reduced-motion
+- `svh` is the stable choice; supported in Safari 15.4+ (June 2022) which covers ≥99% of KZ mobile traffic
+
+**Migration path:**
+1. Land tokens in `theme.css` first (no visual change — utilities exist but unused)
+2. Per-page replacement in 5 commits (one per page): replace `min-h-screen`, `min-h-[80vh]`, bare `pt-32 pb-16` with token utilities
+3. Visual diff each page after replacement
+4. Re-run Tailwind CLI once at the end to verify utilities tree-shake correctly
+
+**Important:** Token migration is a renaming exercise. It does NOT by itself fix the checkup H1 overflow bug — that's either a text cap, a responsive `<br>`, or a gradient-phrase shortening. Phase 35 addresses the fix; Phase 38 only systematizes heights to prevent future drift.
+
+### 3. Sitemap.xml + canonical URLs
+
+- **sitemap.xml:** hand-maintained at repo root, 6 URLs. Netlify serves from publish dir automatically.
+- **robots.txt:** sibling at root, references `Sitemap: https://medicusunion.kz/sitemap.xml`.
+- **lastmod:** `build-pages.sh` can embed `git log -1 --format=%cI -- <file>` per page on build.
+- **Canonical URLs:** grep + reconcile; router already syncs them at runtime (`router.js:158`).
+
+### 4. Form valid-state (`js/main.js` extension, not rewrite)
+
+- Extend existing `is-invalid` pattern with mirrored `is-valid` class + `aria-invalid` toggle on blur.
+- Do NOT migrate to Constraint Validation API — the existing rules-object pattern has explicit Russian error messages; browser-API approach risks OS-localized messages.
+- Add ~30 lines to `initFormValidation()`; preserve existing `showFieldError`/`clearFieldError` API.
+
+### 5. Flag icons
+
+- Vendor `circle-flags` (7 SVGs: de/at/ch/fr/it/es/il) to `img/flags/`.
+- Circular crop matches project rounded-card aesthetic.
+- 1–5KB per flag, MIT license.
+- Vendored not CDN'd to honor v3.0 data-sovereignty principle.
 
 ---
 
-## Anti-Patterns to Avoid
+## Component Boundaries (after v3.1)
 
-### Anti-Pattern 1: Creating Separate CSS Files for Dark Mode or Glass
+| Component | Source | Phase | Notes |
+|-----------|--------|-------|-------|
+| `partials/header.html` | New | 36 | Read by router via spliced pages; do not inject at runtime |
+| `partials/footer.html` | New | 36 | Fixes 5-divergent-footer drift (audit #4, #1) |
+| `partials/sticky-bar.html` | New | 36 | Mobile-only; padding fix lives here once |
+| `partials/mobile-menu.html` | New | 36 | Extract from current inline overlays |
+| `scripts/build-pages.sh` | New | 36 | Marker-based splice + aria-current |
+| `build.sh` (repo root) | New | 36 | `build-pages.sh` → `tailwindcss` |
+| `.netlify/netlify.toml` | Modified | 36 | Add `[build] command = "./build.sh"` |
+| `src/styles/theme.css` | Modified | 38 | New `--section-*` tokens in `:root` + `@theme inline` |
+| `js/main.js` | Modified | 35 | `initFormValidation()` valid-state extension |
+| `js/router.js` | UNMODIFIED | — | Existing swap contract preserved |
+| `js/animations.js` | UNMODIFIED | — | No interaction |
+| `sitemap.xml` | New | 37 | Static at root |
+| `robots.txt` | New | 37 | Static at root |
 
-**What goes wrong:** A `dark.css` or `glass.css` loaded via a separate `<link>` causes FOUC (flash of unstyled content) if JS toggles the class before the second stylesheet loads.
-**Consequence:** User sees light mode for ~100ms before dark mode applies. Looks broken.
-**Prevention:** Keep all tokens in the single `styles.css`. The inline `<script>` pattern in `<head>` prevents the flash.
+**Invariant:** Router's `parsePageHTML()` contract — `#page-content`, `#footer`, `#sticky-bar` IDs and their structural positions — MUST NOT be broken. Marker-based splice preserves them by definition.
 
-### Anti-Pattern 2: Applying Glassmorphism Without Background Content
+---
 
-**What goes wrong:** Glass on elements that sit on a plain white background looks like a dirty semi-transparent rectangle.
-**Consequence:** The visual effect is worse than a solid background, not better.
-**Prevention:** Only apply glass where gradient, photo, or deep-color content exists behind the element. Add gradient backgrounds to sections first; apply glass to cards second.
+## Phase Build Order & Dependencies
 
-### Anti-Pattern 3: Adding `transition` to `:root` Token Changes
+### Phase 33 — Audit Quick Wins
+- **Touches:** `*.html` directly (sticky-bar pb-, Vienna+ТОО unification, emoji→SVG, Astana↔Алматы, em-dash)
+- **Prereqs:** None
+- **Enables:** Clean baseline for Phase 36 extraction (unified data before partials = no merge conflicts)
+- **Order:** Ship FIRST
 
-**What goes wrong:** Adding `transition: all 0.3s` to `:root` to animate theme switches sounds appealing but creates performance issues — every CSS property on every element animates simultaneously.
-**Consequence:** 1,640 lines of CSS all transition at once, causing jank especially on lower-end Android devices (ЦА 45+ may use budget phones).
-**Prevention:** Add `transition: background-color 0.3s ease, color 0.3s ease` only to `body` and specific components that need smooth transitions (header, cards). Never on `:root`.
+### Phase 34 — Treatment Abroad Overhaul
+- **Touches:** `treatment-abroad.html` only + potentially new hero photo asset
+- **Prereqs:** Phase 33 (so Vienna address is correct before page refactor)
+- **Enables:** Worst-page score recovery (14/24 → ~18/24)
+- **Order:** After Phase 33
 
-### Anti-Pattern 4: Using `animation-timeline: scroll()` for Elements That Already Have IntersectionObserver Animations
+### Phase 36 — Shared Layout Primitives ← RENUMBER DISCUSSION
+- **Touches:** New `partials/`, `scripts/build-pages.sh`, `build.sh`, modifies `netlify.toml`, modifies all 6 `*.html` (insert markers + initial splice)
+- **Prereqs:** Phase 33 (HARD — data drift unified). Phase 34 (SOFT — treatment-abroad footer normalized)
+- **Enables:** Phase 37 (sitemap reads partials footer), Phase 38 (cleaner diffs when chrome is in partials)
+- **Order:** After 33+34, before 37+38
+- **Risk:** HIGHEST. Recommend 2 sub-commits: (1) introduce partials + build script + splice, verify byte-identical, smoke-test router; (2) remove inlined chrome from source files
+- **Prerequisite spike:** Test Netlify deploy with checked-in tailwindcss binary (1 hour)
 
-**What goes wrong:** If `.animate-on-scroll` elements get a scroll-driven animation that also controls `opacity` or `transform`, both mechanisms fire. The IntersectionObserver adds `.is-visible` (which overrides `opacity: 0 → 1`), but the scroll-driven animation may conflict by also trying to control opacity.
-**Consequence:** Elements may flicker or snap to wrong state.
-**Prevention:** Pick one mechanism per element. IntersectionObserver stays on existing elements. Scroll-driven animations go on NEW elements or new properties only.
+### Phase 37 — Site Metadata & Hygiene
+- **Touches:** new `sitemap.xml`, `robots.txt`, canonical URL audit, 404.html upgrade, meta-description consistency, flag SVG vendor
+- **Prereqs:** Phase 36 (stable footer + canonical partial)
+- **Order:** After Phase 36
 
-### Anti-Pattern 5: ES6+ Syntax in the Dark Mode Toggle
+### Phase 38 — Vertical Rhythm & Section Sizing
+- **Touches:** `src/styles/theme.css` (new tokens), all 5 production `*.html` (replace ad-hoc min-h + pt/pb with token utilities), `css/styles.css` regenerated
+- **Prereqs:** FEATURES.md research deliverable for canonical vh values; Phase 36 SOFT (cleaner diffs)
+- **Enables:** Permanent fix for Phase 35's checkup H1 overflow (tokens are the systematic fix)
+- **Order:** Before Phase 35 for cleanest outcome
 
-**What goes wrong:** The existing JS uses ES5 throughout (decision logged in PROJECT.md: "ES5 syntax for JS — ЦА 45+ может использовать старые браузеры").
-**Consequence:** Using `const`, arrow functions, template literals in the new `initDarkMode()` function creates inconsistency and may break on the same old browsers the rest of the code was written for.
-**Prevention:** Write `initDarkMode()` in ES5. Use `var`, function declarations, string concatenation. The inline `<script>` in `<head>` must also use ES5.
+### Phase 35 — Checkup Fix + Form UX Polish
+- **Touches:** `checkup.html` (H1 overflow, H2 hierarchy, gender-neutral labels), `js/main.js` (valid-state feedback across 5 forms)
+- **Prereqs:** Phase 38 SOFT (so H1 fix uses tokens, not throwaway min-h)
+- **Order:** After Phase 38 ideally
+
+### Recommended Execution Sequence
+
+```
+1. Phase 33 — Audit Quick Wins              (no deps)
+2. Phase 34 — Treatment Abroad Overhaul     (after 33)
+3. Phase 36 — Shared Layout Primitives      (after 33+34)
+4. Phase 37 — Site Metadata & Hygiene       (after 36)
+5. Phase 38 — Vertical Rhythm & Sizing      (after 36)
+6. Phase 35 — Checkup + Form UX             (after 38)
+```
+
+**Note:** This is NOT numerical order. If strict numerical order is mandated (33→34→35→36→37→38), accept that:
+- Phase 35's checkup H1 fix uses ad-hoc `min-h-[XXvh]` that Phase 38 rewrites — 2× work, no functional difference
+- Everything else still works
+
+---
+
+## Patterns
+
+### Token-first vertical rhythm
+```html
+<!-- BAD (drift-prone) -->
+<section class="min-h-screen pt-32 pb-16 lg:pt-40">
+
+<!-- GOOD (token-anchored) -->
+<section class="min-h-section-hero pt-section-pt pb-section-pb lg:pt-section-pt-lg">
+```
+
+### Build-marker splice
+```html
+<!-- BUILD:partial header -->
+<header class="header fixed z-50 ..." id="header">...</header>
+<!-- BUILD:end header -->
+```
+
+### Dual-layer aria-current
+Build script sets on matching link per page. Router syncs on SPA navigation. Never set runtime-only.
+
+---
+
+## Anti-patterns
+
+### Client-side fetch+inject for header/footer
+Breaks the router's `parsePageHTML` (footer/sticky-bar null in fetched docs), causes flash, breaks Yandex SEO. Not necessary because the router already handles cross-page sync.
+
+### Ad-hoc `min-h-[XXvh]` per page
+Causes the exact drift Phase 38 exists to eliminate. Use tokens.
+
+### Modifying partials without re-running build
+Add `[build] command = "./build.sh"` to `netlify.toml` so deploy always re-splices. Alternatively, pre-commit hook.
+
+### Recommending nginx SSI on a Netlify site
+STACK.md's recommendation is inapplicable. Use build-time splice instead.
 
 ---
 
 ## Confidence Assessment
 
-| Topic | Confidence | Basis |
-|-------|-----------|-------|
-| `data-theme` dark mode token architecture | HIGH | Established pattern, CSS spec stable |
-| `backdrop-filter` browser support | HIGH | Widely supported since 2020, confirmed through training data |
-| CSS Scroll-Driven Animations browser support | MEDIUM | Chrome/Edge 115+ stable; Firefox 129 (Aug 2024) shipped; Safari 18 (Sep 2024) shipped — assumed stable in 2026 but not verified against current caniuse |
-| IntersectionObserver + scroll-driven coexistence | HIGH | They operate on different mechanisms (class mutations vs pure CSS keyframes) |
-| FOUC prevention with inline script | HIGH | Established pattern used by all major theming libraries |
-| `@supports` gating | HIGH | CSS spec, widely supported |
+| Area | Confidence | Basis |
+|------|-----------|-------|
+| Router existence + contract | HIGH | Read `js/router.js` end-to-end |
+| Two-layer token pattern | HIGH | Verified in `theme.css` |
+| No build pipeline | HIGH | No Makefile/package.json/scripts/build.sh |
+| Tailwind `@source` HTML scanning | HIGH | Verified `tailwind.css:3` |
+| Netlify deploy target | HIGH | `.netlify/netlify.toml` exists |
+| nginx SSI inapplicable | HIGH | Netlify doesn't support SSI (documented) |
+| No dark-mode FOUC script | HIGH | Grepped — zero matches |
+| Hero class drift | HIGH | Verified per-page with grep |
+| Tailwind v4 `--height-*`/`--spacing-*` utility generation | MEDIUM | Project's `--shadow-form-inset` → `shadow-form-inset` confirms convention; recommend smoke-test one new token before bulk migration |
+| Netlify build executing checked-in 76 MB binary | MEDIUM | Binary is executable and checked in; slight concern about Netlify build image permissions — test deploy needed |
+| Yandex JS-rendering unreliability | LOW | Conventional wisdom; not load-bearing since recommendation is build-time splice |
 
 ---
 
-## Sources
+## Open Questions for Phase-specific Planning
 
-- MDN: CSS Custom Properties (`var()`) — token cascade behavior — HIGH confidence
-- MDN: `backdrop-filter` — browser support table — HIGH confidence (as of Aug 2025)
-- MDN: CSS Scroll-Driven Animations — `animation-timeline: scroll()` and `view()` — MEDIUM confidence (verify Firefox/Safari current support at caniuse.com before implementation)
-- CSS-Tricks: "A Complete Guide to Dark Mode on the Web" — `data-theme` attribute pattern — HIGH confidence
-- web.dev: "Building a theme switch component" — inline script FOUC prevention — HIGH confidence
-- Existing codebase analysis: `css/styles.css`, `js/main.js`, `index.html` — direct inspection — HIGH confidence
+1. **Tailwind v4 utility name smoke-test** — Does `--height-section-hero` become `min-h-section-hero` or `min-h-[var(--section-h-hero)]`? 30-min spike before Phase 38 bulk migration.
+2. **Netlify build deploy spike** — Test deploy with `[build] command = "./build.sh"` + checked-in tailwindcss. 1-hour prerequisite for Phase 36.
+3. **`partials/header.html` inline `<style>` block** — `index.html:23–51` has inline styles for `.header--scrolled`, `.mobile-menu-overlay`, `.faq__answer`, `a[aria-current="page"]`. Extract to separate partial or move to `theme.css @layer base`? Phase 36 sub-decision.
+4. **Vertical rhythm research** — Concrete vh benchmarks for medical landing pages targeting 45+. See FEATURES.md research deliverable.
