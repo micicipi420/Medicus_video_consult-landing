@@ -1,0 +1,232 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-07T16:20:15.425Z",
+  "phase": null,
+  "phase_name": null,
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "context": "default",
+  "milestone": "v3.1",
+  "milestone_status": "shipped",
+  "branch": "feat/v3.1",
+  "head": "5c83d5b",
+  "completed_tasks": [
+    {
+      "id": "ui-review-38",
+      "name": "Phase 38 UI audit (6-pillar)",
+      "status": "done",
+      "commit": "3f92b19",
+      "output": ".planning/phases/38-vertical-rhythm-section-sizing/38-UI-REVIEW.md",
+      "score": "20/24"
+    },
+    {
+      "id": "260407-j79-t1",
+      "name": "Add lg:pt-section-pt-lg to contacts.html:106 + 404.html:103 (UIREV38-01)",
+      "status": "done",
+      "commit": "cc64597"
+    },
+    {
+      "id": "260407-j79-t2",
+      "name": "Remove stray mb-16 from treatment-abroad.html:121 hero (UIREV38-02)",
+      "status": "done",
+      "commit": "2567165"
+    },
+    {
+      "id": "260407-j79-t3",
+      "name": "Cap index.html:209 hero H1 at xl:text-7xl (UIREV38-03)",
+      "status": "done",
+      "commit": "726f810"
+    },
+    {
+      "id": "260407-j79-docs",
+      "name": "Quick task 260407-j79 summary + STATE update",
+      "status": "done",
+      "commit": "a5c23d2"
+    },
+    {
+      "id": "260407-lho-t1",
+      "name": "Delete .netlify scaffold + gitignore cleanup",
+      "status": "done",
+      "commit": "177ad54"
+    },
+    {
+      "id": "260407-lho-t2",
+      "name": "Pivot active planning docs from Netlify to nginx",
+      "status": "done",
+      "commit": "15ff2e6"
+    },
+    {
+      "id": "260407-lho-t3",
+      "name": "Remove Netlify references from Phase 36 artifacts",
+      "status": "done",
+      "commit": "97e12ae"
+    },
+    {
+      "id": "260407-lho-t4",
+      "name": "Supersession banners on Netlify-era research docs",
+      "status": "done",
+      "commit": "a79888c"
+    },
+    {
+      "id": "260407-lho-t5",
+      "name": "Drop stale .netlify reference from continue-here",
+      "status": "done",
+      "commit": "9b6c641"
+    },
+    {
+      "id": "260407-lho-docs",
+      "name": "Quick task 260407-lho summary",
+      "status": "done",
+      "commit": "5c83d5b"
+    },
+    {
+      "id": "install-playwright-mcp",
+      "name": "Install Playwright MCP at user scope",
+      "status": "done",
+      "commit": null,
+      "details": "Added via `claude mcp add --scope user playwright -- npx -y @playwright/mcp@latest`. Modified ~/.claude.json. Health check: Connected."
+    }
+  ],
+  "remaining_tasks": [
+    {
+      "id": "ux-validation",
+      "name": "UX validation via Playwright MCP on http://localhost:8080",
+      "status": "not_started",
+      "priority": "next",
+      "blocked_by": "session_restart_required",
+      "scope": "5 viewports (320/375/768/1024/1440) x 6 pages (index, online-consultations, treatment-abroad, checkup, contacts, 404). Verify 3 quick-fixes landed visually. Re-check 4 pillars where auditor scored 3/4 (Visuals, Color, Typography, XD). Close RHYTHM-10."
+    },
+    {
+      "id": "rhythm-10",
+      "name": "RHYTHM-10 manual viewport verification (last v3.1 UAT item)",
+      "status": "not_started",
+      "priority": "closes_v3.1",
+      "resolution_path": "Roll into ux-validation above"
+    },
+    {
+      "id": "v3.2-kickoff",
+      "name": "Open v3.2 milestone (absorbs 7 deferred items from v3.1 Phase 36b)",
+      "status": "not_started",
+      "priority": "after_ux_validation",
+      "command": "/gsd-new-milestone v3.2"
+    }
+  ],
+  "blockers": [
+    {
+      "description": "Playwright MCP tools not loaded in current session — registered in ~/.claude.json after session boot, so tools only become available on next session start",
+      "type": "technical",
+      "workaround": "User runs /clear or restarts `claude` CLI. Fresh session will load mcp__playwright__* tool family."
+    },
+    {
+      "description": "First Playwright invocation in new session will download Chromium (~100-200 MB, one-time)",
+      "type": "external",
+      "workaround": "Expect 30-60s delay on first browser_navigate call. Optionally pre-warm with `npx -y @playwright/mcp@latest --help` in another terminal."
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Restart Claude Code session (/clear or kill + relaunch `claude`)",
+      "context": "Required for Playwright MCP tools to load so UX validation can proceed",
+      "blocking": true
+    },
+    {
+      "action": "Confirm scope of UX validation on resume (smoke test vs full 5-viewport sweep)",
+      "context": "Smoke test = 1 viewport x 6 pages (6 screenshots). Full = 5 viewports x 6 pages (30 screenshots + RHYTHM-10 closure).",
+      "blocking": false
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Netlify removed, deploy target reverts to nginx",
+      "rationale": "User directive. Nginx was the original canonical deploy target in CLAUDE.md; Netlify was a mid-Phase 36 research pivot that user now wants undone. Self-hosted nginx also aligns with KZ data sovereignty requirement.",
+      "phase": null,
+      "task": "260407-lho"
+    },
+    {
+      "decision": "Phase 36b partials approach stays build-time shell splice",
+      "rationale": "Works for file:// preview, deploy-target-agnostic, already designed. Only the trigger mechanism changes from `netlify.toml [build] command` to Makefile/pre-commit/CI (TBD when Phase 36b is planned in v3.2).",
+      "phase": null,
+      "task": "260407-lho"
+    },
+    {
+      "decision": "Research artifacts preserved with supersession banners, body intact",
+      "rationale": "research/SUMMARY.md + research/ARCHITECTURE.md are historical audit trail of what was known at v3.1 time. In-place rewrite would destroy the rationale chain. Banner at top + body preserved is the cleanest approach.",
+      "phase": null,
+      "task": "260407-lho"
+    },
+    {
+      "decision": "Phase 38 UI audit priority fixes (3) grouped into single quick task 260407-j79, not a new phase",
+      "rationale": "Surgical line-level edits with exact strings known upfront. Quick task machinery is the right-sized tool. /gsd-plan-phase 39 was rejected because v3.1 is already shipped and no Phase 39 exists in ROADMAP.",
+      "phase": null,
+      "task": "260407-j79"
+    },
+    {
+      "decision": "CLAUDE.md not modified in Netlify removal",
+      "rationale": "CLAUDE.md already correctly specified nginx — the whole point of the task was to align planning docs back with CLAUDE.md, not vice versa.",
+      "phase": null,
+      "task": "260407-lho"
+    }
+  ],
+  "decisions_advisory": [
+    {
+      "note": "Quick task 260407-lho Rule-1 auto-fix",
+      "context": "Planner initially wrote 3 `new_string` blocks for active-doc rewrites containing literal 'Netlify' — contradicted the must-have 'ZERO Netlify mentions in active docs'. Executor auto-fixed by substituting circumlocutions ('non-nginx deploy-target assumption', 'alternate deploy-target scaffold', 'previous toml [build] command').",
+      "lesson": "When a constraint says 'ZERO mentions of X', the planner must verify its OWN new_string blocks don't contain X. Easy to write ABOUT removing X by NAMING X.",
+      "documented_in": ["commit 15ff2e6 body", ".planning/quick/260407-lho-remove-netlify-from-project-deploy-targe/260407-lho-SUMMARY.md"],
+      "severity": "advisory"
+    }
+  ],
+  "uncommitted_files": [],
+  "pre_existing_untracked": [
+    ".planning/HANDOFF.json",
+    "consultations.html",
+    "test-design-system.html",
+    ".planning/milestones/v1.0-research/"
+  ],
+  "infrastructure": {
+    "git": {
+      "branch": "feat/v3.1",
+      "head": "5c83d5b",
+      "session_commits": 11,
+      "uncommitted_changes": 0
+    },
+    "mcp_servers": {
+      "playwright": {
+        "scope": "user",
+        "config_file": "~/.claude.json",
+        "command": "npx -y @playwright/mcp@latest",
+        "health": "Connected",
+        "loaded_in_current_session": false,
+        "notes": "Requires session restart for tools to become available"
+      },
+      "claude.ai Gmail": {
+        "status": "Needs authentication"
+      },
+      "claude.ai Google Calendar": {
+        "status": "Needs authentication"
+      }
+    },
+    "local_server": {
+      "running": false,
+      "required_command": "python3 -m http.server 8080",
+      "bind_to": "http://localhost:8080"
+    },
+    "tailwind_binary": {
+      "path": "./tailwindcss",
+      "size_mb": 76,
+      "checked_in": true,
+      "executable": true,
+      "note": "CSS is pre-compiled at css/styles.css — no build step required to view the site"
+    },
+    "worktrees": {
+      "stale_count": 21,
+      "location": ".claude/worktrees/",
+      "note": "Pre-existing cruft from earlier sessions, not from this session. This session's two worktrees (agent-a02a8374, agent-a022a2dc) were cleaned up after merge."
+    }
+  },
+  "next_action": "Verify Playwright MCP tools loaded via ToolSearch('playwright browser'), then start `python3 -m http.server 8080` in background, then ask user for validation scope (smoke vs full sweep), then execute UX validation with Playwright MCP and produce findings report.",
+  "context_notes": "Paused cleanly at an MCP tool-availability boundary, not mid-task. Resuming session should have a clean slate: no uncommitted changes, no partial work, just needs to confirm Playwright tools loaded and then start executing the UX validation plan drafted in .continue-here.md <remaining_work> and <next_action> sections. The 10 commits from this session form a coherent, reviewable sequence — 4 for quick task j79, 6 for quick task lho."
+}
