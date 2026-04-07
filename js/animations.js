@@ -44,7 +44,7 @@
           { opacity: [0, 1], transform: ['translateY(30px)', 'translateY(0)'] },
           { duration: 0.8, easing: 'ease-out' }
         );
-      }, { amount: 0.2 });
+      }, { amount: 0.2, margin: '-100px 0px -100px 0px' });
     });
 
     // === STAGGERED CARD ENTRANCE ===
@@ -64,7 +64,7 @@
             { duration: 0.8, delay: i * 0.1, easing: 'ease-out' }
           );
         });
-      }, { amount: 0.2 });
+      }, { amount: 0.2, margin: '-100px 0px -100px 0px' });
     });
 
     // === HERO ENTRANCE ===
@@ -143,7 +143,7 @@
           { opacity: [0, 1], transform: ['translateX(-30px)', 'translateX(0)'] },
           { duration: 0.8, easing: 'ease-out' }
         );
-      }, { amount: 0.2 });
+      }, { amount: 0.2, margin: '-100px 0px -100px 0px' });
     });
 
     // === FADE-RIGHT ===
@@ -157,7 +157,7 @@
           { opacity: [0, 1], transform: ['translateX(30px)', 'translateX(0)'] },
           { duration: 0.8, easing: 'ease-out' }
         );
-      }, { amount: 0.2 });
+      }, { amount: 0.2, margin: '-100px 0px -100px 0px' });
     });
 
     // === SCALE-IN ===
@@ -171,7 +171,7 @@
           { opacity: [0, 1], transform: ['scale(0.95)', 'scale(1)'] },
           { duration: 0.8, easing: 'ease-out' }
         );
-      }, { amount: 0.2 });
+      }, { amount: 0.2, margin: '-100px 0px -100px 0px' });
     });
   }
 
