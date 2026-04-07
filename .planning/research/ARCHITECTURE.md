@@ -1,5 +1,8 @@
 # Architecture Research — v3.1 Site Foundation & Audit Fixes
 
+> [!NOTE]
+> **Superseded 2026-04-07.** This research reflects a Netlify deploy target assumption that was reverted. The project's canonical deploy target is nginx (see `CLAUDE.md` § Technology Stack / Infrastructure, unchanged since v1.0). The build-time shell splice approach (`partials/` + `scripts/build-pages.sh` + `build.sh`) described below is still valid — it is deploy-target-agnostic — but the `netlify.toml [build] command` wiring is no longer applicable. For current Phase 36b language, see `.planning/REQUIREMENTS.md` (LAYOUT-04, LAYOUT-12) and `.planning/ROADMAP.md` Phase 36. This document is preserved as a historical record of research conducted on 2026-04-07.
+
 **Researched:** 2026-04-07
 **Mode:** Project Architecture (subsequent milestone, integration-focused)
 **Confidence:** HIGH (all claims verified against existing source files)
