@@ -49,6 +49,14 @@
   --mu-cta-from: #0E8FB5;
   --mu-cta-to: #3B6DD0;
 
+  /* Vertical rhythm tokens — Phase 38 (RHYTHM-01) */
+  --section-h-hero-rich: clamp(560px, 75svh, 760px);
+  --section-h-hero-medium: clamp(500px, 65svh, 700px);
+  --section-h-hero-compact: clamp(440px, 55svh, 580px);
+  --section-pt: 8rem;
+  --section-pt-lg: 10rem;
+  --section-pb: 4rem;
+
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -159,6 +167,15 @@
   --color-mu-green-text: var(--mu-green-text);
   --color-mu-cta-from: var(--mu-cta-from);
   --color-mu-cta-to: var(--mu-cta-to);
+  /* Vertical rhythm utilities — Phase 38 (RHYTHM-02) */
+  /* NOTE: Tailwind v4 uses --min-height-* (not --height-*) to generate min-h-* utilities */
+  /* Confirmed via smoke test: --min-height-X → .min-h-X, --spacing-X → .pt-X/.pb-X */
+  --min-height-section-hero-rich: var(--section-h-hero-rich);
+  --min-height-section-hero-medium: var(--section-h-hero-medium);
+  --min-height-section-hero-compact: var(--section-h-hero-compact);
+  --spacing-section-pt: var(--section-pt);
+  --spacing-section-pt-lg: var(--section-pt-lg);
+  --spacing-section-pb: var(--section-pb);
   --shadow-form-inset: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -309,7 +326,18 @@
   }
 }
 
+/* Scroll anchor offset — prevents sticky header from obscuring anchored elements (RHYTHM-06) */
+@layer base {
+  section[id],
+  h1[id],
+  h2[id],
+  h3[id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
 /* Accessibility: disable animations for users who prefer reduced motion */
+/* RHYTHM-07: scroll-behavior: auto is already included below via scroll-behavior: auto !important */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
