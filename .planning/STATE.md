@@ -84,6 +84,7 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-05T18:51:12.091Z
-Stopped at: Completed 32-02-PLAN.md (accessible colors, ARIA, Glass-5 -- Phase 32 complete)
-Resume file: None
+Last session: 2026-04-07
+Stopped at: v3.1 kickoff notes written and approved by user. Rename (Landing → MedicusUnion KZ) + 5-phase scope locked. Ready to run `/gsd-new-milestone v3.1` in a fresh session.
+Resume file: `.planning/v3.1-KICKOFF-NOTES.md` — `/gsd-new-milestone v3.1` should consume this as input and delete it after milestone is opened. Do NOT re-ask the user about rename or phase structure; those are locked.
+Next command: `/clear` then `/gsd-new-milestone v3.1`
