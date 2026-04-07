@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
-status: active
-stopped_at: ROADMAP.md v3.1 section written. 6 phases (33-38) with success criteria, 52/52 requirements mapped, dependencies documented. Ready for /gsd-plan-phase 33.
-last_updated: "2026-04-07T00:00:00.000Z"
-last_activity: 2026-04-07
+status: Roadmap approved, awaiting first plan
+stopped_at: Completed 33-01-PLAN.md
+last_updated: "2026-04-07T07:20:04.695Z"
+last_activity: 2026-04-07 — v3.1 ROADMAP.md written, 52 requirements mapped across 6 phases
 progress:
   total_phases: 6
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 1
+  total_plans: 1
+  completed_plans: 1
+  percent: 100
 ---
 
 # Project State
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0% (v3.1, 0/6 phases)
 | Phase 31 P02 | 2min | 2 tasks | 7 files |
 | Phase 32 P01 | 1min | 2 tasks | 2 files |
 | Phase 32 P02 | 6min | 2 tasks | 7 files |
+| Phase 33 P33-01 | 45 | 7 tasks | 6 files |
 
 ### Decisions
 
@@ -75,6 +76,8 @@ Recent decisions affecting current work:
 - [Phase 32]: Icon containers and SVGs keep bright original colors; only text elements get *-text accessible variants for WCAG AA compliance
 - [v3.1 roadmap]: Phase order locked numerically (33→34→35→36→37→38); Phase 35's CHKPOL-01 typography-only constraint resolves the cross-phase conflict with Phase 38 min-h ownership (CRIT-03)
 - [v3.1 roadmap]: Phase 36 partials approach is build-time shell splice (NOT runtime fetch, NOT nginx SSI) — preserves existing js/router.js swap contract, works with Netlify deploy target
+- [Phase 33]: 404.html Vienna address fixed as Rule 2 deviation — was not in plan scope but had stale Bruno-Marek-Allee footer
+- [Phase 33]: Gate 1/2 intent achieved despite count discrepancy: Wiener Privatklinik hospital name and HTML entity &laquo; make exact counts unachievable but all stale company refs are gone
 
 ### Roadmap Evolution
 
@@ -90,6 +93,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-07
-Stopped at: v3.1 ROADMAP.md written. 6 phases (33-38) with goal-backward success criteria, 52/52 requirements mapped, hard/soft dependencies documented from research/ARCHITECTURE.md and PITFALLS.md. REQUIREMENTS.md traceability already complete. Ready to start Phase 33.
+Last session: 2026-04-07T07:20:04.691Z
+Stopped at: Completed 33-01-PLAN.md
 Next command: `/clear` then `/gsd-discuss-phase 33` (or `/gsd-plan-phase 33` to skip discussion)

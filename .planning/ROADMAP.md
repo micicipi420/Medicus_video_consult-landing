@@ -150,7 +150,7 @@ Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
 **Goal:** Ship 14 audit fixes AND establish shared layout primitives + a researched vertical-rhythm system. Bridge from "polished landing" to "scalable multi-page site". Re-audit target ≥20/24.
 **Coverage:** 52/52 v3.1 requirements mapped across 6 phases (33-38). No orphans.
 
-- [ ] **Phase 33: Audit Quick Wins** -- 7 credibility fixes (sticky-bar pb, Vienna+ТОО unification, emoji→SVG, Astana→Алматы, em-dash); pre-flight gate for Phase 36
+- [x] **Phase 33: Audit Quick Wins** -- 7 credibility fixes (sticky-bar pb, Vienna+ТОО unification, emoji→SVG, Astana→Алматы, em-dash); pre-flight gate for Phase 36 (completed 2026-04-07)
 - [ ] **Phase 34: Treatment Abroad Overhaul** -- 25× hardcoded SVG hex → tokens, em-dash typography fix, stat bar rework, hero photo swap; restore worst page (14/24 → ≥17/24)
 - [ ] **Phase 35: Checkup Fix + Form UX Polish** -- Checkup H1 typography fix (NO min-h), gender-neutral labels, `:user-valid` blur-first feedback across all 5 forms
 - [ ] **Phase 36: Shared Layout Primitives** -- ARCHITECTURAL CENTERPIECE. Build-time shell splice (`partials/` + `scripts/build-pages.sh` + `build.sh` + `netlify.toml`); preserves existing `js/router.js` swap contract
@@ -246,7 +246,7 @@ Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
 | 30. SEO Optimization | v3.0 | 1/1 | Complete | 2026-04-05 |
 | 31. Performance Optimization | v3.0 | 2/2 | Complete | 2026-04-06 |
 | 32. Design System Compliance | v3.0 | 2/2 | Complete | 2026-04-06 |
-| 33. Audit Quick Wins | v3.1 | 0/0 | Not started | - |
+| 33. Audit Quick Wins | v3.1 | 1/1 | Complete   | 2026-04-07 |
 | 34. Treatment Abroad Overhaul | v3.1 | 0/0 | Not started | - |
 | 35. Checkup Fix + Form UX Polish | v3.1 | 0/0 | Not started | - |
 | 36. Shared Layout Primitives | v3.1 | 0/0 | Not started | - |

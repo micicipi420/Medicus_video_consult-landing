@@ -12,13 +12,13 @@
 
 ## Audit Quick Wins (Phase 33)
 
-- [ ] **AUDIT-01**: Mobile sticky-bar overlap fixed on all 5 pages — `main.pb-8` → `pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-8` to account for 112px sticky bar + iPhone home indicator safe area
-- [ ] **AUDIT-02**: Vienna address unified to `Billrothstrasse 78, 1190 Vienna, Austria` across JSON-LD x2 + `parentOrganization` schema + index.html footer + treatment-abroad.html footer (5 edits total)
-- [ ] **AUDIT-03**: KZ office city unified to `Алматы` — fix `contacts.html:165` (was "Астана") to match index.html + JSON-LD
-- [ ] **AUDIT-04**: Legal entity name unified to `ТОО «MedicusUnion KZ»` (no space) — fix `treatment-abroad.html:826` and `:866` (were "Medicus Union KZ") to match JSON-LD `alternateName`
-- [ ] **AUDIT-05**: Emoji stat bar on `treatment-abroad.html` replaced with SVG icons copied from index.html stats pattern (visual consistency)
-- [ ] **AUDIT-06**: `online-consultations.html` H1 dangling em-dash fixed — bind "врача —" with `&nbsp;` or restructure phrase
-- [ ] **AUDIT-07**: After Phase 33 merges, `git grep 'Wien\|Vienna' *.html | sort -u` returns 1 unique match AND `git grep 'ТОО «' *.html | sort -u` returns 1 unique match (pre-flight gate for Phase 36)
+- [x] **AUDIT-01**: Mobile sticky-bar overlap fixed on all 5 pages — `main.pb-8` → `pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-8` to account for 112px sticky bar + iPhone home indicator safe area
+- [x] **AUDIT-02**: Vienna address unified to `Billrothstrasse 78, 1190 Vienna, Austria` across JSON-LD x2 + `parentOrganization` schema + index.html footer + treatment-abroad.html footer (5 edits total)
+- [x] **AUDIT-03**: KZ office city unified to `Алматы` — fix `contacts.html:165` (was "Астана") to match index.html + JSON-LD
+- [x] **AUDIT-04**: Legal entity name unified to `ТОО «MedicusUnion KZ»` (no space) — fix `treatment-abroad.html:826` and `:866` (were "Medicus Union KZ") to match JSON-LD `alternateName`
+- [x] **AUDIT-05**: Emoji stat bar on `treatment-abroad.html` replaced with SVG icons copied from index.html stats pattern (visual consistency)
+- [x] **AUDIT-06**: `online-consultations.html` H1 dangling em-dash fixed — bind "врача —" with `&nbsp;` or restructure phrase
+- [x] **AUDIT-07**: After Phase 33 merges, `git grep 'Wien\|Vienna' *.html | sort -u` returns 1 unique match AND `git grep 'ТОО «' *.html | sort -u` returns 1 unique match (pre-flight gate for Phase 36)
 
 ## Treatment Abroad Overhaul (Phase 34)
 
