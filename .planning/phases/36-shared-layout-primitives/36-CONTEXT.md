@@ -7,9 +7,9 @@
 <domain>
 ## Phase Boundary (Phase 36a)
 
-Normalize header + footer + sticky-bar + mobile menu drift across all 5 production HTML pages into a canonical form. Bake `aria-current="page"` consistently. Add router.js first-load nav sync, mobile menu event delegation, and bfcache pageshow listener. **Do NOT extract to partials/, do NOT create build scripts, do NOT modify netlify.toml.**
+Normalize header + footer + sticky-bar + mobile menu drift across all 5 production HTML pages into a canonical form. Bake `aria-current="page"` consistently. Add router.js first-load nav sync, mobile menu event delegation, and bfcache pageshow listener. **Do NOT extract to partials/, do NOT create build scripts.**
 
-Phase 36b (extraction + build pipeline + Netlify deploy verification) is deferred to v3.2 or a focused follow-up session where user can verify the 76MB `tailwindcss` binary executes under Netlify build image.
+Phase 36b (extraction + build pipeline + build-script invocation mechanism) is deferred to v3.2 or a focused follow-up session. Deploy target is nginx (CLAUDE.md canonical); the 76 MB `tailwindcss` binary runs only locally during dev, so no build-image compatibility spike is needed. Invocation mechanism (Makefile / pre-commit / CI) is a 36b planning decision.
 
 </domain>
 
@@ -32,10 +32,10 @@ Phase 36b (extraction + build pipeline + Netlify deploy verification) is deferre
 - LAYOUT-01: `partials/` directory
 - LAYOUT-02: `scripts/build-pages.sh`
 - LAYOUT-03: `build.sh` root wrapper
-- LAYOUT-04: `netlify.toml` `[build] command`
+- LAYOUT-04: Build-script invocation mechanism (Makefile / pre-commit / CI)
 - LAYOUT-05: BUILD markers + initial splice
 - LAYOUT-11: 7th-page 0-edit invariant
-- LAYOUT-12: Netlify deploy smoke-test with checked-in tailwindcss
+- LAYOUT-12: Local `./build.sh` byte-identity smoke-test
 
 ### Drift findings (verified 2026-04-07)
 
@@ -169,7 +169,7 @@ Verification only: `grep -n 'application/ld+json' index.html` must show JSON-LD 
 ## Deferred Ideas
 
 - Partials directory (v3.2 Phase 36b)
-- Build script + netlify.toml (v3.2 Phase 36b)
+- Build script + invocation mechanism (Makefile / pre-commit / CI) (v3.2 Phase 36b)
 - Template placeholders (v3.2 Phase 36b)
 - 7th-page invariant verification (v3.2 Phase 36b)
 - Router.js first-load nav sync (likely no-op after normalization — verify and skip if unchanged)

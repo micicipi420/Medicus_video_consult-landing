@@ -44,7 +44,7 @@ metrics:
 
 ## Scope: Phase 36a Only (Extraction Deferred)
 
-This plan covers the drift-normalization subset of Phase 36. Build-pipeline extraction (partials/, build-pages.sh, netlify.toml) is deferred to Phase 36b (v3.2).
+This plan covers the drift-normalization subset of Phase 36. Build-pipeline extraction (partials/, build-pages.sh, build-script invocation mechanism) is deferred to Phase 36b (v3.2).
 
 **In scope for 36a:**
 - LAYOUT-06: aria-current="page" baked in static HTML per page
@@ -60,10 +60,10 @@ This plan covers the drift-normalization subset of Phase 36. Build-pipeline extr
 - LAYOUT-01: partials/ directory
 - LAYOUT-02: scripts/build-pages.sh
 - LAYOUT-03: build.sh root wrapper
-- LAYOUT-04: netlify.toml build command
+- LAYOUT-04: Build-script invocation mechanism (Makefile / pre-commit / CI)
 - LAYOUT-05: BUILD markers + initial splice
 - LAYOUT-11: 7th-page 0-edit invariant
-- LAYOUT-12: Netlify deploy smoke-test
+- LAYOUT-12: Local `./build.sh` byte-identity smoke-test
 
 ---
 
