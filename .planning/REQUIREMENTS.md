@@ -71,21 +71,21 @@
 
 **Dependency:** `/gsd-plan-phase 38` must include empirical verification of clamp values on 6 viewports (320, 390, 768, 1024, 1440, 1920) + manual competitor screenshot pass on 2–3 medical landing sites before bulk migration.
 
-- [ ] **RHYTHM-01**: Vertical rhythm tokens added to `src/styles/theme.css :root`: `--section-h-hero-rich`, `--section-h-hero-medium`, `--section-h-hero-compact`, `--section-pt`, `--section-pt-lg`, `--section-pb` — all hero values use `svh` (NOT `vh`, NOT `dvh` — CRIT-07)
-- [ ] **RHYTHM-02**: Tokens re-exported to `@theme inline` as `--height-section-*` and `--spacing-section-*` following existing `--mu-*` → `--color-mu-*` two-layer pattern
-- [ ] **RHYTHM-03**: Smoke-test before bulk migration: adding one `--height-section-hero-rich` token generates Tailwind utility `min-h-section-hero-rich` (30-min spike before touching markup)
-- [ ] **RHYTHM-04**: `<body class="min-h-screen">` replaced with page-shell wrapper across all 6 pages: `<body><div class="page-shell flex flex-col min-h-[100dvh]"><header/><main class="flex-1"/><footer/></div></body>` — fixes footer-floats-on-tall-viewports bug (CRIT-08, MOD-24)
-- [ ] **RHYTHM-05**: Hero classes migrated on all 5 content pages — content-density tier assigned per page:
+- [x] **RHYTHM-01**: Vertical rhythm tokens added to `src/styles/theme.css :root`: `--section-h-hero-rich`, `--section-h-hero-medium`, `--section-h-hero-compact`, `--section-pt`, `--section-pt-lg`, `--section-pb` — all hero values use `svh` (NOT `vh`, NOT `dvh` — CRIT-07)
+- [x] **RHYTHM-02**: Tokens re-exported to `@theme inline` as `--height-section-*` and `--spacing-section-*` following existing `--mu-*` → `--color-mu-*` two-layer pattern
+- [x] **RHYTHM-03**: Smoke-test before bulk migration: adding one `--height-section-hero-rich` token generates Tailwind utility `min-h-section-hero-rich` (30-min spike before touching markup)
+- [x] **RHYTHM-04**: `<body class="min-h-screen">` replaced with page-shell wrapper across all 6 pages: `<body><div class="page-shell flex flex-col min-h-[100dvh]"><header/><main class="flex-1"/><footer/></div></body>` — fixes footer-floats-on-tall-viewports bug (CRIT-08, MOD-24)
+- [x] **RHYTHM-05**: Hero classes migrated on all 5 content pages — content-density tier assigned per page:
   - `index.html`, `online-consultations.html` → `min-h-section-hero-rich`
   - `treatment-abroad.html`, `checkup.html` → `min-h-section-hero-medium`
   - `contacts.html`, `404.html` → `min-h-section-hero-compact`
-- [ ] **RHYTHM-06**: `section[id], h1[id], h2[id] { scroll-margin-top: var(--header-h); }` global rule added to prevent smooth-scroll anchor links from landing behind sticky header (MOD-12)
-- [ ] **RHYTHM-07**: `@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }` added for 45+ vestibular-safe behavior
-- [ ] **RHYTHM-08**: Scroll-reveal IntersectionObserver `rootMargin` changed from default to `'-100px 0px -100px 0px'` so animations fire when content is genuinely visible, not when tall section's empty top enters viewport (MOD-13)
-- [ ] **RHYTHM-09**: Cyrillic typography clamp widened where needed — `max-width: 55ch` on Russian hero headings (vs 60ch for English), clamp ceiling raised based on 1920/2560 visual review (MOD-10)
+- [x] **RHYTHM-06**: `section[id], h1[id], h2[id] { scroll-margin-top: var(--header-h); }` global rule added to prevent smooth-scroll anchor links from landing behind sticky header (MOD-12)
+- [x] **RHYTHM-07**: `@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }` added for 45+ vestibular-safe behavior
+- [x] **RHYTHM-08**: Scroll-reveal IntersectionObserver `rootMargin` changed from default to `'-100px 0px -100px 0px'` so animations fire when content is genuinely visible, not when tall section's empty top enters viewport (MOD-13)
+- [x] **RHYTHM-09**: Cyrillic typography clamp widened where needed — `max-width: 55ch` on Russian hero headings (vs 60ch for English), clamp ceiling raised based on 1920/2560 visual review (MOD-10)
 - [ ] **RHYTHM-10**: Viewport verification across `320, 360, 390, 412, 768, 1024, 1280, 1440, 1920` — 360 and 412 included for Android KZ market (MIN-09); no section feels "swimming" or "cramped" on any page at any viewport
-- [ ] **RHYTHM-11**: Post-migration gate — `git diff main..HEAD -- '*.html' | grep -E 'min-h-\[' | grep -v 'min-h-screen'` shows zero ad-hoc arbitrary min-h values on hero/section elements (all replaced with tokens)
-- [ ] **RHYTHM-12**: All counter animations cached via `sessionStorage` or referrer-check so they don't re-run on every SPA navigation (MIN-04 — polished UX hygiene)
+- [x] **RHYTHM-11**: Post-migration gate — `git diff main..HEAD -- '*.html' | grep -E 'min-h-\[' | grep -v 'min-h-screen'` shows zero ad-hoc arbitrary min-h values on hero/section elements (all replaced with tokens)
+- [x] **RHYTHM-12**: All counter animations cached via `sessionStorage` or referrer-check so they don't re-run on every SPA navigation (MIN-04 — polished UX hygiene)
 
 ---
 

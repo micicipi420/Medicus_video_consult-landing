@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
-status: Roadmap approved, awaiting first plan
-stopped_at: Completed 36a (36-SUMMARY.md)
-last_updated: "2026-04-07T00:00:00.000Z"
-last_activity: 2026-04-07 — Phase 36a complete: header/footer/sticky-bar BEM drift normalized across 5 pages; LAYOUT-06/08/09/10 done; LAYOUT-07 verified no-op
+status: completed
+stopped_at: Completed Phase 38 Plan 1 (38-PLAN.md) — vertical rhythm system shipped
+last_updated: "2026-04-07T08:19:06.064Z"
+last_activity: "2026-04-07 — Phase 36a: header/footer/sticky-bar normalized across 5 pages, LAYOUT-06/08/09/10 done"
 progress:
   total_phases: 6
-  completed_phases: 1
-  total_plans: 1
-  completed_plans: 1
+  completed_phases: 2
+  total_plans: 2
+  completed_plans: 6
   percent: 100
 ---
 
@@ -56,6 +56,7 @@ Progress: [████░░░░░░] ~40% (v3.1, phases 33/34/35/36a done)
 | Phase 32 P01 | 1min | 2 tasks | 2 files |
 | Phase 32 P02 | 6min | 2 tasks | 7 files |
 | Phase 33 P33-01 | 45 | 7 tasks | 6 files |
+| Phase 38 P1 | 525378 | 9 tasks | 10 files |
 
 ### Decisions
 
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [v3.1 roadmap]: Phase 36 partials approach is build-time shell splice (NOT runtime fetch, NOT nginx SSI) — preserves existing js/router.js swap contract, works with Netlify deploy target
 - [Phase 33]: 404.html Vienna address fixed as Rule 2 deviation — was not in plan scope but had stale Bruno-Marek-Allee footer
 - [Phase 33]: Gate 1/2 intent achieved despite count discrepancy: Wiener Privatklinik hospital name and HTML entity &laquo; make exact counts unachievable but all stale company refs are gone
+- [Phase 38]: Tailwind v4 requires --min-height-* (not --height-*) to generate min-h-* utilities — confirmed via smoke test
+- [Phase 38]: Body min-h-screen removal (simpler approach) chosen over page-shell flex wrapper — viewport verification to confirm
 
 ### Roadmap Evolution
 
@@ -98,6 +101,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-07T07:20:04.691Z
-Stopped at: Completed 33-01-PLAN.md
+Last session: 2026-04-07T08:19:06.060Z
+Stopped at: Completed Phase 38 Plan 1 (38-PLAN.md) — vertical rhythm system shipped
 Next command: `/clear` then `/gsd-discuss-phase 33` (or `/gsd-plan-phase 33` to skip discussion)
