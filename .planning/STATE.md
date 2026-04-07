@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
 status: Roadmap approved, awaiting first plan
-stopped_at: Completed 33-01-PLAN.md
-last_updated: "2026-04-07T07:20:04.695Z"
-last_activity: 2026-04-07 — v3.1 ROADMAP.md written, 52 requirements mapped across 6 phases
+stopped_at: Completed 36a (36-SUMMARY.md)
+last_updated: "2026-04-07T00:00:00.000Z"
+last_activity: 2026-04-07 — Phase 36a complete: header/footer/sticky-bar BEM drift normalized across 5 pages; LAYOUT-06/08/09/10 done; LAYOUT-07 verified no-op
 progress:
   total_phases: 6
   completed_phases: 1
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — proj
 
 ## Current Position
 
-Phase: 33 (Audit Quick Wins) — not yet planned
-Plan: —
-Status: Roadmap approved, awaiting first plan
-Last activity: 2026-04-07 — v3.1 ROADMAP.md written, 52 requirements mapped across 6 phases
+Phase: 36a (Shared Layout Primitives — normalize subset) — complete
+Plan: 36a
+Status: Phase 36a complete; Phase 36b (extraction + build pipeline) deferred to v3.2
+Last activity: 2026-04-07 — Phase 36a: header/footer/sticky-bar normalized across 5 pages, LAYOUT-06/08/09/10 done
 
-Progress: [░░░░░░░░░░] 0% (v3.1, 0/6 phases)
+Progress: [████░░░░░░] ~40% (v3.1, phases 33/34/35/36a done)
 
 ## Performance Metrics
 
@@ -88,6 +88,11 @@ Recent decisions affecting current work:
 
 - Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
 - Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
+- [Phase 36a]: contacts.html + checkup.html selected as canonical BEM reference (footer__*/header__* classes); index.html normalized up to match
+- [Phase 36a]: index.html CTA href changed contacts.html → #contact (page's own form anchor); sticky-bar CTA same fix
+- [Phase 36a]: Footer navigation column normalized to 2 links (Главная + Контакты) to enable Phase 36b single-source extraction
+- [Phase 36a]: LAYOUT-07 verified no-op — router.js already calls updateActiveNav() on SPA nav; static baked aria-current covers first-load
+- [Phase 36a]: Mobile menu toggleMenu() re-queries .header__menu-btn on each call for full router-swap robustness
 - Phase 36 prerequisite spike: Netlify test deploy with checked-in 76 MB tailwindcss binary (Open Verification Item #2)
 - Phase 38 prerequisite spike: Tailwind v4 token-to-utility smoke test (Open Verification Item #3)
 
