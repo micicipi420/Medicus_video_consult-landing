@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
 status: active
-stopped_at: Defining requirements for v3.1 (6 phases locked: 33 Audit Quick Wins, 34 Treatment Abroad Overhaul, 35 Checkup + Form UX, 36 Shared Layout Primitives, 37 Site Metadata & Hygiene, 38 Vertical Rhythm & Section Sizing).
+stopped_at: ROADMAP.md v3.1 section written. 6 phases (33-38) with success criteria, 52/52 requirements mapped, dependencies documented. Ready for /gsd-plan-phase 33.
 last_updated: "2026-04-07T00:00:00.000Z"
 last_activity: 2026-04-07
 progress:
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — proj
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 33 (Audit Quick Wins) — not yet planned
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-07 — Milestone v3.1 started
+Status: Roadmap approved, awaiting first plan
+Last activity: 2026-04-07 — v3.1 ROADMAP.md written, 52 requirements mapped across 6 phases
 
 Progress: [░░░░░░░░░░] 0% (v3.1, 0/6 phases)
 
@@ -73,18 +73,23 @@ Recent decisions affecting current work:
 - [Phase 32]: Used box-shadow for focus-visible ring (global CSS, zero HTML changes across all pages)
 - [Phase 32]: Accessible text tokens use -text suffix (mu-blue-text vs mu-blue) to separate WCAG-safe text colors from bright icon/bg colors
 - [Phase 32]: Icon containers and SVGs keep bright original colors; only text elements get *-text accessible variants for WCAG AA compliance
+- [v3.1 roadmap]: Phase order locked numerically (33→34→35→36→37→38); Phase 35's CHKPOL-01 typography-only constraint resolves the cross-phase conflict with Phase 38 min-h ownership (CRIT-03)
+- [v3.1 roadmap]: Phase 36 partials approach is build-time shell splice (NOT runtime fetch, NOT nginx SSI) — preserves existing js/router.js swap contract, works with Netlify deploy target
 
 ### Roadmap Evolution
 
 - Phase 32 added: Design system compliance: accessible tokens, focus-visible, CTA gradient fix across all pages
+- v3.1 expanded from 5 → 6 phases (Phase 38 added) after user flagged hero/section sizing as out-of-place across all 5 pages — research-first approach with svh tokens
 
 ### Blockers/Concerns
 
 - Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
 - Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
+- Phase 36 prerequisite spike: Netlify test deploy with checked-in 76 MB tailwindcss binary (Open Verification Item #2)
+- Phase 38 prerequisite spike: Tailwind v4 token-to-utility smoke test (Open Verification Item #3)
 
 ## Session Continuity
 
 Last session: 2026-04-07
-Stopped at: v3.1 milestone opened. Rename applied (PROJECT.md + ROADMAP.md H1 + STATE.md). Phase structure expanded from 5 → 6 phases after user flagged section sizing as out-of-place across all 5 pages — new Phase 38 "Vertical Rhythm & Section Sizing" added with research-first approach. REQUIREMENTS.md + ROADMAP.md v3.1 block written by roadmapper. Ready to start Phase 33.
+Stopped at: v3.1 ROADMAP.md written. 6 phases (33-38) with goal-backward success criteria, 52/52 requirements mapped, hard/soft dependencies documented from research/ARCHITECTURE.md and PITFALLS.md. REQUIREMENTS.md traceability already complete. Ready to start Phase 33.
 Next command: `/clear` then `/gsd-discuss-phase 33` (or `/gsd-plan-phase 33` to skip discussion)
