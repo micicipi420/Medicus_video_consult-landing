@@ -4,8 +4,8 @@ milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
 status: shipped
 stopped_at: All 6 phases complete. 44/52 requirements delivered; 7 deferred to v3.2 Phase 36b (partials extraction + build pipeline + Netlify deploy); 1 (RHYTHM-10 manual viewport verification) pending user sign-off. 44 commits across 6 phases. Milestone audit at .planning/milestones/v3.1-MILESTONE-AUDIT.md.
-last_updated: "2026-04-07T12:30:00.000Z"
-last_activity: "2026-04-07 — v3.1 autonomous milestone complete (6 phases, 44 commits)"
+last_updated: "2026-04-07T08:55:00.000Z"
+last_activity: "2026-04-07 — Phase 38 UI audit (20/24) + quick task 260407-j79 fixed 3 findings"
 progress:
   total_phases: 6
   completed_phases: 6
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — proj
 
 Phase: All 6 phases (33–38) complete
 Plan: —
-Status: v3.1 shipped. Awaiting RHYTHM-10 manual viewport verification + re-audit for full closure.
-Last activity: 2026-04-07 — v3.1 autonomous milestone complete (6 phases, 44 commits)
+Status: v3.1 shipped. Phase 38 UI audit complete (20/24, 3 findings fixed via quick task 260407-j79). Awaiting RHYTHM-10 manual viewport verification for full closure.
+Last activity: 2026-04-07 — Phase 38 UI audit + quick task 260407-j79 (3 commits)
 
 Progress: [██████████] 100% (v3.1, 6/6 phases)
 
