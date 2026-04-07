@@ -110,36 +110,42 @@
    * - Swaps menu/close icons
    * - Locks body scroll when open
    * - Closes on overlay background click and nav link click
+   * - Uses event delegation on document for LAYOUT-08 (router swap robustness)
    */
   function initMobileMenu() {
-    var menuBtn = document.querySelector('.header__menu-btn');
     var overlay = document.querySelector('.mobile-menu-overlay');
-    if (!menuBtn || !overlay) return;
-
-    var menuIcon = menuBtn.querySelector('.icon-menu');
-    var closeIcon = menuBtn.querySelector('.icon-close');
+    if (!overlay) return;
 
     function toggleMenu() {
+      var menuBtn = document.querySelector('.header__menu-btn');
       var isOpen = overlay.classList.contains('is-open');
       overlay.classList.toggle('is-open');
-      menuBtn.setAttribute('aria-expanded', String(!isOpen));
-      if (menuIcon) menuIcon.style.display = isOpen ? '' : 'none';
-      if (closeIcon) closeIcon.style.display = isOpen ? 'none' : '';
+      if (menuBtn) {
+        var menuIcon = menuBtn.querySelector('.icon-menu');
+        var closeIcon = menuBtn.querySelector('.icon-close');
+        menuBtn.setAttribute('aria-expanded', String(!isOpen));
+        if (menuIcon) menuIcon.style.display = isOpen ? '' : 'none';
+        if (closeIcon) closeIcon.style.display = isOpen ? 'none' : '';
+      }
       document.body.style.overflow = isOpen ? '' : 'hidden';
     }
 
-    menuBtn.addEventListener('click', toggleMenu);
-
-    // Close on overlay background click
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) toggleMenu();
-    });
-
-    // Close on any link click inside mobile menu
-    overlay.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        if (overlay.classList.contains('is-open')) toggleMenu();
-      });
+    // Event delegation on document — survives router DOM swaps (LAYOUT-08)
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.header__menu-btn');
+      if (btn) {
+        toggleMenu();
+        return;
+      }
+      // Close on overlay background click
+      if (e.target === overlay) {
+        toggleMenu();
+        return;
+      }
+      // Close on any link click inside mobile menu
+      if (overlay.classList.contains('is-open') && overlay.contains(e.target) && e.target.closest('a')) {
+        toggleMenu();
+      }
     });
   }
 
@@ -547,4 +553,14 @@
   } else {
     initAll();
   }
+
+  // LAYOUT-09: bfcache restoration — re-sync page state when navigating back/forward
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      // Restored from bfcache — re-sync state
+      if (window.MU && window.MU.reinitPageContent) {
+        window.MU.reinitPageContent();
+      }
+    }
+  });
 })();
