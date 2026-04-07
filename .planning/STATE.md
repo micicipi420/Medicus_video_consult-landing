@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
-status: completed
-stopped_at: Completed Phase 38 Plan 1 (38-PLAN.md) — vertical rhythm system shipped
-last_updated: "2026-04-07T08:19:06.064Z"
-last_activity: "2026-04-07 — Phase 36a: header/footer/sticky-bar normalized across 5 pages, LAYOUT-06/08/09/10 done"
+status: shipped
+stopped_at: All 6 phases complete. 44/52 requirements delivered; 7 deferred to v3.2 Phase 36b (partials extraction + build pipeline + Netlify deploy); 1 (RHYTHM-10 manual viewport verification) pending user sign-off. 44 commits across 6 phases. Milestone audit at .planning/milestones/v3.1-MILESTONE-AUDIT.md.
+last_updated: "2026-04-07T12:30:00.000Z"
+last_activity: "2026-04-07 — v3.1 autonomous milestone complete (6 phases, 44 commits)"
 progress:
   total_phases: 6
-  completed_phases: 2
-  total_plans: 2
+  completed_phases: 6
+  total_plans: 6
   completed_plans: 6
   percent: 100
 ---
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — proj
 
 ## Current Position
 
-Phase: 36a (Shared Layout Primitives — normalize subset) — complete
-Plan: 36a
-Status: Phase 36a complete; Phase 36b (extraction + build pipeline) deferred to v3.2
-Last activity: 2026-04-07 — Phase 36a: header/footer/sticky-bar normalized across 5 pages, LAYOUT-06/08/09/10 done
+Phase: All 6 phases (33–38) complete
+Plan: —
+Status: v3.1 shipped. Awaiting RHYTHM-10 manual viewport verification + re-audit for full closure.
+Last activity: 2026-04-07 — v3.1 autonomous milestone complete (6 phases, 44 commits)
 
-Progress: [████░░░░░░] ~40% (v3.1, phases 33/34/35/36a done)
+Progress: [██████████] 100% (v3.1, 6/6 phases)
 
 ## Performance Metrics
 

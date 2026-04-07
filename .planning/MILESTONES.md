@@ -1,5 +1,23 @@
 # Milestones
 
+## v3.1 Site Foundation & Audit Fixes (Shipped: 2026-04-07)
+
+**Phases completed:** 6 phases (33–38), 44/52 requirements delivered, 7 deferred to v3.2 Phase 36b, 1 manual verification gate pending (RHYTHM-10)
+
+**Key accomplishments:**
+
+- Data unification gate passed: Vienna address canonical (`Billrothstrasse 78`), ТОО «MedicusUnion KZ» (no space), Алматы (not Астана), Bruno-Marek-Allee drift eliminated
+- Mobile sticky-bar overlap fixed site-wide with `calc(7rem+env(safe-area-inset-bottom))` for iPhone X+ home indicator safety
+- treatment-abroad.html restored from 14/24 audit score: 20 hardcoded hex strokes → `currentColor` tokens, 3 typewriter dashes → en-dashes, hero photo swapped from inappropriate syringe close-up to medical-team composition, stat bar icon-less pattern matching index.html
+- checkup.html H1 overflow fixed via typography-only (`<br class="hidden lg:block">`) — NO min-h touched per cross-phase constraint
+- Form UX upgraded for 45+ audience across all 5 forms: native `:user-valid` CSS (blur-aware), blur-first validation timing, `aria-invalid` transitions, `max-w-[280px]` error containers, gender-neutral copy ("Помогите выбрать" not "Не определился")
+- Chrome drift eliminated across 5 pages: BEM classes normalized, canonical footer/header/sticky-bar structure, `aria-current="page"` baked in static HTML for each page's own nav link, event delegation for mobile menu, bfcache `pageshow` listener
+- Site metadata: `sitemap.xml` (5 URLs, NO 404, NO changefreq/priority), Yandex-safe `robots.txt` (does NOT block /css/ /js/), canonical URL audit confirmed 0 drift, 404.html H1 upgraded + body copy rewritten, meta descriptions trimmed to 150–160 chars, 10 circle-flags SVGs vendored to `img/flags/` (~6KB)
+- Vertical rhythm system (research-first): canonical `svh`-based hero tokens (rich/medium/compact content-density tiers) in `theme.css :root` + `@theme inline` — smoke test caught Tailwind v4's `--min-height-*` key pattern (not `--height-*`), prevented broken bulk migration. `<body class="min-h-screen">` removed across 6 pages. `scroll-margin-top: 6rem` + `prefers-reduced-motion` guards. Counter animations cached via `sessionStorage` to avoid SPA-nav re-run.
+- Deferred to v3.2 Phase 36b: `partials/` extraction, `scripts/build-pages.sh`, `build.sh`, `netlify.toml [build] command`, Netlify deploy smoke-test (prerequisite: user triggers test deploy with checked-in 76 MB `tailwindcss` binary)
+
+---
+
 ## v3.0 SEO, Performance & Polish (Shipped: 2026-04-06)
 
 **Phases completed:** 4 phases, 7 plans, 13 tasks

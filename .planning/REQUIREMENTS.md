@@ -22,50 +22,54 @@
 
 ## Treatment Abroad Overhaul (Phase 34)
 
-- [ ] **TRTOVR-01**: All 25× hardcoded SVG hex strokes on `treatment-abroad.html` (`#38C6F4`, `#35B678`, `rgba(56,198,244,0.1)`) replaced with `currentColor` + Tailwind brand color classes
-- [ ] **TRTOVR-02**: `stroke="#047857"` (emerald-700) on line 752 replaced with `var(--mu-green-600)` token reference
-- [ ] **TRTOVR-03**: Typewriter `--` replaced with `&ndash;` in step duration badges on `treatment-abroad.html` — `2--4 дня` → `2&ndash;4&nbsp;дня` (4 occurrences) + `2--3 клиник` on line 447. Scoped regex `'\([0-9]\)--\([0-9]\)' '\1\&ndash;\2'` to avoid hitting CSS comments (MIN-06)
-- [ ] **TRTOVR-04**: Stat bar hierarchy on `treatment-abroad.html:180-200` reworked to match index.html stats pattern — DO THIS FIRST within Phase 34 (MOD-23 internal ordering)
-- [ ] **TRTOVR-05**: Hero photo replaced from syringes close-up → clinic interior / care team photo, sourced as WebP, integrated into markup with width/height for CLS prevention — DO THIS AFTER stat bar rework (MOD-23). Asset spec: visual quiet space in bottom-third where stat bar overlaps
-- [ ] **TRTOVR-06**: `treatment-abroad.html` page re-audit score ≥17/24 (from 14/24)
+- [x] **TRTOVR-01**: All 25× hardcoded SVG hex strokes on `treatment-abroad.html` (`#38C6F4`, `#35B678`, `rgba(56,198,244,0.1)`) replaced with `currentColor` + Tailwind brand color classes
+- [x] **TRTOVR-02**: `stroke="#047857"` (emerald-700) on line 752 replaced with `var(--mu-green-600)` token reference
+- [x] **TRTOVR-03**: Typewriter `--` replaced with `&ndash;` in step duration badges on `treatment-abroad.html` — `2--4 дня` → `2&ndash;4&nbsp;дня` (4 occurrences) + `2--3 клиник` on line 447. Scoped regex `'\([0-9]\)--\([0-9]\)' '\1\&ndash;\2'` to avoid hitting CSS comments (MIN-06)
+- [x] **TRTOVR-04**: Stat bar hierarchy on `treatment-abroad.html:180-200` reworked to match index.html stats pattern — DO THIS FIRST within Phase 34 (MOD-23 internal ordering)
+- [x] **TRTOVR-05**: Hero photo replaced from syringes close-up → clinic interior / care team photo, sourced as WebP, integrated into markup with width/height for CLS prevention — DO THIS AFTER stat bar rework (MOD-23). Asset spec: visual quiet space in bottom-third where stat bar overlaps
+- [x] **TRTOVR-06**: `treatment-abroad.html` page re-audit score ≥17/24 (from 14/24)
 
 ## Checkup Fix + Form UX Polish (Phase 35)
 
-- [ ] **CHKPOL-01**: `checkup.html` H1 overflow at 1024–1440px fixed via **typography/content change** (responsive `<br>` on the gradient phrase OR shortening "Samsung Medical Center и Severance Hospital" with brand names in subtitle) — **MUST NOT touch `min-h`** (CRIT-03; Phase 38 owns all hero min-h tokens)
-- [ ] **CHKPOL-02**: `checkup.html` H2 form heading hierarchy reduced: `text-4xl md:text-5xl` → `text-3xl md:text-4xl` (currently too close to H1)
-- [ ] **CHKPOL-03**: Gender-neutral form labels applied on `checkup.html` — "Не определился" → "Пока не выбрал(а)" or "Помогите выбрать". Site-wide grep for `-лся\b`, `-ил\b`, `-ал\b` in form copy; no gender-specific past-tense first-person
-- [ ] **CHKPOL-04**: `:user-valid` CSS pseudo-class applied to all 5 forms (name, phone, specialization) — green border-bottom or left-rule on valid state, NOT checkmark icon (MOD-05 — mistaken "submitted" signal)
-- [ ] **CHKPOL-05**: `js/main.js` `initFormValidation()` extended with blur-first validation timing — validate on blur first; re-validate on input only after field has been blurred with errors (MOD-04 — no premature red borders)
-- [ ] **CHKPOL-06**: Phone mask validation on blur only, not on input — no valid/invalid flicker as user types `+7 701 532 24 78` (MOD-07)
-- [ ] **CHKPOL-07**: All Russian form error messages capped at ≤30 characters and container at `max-w-[280px]` to prevent 3-line wrapping on 320px (MOD-08)
-- [ ] **CHKPOL-08**: Screen-reader-only success text (`<span class="sr-only">поле заполнено</span>`) added per valid field; aria-live announcements only on validation transitions, never on every input (MOD-06)
+- [x] **CHKPOL-01**: `checkup.html` H1 overflow at 1024–1440px fixed via **typography/content change** (responsive `<br>` on the gradient phrase OR shortening "Samsung Medical Center и Severance Hospital" with brand names in subtitle) — **MUST NOT touch `min-h`** (CRIT-03; Phase 38 owns all hero min-h tokens)
+- [x] **CHKPOL-02**: `checkup.html` H2 form heading hierarchy reduced: `text-4xl md:text-5xl` → `text-3xl md:text-4xl` (currently too close to H1)
+- [x] **CHKPOL-03**: Gender-neutral form labels applied on `checkup.html` — "Не определился" → "Пока не выбрал(а)" or "Помогите выбрать". Site-wide grep for `-лся\b`, `-ил\b`, `-ал\b` in form copy; no gender-specific past-tense first-person
+- [x] **CHKPOL-04**: `:user-valid` CSS pseudo-class applied to all 5 forms (name, phone, specialization) — green border-bottom or left-rule on valid state, NOT checkmark icon (MOD-05 — mistaken "submitted" signal)
+- [x] **CHKPOL-05**: `js/main.js` `initFormValidation()` extended with blur-first validation timing — validate on blur first; re-validate on input only after field has been blurred with errors (MOD-04 — no premature red borders)
+- [x] **CHKPOL-06**: Phone mask validation on blur only, not on input — no valid/invalid flicker as user types `+7 701 532 24 78` (MOD-07)
+- [x] **CHKPOL-07**: All Russian form error messages capped at ≤30 characters and container at `max-w-[280px]` to prevent 3-line wrapping on 320px (MOD-08)
+- [x] **CHKPOL-08**: Screen-reader-only success text (`<span class="sr-only">поле заполнено</span>`) added per valid field; aria-live announcements only on validation transitions, never on every input (MOD-06)
 
-## Shared Layout Primitives (Phase 36) — ARCHITECTURAL CENTERPIECE
+## Shared Layout Primitives (Phase 36a / 36b) — ARCHITECTURAL CENTERPIECE
 
-**Approach:** Build-time shell-script splice, NOT runtime fetch+inject (CRIT-01; fights existing `js/router.js`). NOT nginx SSI (Netlify doesn't support it).
+**Scope decision 2026-04-07 (user):** Phase 36a ships drift normalization + JS wiring; Phase 36b (partials extraction + build pipeline + Netlify deploy) deferred to v3.2.
 
-- [ ] **LAYOUT-01**: `partials/` directory created with single-source files: `header.html`, `footer.html`, `sticky-bar.html`, `mobile-menu.html`
-- [ ] **LAYOUT-02**: `scripts/build-pages.sh` created — marker-based splice (awk/sed) that replaces content between `<!-- BUILD:partial NAME -->` and `<!-- BUILD:end NAME -->` markers in all 6 HTML files with `partials/<name>.html`
-- [ ] **LAYOUT-03**: `build.sh` wrapper at repo root — runs `scripts/build-pages.sh` then `./tailwindcss -i src/styles/tailwind.css -o css/styles.css --minify` (splice MUST run before Tailwind compile so `@source '../../*.html'` scans post-splice HTML)
-- [ ] **LAYOUT-04**: `.netlify/netlify.toml` updated with `[build] command = "./build.sh"` — deploy always re-splices
-- [ ] **LAYOUT-05**: All 6 HTML files updated with BUILD markers around header, footer, sticky-bar, mobile-menu regions (initial splice produces byte-identical output to current files — verified via `diff` before removing inlined chrome)
-- [ ] **LAYOUT-06**: `aria-current="page"` baked into static HTML for each page's own nav link via `build-pages.sh --page=<name>` (addresses MOD-01 first-paint race; currently only `contacts.html:68/95` has this)
-- [ ] **LAYOUT-07**: `router.js:init()` augmented with `updateActiveNav(window.location.pathname)` call on first load (pairs with LAYOUT-06 for dual-layer active-state)
-- [ ] **LAYOUT-08**: Mobile menu hamburger click handler uses event delegation on `document` (not direct attach) — handler robust to router swap lifecycle (MOD-02)
-- [ ] **LAYOUT-09**: `pageshow` listener added for bfcache restoration — detects `e.persisted` and re-syncs router state + DOM-derived values (CRIT-10)
-- [ ] **LAYOUT-10**: `MedicalBusiness` JSON-LD on index.html remains in static inline HTML — **NOT** extracted to any partial, NOT injected via JS (CRIT-06 — Yandex reliability)
-- [ ] **LAYOUT-11**: Verification — adding a hypothetical 7th page requires editing 0 existing pages' footer/header/sticky-bar markup (single-source invariant)
-- [ ] **LAYOUT-12**: Pre-merge gate — Netlify test deploy verifies checked-in 76 MB `tailwindcss` binary executes under Netlify build image permissions
+- [ ] **LAYOUT-01** _(DEFERRED to v3.2 Phase 36b)_: `partials/` directory with single-source files
+- [ ] **LAYOUT-02** _(DEFERRED to v3.2 Phase 36b)_: `scripts/build-pages.sh` marker-based splice
+- [ ] **LAYOUT-03** _(DEFERRED to v3.2 Phase 36b)_: `build.sh` wrapper at repo root
+- [ ] **LAYOUT-04** _(DEFERRED to v3.2 Phase 36b)_: `.netlify/netlify.toml` `[build] command`
+- [ ] **LAYOUT-05** _(DEFERRED to v3.2 Phase 36b)_: BUILD markers + byte-identical splice verification
+- [x] **LAYOUT-06**: `aria-current="page"` baked in static HTML — 9 placements across 5 pages (drift normalized in Phase 36a)
+- [x] **LAYOUT-07**: Verified no-op — `router.js:updateActiveNav()` already fires on SPA navigation; static baked HTML covers first-load
+- [x] **LAYOUT-08**: Mobile menu hamburger uses event delegation on `document` via `.header__menu-btn` selector
+- [x] **LAYOUT-09**: `pageshow` listener handles bfcache restoration via `e.persisted` in `js/main.js`
+- [x] **LAYOUT-10**: `MedicalBusiness` JSON-LD stays in static inline HTML on `index.html` (verified: 1 script tag, not extracted)
+- [ ] **LAYOUT-11** _(DEFERRED to v3.2 Phase 36b)_: 7th-page 0-edit invariant verification
+- [ ] **LAYOUT-12** _(DEFERRED to v3.2 Phase 36b)_: Netlify test deploy smoke-test with checked-in 76 MB `tailwindcss` binary
+
+**Bonus work in Phase 36a (not in original reqs but implicit from audit CRIT-02):**
+- Header + footer + sticky-bar drift normalized across 5 pages (BEM classes unified, copy unified, nav links consistent)
+- Preserves Phase 33 canonical Vienna address + ТОО name
 
 ## Site Metadata & Hygiene (Phase 37)
 
-- [ ] **META-01**: `sitemap.xml` created at repo root as hand-written allowlist of 5 production pages (index, online-consultations, treatment-abroad, checkup, contacts) — NO 404.html, NO `<changefreq>`, NO `<priority>` (Google ignores both), `<lastmod>` from `git log -1 --format=%cI <file>` per page
-- [ ] **META-02**: `robots.txt` created at repo root with explicit `Allow: /`, disallows for `/.planning/`, `/Redesign/`, `/scripts/`, `/src/`, and `Sitemap: https://medicusunion.kz/sitemap.xml` reference. **Does NOT block `/css/`, `/js/`, `/img/`** (CRIT-05 — Yandex penalty)
-- [ ] **META-03**: Canonical URL audit across all 6 HTML files — one pattern (`https://medicusunion.kz/` for homepage; `https://medicusunion.kz/<name>.html` for service pages; no trailing slash drift). `grep -h 'rel="canonical"' *.html | grep -o 'href="[^"]*"' | sort -u` shows exactly 6 unique URLs
-- [ ] **META-04**: `404.html` H1 upgraded from `text-3xl font-extrabold` → `text-5xl md:text-6xl lg:text-7xl` to match other pages (audit #11)
-- [ ] **META-05**: `404.html` body copy rewritten from generic "Возможно, страница была перемещена или удалена" → "Эту страницу либо перенесли, либо она ещё не появилась. Откройте главную или напишите координатору."
-- [ ] **META-06**: Meta description consistency audit across all **6** pages (including 404.html — MIN-08) — each unique, 150–160 chars, includes primary keyword
-- [ ] **META-07**: `circle-flags` vendored — 7 SVGs (de, at, ch, fr, it, es, il) inlined into `img/flags/` or directly into `online-consultations.html` country list, replacing current approximated inline SVGs. Total budget: ~14KB. Rendered at ≥32px on mobile, 24px minimum on desktop
+- [x] **META-01**: `sitemap.xml` created at repo root as hand-written allowlist of 5 production pages (index, online-consultations, treatment-abroad, checkup, contacts) — NO 404.html, NO `<changefreq>`, NO `<priority>` (Google ignores both), `<lastmod>` from `git log -1 --format=%cI <file>` per page
+- [x] **META-02**: `robots.txt` created at repo root with explicit `Allow: /`, disallows for `/.planning/`, `/Redesign/`, `/scripts/`, `/src/`, and `Sitemap: https://medicusunion.kz/sitemap.xml` reference. **Does NOT block `/css/`, `/js/`, `/img/`** (CRIT-05 — Yandex penalty)
+- [x] **META-03**: Canonical URL audit across all 6 HTML files — one pattern (`https://medicusunion.kz/` for homepage; `https://medicusunion.kz/<name>.html` for service pages; no trailing slash drift). `grep -h 'rel="canonical"' *.html | grep -o 'href="[^"]*"' | sort -u` shows exactly 6 unique URLs
+- [x] **META-04**: `404.html` H1 upgraded from `text-3xl font-extrabold` → `text-5xl md:text-6xl lg:text-7xl` to match other pages (audit #11)
+- [x] **META-05**: `404.html` body copy rewritten from generic "Возможно, страница была перемещена или удалена" → "Эту страницу либо перенесли, либо она ещё не появилась. Откройте главную или напишите координатору."
+- [x] **META-06**: Meta description consistency audit across all **6** pages (including 404.html — MIN-08) — each unique, 150–160 chars, includes primary keyword
+- [x] **META-07**: `circle-flags` vendored — 7 SVGs (de, at, ch, fr, it, es, il) inlined into `img/flags/` or directly into `online-consultations.html` country list, replacing current approximated inline SVGs. Total budget: ~14KB. Rendered at ≥32px on mobile, 24px minimum on desktop
 
 ## Vertical Rhythm & Section Sizing (Phase 38) — RESEARCH-FIRST
 
