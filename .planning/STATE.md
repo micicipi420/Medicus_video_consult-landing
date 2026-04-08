@@ -1,36 +1,36 @@
 ---
 gsd_state_version: 1.0
-milestone: v3.1
-milestone_name: Site Foundation & Audit Fixes
-status: shipped
-stopped_at: v3.1 milestone archived 2026-04-08. 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b. Ready for /gsd-new-milestone v3.2.
-last_updated: "2026-04-08T05:50:00.000Z"
-last_activity: 2026-04-08 — v3.1 milestone archived, ROADMAP collapsed, REQUIREMENTS deleted for fresh v3.2 cycle
+milestone: v3.2
+milestone_name: Build Pipeline & Chrome Partials
+status: planning
+stopped_at: v3.2 milestone kickoff — defining requirements and roadmap
+last_updated: "2026-04-08T06:15:00.000Z"
+last_activity: 2026-04-08 — v3.2 milestone started, requirements being defined
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — project renamed "MedicusUnion KZ Landing" → "MedicusUnion KZ")
+See: .planning/PROJECT.md (updated 2026-04-08 at v3.2 milestone kickoff)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** v3.1 Site Foundation & Audit Fixes — ship 14 audit fixes + shared layout primitives + researched vertical-rhythm system. Bridge from "polished landing" to "scalable multi-page site".
+**Current focus:** v3.2 Build Pipeline & Chrome Partials — extract shared HTML partials, wire byte-identity build pipeline (Makefile + pre-commit hook), knock out 3 residual cosmetic fixes from v3.1 UX validation.
 
 ## Current Position
 
-Phase: All 6 phases (33–38) complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: v3.1 shipped. Phase 38 UI audit complete (20/24, 3 findings fixed via quick task 260407-j79). Awaiting RHYTHM-10 manual viewport verification for full closure.
-Last activity: 2026-04-08
+Status: Defining requirements
+Last activity: 2026-04-08 — Milestone v3.2 started
 
-Progress: [██████████] 100% (v3.1, 6/6 phases)
+Progress: [░░░░░░░░░░] 0% (v3.2, not yet scoped)
 
 ## Performance Metrics
 
@@ -103,5 +103,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-08
-Stopped at: v3.1 fully closed — tag pushed to origin, phase dirs archived under .planning/milestones/v3.1-phases/. Ready for v3.2 kickoff.
-Next command: /clear then /gsd-new-milestone (v3.2 — scope: Phase 36b partials/build pipeline + 3 minor UX backlog items)
+Stopped at: v3.2 kickoff in progress — PROJECT.md updated, STATE.md reset, REQUIREMENTS.md + ROADMAP.md next
+Next command: Defining requirements → spawning roadmapper for v3.2 phase structure

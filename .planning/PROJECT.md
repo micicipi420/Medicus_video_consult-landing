@@ -16,6 +16,22 @@
 **Codebase:** 6 production pages + 404 with shared layout chrome (drift-normalized), full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
 **Stack:** HTML + Tailwind CSS v4 (CLI standalone) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
+## Current Milestone: v3.2 Build Pipeline & Chrome Partials
+
+**Goal:** Eliminate chrome drift at the source by extracting shared HTML partials and wiring a byte-identity build pipeline, then knock out 3 residual cosmetic fixes from v3.1 UX validation.
+
+**Target features:**
+- Partials extraction: `partials/{header,footer,sticky-bar,mobile-menu}.html` as single source of truth
+- Build pipeline: `scripts/build-pages.sh` (splicer), `build.sh` (orchestrator), `Makefile` target, pre-commit hook
+- Byte-identity smoke test: rebuild must produce current 6 pages byte-for-byte
+- Absorbs 7 LAYOUT requirements deferred from v3.1 Phase 36
+- Cosmetic cleanup: 404 H1 at 320vw, `/favicon.ico`, checkup H1 "за 1–2 дня" line-break
+
+**Constraints (inherited):**
+- No Node.js runtime — build scripts must be shell-native
+- Zero visual regression — pixel/byte identity against current 6 pages is the gate
+- Pre-commit hook is new territory for this repo; contributor onboarding adds a one-time install step per clone
+
 ## Requirements
 
 ### Validated
@@ -204,4 +220,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 at v3.1 milestone kickoff*
+*Last updated: 2026-04-08 at v3.2 milestone kickoff*
