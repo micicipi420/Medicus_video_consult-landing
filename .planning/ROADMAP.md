@@ -191,7 +191,10 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
   1. **404 H1 fits at 320px:** Opening `404.html` in a 320px-wide viewport shows the H1 fully within the viewport bounds without relying on `html { overflow-x: clip }`. Measured via `documentElement.scrollWidth === clientWidth` on 320px and no H1 character is clipped.
   2. **Favicon returns 200:** Requesting `/favicon.ico` on every deployed path returns HTTP 200. The browser DevTools console shows zero `favicon.ico` 404s on first load of any of the 6 pages.
   3. **Checkup H1 phrase integrity:** On `checkup.html`, the phrase "за 1–2 дня" never breaks mid-range across any viewport width (320, 375, 768, 1024, 1440, 1920). The numeric range stays bound as a single unit via nbsp or non-breaking hyphen, and line breaks land on natural word boundaries elsewhere in the H1.
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 40-01-PLAN.md — Step 404.html H1 mobile class from text-4xl to text-3xl (COSMETIC-01)
+  - [ ] 40-02-PLAN.md — Generate favicon set (ico/svg/apple-touch-icon/webmanifest) and add 4 link tags to head of all 6 HTML pages (COSMETIC-02)
+  - [ ] 40-03-PLAN.md — Wrap "за 1–2 дня" in whitespace-nowrap span on checkup.html line 138 (COSMETIC-03)
 
 ## Progress
 
@@ -200,6 +203,6 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 39. Partials Extraction & Build Pipeline | 3/3 | Complete    | 2026-04-08 |
-| 40. UX Cosmetic Cleanup | 0/TBD | Not started | - |
+| 40. UX Cosmetic Cleanup | 0/3   | Not started | - |
 
 All v3.1 phases shipped. See `.planning/milestones/v3.1-ROADMAP.md` for phase details, success criteria, and plans.
