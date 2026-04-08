@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v3.1
 milestone_name: Site Foundation & Audit Fixes
 status: shipped
-stopped_at: All 6 phases complete. 44/52 requirements delivered; 7 deferred to v3.2 Phase 36b (partials extraction + build pipeline + build-script invocation mechanism); 1 (RHYTHM-10 manual viewport verification) pending user sign-off. 44 commits across 6 phases. Milestone audit at .planning/milestones/v3.1-MILESTONE-AUDIT.md.
-last_updated: "2026-04-07T08:55:00.000Z"
-last_activity: "2026-04-07 — Phase 38 UI audit (20/24) + quick task 260407-j79 fixed 3 findings"
+stopped_at: v3.1 milestone archived 2026-04-08. 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b. Ready for /gsd-new-milestone v3.2.
+last_updated: "2026-04-08T05:50:00.000Z"
+last_activity: 2026-04-08 — v3.1 milestone archived, ROADMAP collapsed, REQUIREMENTS deleted for fresh v3.2 cycle
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 6
-  completed_plans: 6
+  total_phases: 7
+  completed_phases: 7
+  total_plans: 7
+  completed_plans: 7
   percent: 100
 ---
 
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-07 at v3.1 milestone kickoff — proj
 Phase: All 6 phases (33–38) complete
 Plan: —
 Status: v3.1 shipped. Phase 38 UI audit complete (20/24, 3 findings fixed via quick task 260407-j79). Awaiting RHYTHM-10 manual viewport verification for full closure.
-Last activity: 2026-04-07 — Phase 38 UI audit + quick task 260407-j79 (3 commits)
+Last activity: 2026-04-08
 
 Progress: [██████████] 100% (v3.1, 6/6 phases)
 

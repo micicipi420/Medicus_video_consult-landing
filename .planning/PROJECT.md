@@ -12,9 +12,9 @@
 
 ## Current State
 
-**Shipped:** v3.0 SEO, Performance & Polish (2026-04-06)
-**Codebase:** ~4,714 LOC (4,370 HTML + 344 CSS) + JS, 5 production pages + 404
-**Stack:** HTML + Tailwind CSS v4 (CLI standalone) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker
+**Shipped:** v3.1 Site Foundation & Audit Fixes (2026-04-08)
+**Codebase:** 6 production pages + 404 with shared layout chrome (drift-normalized), full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
+**Stack:** HTML + Tailwind CSS v4 (CLI standalone) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
 ## Requirements
 
@@ -105,21 +105,13 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
-## Current Milestone: v3.1 Site Foundation & Audit Fixes
-
-**Goal:** Ship all 14 audit fixes from the full-site review AND establish shared layout primitives + a researched vertical-rhythm system so v3.2+ page additions become cheap. Bridge from "polished landing" to "scalable multi-page site".
-
-**Source:** `.planning/ui-reviews/UI-REVIEW-FULL-SITE.md` (full-site 6-pillar audit, 2026-04-06, score 17/24) + user-driven vertical-rhythm concern (2026-04-07).
-
-**Target features (6 phases, 33–38):**
-- **Phase 33 — Audit Quick Wins:** sticky-bar overlap fix, Vienna + ТОО unification, emoji→SVG stats, Astana↔Алматы canonical, H1 em-dash fix
-- **Phase 34 — Treatment Abroad Overhaul:** 25× hardcoded SVG hex → currentColor/tokens, `--` → `&ndash;`, hero photo swap, stat bar hierarchy rework
-- **Phase 35 — Checkup Fix + Form UX Polish:** H1 overflow fix, H2 hierarchy, gender-neutral form labels, valid-state feedback on all 5 forms
-- **Phase 36 — Shared Layout Primitives (architectural centerpiece):** extract footer/header/sticky-bar to `partials/`, `aria-current="page"` active-state, dedupe 5× duplicates
-- **Phase 37 — Site Metadata & Hygiene:** `sitemap.xml`, `robots.txt`, canonical URL audit, 404 H1 + copy upgrade, meta-description consistency, real flag icon set
-- **Phase 38 — Vertical Rhythm & Section Sizing (research-first):** research canonical hero/section heights for medical landing pages, define global rhythm system (tokens/utilities), apply across all 5 pages, verify on 320/390/768/1024/1440/1920px viewports
-
-**Re-audit target:** site score ≥20/24 (from 17/24).
+## Shipped: v3.1 Site Foundation & Audit Fixes (2026-04-08)
+- 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b
+- 14 credibility audit fixes (data unification, sticky-bar, typography, stat bar, H1 em-dash)
+- Shared layout chrome drift-normalized across 5 pages (partials extraction deferred to Phase 36b)
+- Full site metadata hygiene (sitemap.xml, robots.txt, canonical audit, circle-flags vendored, 404 upgrade)
+- Vertical rhythm & hero sizing system (svh-based tokens, content-density tiers)
+- Phase 38.1 corrective: mobile viewport overflow safety net (`html { overflow-x: clip }`), nbsp cleanup, checkup H1 gradient-span split, 3 SVG clipPath fixes — RHYTHM-10 verified 2026-04-08
 
 ## Shipped: v3.0 SEO, Performance & Polish (2026-04-06)
 - 4 phases (29-32), 7 plans, 24 requirements

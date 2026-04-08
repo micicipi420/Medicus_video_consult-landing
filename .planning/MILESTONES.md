@@ -1,8 +1,8 @@
 # Milestones
 
-## v3.1 Site Foundation & Audit Fixes (Shipped: 2026-04-07)
+## v3.1 Site Foundation & Audit Fixes (Shipped: 2026-04-08)
 
-**Phases completed:** 6 phases (33–38), 44/52 requirements delivered, 7 deferred to v3.2 Phase 36b, 1 manual verification gate pending (RHYTHM-10)
+**Phases completed:** 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b. RHYTHM-10 verified 2026-04-08 by Phase 38.1 Playwright validation.
 
 **Key accomplishments:**
 
@@ -15,6 +15,7 @@
 - Site metadata: `sitemap.xml` (5 URLs, NO 404, NO changefreq/priority), Yandex-safe `robots.txt` (does NOT block /css/ /js/), canonical URL audit confirmed 0 drift, 404.html H1 upgraded + body copy rewritten, meta descriptions trimmed to 150–160 chars, 10 circle-flags SVGs vendored to `img/flags/` (~6KB)
 - Vertical rhythm system (research-first): canonical `svh`-based hero tokens (rich/medium/compact content-density tiers) in `theme.css :root` + `@theme inline` — smoke test caught Tailwind v4's `--min-height-*` key pattern (not `--height-*`), prevented broken bulk migration. `<body class="min-h-screen">` removed across 6 pages. `scroll-margin-top: 6rem` + `prefers-reduced-motion` guards. Counter animations cached via `sessionStorage` to avoid SPA-nav re-run.
 - Deferred to v3.2 Phase 36b: `partials/` extraction, `scripts/build-pages.sh`, `build.sh`, build-script invocation mechanism (Makefile / pre-commit / CI — exact mechanism TBD in 36b planning), local `./build.sh` byte-identity smoke-test. Deploy target reverted to nginx 2026-04-07; `tailwindcss` binary runs only locally during dev.
+- **Phase 38.1 corrective fix (2026-04-08):** closed RHYTHM-10 after Playwright UX validation surfaced mobile overflow regressions. Root causes fixed: `bg-clip-text` gradient spans with nbsp-bound cross-language content (checkup H1), nbsp misuse between list items (index country cards), decorative absolute elements leaking scrollWidth (`mesh-bg__blob`, hero badges). Added `html { overflow-x: clip }` safety net in `theme.css` @layer base. Replaced invalid `<rect rx="0 0 3 3">` shorthand on 3 flag icons with `<clipPath>` wrappers. All 6 pages now report `scrollWidth === clientWidth` at 320/375/1440.
 
 ---
 
