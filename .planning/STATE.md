@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v3.2
 milestone_name: Build Pipeline & Chrome Partials
-status: planning
-stopped_at: v3.2 roadmap created — 2 phases defined, 11/11 requirements mapped, ready for /gsd-plan-phase 39
-last_updated: "2026-04-08T06:30:00.000Z"
-last_activity: 2026-04-08 — v3.2 ROADMAP.md written (Phases 39, 40); REQUIREMENTS.md traceability filled
+status: executing
+stopped_at: v3.2 kickoff in progress — PROJECT.md updated, STATE.md reset, REQUIREMENTS.md + ROADMAP.md next
+last_updated: "2026-04-08T09:44:27.341Z"
+last_activity: 2026-04-08 -- Phase 39 execution started
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
+  total_plans: 3
   completed_plans: 0
   percent: 0
 ---
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08 at v3.2 milestone kickoff)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** v3.2 Build Pipeline & Chrome Partials — extract shared HTML partials (header/footer/sticky-bar/mobile-menu), wire `make build` as canonical entry point with byte-identity smoke test + pre-commit hook, then close 3 residual cosmetic fixes from v3.1 Phase 38.1 UX validation.
+**Current focus:** Phase 39 — partials-extraction-build-pipeline
 
 ## Current Position
 
-Phase: 39 of 40 (Partials Extraction & Build Pipeline) — not yet planned
-Plan: — (awaiting `/gsd-plan-phase 39`)
-Status: Roadmap complete; ready to plan Phase 39
-Last activity: 2026-04-08 — v3.2 roadmap written, traceability filled
+Phase: 39 (partials-extraction-build-pipeline) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 39
+Last activity: 2026-04-08 -- Phase 39 execution started
 
 Progress: [░░░░░░░░░░] 0% (0/2 phases, 0 plans)
 
