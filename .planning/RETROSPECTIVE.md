@@ -47,6 +47,53 @@
 
 ---
 
+## Milestone: v3.2 — Build Pipeline & Chrome Partials
+
+**Shipped:** 2026-04-08
+**Phases:** 2 (39, 40) | **Plans:** 6 | **Commits:** 32 | **Source diff:** 20 files, +891/-69
+
+### What Was Built
+- **Chrome partials architecture:** 4 partials (header, footer, sticky-bar, mobile-menu) extracted to `partials/*.html`; POSIX-sh + awk marker splicer (`scripts/build-pages.sh`) with 11-token substitution vocabulary regenerates all 6 pages from partial sources.
+- **Byte-identity build pipeline:** `make build` canonical entry point, `build.sh` thin delegator, `Makefile` with 5 targets, `docs/BUILD.md` contributor reference, Tailwind v4.2.2 binary pinned and auto-installed via `install-tailwind` target.
+- **First git hook in repo:** `scripts/hooks/pre-commit` enforces byte-identity gate on every commit. Dual-mode install via symlink works in both regular clones and git worktrees.
+- **404.html H1 mobile fix at the source:** class stepped `text-4xl` → `text-3xl`, phrase "Страница не найдена" now fits 320px viewport without the `overflow-x: clip` safety net.
+- **Full favicon set:** `favicon.ico` (3-frame ICO), `favicon.svg` (hand-drawn brand gradient), `apple-touch-icon.png` (180×180), `site.webmanifest`. 4 `<link>` tags in `<head>` of all 6 pages. Browser console silent on first load.
+- **Russian typography range binding:** checkup.html "за 1–2 дня" wrapped in Tailwind `whitespace-nowrap` span. En-dash U+2013 preserved. Verified at 6 viewports.
+
+### What Worked
+- **Locked decisions in CONTEXT.md made planning trivial.** Phase 40's CONTEXT.md specified exact file paths, exact class strings, exact HTML fragments, and exact verification viewports. Planner produced 3 pass-on-first-iteration plans with no revisions needed and no research pass required.
+- **Parallel worktrees for disjoint files.** Wave 1 (40-01 touching `404.html`, 40-03 touching `checkup.html`) ran in parallel isolated worktrees. Wave 2 (40-02 touching all 6 HTML pages + 4 new assets) was sequenced after — explicit wave ordering prevented merge-conflict risk on shared files.
+- **Pillow as ImageMagick fallback** worked cleanly for the one-shot raster pipeline. Pre-authorizing the deviation in the executor prompt avoided a mid-plan stall to install new system tooling.
+- **Playwright MCP `Range.getClientRects()` as the definitive single-line test** instead of `height === lineHeight`. Font metric overhead makes the height check unreliable (43px actual vs 39.6px lineHeight on a 1-line span) — client-rect count is the correct semantic.
+- **Audit-free completion worked for this milestone** specifically because Phase 40 already had a rigorous Playwright verification pass per must-have, and Phase 39's byte-identity gate is enforced at commit time. For milestones with less automated verification, `/gsd-audit-milestone` remains the right call.
+
+### What Was Inefficient
+- **Bash cwd drift into a worktree during Wave 1 merge.** My shell's cwd silently moved into `agent-aeac346e` (the 40-03 worktree) without an explicit `cd`, so the `git merge worktree-agent-acbcd926` command landed the 40-01 merge commit on the 40-03 worktree branch instead of `feat/v3.1`. Recovered via explicit `cd` back to main repo + `git merge --ff-only` (which fast-forwarded cleanly since the merge commit already contained both plans), but this cost a round-trip of investigation.
+- **`phase complete` CLI leaves checkbox drift in the active milestone section.** The CLI flipped plan checkboxes in the Phase Details sections and updated the Progress table, but did NOT flip the `- [ ] **Phase N:** ` items in the top-of-roadmap milestone listing (active-phase format) nor the unchecked items in REQUIREMENTS.md. Required manual drift fix before archival. Pre-existing CLI quirk that should be filed.
+- **`milestone complete` CLI extracted garbage "Found during:" one-liners** for Phase 39 SUMMARYs because those files don't have a clean `one_liner` frontmatter field. Had to hand-rewrite the MILESTONES.md entry. SUMMARY template would benefit from a mandatory `one_liner` field.
+- **Workflow `rm .planning/ROADMAP.md` line in complete-milestone.md is a doc bug** — reorganize_and_delete step tells you to reorganize ROADMAP.md THEN delete it, which contradicts itself. Treated as "reorganize + keep" based on intent.
+
+### Patterns Established
+- **Chrome as partials with marker splicer** — any duplicated HTML region that drifts between pages becomes a partial the moment the drift costs a fix. Marker comments are the interface, splicer is the implementation.
+- **Pre-commit hook as byte-identity gate** — when a build produces deterministic output from checked-in sources, the hook runs the build and asserts `git diff --quiet` after. Blocks drift at the earliest possible point (commit time, not CI time).
+- **Locked decisions + 0 research** — when CONTEXT.md names exact line numbers, exact strings, and exact verification protocol, skip research and plan directly. Saves a full agent turn without sacrificing quality.
+- **Playwright MCP for cosmetic verification** over a committed test suite — ad-hoc browser measurements per phase are faster than maintaining permanent E2E infrastructure. `.playwright-mcp/` stays gitignored. Reserve permanent suites for high-regression-risk features.
+- **Pre-authorize tooling deviations in executor prompts** — when the plan specifies a tool that isn't installed, tell the executor explicitly which fallback is approved and why, with example code. Prevents mid-plan stalls.
+
+### Key Lessons
+1. **Explicit `cd` before every git operation when worktrees exist.** Bash shell state can drift between tool calls in ways that aren't visible from the output of the previous command. Prefixing merges with `cd /absolute/path/to/repo` eliminates the entire class of "wrong worktree" bugs.
+2. **When a CLI has known drift, lint for it before archiving.** The `phase complete` CLI's failure to flip active-milestone checkboxes is a silent data-quality bug — it only surfaces when the next command (autonomous, audit, complete) reads the drifted state. A linter pass before archival catches it.
+3. **`Range.getClientRects()` is the right single-line check for `whitespace-nowrap` spans.** `height === lineHeight` false-negatives due to font ascender/descender overhead. `clientRects.length === 1` is semantically exact and independent of font metrics.
+4. **En-dash U+2013 is a first-class character in Russian typography.** It is not interchangeable with hyphen-minus for numeric ranges. Verification must grep for the literal entity to catch regressions, not just "dash present".
+5. **Smaller, tighter milestones ship faster and cleaner.** v3.2 was 2 phases and 6 plans and landed in a single day with zero plan revisions. v3.0 was 4 phases and 7 plans over multiple sessions with typography polish bleeding out post-completion. There's a ceiling where milestone breadth compounds friction — staying under it is worth the discipline.
+
+### Cost Observations
+- Model mix: predominantly Opus 4.6 (1M context) for orchestration, planning, executor agents; Sonnet for plan checker, code reviewer, verifier.
+- Sessions: 1 session for the full milestone (discuss → plan → execute → verify → complete for both phases).
+- Notable: Phase 40 Wave 1 was the first phase where I ran Playwright MCP verification inline in the orchestrator context rather than delegating to a verifier subagent. Saved one agent turn per plan and kept the measurement tables in the orchestrator's working set where they could be written into SUMMARYs directly.
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -60,6 +107,7 @@
 | v1.4 2025 Visual Redesign | 4 | 6 | Dark mode, glassmorphism, bold typography, micro-animations |
 | v2.0 Service Pages Rewrite | 4 | 8 | Tailwind v4 migration + service-page copywriting rewrite from копирайтинг-документы |
 | v3.0 SEO, Performance & Polish | 4 | 7 | Local WebP, full SEO + Schema.org, WCAG AA tokens + focus-visible + ARIA, Russian typography polish |
+| v3.2 Build Pipeline & Chrome Partials | 2 | 6 | Chrome partials extraction + POSIX-sh marker splicer + byte-identity pre-commit hook + 3 UX cosmetic fixes at the source |
 
 ### Cumulative Quality
 
@@ -68,8 +116,11 @@
 | v1.0 | 1 (index) | ~64KB total | Semantic HTML, OG meta, lightweight assets |
 | v2.0 | 5 (full multi-page) | ~3,150 LOC | Tailwind v4, pixel-perfect TSX parity |
 | v3.0 | 6 (incl. 404) | ~4,714 LOC | WCAG AA contrast, focus-visible, JSON-LD, WebP |
+| v3.2 | 6 (incl. 404) | ~5,600 LOC | Chrome partials drift-proof, byte-identity build gate, full favicon set, console silent on first load |
 
 ### Top Lessons (Verified Across Milestones)
 1. **The Redesign/ folder as design source of truth is a high-leverage decision.** Validated in v1.4 (initial application), v2.0 (Tailwind migration), and v3.0 (a11y compliance). Without it, we'd be guessing at brand consistency every phase.
 2. **Russian typography needs explicit handling.** First surfaced in v1.4 (hero headings), reinforced in v3.0 (post-phase nbsp binding). Plan it in, don't bolt it on.
-3. **Audit-first milestone completion** — `/gsd-audit-milestone` before `/gsd-complete-milestone` is the right order. v3.0 confirmed this when the audit caught all 18 requirements pre-shipping.
+3. **Audit-first milestone completion** — `/gsd-audit-milestone` before `/gsd-complete-milestone` is the right order for milestones with multi-phase dependencies and non-trivial integration flows. v3.0 confirmed this. v3.2 skipped the audit because every must-have was already verified by Playwright MCP during phase execution — rigorous per-phase verification can substitute for milestone-level audit when the phase count is small and the gates are machine-checkable.
+4. **Byte-identity build gates catch drift at the earliest point.** v3.2 shipped the first git hook in the repo; the pre-commit hook asserts `make build` + `git diff --quiet` on every commit. Any duplicated HTML that drifts between the partials source and the rendered pages fails the commit. This pattern generalizes: any deterministic build should be enforced by a hook that asserts post-build cleanness.
+5. **Smaller milestones compound less friction.** v3.2 (2 phases, 6 plans, 1 day) shipped with zero plan revisions and zero post-completion follow-ups. v3.0 (4 phases, 7 plans) required post-phase typography polish and deferred audit items. Smaller milestones mean tighter feedback loops and less context-carry between phases.

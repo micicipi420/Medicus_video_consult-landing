@@ -1,5 +1,20 @@
 # Milestones
 
+## v3.2 Build Pipeline & Chrome Partials (Shipped: 2026-04-08)
+
+**Phases completed:** 2 phases (39, 40), 6 plans, 11/11 requirements (8 LAYOUT + 3 COSMETIC), 32 commits, 20 source files changed (+891/-69)
+
+**Key accomplishments:**
+
+- **Chrome partials architecture** — extracted 4 shared chrome regions (header, footer, sticky-bar, mobile-menu) to `partials/*.html` as single source of truth; POSIX-sh + awk marker splicer (`scripts/build-pages.sh`) with 11-token substitution vocabulary drives 6-page regeneration. Chrome drift becomes structurally impossible.
+- **Byte-identity build pipeline** — `make build` canonical entry point + `build.sh` thin delegator + `Makefile` with 5 targets (build / check / install-hooks / install-tailwind / clean). Tailwind v4.2.2 binary pinned and auto-installed via `install-tailwind` target. `docs/BUILD.md` contributor reference.
+- **First git hook in repo** — `scripts/hooks/pre-commit` enforces byte-identity gate on every commit (runs `make build` + asserts no chrome drift). Dual-mode install via symlink works in both regular clones and git worktrees.
+- **404.html mobile fix at the source** — H1 class stepped from `text-4xl` to `text-3xl` at mobile breakpoint; "Страница не найдена" now fits 320px viewport without relying on the `overflow-x: clip` safety net. Subject+verb nbsp binding preserved. Playwright verified at 320/375/768/1024.
+- **Full favicon set shipped** — `favicon.ico` (multi-size 16/32/48), `favicon.svg` (hand-drawn brand gradient), `apple-touch-icon.png` (180×180), `site.webmanifest`. Assets generated from production Tilda PNG via Python Pillow 11.3.0 (one-shot dev fallback for ImageMagick). 4 `<link>` tags added to `<head>` of all 6 HTML pages (24 total). Browser console silent on first load (previously: favicon 404 on 404.html).
+- **Russian typography range binding** — checkup.html "за 1–2 дня" wrapped in Tailwind `whitespace-nowrap` span. En-dash U+2013 preserved as canonical Russian range separator. Playwright verified at 6 viewports (320/375/768/1024/1440/1920) — phrase renders as exactly 1 client rect at every width.
+
+---
+
 ## v3.1 Site Foundation & Audit Fixes (Shipped: 2026-04-08)
 
 **Phases completed:** 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b. RHYTHM-10 verified 2026-04-08 by Phase 38.1 Playwright validation.

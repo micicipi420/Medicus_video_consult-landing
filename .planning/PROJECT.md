@@ -12,26 +12,10 @@
 
 ## Current State
 
-**Shipped:** v3.1 Site Foundation & Audit Fixes (2026-04-08), v3.2 Build Pipeline & Chrome Partials (2026-04-08)
-**In progress:** v3.2 closed — all phases (39, 40) complete; milestone ready for `/gsd-complete-milestone`
-**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth, byte-identity gate enforced at commit time), `make build` canonical entry point, full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, 404 H1 sized to fit 320px mobile at the source (not via `overflow-x: clip` safety net), checkup.html "за 1–2 дня" range bound as single `whitespace-nowrap` unit across all viewports, browser console silent on first load of all 6 pages, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
+**Shipped:** v3.2 Build Pipeline & Chrome Partials (2026-04-08) — latest
+**In progress:** Nothing — awaiting next milestone scoping via `/gsd-new-milestone`
+**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth via POSIX-sh splicer, byte-identity gate enforced at commit time by pre-commit hook), `make build` canonical entry point, `docs/BUILD.md` contributor reference, full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, 404 H1 sized to fit 320px mobile at the source (not via `overflow-x: clip` safety net), checkup.html "за 1–2 дня" range bound as single `whitespace-nowrap` unit across all viewports, browser console silent on first load of all 6 pages, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
 **Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
-
-## Current Milestone: v3.2 Build Pipeline & Chrome Partials
-
-**Goal:** Eliminate chrome drift at the source by extracting shared HTML partials and wiring a byte-identity build pipeline, then knock out 3 residual cosmetic fixes from v3.1 UX validation.
-
-**Target features:**
-- Partials extraction: `partials/{header,footer,sticky-bar,mobile-menu}.html` as single source of truth
-- Build pipeline: `scripts/build-pages.sh` (splicer), `build.sh` (orchestrator), `Makefile` target, pre-commit hook
-- Byte-identity smoke test: rebuild must produce current 6 pages byte-for-byte
-- Absorbs 7 LAYOUT requirements deferred from v3.1 Phase 36
-- Cosmetic cleanup: 404 H1 at 320vw, `/favicon.ico`, checkup H1 "за 1–2 дня" line-break
-
-**Constraints (inherited):**
-- No Node.js runtime — build scripts must be shell-native
-- Zero visual regression — pixel/byte identity against current 6 pages is the gate
-- Pre-commit hook is new territory for this repo; contributor onboarding adds a one-time install step per clone
 
 ## Requirements
 
@@ -108,7 +92,19 @@
 - ✓ Glass-5 form containers (bg-white/70 + shadow-form-inset) на всех 6 страницах — v3.0
 - ✓ Russian typography polish: nbsp binding для subject+verb pairs, orphan prevention, responsive br на hero headings — v3.0
 
+- ✓ Shared chrome extracted to partials/{header,footer,sticky-bar,mobile-menu}.html as single source of truth — v3.2 (LAYOUT-01/02/05)
+- ✓ POSIX-sh + awk marker splicer (scripts/build-pages.sh) with 11-token substitution vocabulary — v3.2 (LAYOUT-02)
+- ✓ make build canonical entry point + build.sh thin delegator + Makefile with 5 targets — v3.2 (LAYOUT-03/04)
+- ✓ Byte-identity smoke test: rebuild produces 6 pages byte-for-byte, zero drift (LAYOUT-12) — v3.2
+- ✓ 7th-page 0-edit invariant verified: new pages require only body + BUILD markers — v3.2 (LAYOUT-11)
+- ✓ Pre-commit hook (scripts/hooks/pre-commit) enforces byte-identity gate on every commit — v3.2 (LAYOUT-13)
+- ✓ 404.html H1 fits 320px viewport at the source (text-3xl mobile step-down) — v3.2 (COSMETIC-01)
+- ✓ Full favicon set (ico/svg/apple-touch-icon/webmanifest) at repo root + 4 link tags in all 6 pages — v3.2 (COSMETIC-02)
+- ✓ checkup.html "за 1–2 дня" numeric range bound as single whitespace-nowrap unit across all viewports — v3.2 (COSMETIC-03)
+
 ### Active
+
+- (empty — next milestone not yet scoped)
 
 ### Out of Scope
 
@@ -121,6 +117,13 @@
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
+
+## Shipped: v3.2 Build Pipeline & Chrome Partials (2026-04-08)
+- 2 phases (39, 40), 6 plans, 32 commits, 20 source files changed (+891/-69)
+- Eliminated chrome drift at the source: `partials/{header,footer,sticky-bar,mobile-menu}.html` as single source of truth, POSIX-sh + awk marker splicer with 11-token substitution vocabulary, byte-identity gate proven and enforced at commit time by first-ever repo pre-commit hook
+- `make build` canonical entry point + `build.sh` thin delegator + `docs/BUILD.md` contributor reference; Tailwind v4.2.2 pinned and auto-installed via `make install-tailwind` target
+- UX cosmetic cleanup (residual items from v3.1 Phase 38.1 Playwright audit): 404.html H1 fits 320px at the source (not via overflow-x clip safety net), full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, checkup.html "за 1–2 дня" wrapped in Tailwind `whitespace-nowrap` span — en-dash U+2013 preserved
+- Browser console silent on first load of all 6 pages (previously: favicon 404 on 404.html); verified via curl + Playwright MCP DOM assertions
 
 ## Shipped: v3.1 Site Foundation & Audit Fixes (2026-04-08)
 - 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b
@@ -151,6 +154,8 @@
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
 - v2.0: 35 requirements, 4 phases (25-28), 8 plans — Tailwind v4 migration + service pages copywriting rewrite (online-consultations, treatment-abroad, checkup, contacts)
 - v3.0: 24 requirements, 4 phases (29-32), 7 plans — 404 page + cross-page consistency, full SEO + Schema.org, local WebP + lazy loading + preload, WCAG AA accessible tokens + focus-visible + ARIA + prefers-reduced-motion
+- v3.1: 45/52 requirements, 7 phases (33–38 + 38.1), vertical rhythm + credibility audit fixes + Phase 38.1 corrective (mobile overflow safety net) — 7 LAYOUT deferred to v3.2
+- v3.2: 11 requirements (8 LAYOUT + 3 COSMETIC), 2 phases (39, 40), 6 plans — chrome partials extraction + POSIX-sh marker splicer + byte-identity pre-commit hook + UX cosmetic cleanup (404 H1 mobile, favicon full set, checkup H1 range binding)
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -202,6 +207,14 @@
 | Responsive `<br class="md:hidden">` for hero headings | Lets Russian compound phrases break correctly on mobile without JS | ✓ Good — v3.0 |
 | Renamed project "MedicusUnion KZ Landing" → "MedicusUnion KZ" at v3.1 kickoff | By v3.0 the product was 6 pages, full design system, SEO/a11y baseline — "landing" framing undersold the artifact and limited how future growth was scoped. Directory name kept unchanged to avoid breaking git/CI/bookmarks | Expected good — unblocks multi-page architecture thinking (v3.1) |
 | Phase 38 vertical-rhythm system over ad-hoc `min-h` values | User identified hero + section heights as "out of place" across all 5 pages; picking numbers per-page produces drift. A researched canonical system (benchmarks, 45+ audience viewport considerations) + tokens is the only fix that survives future page additions | Expected good — prerequisite for v3.2+ page additions (v3.1) |
+| POSIX-sh + awk marker splicer over Node templating (Handlebars/Mustache/EJS) | Repo is deliberately zero-Node at runtime; `tailwindcss` standalone binary is the only tooling dependency. Shell-based splicing is sufficient for 4 chrome partials and keeps the build footprint minimal | ✓ Good — v3.2 (Phase 39-02) |
+| BUILD marker comment pairs (`<!-- BUILD:name -->` / `<!-- /BUILD:name -->`) in HTML pages | Markers are ordinary HTML comments: invisible to browsers, preserved by formatters, trivially grep-able, and the splicer is a context-free regex replacement. No new syntax for contributors to learn | ✓ Good — v3.2 (Phase 39-02) |
+| Pre-commit hook as byte-identity gate (first git hook in repo) | Manual `make build` discipline is unreliable; the hook makes chrome drift impossible at commit time. Dual-mode install (regular clones + worktrees) via symlink keeps setup to a single one-liner per clone | ✓ Good — v3.2 (Phase 39-03) |
+| Tailwind v4.2.2 binary pinned + auto-installed by `make install-tailwind` | Reproducible builds across contributor machines without requiring a package manager or manual download. Binary is in `.gitignore`; install target is idempotent | ✓ Good — v3.2 (Phase 39-03) |
+| 404 H1 mobile step-down (`text-4xl` → `text-3xl`) over `clamp()` fluid sizing | Tailwind step-function is already the project's typography pattern; introducing `clamp()` for one H1 would be a pattern fork. The single-class change also preserves the subject+verb nbsp binding trivially | ✓ Good — v3.2 (Phase 40, COSMETIC-01) |
+| Hand-download Tilda production PNG once, commit derivatives, forbid runtime hotlinking | Supply-chain hygiene: the downloaded PNG source is logged with SHA256 in the summary, derivatives (ico/apple-touch/svg) ship as permanent assets. No runtime dependency on Tilda CDN, no external URL in any `<link>` tag | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
+| Python Pillow as ImageMagick fallback for one-shot raster pipeline | ImageMagick was not installed and adds a heavy dependency. Pillow 11.3.0 was already present, produces real multi-size ICO via `Image.save(sizes=[(16,16),(32,32),(48,48)])`, and is dev-only (not a runtime dep) | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
+| Tailwind `whitespace-nowrap` span for Russian numeric range binding | Alternative was `&nbsp;` entity glue inside the fragment (fragile, hard to audit), or a `<span style="white-space:nowrap">` inline style (inconsistent with utility-first CSS). Tailwind class is auditable via grep, no stylesheet pollution, and the generated CSS rule emits only when used | ✓ Good — v3.2 (Phase 40, COSMETIC-03) |
 
 ## Evolution
 
@@ -221,4 +234,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 — Phase 40 complete (UX cosmetic cleanup: 404 H1, favicon set, checkup H1 range) — milestone v3.2 fully closed*
+*Last updated: 2026-04-08 — milestone v3.2 Build Pipeline & Chrome Partials shipped and archived*
