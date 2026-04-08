@@ -179,9 +179,9 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
   4. **7th-page 0-edit invariant:** Authoring a hypothetical 7th page requires only writing page-specific body content plus BUILD marker comments — zero chrome markup is hand-duplicated. This is verified by a dry-run exercise (can be as simple as creating `test-page.html` with markers, running `make build`, and confirming the chrome splices in correctly, then removing it).
   5. **Pre-commit hook wired:** `scripts/hooks/pre-commit` calls `make build` and fails the commit if the working tree contains drift after the build runs. A one-liner installation command (e.g. `ln -s ../../scripts/hooks/pre-commit .git/hooks/pre-commit`) is documented in the README, and every contributor runs it once per clone. This is the first git hook in the repo — the README section must be discoverable.
 **Plans**: 3 plans
-  - [ ] 39-01-PLAN.md — Normalize 404.html chrome to canonical BEM (drift removal — prerequisite for partial extraction)
-  - [ ] 39-02-PLAN.md — Extract partials/{header,footer,sticky-bar,mobile-menu}.html, write POSIX-sh marker splicer with token substitution, instrument 6 pages with BUILD markers, verify byte-identity gate
-  - [ ] 39-03-PLAN.md — Makefile + build.sh delegator + pre-commit hook + docs/BUILD.md + 7th-page invariant verification
+  - [x] 39-01-PLAN.md — Normalize 404.html chrome to canonical BEM (drift removal — prerequisite for partial extraction)
+  - [x] 39-02-PLAN.md — Extract partials/{header,footer,sticky-bar,mobile-menu}.html, write POSIX-sh marker splicer with token substitution, instrument 6 pages with BUILD markers, verify byte-identity gate
+  - [x] 39-03-PLAN.md — Makefile + build.sh delegator + pre-commit hook + docs/BUILD.md + 7th-page invariant verification
 
 ### Phase 40: UX Cosmetic Cleanup
 **Goal**: The 3 residual cosmetic items flagged by Phase 38.1's Playwright UX validation are closed at the source, so the mobile overflow safety net from v3.1 is no longer compensating for underlying sizing bugs and the browser console is silent on first load.
@@ -199,7 +199,7 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 39. Partials Extraction & Build Pipeline | 0/3 | Planned | - |
+| 39. Partials Extraction & Build Pipeline | 3/3 | Complete    | 2026-04-08 |
 | 40. UX Cosmetic Cleanup | 0/TBD | Not started | - |
 
 All v3.1 phases shipped. See `.planning/milestones/v3.1-ROADMAP.md` for phase details, success criteria, and plans.
