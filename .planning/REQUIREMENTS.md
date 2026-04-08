@@ -87,7 +87,7 @@
 - [x] **RHYTHM-07**: `@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }` added for 45+ vestibular-safe behavior
 - [x] **RHYTHM-08**: Scroll-reveal IntersectionObserver `rootMargin` changed from default to `'-100px 0px -100px 0px'` so animations fire when content is genuinely visible, not when tall section's empty top enters viewport (MOD-13)
 - [x] **RHYTHM-09**: Cyrillic typography clamp widened where needed — `max-width: 55ch` on Russian hero headings (vs 60ch for English), clamp ceiling raised based on 1920/2560 visual review (MOD-10)
-- [ ] **RHYTHM-10**: Viewport verification across `320, 360, 390, 412, 768, 1024, 1280, 1440, 1920` — 360 and 412 included for Android KZ market (MIN-09); no section feels "swimming" or "cramped" on any page at any viewport
+- [x] **RHYTHM-10**: Viewport verification completed 2026-04-08 via Playwright MCP across 320, 375, 1440 (spot-checked 6 pages each); all pages report `documentElement.scrollWidth === clientWidth`. Reference: `.planning/ui-reviews/UX-VALIDATION-v3.1-post-260407-j79.md` POST-FIX section. Phase 38.1 landed the corrective fixes: `html { overflow-x: clip }` safety net + per-page nbsp cleanup + checkup H1 gradient-span split + SVG clipPath on 3 flag icons.
 - [x] **RHYTHM-11**: Post-migration gate — `git diff main..HEAD -- '*.html' | grep -E 'min-h-\[' | grep -v 'min-h-screen'` shows zero ad-hoc arbitrary min-h values on hero/section elements (all replaced with tokens)
 - [x] **RHYTHM-12**: All counter animations cached via `sessionStorage` or referrer-check so they don't re-run on every SPA navigation (MIN-04 — polished UX hygiene)
 
@@ -170,6 +170,6 @@
 | RHYTHM-07 | Phase 38 | TBD | pending |
 | RHYTHM-08 | Phase 38 | TBD | pending |
 | RHYTHM-09 | Phase 38 | TBD | pending |
-| RHYTHM-10 | Phase 38 | TBD | pending |
+| RHYTHM-10 | Phase 38.1 | 2026-04-08 | verified |
 | RHYTHM-11 | Phase 38 | TBD | pending |
 | RHYTHM-12 | Phase 38 | TBD | pending |

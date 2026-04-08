@@ -86,6 +86,7 @@ Recent decisions affecting current work:
 
 - Phase 32 added: Design system compliance: accessible tokens, focus-visible, CTA gradient fix across all pages
 - v3.1 expanded from 5 → 6 phases (Phase 38 added) after user flagged hero/section sizing as out-of-place across all 5 pages — research-first approach with svh tokens
+- Phase 38.1 inserted after Phase 38: Mobile viewport overflow + checkup H1 fix (URGENT) — Playwright UX validation on 2026-04-08 uncovered 3 P0 regressions (5 of 6 pages horizontal-scroll at 375, checkup H1 gradient-span overflow at lg/mobile, 4 invalid SVG `rx` attributes). Blocks RHYTHM-10 closure and therefore v3.1 sign-off.
 
 ### Blockers/Concerns
 
@@ -101,6 +102,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-07T08:19:06.060Z
-Stopped at: Completed Phase 38 Plan 1 (38-PLAN.md) — vertical rhythm system shipped
-Next command: `/clear` then `/gsd-discuss-phase 33` (or `/gsd-plan-phase 33` to skip discussion)
+Last session: 2026-04-08T00:00:00.000Z
+Stopped at: Phase 38.1 inserted after Playwright UX validation exposed mobile overflow regressions; autonomous execution starting
+Next command: autonomous mode runs discuss → plan → execute for 38.1, then re-runs Playwright validation to close RHYTHM-10

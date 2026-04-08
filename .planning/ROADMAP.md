@@ -252,3 +252,13 @@ Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
 | 36. Shared Layout Primitives | v3.1 | 0/0 | Not started | - |
 | 37. Site Metadata & Hygiene | v3.1 | 0/0 | Not started | - |
 | 38. Vertical Rhythm & Section Sizing | v3.1 | 0/0 | Not started | - |
+
+### Phase 38.1: Mobile viewport overflow + checkup H1 fix (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 38
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 38.1 to break down)
