@@ -47,27 +47,25 @@ Nothing currently deferred. v3.2 closes v3.1's known-open items cleanly.
 
 ## Traceability
 
-Will be populated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAYOUT-01 | TBD | Pending |
-| LAYOUT-02 | TBD | Pending |
-| LAYOUT-03 | TBD | Pending |
-| LAYOUT-04 | TBD | Pending |
-| LAYOUT-05 | TBD | Pending |
-| LAYOUT-11 | TBD | Pending |
-| LAYOUT-12 | TBD | Pending |
-| LAYOUT-13 | TBD | Pending |
-| COSMETIC-01 | TBD | Pending |
-| COSMETIC-02 | TBD | Pending |
-| COSMETIC-03 | TBD | Pending |
+| LAYOUT-01 | Phase 39 | Pending |
+| LAYOUT-02 | Phase 39 | Pending |
+| LAYOUT-03 | Phase 39 | Pending |
+| LAYOUT-04 | Phase 39 | Pending |
+| LAYOUT-05 | Phase 39 | Pending |
+| LAYOUT-11 | Phase 39 | Pending |
+| LAYOUT-12 | Phase 39 | Pending |
+| LAYOUT-13 | Phase 39 | Pending |
+| COSMETIC-01 | Phase 40 | Pending |
+| COSMETIC-02 | Phase 40 | Pending |
+| COSMETIC-03 | Phase 40 | Pending |
 
 **Coverage:**
 - v3.2 requirements: 11 total
-- Mapped to phases: 0 (pending roadmap creation)
-- Unmapped: 11 ⚠️ (will be resolved by roadmapper)
+- Mapped to phases: 11 (Phase 39: 8 LAYOUT reqs; Phase 40: 3 COSMETIC reqs)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 at v3.2 milestone kickoff*
+*Last updated: 2026-04-08 — traceability filled by roadmapper (v3.2 Phases 39, 40)*

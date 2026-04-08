@@ -10,8 +10,14 @@
 - v2.0 Service Pages Copywriting Rewrite -- Phases 26-28 (shipped 2026-04-05)
 - v3.0 SEO, Performance & Polish -- Phases 29-32 (shipped 2026-04-06)
 - v3.1 Site Foundation & Audit Fixes -- Phases 33-38 + 38.1 (shipped 2026-04-08)
+- **v3.2 Build Pipeline & Chrome Partials -- Phases 39-40 (active, started 2026-04-08)**
 
 ## Phases
+
+### v3.2 Build Pipeline & Chrome Partials (active)
+
+- [ ] **Phase 39: Partials Extraction & Build Pipeline** — Extract shared chrome into `partials/`, wire `make build` with byte-identity smoke test and pre-commit hook
+- [ ] **Phase 40: UX Cosmetic Cleanup** — Close 3 residual cosmetic items from v3.1 Phase 38.1 UX validation
 
 <details>
 <summary>v1.0 MedicusUnion KZ Landing (Phases 1-10) -- SHIPPED 2026-03-23</summary>
@@ -160,6 +166,37 @@ Full details: `.planning/milestones/v3.1-ROADMAP.md`
 Requirements: `.planning/milestones/v3.1-REQUIREMENTS.md`
 Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 
+## Phase Details
+
+### Phase 39: Partials Extraction & Build Pipeline
+**Goal**: Shared chrome (header, footer, sticky-bar, mobile-menu) lives in a single source of truth, and any contributor can regenerate the 6 production HTML pages byte-for-byte via one canonical command (`make build`). Chrome drift becomes structurally impossible — fixing a link in the footer touches one file, not six.
+**Depends on**: Nothing (pure additive layer — does not rename or move existing assets)
+**Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03, LAYOUT-04, LAYOUT-05, LAYOUT-11, LAYOUT-12, LAYOUT-13
+**Success Criteria** (what must be TRUE):
+  1. **Byte-identity gate (hard):** Running `make build` on a clean checkout produces `index.html`, `online-consultations.html`, `treatment-abroad.html`, `checkup.html`, `contacts.html`, and `404.html` byte-for-byte identical to the committed versions. `git diff` after build is empty. Any drift is a bug that blocks phase completion.
+  2. **Single source of truth:** `partials/header.html`, `partials/footer.html`, `partials/sticky-bar.html`, `partials/mobile-menu.html` exist at repo root and contain the exact chrome content currently duplicated across the 6 pages. Each `<!-- BUILD:partial-name -->` … `<!-- /BUILD:partial-name -->` marker pair in the 6 HTML pages resolves to the matching partial file.
+  3. **Canonical entry point:** `make build` runs the tailwind build followed by `scripts/build-pages.sh` and is the documented way to rebuild. `./build.sh` exists as a thin delegator that invokes `make build`. No Node.js runtime is introduced — all scripting is shell-native and uses the already-committed `tailwindcss` binary.
+  4. **7th-page 0-edit invariant:** Authoring a hypothetical 7th page requires only writing page-specific body content plus BUILD marker comments — zero chrome markup is hand-duplicated. This is verified by a dry-run exercise (can be as simple as creating `test-page.html` with markers, running `make build`, and confirming the chrome splices in correctly, then removing it).
+  5. **Pre-commit hook wired:** `scripts/hooks/pre-commit` calls `make build` and fails the commit if the working tree contains drift after the build runs. A one-liner installation command (e.g. `ln -s ../../scripts/hooks/pre-commit .git/hooks/pre-commit`) is documented in the README, and every contributor runs it once per clone. This is the first git hook in the repo — the README section must be discoverable.
+**Plans**: TBD
+
+### Phase 40: UX Cosmetic Cleanup
+**Goal**: The 3 residual cosmetic items flagged by Phase 38.1's Playwright UX validation are closed at the source, so the mobile overflow safety net from v3.1 is no longer compensating for underlying sizing bugs and the browser console is silent on first load.
+**Depends on**: Phase 39 (so that the 404.html fix lands against a codebase where chrome is already partials-driven — avoids re-applying COSMETIC-01 to both `404.html` and a later extracted partial)
+**Requirements**: COSMETIC-01, COSMETIC-02, COSMETIC-03
+**Success Criteria** (what must be TRUE):
+  1. **404 H1 fits at 320px:** Opening `404.html` in a 320px-wide viewport shows the H1 fully within the viewport bounds without relying on `html { overflow-x: clip }`. Measured via `documentElement.scrollWidth === clientWidth` on 320px and no H1 character is clipped.
+  2. **Favicon returns 200:** Requesting `/favicon.ico` on every deployed path returns HTTP 200. The browser DevTools console shows zero `favicon.ico` 404s on first load of any of the 6 pages.
+  3. **Checkup H1 phrase integrity:** On `checkup.html`, the phrase "за 1–2 дня" never breaks mid-range across any viewport width (320, 375, 768, 1024, 1440, 1920). The numeric range stays bound as a single unit via nbsp or non-breaking hyphen, and line breaks land on natural word boundaries elsewhere in the H1.
+**Plans**: TBD
+
 ## Progress
+
+### v3.2 Build Pipeline & Chrome Partials
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 39. Partials Extraction & Build Pipeline | 0/TBD | Not started | - |
+| 40. UX Cosmetic Cleanup | 0/TBD | Not started | - |
 
 All v3.1 phases shipped. See `.planning/milestones/v3.1-ROADMAP.md` for phase details, success criteria, and plans.
