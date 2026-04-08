@@ -12,9 +12,9 @@
 
 ## Current State
 
-**Shipped:** v3.1 Site Foundation & Audit Fixes (2026-04-08)
-**In progress:** v3.2 Phase 39 complete (2026-04-08) — chrome partials + byte-identity build pipeline; v3.2 Phase 40 pending
-**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth, byte-identity gate enforced at commit time), `make build` canonical entry point, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
+**Shipped:** v3.1 Site Foundation & Audit Fixes (2026-04-08), v3.2 Build Pipeline & Chrome Partials (2026-04-08)
+**In progress:** v3.2 closed — all phases (39, 40) complete; milestone ready for `/gsd-complete-milestone`
+**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth, byte-identity gate enforced at commit time), `make build` canonical entry point, full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, 404 H1 sized to fit 320px mobile at the source (not via `overflow-x: clip` safety net), checkup.html "за 1–2 дня" range bound as single `whitespace-nowrap` unit across all viewports, browser console silent on first load of all 6 pages, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
 **Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
 ## Current Milestone: v3.2 Build Pipeline & Chrome Partials
@@ -221,4 +221,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 — Phase 39 complete (partials extraction + build pipeline)*
+*Last updated: 2026-04-08 — Phase 40 complete (UX cosmetic cleanup: 404 H1, favicon set, checkup H1 range) — milestone v3.2 fully closed*
