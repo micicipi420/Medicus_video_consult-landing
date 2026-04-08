@@ -203,6 +203,6 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 39. Partials Extraction & Build Pipeline | 3/3 | Complete    | 2026-04-08 |
-| 40. UX Cosmetic Cleanup | 3/3 | Complete   | 2026-04-08 |
+| 40. UX Cosmetic Cleanup | 3/3 | Complete    | 2026-04-08 |
 
 All v3.1 phases shipped. See `.planning/milestones/v3.1-ROADMAP.md` for phase details, success criteria, and plans.
