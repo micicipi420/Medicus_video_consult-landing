@@ -139,25 +139,24 @@ All entity counts preserved. Em-dash count is identical (40), confirming no em-d
 
 ## Verification Results — Task 2 (Playwright MCP, 6 viewports)
 
-> **Status:** awaiting human-verify checkpoint. Task 2 will be executed by a fresh agent (or by the user inline) running the Playwright MCP protocol described in 40-03-PLAN.md `<how-to-verify>`. The measurement table below will be filled in at that time.
+**Status: PASSED** — all 6 viewports verified by orchestrator on 2026-04-08 after wave 1 merge (commit `2255867`). Local static server `python3 -m http.server 8765` served `checkup.html`; measurements taken via `mcp__playwright__browser_resize` + `mcp__playwright__browser_evaluate` with `Range.getClientRects()` as the definitive single-line check (1 client rect ⇔ single line).
 
-| Viewport | `text` value | `width_px` | `height_px` | `lineHeight_px` | `isSingleLine` | `white_space` |
-|---|---|---|---|---|---|---|
-| 320 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
-| 375 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
-| 768 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
-| 1024 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
-| 1440 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
-| 1920 | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ | _pending_ |
+| Viewport | `text` value | `width_px` | `client_rect_count` | `isSingleLine` | `white_space` | En-dash (U+2013) | Result |
+|---------:|:-------------|-----------:|:-------------------:|:--------------:|:--------------|:----------------:|:------:|
+| 320  | за 1–2 дня | 152.80 | 1 | true | nowrap | yes | PASS |
+| 375  | за 1–2 дня | 152.80 | 1 | true | nowrap | yes | PASS |
+| 768  | за 1–2 дня | 254.66 | 1 | true | nowrap | yes | PASS |
+| 1024 | за 1–2 дня | 305.59 | 1 | true | nowrap | yes | PASS |
+| 1440 | за 1–2 дня | 305.59 | 1 | true | nowrap | yes | PASS |
+| 1920 | за 1–2 дня | 305.59 | 1 | true | nowrap | yes | PASS |
 
-**Acceptance criteria for Task 2 (per plan):**
-- At all 6 viewports: `text === "за 1–2 дня"` (en-dash U+2013 — entity-decoded)
-- At all 6 viewports: `isSingleLine === true`
-- At all 6 viewports: `white_space === "nowrap"`
-- No CSS parse errors in `mcp__playwright__browser_console_messages`
-- ≥1 viewport snapshot saved (PNG via `mcp__playwright__browser_snapshot`) in `.playwright-mcp/` (gitignored — referenced by filename only)
-
-If any viewport reports `isSingleLine === false`: investigate the Tailwind compile (was the new `.whitespace-nowrap` rule emitted?), the span nesting (is there extra whitespace introduced by an editor?), and re-run.
+**Key findings:**
+- At every viewport, the `.whitespace-nowrap` span renders as exactly **1 client rectangle** — the phrase never splits mid-range.
+- `text.includes('\u2013') === true` at every viewport — the en-dash is preserved verbatim (NOT downgraded to hyphen-minus).
+- `getComputedStyle(span).whiteSpace === 'nowrap'` confirms the new Tailwind `.whitespace-nowrap` rule emitted by `make build` is actually applied.
+- Note: `getBoundingClientRect().height` (43px at 320px viewport) exceeds the CSS `line-height` (39.6px) due to font metric ascender/descender overhead, which is why a simple `height === lineHeight` check registered a false negative. `Range.getClientRects().length === 1` is the correct and definitive single-line test and was used instead.
+- At 320/375 (mobile), the H1 as a whole is 7 lines tall (`h1.height / lineHeight ≈ 7`), but the "за 1–2 дня" nowrap span sits cleanly on one of those lines — never split. This satisfies D-05 and the user-memory orphan-prevention rule (the phrase has 4 word tokens and 11+ characters, exceeding the ≥2 words AND ≥10 chars threshold).
+- No CSS parse errors on load for `checkup.html` (the only console entry was the well-known `/favicon.ico` 404, which is scheduled to be fixed in Wave 2 / plan 40-02).
 
 ## Deviations from Plan
 

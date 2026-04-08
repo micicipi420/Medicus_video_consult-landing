@@ -99,17 +99,23 @@ diff --git a/404.html b/404.html
 
 ## Verification Results — Task 2 (Playwright MCP)
 
-**Status: PENDING — owned by orchestrator/verifier, not executed in this worktree.**
+**Status: PASSED** — all 4 viewports verified by orchestrator on 2026-04-08 after wave 1 merge (commit `2255867`). Local static server `python3 -m http.server 8765` served `404.html`; measurements taken via `mcp__playwright__browser_resize` + `mcp__playwright__browser_evaluate`.
 
-This plan's Task 2 is a `checkpoint:human-verify` gate that requires Playwright MCP measurements at viewports 320, 375, 768, 1024 to confirm:
+| Viewport | scrollWidth | clientWidth | overflowX | H1 fontSize | H1 left | H1 right | H1 clipped | H1 height / lineHeight | Result |
+|---------:|------------:|------------:|:---------:|------------:|--------:|---------:|:----------:|:-----------------------|:------:|
+| 320  | 305  | 305  | false | 30px | 8.70 | 296.30 | no | 36 / 36 (1 line) | PASS |
+| 375  | 360  | 360  | false | 30px | 16.00 | 344.00 | no | 36 / 36 (1 line) | PASS |
+| 768  | 753  | 753  | false | 60px | —    | —      | no | 60 / 60 (1 line) | PASS |
+| 1024 | 1009 | 1009 | false | 72px | —    | —      | no | 72 / 72 (1 line) | PASS |
 
-- `documentElement.scrollWidth === clientWidth` (zero horizontal overflow at every viewport, regardless of `overflow-x: clip` safety net)
-- `h1.getBoundingClientRect()` left ≥ 0 and right ≤ window.innerWidth (no clipping at any edge)
-- `h1.textContent.trim() === 'Страница не найдена'` (text content unchanged after entity decode)
+**Key findings:**
+- At every viewport, `documentElement.scrollWidth === clientWidth` — no horizontal overflow anywhere. The mobile safety net (`html { overflow-x: clip }`) is no longer compensating.
+- At every viewport, `h1.getBoundingClientRect().left >= 0 && right <= window.innerWidth` — no edge clipping.
+- `h1.textContent.trim() === 'Страница не найдена'` at every viewport — entity-decoded text intact, subject+verb nbsp binding preserved.
+- H1 is a single line at every viewport (H1 height equals computed lineHeight).
+- At 320px, `text-3xl` (30px font, 36px lineHeight) fits the phrase comfortably within the 305px content-area (viewport minus scrollbar); at 375+ the higher breakpoints kick in as expected from the Tailwind step-function (`sm:text-5xl md:text-6xl lg:text-7xl`).
 
-Per the executor agent's instructions for parallel-wave execution: this worktree returns the checkpoint state to the orchestrator and does NOT run Playwright MCP itself. The orchestrator will dispatch the verification step after both wave-1 worktree agents (40-01 and 40-03) have committed their atomic edits, then merge the wave and run the 4-viewport measurement table from a single verification context. The measurement table will be appended to this SUMMARY by the verifier.
-
-**Expected outcome (from D-01 reasoning in 40-CONTEXT.md):** At 320px, the content area is 320 − 32px container padding = 288px. text-3xl = 30px font-size; the phrase "Страница не найдена" is 17 glyphs (with two `\u00A0` no-break spaces preserving subject+verb binding). At 30px font-size in SF Pro Display ExtraBold, the phrase should fit within 288px without horizontal overflow and without clipping. The two `&nbsp;` bindings keep "Страница не найдена" on a single line (or wrap as a whole unit if narrower viewports are tested).
+**Note:** The 1 console error observed at load-time on 404.html is the `/favicon.ico` 404 — this is the subject of COSMETIC-02 (plan 40-02, wave 2) and is NOT a regression introduced by this plan.
 
 ## Decisions Made
 
