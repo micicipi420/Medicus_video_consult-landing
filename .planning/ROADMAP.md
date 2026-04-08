@@ -193,7 +193,7 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
   3. **Checkup H1 phrase integrity:** On `checkup.html`, the phrase "за 1–2 дня" never breaks mid-range across any viewport width (320, 375, 768, 1024, 1440, 1920). The numeric range stays bound as a single unit via nbsp or non-breaking hyphen, and line breaks land on natural word boundaries elsewhere in the H1.
 **Plans**: 3 plans
   - [x] 40-01-PLAN.md — Step 404.html H1 mobile class from text-4xl to text-3xl (COSMETIC-01)
-  - [ ] 40-02-PLAN.md — Generate favicon set (ico/svg/apple-touch-icon/webmanifest) and add 4 link tags to head of all 6 HTML pages (COSMETIC-02)
+  - [x] 40-02-PLAN.md — Generate favicon set (ico/svg/apple-touch-icon/webmanifest) and add 4 link tags to head of all 6 HTML pages (COSMETIC-02)
   - [x] 40-03-PLAN.md — Wrap "за 1–2 дня" in whitespace-nowrap span on checkup.html line 138 (COSMETIC-03)
 
 ## Progress
@@ -203,6 +203,6 @@ Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 39. Partials Extraction & Build Pipeline | 3/3 | Complete    | 2026-04-08 |
-| 40. UX Cosmetic Cleanup | 2/3 | In Progress|  |
+| 40. UX Cosmetic Cleanup | 3/3 | Complete   | 2026-04-08 |
 
 All v3.1 phases shipped. See `.planning/milestones/v3.1-ROADMAP.md` for phase details, success criteria, and plans.
