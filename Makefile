@@ -84,9 +84,25 @@ install-hooks:
 		exit 1; \
 	fi
 	@chmod +x scripts/hooks/pre-commit
-	@mkdir -p .git/hooks
-	@ln -sf ../../scripts/hooks/pre-commit .git/hooks/pre-commit
-	@echo "[install-hooks] installed: .git/hooks/pre-commit -> ../../scripts/hooks/pre-commit"
+	@# Regular clone: .git is a directory, install a relative-path symlink at
+	@#   .git/hooks/pre-commit -> ../../scripts/hooks/pre-commit
+	@# Worktree: .git is a file pointing at .git/worktrees/<name>. `git rev-parse
+	@# --git-common-dir` resolves to the shared .git directory, and hooks installed
+	@# there apply to all worktrees. Use absolute-path symlink in that case because
+	@# the relative form would not resolve correctly from the nested worktrees dir.
+	@if [ -d .git ]; then \
+		mkdir -p .git/hooks; \
+		ln -sf ../../scripts/hooks/pre-commit .git/hooks/pre-commit; \
+		echo "[install-hooks] installed: .git/hooks/pre-commit -> ../../scripts/hooks/pre-commit"; \
+	else \
+		GIT_COMMON_DIR=$$(git rev-parse --git-common-dir); \
+		REPO_ROOT=$$(git rev-parse --show-toplevel); \
+		HOOK_SRC="$$REPO_ROOT/scripts/hooks/pre-commit"; \
+		HOOK_DST="$$GIT_COMMON_DIR/hooks/pre-commit"; \
+		mkdir -p "$$GIT_COMMON_DIR/hooks"; \
+		ln -sf "$$HOOK_SRC" "$$HOOK_DST"; \
+		echo "[install-hooks] installed (worktree mode): $$HOOK_DST -> $$HOOK_SRC"; \
+	fi
 
 clean:
 	@echo "[clean] no-op (no transient build artifacts; css/styles.css is committed)"
