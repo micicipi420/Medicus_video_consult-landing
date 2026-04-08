@@ -102,6 +102,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-08T00:00:00.000Z
-Stopped at: Phase 38.1 inserted after Playwright UX validation exposed mobile overflow regressions; autonomous execution starting
-Next command: autonomous mode runs discuss → plan → execute for 38.1, then re-runs Playwright validation to close RHYTHM-10
+Last session: 2026-04-08
+Stopped at: v3.1 fully closed — tag pushed to origin, phase dirs archived under .planning/milestones/v3.1-phases/. Ready for v3.2 kickoff.
+Next command: /clear then /gsd-new-milestone (v3.2 — scope: Phase 36b partials/build pipeline + 3 minor UX backlog items)
