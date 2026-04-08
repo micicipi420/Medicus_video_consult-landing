@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-08T16:17:51.246Z",
+  "context": "between_milestones",
+  "phase": null,
+  "phase_name": null,
+  "phase_dir": null,
+  "plan": null,
+  "task": null,
+  "total_tasks": 0,
+  "status": "milestone_shipped",
+  "milestone": {
+    "version": "v3.2",
+    "name": "Build Pipeline & Chrome Partials",
+    "shipped": "2026-04-08",
+    "phases": 2,
+    "plans": 6,
+    "requirements": "11/11 (8 LAYOUT + 3 COSMETIC)",
+    "commits": 32,
+    "source_diff": "20 files, +891/-69",
+    "tag": "v3.2",
+    "pushed": true
+  },
+  "completed_tasks": [
+    { "id": "v3.2-phase-39", "name": "Partials Extraction & Build Pipeline", "status": "done", "plans": "3/3", "notes": "4 partials + POSIX-sh splicer + make build + pre-commit hook + docs/BUILD.md" },
+    { "id": "v3.2-phase-40", "name": "UX Cosmetic Cleanup", "status": "done", "plans": "3/3", "notes": "404 H1 mobile, favicon set, checkup H1 range binding" },
+    { "id": "v3.2-milestone-close", "name": "Milestone archival + tag + push", "status": "done", "commit": "6b924bc", "tag": "v3.2", "pushed_to": "origin/feat/v3.1" }
+  ],
+  "remaining_tasks": [],
+  "blockers": [],
+  "human_actions_pending": [
+    {
+      "action": "Verify GitHub Pages picked up v3.2 changes",
+      "context": "40-02-SUMMARY.md defers the live-URL favicon curl check until feat/v3.1 is pushed and Pages rebuilds. Branch pushed 2026-04-08 — once build completes, run `curl -sI https://micicipi420.github.io/Medicus_video_consult-landing/favicon.ico` and confirm HTTP 200.",
+      "blocking": false
+    },
+    {
+      "action": "Optional: merge feat/v3.1 into main",
+      "context": "All work from v3.1 + v3.2 is currently on the feat/v3.1 branch. If main should reflect shipped state, merge (or squash-merge) feat/v3.1 → main. If the team treats feat/v3.1 as the de facto trunk, no action needed.",
+      "blocking": false
+    }
+  ],
+  "decisions": [
+    { "decision": "POSIX-sh + awk marker splicer over Node templating", "rationale": "Repo is zero-Node at runtime; shell splicing is sufficient for 4 chrome partials", "phase": "v3.2 Phase 39-02" },
+    { "decision": "Pre-commit hook as byte-identity gate (first git hook in repo)", "rationale": "Chrome drift impossible at commit time; dual-mode symlink install works in clones + worktrees", "phase": "v3.2 Phase 39-03" },
+    { "decision": "Tailwind v4.2.2 binary pinned + auto-installed via make install-tailwind", "rationale": "Reproducible builds without requiring package manager", "phase": "v3.2 Phase 39-03" },
+    { "decision": "404 H1 mobile step-down (text-4xl → text-3xl) over clamp() fluid sizing", "rationale": "Stay on project's Tailwind step-function pattern; preserves nbsp binding trivially", "phase": "v3.2 Phase 40-01" },
+    { "decision": "Python Pillow as ImageMagick fallback for one-shot raster pipeline", "rationale": "ImageMagick not installed; Pillow 11.3.0 already present and equivalent for PNG→multi-size ICO + 180×180 square padding", "phase": "v3.2 Phase 40-02" },
+    { "decision": "Hand-download Tilda production PNG once, commit derivatives, forbid runtime hotlinking", "rationale": "Supply-chain hygiene; no runtime dependency on third-party CDN", "phase": "v3.2 Phase 40-02" },
+    { "decision": "Tailwind whitespace-nowrap span for Russian numeric range binding", "rationale": "Auditable via grep, utility-first consistent, no stylesheet pollution", "phase": "v3.2 Phase 40-03" }
+  ],
+  "uncommitted_files": [],
+  "untracked_files": [
+    ".planning/milestones/v1.0-research/",
+    ".planning/milestones/v3.1-phases/38.1-mobile-viewport-overflow-checkup-h1-fix/.gitkeep",
+    ".playwright-mcp/"
+  ],
+  "git_state": {
+    "branch": "feat/v3.1",
+    "head": "6b924bc416ecf67f3ada6ef146c214500460ab4d",
+    "pushed_to_origin": true,
+    "tags_created": ["v3.2"],
+    "tags_pushed": true
+  },
+  "next_action": "Start next milestone with /gsd-new-milestone (questioning → research → requirements → roadmap). Alternatively, verify GitHub Pages rebuild and run the deferred live-URL favicon curl.",
+  "context_notes": "v3.2 shipped cleanly in a single day: 2 phases, 6 plans, 11 requirements, zero plan revisions. Milestone archival required manual drift fixes because the `phase complete` CLI does not flip active-milestone checkboxes in bold format, and `milestone complete` CLI's one-liner auto-extract produced garbage for Phase 39 summaries. Retrospective in .planning/RETROSPECTIVE.md has full lessons learned. Session anti-patterns: Bash cwd drift into worktree during Wave 1 merge (recovered via cd back + ff-only); pre-authorized tooling deviations in executor prompts worked well for Pillow fallback; parallel worktrees for disjoint files + sequential worktree for shared files was the right wave structure."
+}
