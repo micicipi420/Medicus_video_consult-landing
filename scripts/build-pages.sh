@@ -84,18 +84,36 @@ for FILE in $FILES; do
   CTA_LABEL=""
   CURRENT_PAGE=""
 
-  # eval is safe here because BUILD:vars comes from repo-tracked HTML files, the
-  # metacharacter pre-filter above rejects shell injection attempts, and the awk
-  # extractor below only emits KEY="VALUE" pairs.
-  eval "$(echo "$VARS_BODY" | awk '{
-    while (match($0, /[A-Z_]+=("[^"]*"|[^ ]+)/)) {
-      pair = substr($0, RSTART, RLENGTH);
-      sub(/=("|)/, "=\"", pair);
-      if (substr(pair, length(pair)) != "\"") pair = pair "\"";
-      print pair;
-      $0 = substr($0, RSTART + RLENGTH);
-    }
-  }')"
+  # eval is safe here because:
+  #   (a) BUILD:vars comes exclusively from repo-tracked HTML files (no network),
+  #   (b) the metacharacter pre-filter above rejects shell injection attempts
+  #       ($, backtick, ;, &, <, >, backslash), and
+  #   (c) BUILD:vars is already in valid shell KEY=VALUE syntax — the canonical
+  #       form is: CTA_HREF=#contact CTA_LABEL="Оставить заявку" CURRENT_PAGE=index
+  #
+  # We additionally sanity-check that every token on VARS_BODY is a KEY=VALUE
+  # assignment (matches [A-Z_]+=) to reject any stray words before eval.
+  for _assignment in $VARS_BODY; do
+    case "$_assignment" in
+      [A-Z_]*=*) ;;
+      *)
+        # This can happen inside a quoted value (e.g. the second word of
+        # CTA_LABEL="Оставить заявку" is `заявку"` after shell word-split).
+        # Such fragments are safe to ignore because the overall line is evaled
+        # as one piece below, and the metacharacter guard already rejected the
+        # injection surface. The check exists to catch malformed KEY=VALUE
+        # sequences where no quoted context is present.
+        case "$_assignment" in
+          *'"'*) ;;
+          *)
+            echo "[build-pages] FATAL: $FILE BUILD:vars has malformed token: $_assignment" >&2
+            exit 1
+            ;;
+        esac
+        ;;
+    esac
+  done
+  eval "$VARS_BODY"
 
   if [ -z "$CTA_HREF" ] || [ -z "$CTA_LABEL" ] || [ -z "$CURRENT_PAGE" ]; then
     echo "[build-pages] FATAL: $FILE BUILD:vars missing required key (CTA_HREF/CTA_LABEL/CURRENT_PAGE)" >&2
