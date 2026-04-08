@@ -267,6 +267,11 @@
 
   html {
     font-size: var(--font-size);
+    /* Phase 38.1: prevent decorative absolute elements (hero floating badges,
+       mesh-bg blobs) from creating horizontal scroll on mobile. overflow: clip
+       is safer than overflow: hidden — does not create a block formatting
+       context and does not break position:sticky descendants. */
+    overflow-x: clip;
   }
 
   h1 {

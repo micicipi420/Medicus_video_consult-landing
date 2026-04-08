@@ -53,7 +53,7 @@
     a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
   </style>
 </head>
-<body class="relative bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-hidden">
+<body class="relative bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-clip">
   <!-- Animated Mesh Background -->
   <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
     <div class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-mu-blue/30 mix-blend-multiply blur-[120px]"></div>
@@ -130,11 +130,11 @@
               <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">&mdash;&nbsp;за&nbsp;5&nbsp;дней, без&nbsp;перелёта</span>
             </h1>
 
-            <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Видеоконсультация с&nbsp;европейским специалистом&nbsp;&mdash;&nbsp;на&nbsp;вашем языке, с&nbsp;переводом. Загрузите документы в&nbsp;приложение&nbsp;&mdash;&nbsp;мы&nbsp;переведём их, передадим врачу и&nbsp;организуем встречу.</p>
+            <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Видеоконсультация с&nbsp;европейским специалистом &mdash;на&nbsp;вашем языке, с&nbsp;переводом. Загрузите документы в&nbsp;приложение &mdash;мы&nbsp;переведём их, передадим врачу и&nbsp;организуем встречу.</p>
 
             <div class="flex flex-col sm:flex-row gap-4 mb-12">
               <a href="#consultation-form" class="bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-8 py-4 rounded-3xl font-semibold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 group text-lg">
-                Получить консультацию&nbsp;&mdash;&nbsp;от&nbsp;450&nbsp;&euro;
+                Получить консультацию &mdash;от&nbsp;450&nbsp;&euro;
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </a>
               <a href="#triggers" class="bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg text-center">
@@ -183,7 +183,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">За&nbsp;5&nbsp;рабочих дней</h3>
-          <p class="text-mu-text-700 font-medium">От заявки до заключения&nbsp;&mdash;&nbsp;без перелёта и&nbsp;ожидания</p>
+          <p class="text-mu-text-700 font-medium">От заявки до заключения &mdash;без перелёта и&nbsp;ожидания</p>
         </div>
         <!-- Feature 2: Врачи из 7 стран -->
         <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
@@ -207,7 +207,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">На вашем языке</h3>
-          <p class="text-mu-text-700 font-medium">Консультация с&nbsp;переводчиком&nbsp;&mdash;&nbsp;русский, казахский, английский</p>
+          <p class="text-mu-text-700 font-medium">Консультация с&nbsp;переводчиком &mdash;русский, казахский, английский</p>
         </div>
         <!-- Feature 5: ISO 27001 -->
         <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
@@ -234,9 +234,9 @@
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Знакомо?</span>
       </h2>
       <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto space-y-6">
-        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Получили диагноз&nbsp;&mdash;&nbsp;и&nbsp;не&nbsp;уверены, что он&nbsp;правильный. Разные врачи говорят разное. Хочется услышать мнение врача, которому можно верить.</p>
-        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Слышали, что за&nbsp;границей лечат лучше&nbsp;&mdash;&nbsp;но&nbsp;лететь дорого, долго и&nbsp;страшно. А&nbsp;вдруг&nbsp;можно&nbsp;получить ответ, не&nbsp;выходя из&nbsp;дома?</p>
-        <p class="text-mu-text-900 font-bold text-lg leading-relaxed">Время&nbsp;идёт&nbsp;&mdash;&nbsp;а&nbsp;решение всё ещё не&nbsp;принято.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Получили диагноз &mdash;и&nbsp;не&nbsp;уверены, что он&nbsp;правильный. Разные врачи говорят разное. Хочется услышать мнение врача, которому можно верить.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Слышали, что за&nbsp;границей лечат лучше &mdash;но&nbsp;лететь дорого, долго и&nbsp;страшно. А&nbsp;вдруг&nbsp;можно&nbsp;получить ответ, не&nbsp;выходя из&nbsp;дома?</p>
+        <p class="text-mu-text-900 font-bold text-lg leading-relaxed">Время&nbsp;идёт &mdash;а&nbsp;решение всё ещё не&nbsp;принято.</p>
       </div>
     </section>
 
@@ -279,7 +279,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
           </div>
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Ответы на&nbsp;ваши вопросы</h3>
-          <p class="text-mu-text-700 font-medium">Консультация&nbsp;&mdash;&nbsp;это не&nbsp;монолог врача. Вы&nbsp;задаёте&nbsp;вопросы, врач отвечает. Переводчик&nbsp;обеспечивает полное понимание.</p>
+          <p class="text-mu-text-700 font-medium">Консультация &mdash;это не&nbsp;монолог врача. Вы&nbsp;задаёте&nbsp;вопросы, врач отвечает. Переводчик&nbsp;обеспечивает полное понимание.</p>
         </div>
       </div>
     </section>
@@ -294,7 +294,7 @@
         <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div class="text-6xl font-extrabold text-mu-accent-blue opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500">01</div>
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Загрузите документы</h3>
-          <p class="text-mu-text-700 font-medium">Снимки, анализы, заключения&nbsp;&mdash;&nbsp;в&nbsp;любом формате, на&nbsp;любом языке. Мы&nbsp;переведём всё сами и&nbsp;подготовим для врача.</p>
+          <p class="text-mu-text-700 font-medium">Снимки, анализы, заключения &mdash;в&nbsp;любом формате, на&nbsp;любом языке. Мы&nbsp;переведём всё сами и&nbsp;подготовим для врача.</p>
         </div>
         <!-- Step 2 -->
         <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
@@ -306,7 +306,7 @@
         <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div class="text-6xl font-extrabold text-mu-accent-teal opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500">03</div>
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Видеоконсультация</h3>
-          <p class="text-mu-text-700 font-medium">Встреча по&nbsp;видео с&nbsp;переводчиком. Врач&nbsp;даёт оценку, отвечает на&nbsp;вопросы. После&nbsp;&mdash;&nbsp;письменное заключение в&nbsp;личном кабинете.</p>
+          <p class="text-mu-text-700 font-medium">Встреча по&nbsp;видео с&nbsp;переводчиком. Врач&nbsp;даёт оценку, отвечает на&nbsp;вопросы. После &mdash;письменное заключение в&nbsp;личном кабинете.</p>
         </div>
       </div>
     </section>
@@ -320,9 +320,9 @@
       </div>
 
       <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-4xl mx-auto mb-12 space-y-4">
-        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">На&nbsp;платформе MedicusUnion&nbsp;&mdash;&nbsp;врачи из&nbsp;клиник и&nbsp;медицинских университетов Германии, Израиля, Швейцарии, Австрии, ОАЭ, Южной Кореи и&nbsp;Турции.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">На&nbsp;платформе MedicusUnion &mdash;врачи из&nbsp;клиник и&nbsp;медицинских университетов Германии, Израиля, Швейцарии, Австрии, ОАЭ, Южной Кореи и&nbsp;Турции.</p>
         <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Основные специализации: онкология, кардиология, нейрохирургия, ортопедия, радиология, ЭКО и&nbsp;другие.</p>
-        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Каждый врач&nbsp;&mdash;&nbsp;с&nbsp;профилем на&nbsp;платформе: специализация, опыт, клиника, языки консультации, стоимость.</p>
+        <p class="text-mu-text-700 font-medium text-lg leading-relaxed">Каждый врач &mdash;с&nbsp;профилем на&nbsp;платформе: специализация, опыт, клиника, языки консультации, стоимость.</p>
       </div>
 
       <!-- Country cards -->
@@ -412,7 +412,7 @@
             </div>
             <div>
               <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Документы переведены и&nbsp;подготовлены</h3>
-              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;загружаете на&nbsp;русском&nbsp;&mdash;&nbsp;врач получает на&nbsp;своём языке. Не&nbsp;нужно&nbsp;искать переводчика медицинских документов.</p>
+              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;загружаете на&nbsp;русском &mdash;врач получает на&nbsp;своём языке. Не&nbsp;нужно&nbsp;искать переводчика медицинских документов.</p>
             </div>
           </div>
         </div>
@@ -426,7 +426,7 @@
             </div>
             <div>
               <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Перевод прямо во&nbsp;время консультации</h3>
-              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;говорите на&nbsp;русском, врач&nbsp;&mdash;&nbsp;на&nbsp;своём. Переводчик&nbsp;обеспечивает полное понимание&nbsp;&mdash;&nbsp;включая медицинскую терминологию.</p>
+              <p class="text-mu-text-700 font-medium text-sm">Вы&nbsp;говорите на&nbsp;русском, врач &mdash;на&nbsp;своём. Переводчик&nbsp;обеспечивает полное понимание &mdash;включая медицинскую терминологию.</p>
             </div>
           </div>
         </div>
@@ -440,7 +440,7 @@
             </div>
             <div>
               <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Всё&nbsp;в&nbsp;одном&nbsp;приложении</h3>
-              <p class="text-mu-text-700 font-medium text-sm">Документы, расписание, видеозвонок, заключение врача&nbsp;&mdash;&nbsp;в&nbsp;личном кабинете. Ничего не&nbsp;потеряется, всё под рукой.</p>
+              <p class="text-mu-text-700 font-medium text-sm">Документы, расписание, видеозвонок, заключение врача &mdash;в&nbsp;личном кабинете. Ничего не&nbsp;потеряется, всё под рукой.</p>
             </div>
           </div>
         </div>
@@ -454,7 +454,7 @@
             </div>
             <div>
               <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Офис в&nbsp;Казахстане, договор, документы</h3>
-              <p class="text-mu-text-700 font-medium text-sm">MedicusUnion GmbH, Австрия. Офис в&nbsp;Казахстане&nbsp;&mdash;&nbsp;резидент Astana&nbsp;Hub. ISO&nbsp;27001.</p>
+              <p class="text-mu-text-700 font-medium text-sm">MedicusUnion GmbH, Австрия. Офис в&nbsp;Казахстане &mdash;резидент Astana&nbsp;Hub. ISO&nbsp;27001.</p>
             </div>
           </div>
         </div>
@@ -467,8 +467,8 @@
               </div>
             </div>
             <div>
-              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Нужно больше&nbsp;&mdash;&nbsp;организуем</h3>
-              <p class="text-mu-text-700 font-medium text-sm">Если после консультации нужно лечение за&nbsp;рубежом&nbsp;&mdash;&nbsp;мы&nbsp;организуем всё: клинику, документы, логистику, сопровождение. Но&nbsp;это&nbsp;уже&nbsp;следующий шаг.</p>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-2 leading-snug">Нужно больше &mdash;организуем</h3>
+              <p class="text-mu-text-700 font-medium text-sm">Если после консультации нужно лечение за&nbsp;рубежом &mdash;мы&nbsp;организуем всё: клинику, документы, логистику, сопровождение. Но&nbsp;это&nbsp;уже&nbsp;следующий шаг.</p>
               <a href="treatment-abroad.html" class="inline-flex items-center gap-1 text-mu-accent-blue-text font-bold mt-3 text-sm hover:gap-2 transition-all">
                 Лечение за&nbsp;рубежом
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -569,7 +569,7 @@
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
             <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Записаться на&nbsp;консультацию</span>
           </h2>
-          <p class="text-mu-text-700 font-medium text-lg mb-8 leading-relaxed max-w-lg">Оставьте заявку&nbsp;&mdash;&nbsp;мы&nbsp;свяжемся в&nbsp;течение 24&nbsp;часов, обсудим ваш случай и&nbsp;подберём врача. Бесплатно и&nbsp;без обязательств.</p>
+          <p class="text-mu-text-700 font-medium text-lg mb-8 leading-relaxed max-w-lg">Оставьте заявку &mdash;мы&nbsp;свяжемся в&nbsp;течение 24&nbsp;часов, обсудим ваш случай и&nbsp;подберём врача. Бесплатно и&nbsp;без обязательств.</p>
 
           <ul class="space-y-4 mb-8">
             <li class="flex items-center gap-3 text-mu-text-900 font-medium">
@@ -692,7 +692,7 @@
             </svg>
           </button>
           <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
-            <div class="faq__answer-inner">Обычно 30&ndash;60 минут. Врач&nbsp;не&nbsp;торопится&nbsp;&mdash;&nbsp;это не&nbsp;поликлиника с&nbsp;10-минутным приёмом.</div>
+            <div class="faq__answer-inner">Обычно 30&ndash;60 минут. Врач&nbsp;не&nbsp;торопится &mdash;это не&nbsp;поликлиника с&nbsp;10-минутным приёмом.</div>
           </div>
         </div>
 
@@ -718,7 +718,7 @@
             </svg>
           </button>
           <div class="faq__answer px-6 pb-5 text-mu-text-700 font-medium leading-relaxed">
-            <div class="faq__answer-inner">Конечно. Вы&nbsp;получите письменное заключение&nbsp;&mdash;&nbsp;его можно скачать, распечатать, показать любому врачу.</div>
+            <div class="faq__answer-inner">Конечно. Вы&nbsp;получите письменное заключение &mdash;его можно скачать, распечатать, показать любому врачу.</div>
           </div>
         </div>
 
@@ -757,7 +757,7 @@
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-mu-accent-orange-bg rounded-full blur-[100px] -z-10" aria-hidden="true"></div>
 
         <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Не&nbsp;откладывайте&nbsp;решение</h2>
-        <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Второе мнение&nbsp;&mdash;&nbsp;это не&nbsp;роскошь, а&nbsp;возможность принять правильное решение. От&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней, из&nbsp;дома.</p>
+        <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Второе мнение &mdash;это не&nbsp;роскошь, а&nbsp;возможность принять правильное решение. От&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней, из&nbsp;дома.</p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#consultation-form" class="bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-10 py-5 rounded-3xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] text-lg flex items-center gap-2">
