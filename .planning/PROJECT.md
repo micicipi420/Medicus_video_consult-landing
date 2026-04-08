@@ -13,8 +13,9 @@
 ## Current State
 
 **Shipped:** v3.1 Site Foundation & Audit Fixes (2026-04-08)
-**Codebase:** 6 production pages + 404 with shared layout chrome (drift-normalized), full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
-**Stack:** HTML + Tailwind CSS v4 (CLI standalone) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
+**In progress:** v3.2 Phase 39 complete (2026-04-08) — chrome partials + byte-identity build pipeline; v3.2 Phase 40 pending
+**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth, byte-identity gate enforced at commit time), `make build` canonical entry point, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
+**Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
 ## Current Milestone: v3.2 Build Pipeline & Chrome Partials
 
@@ -220,4 +221,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 at v3.2 milestone kickoff*
+*Last updated: 2026-04-08 — Phase 39 complete (partials extraction + build pipeline)*

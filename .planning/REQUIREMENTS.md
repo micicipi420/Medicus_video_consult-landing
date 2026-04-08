@@ -12,14 +12,14 @@
 
 7 of these 8 are carried over from v3.1 Phase 36, where they were explicitly deferred to "Phase 36b in v3.2." The original IDs are preserved for cross-milestone traceability.
 
-- [ ] **LAYOUT-01** _(deferred from v3.1)_: `partials/` directory exists at repo root containing `header.html`, `footer.html`, `sticky-bar.html`, `mobile-menu.html` as the single source of truth for shared chrome
-- [ ] **LAYOUT-02** _(deferred from v3.1)_: `scripts/build-pages.sh` is a shell-based marker splicer that reads `<!-- BUILD:partial-name -->` … `<!-- /BUILD:partial-name -->` blocks in HTML pages and replaces their contents with the current partial file
-- [ ] **LAYOUT-03** _(deferred from v3.1)_: `build.sh` at the repo root is the top-level orchestrator (runs `tailwindcss` build, then `scripts/build-pages.sh`)
-- [ ] **LAYOUT-04** _(deferred from v3.1, refined)_: `Makefile` with a `make build` target is the canonical entry point. Make is the source of truth; `./build.sh` is a thin delegator to `make build`
-- [ ] **LAYOUT-05** _(deferred from v3.1)_: BUILD markers are present in all 6 HTML pages (`index`, `online-consultations`, `treatment-abroad`, `checkup`, `contacts`, `404`) at every shared-chrome insertion point
-- [ ] **LAYOUT-11** _(deferred from v3.1)_: 7th-page 0-edit invariant is verified — adding a new page requires only authoring page-specific body content plus BUILD markers, with zero duplicated chrome
-- [ ] **LAYOUT-12** _(deferred from v3.1)_: Byte-identity smoke test — running `./build.sh` (or `make build`) on a clean checkout produces HTML byte-for-byte identical to the current committed 6 pages (zero drift)
-- [ ] **LAYOUT-13** _(new v3.2)_: Pre-commit hook (`scripts/hooks/pre-commit`) calls `make build` before every commit. Contributors install it once per clone via a documented one-liner (e.g. `ln -s ../../scripts/hooks/pre-commit .git/hooks/pre-commit`). README documents the install step
+- [x] **LAYOUT-01** _(deferred from v3.1)_: `partials/` directory exists at repo root containing `header.html`, `footer.html`, `sticky-bar.html`, `mobile-menu.html` as the single source of truth for shared chrome
+- [x] **LAYOUT-02** _(deferred from v3.1)_: `scripts/build-pages.sh` is a shell-based marker splicer that reads `<!-- BUILD:partial-name -->` … `<!-- /BUILD:partial-name -->` blocks in HTML pages and replaces their contents with the current partial file
+- [x] **LAYOUT-03** _(deferred from v3.1)_: `build.sh` at the repo root is the top-level orchestrator (runs `tailwindcss` build, then `scripts/build-pages.sh`)
+- [x] **LAYOUT-04** _(deferred from v3.1, refined)_: `Makefile` with a `make build` target is the canonical entry point. Make is the source of truth; `./build.sh` is a thin delegator to `make build`
+- [x] **LAYOUT-05** _(deferred from v3.1)_: BUILD markers are present in all 6 HTML pages (`index`, `online-consultations`, `treatment-abroad`, `checkup`, `contacts`, `404`) at every shared-chrome insertion point
+- [x] **LAYOUT-11** _(deferred from v3.1)_: 7th-page 0-edit invariant is verified — adding a new page requires only authoring page-specific body content plus BUILD markers, with zero duplicated chrome
+- [x] **LAYOUT-12** _(deferred from v3.1)_: Byte-identity smoke test — running `./build.sh` (or `make build`) on a clean checkout produces HTML byte-for-byte identical to the current committed 6 pages (zero drift)
+- [x] **LAYOUT-13** _(new v3.2)_: Pre-commit hook (`scripts/hooks/pre-commit`) calls `make build` before every commit. Contributors install it once per clone via a documented one-liner (e.g. `ln -s ../../scripts/hooks/pre-commit .git/hooks/pre-commit`). README documents the install step
 
 ### Cosmetic Cleanup
 
@@ -49,14 +49,14 @@ Nothing currently deferred. v3.2 closes v3.1's known-open items cleanly.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAYOUT-01 | Phase 39 | Pending |
-| LAYOUT-02 | Phase 39 | Pending |
-| LAYOUT-03 | Phase 39 | Pending |
-| LAYOUT-04 | Phase 39 | Pending |
-| LAYOUT-05 | Phase 39 | Pending |
-| LAYOUT-11 | Phase 39 | Pending |
-| LAYOUT-12 | Phase 39 | Pending |
-| LAYOUT-13 | Phase 39 | Pending |
+| LAYOUT-01 | Phase 39 | Done |
+| LAYOUT-02 | Phase 39 | Done |
+| LAYOUT-03 | Phase 39 | Done |
+| LAYOUT-04 | Phase 39 | Done |
+| LAYOUT-05 | Phase 39 | Done |
+| LAYOUT-11 | Phase 39 | Done |
+| LAYOUT-12 | Phase 39 | Done |
+| LAYOUT-13 | Phase 39 | Done |
 | COSMETIC-01 | Phase 40 | Pending |
 | COSMETIC-02 | Phase 40 | Pending |
 | COSMETIC-03 | Phase 40 | Pending |
@@ -68,4 +68,4 @@ Nothing currently deferred. v3.2 closes v3.1's known-open items cleanly.
 
 ---
 *Requirements defined: 2026-04-08*
-*Last updated: 2026-04-08 — traceability filled by roadmapper (v3.2 Phases 39, 40)*
+*Last updated: 2026-04-08 — Phase 39 complete, 8/8 LAYOUT requirements validated*
