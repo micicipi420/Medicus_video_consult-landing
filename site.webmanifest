@@ -1,0 +1,14 @@
+{
+  "name": "MedicusUnion KZ — онлайн-консультации, лечение и чек-апы за рубежом",
+  "short_name": "MedicusUnion",
+  "lang": "ru-KZ",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#1AC67E",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/favicon.ico",          "sizes": "16x16 32x32 48x48", "type": "image/vnd.microsoft.icon" },
+    { "src": "/favicon.svg",          "sizes": "any",               "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180",           "type": "image/png" }
+  ]
+}
