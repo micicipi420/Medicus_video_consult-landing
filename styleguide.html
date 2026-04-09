@@ -60,6 +60,14 @@
   <a href="#page-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-mu-text-900 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:outline-2 focus:outline-mu-blue-text">Перейти к&nbsp;содержимому</a>
 <!-- BUILD:vars CTA_HREF=#contact CTA_LABEL="Оставить заявку" CURRENT_PAGE=styleguide -->
 <!-- BUILD:svg-defs -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="liquid-refract">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4"/>
+        <feDisplacementMap in="SourceGraphic" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
 <!-- /BUILD:svg-defs -->
   <!-- Animated Mesh Background (Layout.tsx) -->
   <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
@@ -71,10 +79,54 @@
 
   <!-- Header -->
 <!-- BUILD:header -->
+  <header class="header liquid-regular squircle-xl fixed z-50 transition-all duration-500 top-4 left-4 right-4 mx-auto max-w-[1200px] px-4 md:px-8 py-5" id="header">
+    <div class="header__inner flex items-center justify-between">
+      <a href="index.html" class="header__logo text-2xl font-bold tracking-tight bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent">MedicusUnion</a>
+
+      <nav class="header__nav hidden lg:flex items-center gap-6" aria-label="Основная навигация">
+        <a href="online-consultations.html" class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">Лечение за рубежом</a>
+        <a href="checkup.html" class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">Чек-ап</a>
+        <a href="index.html#why-us" class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">О нас</a>
+        <a href="contacts.html" class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">Контакты</a>
+      </nav>
+
+      <div class="header__actions hidden lg:flex items-center gap-4">
+        <a href="tel:+77015322478" class="header__phone flex items-center gap-2 text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
+        </a>
+        <a href="#contact" class="header__cta bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow inline-block tracking-tight">Оставить заявку</a>
+      </div>
+
+      <button class="header__menu-btn lg:hidden p-2 text-mu-text-700 liquid-regular squircle-full" aria-label="Открыть меню" aria-expanded="false">
+        <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </header>
 <!-- /BUILD:header -->
 
   <!-- Mobile Menu -->
 <!-- BUILD:mobile-menu -->
+  <div class="mobile-menu-overlay fixed inset-0 z-40 lg:hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="mobile-menu absolute top-24 left-4 right-4 liquid-regular squircle-xl backdrop-blur-[80px] overflow-hidden">
+      <nav class="mobile-menu__nav flex flex-col p-6 gap-2" aria-label="Мобильная навигация">
+        <a href="online-consultations.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Консультации</a>
+        <a href="treatment-abroad.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Лечение за рубежом</a>
+        <a href="checkup.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Чек-ап</a>
+        <a href="index.html#why-us" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">О нас</a>
+        <a href="contacts.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Контакты</a>
+        <div class="mobile-menu__divider h-[0.5px] bg-white/40 my-2"></div>
+        <a href="tel:+77015322478" class="mobile-menu__phone flex items-center gap-3 text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
+        </a>
+        <a href="#contact" class="mobile-menu__cta bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-6 py-4 squircle-lg font-semibold tracking-tight shadow-lg mt-4 w-full text-center block">Оставить заявку</a>
+      </nav>
+    </div>
+  </div>
 <!-- /BUILD:mobile-menu -->
 
   <!-- Styleguide Content -->
@@ -500,9 +552,76 @@
   </main>
 
 <!-- BUILD:footer -->
+  <footer class="footer relative overflow-hidden z-10 py-16" id="footer">
+    <div class="container mx-auto px-4 lg:px-6 relative z-10">
+      <div class="footer__wrapper liquid-card squircle-xl p-12">
+        <div class="footer__grid grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div>
+            <h3 class="footer__logo text-brand-gradient text-3xl font-extrabold bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent mb-4 drop-shadow-sm">MedicusUnion</h3>
+            <p class="footer__desc text-mu-text-700 font-medium leading-relaxed">Международный медицинский сервис. Австрия&nbsp;&middot;&nbsp;Казахстан</p>
+          </div>
+          <div>
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Услуги</h4>
+            <ul class="footer__links space-y-3">
+              <li><a href="online-consultations.html" class="footer__link text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium">Онлайн-консультации</a></li>
+              <li><a href="treatment-abroad.html" class="footer__link text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium">Лечение за&nbsp;рубежом</a></li>
+              <li><a href="checkup.html" class="footer__link text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium">Чек-ап</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Навигация</h4>
+            <ul class="footer__links space-y-3">
+              <li><a href="index.html" class="footer__link text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium">Главная</a></li>
+              <li><a href="contacts.html" class="footer__link text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium">Контакты</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer__heading font-extrabold text-lg text-mu-text-900 mb-4">Контакты</h4>
+            <ul class="footer__links space-y-3">
+              <li>
+                <a href="tel:+77015322478" class="footer__contact-item flex items-center gap-3 text-mu-text-900 hover:text-mu-blue-text transition-colors font-semibold">
+                  <span class="footer__contact-icon liquid-regular squircle-md p-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  +7&nbsp;701&nbsp;532&nbsp;24&nbsp;78
+                </a>
+              </li>
+              <li>
+                <a href="mailto:kz@medicusunion.com" class="footer__contact-item flex items-center gap-3 text-mu-text-900 hover:text-mu-blue-text transition-colors font-semibold">
+                  <span class="footer__contact-icon liquid-regular squircle-md p-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  </span>
+                  kz@medicusunion.com
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__bottom border-t border-mu-text-300/30 pt-8 mt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="footer__copyright text-mu-text-700 font-medium text-sm">&copy;&nbsp;2026 MedicusUnion. Все права защищены.</p>
+          <p class="footer__badges text-mu-text-700 font-medium text-sm flex items-center gap-2">
+            <span class="footer__badge-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              ISO&nbsp;27001&nbsp;Certified
+            </span>
+            <span class="footer__badge-dot w-1.5 h-1.5 bg-mu-text-300/30 rounded-full" aria-hidden="true"></span>
+            <span>Astana&nbsp;Hub&nbsp;Resident</span>
+          </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 <!-- /BUILD:footer -->
 
 <!-- BUILD:sticky-bar -->
+  <div class="sticky-bar fixed bottom-4 left-4 right-4 z-50 liquid-regular squircle-lg p-3 lg:hidden" id="sticky-bar" role="complementary" aria-label="Быстрые действия">
+    <div class="container sticky-bar__container flex items-center justify-between gap-3">
+      <a href="tel:+77015322478" class="sticky-bar__phone text-mu-text-900 font-semibold text-sm" aria-label="Позвонить +7 701 532 24 78">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
+      <a href="#contact" class="btn-primary sticky-bar__cta bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-6 py-3 squircle-md font-bold shadow-lg shadow-mu-blue/30 text-sm">Оставить заявку</a>
+    </div>
+  </div>
 <!-- /BUILD:sticky-bar -->
 
   <script defer src="https://cdn.jsdelivr.net/npm/motion@12.23.24/dist/motion.js"></script>

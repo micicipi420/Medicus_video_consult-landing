@@ -8,7 +8,7 @@
 set -eu
 
 # Default page list used when no positional args are provided.
-DEFAULT_PAGES="index.html online-consultations.html treatment-abroad.html checkup.html contacts.html 404.html"
+DEFAULT_PAGES="index.html online-consultations.html treatment-abroad.html checkup.html contacts.html 404.html styleguide.html"
 
 # Required partials. All five must exist or the build aborts.
 # Supported marker vocabulary (one opening + one closing marker per partial per page):
@@ -160,8 +160,8 @@ for FILE in $FILES; do
       NAV_HEADER_contacts="$ACTIVE_HEADER"
       NAV_MOBILE_contacts="$ACTIVE_MOBILE"
       ;;
-    index|404)
-      # no nav link is current: index uses logo aria-current, 404 has no nav presence
+    index|404|styleguide)
+      # no nav link is current: index uses logo aria-current, 404/styleguide have no nav presence
       ;;
     *)
       echo "[build-pages] FATAL: $FILE has unknown CURRENT_PAGE=$CURRENT_PAGE" >&2
