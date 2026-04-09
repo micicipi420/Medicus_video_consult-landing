@@ -27,3 +27,11 @@ Resolved debug sessions. Used by `gsd-debugger` to surface known-pattern hypothe
 - **Fix:** Replaced rounded-2xl with squircle-md on both hero floating badge icon containers (w-14 h-14 boxes at lines 271, 282 of index.html). shadow-inner (inset shadow) is safe with mask-image per squircles.css docs.
 - **Files changed:** index.html, css/styles.css
 ---
+
+## grid-width-squircle-coverage -- Mobile overflow and constrained grid width on all pages
+- **Date:** 2026-04-09
+- **Error patterns:** grid-cols-12, gap overflow, max-w, narrow content, mobile overflow, horizontal scroll, gap-8, gap-12, gap-16, p-12, CTA card
+- **Root cause:** Issue 1 (desktop): inner max-w constraints (max-w-3xl through max-w-6xl + mx-auto) inside the 1400px container narrowed grid content visually. Issue 1 (mobile): CSS Grid column gap creates minimum intrinsic width = (N-1) * gap_size; gap-8 with 12 columns = 352px, gap-12 = 528px, gap-16 = 704px, all exceeding the 343px mobile content area. CTA p-12 (48px) padding also overflowed on mobile. Issue 2: already resolved — all remaining rounded-* are rotating icon chips (documented squircle exception).
+- **Fix:** Removed max-w + mx-auto from grid/card wrappers across all pages. Made grid column gaps responsive: gap-y-* on mobile (children stack, only row gap needed), full gap-* at the breakpoint where multi-column layout activates (md or lg). Made CTA card padding responsive: p-6 md:p-12 lg:p-20.
+- **Files changed:** index.html, online-consultations.html, treatment-abroad.html, checkup.html, 404.html, css/styles.css
+---
