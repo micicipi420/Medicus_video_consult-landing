@@ -97,8 +97,8 @@ See `.planning/milestones/` for full details per milestone.
   5. make build exits 0 and byte-identity check passes; no HTML files are modified in this phase
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [x] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [x] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 42: Squircle Primitives
@@ -113,8 +113,8 @@ Plans:
   5. make build exits 0; Tailwind CSS output includes squircle classes; no HTML pages are modified yet
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [x] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [x] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 
 ### Phase 43: Liquid Glass Primitives
 **Goal**: A complete Liquid Glass material system and distinctive components exist as reusable CSS/JS, so that any surface can be given glass treatment and the 3 differentiator effects (shimmer, grouped stats, scroll-edge fade) are ready to apply
@@ -128,7 +128,7 @@ Plans:
   5. Chrome 139+ users with JS enabled see refraction effect (SVG feTurbulence + feDisplacementMap) via html[data-refract] attribute set by ~10 LOC JS probe; Safari/Firefox show blur-only glass
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [x] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
 - [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
@@ -244,7 +244,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 41. Foundation Tokens | 0/2 | Planned | - |
+| 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
 | 42. Squircle Primitives | 0/TBD | Not started | - |
 | 43. Liquid Glass Primitives | 0/TBD | Not started | - |
 | 44. Chrome Partials Upgrade | 0/TBD | Not started | - |
