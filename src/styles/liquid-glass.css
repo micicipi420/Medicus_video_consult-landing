@@ -338,3 +338,61 @@ html[data-refract="true"] .stats-glass {
     display: none;
   }
 }
+
+/* ================================================
+   Section 11 -- Reduced transparency
+   For users who prefer less transparency (e.g., macOS
+   "Reduce transparency" setting). Increases background
+   opacity and disables backdrop-filter.
+   ================================================ */
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-secondary,
+  .stats-glass,
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .stats-glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-regular,
+  .dark .liquid-card,
+  .dark .liquid-btn-secondary,
+  .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .liquid-card::after {
+    display: none;
+  }
+}
+
+/* ================================================
+   Section 12 -- No backdrop-filter support (~3%)
+   Solid semi-transparent background fallback for
+   browsers without backdrop-filter support.
+   ================================================ */
+
+@supports not (backdrop-filter: blur(1px)) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-secondary,
+  .stats-glass {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-regular,
+  .dark .liquid-card,
+  .dark .liquid-btn-secondary,
+  .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+}
