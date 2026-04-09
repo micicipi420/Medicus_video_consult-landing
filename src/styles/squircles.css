@@ -1,0 +1,104 @@
+/*
+ * src/styles/squircles.css
+ *
+ * Squircle primitives for MedicusUnion KZ v4.0 Liquid Design System.
+ *
+ * Uses mask-image + inline SVG data-URI as the production default.
+ * Progressive enhancement via corner-shape: superellipse(2) for Chrome 139+.
+ *
+ * Three-tier degradation:
+ *   Tier 1 (Chrome 139+): corner-shape: superellipse(2) -- native, GPU-accelerated
+ *   Tier 2 (Safari 17+, Firefox 120+, Chrome <139): mask-image SVG -- production default
+ *   Tier 3 (no mask-image support): border-radius rounded corner fallback
+ *
+ * Shadow-wrap pattern:
+ *   mask-image clips box-shadow. For elements needing outer shadows,
+ *   use a wrapper div for the shadow and the inner element for the mask.
+ *
+ *   Pattern: outer wrapper carries box-shadow + matching border-radius,
+ *   inner element carries squircle mask.
+ *
+ *   Card example:
+ *     <div class="liquid-card-wrap">           <!-- outer: shadow + border-radius -->
+ *       <article class="squircle-lg liquid-card">  <!-- inner: mask, no outer shadow -->
+ *         <!-- card content -->
+ *       </article>
+ *     </div>
+ *
+ *   Button example:
+ *     <div class="btn-shadow-wrap">            <!-- outer: glow shadow + border-radius -->
+ *       <button class="squircle-md px-6 py-3 text-white">
+ *         Submit
+ *       </button>
+ *     </div>
+ *
+ *   Inset shadows are safe inside mask (no wrap needed):
+ *     <form class="squircle-xl">
+ *       <!-- form fields -- inset shadows render inside the mask -->
+ *     </form>
+ *
+ *   Elements with no shadow need no wrap (badges, chips, pills):
+ *     <span class="squircle-md bg-mu-green-50 px-3 py-1 text-sm">Badge</span>
+ *
+ * Anti-patterns:
+ *   - NEVER apply box-shadow AND mask-image to the same element.
+ *     The shadow will be clipped to the mask silhouette, rendering
+ *     as two thin arcs instead of a continuous shadow.
+ *     Use the shadow-wrap pattern above instead.
+ *   - NEVER apply border to a squircle element. Borders are clipped
+ *     by mask-image. Use box-shadow: inset 0 0 0 1px <color> instead.
+ *   - NEVER apply squircle to rotating elements. mask-image distorts
+ *     during CSS transform: rotate(). Keep border-radius for those.
+ *
+ * Tokens declared in: theme.css :root (--squircle-mask-md/lg/xl/full)
+ */
+
+/* ------------------------------------------------
+   Utility classes
+   ------------------------------------------------ */
+
+.squircle-md {
+  border-radius: 16px;
+  -webkit-mask-image: var(--squircle-mask-md);
+          mask-image: var(--squircle-mask-md);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+.squircle-lg {
+  border-radius: 24px;
+  -webkit-mask-image: var(--squircle-mask-lg);
+          mask-image: var(--squircle-mask-lg);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+.squircle-xl {
+  border-radius: 40px;
+  -webkit-mask-image: var(--squircle-mask-xl);
+          mask-image: var(--squircle-mask-xl);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+
+.squircle-full {
+  border-radius: 9999px;
+  /* No mask needed -- at full radius, squircle = circle.
+     --squircle-mask-full is 'none' in theme.css. */
+}
+
+/* ------------------------------------------------
+   Progressive enhancement -- Chrome 139+
+   Native corner-shape removes mask overhead
+   ------------------------------------------------ */
+
+@supports (corner-shape: superellipse(2)) {
+  .squircle-md,
+  .squircle-lg,
+  .squircle-xl,
+  .squircle-full {
+    -webkit-mask-image: none;
+            mask-image: none;
+    corner-shape: superellipse(2);
+  }
+}

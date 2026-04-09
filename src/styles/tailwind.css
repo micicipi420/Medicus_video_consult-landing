@@ -2,3 +2,4 @@
 @import 'tailwindcss' source(none);
 @source '../../*.html';
 @import './theme.css';
+@import './squircles.css';    /* Phase 42: squircle primitives */
