@@ -524,9 +524,24 @@
   }
 
   /**
+   * Refraction Probe
+   * Detects Chrome/Edge support for backdrop-filter: url(#svg-filter).
+   * Sets html[data-refract="true"] when supported, enabling CSS refraction
+   * selectors in liquid-glass.css. Safari/Firefox show blur-only glass.
+   * ~10 LOC, no dependencies.
+   */
+  function initRefractionProbe() {
+    if (typeof CSS !== 'undefined' && CSS.supports &&
+        CSS.supports('backdrop-filter', 'url(#test) blur(1px)')) {
+      document.documentElement.setAttribute('data-refract', 'true');
+    }
+  }
+
+  /**
    * Initialize all modules
    */
   function initAll() {
+    initRefractionProbe();
     initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
@@ -555,6 +570,7 @@
   window.MU = window.MU || {};
   window.MU.initAll = initAll;
   window.MU.reinitPageContent = reinitPageContent;
+  window.MU.initRefractionProbe = initRefractionProbe;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
