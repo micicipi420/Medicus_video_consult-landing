@@ -55,6 +55,7 @@
    ================================================ */
 
 .liquid-regular {
+  isolation: isolate;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -72,6 +73,8 @@
    ================================================ */
 
 .liquid-card {
+  isolation: isolate;
+  position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -79,6 +82,20 @@
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
     var(--liquid-shadow-outer);
+}
+
+.liquid-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 60% 50% at 25% 15%,
+    rgba(255, 255, 255, 0.12),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Shadow-wrap wrapper is DEPRECATED.
@@ -122,6 +139,7 @@
    Used for secondary actions (e.g., "Learn more"). */
 
 .liquid-btn-secondary {
+  isolation: isolate;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -149,6 +167,7 @@
    ================================================ */
 
 .stats-glass {
+  isolation: isolate;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -288,6 +307,10 @@ html[data-refract="true"] .stats-glass {
 .dark .section-tint-warm,
 .dark .section-tint-mint {
   background: none;
+}
+
+.dark .liquid-card::after {
+  opacity: 0.4;
 }
 
 /* ================================================
