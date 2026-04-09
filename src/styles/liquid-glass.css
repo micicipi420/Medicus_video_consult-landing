@@ -61,8 +61,8 @@
   border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
-    var(--liquid-shadow-inset-bottom);
-  filter: drop-shadow(0 8px 24px rgba(20, 30, 60, 0.12));
+    var(--liquid-shadow-inset-bottom),
+    0 8px 24px rgba(20, 30, 60, 0.12);
 }
 
 /* ================================================
@@ -78,10 +78,8 @@
   border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
-    var(--liquid-shadow-inset-bottom);
-  /* Outer shadow via drop-shadow — renders along mask boundary (superellipse),
-     not along border-radius. This eliminates shadow-wrap artifacts. */
-  filter: drop-shadow(0 16px 40px rgba(20, 30, 60, 0.16));
+    var(--liquid-shadow-inset-bottom),
+    0 16px 40px rgba(20, 30, 60, 0.16);
 }
 
 /* Shadow-wrap wrapper is DEPRECATED.
@@ -159,8 +157,8 @@
   border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
-    var(--liquid-shadow-inset-bottom);
-  filter: drop-shadow(0 16px 40px rgba(20, 30, 60, 0.16));
+    var(--liquid-shadow-inset-bottom),
+    0 16px 40px rgba(20, 30, 60, 0.16);
 }
 
 /* ================================================
