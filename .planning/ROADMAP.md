@@ -191,8 +191,8 @@ Plans:
   5. Per-page migration gates pass: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0; make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 47-01-PLAN.md — TBD
-- [ ] 47-02-PLAN.md — TBD
+- [ ] 47-01-PLAN.md — Migrate Hero + Stats + Sections 2-6 (grid, liquid-card, shimmer CTA, grouped stats-glass)
+- [ ] 47-02-PLAN.md — Migrate Sections 7-11 (FAQ, Form, Final CTA) + GRID-02 cross-page verification
 **UI hint**: yes
 
 ### Phase 48: Verification
