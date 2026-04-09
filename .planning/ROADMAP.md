@@ -143,8 +143,8 @@ Plans:
   5. Opening any of the 6 pages in browser shows glass-styled header, footer, mobile menu, and sticky bar with no visual regression in existing content areas
 **Plans**: 2 plans
 Plans:
-- [ ] 44-01-PLAN.md — SVG defs partial + splicer integration + BUILD markers on all 6 pages
-- [ ] 44-02-PLAN.md — Upgrade 4 chrome partials with glass/squircle classes + header scroll state token overrides
+- [x] 44-01-PLAN.md — SVG defs partial + splicer integration + BUILD markers on all 6 pages
+- [x] 44-02-PLAN.md — Upgrade 4 chrome partials with glass/squircle classes + header scroll state token overrides
 **UI hint**: yes
 
 ### Phase 45: Simple Pages (404 + Contacts)
@@ -246,7 +246,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
 | 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
 | 43. Liquid Glass Primitives | 2/2 | Complete    | 2026-04-09 |
-| 44. Chrome Partials Upgrade | 0/2 | Planning complete | - |
+| 44. Chrome Partials Upgrade | 2/2 | Complete    | 2026-04-09 |
 | 45. Simple Pages (404 + Contacts) | 0/TBD | Not started | - |
 | 46. Service Pages | 0/TBD | Not started | - |
 | 47. Index Page | 0/TBD | Not started | - |
