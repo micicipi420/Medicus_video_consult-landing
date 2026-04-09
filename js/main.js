@@ -538,10 +538,35 @@
   }
 
   /**
+   * Mouse-tracking Specular Highlight
+   * Sets --mouse-x/--mouse-y CSS custom properties on .liquid-card elements
+   * so the ::after radial-gradient follows the cursor position.
+   * Desktop-only: uses mousemove. Touch devices use CSS default (30%, 0%).
+   */
+  function initMouseSpecular() {
+    // Skip on touch-primary devices — no mousemove events worth tracking
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+    // Respect reduced motion
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.addEventListener('mousemove', function(e) {
+      var cards = document.querySelectorAll('.liquid-card');
+      for (var i = 0; i < cards.length; i++) {
+        var rect = cards[i].getBoundingClientRect();
+        var x = ((e.clientX - rect.left) / rect.width * 100);
+        var y = ((e.clientY - rect.top) / rect.height * 100);
+        cards[i].style.setProperty('--mouse-x', x + '%');
+        cards[i].style.setProperty('--mouse-y', y + '%');
+      }
+    });
+  }
+
+  /**
    * Initialize all modules
    */
   function initAll() {
     initRefractionProbe();
+    initMouseSpecular();
     initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
@@ -571,6 +596,7 @@
   window.MU.initAll = initAll;
   window.MU.reinitPageContent = reinitPageContent;
   window.MU.initRefractionProbe = initRefractionProbe;
+  window.MU.initMouseSpecular = initMouseSpecular;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
