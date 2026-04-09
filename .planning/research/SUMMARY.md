@@ -1,383 +1,257 @@
-# Research Summary — v4.0 Liquid Design System
+# Project Research Summary
 
-**Project:** MedicusUnion KZ
-**Milestone:** v4.0 Liquid Design System
-**Researched:** 2026-04-09
-**Overall confidence:** HIGH on integration points and technique choices, MEDIUM on specific numeric tuning values, LOW on budget-Android perf numbers (extrapolated, not measured)
-
----
+**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
+**Domain:** Medical landing page visual enhancement (glassmorphism, dark mode, bold typography, micro-animations)
+**Researched:** 2026-03-24
+**Confidence:** HIGH (CSS/browser specs), MEDIUM (UX patterns for 45+ audience)
 
 ## Executive Summary
 
-- **Zero new dependencies, zero Node runtime changes.** Every v4.0 technique — squircles, Liquid Glass, 12/8/2-3 grid — works with the existing `tailwindcss` standalone binary + POSIX-sh splicer + vanilla JS stack. No npm packages, no Houdini worklets, no build-tool additions.
-- **Two CSS files + one HTML partial + theme.css extension = the entire v4.0 infrastructure addition.** `src/styles/squircles.css` (NEW), `src/styles/liquid-glass.css` (NEW), `partials/svg-defs.html` (NEW), `src/styles/theme.css` (EXTENDED). The byte-identity pre-commit hook and splicer pipeline from v3.2 handle propagation automatically.
-- **One material variant only: Regular.** iOS 26 has two variants (Regular, Clear). Clear is an anti-feature for our medical ЦА 45+ context (no adaptive legibility help, fails WCAG AA over photo backgrounds). The orchestrator prompt's "5 variants" refers to iOS 17 UIBlurEffect legacy styles — not iOS 26. iOS 26 has two; we use one.
-- **Primary CTA stays gradient-filled.** Liquid Glass on secondary/tertiary buttons only. The green→teal gradient is the conversion-critical affordance; translucent primary CTAs are invisible to ЦА 45+ Android users unfamiliar with iOS glass conventions.
-- **9 BLOCKERs must resolve before their phase can merge.** Focus-visible ring migration (C1), byte-identity hook compliance (C2), overflow-x clip safety net (C3), nbsp bindings (C4), SEO head content (C5), dark selector audit (C6), honeypot (C7), ARIA live regions (C8), vertical rhythm compatibility (C9). Each is a regression from v3.x if missed.
+The v1.4 milestone is a visual enhancement layer on top of a fully working product. The existing architecture — vanilla HTML/CSS/JS, ~1,640 lines of CSS with a complete custom property token system, ES5 JavaScript with IntersectionObserver scroll animations — is the right foundation. All four new capability areas (glassmorphism, dark mode, bold typography, micro-animations) integrate cleanly without structural changes, provided a strict sequencing discipline is followed: token infrastructure first, visual effects second, progressive enhancement third. No new dependencies are needed; every required technique is achievable with native CSS and vanilla JS.
+
+The most important research finding is that the 45+ Kazakhstani medical audience acts as the decisive design filter. This is a 45+ audience evaluating a 450 EUR medical service in Kazakhstan. Every visual decision must pass two tests: does it maintain WCAG AA contrast (ideally AAA for this demographic), and does it reinforce rather than erode medical trust? These filters eliminate most 2025 visual trend temptations: parallax is out (PROJECT.md constraint, vestibular risk), full-page glassmorphism is out (Android performance failure, visual noise for older readers), animated statistics counters are out (distracting, cognitively disorienting for this audience), and dark mode as the default is explicitly out (the 45+ medical audience associates white/light interfaces with clinical credibility — a dark-defaulting page reads as broken or untrustworthy to this demographic). What remains after applying these filters is a targeted, disciplined set of enhancements: selective glassmorphism on 2 components, bold typography via token changes, and purposeful micro-animations that confirm actions rather than entertain.
+
+The primary technical risks are well-defined and avoidable. Glassmorphism on mid-range Android (the dominant device in the KZ 45+ market) requires limiting glass to 1-2 elements per viewport with blur radius no higher than 12px — enforced by a Chrome DevTools 4x CPU throttle test as a mandatory phase exit criterion. Dark mode flash-of-unstyled-content (FOUC) is prevented by a single synchronous inline `<script>` in `<head>` that reads localStorage before the first paint. CSS regression across the 11-section structure is mitigated by strict token namespacing (`--glass-*` prefix for all new v1.4 tokens) and verifying form submission end-to-end after every phase.
 
 ---
 
-## Stack Decisions (canonical picks)
+## Key Findings
 
-### Squircle technique
+### Recommended Stack
 
-**Default (production):** `mask-image` with inline SVG data-URI, `mask-size: 100% 100%`, `preserveAspectRatio="none"`. Four variants only: md/lg/xl/full. Skip sm (8px is visually indistinguishable from `border-radius`; saves data-URI bloat).
+No new dependencies. All four v1.4 capability areas are native CSS and vanilla JS. The new capability surface:
 
-**Progressive enhancement:** `corner-shape: superellipse(2)` inside `@supports (corner-shape: superellipse(2))` for Chrome 139+ (August 2025+). Wipes the mask; native GPU-accelerated; no clipping side effects.
+**Core new CSS techniques:**
+- `backdrop-filter: blur(8-12px) saturate(180%)` + `-webkit-backdrop-filter` — glassmorphism; Baseline 2024 (September 2024); ~95% browser coverage; GPU compositing cost requires restraint on mobile
+- `html[data-theme="dark"]` attribute selector + CSS custom property cascade — dark mode theming; established pattern used by MDN, GitHub, Radix docs; HIGH confidence
+- `localStorage` + `window.matchMedia('prefers-color-scheme')` — theme persistence and FOUC prevention; universal browser support; HIGH confidence
+- `clamp()` for responsive font sizing — bold display typography; universal support; HIGH confidence
+- `@supports (animation-timeline: scroll())` — progressive scroll-driven enhancement only; Chrome/Edge 115+, Firefox 128+, Safari 18+; ~70-75% coverage; must be additive enhancement, never a replacement for IntersectionObserver
 
-**Fallback chain:**
-```
-Chrome 139+:          corner-shape: superellipse(2)   — native, no mask, no clipping issues
-Safari/Firefox/Chrome <139:  mask-image SVG data-URI   — production default
-Browsers without mask-image: border-radius              — graceful rounded rectangle
-```
+**Critical implementation constraints from the existing codebase:**
+- All new JS must use ES5 syntax (`var`, function declarations, no arrow functions) — explicit project decision for 45+ browser compatibility
+- No separate CSS files — all tokens stay in `css/styles.css` to avoid FOUC and cascade fragmentation
+- New v1.4 tokens use `--glass-*` namespace — never redefine existing `--color-*` or `--gradient-*` tokens outside the scoped `[data-theme="dark"]` block
 
-**Critical shadow-wrap pattern:** `mask-image` clips `box-shadow`, `border`, and `outline`. Outer drop-shadows must live on an un-masked wrapper div (`.liquid-card-wrap`). Applies to: cards, primary buttons, secondary buttons. Icon chips and badges are exempt (no outer shadow). Inset box-shadows are safe inside the mask.
+### Expected Features
 
-**Focus-visible BLOCKER (Phase 1):** Current `@layer base` uses `box-shadow` for focus rings — clipped by `mask-image`, breaking WCAG 2.1 SC 2.4.7. Must change to `outline: 2px solid var(--mu-blue-text); outline-offset: 3px` before any squircle class lands.
+**Must have (v1.4 launch):**
+- Dark mode toggle in sticky navigation — the anchor feature; all other theming depends on it
+- `[data-theme="dark"]` CSS token block — prerequisite for all dark mode component styling
+- FOUC-prevention inline `<script>` in `<head>` — without this, dark mode is broken for return visitors (white flash on every load)
+- Bold display typography: h1 `clamp(40px, 5vw, 56px)` / 800 weight, h2 `clamp(28px, 3.5vw, 44px)` / 800 weight — highest visual impact per implementation effort; Manrope Variable already supports weight 800
+- Hero section CSS gradient mesh background — enables glassmorphism on hero and adds visual depth with no image files
+- Glassmorphism on sticky header (`.is-scrolled` state) and pricing card only (2 elements maximum) — selective application avoids performance and contrast failures
+- Enhanced scroll animations: `translateY(20px → 0)` added to existing `.animate-on-scroll` system — extends what already works
+- Button `:active` micro-interaction: `scale(0.97)` on CTA buttons — 100ms tactile click confirmation; particularly valuable for 45+ users uncertain about touch input
 
-**CONFLICT resolved:** FEATURES.md Recipe 2 uses `corner-shape: squircle`; STACK.md uses `corner-shape: superellipse(2)`. These may be synonyms in the Chrome 139+ spec — executor must verify against current MDN at Phase 2 time. Either keyword works until proven otherwise.
+**Should have (v1.4.x patch after validation):**
+- Smooth theme transition: 300ms fade on `color` and `background-color` scoped to `body` only (never on `:root` — causes full-page jank on theme switch)
+- Dark mode OLED refinement pass after real-device testing
+- Card hover shadow depth increase in light mode
 
-### Liquid Glass materials
+**Defer to v2+:**
+- CSS Scroll-Driven Animations as primary animation mechanism — not Baseline-stable; IntersectionObserver is the reliable baseline for this audience
+- View Transitions API for theme switching — adds complexity for marginal gain
+- Animated number counters on social proof statistics — FEATURES.md and PITFALLS.md both flag these as cognitively disorienting for 45+ users; defer or eliminate entirely
 
-**Chosen:** one material (Regular), four blur scales (sm/md/lg/xl = 16/24/40/60px).
+**Anti-features confirmed — do not build:**
+- Full-page glassmorphism (all 11 sections) — GPU performance failure on mid-range Android; visual noise overwhelms older readers
+- Dark mode as default or OS-preference-driven automatic — reduces medical trust signals; the 45+ audience expects clinical white
+- Parallax scroll effects — PROJECT.md out-of-scope; vestibular risk for 35%+ of the 45+ demographic
+- Animated statistics counters — distracting, delays trust signal perception, vestibular risk
+- Pure `#000000` dark background — causes halation (halos around text) for astigmatic users; high prevalence at 45+; use `#0F1923` instead
 
-**Light-mode recipe (theme.css `:root`):**
-```css
---liquid-bg: rgba(255, 255, 255, 0.18);
---liquid-blur-md: 24px;
---liquid-saturate: 180%;
---liquid-brightness: 108%;
---liquid-border-top: rgba(255, 255, 255, 0.9);
---liquid-shadow-outer: 0 16px 40px rgba(20, 30, 60, 0.12);
---liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.9);
---liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-```
+### Architecture Approach
 
-**Dark-mode recipe (theme.css `.dark` block — reverses v1.4 "glass-off" decision):**
-```css
---liquid-bg: rgba(30, 40, 60, 0.45);  /* dark tint, not white tint */
---liquid-blur-md: 28px;
---liquid-saturate: 160%;
---liquid-brightness: 115%;
---liquid-border-top: rgba(255, 255, 255, 0.25);
-```
+All v1.4 changes integrate into the existing single-file architecture following four established patterns that research confirmed as correct for this codebase:
 
-**Dark-mode selector:** use `.dark` (the existing theme.css convention), not `[data-theme="dark"]`. PROJECT.md mentions `[data-theme="dark"]` but `theme.css` actually uses `.dark`. Phase 1 prerequisite: audit `js/main.js` to confirm which form the toggle JS uses before writing any new tokens.
+1. **Token override pattern** — `[data-theme="dark"]` block immediately after the existing `:root` block in `styles.css` overrides the same token names. All 1,640 existing lines auto-update to dark mode without modification. Zero search-and-replace needed.
+2. **Modifier class pattern** — `.card--glass` is an opt-in CSS modifier; the base `.card` rule is never changed. Glass applies only to the 2 targeted elements; all other cards are untouched.
+3. **`@supports` gating** — scroll-driven animation additions wrapped in `@supports (animation-timeline: scroll())`; glass cards wrapped in `@supports not (backdrop-filter: blur(1px))` fallback. Elements stay visible and accessible on non-supporting browsers.
+4. **Inline `<script>` FOUC prevention** — synchronous ES5 script in `<head>` before `<link rel="stylesheet">` reads localStorage and sets `data-theme` attribute before first paint. Toggle wiring stays in the existing IIFE.
 
-**Refraction (Chrome-only PE):** inline SVG `feTurbulence + feDisplacementMap` in `partials/svg-defs.html`. JS probe sets `html[data-refract="true"]`. Safari/Firefox show blur-only glass. This is progressive enhancement, not a baseline requirement.
+**Component change map:**
 
-### Grid system
+| Feature | CSS file location | HTML change | JS change |
+|---------|------------------|-------------|-----------|
+| Dark mode tokens | Section 2 (after `:root`) | `data-theme` attribute on `<html>` | New `initDarkMode()` in IIFE + inline head script |
+| Bold typography | Section 2 (token value changes) | None | None |
+| Glass header | Modify Section 7 `.site-header.is-scrolled` | None | None |
+| Glass pricing card | Add `.card--glass` rule in Section 6; gradient to Section 7 `.pricing` | Add class to 1 element | None |
+| Scroll animations enhancement | Add inside Section 10 `@supports` block | None | None |
+| Dark mode toggle button | None | Add `<button>` in `.site-header__container` | Wired in `initDarkMode()` |
 
-**Canonical class triplet:** `grid-cols-2 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8 max-w-content mx-auto`
+**Estimated file impact:** ~120 lines added to `styles.css` (dark mode ~40 lines, glass modifiers ~30 lines, animation additions ~50 lines). File grows from ~1,640 to ~1,760 lines — well within maintainable range for single-file approach.
 
-| Breakpoint | Cols | Gutter | Max-width |
-|---|---|---|---|
-| Mobile (< 768px) | 2 (3 for icon/stat rows) | 16px | 100vw − 32px |
-| Tablet (`md:`, 768px+) | 8 | 24px | 100vw − 48px |
-| Desktop (`lg:`, 1024px+) | 12 | 32px | 1200px |
+### Critical Pitfalls
 
-New token: `--container-max-content: 1200px` → `@theme inline` → `max-w-content` utility. No `tailwind.config.js` needed. Tailwind v4.2.2 generates `grid-cols-8` and `grid-cols-12` natively.
+Seven pitfalls have meaningful probability of causing launch failure or conversion damage. In priority order:
 
-**Single `<main class="liquid-grid ...">` per page.** Sections span full width; internal layouts use `grid-cols-subgrid`. Subgrid is Baseline 2026 (Chrome 117+, Firefox 71+, Safari 16+).
+1. **Glassmorphism text contrast failure** — Glass cards sit over dynamically shifting blurred backgrounds; contrast ratio at any scroll position cannot be predicted from a static mockup. Prevention: set glass card minimum background opacity at `rgba(255,255,255,0.75)` for light mode; test contrast against the darkest content that will ever appear behind the card; target 7:1 (AAA) for the 45+ audience, not just 4.5:1 (AA). A contrast check on the design-intent background only is insufficient.
 
-**Tablet card minimum:** `md:col-span-4` for any text-bearing card. Russian compounds like `высококвалифицированный` don't fit in 176px (2-col at tablet).
+2. **`backdrop-filter` performance on mid-range Android** — More than 2 glass elements simultaneously cause frame drops to 20-25fps on Samsung Galaxy A-series and Xiaomi Redmi (dominant KZ market devices). Prevention: strict limit of 1-2 glass elements per viewport; blur radius maximum 8-12px (not 20px+); mandatory Chrome DevTools 4x CPU throttle scroll test before Phase 3 sign-off; `@supports` fallback renders a solid near-white card.
 
-### Motion library
+3. **Dark mode FOUC (flash of unstyled content)** — Without synchronous localStorage read in `<head>`, users with a saved dark preference see a white flash on every page load. Prevention: inline `<script>` before the CSS `<link>` tag, ES5 syntax, reads localStorage and sets `data-theme` attribute before any rendering occurs.
 
-**Stay on Motion 12.x CDN.** No version bump. Relevant APIs: `animate()` for spring hover, `inView()` for scroll-reveal, `scroll()` for header blur, `type: 'spring', stiffness: 150, damping: 20` for Apple-feel.
+4. **Dark mode default erodes medical trust** — The 45+ medical audience treats light/white interfaces as clinical authority. OS-preference-driven dark mode or dark-as-default violates this expectation. Prevention: always load in light mode; `localStorage` absent means light; `prefers-color-scheme: dark` is a secondary hint for first visit only, not the primary trigger.
 
-New motion tokens (theme.css):
-- `--ease-liquid: cubic-bezier(0.2, 0, 0, 1)` — press, hover, sheet
-- `--ease-liquid-out: cubic-bezier(0.16, 1, 0.3, 1)` — scroll-reveal
-- `--dur-press: 120ms` / `--dur-hover: 280ms` / `--dur-sheet: 400ms`
+5. **Dark mode WCAG contrast failures in secondary text** — Secondary text, form placeholders, and disabled states that borderline-pass in light mode will fail in dark mode when colours are naively inverted. Grey-on-dark is the most common silent failure (`#888` on `#1a1a1a` is only 3.6:1). Prevention: full token-pair contrast audit before any dark component styling; explicit token values for every dark pair, never derived by opacity or `filter: invert()`.
 
-### Font stack
+6. **CSS regression across 11 sections** — Dark mode tokens, glass modifiers, and animation additions all touch `styles.css`; cascade conflicts and token name collisions can silently break form validation states, sticky header, wave dividers, or accordion. Prevention: `--glass-*` namespace for all new tokens; visual regression screenshots at 390px and 1440px before starting; form submission flow tested end-to-end after every phase.
 
-**Unchanged.** SF Pro Display / SF Pro Rounded via `-apple-system, BlinkMacSystemFont` fallback. iOS 26 does not add a new SF Pro web variant. Self-hosting violates Apple EULA.
-
-### Anti-recommendations (explicit)
-
-| Do NOT use | Why |
-|---|---|
-| `figma-squircle` npm | Requires Node install; no precompiled CDN UMD |
-| `smooth-corners` Houdini worklet | Safari/Firefox zero support; disabled on `<a href>` elements |
-| `will-change: backdrop-filter` | Makes perf worse — multiplies compositor layer cost |
-| `text-wrap: balance` on Cyrillic | v3.0 decision: unreliable; breaks nbsp bindings |
-| Nested backdrop-filter (glass inside glass) | Nested stacking contexts; doubled perf cost; z-index chaos |
-| `@tailwindcss/container-queries` plugin | Obsolete — native in Tailwind v4 |
-| Alpine.js / htmx / Stimulus | Zero-framework policy |
-| Clear material variant | No adaptive legibility for ЦА 45+; fails WCAG AA |
+7. **Mobile typography line-break failures** — 56px+ headlines without proper `clamp()` minimum values force single-word Cyrillic orphan lines on 390px screens. Prevention: verify every headline at 320px and 390px before Phase 2 closes; use `text-wrap: balance`; no `letter-spacing` adjustment on Cyrillic (only Latin benefits from tracking reduction at display sizes).
 
 ---
 
-## Feature Landscape
+## Implications for Roadmap
 
-### Table Stakes — 14 components
+Research establishes a clear sequential dependency chain: token infrastructure must precede all visual effects; gradient backgrounds must precede glass cards; FOUC prevention must precede any dark mode toggle; the `prefers-reduced-motion` guard must precede any new animation. A 4-phase structure emerges naturally from these dependencies, where each phase is independently deployable.
 
-| Component | Surfaces | Complexity |
-|---|---|---|
-| Primary CTA (gradient + squircle + specular edge) | Hero + form submit, all 6 pages | Moderate |
-| Secondary button (Regular glass) | "Подробнее", hero secondary, all pages | Moderate |
-| Icon button (circular glass) | Menu trigger, dark toggle, phone — via partials | Trivial |
-| Card (Regular glass + squircle-lg) | Service/clinic/review/pricing/FAQ cards | Moderate |
-| Form container (panel glass) | Form shell on all 6 pages | Moderate |
-| Text field + textarea | Name, phone, description on all forms | Moderate |
-| Select trigger (glass) | Specialization dropdown on all forms | Moderate |
-| Nav bar (Regular glass) | `partials/header.html` — propagates to 6 pages | Moderate |
-| Sticky mobile bar (tab-bar analog) | `partials/sticky-bar.html` | Moderate |
-| Mobile menu drawer (sheet glass) | `partials/mobile-menu.html` | Moderate |
-| Squircle radius scale (md/lg/xl/full) | Every rounded element, all pages | Moderate |
-| Responsive 12/8/2-3 grid | All 6 pages | Moderate |
-| Form success overlay (alert glass) | `form__success` on all form pages | Trivial |
-| Badge / chip (glass) | Hero badge, pricing badge, card badges | Trivial |
+### Phase 1: Dark Mode Token Infrastructure
 
-### Differentiators — 5 components
+**Rationale:** The foundational prerequisite. All other v1.4 features depend on the `[data-theme="dark"]` token block existing and the `--glass-*` tokens being defined. This phase has zero visual change in light mode — it is entirely additive and carries no regression risk. Starting here means the page is deployable after this phase with a functional, tested dark mode before any glass or typography work begins.
 
-| Component | Surfaces | Complexity |
-|---|---|---|
-| Shimmer sweep on hover | Hero primary CTA only — max 1 per page | Moderate |
-| Rim lighting (asymmetric inset shadow) | Every glass surface, pairs with `.liquid-regular` | Trivial |
-| Scroll-edge fade at chrome overlap | Hero/sticky-bar boundaries | Moderate |
-| Stats bar grouped glass backdrop | index.html + checkup.html | Moderate |
-| `corner-shape` PE | Chrome 139+ enhancement layer | Trivial |
+**Delivers:** Fully functional dark mode toggle with localStorage persistence and FOUC-free experience; all token values contrast-audited before any component uses them; `--glass-*` tokens ready for Phase 3.
 
-### Anti-Features — excluded
+**Addresses:** Dark mode toggle (navigation button), `[data-theme="dark"]` CSS block, FOUC-prevention inline script, `aria-pressed` toggle accessibility, minimum 44px touch target on toggle, visible text label alongside icon.
 
-Clear material variant, cross-browser refraction, chromatic aberration, center specular cursor-follow, animated gradient mesh, shimmer beyond hero CTA, scroll-linked parallax, sidebar, context menu, command palette, page indicators, sliders, steppers, pickers.
+**Avoids:**
+- Pitfall 3 (FOUC) — inline `<script>` pattern established
+- Pitfall 4 (dark mode trust erosion) — default-light policy built into the token architecture; `prefers-color-scheme` is secondary only
+- Pitfall 5 (dark mode WCAG failures) — full token-pair contrast audit is the exit criterion for this phase; no component receives dark styling until all token pairs pass
+- Pitfall 6 (CSS regression) — `--glass-*` namespace policy established here
 
-### Per-page migration complexity
-
-| Page | Complexity | Notes |
-|---|---|---|
-| 404.html | Trivial | Single CTA + partials |
-| contacts.html | Trivial | Contact card + form + partials |
-| checkup.html | Moderate | Program cards, stats, B2B, form |
-| online-consultations.html | Moderate | Doctor/pricing/trigger cards, form |
-| treatment-abroad.html | Moderate | Clinic + step + review cards, form |
-| index.html | Complex | 13 sections, floating hero cards, most surfaces |
+**Phase exit criteria:** Dark mode toggle works; localStorage persists between sessions; FOUC test passes (hard refresh with OS dark mode set shows correct theme immediately); every new `[data-theme="dark"]` token pair documented and contrast-checked.
 
 ---
 
-## Architecture Plan
+### Phase 2: Bold Typography Scale
 
-### New files
+**Rationale:** High visual impact, lowest implementation risk. Typography is token-value changes only — no new HTML structure, no new CSS classes, no new JS, no new APIs. Manrope Variable (already loaded, already supporting weight 800) is the only dependency. Building this second means typographic sizes are finalized before gradient backgrounds in Phase 3 are proportioned around the hero layout.
 
-| File | Purpose |
-|---|---|
-| `src/styles/squircles.css` | 4 SVG mask data-URIs, `.squircle-*` utility classes, `@supports corner-shape` PE |
-| `src/styles/liquid-glass.css` | All `.liquid-*` semantic classes, `@media print` fallback, `@supports` refraction PE |
-| `partials/svg-defs.html` | Hidden `<svg><defs><filter id="liquid-refract">` — spliced into all 6 pages |
-| `docs/DESIGN-SYSTEM.md` | Shadow-wrap idiom, class inventory, token scale, anti-patterns, Russian typography rules |
+**Delivers:** h1 at `clamp(40px, 5vw, 56px)` / 800 weight, h2 at `clamp(28px, 3.5vw, 44px)` / 800 weight; line-height tightened to 1.1 for display-size headings; `text-wrap: balance` on all section headings; every headline verified at 320px and 390px.
 
-### Modified files
+**Addresses:** Bold display headings with `clamp()` responsive scaling; font-weight policy (minimum 400 for any informational text); Cyrillic mobile line-break testing.
 
-| File | Change |
-|---|---|
-| `src/styles/tailwind.css` | Add `@import './squircles.css'` and `@import './liquid-glass.css'` after theme.css |
-| `src/styles/theme.css` | Add squircle/liquid/motion tokens, `--container-content`, extend `.dark` block, refactor `:focus-visible`, extend reduced-motion block |
-| `scripts/build-pages.sh` | Line 19: add `svg-defs` to PARTIALS — one-line change |
-| `partials/header.html` | `.liquid-nav`, `.squircle-xl`, `max-w-7xl` → `max-w-content` |
-| `partials/footer.html` | Liquid treatment, `max-w-7xl` → `max-w-content` |
-| `partials/mobile-menu.html` | `.liquid-sheet`, `.squircle-xl`, `.squircle-full` on buttons |
-| `partials/sticky-bar.html` | `.liquid-sticky-bar`, `.squircle-full` |
-| `js/main.js` | ~10 LOC refraction JS probe → `html[data-refract="true"]` |
-| All 6 HTML pages | `BUILD:svg-defs` marker block + `<main class="liquid-grid ...">` + card/form/button class migration |
+**Avoids:**
+- Pitfall 7 (mobile typography orphan lines) — 320px/390px viewport review is the exit criterion
+- Pitfall 6 (thin weight text contrast) — weight-to-contrast policy defined: no `font-weight` below 400 for any text conveying information; pricing and statistics checked explicitly at every weight used
 
-### Protected files (must not be touched)
-
-```
-scripts/hooks/pre-commit                    — byte-identity gate
-scripts/build-pages.sh lines 59-169        — only line 19 PARTIALS may change
-theme.css vertical rhythm tokens            — --section-h-hero-*, --spacing-section-*
-theme.css WCAG AA text tokens               — --mu-text-900/700/500, --mu-cta-from/to
-theme.css line 274 overflow-x: clip        — mobile safety net
-theme.css @media reduced-motion block      — extend only, never remove
-Honeypot fields on all forms
-ARIA role="alert" + aria-live on 20 error containers
-<br class="md:hidden"> in hero headings
-All &nbsp; entities in Russian content
-<span class="whitespace-nowrap"> in checkup.html hero
-Per-page <head>: title, meta, og, canonical, JSON-LD (index.html only)
-Favicon link set (4 <link> per page)
-```
-
-### Phase build order with cross-phase gates
-
-```
-Phase 1: Foundation tokens (theme.css only, no HTML)
-Phase 2: Squircle primitives (squircles.css, 4 SVG masks, @supports)
-Phase 3: Liquid Glass primitives (liquid-glass.css, JS probe, dark recipe tuning)
-Phase 4: SVG defs partial + chrome partials (atomic commit; byte-identity gate)
-Phase 5: Simple pages — 404.html + contacts.html
-Phase 6: Service pages — checkup, online-consultations, treatment-abroad (parallelizable)
-Phase 7: Index page (highest complexity)
-Phase 8: A11y + perf verification (keyboard, WCAG AA, dark-mode visual, budget Android FPS)
-Phase 9: Docs (DESIGN-SYSTEM.md + optional styleguide.html)
-```
-
-Universal gate after every phase: `make build` exits 0 + `make check` (byte-identity) passes.
+**Phase exit criteria:** Every headline reviewed at 320px and 390px; no single-word Russian orphan lines; contrast ratio verified for all heading colour combinations in both light and dark mode (dark mode tokens from Phase 1 are available for testing).
 
 ---
 
-## Watch Out For (top 10 pitfalls)
+### Phase 3: Glassmorphism
 
-### BLOCKERs
+**Rationale:** Depends on Phase 1 (glass tokens established, dark mode available for testing glass in dark context) and Phase 2 (hero layout finalized at bold type sizes before gradient backgrounds are designed around it). Glass is the highest visual risk of the milestone — both for Android performance and for contrast compliance — so it runs after the lower-risk phases are stable and deployed. If glassmorphism fails in production, it is removed by reverting 2 CSS modifier classes and one gradient background; Phases 1 and 2 are unaffected.
 
-| # | Pitfall | Phase | Mitigation |
-|---|---|---|---|
-| C1 | **Focus ring disappears on squircled elements** — `box-shadow` ring clipped by `mask-image`, WCAG 2.1 failure | 1 | Refactor `:focus-visible` to `outline + outline-offset` in `theme.css @layer base` before Phase 2 |
-| C2 | **Byte-identity hook blocks partial changes** — new `svg-defs` partial, incomplete commits rejected | 4 | Plan full commit anatomy; `make check` before commit; grep confirms all 6 pages have `BUILD:svg-defs` marker |
-| C3 | **`overflow-x: clip` removed from theme.css** — reintroduces mobile horizontal-scroll from v3.1 | 1, 7 | Phase 1 gate: `grep -c 'overflow-x: clip' src/styles/theme.css` = 1; Phase 7: 320px viewport check |
-| C4 | **Russian nbsp bindings destroyed during page edits** — `&nbsp;`, `whitespace-nowrap`, `<br class="md:hidden">` lost | 5-7 | Baseline `grep -c '&nbsp;' *.html` before migration; count must not decrease at each phase gate |
-| C5 | **SEO head content deleted** — JSON-LD, og tags, canonical, meta description lost | 5-7 | Per-page head-content diff: additions only, never deletions |
-| C6 | **Dark selector mismatch causes glass to silently fail** — `.dark` vs `[data-theme="dark"]` | 1 | Audit `js/main.js` before writing any dark tokens; use whichever the toggle JS actually sets |
-| C7 | **Honeypot field stripped in form refactor** — invisible spam protection loss | 5-7 | Grep honeypot field name before/after; test bot-submission is rejected |
-| C8 | **ARIA `role="alert"` removed** — screen reader announcements break | 5-7 | `grep -c 'role="alert"\|aria-live'` before/after must be identical |
-| C9 | **Hero collapses inside grid wrapper** — grid may override `min-h-section-hero-*` svh tokens | 4 | Never declare explicit `grid-template-rows` on `.liquid-grid`; implicit rows respect `min-height` |
+**Delivers:** CSS gradient mesh background on hero section; glass effect on `.site-header.is-scrolled`; gradient background on `.pricing` section; `.card--glass` modifier on pricing card; solid-colour fallback via `@supports not (backdrop-filter: blur(1px))` for non-supporting browsers.
 
-### HIGHs
+**Addresses:** Hero gradient mesh; glassmorphism on sticky header; glassmorphism on pricing card; `@supports` fallback; glass tokens in both light and dark variants (dark mode disables `backdrop-filter` and uses opaque dark surface instead — glass over dark backgrounds renders poorly).
 
-| # | Pitfall | Phase | Mitigation |
-|---|---|---|---|
-| H3 | **Stacking contexts multiply with backdrop-filter** — form success overlay, floating hero cards render behind wrong layers | 3, 5, 7 | Use contacts.html as stacking context canary in Phase 5; full z-index map before Phase 7 |
-| H4 | **WCAG AA fails over translucent backgrounds** — automated tools see declared color, not effective backdrop | 3, 8 | Use `--mu-text-900` on glass surfaces; manual pixel-sample contrast check in Phase 8 |
-| H5 | **Dark-mode reproduces v1.4 "murky navy smear"** — recipe values are estimates | 3, 8 | Phase 3 tuning subtask on test fixtures; Phase 8 visual review on every page |
-| H8 | **Budget Android FPS < 30** — 30+ glass surfaces exceed GPU budget | 8 | Measure on Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10; mobile blur mitigation: `@media (max-width: 640px) { --liquid-blur-md: 12px }` |
-| H9 | **Secondary glass CTA reads as decoration to ЦА 45+** | 3 | `font-semibold`; visible hover brightening; press `scale(0.97)`; icon + arrow label |
+**Avoids:**
+- Pitfall 1 (glass contrast failure) — contrast tested against worst-case background (darkest content that will ever scroll behind the card), not design-intent background; minimum 75% opacity background floor on glass elements
+- Pitfall 2 (Android performance failure) — maximum 2 glass elements per viewport; blur radius 8-12px; Chrome DevTools 4x CPU throttle scroll test is a mandatory exit criterion (FPS must stay above 50fps)
+- Anti-pattern: glass in dark mode — `[data-theme="dark"]` disables `backdrop-filter` on glass modifiers; replaces with opaque near-black surface
+
+**Phase exit criteria:** 4x CPU throttle scroll test passes at 50fps+ with both glass elements visible; contrast checked against darkest scroll context; `@supports` fallback verified on a browser with `backdrop-filter` disabled; form submission flow tested end-to-end.
 
 ---
 
-## Protected Legacy
+### Phase 4: Micro-Animations Enhancement
 
-What v3.0–v3.2 work must survive v4.0 intact:
+**Rationale:** Purely additive over stable Phase 1-3 surfaces. The existing IntersectionObserver system stays intact. New additions go inside `@supports` blocks or extend existing `.animate-on-scroll` / `.is-visible` patterns with new properties. The animation catalogue is defined upfront and capped at 4-5 distinct types to prevent cognitive overload for the 45+ audience. The `prefers-reduced-motion` guard rule is written first — before any `@keyframes` is created.
 
-1. nbsp bindings — subject+verb, orphan prevention, numeric ranges throughout all pages
-2. `<br class="md:hidden">` — Russian compound phrase breaking in hero headings
-3. `<span class="whitespace-nowrap">за 1–2 дня</span>` in checkup.html (v3.2 COSMETIC-03)
-4. Honeypot hidden inputs on all 6 forms
-5. `role="alert"` + `aria-live="polite"` on 20 form error containers
-6. Per-page SEO metadata — `<title>`, `<meta name="description">`, og tags, canonical, JSON-LD on index.html
-7. Favicon set (4 `<link>` per page)
-8. Vertical rhythm tokens — `--section-h-hero-*`, `--section-pt*` (v3.1 Phase 38)
-9. WCAG AA text tokens — contrast ratios must not decrease
-10. `html { overflow-x: clip }` — v3.1 Phase 38.1 safety net
-11. `@media (prefers-reduced-motion: reduce)` guard — extend only
-12. `scroll-margin-top: 6rem` on anchor targets
-13. Byte-identity pre-commit hook — untouchable
+**Delivers:** `translateY(20px → 0)` added to `.animate-on-scroll` initial state (existing `opacity` fade becomes fade + slide); button `:active` `scale(0.97)` feedback; `:focus-visible` ring enhancement; optional CSS scroll progress bar in header via `animation-timeline: scroll(root)` behind `@supports` gate; smooth theme transition (300ms `background-color, color` on `body` only — if not already landed in Phase 1 patch).
+
+**Addresses:** Enhanced scroll reveal; button active feedback; focus ring accessibility; smooth theme transition; optional scroll progress indicator.
+
+**Avoids:**
+- Pitfall 7 (vestibular disorder triggers) — `prefers-reduced-motion` rule written first; new `transform: translateY()` additions also reset `transform: none` in the reduced-motion block (not just zeroing duration — a duration-zero transform from `translateY(20px)` still snaps)
+- Pitfall 8 (animation cognitive overload) — animation catalogue defined upfront: scroll reveal, button active, focus ring, theme transition, optional progress bar = 5 types maximum; no looping animations; no animated counters; no scale above `scale(1.02)` on hover
+- IntersectionObserver + scroll-driven conflict — scroll-driven animations only on new elements or new CSS properties; never applied to existing `.animate-on-scroll` elements that already control `opacity`
+
+**Phase exit criteria:** `prefers-reduced-motion` verified globally; total distinct animation types on page counted and capped at 5; stagger delay between card grid children confirmed at ≤100ms; no looping or continuous animations visible in the resting viewport state.
 
 ---
 
-## Scope Creep Guards
+### Phase Ordering Rationale
 
-| Temptation | Why no |
-|---|---|
-| Rewrite copy for "more Apple tone" | Copywriting locked per v2.0 (копирайтинг-документы first) |
-| Replace SF Pro with Inter variable font | v2.0 intentionally removed Inter; EULA prohibits self-hosted SF Pro |
-| Add Kazakh language toggle | PROJECT.md out-of-scope: только русский |
-| Scroll-linked parallax "like apple.com" | ЦА 45+ vestibular concern; PROJECT.md explicit out-of-scope |
-| Add Playwright regression tests | Valid, but its own milestone — not v4.0 |
-| Extract `<head>` to a partial | Rejected in ARCHITECTURE.md E.2; massive BUILD:vars vocabulary cost |
-| `text-wrap: balance` on Russian headings | v3.0 decision: unreliable for Cyrillic; breaks nbsp bindings |
-| Dark-mode tinted glass variants (green, blue) | Adds complexity not in v4.0 scope |
-| Refactor existing class names | Churn + byte-identity fires; add `.liquid-*` additively |
-| Replace Directus backend | v1.0 Key Decision |
-| View Transitions API navigation | Static multi-page; zero measurable benefit |
-| Analytics / telemetry | Privacy implications; use manual Phase 8 measurement |
+The dependency chain is strictly linear:
 
----
+- **Token infrastructure first** — CSS cascade is unforgiving; any component using `var(--glass-*)` before that token exists silently falls to `initial`. Dark mode toggle must exist before any section's dark mode styling can be verified.
+- **Typography before glassmorphism** — heading sizes affect vertical layout metrics that gradient background proportions should be designed around. Build the hero at its final type scale before adding the gradient behind it.
+- **Glassmorphism before animations** — micro-animations layer on stable visual surfaces. Animating elements whose background will later be changed by glass styling creates double rework.
+- **Each phase independently deployable** — this is the regression safety net. Phase 3 failure (Android performance) means reverting Phase 3 only; Phases 1 and 2 remain live and stable.
 
-## Open Questions for Planning Phases
+### Research Flags
 
-| Question | Where to resolve | Implication |
-|---|---|---|
-| **Dark mode selector: `.dark` or `[data-theme="dark"]`?** | Phase 1 prerequisite — grep `js/main.js` | All dark-mode glass tokens must be in the correct selector |
-| **Budget Android test device selection** | Phase 8 planning | Must be a real 2020-2022 device (Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10) |
-| **Squircle k-value visual tuning** | Phase 2 smoke test | `superellipse(2)` is recommended; verify on our button + card sizes |
-| **Dark-mode recipe numeric values** | Phase 3 tuning subtask | Research values are best-guess; 2-day tuning budget in Phase 8 |
-| **`corner-shape: squircle` vs `superellipse(2)` syntax** | Phase 2 — re-check MDN at execution time | FEATURES.md and STACK.md disagree; may be synonyms in Chrome 139+ |
-| **Rotate-vs-squircle for index.html icon chips** | Phase 7 per-chip decision | `group-hover:rotate-3` + `mask-image` distorts on Safari; drop rotate or skip squircle |
-| **Mesh-bg blob blur reduction** | Phase 7 | Recommend 120px → 60px; confirm in visual review |
-| **Squircle SVG path strings** | Phase 2 executor generates them | Research describes the math; actual `d=` paths for md/lg/xl/full must be hand-authored |
+**Standard patterns — no research phase needed:**
+- **Phase 1 (Dark Mode Tokens):** `data-theme` + localStorage FOUC prevention pattern is HIGH confidence; fully specified in ARCHITECTURE.md with exact code patterns. Implementation is mechanical.
+- **Phase 2 (Bold Typography):** `clamp()` and Manrope Variable weight 800 are HIGH confidence. Specific `clamp()` midpoints require viewport testing, not research.
+- **Phase 4 (Micro-Animations):** All techniques are standard CSS with HIGH confidence. Pre-implementation check: read lines 182-189 of `styles.css` to confirm the existing `prefers-reduced-motion` rule scope and whether `transform` reset needs to be added.
 
----
-
-## Suggested Phase Structure
-
-9-phase canonical sequence synthesized from all 4 researchers. Downstream roadmapper uses this as starting point.
-
-| # | Phase | Rationale | Parallelizable? |
-|---|---|---|---|
-| 1 | Foundation tokens | theme.css extensions, focus-visible migration, dark selector audit — no HTML changes. All later phases depend on these tokens | No |
-| 2 | Squircle primitives | squircles.css + SVG masks + @supports PE. Depends on Phase 1 tokens | No |
-| 3 | Liquid Glass primitives | liquid-glass.css + print fallback + JS probe + dark recipe tuning. Depends on Phase 1; can run parallel with Phase 2 once Phase 1 is stable | Parallel with Phase 2 |
-| 4 | SVG defs partial + chrome upgrade | New partial + 4 chrome partials restyled. Atomic commit. Depends on Phases 2+3 | No |
-| 5 | Simple pages (404, contacts) | Canary for stacking contexts, nbsp, ARIA, honeypot. Depends on Phase 4 | No (build confidence) |
-| 6 | Service pages (3 pages) | checkup, online-consultations, treatment-abroad. Each independent | Yes — 3 parallel streams |
-| 7 | Index page | Most complex (13 sections, floating cards). Last — all patterns proven first | No |
-| 8 | A11y + perf verification | Keyboard, WCAG AA, dark-mode visual, budget-Android FPS | No |
-| 9 | Docs | DESIGN-SYSTEM.md + optional styleguide.html | Partial overlap with Phase 8 |
-
-**Research flags (phases needing deeper work):**
-- **Phase 3:** dark-mode recipe requires real-device tuning — not researchable in advance
-- **Phase 7:** index.html needs z-index map before execution; stacking context risks are highest here
-- **Phase 8:** requires real budget-Android hardware; DevTools throttle is insufficient for compositor cost
-
-**Standard patterns (skip research-phase):**
-- Phase 1: token extension in theme.css — established pattern from v2.0+
-- Phase 2: squircle SVG masks — fully researched; path authoring is manual but documented
-- Phase 4: partial update workflow — established v3.2 pattern; byte-identity hook proven
-- Phase 9: documentation — write-only
+**Targeted verification required (not a full research phase — just a task before sign-off):**
+- **Phase 3 (Glassmorphism):** Browser API is HIGH confidence. Android performance on this specific codebase cannot be predicted from specs. Run Chrome DevTools 4x CPU throttle scroll test before phase sign-off. If FPS drops below 50fps, reduce blur from 12px to 8px, then if still failing, remove the pricing card glass and keep only the header glass.
+- **Phase 4 pre-check:** Verify current `animation-timeline` Firefox/Safari support at caniuse.com before implementation (training data cutoff is August 2025; the scroll progress bar enhancement depends on whether `@supports` covers the actual gap).
 
 ---
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
-|---|---|---|
-| Stack — squircle technique | HIGH | mask-image + corner-shape PE validated against MDN, Smashing Magazine 2026, Chrome Platform Status |
-| Stack — Liquid Glass CSS recipe | HIGH (technique) / MEDIUM (numbers) | Multi-layer CSS approach confirmed by LogRocket, CSS-Tricks, kube.io; blur/opacity values are community estimates |
-| Stack — grid system | HIGH | Tailwind v4.2.2 native grid confirmed; 8-col tablet is project decision, externally valid at 8 or 6 col per references |
-| Stack — Motion 12.x | HIGH | Stable API, all referenced methods documented |
-| Features — table stakes list | HIGH | 14 components mapped to existing surfaces; Apple component taxonomy confirmed via WWDC25 Session 219 |
-| Features — material taxonomy | HIGH | "Regular only, Clear is anti-feature" — triangulated from Apple HIG + conorluddy reference + createwithswift |
-| Architecture — file layout | HIGH | Existing codebase fully documented; minimal new-file footprint |
-| Architecture — migration order | HIGH | 9-phase dependency graph validated across all 4 researchers |
-| Pitfalls — C-series BLOCKERs | HIGH | All traceable to specific existing code; regression risks from v3.x behavior |
-| Pitfalls — H-series | HIGH (identification) / MEDIUM (mitigation values) | Mitigation strategies sound; exact thresholds need real-device confirmation |
-| Dark-mode recipe tuning | MEDIUM | v1.4 failure suggests dark glass is non-trivial; Phase 3 tuning subtask is mandatory |
-| Budget Android perf | LOW | Estimated from published benchmarks; not measured on specific Samsung/Xiaomi models in KZ market |
+|------|------------|-------|
+| Stack | HIGH | All four new capabilities use native CSS/JS APIs with MDN-verified, Baseline-stable documentation. No new dependencies. Scroll-driven animations are the only area with meaningful browser gaps (~25% non-support), correctly addressed by `@supports` progressive enhancement. |
+| Features | HIGH (CSS), MEDIUM (UX) | CSS feature list and browser support are HIGH confidence from MDN primary sources. UX guidance for the 45+ audience (dark mode medical trust damage, animation cognitive overload, halation on pure black) is MEDIUM confidence from WCAG 2.1, NNGroup, and research consensus — no Kazakhstan-specific clinical data found. |
+| Architecture | HIGH | Token override architecture, modifier class pattern, FOUC prevention, and `@supports` gating are established patterns. Integration plan was validated against the actual codebase structure via direct file inspection — section numbering, token names, and existing class names are confirmed. |
+| Pitfalls | HIGH (technical), MEDIUM (audience-specific) | CSS performance and WCAG pitfalls are grounded in WCAG 2.1 specifications and MDN browser behaviour. Audience-specific claims (vestibular disorder prevalence at 45+, medical trust association with light interfaces) are MEDIUM confidence from research consensus without a single authoritative clinical source. |
 
-**Overall: HIGH** on what to build and how. **MEDIUM** on specific recipe values requiring real-device tuning.
+**Overall confidence:** HIGH for technical implementation decisions. MEDIUM for predicting the audience-specific UX impact of dark mode and glassmorphism on the 45+ Kazakhstan demographic (no local data available).
 
-### Gaps to address
+### Gaps to Address
 
-- **Dark-mode glass recipe:** Phase 3 tuning subtask mandatory; allow 2-day Phase 8 budget for dark-mode iteration
-- **Budget Android FPS floor:** measure on real Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10 in Phase 8
-- **`corner-shape` keyword syntax:** re-check MDN at Phase 2 execution; `squircle` vs `superellipse(2)` may be synonyms
-- **Squircle SVG path strings:** Phase 2 executor must generate 4 superellipse path `d=` values (md/lg/xl/full) — research describes the math, not the actual strings
+- **Dark mode ROI for this audience:** Whether dark mode meaningfully improves the experience for 45+ KZ users is unproven. If the product decision is uncertain, Phase 1 can be scoped as "CSS token semantic refactor only" (adding `--color-bg`, `--color-surface` semantic tokens without a dark toggle), which still benefits Phase 3 glassmorphism architecture without the full dark mode QA surface. Monitor dark mode toggle usage post-launch.
+
+- **Dark mode treatment of hero illustration:** The existing SVG hero illustration uses duotone colours optimised for a light background. In dark mode it will appear washed-out or desaturated. The correct treatment — CSS `filter`, dark-mode SVG variant, or dark overlay — was not researched. Must be decided during Phase 1 execution.
+
+- **Exact `clamp()` values per headline:** The research provides ranges (h1: 40-56px, h2: 28-44px) but specific midpoints depend on actual Russian headline lengths at the breakpoint widths. This is a Phase 2 implementation testing task, not a research gap.
+
+- **caniuse.com verification for `animation-timeline`:** Browser support figures are from training data (August 2025 cutoff). Verify current Firefox/Safari support before Phase 4 to determine whether the scroll progress bar enhancement covers enough users to be worth building.
+
+- **Kazakhstan market device performance baseline:** The recommendation to limit glass elements and blur radius is based on general mid-range Android characteristics, not a measured baseline on this codebase on this device class. The Phase 3 DevTools throttle test is the proxy validation. If performance issues appear in production on real devices, the recovery path is: reduce blur from 12px to 8px → remove pricing card glass → keep only header glass.
 
 ---
 
-## Sources (aggregated)
+## Sources
 
-**HIGH confidence:**
-- Apple Developer: Liquid Glass overview — official two-variant taxonomy
-- Apple Newsroom (2025-06) — specular/refraction/adaptive descriptions
-- MDN: corner-shape — Experimental, Chrome 139+ status confirmed
-- Chrome Platform Status: corner-shape — shipped August 2025
-- LogRocket: Liquid Glass effects with CSS and SVG — Chrome-only refraction confirmed
-- kube.io: Liquid Glass in the Browser — displacement map + Chrome-only note
-- Tailwind CSS v4.0/v4.1 release notes — container queries native, grid-cols-N native, v4.2.2 as latest
-- conorluddy/LiquidGlassReference GitHub — two-variant confirmation
+### Primary (HIGH confidence)
+- MDN Web Docs: `backdrop-filter` (Baseline 2024, September 2024) — glassmorphism support and GPU compositing behaviour
+- MDN Web Docs: `animation-timeline` — NOT Baseline; limited availability; `@supports` progressive enhancement required
+- MDN Web Docs: `prefers-reduced-motion` — Baseline Widely Available since January 2020
+- MDN Web Docs: `prefers-color-scheme` — Baseline Widely Available since January 2020
+- MDN Web Docs: `color-scheme` property — Baseline Widely Available since January 2022
+- MDN Web Docs: CSS Scroll-Driven Animations — draft spec, browser support
+- MDN Web Docs: `:focus-visible` — Chrome 86+, Firefox 85+, Safari 15.4+
+- WCAG 2.1 SC 1.4.3 Contrast Minimum (4.5:1 normal text, 3:1 large text)
+- WCAG 2.1 SC 2.3.3 Animation from Interactions (AAA) — vestibular motion guidelines
+- WCAG 2.1 SC 2.5.5 Target Size — 44x44px minimum touch target
+- CSS `text-wrap: balance` — Baseline 2023
+- Existing codebase: `css/styles.css` (~1,640 lines), `js/main.js` (~488 lines), `index.html` (~762 lines) — direct inspection for integration constraints and token names
 
-**MEDIUM confidence:**
-- CSS-Tricks: Getting Clarity on Apple's Liquid Glass — three-layer breakdown
-- Smashing Magazine: Beyond border-radius (March 2026) — squircle production readiness
-- createwithswift.com — SwiftUI material API details
-- Six Colors: macOS Tahoe review — Liquid Glass criticisms, accessibility concerns
-- Infinum: iOS 26 accessibility — 1.5:1 contrast ratio finding on glass
+### Secondary (MEDIUM confidence)
+- CSS-Tricks: "A Complete Guide to Dark Mode on the Web" — `data-theme` attribute pattern and localStorage approach
+- web.dev: "Building a theme switch component" — inline `<script>` FOUC prevention pattern
+- W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
+- Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading contexts
+- Chrome Developers: Scroll-driven Animations documentation — `animation-timeline: view()` usage patterns
+- Design community consensus on 2025 display typography (Vercel, Stripe, Linear landing pages) — heading scale 56-72px / 800 weight convention
+
+### Tertiary (LOW confidence — needs validation)
+- Ophthalmology UX literature on halation (pure black backgrounds causing halos for astigmatic users) — referenced in NNGroup and design literature; primary clinical sources not located
+- 45+ vestibular disorder prevalence (~35% of adults over 40) — audiological/neurological research consensus; no single authoritative source cited
+- Kazakhstan-specific 45+ device distribution — not found; mid-range Android assumption based on general KZ market data
 
 ---
-*Research completed: 2026-04-09*
+*Research completed: 2026-03-24*
 *Ready for roadmap: yes*

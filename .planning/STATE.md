@@ -1,47 +1,52 @@
 ---
 gsd_state_version: 1.0
-milestone: v4.0
-milestone_name: Liquid Design System
-status: planning
-stopped_at: Roadmap created -- 9 phases (41-49), 30 requirements mapped with 100% coverage
-last_updated: "2026-04-09T10:54:22.343Z"
-last_activity: 2026-04-09
+milestone: v1.0
+milestone_name: milestone
+status: unknown
+stopped_at: Completed 22-01-PLAN.md
+last_updated: "2026-03-24T14:25:11.004Z"
 progress:
-  total_phases: 9
-  completed_phases: 5
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 2
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (evolved 2026-04-09 at v4.0 milestone kickoff)
+See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 41 Foundation Tokens -- ready to plan
+**Current focus:** Phase 24 — liquid-glass-enhancement
 
 ## Current Position
 
-Phase: 46 of 49 (service pages)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-04-09
-
-Progress: [░░░░░░░░░░] 0%
+Phase: 24 (liquid-glass-enhancement) — COMPLETE ✅
+Plan: 2 of 2 (all done, 17/17 decisions verified)
 
 ## Performance Metrics
 
-**Velocity (historical across all milestones):**
+**Velocity:**
 
-- v3.2: 2 phases, 6 plans, 1 day
-- v3.1: 7 phases (33-38 + 38.1), 45/52 reqs
-- v3.0: 4 phases (29-32), 7 plans, 24 reqs
-- v2.0: 4 phases (25-28), 8 plans, 35 reqs
+- Total plans completed: 0
+- Average duration: --
+- Total execution time: 0 hours
 
-**v4.0:** 9 phases (41-49), 30 requirements. Plans TBD per phase.
+**By Phase:**
+
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| 17 | 0/TBD | - | - |
+| 18 | 0/TBD | - | - |
+| Phase 17 P01 | 2min | 2 tasks | 1 files |
+| Phase 18 P01 | 8 | 3 tasks | 1 files |
+| Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
+| Phase 20 P01 | 2 | 2 tasks | 2 files |
+| Phase 20 P02 | 10 | 2 tasks | 2 files |
+| Phase 21 P01 | 15 | 2 tasks | 1 files |
+| Phase 22 P01 | 2 | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -50,27 +55,35 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [v4.0 kickoff]: Major version bump -- Liquid Design System is fundamental visual overhaul
-- [v4.0 kickoff]: GPU budget relaxed -- supersedes v1.4 "max 2 glass, blur <=12px"
-- [v4.0 kickoff]: Universal squircle replacement -- ALL rounded rects become superellipse
-- [v4.0 kickoff]: 8-col tablet grid (not 6, not 12) -- project convention
-- [v4.0 research]: Single material variant (Regular only) -- Clear is anti-feature for medical 45+
-- [v4.0 research]: mask-image + @supports corner-shape PE -- production squircle technique
-- [v4.0 research]: Dark mode glass reverses v1.4 "glass-off" -- tuned dark recipe replaces opaque
+- [v1.2]: Separate --color-cta from --color-primary (green CTA, cyan accents)
+- [v1.3]: Gradient CTA replaces solid green -- align with medicusunion.kz
+- [Phase 17]: Opacity hover (0.85) for gradient CTA compatibility
+- [Phase 18]: Flat card design (no shadows) matches medicusunion.kz reference — removed all card box-shadows
+- [Phase 18]: Mint badge palette (#d0fae4 bg / #007955 text) as CSS custom properties for pricing badge
+- [Phase 19-v1-3-cleanup]: Removed --color-cta-hover-kz token declared in Phase 17 but never used — hover relies on opacity: 0.85
+- [Phase 19-v1-3-cleanup]: Removed box-shadow from .pricing__card to complete flat design intent missed in Phase 18
+- [Phase 20]: navy #0F1923 as dark mode base — avoids pure black halation for astigmatic 45+ users
+- [Phase 20]: [data-theme='dark'] redefines exact same --color-* token names — never parallel names like --color-white-dark; all component CSS auto-updates via cascade
+- [Phase 20]: Default-light policy (DM-04): @media prefers-color-scheme scoped to :root:not([data-theme='light']) — OS dark is hint-only, explicit toggle always wins
+- [Phase 20]: initDarkMode() placed last in initAll() so all other UI is initialised before theme state reconciliation
+- [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
+- [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
+- [Phase 21]: h1/h2 weight 800 (Manrope Variable), h3 stays 700; --line-height-display: 1.1 added for display-scale headings; text-wrap: balance on all h1/h2/h3 prevents Cyrillic orphan lines
+- [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
+- [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
+- [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
 
-### Pending Todos
+### Roadmap Evolution
 
-None yet.
+- Phase 24 added: Liquid Glass Enhancement
 
 ### Blockers/Concerns
 
-- **Phase 41 prerequisite:** Dark selector audit (`.dark` vs `[data-theme="dark"]`) must resolve before any dark tokens written
-- **Phase 41 prerequisite:** Focus-visible refactor (outline, not box-shadow) MUST land before Phase 42 squircle classes
-- **Phase 43 tuning:** Dark-mode glass recipe values are estimates; real-device tuning needed
-- **Phase 48 hardware:** Budget Android test device needed (Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10)
+- Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
+- Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
 
 ## Session Continuity
 
-Last session: 2026-04-09
-Stopped at: Roadmap created -- 9 phases (41-49), 30 requirements mapped with 100% coverage
-Next command: /gsd-plan-phase 41
+Last session: 2026-03-25T03:14:10Z
+Stopped at: Phase 24 complete — ad-hoc glass on problem/benefits cards added post-verification
+Resume file: .planning/HANDOFF.json

@@ -1,8 +1,8 @@
-# MedicusUnion KZ
+# MedicusUnion KZ Landing
 
 ## What This Is
 
-Многостраничный сайт medicusunion.kz — веб-представительство международного медицинского сервиса в Казахстане. 6 страниц (главная, онлайн-консультации, лечение за рубежом, чекапы, контакты, 404), форма заявки, Directus-бэкенд, полная SEO-оптимизация, WCAG AA доступность, дизайн-система на Tailwind v4. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму.
+Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -12,10 +12,9 @@
 
 ## Current State
 
-**Shipped:** v3.2 Build Pipeline & Chrome Partials (2026-04-08) — latest
-**In progress:** v4.0 Liquid Design System — questioning → research → requirements → roadmap (started 2026-04-09)
-**Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth via POSIX-sh splicer, byte-identity gate enforced at commit time by pre-commit hook), `make build` canonical entry point, `docs/BUILD.md` contributor reference, full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, 404 H1 sized to fit 320px mobile at the source (not via `overflow-x: clip` safety net), checkup.html "за 1–2 дня" range bound as single `whitespace-nowrap` unit across all viewports, browser console silent on first load of all 6 pages, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
-**Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
+**Shipped:** v1.4 2025 Visual Redesign (2026-03-24)
+**Codebase:** ~3,152 LOC (762 HTML + 1,900 CSS + 490 JS)
+**Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
 
@@ -64,52 +63,7 @@
 - ✓ Glassmorphism: hero gradient mesh, frosted header on scroll, .card--glass на pricing; @supports fallback; ≤2 glass elements — v1.4
 - ✓ Micro-animations: scroll-reveal translateY(20px)/0.4s, button :active scale(0.97)/100ms, prefers-reduced-motion guard — v1.4
 
-- ✓ Service-page копирайт rewrite по копирайтинг-документам (online-consultations, treatment-abroad, checkup) — v2.0
-- ✓ Pixel-perfect Tailwind v4 миграция из Redesign TSX-прототипа — v2.0
-- ✓ Migrate-to-Tailwind-CSS-v4: standalone CLI binary, theme.css токены — v2.0
-
-- ✓ Branded 404.html с gradient "404", «Страница не найдена» и кнопкой «На главную» — v3.0
-- ✓ Консистентный header/footer/mobile-menu/sticky-bar на всех 6 страницах — v3.0
-- ✓ Honeypot spam protection на всех формах — v3.0
-- ✓ FAQ accordions работают корректно на всех страницах — v3.0
-- ✓ Все CTA-ссылки проверены и ведут на правильные страницы — v3.0
-- ✓ Уникальные title + meta description на каждой странице из копирайтинг-документов — v3.0
-- ✓ Open Graph теги (og:title/description/url/type/image) на каждой странице — v3.0
-- ✓ Canonical URLs на каждой странице — v3.0
-- ✓ Schema.org MedicalBusiness JSON-LD на index.html — v3.0
-- ✓ 11 Unsplash изображений → локальные WebP (660KB → 283KB, -57%) — v3.0
-- ✓ Lazy loading + width/height на всех below-fold изображениях (CLS prevention) — v3.0
-- ✓ Preload критичных ресурсов (CSS, шрифты, hero images) в head — v3.0
-- ✓ Motion CDN + JS scripts с defer — v3.0
-- ✓ Tailwind CSS минифицирован через --minify — v3.0
-- ✓ WCAG AA accessible color tokens (7 text + 2 CTA gradient) в theme.css :root и @theme inline — v3.0
-- ✓ Neutral text tokens обновлены: --mu-text-700 (5.89:1), --mu-text-500 (4.50:1) — v3.0
-- ✓ Focus-visible keyboard ring на всех интерактивных элементах — v3.0
-- ✓ Accessible CTA gradient (from-mu-cta-from → to-mu-cta-to) на 77 кнопках — v3.0
-- ✓ Bright accent colors на readable text заменены на *-text варианты (88 hover states, 62 text elements) — v3.0
-- ✓ ARIA role="alert" aria-live="polite" на 20 form error containers — v3.0
-- ✓ @media (prefers-reduced-motion: reduce) отключает анимации и transitions — v3.0
-- ✓ Glass-5 form containers (bg-white/70 + shadow-form-inset) на всех 6 страницах — v3.0
-- ✓ Russian typography polish: nbsp binding для subject+verb pairs, orphan prevention, responsive br на hero headings — v3.0
-
-- ✓ Shared chrome extracted to partials/{header,footer,sticky-bar,mobile-menu}.html as single source of truth — v3.2 (LAYOUT-01/02/05)
-- ✓ POSIX-sh + awk marker splicer (scripts/build-pages.sh) with 11-token substitution vocabulary — v3.2 (LAYOUT-02)
-- ✓ make build canonical entry point + build.sh thin delegator + Makefile with 5 targets — v3.2 (LAYOUT-03/04)
-- ✓ Byte-identity smoke test: rebuild produces 6 pages byte-for-byte, zero drift (LAYOUT-12) — v3.2
-- ✓ 7th-page 0-edit invariant verified: new pages require only body + BUILD markers — v3.2 (LAYOUT-11)
-- ✓ Pre-commit hook (scripts/hooks/pre-commit) enforces byte-identity gate on every commit — v3.2 (LAYOUT-13)
-- ✓ 404.html H1 fits 320px viewport at the source (text-3xl mobile step-down) — v3.2 (COSMETIC-01)
-- ✓ Full favicon set (ico/svg/apple-touch-icon/webmanifest) at repo root + 4 link tags in all 6 pages — v3.2 (COSMETIC-02)
-- ✓ checkup.html "за 1–2 дня" numeric range bound as single whitespace-nowrap unit across all viewports — v3.2 (COSMETIC-03)
-
 ### Active
-
-**v4.0 Liquid Design System** (requirements being defined):
-- Responsive grid foundation — 12/8/2-3 col (desktop/tablet/mobile), все элементы на 6 страницах привязаны к сетке
-- Squircle primitives — universal replacement всех border-radius на superellipse shapes (кнопки, карточки, инпуты, badge, nav, mobile menu, form, hero, avatars, flags)
-- Liquid Design tokens & компоненты — specular highlights, refraction gradients, real-time blur, Liquid materials под Apple HIG iOS 26 / macOS Tahoe
-- Design system документация — `docs/DESIGN-SYSTEM.md` + возможно визуальный reference styleguide page
-- Page migration — новый визуальный язык применён ко всем 6 страницам через партиалы
 
 ### Out of Scope
 
@@ -123,70 +77,24 @@
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
 
-## Current Milestone: v4.0 Liquid Design System
-
-**Goal:** Переработать визуальный язык всех 6 страниц под Apple Liquid Design — responsive grid foundation, squircle primitives вместо всех rounded rectangles, Liquid Glass материалы/highlights/refraction во всех поверхностях, документированная дизайн-система.
-
-**Target features:**
-- **Grid foundation** — responsive 12/8/2-3 col система (desktop/tablet/mobile), CSS grid tokens в theme.css, все секции и элементы на всех 6 страницах привязаны к колонкам
-- **Squircle primitives** — universal replacement всех border-radius на superellipse shapes. Кнопки (CTA/secondary/icon), карточки, инпуты, badge'и, nav pill, mobile menu, form container, hero-иллюстрации, photo-avatars, flag-иконки. Implementation technique TBD в research-фазе
-- **Liquid Design tokens & компоненты** — specular highlights, refraction gradients, real-time/динамический blur, Liquid materials из Apple HIG iOS 26 / macOS Tahoe. Новые CSS tokens в theme.css + Tailwind `@theme inline`
-- **Design system документация** — `docs/DESIGN-SYSTEM.md` + возможно визуальный reference styleguide page с инвентарём компонентов
-- **Page migration** — применить новый визуальный язык ко всем 6 страницам (index, online-consultations, treatment-abroad, checkup, contacts, 404) через партиалы где возможно
-
-**Key context:**
-- **Perf budget relaxed:** v4.0 осознанно отменяет v1.4 constraint "max 2 glass elements per viewport, blur ≤12px". Budget Android (доминирующее устройство ЦА 45+ в KZ) получит worse experience — это сознательный trade-off в пользу визуальной планки. Полное обоснование залогировано в Key Decisions
-- **References:** iOS 26 / macOS Tahoe (Liquid Glass OS), apple.com marketing, Apple HIG docs (developer.apple.com), Linear / Vercel / Stripe (web Apple-idiom adaptation)
-- **Squircle implementation:** technique TBD в research-фазе — кандидаты: CSS `corner-shape` (experimental), SVG clipPath, CSS `mask-image`, или hybrid с graceful degradation. Research обязателен
-- **Stack constraint:** zero-Node сохраняется — Tailwind v4 standalone CLI, vanilla JS, никаких фреймворков
-- **Build pipeline:** v3.2 партиалы + POSIX-sh splicer + byte-identity pre-commit hook сохраняются и используются для multi-page миграции
-- **Grid convention:** 8-col tablet (не 6, не 12) — подтверждено user intent на kickoff, зафиксировано как project convention
-
-## Shipped: v3.2 Build Pipeline & Chrome Partials (2026-04-08)
-- 2 phases (39, 40), 6 plans, 32 commits, 20 source files changed (+891/-69)
-- Eliminated chrome drift at the source: `partials/{header,footer,sticky-bar,mobile-menu}.html` as single source of truth, POSIX-sh + awk marker splicer with 11-token substitution vocabulary, byte-identity gate proven and enforced at commit time by first-ever repo pre-commit hook
-- `make build` canonical entry point + `build.sh` thin delegator + `docs/BUILD.md` contributor reference; Tailwind v4.2.2 pinned and auto-installed via `make install-tailwind` target
-- UX cosmetic cleanup (residual items from v3.1 Phase 38.1 Playwright audit): 404.html H1 fits 320px at the source (not via overflow-x clip safety net), full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, checkup.html "за 1–2 дня" wrapped in Tailwind `whitespace-nowrap` span — en-dash U+2013 preserved
-- Browser console silent on first load of all 6 pages (previously: favicon 404 on 404.html); verified via curl + Playwright MCP DOM assertions
-
-## Shipped: v3.1 Site Foundation & Audit Fixes (2026-04-08)
-- 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b
-- 14 credibility audit fixes (data unification, sticky-bar, typography, stat bar, H1 em-dash)
-- Shared layout chrome drift-normalized across 5 pages (partials extraction deferred to Phase 36b)
-- Full site metadata hygiene (sitemap.xml, robots.txt, canonical audit, circle-flags vendored, 404 upgrade)
-- Vertical rhythm & hero sizing system (svh-based tokens, content-density tiers)
-- Phase 38.1 corrective: mobile viewport overflow safety net (`html { overflow-x: clip }`), nbsp cleanup, checkup H1 gradient-span split, 3 SVG clipPath fixes — RHYTHM-10 verified 2026-04-08
-
-## Shipped: v3.0 SEO, Performance & Polish (2026-04-06)
-- 4 phases (29-32), 7 plans, 24 requirements
-- 404 page + cross-page consistency, full SEO + Schema.org, local WebP + lazy loading + preload, WCAG AA tokens + focus-visible + ARIA + reduced-motion
-
-## Shipped: v2.0 Service Pages Copywriting Rewrite (2026-04-05)
-- 4 страницы переписаны по копирайтинг-документам (35 requirements)
-- Pixel-perfect Tailwind из Redesign TSX
-
 ## Context
 
-- Shipped v1.0 redesign with 5 pages, Tailwind CSS v4, Motion CDN animations
-- Stack: HTML + Tailwind CSS v4 (CLI standalone) + JS, Directus 11 + PostgreSQL 16 via Docker
-- SF Pro Display/Rounded system fonts with fallback chain
-- Tailwind CLI standalone binary for CSS compilation
+- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
+- Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
+- Self-hosted Inter + Manrope variable fonts (WOFF2)
+- No build tools, no frameworks, no external dependencies
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
-- v2.0: 35 requirements, 4 phases (25-28), 8 plans — Tailwind v4 migration + service pages copywriting rewrite (online-consultations, treatment-abroad, checkup, contacts)
-- v3.0: 24 requirements, 4 phases (29-32), 7 plans — 404 page + cross-page consistency, full SEO + Schema.org, local WebP + lazy loading + preload, WCAG AA accessible tokens + focus-visible + ARIA + prefers-reduced-motion
-- v3.1: 45/52 requirements, 7 phases (33–38 + 38.1), vertical rhythm + credibility audit fixes + Phase 38.1 corrective (mobile overflow safety net) — 7 LAYOUT deferred to v3.2
-- v3.2: 11 requirements (8 LAYOUT + 3 COSMETIC), 2 phases (39, 40), 6 plans — chrome partials extraction + POSIX-sh marker splicer + byte-identity pre-commit hook + UX cosmetic cleanup (404 H1 mobile, favicon full set, checkup H1 range binding)
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
 
 ## Constraints
 
-- **Stack**: HTML + Tailwind CSS v4 (CLI standalone) + JS — Tailwind для pixel-perfect match с Redesign прототипом
+- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
 - **Backend**: Directus (self-hosted) — приём заявок с формы
 - **Language**: Только русский
 - **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
@@ -221,28 +129,6 @@
 | Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
 | translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
 | prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
-| Tailwind CSS v4 standalone CLI binary | Pixel-perfect parity with Redesign/ TSX prototype, no Node.js runtime, single executable for CI/deploy | ✓ Good — v2.0 |
-| Service-page rewrite from копирайтинг-документы first, then code | Locks brand voice and conversion framing before HTML — prevents cosmetic-only refactors | ✓ Good — v2.0 |
-| Local WebP over Unsplash CDN | Data sovereignty (medical imagery), -57% bytes, no third-party SLA risk on KZ 3G/4G | ✓ Good — v3.0 |
-| Schema.org MedicalBusiness JSON-LD on index only | Single source of truth — service pages aren't separate businesses | ✓ Good — v3.0 |
-| Two-token CTA gradient (mu-cta-from / mu-cta-to) | Allows accessible-contrast variant without breaking visual brand identity | ✓ Good — v3.0 |
-| Global focus-visible CSS rule (not per-component) | Single override propagates to all 6 pages without component churn | ✓ Good — v3.0 |
-| nbsp binding for Russian subject+verb pairs (rather than CSS only) | CSS `text-wrap: balance` is unreliable for Cyrillic; explicit nbsp guarantees orphan prevention across browsers | ✓ Good — v3.0 |
-| Responsive `<br class="md:hidden">` for hero headings | Lets Russian compound phrases break correctly on mobile without JS | ✓ Good — v3.0 |
-| Renamed project "MedicusUnion KZ Landing" → "MedicusUnion KZ" at v3.1 kickoff | By v3.0 the product was 6 pages, full design system, SEO/a11y baseline — "landing" framing undersold the artifact and limited how future growth was scoped. Directory name kept unchanged to avoid breaking git/CI/bookmarks | Expected good — unblocks multi-page architecture thinking (v3.1) |
-| Phase 38 vertical-rhythm system over ad-hoc `min-h` values | User identified hero + section heights as "out of place" across all 5 pages; picking numbers per-page produces drift. A researched canonical system (benchmarks, 45+ audience viewport considerations) + tokens is the only fix that survives future page additions | Expected good — prerequisite for v3.2+ page additions (v3.1) |
-| POSIX-sh + awk marker splicer over Node templating (Handlebars/Mustache/EJS) | Repo is deliberately zero-Node at runtime; `tailwindcss` standalone binary is the only tooling dependency. Shell-based splicing is sufficient for 4 chrome partials and keeps the build footprint minimal | ✓ Good — v3.2 (Phase 39-02) |
-| BUILD marker comment pairs (`<!-- BUILD:name -->` / `<!-- /BUILD:name -->`) in HTML pages | Markers are ordinary HTML comments: invisible to browsers, preserved by formatters, trivially grep-able, and the splicer is a context-free regex replacement. No new syntax for contributors to learn | ✓ Good — v3.2 (Phase 39-02) |
-| Pre-commit hook as byte-identity gate (first git hook in repo) | Manual `make build` discipline is unreliable; the hook makes chrome drift impossible at commit time. Dual-mode install (regular clones + worktrees) via symlink keeps setup to a single one-liner per clone | ✓ Good — v3.2 (Phase 39-03) |
-| Tailwind v4.2.2 binary pinned + auto-installed by `make install-tailwind` | Reproducible builds across contributor machines without requiring a package manager or manual download. Binary is in `.gitignore`; install target is idempotent | ✓ Good — v3.2 (Phase 39-03) |
-| 404 H1 mobile step-down (`text-4xl` → `text-3xl`) over `clamp()` fluid sizing | Tailwind step-function is already the project's typography pattern; introducing `clamp()` for one H1 would be a pattern fork. The single-class change also preserves the subject+verb nbsp binding trivially | ✓ Good — v3.2 (Phase 40, COSMETIC-01) |
-| Hand-download Tilda production PNG once, commit derivatives, forbid runtime hotlinking | Supply-chain hygiene: the downloaded PNG source is logged with SHA256 in the summary, derivatives (ico/apple-touch/svg) ship as permanent assets. No runtime dependency on Tilda CDN, no external URL in any `<link>` tag | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
-| Python Pillow as ImageMagick fallback for one-shot raster pipeline | ImageMagick was not installed and adds a heavy dependency. Pillow 11.3.0 was already present, produces real multi-size ICO via `Image.save(sizes=[(16,16),(32,32),(48,48)])`, and is dev-only (not a runtime dep) | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
-| Tailwind `whitespace-nowrap` span for Russian numeric range binding | Alternative was `&nbsp;` entity glue inside the fragment (fragile, hard to audit), or a `<span style="white-space:nowrap">` inline style (inconsistent with utility-first CSS). Tailwind class is auditable via grep, no stylesheet pollution, and the generated CSS rule emits only when used | ✓ Good — v3.2 (Phase 40, COSMETIC-03) |
-| **v4.0 Liquid Design System pivot → Major version bump** | После v3.2 codebase в здоровом состоянии (chrome unified via партиалы, vertical rhythm tokens, WCAG AA, build pipeline + byte-identity hook). User (2026-04-09) запросил фундаментальный pivot визуального языка: grid foundation (12/8/2-3) + universal squircles (все rounded rectangles) + Apple Liquid Design tokens/components + design system docs. Scope — не minor refinement, а полная эволюция визуального паттерна. Major version bump честно отражает глубину работы и объём миграции | Expected good — v4.0 (milestone kickoff 2026-04-09) |
-| **v4.0 supersedes v1.4 GPU budget constraint** — relax "max 2 glass elements per viewport, blur ≤12px" everywhere | Apple Liquid Glass (iOS 26 / macOS Tahoe) — real-time refraction, specular highlights, dynamic blur — несовместим с v1.4 лимитом. User (2026-04-09) принял осознанный trade-off: визуальная планка нового дизайн-языка приоритетнее производительности на budget Android. ЦА 45+ в KZ частично сидит на старом железе и получит worse experience — это **известный и принятый риск**. Revisit policy: если post-ship телеметрия покажет массовый FPS < 30 на реальных устройствах, открываем v4.x minor milestone с graceful degradation. До тех пор — полный Liquid Glass на всех viewport'ах | Expected neutral — v4.0 (milestone kickoff 2026-04-09) |
-| **Universal squircle replacement — все rounded rectangles → superellipse** | User (2026-04-09) явно запросил "абсолютно всё" — кнопки, карточки, инпуты, badge, nav, mobile menu, form, hero, avatars, flags. Альтернатива (selective replacement — только primary surfaces) была отклонена: частичная замена ломает визуальную когерентность Liquid языка. Implementation technique TBD в research-фазе (CSS `corner-shape` экспериментальный, SVG clipPath / CSS mask / hybrid — кандидаты) | Expected good — v4.0 (milestone kickoff 2026-04-09) |
-| **8-column tablet grid (не 6, не 12)** | User explicitly chose 8 columns for tablet breakpoint при 12 desktop / 2-3 mobile. 8 — необычный выбор (6 или 8 встречаются, 12 доминирует), но user intent фиксируется как project convention: не challenge, не normalize. Зафиксировано на milestone kickoff чтобы избежать дрейфа при planning/execution | Expected good — v4.0 (milestone kickoff 2026-04-09) |
 
 ## Evolution
 
@@ -262,4 +148,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 — milestone v4.0 Liquid Design System kickoff (questioning → research → requirements → roadmap)*
+*Last updated: 2026-03-24 after v1.4 milestone completion*

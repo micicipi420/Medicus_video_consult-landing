@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /.planning/
-Disallow: /Redesign/
-Disallow: /scripts/
-Disallow: /src/
-
-Sitemap: https://medicusunion.kz/sitemap.xml

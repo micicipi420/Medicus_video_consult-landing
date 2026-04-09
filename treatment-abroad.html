@@ -141,14 +141,14 @@
 <!-- /BUILD:mobile-menu -->
 
   <main id="page-content" class="relative z-10 flex flex-col gap-8 md:gap-16 pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-8">
-    <!-- Hero Section (TSX: pt-32 pb-16, container, grid lg:grid-cols-2 gap-12 items-center) -->
+    <!-- Hero Section -->
     <section class="min-h-section-hero-medium flex items-center justify-center pt-section-pt pb-section-pb lg:pt-section-pt-lg" id="hero-abroad">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
           <!-- Left Content -->
-          <div>
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+          <div class="md:col-span-8 lg:col-span-6">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-mu-blue"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
               <span class="text-sm font-bold text-mu-blue-text uppercase tracking-wider">Медицинский туризм</span>
             </div>
@@ -162,11 +162,11 @@
             <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Без очередей, переплат и&nbsp;языкового барьера. Подберём врача, оформим документы, переведём анализы и&nbsp;организуем перелёт. Вам&nbsp;остаётся только поправляться &mdash;остальное мы&nbsp;берём на&nbsp;себя.</p>
 
             <div class="flex flex-col sm:flex-row gap-4 mb-12">
-              <a href="#form-abroad" class="bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-8 py-4 rounded-3xl font-semibold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 group text-lg">
+              <a href="#form-abroad" class="liquid-btn-primary squircle-md px-8 py-4 flex items-center justify-center gap-2 group text-lg tracking-tight">
                 Получить бесплатную консультацию
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </a>
-              <a href="#steps" class="bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg text-center">
+              <a href="#steps" class="liquid-btn-secondary squircle-md px-8 py-4 text-mu-text-900 text-lg text-center tracking-tight">
                 Как это работает
               </a>
             </div>
@@ -184,497 +184,609 @@
           </div>
 
           <!-- Right Content - Hero Image -->
-          <div class="relative">
-            <div class="rounded-[3rem] overflow-hidden shadow-glass-lg border-[8px] border-white/40 bg-white/20">
-              <img
-                src="img/hero-treatment-abroad.webp"
-                width="1080" height="720"
-                alt="Европейские врачи — команда специалистов в клинике"
-                class="w-full h-[400px] lg:h-[500px] object-cover"
-                loading="eager"
-              />
+          <div class="md:col-span-8 lg:col-span-6 relative">
+            <div class="liquid-card-wrap">
+              <div class="squircle-xl overflow-hidden">
+                <img
+                  src="img/hero-treatment-abroad.webp"
+                  width="1080" height="720"
+                  alt="Европейские врачи — команда специалистов в клинике"
+                  class="w-full h-[400px] lg:h-[500px] object-cover"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Stats Bar (TSX: countries grid pattern -- grid grid-cols-2 md:grid-cols-4 gap-4) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" aria-label="Ключевые цифры">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass text-center flex flex-col items-center justify-center">
-          <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue-text">100+</div>
-          <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">клиник по&nbsp;всему миру</div>
-        </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass text-center flex flex-col items-center justify-center">
-          <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-teal-text">500+</div>
-          <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">врачей-экспертов</div>
-        </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass text-center flex flex-col items-center justify-center">
-          <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-orange-text">15+</div>
-          <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">лет практики</div>
-        </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass text-center flex flex-col items-center justify-center">
-          <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-green-text">10&nbsp;000+</div>
-          <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">пациентов доверились нам</div>
+    <!-- Stats Bar -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" aria-label="Ключевые цифры">
+      <div class="liquid-card-wrap">
+        <div class="stats-glass squircle-xl">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+            <div class="text-center flex flex-col items-center justify-center p-6">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue-text">100+</div>
+              <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">клиник по&nbsp;всему миру</div>
+            </div>
+            <div class="text-center flex flex-col items-center justify-center p-6">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-teal-text">500+</div>
+              <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">врачей-экспертов</div>
+            </div>
+            <div class="text-center flex flex-col items-center justify-center p-6">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-orange-text">15+</div>
+              <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">лет практики</div>
+            </div>
+            <div class="text-center flex flex-col items-center justify-center p-6">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-green-text">10&nbsp;000+</div>
+              <div class="text-mu-text-700 font-bold text-sm uppercase tracking-wider">пациентов доверились нам</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- About Us Section (TSX: included cards pattern -- bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="about-us">
+    <!-- About Us Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="about-us">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">MedicusUnion &mdash;ваш надёжный партнёр в&nbsp;лечении за&nbsp;границей</span>
       </h2>
       <p class="text-mu-text-700 text-lg leading-relaxed font-medium text-center max-w-3xl mx-auto mb-12">Организуем лечение под ключ: от&nbsp;согласования с&nbsp;клиникой до&nbsp;выбора страны и&nbsp;решения всех формальностей. За&nbsp;счёт опыта и&nbsp;партнёрских связей экономим ваши деньги и&nbsp;время.</p>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
         <!-- Card 1 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
-              <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
-              <polyline points="16,24 22,30 32,18" stroke="var(--mu-green-600)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
+                  <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
+                  <polyline points="16,24 22,30 32,18" stroke="var(--mu-green-600)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">15+&nbsp;лет практики</h3>
+              <p class="text-mu-text-700 font-medium">10&nbsp;000+&nbsp;пациентов&nbsp;доверили нам лечение за&nbsp;рубежом &mdash;устойчивые процессы и&nbsp;проверенные партнёры.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">15+&nbsp;лет практики</h3>
-          <p class="text-mu-text-700 font-medium">10&nbsp;000+&nbsp;пациентов&nbsp;доверили нам лечение за&nbsp;рубежом &mdash;устойчивые процессы и&nbsp;проверенные партнёры.</p>
         </div>
         <!-- Card 2 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
-              <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
-              <ellipse cx="24" cy="24" rx="8" ry="18" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              <line x1="6" y1="18" x2="42" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="6" y1="30" x2="42" y2="30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
+                  <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
+                  <ellipse cx="24" cy="24" rx="8" ry="18" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  <line x1="6" y1="18" x2="42" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="6" y1="30" x2="42" y2="30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Выбор страны под задачу</h3>
+              <p class="text-mu-text-700 font-medium">Австрия, Швейцария, Германия, Индия, ОАЭ, Израиль &mdash;обоснуем клинические и&nbsp;бюджетные плюсы каждого варианта.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Выбор страны под задачу</h3>
-          <p class="text-mu-text-700 font-medium">Австрия, Швейцария, Германия, Индия, ОАЭ, Израиль &mdash;обоснуем клинические и&nbsp;бюджетные плюсы каждого варианта.</p>
         </div>
         <!-- Card 3 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
-              <rect x="8" y="10" width="32" height="28" rx="4" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
-              <path d="M16 10V6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M32 10V6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="8" y1="18" x2="40" y2="18" stroke="currentColor" stroke-width="2"/>
-              <circle cx="24" cy="28" r="4" stroke="var(--mu-green-600)" stroke-width="2" fill="color-mix(in oklch, var(--mu-green-600) 15%, transparent)"/>
-            </svg>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
+                  <rect x="8" y="10" width="32" height="28" rx="4" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
+                  <path d="M16 10V6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M32 10V6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                  <line x1="8" y1="18" x2="40" y2="18" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="24" cy="28" r="4" stroke="var(--mu-green-600)" stroke-width="2" fill="color-mix(in oklch, var(--mu-green-600) 15%, transparent)"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Прямые партнёрства</h3>
+              <p class="text-mu-text-700 font-medium">Rudolfinerhaus, Ichilov, Hirslanden и&nbsp;другие &mdash;быстрые слоты и&nbsp;согласованные протоколы лечения.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Прямые партнёрства</h3>
-          <p class="text-mu-text-700 font-medium">Rudolfinerhaus, Ichilov, Hirslanden и&nbsp;другие &mdash;быстрые слоты и&nbsp;согласованные протоколы лечения.</p>
         </div>
         <!-- Card 4 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
-              <rect x="10" y="8" width="28" height="34" rx="3" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
-              <rect x="17" y="4" width="14" height="8" rx="2" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
-              <line x1="16" y1="22" x2="32" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <line x1="16" y1="28" x2="28" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <line x1="16" y1="34" x2="24" y2="34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
+                  <rect x="10" y="8" width="28" height="34" rx="3" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
+                  <rect x="17" y="4" width="14" height="8" rx="2" stroke="currentColor" stroke-width="2.5" fill="color-mix(in oklch, var(--mu-blue) 10%, transparent)"/>
+                  <line x1="16" y1="22" x2="32" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16" y1="28" x2="28" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16" y1="34" x2="24" y2="34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Медицинская экспертиза</h3>
+              <p class="text-mu-text-700 font-medium">Наш координатор&nbsp;сверяет показания и&nbsp;документы &mdash;не&nbsp;&laquo;просто туризм&raquo;, а&nbsp;обоснованное лечение.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Медицинская экспертиза</h3>
-          <p class="text-mu-text-700 font-medium">Наш координатор&nbsp;сверяет показания и&nbsp;документы &mdash;не&nbsp;&laquo;просто туризм&raquo;, а&nbsp;обоснованное лечение.</p>
         </div>
       </div>
     </section>
 
-    <!-- Platform Section (TSX: CTA card pattern -- bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 border border-white/60 shadow-glass-lg) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="platform">
+    <!-- Platform Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="platform">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Ваши документы, снимки и&nbsp;связь с&nbsp;врачом &mdash;в&nbsp;одном месте</span>
       </h2>
 
-      <div class="bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-8 md:p-12 border border-white/60 shadow-glass-lg max-w-4xl mx-auto relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-mu-green-300/20 rounded-full blur-[100px] -z-10"></div>
-        <p class="text-mu-text-700 font-medium leading-relaxed text-lg mb-8">У&nbsp;MedicusUnion есть&nbsp;то, чего нет ни&nbsp;у&nbsp;одного агентства &mdash;собственная медицинская платформа. Это&nbsp;не&nbsp;чат&nbsp;в&nbsp;мессенджере, который потеряется через месяц. Это&nbsp;защищённый&nbsp;личный кабинет, где вы&nbsp;видите:</p>
+      <div class="liquid-card-wrap max-w-4xl mx-auto">
+        <div class="liquid-card squircle-xl p-8 md:p-12 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-96 h-96 bg-mu-green-300/20 rounded-full blur-[100px] -z-10"></div>
+          <p class="text-mu-text-700 font-medium leading-relaxed text-lg mb-8">У&nbsp;MedicusUnion есть&nbsp;то, чего нет ни&nbsp;у&nbsp;одного агентства &mdash;собственная медицинская платформа. Это&nbsp;не&nbsp;чат&nbsp;в&nbsp;мессенджере, который потеряется через месяц. Это&nbsp;защищённый&nbsp;личный кабинет, где вы&nbsp;видите:</p>
 
-        <ul class="space-y-4 mb-8" role="list">
-          <li class="flex items-start gap-3">
-            <span class="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
-              <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            <span class="text-mu-text-900 font-medium">Результаты анализов и&nbsp;заключения врачей</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
-              <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            <span class="text-mu-text-900 font-medium">Медицинские снимки через встроенный DICOM-вьювер</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
-              <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            <span class="text-mu-text-900 font-medium">Историю переписки с&nbsp;координатором и&nbsp;врачом</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
-              <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            <span class="text-mu-text-900 font-medium">План лечения и&nbsp;все документы в&nbsp;одном месте</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
-              <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-            </span>
-            <span class="text-mu-text-900 font-medium">ИИ-анализ ваших лабораторных исследований</span>
-          </li>
-        </ul>
+          <ul class="space-y-4 mb-8" role="list">
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 squircle-full bg-white/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="text-mu-text-900 font-medium">Результаты анализов и&nbsp;заключения врачей</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 squircle-full bg-white/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="text-mu-text-900 font-medium">Медицинские снимки через встроенный DICOM-вьювер</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 squircle-full bg-white/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="text-mu-text-900 font-medium">Историю переписки с&nbsp;координатором и&nbsp;врачом</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 squircle-full bg-white/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="text-mu-text-900 font-medium">План лечения и&nbsp;все документы в&nbsp;одном месте</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 squircle-full bg-white/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-3.5 h-3.5 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span class="text-mu-text-900 font-medium">ИИ-анализ ваших лабораторных исследований</span>
+            </li>
+          </ul>
 
-        <p class="text-mu-text-700 font-medium leading-relaxed text-lg">Доступно через браузер и&nbsp;мобильное приложение (iOS и&nbsp;Android).</p>
+          <p class="text-mu-text-700 font-medium leading-relaxed text-lg">Доступно через браузер и&nbsp;мобильное приложение (iOS и&nbsp;Android).</p>
+        </div>
       </div>
 
       <p class="text-center text-mu-text-700 font-medium mt-8 max-w-2xl mx-auto">Данные&nbsp;защищены по&nbsp;стандартам ISO&nbsp;27001 и&nbsp;GDPR &mdash;сквозное шифрование, серверы в&nbsp;Европе.</p>
     </section>
 
-    <!-- Clinics / Geography Section (TSX: countries grid -- grid grid-cols-2 md:grid-cols-4 gap-4, cards: bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="clinics">
+    <!-- Clinics / Geography Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="clinics">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-4">
         <span class="text-mu-text-900">Подбираем клинику под ваш диагноз, а&nbsp;не&nbsp;продаём &laquo;свою&raquo;</span>
       </h2>
       <p class="text-mu-text-700 text-lg leading-relaxed font-medium text-center max-w-3xl mx-auto mb-12">Прямые контракты с&nbsp;ведущими медицинскими центрами. Это&nbsp;значит:&nbsp;приоритетная&nbsp;запись, согласованные условия лечения и&nbsp;координация без цепочки посредников.</p>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
         <!-- Austria -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#ED2939"/><rect y="11" width="48" height="10" fill="#fff"/></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#ED2939"/><rect y="11" width="48" height="10" fill="#fff"/></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Австрия</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Хирургия &middot; Онкология &middot; Кардиология</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Rudolfinerhaus</li>
+                <li>D&ouml;bling&nbsp;Private&nbsp;Clinic</li>
+                <li>Goldenes&nbsp;Kreuz&nbsp;Private&nbsp;Hospital</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Австрия</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Хирургия &middot; Онкология &middot; Кардиология</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Rudolfinerhaus</li>
-            <li>D&ouml;bling&nbsp;Private&nbsp;Clinic</li>
-            <li>Goldenes&nbsp;Kreuz&nbsp;Private&nbsp;Hospital</li>
-          </ul>
         </div>
 
         <!-- Germany -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-de"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-de)"><rect width="48" height="32" fill="#000"/><rect y="11" width="48" height="10" fill="#DD0000"/><rect y="21" width="48" height="11" fill="#FFCC00"/></g></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-de"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-de)"><rect width="48" height="32" fill="#000"/><rect y="11" width="48" height="10" fill="#DD0000"/><rect y="21" width="48" height="11" fill="#FFCC00"/></g></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Германия</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Педиатрия &middot; Ортопедия &middot; Кардиология</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>M1&nbsp;Pediatric&nbsp;Center</li>
+                <li>ATOS&nbsp;Orthopedic&nbsp;Center</li>
+                <li>Internistisches Klinikum M&uuml;nchen S&uuml;d</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Германия</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Педиатрия &middot; Ортопедия &middot; Кардиология</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>M1&nbsp;Pediatric&nbsp;Center</li>
-            <li>ATOS&nbsp;Orthopedic&nbsp;Center</li>
-            <li>Internistisches Klinikum M&uuml;nchen S&uuml;d</li>
-          </ul>
         </div>
 
         <!-- Switzerland -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#DA291C"/><rect x="20" y="8" width="8" height="16" fill="#fff"/><rect x="16" y="12" width="16" height="8" fill="#fff"/></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#DA291C"/><rect x="20" y="8" width="8" height="16" fill="#fff"/><rect x="16" y="12" width="16" height="8" fill="#fff"/></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Швейцария</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Кардиология &middot; Онкология &middot; Пластическая хирургия</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Hirslanden&nbsp;Private&nbsp;Hospital&nbsp;Group</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Швейцария</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Кардиология &middot; Онкология &middot; Пластическая хирургия</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Hirslanden&nbsp;Private&nbsp;Hospital&nbsp;Group</li>
-          </ul>
         </div>
 
         <!-- Israel -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><rect y="4" width="48" height="4" fill="#0038B8"/><rect y="24" width="48" height="4" fill="#0038B8"/><polygon points="24,9 27.5,18 20.5,18" fill="none" stroke="#0038B8" stroke-width="1.5"/><polygon points="24,23 20.5,14 27.5,14" fill="none" stroke="#0038B8" stroke-width="1.5"/></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><rect y="4" width="48" height="4" fill="#0038B8"/><rect y="24" width="48" height="4" fill="#0038B8"/><polygon points="24,9 27.5,18 20.5,18" fill="none" stroke="#0038B8" stroke-width="1.5"/><polygon points="24,23 20.5,14 27.5,14" fill="none" stroke="#0038B8" stroke-width="1.5"/></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Израиль</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Онкология &middot; Кардиохирургия &middot; Трансплантология</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Sourasky&nbsp;Medical&nbsp;Center (Ichilov)</li>
+                <li>Assuta&nbsp;Private&nbsp;Clinic</li>
+                <li>Beilinson&nbsp;Hospital</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Израиль</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Онкология &middot; Кардиохирургия &middot; Трансплантология</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Sourasky&nbsp;Medical&nbsp;Center (Ichilov)</li>
-            <li>Assuta&nbsp;Private&nbsp;Clinic</li>
-            <li>Beilinson&nbsp;Hospital</li>
-          </ul>
         </div>
 
         <!-- India -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-in"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-in)"><rect width="48" height="32" fill="#fff"/><rect width="48" height="11" fill="#FF9933"/><rect y="21" width="48" height="11" fill="#138808"/><circle cx="24" cy="16" r="4" stroke="#000080" stroke-width="1" fill="none"/></g></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-in"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-in)"><rect width="48" height="32" fill="#fff"/><rect width="48" height="11" fill="#FF9933"/><rect y="21" width="48" height="11" fill="#138808"/><circle cx="24" cy="16" r="4" stroke="#000080" stroke-width="1" fill="none"/></g></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Индия</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Ортопедия &middot; Онкология &middot; Кардиохирургия</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Marengo&nbsp;CIMS&nbsp;Hospitals</li>
+                <li>Shalby&nbsp;Multispecialty&nbsp;Hospital</li>
+                <li>HCG&nbsp;Hospital</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Индия</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Ортопедия &middot; Онкология &middot; Кардиохирургия</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Marengo&nbsp;CIMS&nbsp;Hospitals</li>
-            <li>Shalby&nbsp;Multispecialty&nbsp;Hospital</li>
-            <li>HCG&nbsp;Hospital</li>
-          </ul>
         </div>
 
         <!-- UAE -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-ae"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-ae)"><rect width="48" height="32" fill="#000"/><rect x="12" width="36" height="11" fill="#00732F"/><rect x="12" y="11" width="36" height="10" fill="#fff"/><rect x="12" y="21" width="36" height="11" fill="#000"/><rect width="12" height="32" fill="#FF0000"/></g></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><defs><clipPath id="flag-ae"><rect width="48" height="32" rx="3"/></clipPath></defs><g clip-path="url(#flag-ae)"><rect width="48" height="32" fill="#000"/><rect x="12" width="36" height="11" fill="#00732F"/><rect x="12" y="11" width="36" height="10" fill="#fff"/><rect x="12" y="21" width="36" height="11" fill="#000"/><rect width="12" height="32" fill="#FF0000"/></g></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">ОАЭ</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Кардиология &middot; Онкология &middot; Ортопедия</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Dubai&nbsp;London&nbsp;Clinic</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">ОАЭ</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Кардиология &middot; Онкология &middot; Ортопедия</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Dubai&nbsp;London&nbsp;Clinic</li>
-          </ul>
         </div>
 
         <!-- Turkey -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#E30A17"/><circle cx="20" cy="16" r="7" fill="#fff"/><circle cx="22.5" cy="16" r="5.5" fill="#E30A17"/><polygon points="28,16 25.5,17.2 26,14.5 24,12.8 26.7,12.5 28,10 29.3,12.5 32,12.8 30,14.5 30.5,17.2" fill="#fff" transform="scale(0.7) translate(12,8)"/></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#E30A17"/><circle cx="20" cy="16" r="7" fill="#fff"/><circle cx="22.5" cy="16" r="5.5" fill="#E30A17"/><polygon points="28,16 25.5,17.2 26,14.5 24,12.8 26.7,12.5 28,10 29.3,12.5 32,12.8 30,14.5 30.5,17.2" fill="#fff" transform="scale(0.7) translate(12,8)"/></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Турция</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Широкий профиль &middot; JCI-аккредитация</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Liv&nbsp;Hospital</li>
+                <li>Medicana&nbsp;Hospital</li>
+                <li>Istanbul&nbsp;Florence&nbsp;Nightingale&nbsp;Hospital</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Турция</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Широкий профиль &middot; JCI-аккредитация</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Liv&nbsp;Hospital</li>
-            <li>Medicana&nbsp;Hospital</li>
-            <li>Istanbul&nbsp;Florence&nbsp;Nightingale&nbsp;Hospital</li>
-          </ul>
         </div>
 
         <!-- South Korea -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-          <div class="w-12 h-8 mb-4" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><circle cx="24" cy="16" r="8" fill="none"/><path d="M16,16 A8,8 0 0,1 32,16 A4,4 0 0,1 24,16 A4,4 0 0,0 16,16Z" fill="#CD2E3A"/><path d="M32,16 A8,8 0 0,1 16,16 A4,4 0 0,1 24,16 A4,4 0 0,0 32,16Z" fill="#0047A0"/></svg>
+        <div class="md:col-span-2 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-lg p-4 h-full">
+              <div class="w-12 h-8 squircle-full mb-4" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32"><rect width="48" height="32" rx="3" fill="#fff"/><circle cx="24" cy="16" r="8" fill="none"/><path d="M16,16 A8,8 0 0,1 32,16 A4,4 0 0,1 24,16 A4,4 0 0,0 16,16Z" fill="#CD2E3A"/><path d="M32,16 A8,8 0 0,1 16,16 A4,4 0 0,1 24,16 A4,4 0 0,0 32,16Z" fill="#0047A0"/></svg>
+              </div>
+              <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Южная Корея</h3>
+              <p class="text-mu-text-700 font-medium text-sm mb-3">Онкология &middot; Чекапы &middot; Высокотехнологичная диагностика</p>
+              <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
+                <li>Samsung&nbsp;Medical&nbsp;Center</li>
+                <li>Severance&nbsp;Hospital</li>
+                <li>Seoul&nbsp;National&nbsp;University&nbsp;Hospital</li>
+              </ul>
+            </div>
           </div>
-          <h3 class="text-lg font-extrabold text-mu-text-900 mb-1">Южная Корея</h3>
-          <p class="text-mu-text-700 font-medium text-sm mb-3">Онкология &middot; Чекапы &middot; Высокотехнологичная диагностика</p>
-          <ul class="space-y-1.5 text-sm text-mu-text-900 font-medium">
-            <li>Samsung&nbsp;Medical&nbsp;Center</li>
-            <li>Severance&nbsp;Hospital</li>
-            <li>Seoul&nbsp;National&nbsp;University&nbsp;Hospital</li>
-          </ul>
         </div>
       </div>
 
       <p class="text-center text-mu-text-700 font-medium mt-10 max-w-2xl mx-auto">Это&nbsp;часть&nbsp;нашей партнёрской сети. Если для вашего случая нужен другой специалист или клиника &mdash;мы&nbsp;найдём.</p>
     </section>
 
-    <!-- What's Included (TSX: sm:grid-cols-2 lg:grid-cols-3 gap-6, cards: bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="included">
+    <!-- What's Included -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="included">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="text-mu-text-900">Что </span>
         <span class="bg-gradient-to-r from-mu-blue to-mu-green-600 bg-clip-text text-transparent">включено</span>
       </h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Подбор клиники</h3>
+              <p class="text-mu-text-700 font-medium">Анализ диагноза, подбор 2&ndash;3&nbsp;клиник, сравнение цен и&nbsp;результатов</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Подбор клиники</h3>
-          <p class="text-mu-text-700 font-medium">Анализ диагноза, подбор 2&ndash;3&nbsp;клиник, сравнение цен и&nbsp;результатов</p>
         </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Визовая поддержка</h3>
+              <p class="text-mu-text-700 font-medium">Медицинское приглашение, помощь с&nbsp;документами, бронирование</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Визовая поддержка</h3>
-          <p class="text-mu-text-700 font-medium">Медицинское приглашение, помощь с&nbsp;документами, бронирование</p>
         </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Сопровождение</h3>
+              <p class="text-mu-text-700 font-medium">Личный координатор в&nbsp;стране лечения, переводчик, трансфер</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Сопровождение</h3>
-          <p class="text-mu-text-700 font-medium">Личный координатор в&nbsp;стране лечения, переводчик, трансфер</p>
         </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Лечение</h3>
+              <p class="text-mu-text-700 font-medium">Организация приёмов, операций, реабилитации &mdash;полная координация</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Лечение</h3>
-          <p class="text-mu-text-700 font-medium">Организация приёмов, операций, реабилитации &mdash;полная координация</p>
         </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Документация</h3>
+              <p class="text-mu-text-700 font-medium">Перевод, заверение, хранение всех медицинских документов</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Документация</h3>
-          <p class="text-mu-text-700 font-medium">Перевод, заверение, хранение всех медицинских документов</p>
         </div>
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        <div class="md:col-span-4 lg:col-span-4">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+              </div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Переводчик</h3>
+              <p class="text-mu-text-700 font-medium">Профессиональный медицинский переводчик на&nbsp;всех этапах</p>
+            </div>
           </div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Переводчик</h3>
-          <p class="text-mu-text-700 font-medium">Профессиональный медицинский переводчик на&nbsp;всех этапах</p>
         </div>
       </div>
     </section>
 
-    <!-- 4 Steps Section (TSX: sm:grid-cols-2 lg:grid-cols-4 gap-6, cards: bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="steps">
+    <!-- 4 Steps Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="steps">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Как это работает</span>
       </h2>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
         <!-- Step 1 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">01</div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Планирование</h3>
-          <span class="inline-flex items-center bg-mu-blue/10 text-mu-blue-text font-bold text-sm px-3 py-1 rounded-full mb-4">2&ndash;4&nbsp;дня</span>
-          <p class="text-mu-text-700 font-medium mb-4">Анализ медицинской истории, подбор лучших клиник и&nbsp;врачей, организация онлайн-консультаций с&nbsp;экспертами.</p>
-          <ul class="space-y-2" role="list">
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Анализ медкарты
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Подбор клиники
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Онлайн-консультации
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Расчёт стоимости
-            </li>
-          </ul>
+        <div class="md:col-span-4 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">01</div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Планирование</h3>
+              <span class="inline-flex items-center bg-mu-blue/10 text-mu-blue-text font-bold text-sm px-3 py-1 squircle-full mb-4">2&ndash;4&nbsp;дня</span>
+              <p class="text-mu-text-700 font-medium mb-4">Анализ медицинской истории, подбор лучших клиник и&nbsp;врачей, организация онлайн-консультаций с&nbsp;экспертами.</p>
+              <ul class="space-y-2" role="list">
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Анализ медкарты
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Подбор клиники
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Онлайн-консультации
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Расчёт стоимости
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Step 2 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">02</div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Логистика</h3>
-          <span class="inline-flex items-center bg-mu-accent-teal-bg text-mu-accent-teal-text font-bold text-sm px-3 py-1 rounded-full mb-4">7&ndash;10&nbsp;дней</span>
-          <p class="text-mu-text-700 font-medium mb-4">Помощь с&nbsp;оформлением виз, бронирование перелётов и&nbsp;отелей, организация трансферов.</p>
-          <ul class="space-y-2" role="list">
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Визовая поддержка
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Авиабилеты
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Проживание
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Трансферы
-            </li>
-          </ul>
+        <div class="md:col-span-4 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">02</div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Логистика</h3>
+              <span class="inline-flex items-center bg-mu-accent-teal-bg text-mu-accent-teal-text font-bold text-sm px-3 py-1 squircle-full mb-4">7&ndash;10&nbsp;дней</span>
+              <p class="text-mu-text-700 font-medium mb-4">Помощь с&nbsp;оформлением виз, бронирование перелётов и&nbsp;отелей, организация трансферов.</p>
+              <ul class="space-y-2" role="list">
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Визовая поддержка
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Авиабилеты
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Проживание
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Трансферы
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Step 3 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">03</div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Координация лечения</h3>
-          <span class="inline-flex items-center bg-mu-accent-orange-bg text-mu-accent-orange-text font-bold text-sm px-3 py-1 rounded-full mb-4">По&nbsp;плану лечения</span>
-          <p class="text-mu-text-700 font-medium mb-4">Координация с&nbsp;медперсоналом, услуги переводчика, постоянная поддержка на&nbsp;всех этапах лечения.</p>
-          <ul class="space-y-2" role="list">
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Постоянная связь
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Медицинские переводчики
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Экстренная поддержка
-            </li>
-          </ul>
+        <div class="md:col-span-4 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">03</div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Координация лечения</h3>
+              <span class="inline-flex items-center bg-mu-accent-orange-bg text-mu-accent-orange-text font-bold text-sm px-3 py-1 squircle-full mb-4">По&nbsp;плану лечения</span>
+              <p class="text-mu-text-700 font-medium mb-4">Координация с&nbsp;медперсоналом, услуги переводчика, постоянная поддержка на&nbsp;всех этапах лечения.</p>
+              <ul class="space-y-2" role="list">
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Постоянная связь
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Медицинские переводчики
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Экстренная поддержка
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Step 4 -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">04</div>
-          <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Реабилитация</h3>
-          <span class="inline-flex items-center bg-mu-green-50 text-mu-green-text font-bold text-sm px-3 py-1 rounded-full mb-4">Долгосрочно</span>
-          <p class="text-mu-text-700 font-medium mb-4">Мониторинг восстановления, координация с&nbsp;врачами на&nbsp;родине, долгосрочное наблюдение.</p>
-          <ul class="space-y-2" role="list">
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Мониторинг здоровья
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Связь с&nbsp;врачами
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Реабилитационные программы
-            </li>
-            <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
-              <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-              Постоянное наблюдение
-            </li>
-          </ul>
+        <div class="md:col-span-4 lg:col-span-3">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">04</div>
+              <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Реабилитация</h3>
+              <span class="inline-flex items-center bg-mu-green-50 text-mu-green-text font-bold text-sm px-3 py-1 squircle-full mb-4">Долгосрочно</span>
+              <p class="text-mu-text-700 font-medium mb-4">Мониторинг восстановления, координация с&nbsp;врачами на&nbsp;родине, долгосрочное наблюдение.</p>
+              <ul class="space-y-2" role="list">
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Мониторинг здоровья
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Связь с&nbsp;врачами
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Реабилитационные программы
+                </li>
+                <li class="flex items-center gap-2 text-sm text-mu-text-900 font-medium">
+                  <svg class="w-4 h-4 text-mu-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                  Постоянное наблюдение
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Reviews Section (TSX: glass card pattern) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="reviews">
+    <!-- Reviews Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="reviews">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Пациенты, которые прошли этот путь</span>
       </h2>
 
-      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="flex items-center gap-4 mb-5">
-            <span class="w-12 h-12 bg-gradient-to-br from-mu-cta-from to-mu-cta-to rounded-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">Р</span>
-            <div>
-              <span class="block text-mu-text-900 font-bold">Ренат</span>
-              <span class="text-mu-text-700 text-sm font-medium">Казахстан &middot; Лечение в&nbsp;Австрии, Rudolfinerhaus</span>
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 max-w-4xl mx-auto">
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="flex items-center gap-4 mb-5">
+                <span class="w-12 h-12 bg-gradient-to-br from-mu-cta-from to-mu-cta-to squircle-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">Р</span>
+                <div>
+                  <span class="block text-mu-text-900 font-bold">Ренат</span>
+                  <span class="text-mu-text-700 text-sm font-medium">Казахстан &middot; Лечение в&nbsp;Австрии, Rudolfinerhaus</span>
+                </div>
+              </div>
+              <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Уже 10&nbsp;лет приезжаю в&nbsp;Рудольфинерхаус на&nbsp;лечение, пользуясь услугами MedicusUnion. Каждый раз &mdash;чёткая организация, никаких накладок.&raquo;</p>
             </div>
           </div>
-          <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Уже 10&nbsp;лет приезжаю в&nbsp;Рудольфинерхаус на&nbsp;лечение, пользуясь услугами MedicusUnion. Каждый раз &mdash;чёткая организация, никаких накладок.&raquo;</p>
         </div>
 
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="flex items-center gap-4 mb-5">
-            <span class="w-12 h-12 bg-gradient-to-br from-mu-green-500 to-mu-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">Ж</span>
-            <div>
-              <span class="block text-mu-text-900 font-bold">Жанна</span>
-              <span class="text-mu-text-700 text-sm font-medium">Россия &middot; Лечение за&nbsp;рубежом</span>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="flex items-center gap-4 mb-5">
+                <span class="w-12 h-12 bg-gradient-to-br from-mu-green-500 to-mu-green-600 squircle-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">Ж</span>
+                <div>
+                  <span class="block text-mu-text-900 font-bold">Жанна</span>
+                  <span class="text-mu-text-700 text-sm font-medium">Россия &middot; Лечение за&nbsp;рубежом</span>
+                </div>
+              </div>
+              <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Всё было сделано настолько оперативно и&nbsp;без проволочек, что заслуживает отдельного внимания. Благодарю за&nbsp;организацию.&raquo;</p>
             </div>
           </div>
-          <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Всё было сделано настолько оперативно и&nbsp;без проволочек, что заслуживает отдельного внимания. Благодарю за&nbsp;организацию.&raquo;</p>
         </div>
 
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="flex items-center gap-4 mb-5">
-            <span class="w-12 h-12 bg-gradient-to-br from-mu-accent-teal to-mu-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">А</span>
-            <div>
-              <span class="block text-mu-text-900 font-bold">Андрей</span>
-              <span class="text-mu-text-700 text-sm font-medium">Украина &middot; Регулярное обращение</span>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="flex items-center gap-4 mb-5">
+                <span class="w-12 h-12 bg-gradient-to-br from-mu-accent-teal to-mu-green-600 squircle-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">А</span>
+                <div>
+                  <span class="block text-mu-text-900 font-bold">Андрей</span>
+                  <span class="text-mu-text-700 text-sm font-medium">Украина &middot; Регулярное обращение</span>
+                </div>
+              </div>
+              <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Уже несколько лет обращаемся к&nbsp;компании MedicusUnion. Медицинское обслуживание на&nbsp;превосходном уровне в&nbsp;минимальные сроки.&raquo;</p>
             </div>
           </div>
-          <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Уже несколько лет обращаемся к&nbsp;компании MedicusUnion. Медицинское обслуживание на&nbsp;превосходном уровне в&nbsp;минимальные сроки.&raquo;</p>
         </div>
 
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div class="flex items-center gap-4 mb-5">
-            <span class="w-12 h-12 bg-gradient-to-br from-mu-accent-orange to-mu-accent-red rounded-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">А</span>
-            <div>
-              <span class="block text-mu-text-900 font-bold">Арина</span>
-              <span class="text-mu-text-700 text-sm font-medium">Россия &middot; Обследование в&nbsp;Вене</span>
+        <div class="md:col-span-4 lg:col-span-6">
+          <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl p-8 h-full">
+              <div class="flex items-center gap-4 mb-5">
+                <span class="w-12 h-12 bg-gradient-to-br from-mu-accent-orange to-mu-accent-red squircle-full flex items-center justify-center text-white font-bold text-lg" aria-hidden="true">А</span>
+                <div>
+                  <span class="block text-mu-text-900 font-bold">Арина</span>
+                  <span class="text-mu-text-700 text-sm font-medium">Россия &middot; Обследование в&nbsp;Вене</span>
+                </div>
+              </div>
+              <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Познакомилась с&nbsp;компанией MedicusUnion в&nbsp;2008 году. На&nbsp;протяжении этих лет приезжаю в&nbsp;Вену на&nbsp;обследование и&nbsp;обращаюсь к&nbsp;ним.&raquo;</p>
             </div>
           </div>
-          <p class="text-mu-text-700 font-medium leading-relaxed">&laquo;Познакомилась с&nbsp;компанией MedicusUnion в&nbsp;2008 году. На&nbsp;протяжении этих лет приезжаю в&nbsp;Вену на&nbsp;обследование и&nbsp;обращаюсь к&nbsp;ним.&raquo;</p>
         </div>
       </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="faq-abroad">
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="faq-abroad">
       <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12">
         <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Часто задаваемые вопросы</span>
       </h2>
 
       <div class="faq__list max-w-3xl mx-auto space-y-4">
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>С&nbsp;какими заболеваниями можно обратиться?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -684,7 +796,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Как вы&nbsp;выбираете клинику?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -694,7 +806,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Сколько это стоит?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -704,7 +816,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Можно&nbsp;ли поговорить с&nbsp;врачом до&nbsp;поездки?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -714,7 +826,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Какие документы нужны?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -724,7 +836,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Чем вы&nbsp;отличаетесь от&nbsp;агентств, которые предлагают то&nbsp;же&nbsp;самое?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -734,7 +846,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Могу&nbsp;ли я&nbsp;обратиться в&nbsp;клинику напрямую?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -744,7 +856,7 @@
           </div>
         </div>
 
-        <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-white/60 shadow-glass-sm overflow-hidden">
+        <div class="faq__item liquid-regular squircle-md overflow-hidden">
           <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
             <span>Что будет после лечения?</span>
             <svg class="faq__question-icon flex-shrink-0 ml-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -756,12 +868,12 @@
       </div>
     </section>
 
-    <!-- Lead Form Section (TSX: CTA container pattern with glass form) -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16" id="form-abroad">
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
+    <!-- Lead Form Section -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16" id="form-abroad">
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
         <!-- Left: info -->
-        <div class="flex flex-col h-full">
+        <div class="md:col-span-4 lg:col-span-5 flex flex-col h-full">
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
             <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Опишите ваш случай &mdash; мы&nbsp;подготовим план лечения за 2&ndash;4&nbsp;дня</span>
           </h2>
@@ -790,7 +902,9 @@
         </div>
 
         <!-- Right: form -->
-        <div class="bg-white/70 backdrop-blur-3xl rounded-[3rem] p-8 border border-white/60 relative overflow-hidden shadow-glass-lg">
+        <div class="md:col-span-4 lg:col-span-7">
+        <div class="liquid-card-wrap">
+        <div class="liquid-card squircle-xl p-8 relative overflow-hidden">
           <!-- Success overlay -->
           <div class="form__success absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8" id="form-success" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="form__success-icon" aria-hidden="true">
@@ -804,19 +918,19 @@
           <form class="contact-form space-y-6" novalidate>
             <div class="form__group">
               <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="name">Ваше имя</label>
-              <input type="text" id="name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
+              <input type="text" id="name" name="name" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
               <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
             </div>
 
             <div class="form__group">
               <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="phone">Телефон</label>
-              <input type="tel" id="phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+              <input type="tel" id="phone" name="phone" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
               <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
             </div>
 
             <div class="form__group">
               <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-method">Предпочтительный способ связи</label>
-              <select id="contact-method" name="contact_method" class="form__select w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none">
+              <select id="contact-method" name="contact_method" class="form__select w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none">
                 <option value="" disabled selected>Выберите способ связи</option>
                 <option value="phone">Телефон</option>
                 <option value="whatsapp">WhatsApp</option>
@@ -827,7 +941,7 @@
 
             <div class="form__group">
               <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="description">Кратко о&nbsp;вашем случае <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
-              <textarea id="description" name="description" class="form__textarea w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="3" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
+              <textarea id="description" name="description" class="form__textarea w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="3" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
             </div>
 
             <!-- Honeypot -->
@@ -836,7 +950,7 @@
               <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <button class="form__submit w-full bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white py-4 rounded-2xl font-bold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
+            <button class="form__submit w-full liquid-btn-primary squircle-md py-4 font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
               Получить план лечения
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m22 2-7 20-4-9-9-4Z"/>
@@ -851,24 +965,28 @@
             <div class="form__error" role="alert" aria-live="polite" hidden></div>
           </form>
         </div>
+        </div>
+        </div>
 
       </div>
     </section>
 
-    <!-- Cross-sell CTA (TSX: CTA pattern -- bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 text-center border border-white/60 shadow-glass-lg relative overflow-hidden) -->
-    <section class="container mx-auto px-4 lg:px-6">
-      <div class="bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 text-center border border-white/60 shadow-glass-lg relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-mu-green-300/20 rounded-full blur-[100px] -z-10"></div>
-        <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Пока не&nbsp;готовы к&nbsp;поездке?</h2>
-        <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Начните с&nbsp;онлайн-консультации с&nbsp;зарубежным врачом. Обсудите ваш диагноз и&nbsp;план лечения &mdash;без выезда из&nbsp;Казахстана.</p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="index.html#services" class="bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg flex items-center gap-2">
-            Записаться на&nbsp;онлайн-консультацию
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-          <a href="#form-abroad" class="bg-white/60 backdrop-blur-xl text-mu-text-900 px-10 py-5 rounded-3xl font-bold border border-white/60 hover:bg-white/80 transition-all flex items-center gap-2 shadow-glass-sm text-lg">
-            Оставить заявку на&nbsp;лечение
-          </a>
+    <!-- Cross-sell CTA -->
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+      <div class="liquid-card-wrap">
+        <div class="liquid-card squircle-xl p-12 lg:p-20 text-center relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-96 h-96 bg-mu-green-300/20 rounded-full blur-[100px] -z-10"></div>
+          <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Пока не&nbsp;готовы к&nbsp;поездке?</h2>
+          <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Начните с&nbsp;онлайн-консультации с&nbsp;зарубежным врачом. Обсудите ваш диагноз и&nbsp;план лечения &mdash;без выезда из&nbsp;Казахстана.</p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="index.html#services" class="liquid-btn-primary squircle-md px-10 py-5 font-bold text-lg flex items-center gap-2">
+              Записаться на&nbsp;онлайн-консультацию
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a href="#form-abroad" class="liquid-btn-secondary squircle-md px-10 py-5 text-mu-text-900 font-bold text-lg flex items-center gap-2">
+              Оставить заявку на&nbsp;лечение
+            </a>
+          </div>
         </div>
       </div>
     </section>
