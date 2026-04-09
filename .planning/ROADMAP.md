@@ -23,9 +23,9 @@
 - [x] **Phase 44: Chrome Partials Upgrade** - SVG defs partial + 4 chrome partials restyled with glass/squircle/grid; atomic commit under byte-identity gate -- completed 2026-04-09
 - [x] **Phase 45: Simple Pages (404 + Contacts)** - Grid/squircle/liquid migration on simplest pages; canary for stacking contexts and protected legacy -- completed 2026-04-09
 - [x] **Phase 46: Service Pages** - checkup + online-consultations + treatment-abroad migration; 3 parallelizable streams -- completed 2026-04-09
-- [ ] **Phase 47: Index Page** - Full grid/liquid/squircle treatment on 13-section index; floating cards, z-index map, mesh-bg compatibility
-- [ ] **Phase 48: Verification** - WCAG AA contrast on glass, keyboard tab order, budget Android FPS, reduced-motion visual audit
-- [ ] **Phase 49: Documentation** - DESIGN-SYSTEM.md + styleguide.html live reference page
+- [x] **Phase 47: Index Page** - Full grid/liquid/squircle treatment on 13-section index; floating cards, z-index map, mesh-bg compatibility -- completed 2026-04-09
+- [x] **Phase 48: Verification** - WCAG AA contrast on glass, keyboard tab order, budget Android FPS, reduced-motion visual audit -- completed 2026-04-09
+- [x] **Phase 49: Documentation** - DESIGN-SYSTEM.md + styleguide.html live reference page -- completed 2026-04-09
 
 <details>
 <summary>v3.2 Build Pipeline & Chrome Partials (Phases 39-40) -- SHIPPED 2026-04-08</summary>
