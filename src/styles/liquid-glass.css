@@ -80,7 +80,9 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
-  padding: 1.5rem;
+  /* padding removed -- cards manage their own padding via Tailwind utilities.
+     Built-in 1.5rem caused double-padding on cards with internal p-8/p-3 children.
+     Use p-6 / p-8 utility on the element as needed. */
 }
 
 .liquid-card-wrap {
@@ -157,7 +159,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
-  padding: 1.5rem;
+  /* padding removed -- use Tailwind p-6 utility on the element. */
 }
 
 /* ================================================
