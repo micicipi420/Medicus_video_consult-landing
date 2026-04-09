@@ -37,7 +37,7 @@ TW_URL := https://github.com/tailwindlabs/tailwindcss/releases/download/$(TAILWI
 # Passed to ./scripts/build-pages.sh on every build: the splicer's internal
 # DEFAULT_PAGES fallback is only consulted when the splicer is invoked directly
 # without args (ad-hoc debugging). `make build` always uses $(PAGES).
-PAGES := index.html online-consultations.html treatment-abroad.html checkup.html contacts.html 404.html
+PAGES := index.html online-consultations.html treatment-abroad.html checkup.html contacts.html 404.html styleguide.html
 
 help:
 	@echo "Targets:"
