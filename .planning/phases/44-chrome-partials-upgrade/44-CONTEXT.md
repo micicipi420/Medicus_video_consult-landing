@@ -17,7 +17,6 @@ All 4 shared chrome partials (header, footer, mobile-menu, sticky-bar) and a new
 ### SVG Defs Partial (CHROME-02, locked by success criteria)
 - New file: partials/svg-defs.html with hidden SVG containing filter id="liquid-refract"
 - feTurbulence + feDisplacementMap filter for Chrome refraction PE
-- Script block for refraction probe initialization (calls initRefractionProbe from main.js)
 - All 6 pages get BUILD:svg-defs marker pairs
 - scripts/build-pages.sh updated to splice this partial
 
