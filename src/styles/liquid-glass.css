@@ -58,7 +58,7 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border: none;
+  /* No border -- use .border-inset-glass for squircle-safe borders (see squircles.css). */
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
@@ -75,7 +75,6 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
@@ -126,7 +125,6 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -154,7 +152,6 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
