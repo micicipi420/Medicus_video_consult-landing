@@ -173,10 +173,11 @@ Plans:
   3. treatment-abroad.html uses grid + squircle on clinic/step/review cards + liquid surfaces; review cards with glass treatment
   4. Per-page migration gates pass on all 3 pages: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0
   5. make build exits 0 and byte-identity check passes; all 3 pages render correctly in light and dark mode
-**Plans**: 2 plans
+**Plans**: 3 plans
 Plans:
-- [ ] 46-01-PLAN.md — TBD
-- [ ] 46-02-PLAN.md — TBD
+- [ ] 46-01-PLAN.md — Migrate checkup.html (12 sections: grid + squircle + liquid + stats-glass DIFF-02)
+- [ ] 46-02-PLAN.md — Migrate online-consultations.html (12 sections: grid + squircle + liquid + doctor/pricing/badge cards)
+- [ ] 46-03-PLAN.md — Migrate treatment-abroad.html (11 sections: grid + squircle + liquid + clinic/step/review cards)
 **UI hint**: yes
 
 ### Phase 47: Index Page
@@ -248,7 +249,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 43. Liquid Glass Primitives | 2/2 | Complete    | 2026-04-09 |
 | 44. Chrome Partials Upgrade | 2/2 | Complete    | 2026-04-09 |
 | 45. Simple Pages (404 + Contacts) | 2/2 | Complete    | 2026-04-09 |
-| 46. Service Pages | 0/TBD | Not started | - |
+| 46. Service Pages | 0/3 | Not started | - |
 | 47. Index Page | 0/TBD | Not started | - |
 | 48. Verification | 0/TBD | Not started | - |
 | 49. Documentation | 0/TBD | Not started | - |
