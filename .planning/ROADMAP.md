@@ -159,8 +159,8 @@ Plans:
   5. make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 45-01-PLAN.md — Migrate 404.html main content (grid wrapper + liquid card + squircle CTA)
-- [ ] 45-02-PLAN.md — Migrate contacts.html main content (grid + liquid glass cards/form + squircle inputs/buttons)
+- [x] 45-01-PLAN.md — Migrate 404.html main content (grid wrapper + liquid card + squircle CTA)
+- [x] 45-02-PLAN.md — Migrate contacts.html main content (grid + liquid glass cards/form + squircle inputs/buttons)
 **UI hint**: yes
 
 ### Phase 46: Service Pages
@@ -247,7 +247,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
 | 43. Liquid Glass Primitives | 2/2 | Complete    | 2026-04-09 |
 | 44. Chrome Partials Upgrade | 2/2 | Complete    | 2026-04-09 |
-| 45. Simple Pages (404 + Contacts) | 0/TBD | Not started | - |
+| 45. Simple Pages (404 + Contacts) | 2/2 | Complete    | 2026-04-09 |
 | 46. Service Pages | 0/TBD | Not started | - |
 | 47. Index Page | 0/TBD | Not started | - |
 | 48. Verification | 0/TBD | Not started | - |
