@@ -62,7 +62,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
-    0 8px 24px rgba(20, 30, 60, 0.12);
+    var(--liquid-shadow-outer);
 }
 
 /* ================================================
@@ -79,7 +79,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
-    0 16px 40px rgba(20, 30, 60, 0.16);
+    var(--liquid-shadow-outer);
 }
 
 /* Shadow-wrap wrapper is DEPRECATED.
@@ -158,7 +158,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
-    0 16px 40px rgba(20, 30, 60, 0.16);
+    var(--liquid-shadow-outer);
 }
 
 /* ================================================
