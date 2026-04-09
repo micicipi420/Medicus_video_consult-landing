@@ -19,3 +19,11 @@ Resolved debug sessions. Used by `gsd-debugger` to surface known-pattern hypothe
 - **Fix:** Replaced all three SVG mask data-URIs in theme.css with rect-with-superellipse-corners paths. New paths use viewBox 0 0 1 1 (unit square), small corner fractions (md=6%, lg=7%, xl=8%), n=5 superellipse exponent, and H/V commands for straight edges.
 - **Files changed:** src/styles/theme.css, css/styles.css
 ---
+
+## missed-squircle-migrations -- Hero badge icon boxes kept rounded-* instead of squircle-md
+- **Date:** 2026-04-09
+- **Error patterns:** rounded-2xl, squircle migration, missed elements, hero badge, icon box, SQUIRCLE-01
+- **Root cause:** Phase 47 migration plan explicitly chose to keep rounded-2xl on 2 hero floating badge icon containers, documenting them as "decorative, no need for squircle." This directly contradicted the SQUIRCLE-01 requirement that ALL border-radius elements use squircle classes. The 15 rotating icon chips across the page are correct exceptions (squircles distort under CSS transform: rotate()), but the 2 non-rotating hero badge icon boxes were simply an oversight in the plan.
+- **Fix:** Replaced rounded-2xl with squircle-md on both hero floating badge icon containers (w-14 h-14 boxes at lines 271, 282 of index.html). shadow-inner (inset shadow) is safe with mask-image per squircles.css docs.
+- **Files changed:** index.html, css/styles.css
+---
