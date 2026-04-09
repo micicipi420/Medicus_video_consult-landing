@@ -1,0 +1,270 @@
+/*
+ * src/styles/liquid-glass.css
+ *
+ * Liquid Glass material primitives for MedicusUnion KZ v4.0 Liquid Design System.
+ *
+ * Provides reusable CSS classes that encode the complete glass visual language:
+ *   - Base material (.liquid-regular)
+ *   - Card material (.liquid-card, .liquid-card-wrap)
+ *   - Button variants (.liquid-btn-primary, .liquid-btn-secondary)
+ *   - Grouped stats backdrop (.stats-glass)
+ *   - Shimmer sweep (.shimmer-sweep)
+ *   - Scroll-edge fade (.scroll-fade-top, .scroll-fade-bottom)
+ *
+ * Single variant: Regular only.
+ *   Clear glass is an anti-feature for medical CA 45+ audience --
+ *   contrast and legibility take priority over visual novelty.
+ *
+ * Tokens declared in: theme.css :root (--liquid-*) and .dark cascade.
+ * Companion file: squircles.css (shape primitives).
+ *
+ * Dark mode: automatic via --liquid-* token cascade in theme.css .dark {}.
+ *   No explicit .dark selectors exist in this file.
+ *   All classes auto-inherit dark values through var() references.
+ *
+ * Shadow-wrap pattern (for elements needing outer shadow + squircle mask):
+ *   mask-image clips box-shadow. Use a wrapper div for the shadow
+ *   and the inner element for the mask + glass material.
+ *
+ *   Card example:
+ *     <div class="liquid-card-wrap">                  <!-- outer: shadow + border-radius -->
+ *       <article class="squircle-lg liquid-card">     <!-- inner: mask + glass, no outer shadow -->
+ *         <!-- card content -->
+ *       </article>
+ *     </div>
+ *
+ * Note: backdrop-filter creates implicit stacking contexts.
+ *   Any element with .liquid-regular (or derivatives) becomes a
+ *   stacking context root. Plan z-index accordingly.
+ *
+ * Anti-patterns:
+ *   - NEVER use will-change: backdrop-filter on static cards.
+ *     Wastes GPU memory with no measurable benefit for non-animated elements.
+ *   - NEVER nest glass inside glass.
+ *     Double backdrop-filter compounds blur and kills readability.
+ *   - NEVER use shimmer on non-hero elements.
+ *     Max 1 shimmer per viewport -- more is visual noise for CA 45+.
+ *   - NEVER use border on masked glass (squircle clips borders).
+ *     Use inset box-shadow instead (rim lighting tokens handle this).
+ *   - NEVER apply box-shadow AND mask-image on the same element.
+ *     Shadow gets clipped to mask silhouette. Use shadow-wrap pattern.
+ */
+
+/* ================================================
+   Section 1 -- Base material
+   ================================================ */
+
+.liquid-regular {
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  border-top: 1px solid var(--liquid-border-top);
+  border-bottom: 1px solid var(--liquid-border-bottom);
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+}
+
+/* ================================================
+   Section 2 -- Card
+   .liquid-card = .liquid-regular + padding.
+   Compose with squircle: class="squircle-lg liquid-card"
+   ================================================ */
+
+.liquid-card {
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  border-top: 1px solid var(--liquid-border-top);
+  border-bottom: 1px solid var(--liquid-border-bottom);
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  padding: 1.5rem;
+}
+
+.liquid-card-wrap {
+  box-shadow: var(--liquid-shadow-outer);
+  border-radius: 24px; /* matches squircle-lg fallback radius */
+}
+
+/* ================================================
+   Section 3 -- Buttons
+   ================================================ */
+
+/* Primary CTA -- gradient fill, NOT glass.
+   Conversion affordance for CA 45+: solid opaque button
+   with specular edge treatment (thin inset highlight). */
+
+.liquid-btn-primary {
+  background: linear-gradient(135deg, var(--mu-cta-from), var(--mu-cta-to));
+  color: white;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(14, 143, 181, 0.25);
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+.liquid-btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.liquid-btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* Secondary button -- glass material.
+   Used for secondary actions (e.g., "Learn more"). */
+
+.liquid-btn-secondary {
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  border-top: 1px solid var(--liquid-border-top);
+  border-bottom: 1px solid var(--liquid-border-bottom);
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  font-weight: 600;
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+.liquid-btn-secondary:hover {
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.liquid-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* ================================================
+   Section 4 -- Grouped stats backdrop
+   Uses --liquid-blur-lg (40px light / 44px dark)
+   instead of --liquid-blur-md -- larger surface
+   grouping multiple stat elements.
+   ================================================ */
+
+.stats-glass {
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  border-top: 1px solid var(--liquid-border-top);
+  border-bottom: 1px solid var(--liquid-border-bottom);
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  padding: 1.5rem;
+}
+
+/* ================================================
+   Section 5 -- Shimmer sweep
+   Hero CTA only. Max 1 per viewport.
+   CSS-only hover animation via ::before pseudo-element.
+   ================================================ */
+
+.shimmer-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.25) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+  pointer-events: none;
+}
+
+.shimmer-sweep:hover::before {
+  transform: translateX(100%);
+}
+
+/* ================================================
+   Section 6 -- Scroll-edge fade
+   CSS mask-image gradient fade at content/chrome
+   overlap boundaries.
+   ================================================ */
+
+.scroll-fade-top {
+  --scroll-fade-size: 80px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black var(--scroll-fade-size));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black var(--scroll-fade-size));
+}
+
+.scroll-fade-bottom {
+  --scroll-fade-size: 80px;
+  mask-image: linear-gradient(to top, transparent 0%, black var(--scroll-fade-size));
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black var(--scroll-fade-size));
+}
+
+/* ================================================
+   Section 7 -- Refraction progressive enhancement
+   Chrome 139+ only. Gated by html[data-refract="true"]
+   attribute set by JS probe (added in Plan 02).
+   ================================================ */
+
+html[data-refract="true"] .liquid-regular,
+html[data-refract="true"] .liquid-card,
+html[data-refract="true"] .stats-glass {
+  backdrop-filter: url(#liquid-refract) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* ================================================
+   Section 8 -- Print stylesheet
+   All glass surfaces render as opaque white
+   with 1px border. No backdrop-filter in print.
+   ================================================ */
+
+@media print {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-primary,
+  .liquid-btn-secondary,
+  .stats-glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+
+  .shimmer-sweep::before {
+    display: none !important;
+  }
+
+  .scroll-fade-top,
+  .scroll-fade-bottom {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+}
+
+/* ================================================
+   Section 9 -- Reduced motion
+   Extends existing theme.css reduced-motion guard
+   (which already zeroes animation-duration/transition-duration
+   and sets --dur-press/hover/sheet/reveal to 0ms).
+   This block adds glass-specific downgrades:
+   blur reduced to 8px, shimmer hidden.
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-secondary,
+  .stats-glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .shimmer-sweep::before {
+    display: none;
+  }
+}
