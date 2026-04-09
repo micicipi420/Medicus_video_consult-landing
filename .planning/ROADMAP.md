@@ -95,7 +95,10 @@ See `.planning/milestones/` for full details per milestone.
   3. Dark-mode glass tokens exist under the correct selector (.dark or [data-theme="dark"] -- whichever js/main.js toggle actually sets), with tuned dark recipe values (rgba(30,40,60,0.45) base, blur 28px, saturate 160%, brightness 115%)
   4. Focus-visible ring uses outline: 2px solid var(--mu-blue-text); outline-offset: 3px instead of box-shadow -- verified by inspecting a focused button in browser DevTools and confirming outline renders outside any mask-image clip boundary
   5. make build exits 0 and byte-identity check passes; no HTML files are modified in this phase
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 42: Squircle Primitives
@@ -108,7 +111,10 @@ See `.planning/milestones/` for full details per milestone.
   3. Browsers without mask-image support gracefully fall back to standard border-radius (verified via @supports not (mask-image: url(...)) or absence of mask)
   4. Shadow-wrap pattern documented and testable: an element with .squircle-lg inside a wrapper div renders box-shadow on the wrapper (outside the mask) while the inner element carries the squircle clip -- visible in browser DevTools
   5. make build exits 0; Tailwind CSS output includes squircle classes; no HTML pages are modified yet
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 
 ### Phase 43: Liquid Glass Primitives
 **Goal**: A complete Liquid Glass material system and distinctive components exist as reusable CSS/JS, so that any surface can be given glass treatment and the 3 differentiator effects (shimmer, grouped stats, scroll-edge fade) are ready to apply
@@ -120,7 +126,10 @@ See `.planning/milestones/` for full details per milestone.
   3. Primary CTA retains gradient fill (green-to-teal) with specular edge treatment (not clear glass); secondary/tertiary buttons use .liquid-regular glass with semibold label, hover brightening, press scale(0.97), and icon+arrow affordance
   4. Print stylesheet renders glass surfaces as opaque with border; reduced-motion disables specular shimmer and spring animations while keeping static glass appearance; shimmer sweep (DIFF-01), grouped stats backdrop (DIFF-02), and scroll-edge fade (DIFF-03) classes exist and are testable
   5. Chrome 139+ users with JS enabled see refraction effect (SVG feTurbulence + feDisplacementMap) via html[data-refract] attribute set by ~10 LOC JS probe; Safari/Firefox show blur-only glass
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 44: Chrome Partials Upgrade
@@ -133,7 +142,10 @@ See `.planning/milestones/` for full details per milestone.
   3. partials/header.html uses .liquid-nav glass treatment + squircle radius + max-w-content grid alignment; partials/footer.html, partials/mobile-menu.html, partials/sticky-bar.html each use appropriate glass/squircle classes
   4. make build exits 0 and byte-identity check passes -- the atomic commit includes both the new partial and all 6 page marker insertions
   5. Opening any of the 6 pages in browser shows glass-styled header, footer, mobile menu, and sticky bar with no visual regression in existing content areas
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 45: Simple Pages (404 + Contacts)
@@ -146,7 +158,10 @@ See `.planning/milestones/` for full details per milestone.
   3. Protected legacy preserved on both pages: nbsp count unchanged (grep -c '&nbsp;'), ARIA attribute count unchanged (grep -c 'role="alert"\|aria-live'), head metadata diff is append-only, honeypot field present, zero text-wrap: balance instances
   4. Stacking contexts validated: form success overlay renders above glass surfaces; dark mode toggle produces correct glass appearance on both pages; no z-index collisions visible
   5. make build exits 0 and byte-identity check passes
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 46: Service Pages
@@ -159,7 +174,10 @@ See `.planning/milestones/` for full details per milestone.
   3. treatment-abroad.html uses grid + squircle on clinic/step/review cards + liquid surfaces; review cards with glass treatment
   4. Per-page migration gates pass on all 3 pages: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0
   5. make build exits 0 and byte-identity check passes; all 3 pages render correctly in light and dark mode
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 47: Index Page
@@ -172,7 +190,10 @@ See `.planning/milestones/` for full details per milestone.
   3. GRID-02 verified: text-bearing cards occupy minimum 4 columns on tablet breakpoint (8-col) across ALL 6 pages -- Russian compound words do not overflow card boundaries at 768px viewport
   4. Hero CTA has shimmer sweep animation on hover (DIFF-01 surface applied); scroll-edge fade (DIFF-03) visible at chrome/content overlap boundaries
   5. Per-page migration gates pass: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0; make build exits 0 and byte-identity check passes
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ### Phase 48: Verification
@@ -184,7 +205,10 @@ See `.planning/milestones/` for full details per milestone.
   2. Keyboard tab order is correct and focus-visible outline (outline, not box-shadow) is visible on all interactive elements across all 6 pages -- verified by tabbing through each page start-to-finish
   3. Budget Android device (Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10) achieves scroll FPS >= 30 on index.html (the heaviest page) -- measured on a real physical device, not DevTools throttle
   4. Toggling prefers-reduced-motion: reduce in browser settings disables specular shimmer, spring animations, and refraction effect while showing static glass appearance -- visually verified on at least 2 pages
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 
 ### Phase 49: Documentation
 **Goal**: The v4.0 design system is documented for future contributors, and a live styleguide page proves the 7th-page invariant (a new page can be authored using only documented components and the splicer pipeline)
@@ -194,7 +218,10 @@ See `.planning/milestones/` for full details per milestone.
   1. docs/DESIGN-SYSTEM.md exists and documents: shadow-wrap idiom with code examples, complete class inventory (.squircle-*, .liquid-*), token scale (grid/squircle/liquid/motion), anti-patterns list, Russian typography rules (nbsp binding, orphan prevention, whitespace-nowrap), protected files list, and scope creep guards
   2. styleguide.html exists as a live visual reference page showing all design system components: glass cards (light + dark), squircle mask variants (md/lg/xl/full), typography scale, button variants (primary gradient, secondary glass, icon), form elements (input, select, textarea), badge/chip -- all rendered with real CSS, not screenshots
   3. styleguide.html builds correctly via make build (proving the 7th-page invariant -- splicer handles a new page with only body content + BUILD markers, zero chrome duplication)
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
+- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
 **UI hint**: yes
 
 ## Progress
@@ -217,7 +244,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 41. Foundation Tokens | 0/TBD | Not started | - |
+| 41. Foundation Tokens | 0/2 | Planned | - |
 | 42. Squircle Primitives | 0/TBD | Not started | - |
 | 43. Liquid Glass Primitives | 0/TBD | Not started | - |
 | 44. Chrome Partials Upgrade | 0/TBD | Not started | - |
