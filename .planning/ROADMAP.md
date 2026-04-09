@@ -127,8 +127,8 @@ Plans:
   5. Chrome 139+ users with JS enabled see refraction effect (SVG feTurbulence + feDisplacementMap) via html[data-refract] attribute set by ~10 LOC JS probe; Safari/Firefox show blur-only glass
 **Plans**: 2 plans
 Plans:
-- [x] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 43-01-PLAN.md — Create liquid-glass.css with all glass material and differentiator CSS classes
+- [ ] 43-02-PLAN.md — Add refraction JS probe to main.js + visual verification checkpoint
 **UI hint**: yes
 
 ### Phase 44: Chrome Partials Upgrade
@@ -245,7 +245,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 |-------|----------------|--------|-----------|
 | 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
 | 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
-| 43. Liquid Glass Primitives | 0/TBD | Not started | - |
+| 43. Liquid Glass Primitives | 0/2 | Not started | - |
 | 44. Chrome Partials Upgrade | 0/TBD | Not started | - |
 | 45. Simple Pages (404 + Contacts) | 0/TBD | Not started | - |
 | 46. Service Pages | 0/TBD | Not started | - |
