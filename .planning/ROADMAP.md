@@ -219,8 +219,8 @@ Plans:
   3. styleguide.html builds correctly via make build (proving the 7th-page invariant -- splicer handles a new page with only body content + BUILD markers, zero chrome duplication)
 **Plans**: 2 plans
 Plans:
-- [ ] 49-01-PLAN.md — TBD
-- [ ] 49-02-PLAN.md — TBD
+- [ ] 49-01-PLAN.md — Create docs/DESIGN-SYSTEM.md with complete v4.0 design system reference
+- [ ] 49-02-PLAN.md — Create styleguide.html + wire into build pipeline (7th-page invariant)
 **UI hint**: yes
 
 ## Progress
