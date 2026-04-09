@@ -222,10 +222,10 @@
     <!-- SECTION 1: HERO (Hero.tsx) -->
     <section class="relative min-h-section-hero-rich flex items-center justify-center pt-section-pt pb-section-pb lg:pt-section-pt-lg" id="hero">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6 relative z-10">
-        <div class="grid grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div class="grid grid-cols-12 gap-y-12 lg:gap-8 items-center">
 
           <!-- Left Content -->
-          <div class="col-span-12 lg:col-span-7 max-w-2xl">
+          <div class="col-span-12 lg:col-span-7">
             <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
               <span class="text-sm font-semibold text-mu-text-900">Австрийская медицинская компания с офисом в&nbsp;Казахстане</span>
@@ -320,7 +320,7 @@
     </section>
 
     <!-- SECTION 2: THREE SERVICE CARDS (ServicesSection.tsx) -->
-    <section class="py-16 relative z-10" id="services">
+    <section class="py-16 relative z-10 section-tint-cool" id="services">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <!-- Section Title -->
         <div class="text-center mb-16 max-w-3xl mx-auto">
@@ -333,7 +333,7 @@
         </div>
 
         <!-- Services Grid -->
-        <div class="grid grid-cols-12 gap-8">
+        <div class="grid grid-cols-12 gap-y-8 md:gap-8">
           <!-- Card 1: Online Consultation -->
           <div class="col-span-12 md:col-span-6 lg:col-span-4 relative group h-full flex flex-col">
             <div class="liquid-card-wrap h-full">
@@ -489,7 +489,7 @@
     </section>
 
     <!-- SECTION 3: PROBLEM / RECOGNITION (GuideSection.tsx pattern) -->
-    <section class="py-16 relative z-10" id="problem">
+    <section class="py-16 relative z-10 section-tint-warm" id="problem">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6 relative z-10">
         <!-- Section Title -->
         <div class="text-center mb-16">
@@ -498,7 +498,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-12 gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-12 gap-y-8 md:gap-8">
           <!-- Problem 1 -->
           <div class="col-span-12 md:col-span-6 lg:col-span-6 group cursor-pointer flex flex-col h-full">
             <div class="liquid-card-wrap h-full">
@@ -560,7 +560,7 @@
     </section>
 
     <!-- SECTION 4: HOW IT WORKS (glass card pattern) -->
-    <section class="py-16 relative z-10" id="process">
+    <section class="py-16 relative z-10 section-tint-mint" id="process">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <div class="text-center mb-16 max-w-3xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
@@ -569,7 +569,7 @@
           <p class="text-mu-text-700 text-lg max-w-2xl mx-auto font-medium">Вы&nbsp;занимаетесь здоровьем &mdash;мы&nbsp;берём на&nbsp;себя всё остальное.</p>
         </div>
 
-        <div class="grid grid-cols-12 gap-8 max-w-6xl mx-auto">
+        <div class="grid grid-cols-12 gap-y-8 md:gap-8">
           <!-- Step 1 -->
           <div class="col-span-12 md:col-span-6 lg:col-span-3 group">
             <div class="liquid-card-wrap h-full">
@@ -615,9 +615,9 @@
     </section>
 
     <!-- SECTION 5: WHY MEDICUSUNION (WhyUsSection.tsx) -->
-    <section class="py-16 relative z-10" id="why-us">
+    <section class="py-16 relative z-10 section-tint-cool" id="why-us">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
-        <div class="grid grid-cols-12 gap-16 items-center">
+        <div class="grid grid-cols-12 gap-y-16 lg:gap-16 items-center">
 
           <!-- Left Content -->
           <div class="col-span-12 lg:col-span-7">
@@ -713,7 +713,7 @@
     </section>
 
     <!-- SECTION 6: CLINICS AND GEOGRAPHY (glass card pattern) -->
-    <section class="py-16 relative z-10" id="clinics">
+    <section class="py-16 relative z-10 section-tint-warm" id="clinics">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <div class="text-center mb-8 max-w-3xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
@@ -722,7 +722,7 @@
           <p class="text-mu-text-700 text-lg max-w-2xl mx-auto font-medium">Прямые контракты с&nbsp;медицинскими центрами. Приоритетная запись, согласованные условия, координация без цепочки посредников.</p>
         </div>
 
-        <div class="grid grid-cols-12 gap-6 max-w-5xl mx-auto mb-8">
+        <div class="grid grid-cols-12 gap-y-6 md:gap-6 mb-8">
           <!-- Germany -->
           <div class="col-span-12 md:col-span-6 lg:col-span-6">
             <div class="liquid-card-wrap h-full">
@@ -810,7 +810,7 @@
     </section>
 
     <!-- SECTION 7: PLATFORM (glass card pattern) -->
-    <section class="py-16 relative z-10" id="platform">
+    <section class="py-16 relative z-10 section-tint-mint" id="platform">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <div class="text-center mb-12 max-w-3xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
@@ -818,7 +818,7 @@
           </h2>
         </div>
 
-        <div class="liquid-card-wrap max-w-3xl mx-auto">
+        <div class="liquid-card-wrap">
         <div class="liquid-card squircle-xl p-8 md:p-12">
           <p class="text-mu-text-700 font-medium text-lg leading-relaxed mb-8">У&nbsp;MedicusUnion есть то, чего нет ни&nbsp;у&nbsp;одного медицинского агентства &mdash;собственная цифровая платформа. Это защищённый личный кабинет, где вы&nbsp;видите:</p>
           <ul class="space-y-4 mb-8">
@@ -851,7 +851,7 @@
     </section>
 
     <!-- SECTION 8: REVIEWS (glass card pattern) -->
-    <section class="py-16 relative z-10" id="reviews">
+    <section class="py-16 relative z-10 section-tint-cool" id="reviews">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <div class="text-center mb-12 max-w-3xl mx-auto">
           <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
@@ -859,7 +859,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-12 gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-12 gap-y-8 md:gap-8">
           <!-- Review 1: Renat -->
           <div class="col-span-12 md:col-span-6 lg:col-span-6">
             <div class="liquid-card-wrap h-full">
@@ -925,13 +925,13 @@
     </section>
 
     <!-- SECTION 9: FAQ (glass card pattern) -->
-    <section class="py-16 relative z-10" id="faq">
+    <section class="py-16 relative z-10 section-tint-warm" id="faq">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
         <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-8 text-center">
           <span class="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Частые вопросы</span>
         </h2>
 
-        <div class="faq__list max-w-3xl mx-auto space-y-4">
+        <div class="faq__list space-y-4">
           <!-- FAQ 1 -->
           <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
@@ -1013,9 +1013,9 @@
     </section>
 
     <!-- SECTION 10: CONTACT FORM (ContactSection.tsx) -->
-    <section class="py-16 relative z-10" id="contact">
+    <section class="py-16 relative z-10 section-tint-mint" id="contact">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6 relative z-10">
-        <div class="grid grid-cols-12 gap-12 items-start">
+        <div class="grid grid-cols-12 gap-y-12 lg:gap-12 items-start">
 
           <!-- Left Column - Info (ContactSection.tsx) -->
           <div class="col-span-12 lg:col-span-5 flex flex-col h-full">
@@ -1137,14 +1137,14 @@
     </section>
 
     <!-- SECTION 11: FINAL CTA (CTASection.tsx) -->
-    <section class="py-16 relative overflow-hidden z-10" id="cta">
+    <section class="py-16 relative overflow-hidden z-10 section-tint-cool" id="cta">
       <div class="max-w-[1400px] mx-auto px-4 lg:px-6 relative z-10">
         <div class="liquid-card-wrap">
         <div class="liquid-card squircle-xl overflow-hidden relative p-0">
           <div class="grid lg:grid-cols-2">
 
             <!-- Left Content (CTASection.tsx) -->
-            <div class="p-12 lg:p-20 flex flex-col justify-center relative z-10">
+            <div class="p-6 md:p-12 lg:p-20 flex flex-col justify-center relative z-10">
               <!-- Animated background element -->
               <div class="absolute top-0 left-0 w-96 h-96 bg-mu-blue/30 rounded-full blur-[100px] -z-10 mix-blend-multiply" aria-hidden="true"></div>
 
