@@ -100,7 +100,6 @@
      ================================================ */
 
   /* Grid foundation */
-  --container-content: 1200px;
   --grid-gutter-mobile: 16px;
   --grid-gutter-tablet: 24px;
   --grid-gutter-desktop: 32px;
