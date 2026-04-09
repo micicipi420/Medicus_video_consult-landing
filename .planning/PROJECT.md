@@ -12,9 +12,10 @@
 
 ## Current State
 
-**Shipped:** v1.4 2025 Visual Redesign (2026-03-24)
-**Codebase:** ~3,152 LOC (762 HTML + 1,900 CSS + 490 JS)
-**Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
+**Shipped:** v4.0 Liquid Design System (2026-04-09) — latest
+**In progress:** None — milestone cycle complete
+**Codebase:** 7 production pages + styleguide, shared chrome via partials (5 partials, POSIX-sh splicer), Liquid Glass design system (squircle masks, glass materials, 3 differentiator effects), full SEO/a11y/WCAG AA baseline, `make build` canonical entry point, byte-identity pre-commit hook
+**Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
 ## Requirements
 
