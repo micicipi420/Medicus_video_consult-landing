@@ -56,6 +56,7 @@
 
 .liquid-regular {
   isolation: isolate;
+  position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -140,6 +141,7 @@
 
 .liquid-btn-secondary {
   isolation: isolate;
+  position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -168,6 +170,7 @@
 
 .stats-glass {
   isolation: isolate;
+  position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -221,7 +224,72 @@
 }
 
 /* ================================================
-   Section 7 -- Refraction progressive enhancement
+   Section 7 -- Specular rim-lights
+   Top-edge highlight on glass surfaces for depth cue.
+   .liquid-card excluded — gets glint border instead.
+   ================================================ */
+
+.liquid-regular::before,
+.liquid-btn-secondary::before,
+.stats-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ================================================
+   Section 8 -- Animated glint border (liquid-card only)
+   Sweeping specular border highlight. Replaces rim-light
+   on cards with a continuous animated edge treatment.
+   ================================================ */
+
+.liquid-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
+  background-size: 200% 100%;
+  animation: glint 6s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes glint {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ================================================
+   Section 9 -- Header backdrop (Josh Comeau extended technique)
+   Double-height element with mask fade for seamless
+   header blur that extends beyond the element boundary.
+   ================================================ */
+
+.liquid-header-backdrop {
+  position: absolute;
+  inset: 0;
+  height: 200%;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ================================================
+   Section 10 -- Refraction progressive enhancement
    Chrome 139+ only. Gated by html[data-refract="true"]
    attribute set by JS probe (added in Plan 02).
    ================================================ */
@@ -234,7 +302,7 @@ html[data-refract="true"] .stats-glass {
 }
 
 /* ================================================
-   Section 8 -- Print stylesheet
+   Section 11 -- Print stylesheet
    All glass surfaces render as opaque white
    with 1px border. No backdrop-filter in print.
    ================================================ */
@@ -264,7 +332,7 @@ html[data-refract="true"] .stats-glass {
 }
 
 /* ================================================
-   Section 9 -- Section tint backgrounds
+   Section 12 -- Section tint backgrounds
    Alternating cool/warm gradient tints give backdrop-filter
    something to blur against on light backgrounds.
    Apply to <section> elements:
@@ -309,17 +377,27 @@ html[data-refract="true"] .stats-glass {
   background: none;
 }
 
+.dark .liquid-regular::before,
+.dark .liquid-btn-secondary::before,
+.dark .stats-glass::before {
+  opacity: 0.3;
+}
+
+.dark .liquid-card::before {
+  opacity: 0.5;
+}
+
 .dark .liquid-card::after {
   opacity: 0.4;
 }
 
 /* ================================================
-   Section 10 -- Reduced motion
+   Section 13 -- Reduced motion
    Extends existing theme.css reduced-motion guard
    (which already zeroes animation-duration/transition-duration
    and sets --dur-press/hover/sheet/reveal to 0ms).
    This block adds glass-specific downgrades:
-   blur reduced to 8px, shimmer hidden.
+   blur reduced to 8px, shimmer and glint hidden.
    ================================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -337,13 +415,18 @@ html[data-refract="true"] .stats-glass {
   .shimmer-sweep::before {
     display: none;
   }
+
+  .liquid-card::before {
+    display: none;
+  }
 }
 
 /* ================================================
-   Section 11 -- Reduced transparency
+   Section 14 -- Reduced transparency
    For users who prefer less transparency (e.g., macOS
    "Reduce transparency" setting). Increases background
-   opacity and disables backdrop-filter.
+   opacity, disables backdrop-filter, and hides all
+   pseudo-element decorations.
    ================================================ */
 
 @media (prefers-reduced-transparency: reduce) {
@@ -371,10 +454,17 @@ html[data-refract="true"] .stats-glass {
   .liquid-card::after {
     display: none;
   }
+
+  .liquid-regular::before,
+  .liquid-btn-secondary::before,
+  .stats-glass::before,
+  .liquid-card::before {
+    display: none;
+  }
 }
 
 /* ================================================
-   Section 12 -- No backdrop-filter support (~3%)
+   Section 15 -- No backdrop-filter support (~3%)
    Solid semi-transparent background fallback for
    browsers without backdrop-filter support.
    ================================================ */
