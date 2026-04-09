@@ -115,19 +115,24 @@
   /* full: use border-radius: 50% -- no mask needed */
   --squircle-mask-full: none;
 
-  /* Liquid Glass -- Regular material (light mode) */
-  --liquid-bg: rgba(255, 255, 255, 0.18);
+  /* Liquid Glass -- Regular material (light mode)
+     Tuned for visibility on white / near-white section backgrounds.
+     --liquid-bg raised to 0.42 so the frosted surface is self-evident.
+     --liquid-shadow-outer raised to 0.16 for visible depth.
+     --liquid-border-top shifted to a subtle grey tint so the rim highlight
+     is visible even against pure white. */
+  --liquid-bg: rgba(255, 255, 255, 0.42);
   --liquid-blur-sm: 16px;
   --liquid-blur-md: 24px;
   --liquid-blur-lg: 40px;
   --liquid-blur-xl: 60px;
   --liquid-saturate: 180%;
   --liquid-brightness: 108%;
-  --liquid-border-top: rgba(255, 255, 255, 0.9);
-  --liquid-border-bottom: rgba(255, 255, 255, 0.35);
-  --liquid-shadow-outer: 0 16px 40px rgba(20, 30, 60, 0.12);
-  --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+  --liquid-border-top: rgba(220, 225, 235, 0.7);
+  --liquid-border-bottom: rgba(200, 210, 225, 0.25);
+  --liquid-shadow-outer: 0 16px 40px rgba(20, 30, 60, 0.16);
+  --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(200, 210, 225, 0.15);
 
   /* Motion tokens */
   --ease-liquid: cubic-bezier(0.2, 0, 0, 1);
@@ -298,6 +303,14 @@
   --spacing-gutter-mobile: var(--grid-gutter-mobile);
   --spacing-gutter-tablet: var(--grid-gutter-tablet);
   --spacing-gutter-desktop: var(--grid-gutter-desktop);
+}
+
+@layer utilities {
+  /* Squircle-safe border: inset box-shadow instead of border (which gets clipped by mask-image).
+     See squircles.css anti-pattern docs. */
+  .border-inset-glass {
+    box-shadow: inset 0 0 0 1px var(--color-glass-border);
+  }
 }
 
 @layer base {
