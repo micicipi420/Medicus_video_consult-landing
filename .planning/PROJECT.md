@@ -13,7 +13,7 @@
 ## Current State
 
 **Shipped:** v3.2 Build Pipeline & Chrome Partials (2026-04-08) — latest
-**In progress:** Nothing — awaiting next milestone scoping via `/gsd-new-milestone`
+**In progress:** v4.0 Liquid Design System — questioning → research → requirements → roadmap (started 2026-04-09)
 **Codebase:** 6 production pages + 404 with shared chrome extracted to `partials/*.html` (single source of truth via POSIX-sh splicer, byte-identity gate enforced at commit time by pre-commit hook), `make build` canonical entry point, `docs/BUILD.md` contributor reference, full favicon set (ico/svg/apple-touch-icon/webmanifest) with 4 `<link>` tags in every page, 404 H1 sized to fit 320px mobile at the source (not via `overflow-x: clip` safety net), checkup.html "за 1–2 дня" range bound as single `whitespace-nowrap` unit across all viewports, browser console silent on first load of all 6 pages, full SEO/a11y baseline, vertical rhythm token system, mobile-first overflow safety net
 **Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
@@ -104,7 +104,12 @@
 
 ### Active
 
-- (empty — next milestone not yet scoped)
+**v4.0 Liquid Design System** (requirements being defined):
+- Responsive grid foundation — 12/8/2-3 col (desktop/tablet/mobile), все элементы на 6 страницах привязаны к сетке
+- Squircle primitives — universal replacement всех border-radius на superellipse shapes (кнопки, карточки, инпуты, badge, nav, mobile menu, form, hero, avatars, flags)
+- Liquid Design tokens & компоненты — specular highlights, refraction gradients, real-time blur, Liquid materials под Apple HIG iOS 26 / macOS Tahoe
+- Design system документация — `docs/DESIGN-SYSTEM.md` + возможно визуальный reference styleguide page
+- Page migration — новый визуальный язык применён ко всем 6 страницам через партиалы
 
 ### Out of Scope
 
@@ -117,6 +122,25 @@
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
 - A/B тестирование — требует серверную инфраструктуру, преждевременно
+
+## Current Milestone: v4.0 Liquid Design System
+
+**Goal:** Переработать визуальный язык всех 6 страниц под Apple Liquid Design — responsive grid foundation, squircle primitives вместо всех rounded rectangles, Liquid Glass материалы/highlights/refraction во всех поверхностях, документированная дизайн-система.
+
+**Target features:**
+- **Grid foundation** — responsive 12/8/2-3 col система (desktop/tablet/mobile), CSS grid tokens в theme.css, все секции и элементы на всех 6 страницах привязаны к колонкам
+- **Squircle primitives** — universal replacement всех border-radius на superellipse shapes. Кнопки (CTA/secondary/icon), карточки, инпуты, badge'и, nav pill, mobile menu, form container, hero-иллюстрации, photo-avatars, flag-иконки. Implementation technique TBD в research-фазе
+- **Liquid Design tokens & компоненты** — specular highlights, refraction gradients, real-time/динамический blur, Liquid materials из Apple HIG iOS 26 / macOS Tahoe. Новые CSS tokens в theme.css + Tailwind `@theme inline`
+- **Design system документация** — `docs/DESIGN-SYSTEM.md` + возможно визуальный reference styleguide page с инвентарём компонентов
+- **Page migration** — применить новый визуальный язык ко всем 6 страницам (index, online-consultations, treatment-abroad, checkup, contacts, 404) через партиалы где возможно
+
+**Key context:**
+- **Perf budget relaxed:** v4.0 осознанно отменяет v1.4 constraint "max 2 glass elements per viewport, blur ≤12px". Budget Android (доминирующее устройство ЦА 45+ в KZ) получит worse experience — это сознательный trade-off в пользу визуальной планки. Полное обоснование залогировано в Key Decisions
+- **References:** iOS 26 / macOS Tahoe (Liquid Glass OS), apple.com marketing, Apple HIG docs (developer.apple.com), Linear / Vercel / Stripe (web Apple-idiom adaptation)
+- **Squircle implementation:** technique TBD в research-фазе — кандидаты: CSS `corner-shape` (experimental), SVG clipPath, CSS `mask-image`, или hybrid с graceful degradation. Research обязателен
+- **Stack constraint:** zero-Node сохраняется — Tailwind v4 standalone CLI, vanilla JS, никаких фреймворков
+- **Build pipeline:** v3.2 партиалы + POSIX-sh splicer + byte-identity pre-commit hook сохраняются и используются для multi-page миграции
+- **Grid convention:** 8-col tablet (не 6, не 12) — подтверждено user intent на kickoff, зафиксировано как project convention
 
 ## Shipped: v3.2 Build Pipeline & Chrome Partials (2026-04-08)
 - 2 phases (39, 40), 6 plans, 32 commits, 20 source files changed (+891/-69)
@@ -215,6 +239,10 @@
 | Hand-download Tilda production PNG once, commit derivatives, forbid runtime hotlinking | Supply-chain hygiene: the downloaded PNG source is logged with SHA256 in the summary, derivatives (ico/apple-touch/svg) ship as permanent assets. No runtime dependency on Tilda CDN, no external URL in any `<link>` tag | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
 | Python Pillow as ImageMagick fallback for one-shot raster pipeline | ImageMagick was not installed and adds a heavy dependency. Pillow 11.3.0 was already present, produces real multi-size ICO via `Image.save(sizes=[(16,16),(32,32),(48,48)])`, and is dev-only (not a runtime dep) | ✓ Good — v3.2 (Phase 40, COSMETIC-02) |
 | Tailwind `whitespace-nowrap` span for Russian numeric range binding | Alternative was `&nbsp;` entity glue inside the fragment (fragile, hard to audit), or a `<span style="white-space:nowrap">` inline style (inconsistent with utility-first CSS). Tailwind class is auditable via grep, no stylesheet pollution, and the generated CSS rule emits only when used | ✓ Good — v3.2 (Phase 40, COSMETIC-03) |
+| **v4.0 Liquid Design System pivot → Major version bump** | После v3.2 codebase в здоровом состоянии (chrome unified via партиалы, vertical rhythm tokens, WCAG AA, build pipeline + byte-identity hook). User (2026-04-09) запросил фундаментальный pivot визуального языка: grid foundation (12/8/2-3) + universal squircles (все rounded rectangles) + Apple Liquid Design tokens/components + design system docs. Scope — не minor refinement, а полная эволюция визуального паттерна. Major version bump честно отражает глубину работы и объём миграции | Expected good — v4.0 (milestone kickoff 2026-04-09) |
+| **v4.0 supersedes v1.4 GPU budget constraint** — relax "max 2 glass elements per viewport, blur ≤12px" everywhere | Apple Liquid Glass (iOS 26 / macOS Tahoe) — real-time refraction, specular highlights, dynamic blur — несовместим с v1.4 лимитом. User (2026-04-09) принял осознанный trade-off: визуальная планка нового дизайн-языка приоритетнее производительности на budget Android. ЦА 45+ в KZ частично сидит на старом железе и получит worse experience — это **известный и принятый риск**. Revisit policy: если post-ship телеметрия покажет массовый FPS < 30 на реальных устройствах, открываем v4.x minor milestone с graceful degradation. До тех пор — полный Liquid Glass на всех viewport'ах | Expected neutral — v4.0 (milestone kickoff 2026-04-09) |
+| **Universal squircle replacement — все rounded rectangles → superellipse** | User (2026-04-09) явно запросил "абсолютно всё" — кнопки, карточки, инпуты, badge, nav, mobile menu, form, hero, avatars, flags. Альтернатива (selective replacement — только primary surfaces) была отклонена: частичная замена ломает визуальную когерентность Liquid языка. Implementation technique TBD в research-фазе (CSS `corner-shape` экспериментальный, SVG clipPath / CSS mask / hybrid — кандидаты) | Expected good — v4.0 (milestone kickoff 2026-04-09) |
+| **8-column tablet grid (не 6, не 12)** | User explicitly chose 8 columns for tablet breakpoint при 12 desktop / 2-3 mobile. 8 — необычный выбор (6 или 8 встречаются, 12 доминирует), но user intent фиксируется как project convention: не challenge, не normalize. Зафиксировано на milestone kickoff чтобы избежать дрейфа при planning/execution | Expected good — v4.0 (milestone kickoff 2026-04-09) |
 
 ## Evolution
 
@@ -234,4 +262,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 — milestone v3.2 Build Pipeline & Chrome Partials shipped and archived*
+*Last updated: 2026-04-09 — milestone v4.0 Liquid Design System kickoff (questioning → research → requirements → roadmap)*
