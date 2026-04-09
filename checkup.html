@@ -135,12 +135,12 @@
 
     <!-- SECTION 1 — HERO -->
     <section class="hero relative min-h-section-hero-medium flex items-center justify-center pt-section-pt pb-section-pb lg:pt-section-pt-lg" id="hero-checkup">
-      <div class="container mx-auto px-4 lg:px-6 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
           <!-- Left Content -->
-          <div class="hero__content animate-fade-up max-w-2xl">
-            <div class="glass-badge inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+          <div class="hero__content animate-fade-up max-w-2xl md:col-span-8 lg:col-span-6">
+            <div class="glass-badge inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue" aria-hidden="true">
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
@@ -160,11 +160,11 @@
             <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">Комплексный чек-ап в&nbsp;ведущих клиниках Южной Кореи и&nbsp;Турции. Мы&nbsp;берём&nbsp;на&nbsp;себя всё &mdash;от&nbsp;визы до&nbsp;перевода результатов. Вам&nbsp;остаётся только приехать.</p>
 
             <div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
-              <a href="#form-checkup" class="btn-primary w-full sm:w-auto bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-8 py-4 rounded-3xl font-semibold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 group text-lg">
+              <a href="#form-checkup" class="liquid-btn-primary squircle-md w-full sm:w-auto px-8 py-4 flex items-center justify-center gap-2 group text-lg">
                 Подобрать программу
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </a>
-              <a href="#programs-korea" class="btn-secondary w-full sm:w-auto bg-white/50 backdrop-blur-[20px] text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-glass-border text-lg">
+              <a href="#programs-korea" class="liquid-btn-secondary squircle-md w-full sm:w-auto px-8 py-4 text-lg">
                 Смотреть программы
               </a>
             </div>
@@ -173,8 +173,9 @@
           </div>
 
           <!-- Right Content - Hero Image -->
-          <div class="relative">
-            <div class="rounded-[3rem] overflow-hidden shadow-glass-lg border-[8px] border-white/40 bg-white/20">
+          <div class="relative md:col-span-8 lg:col-span-6">
+            <div class="liquid-card-wrap">
+              <div class="squircle-xl overflow-hidden">
               <img
                 src="img/hero-checkup.webp"
                 width="1080" height="720"
@@ -182,6 +183,7 @@
                 class="w-full h-[400px] lg:h-[500px] object-cover"
                 loading="eager"
               />
+              </div>
             </div>
           </div>
         </div>
@@ -190,23 +192,27 @@
 
     <!-- Stats Bar -->
     <section class="stats relative py-12 z-20" aria-label="Ключевые цифры">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="stats__grid animate-stagger grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="stat-card relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="liquid-card-wrap">
+          <div class="stats-glass squircle-xl">
+          <div class="stats__grid animate-stagger grid grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+          <div class="stat-card flex flex-col items-center justify-center p-8">
             <div class="stat-card__number text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue-text relative z-10" data-target="43">0</div>
             <div class="stat-card__label text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">клиники</div>
           </div>
-          <div class="stat-card relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
+          <div class="stat-card flex flex-col items-center justify-center p-8">
             <div class="stat-card__number text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-teal-text relative z-10" data-target="11">0</div>
             <div class="stat-card__label text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">стран</div>
           </div>
-          <div class="stat-card relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
+          <div class="stat-card flex flex-col items-center justify-center p-8">
             <div class="stat-card__number text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-orange-text relative z-10">1&ndash;2</div>
             <div class="stat-card__label text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">дня обследование</div>
           </div>
-          <div class="stat-card relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
+          <div class="stat-card flex flex-col items-center justify-center p-8">
             <div class="stat-card__number text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-green-text relative z-10">ISO</div>
             <div class="stat-card__label text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">27001</div>
+          </div>
+          </div>
           </div>
         </div>
       </div>
@@ -214,218 +220,243 @@
 
     <!-- SECTION 2 — PROBLEM -->
     <section class="section py-16 relative z-10" id="why-checkup">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Почему не&nbsp;стоит ждать симптомов</span></h2>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Большинство серьёзных заболеваний &mdash;онкология, сердечно-сосудистые, эндокринные нарушения &mdash;на&nbsp;ранних стадиях никак себя не&nbsp;проявляют. Комплексный чек-ап&nbsp;проверяет все ключевые системы организма за&nbsp;1&ndash;2&nbsp;дня и&nbsp;выявляет проблемы тогда, когда с&nbsp;ними ещё можно справиться.</p>
 
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="1"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">&laquo;Я&nbsp;нормально себя чувствую&raquo;</h3>
             <p class="text-mu-text-700 font-medium">Именно так говорит большинство людей, у&nbsp;которых потом находят проблему. Чек-ап &mdash;это не&nbsp;про ощущения, а&nbsp;про данные: анализы крови, УЗИ, КТ, МРТ видят то, что вы&nbsp;не&nbsp;чувствуете.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">&laquo;У&nbsp;меня нет времени&raquo;</h3>
             <p class="text-mu-text-700 font-medium">Чек-ап за&nbsp;рубежом &mdash;это не&nbsp;месяцы хождения по&nbsp;кабинетам. Это 1&ndash;2&nbsp;дня по&nbsp;заранее спланированному расписанию: вы&nbsp;приехали, прошли всё, получили результат. Без очередей.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">&laquo;Не&nbsp;знаю, что проверять&raquo;</h3>
             <p class="text-mu-text-700 font-medium">Не&nbsp;нужно&nbsp;знать. Программы чек-апов составлены врачами и&nbsp;покрывают все основные системы: от&nbsp;сердца и&nbsp;сосудов до&nbsp;онкомаркеров. Вы&nbsp;выбираете уровень программы &mdash;остальное уже продумано.</p>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
     <!-- SECTION 3 — WHY ABROAD -->
     <section class="section py-16 relative z-10" id="why-abroad">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Что даёт чек-ап в&nbsp;клинике мирового уровня</span></h2>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Качество чек-апа определяется тремя вещами: оборудование, квалификация врачей и&nbsp;полнота программы. Samsung&nbsp;Medical&nbsp;Center и&nbsp;Severance&nbsp;Hospital &mdash;клиники, которые входят в&nbsp;мировые рейтинги и&nbsp;ежегодно принимают тысячи международных пациентов.</p>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Оборудование последнего поколения</h3>
             <p class="text-mu-text-700 font-medium">Низкодозированная КТ, 3D&nbsp;КТ сосудов сердца, ПЭТ&nbsp;КТ, МРТ/МРА головного мозга &mdash;методы, которые выявляют патологии на&nbsp;самых ранних стадиях.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M5 20c0-5 3-8 7-8s7 3 7 8"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Врачи с&nbsp;международной репутацией</h3>
             <p class="text-mu-text-700 font-medium">Обследование&nbsp;проводят профессора и&nbsp;ведущие специалисты. По&nbsp;результатам &mdash;личная консультация врача: что в&nbsp;норме, что требует внимания, что делать дальше.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Программы, а&nbsp;не&nbsp;отдельные анализы</h3>
             <p class="text-mu-text-700 font-medium">Каждая программа &mdash;это комплекс обследований, составленный так, чтобы ничего не&nbsp;пропустить. От&nbsp;базового скрининга до&nbsp;углублённого обследования с&nbsp;колоноскопией и&nbsp;МРТ.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
-            <div class="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up">
+            <div class="w-14 h-14 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             </div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Скорость и&nbsp;точность</h3>
             <p class="text-mu-text-700 font-medium">Все обследования &mdash;за&nbsp;1&ndash;2&nbsp;дня по&nbsp;заранее составленному расписанию. Результаты &mdash;в&nbsp;день обследования или на&nbsp;следующий день.</p>
           </div>
         </div>
+        </div>
       </div>
     </section>
 
     <!-- SECTION 4 — WHY MEDICUSUNION -->
     <section class="section py-16 relative z-10" id="why-us">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Не просто посредник &mdash; медицинская платформа</span></h2>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Можно обратиться в&nbsp;клинику напрямую. Но&nbsp;тогда&nbsp;вы&nbsp;сами организуете визу, перелёт, трансфер, проживание, переписку с&nbsp;клиникой на&nbsp;английском, перевод результатов. И&nbsp;если&nbsp;обследование&nbsp;выявит проблему &mdash;вы&nbsp;с&nbsp;ней один на&nbsp;один. MedicusUnion &mdash;это другой подход.</p>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">01</div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Организация от&nbsp;А&nbsp;до&nbsp;Я</h3>
             <p class="text-mu-text-700 font-medium">Запись в&nbsp;клинику, визовая поддержка, авиабилеты, трансфер из&nbsp;аэропорта, проживание, личный переводчик-сопровождающий на&nbsp;всех этапах.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">02</div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Личный кабинет и&nbsp;приложение</h3>
             <p class="text-mu-text-700 font-medium">Все результаты обследования &mdash;в&nbsp;вашем личном кабинете: на&nbsp;русском языке, в&nbsp;цифровом виде. DICOM-просмотрщик для снимков, переведённые заключения врачей.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">03</div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Страховочная сетка: 43&nbsp;клиники, 11&nbsp;стран</h3>
             <p class="text-mu-text-700 font-medium">Если чек-ап&nbsp;выявит проблему &mdash;вам не&nbsp;нужно начинать поиск с&nbsp;нуля. Мы&nbsp;организуем лечение в&nbsp;той&nbsp;же клинике или в&nbsp;любой другой из&nbsp;нашей сети.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">04</div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Юридическая надёжность</h3>
             <p class="text-mu-text-700 font-medium">MedicusUnion GmbH&nbsp;зарегистрирована в&nbsp;Австрии. Офис в&nbsp;Казахстане &mdash;резидент Astana&nbsp;Hub. Договор, чеки, прозрачные условия. Сертификация ISO&nbsp;27001.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">05</div>
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-2">Два направления &mdash;под ваш бюджет</h3>
             <p class="text-mu-text-700 font-medium">Южная Корея &mdash;максимально глубокое обследование в&nbsp;клиниках мирового топ-уровня. Турция &mdash;качественный чек-ап ближе и&nbsp;доступнее по&nbsp;цене.</p>
           </div>
+        </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 5 — PROGRAMS: SOUTH KOREA -->
     <section class="section py-16 relative z-10" id="programs-korea">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Чек-ап в&nbsp;Южной Корее</span></h2>
         <p class="text-mu-blue-text font-bold text-lg text-center mb-4">Samsung&nbsp;Medical&nbsp;Center &middot; Severance&nbsp;Hospital &mdash;ведущие клиники Сеула с&nbsp;международной аккредитацией</p>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Samsung&nbsp;Medical&nbsp;Center &mdash;№1 в&nbsp;Азии по&nbsp;онкологии. Severance&nbsp;Hospital &mdash;один из&nbsp;старейших университетских госпиталей Кореи, основан в&nbsp;1885&nbsp;году. Оба центра ежегодно принимают десятки тысяч международных пациентов.</p>
 
         <h3 class="text-2xl font-extrabold text-mu-text-900 mb-6">Комплексные программы</h3>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Базовая</span></span>
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 mb-12">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Базовая</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$760 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$810 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Анализы крови (метаболизм, онкомаркеры, гепатит, инфекции), анализ мочи и&nbsp;кала, офтальмолог, аудиометрия, ЭКГ, флюорография, УЗИ брюшной полости, стоматолог, маммография (жен.&nbsp;35+), гинекология (жен.), консультация врача.</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Primary</span></span>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Primary</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;400 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$1&nbsp;750 (жен.) &middot; 3&nbsp;часа</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Всё из&nbsp;базовой + расширенные анализы крови (щитовидная железа, липидный профиль, диабет, анемия, половые гормоны, витамин&nbsp;D), гастроскопия с&nbsp;седацией, УЗИ сонных артерий, анализ состава тела.</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Executive</span></span>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Executive</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$2&nbsp;270 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$2&nbsp;600 (жен.) &middot; 4&nbsp;часа</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Всё из&nbsp;Primary + колоноскопия с&nbsp;седацией, УЗИ сердца, детальные анализы крови (электролиты, маркеры костной ткани, B12, фолиевая кислота, NT-pro BNP), денситометрия (35+).</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold">Executive on&nbsp;Cancer</span></span>
+          <div class="liquid-card-wrap shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold">Executive on&nbsp;Cancer</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$2&nbsp;150 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$2&nbsp;690 (жен.) &middot; 5&nbsp;часов</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Всё из&nbsp;Executive + КТ&nbsp;брюшной полости и&nbsp;малого таза, низкодозированная КТ&nbsp;лёгких, расширенные анализы на&nbsp;онкомаркеры, УЗИ щитовидной железы. Углублённая проверка на&nbsp;онкологию.</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Премиум</span></span>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Премиум</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$2&nbsp;410 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$2&nbsp;990 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Базовая + всё из&nbsp;Executive, КТ&nbsp;на кальциноз коронарных артерий, КТ&nbsp;брюшной полости, низкодозированная КТ&nbsp;лёгких, колоноскопия с&nbsp;седацией, денситометрия, Exbody (костно-мышечный дисбаланс).</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Платинум</span></span>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Платинум</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$4&nbsp;280 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$4&nbsp;860 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Всё из&nbsp;Премиум + МРТ/МРА головного мозга, УЗИ сонных артерий, УЗИ сердца.</p>
           </div>
+        </div>
 
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] animate-fade-up flex flex-col md:col-span-2 lg:col-span-3">
-            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold">Ноблесс</span></span>
+          <div class="liquid-card-wrap shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] md:col-span-8 lg:col-span-12"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold">Ноблесс</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$6&nbsp;100 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$6&nbsp;420 (жен.) &middot; 8&nbsp;часов</span></div>
             <p class="text-mu-text-700 font-medium">Максимальная программа. Всё из&nbsp;Платинум + МРТ&nbsp;брюшной полости, 3D&nbsp;КТ сосудов сердца, МРТ&nbsp;предстательной железы (муж.), ПЭТ&nbsp;КТ (40+), стоматологический осмотр, панорамный снимок зубов, аудиометрия.</p>
-          </div>
+          </div></div>
         </div>
 
         <h3 class="text-2xl font-extrabold text-mu-text-900 mb-6">Для подростков (13&ndash;18 лет)</h3>
-        <div class="grid md:grid-cols-1 max-w-xl gap-6 mb-12">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Подростковая</span></span>
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 mb-12">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Подростковая</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$440 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$475 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium">Анализы крови (анемия, метаболизм, функция печени/почек/щитовидной железы, гепатит, инфекции), измерение давления, анализ мочи, острота зрения и&nbsp;слуха, ЭКГ, флюорография, УЗИ брюшной полости.</p>
           </div>
         </div>
+        </div>
 
         <h3 class="text-2xl font-extrabold text-mu-text-900 mb-3">Узкоспециализированные пакеты</h3>
         <p class="text-mu-text-700 font-medium mb-6">Базовая программа&nbsp;включена во&nbsp;все пакеты.</p>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Пищеварительная система</span></span>
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Пищеварительная система</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;500 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$1&nbsp;560 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">КТ&nbsp;брюшной полости, колоноскопия с&nbsp;седацией.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Сердечно-сосудистая система</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Сердечно-сосудистая система</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;800 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$1&nbsp;850 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">3D&nbsp;КТ сосудов сердца, УЗИ сердца и&nbsp;сонных артерий, измерение стеноза и&nbsp;эластичности артерий, центральное аортальное давление.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Дыхательная система</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Дыхательная система</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;260 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$1&nbsp;350 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Низкодозированная КТ&nbsp;лёгких, онкомаркер рака лёгких, анализ на&nbsp;аллергию (MAST/61), функция лёгких.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Головной мозг</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Головной мозг</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$2&nbsp;400 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$2&nbsp;450 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">МРТ + МРА головного мозга, УЗИ сонных артерий, измерение стеноза и&nbsp;эластичности артерий.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Для будущих мам</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Для будущих мам</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;200 <span class="text-base font-bold text-mu-text-700">(жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">УЗИ малого таза, антимюллеров гормон, антитела к&nbsp;краснухе, тесты на&nbsp;рак яичников (HE4, ROMA).</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Для женщин</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Для женщин</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;735 <span class="text-base font-bold text-mu-text-700">(жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">УЗИ щитовидной железы, молочных желёз, малого таза, ВПЧ, денситометрия, женские гормоны, тесты на&nbsp;рак яичников.</p>
           </div>
+        </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 6 — PROGRAMS: TURKEY -->
     <section class="section py-16 relative z-10" id="programs-turkey">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Чек-ап в&nbsp;Турции</span></h2>
         <p class="text-mu-blue-text font-bold text-lg text-center mb-4">Liv&nbsp;Hospital &middot; Medicana &mdash;ведущие клиники Стамбула с&nbsp;аккредитацией JCI</p>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Турция &mdash;одно из&nbsp;самых популярных направлений медицинского туризма в&nbsp;мире. Ближе чем Корея, доступнее по&nbsp;цене, при этом уровень оборудования и&nbsp;врачей в&nbsp;аккредитованных клиниках соответствует европейским стандартам.</p>
 
         <!-- What's included -->
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass mb-8">
+        <div class="liquid-card-wrap mb-8"><div class="liquid-card squircle-xl p-8">
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-4">Что включено во&nbsp;все программы</h3>
           <ul class="grid sm:grid-cols-2 gap-3" role="list">
             <li class="flex items-start gap-3">
@@ -458,32 +489,37 @@
             </li>
           </ul>
         </div>
+      </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Лабораторный</span></span>
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 mb-8">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Лабораторный</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$350</div>
             <p class="text-mu-text-700 font-medium flex-grow">Расширенные анализы крови.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Silver</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Silver</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$1&nbsp;100 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$1&nbsp;200 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Анализы + УЗИ + базовые обследования.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Gold</span></span>
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold text-mu-accent-blue-text">Gold</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$2&nbsp;100 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$2&nbsp;200 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Silver + расширенная диагностика.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] animate-fade-up flex flex-col">
-            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-4 py-1.5 rounded-full shadow-sm w-fit mb-4"><span class="text-sm font-bold">Platinum</span></span>
+        </div>
+          <div class="liquid-card-wrap shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] md:col-span-4 lg:col-span-3"><div class="liquid-card squircle-xl p-8 animate-fade-up flex flex-col">
+            <span class="inline-flex items-center gap-2 bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white squircle-full px-4 py-1.5 w-fit mb-4"><span class="text-sm font-bold">Platinum</span></span>
             <div class="text-2xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-3">от&nbsp;~$3&nbsp;100 <span class="text-base font-bold text-mu-text-700">(муж.) / ~$3&nbsp;200 (жен.)</span></div>
             <p class="text-mu-text-700 font-medium flex-grow">Полный комплекс обследований.</p>
           </div>
         </div>
+        </div>
 
         <div class="text-center">
-          <a href="#form-checkup" class="btn-primary bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2">
+          <a href="#form-checkup" class="liquid-btn-primary squircle-md px-10 py-5 font-bold text-lg inline-flex items-center gap-2">
             Подобрать программу
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
@@ -493,58 +529,65 @@
 
     <!-- SECTION 7 — HOW IT WORKS -->
     <section class="section py-16 relative z-10" id="how-it-works">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-12 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">От заявки до результатов &mdash; 5&nbsp;шагов</span></h2>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up text-center">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up text-center">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">01</div>
             <h3 class="text-lg font-extrabold text-mu-text-900 mb-2">Оставьте заявку</h3>
             <p class="text-mu-text-700 font-medium text-sm">Мы&nbsp;свяжемся с&nbsp;вами, уточним цели обследования, возраст, историю здоровья &mdash;и&nbsp;подберём программу и&nbsp;направление.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up text-center">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up text-center">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">02</div>
             <h3 class="text-lg font-extrabold text-mu-text-900 mb-2">Согласование и&nbsp;подготовка</h3>
             <p class="text-mu-text-700 font-medium text-sm">Фиксируем программу, дату, организуем визовую поддержку, бронируем слот в&nbsp;клинике, помогаем с&nbsp;авиабилетами и&nbsp;проживанием.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up text-center">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up text-center">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">03</div>
             <h3 class="text-lg font-extrabold text-mu-text-900 mb-2">Прилёт и&nbsp;трансфер</h3>
             <p class="text-mu-text-700 font-medium text-sm">Вас встречают в&nbsp;аэропорту, доставляют в&nbsp;отель или в&nbsp;клинику. С&nbsp;вами &mdash;личный переводчик-сопровождающий.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up text-center">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up text-center">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">04</div>
             <h3 class="text-lg font-extrabold text-mu-text-900 mb-2">Обследование</h3>
             <p class="text-mu-text-700 font-medium text-sm">Все процедуры &mdash;по&nbsp;расписанию, без очередей. Сопровождающий&nbsp;рядом на&nbsp;каждом этапе. Консультация врача по&nbsp;результатам.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up text-center">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-4"><div class="liquid-card squircle-xl p-8 animate-fade-up text-center">
             <div class="text-4xl font-extrabold bg-gradient-to-r from-mu-cta-from to-mu-cta-to bg-clip-text text-transparent mb-4" aria-hidden="true">05</div>
             <h3 class="text-lg font-extrabold text-mu-text-900 mb-2">Результаты и&nbsp;дальнейшие шаги</h3>
             <p class="text-mu-text-700 font-medium text-sm">Все заключения, снимки и&nbsp;анализы &mdash;в&nbsp;личном кабинете и&nbsp;приложении MedicusUnion, с&nbsp;переводом на&nbsp;русский. Если нужно лечение &mdash;организуем.</p>
           </div>
+        </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 8 — B2B -->
     <section class="section py-16 relative z-10" id="b2b">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Чек-апы для бизнеса</span></h2>
         <p class="text-mu-blue-text font-bold text-lg text-center mb-4">Корпоративные программы обследования для топ-менеджмента и&nbsp;клиентов вашей компании</p>
         <p class="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">Здоровье ключевых людей &mdash;это бизнес-риск, который можно контролировать. MedicusUnion&nbsp;организует корпоративные чек-апы в&nbsp;Samsung&nbsp;Medical&nbsp;Center, Severance&nbsp;Hospital и&nbsp;клиниках Стамбула с&nbsp;полным сопровождением.</p>
 
-        <div class="grid md:grid-cols-2 gap-6 mb-8">
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 mb-8">
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-6"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Для ваших сотрудников</h3>
             <p class="text-mu-text-700 font-medium">Чек-ап для топ-менеджмента и&nbsp;ключевых специалистов &mdash;как часть корпоративной программы заботы о&nbsp;здоровье. Покрывает то, что не&nbsp;покрывает стандартный ДМС: онкоскрининг, кардиодиагностику, МРТ, колоноскопию.</p>
           </div>
-          <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass animate-fade-up">
+        </div>
+          <div class="liquid-card-wrap md:col-span-4 lg:col-span-6"><div class="liquid-card squircle-xl p-8 animate-fade-up">
             <h3 class="text-xl font-extrabold text-mu-text-900 mb-3">Для ваших клиентов</h3>
             <p class="text-mu-text-700 font-medium">Чек-ап в&nbsp;клинике мирового уровня &mdash;как статусный корпоративный подарок. Запоминается, ценится и&nbsp;работает на&nbsp;лояльность сильнее любого стандартного бонуса.</p>
           </div>
         </div>
+        </div>
 
-        <div class="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass mb-8">
+        <div class="liquid-card-wrap mb-8"><div class="liquid-card squircle-xl p-8">
           <h3 class="text-xl font-extrabold text-mu-text-900 mb-4">Почему компании&nbsp;выбирают MedicusUnion</h3>
           <ul class="space-y-3" role="list">
             <li class="flex items-start gap-3">
@@ -569,9 +612,10 @@
             </li>
           </ul>
         </div>
+      </div>
 
         <div class="text-center">
-          <a href="#form-checkup" class="btn-primary bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2">
+          <a href="#form-checkup" class="liquid-btn-primary squircle-md px-10 py-5 font-bold text-lg inline-flex items-center gap-2">
             Обсудить корпоративную программу
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
@@ -581,11 +625,11 @@
 
     <!-- SECTION 9 — FAQ -->
     <section class="section faq py-16 relative z-10" id="faq-checkup">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="section-heading text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-8 text-center"><span class="text-brand-gradient bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Частые вопросы</span></h2>
 
         <div class="faq__list max-w-3xl mx-auto space-y-4 animate-fade-up">
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Нужна&nbsp;ли виза в&nbsp;Южную Корею?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -595,7 +639,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Нужна&nbsp;ли виза в&nbsp;Турцию?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -605,7 +649,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Сколько дней нужно закладывать на&nbsp;поездку?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -615,7 +659,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Что если чек-ап&nbsp;выявит проблему?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -625,7 +669,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Будет&nbsp;ли переводчик?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -635,7 +679,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Как я&nbsp;получу результаты?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -645,7 +689,7 @@
             </div>
           </div>
 
-          <div class="faq__item bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden">
+          <div class="faq__item liquid-regular squircle-md overflow-hidden">
             <button class="faq__question w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80" type="button" aria-expanded="false">
               Можно&nbsp;ли добавить отдельные обследования к&nbsp;программе?
               <svg class="faq__question-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -660,11 +704,11 @@
 
     <!-- SECTION 10 — FORM -->
     <section class="section py-16 relative z-10" id="form-checkup">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
           <!-- Left: info -->
-          <div class="animate-fade-up">
+          <div class="animate-fade-up md:col-span-4 lg:col-span-5">
             <h2 class="text-3xl md:text-4xl font-extrabold text-mu-text-900 mb-6 leading-tight">Узнайте всё о&nbsp;своём здоровье за&nbsp;1&ndash;2&nbsp;дня</h2>
             <p class="text-xl text-mu-text-700 font-medium leading-relaxed mb-8">Оставьте заявку &mdash;мы&nbsp;свяжемся с&nbsp;вами, поможем выбрать программу и&nbsp;направление, и&nbsp;организуем чек-ап полностью. Бесплатная консультация, без обязательств.</p>
             <ul class="space-y-4 mb-8" role="list">
@@ -684,7 +728,7 @@
           </div>
 
           <!-- Right: form -->
-          <div class="form-wrapper bg-white/70 backdrop-blur-3xl rounded-[3rem] p-8 border border-white/60 relative overflow-hidden shadow-glass-lg animate-fade-right">
+          <div class="liquid-card-wrap animate-fade-right md:col-span-4 lg:col-span-7"><div class="liquid-card squircle-xl p-8 relative overflow-hidden">
             <!-- Success overlay -->
             <div class="form__success absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8" id="form-success" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="form__success-icon" aria-hidden="true">
@@ -698,19 +742,19 @@
             <form class="contact-form space-y-6" novalidate>
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
-                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
+                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="Например, Айгуль" required autocomplete="name">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
-                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-interest">Направление</label>
-                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none" required>
+                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-glass-inner appearance-none" required>
                   <option value="" disabled selected>Выберите направление</option>
                   <option value="korea">Южная Корея</option>
                   <option value="turkey">Турция</option>
@@ -721,7 +765,7 @@
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-description">Комментарий <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
-                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="3" placeholder="Возраст, интересующая программа, вопросы"></textarea>
+                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner" rows="3" placeholder="Возраст, интересующая программа, вопросы"></textarea>
               </div>
 
               <!-- Honeypot -->
@@ -730,7 +774,7 @@
                 <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
               </div>
 
-              <button class="form__submit btn-primary w-full bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white py-4 rounded-2xl font-bold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
+              <button class="form__submit liquid-btn-primary squircle-md w-full py-4 font-bold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8" type="submit">
                 Подобрать программу
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m22 2-7 20-4-9-9-4Z"/>
@@ -742,7 +786,8 @@
               <p class="text-xs text-mu-text-500 font-medium text-center">Цены&nbsp;указаны ориентировочно в&nbsp;USD и&nbsp;могут меняться в&nbsp;зависимости от&nbsp;курса на&nbsp;дату обследования.</p>
               <div class="form__error" role="alert" aria-live="polite" hidden></div>
             </form>
-          </div>
+          </div></div>
+        </div>
 
         </div>
       </div>
@@ -750,20 +795,21 @@
 
     <!-- Cross-sell CTA -->
     <section class="section py-16 relative z-10" id="final-cta-checkup">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="cta-card bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-12 lg:p-20 text-center border border-white/60 shadow-glass-lg relative overflow-hidden animate-scale-in">
+      <div class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="liquid-card-wrap"><div class="liquid-card squircle-xl p-12 lg:p-20 text-center relative overflow-hidden animate-scale-in">
           <h2 class="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-6">Нужна консультация врача, а&nbsp;не&nbsp;чек-ап?</h2>
           <p class="text-xl text-mu-text-700 font-medium mb-10 max-w-2xl mx-auto">Получите второе мнение европейского специалиста по&nbsp;видео &mdash;без перелёта, от&nbsp;450&nbsp;&euro;, за&nbsp;5&nbsp;дней.</p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="online-consultations.html" class="btn-primary bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2">
+            <a href="online-consultations.html" class="liquid-btn-primary squircle-md px-10 py-5 font-bold text-lg inline-flex items-center gap-2">
               Онлайн-консультации
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
-            <a href="treatment-abroad.html" class="btn-secondary bg-white/60 backdrop-blur-xl text-mu-text-900 px-10 py-5 rounded-3xl font-bold border border-glass-border hover:bg-white/80 transition-all shadow-glass-sm text-lg inline-flex items-center gap-2">
+            <a href="treatment-abroad.html" class="liquid-btn-secondary squircle-md px-10 py-5 font-bold text-lg inline-flex items-center gap-2">
               Лечение за&nbsp;рубежом
             </a>
           </div>
-        </div>
+        </div></div>
+      </div>
       </div>
     </section>
 
