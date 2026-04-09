@@ -159,8 +159,8 @@ Plans:
   5. make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 45-01-PLAN.md — TBD
-- [ ] 45-02-PLAN.md — TBD
+- [ ] 45-01-PLAN.md — Migrate 404.html main content (grid wrapper + liquid card + squircle CTA)
+- [ ] 45-02-PLAN.md — Migrate contacts.html main content (grid + liquid glass cards/form + squircle inputs/buttons)
 **UI hint**: yes
 
 ### Phase 46: Service Pages
