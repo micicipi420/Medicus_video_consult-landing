@@ -93,11 +93,38 @@
 
 ## Traceability
 
-_Populated by roadmapper after phase assignment._
-
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| — | — | — | — |
+| GRID-01 | Phase 41 (tokens) + Phases 45-47 (applied) | — | Pending |
+| GRID-02 | Phase 47 | — | Pending |
+| SQUIRCLE-01 | Phase 42 | — | Pending |
+| SQUIRCLE-02 | Phase 42 | — | Pending |
+| SQUIRCLE-03 | Phase 41 | — | Pending |
+| SQUIRCLE-04 | Phase 42 | — | Pending |
+| LIQUID-01 | Phase 43 | — | Pending |
+| LIQUID-02 | Phase 43 | — | Pending |
+| LIQUID-03 | Phase 43 | — | Pending |
+| LIQUID-04 | Phase 43 | — | Pending |
+| LIQUID-05 | Phase 43 | — | Pending |
+| LIQUID-06 | Phase 43 | — | Pending |
+| LIQUID-07 | Phase 43 | — | Pending |
+| DIFF-01 | Phase 43 | — | Pending |
+| DIFF-02 | Phase 43 | — | Pending |
+| DIFF-03 | Phase 43 | — | Pending |
+| CHROME-01 | Phase 44 | — | Pending |
+| CHROME-02 | Phase 44 | — | Pending |
+| MIGRATE-01 | Phase 45 | — | Pending |
+| MIGRATE-02 | Phase 45 | — | Pending |
+| MIGRATE-03 | Phase 46 | — | Pending |
+| MIGRATE-04 | Phase 46 | — | Pending |
+| MIGRATE-05 | Phase 46 | — | Pending |
+| MIGRATE-06 | Phase 47 | — | Pending |
+| VERIFY-01 | Phase 48 | — | Pending |
+| VERIFY-02 | Phase 48 | — | Pending |
+| VERIFY-03 | Phase 48 | — | Pending |
+| VERIFY-04 | Phase 48 | — | Pending |
+| DOCS-01 | Phase 49 | — | Pending |
+| DOCS-02 | Phase 49 | — | Pending |
 
 ---
 
