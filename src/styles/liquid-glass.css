@@ -85,7 +85,9 @@
 
 .liquid-card-wrap {
   box-shadow: var(--liquid-shadow-outer);
-  border-radius: 24px; /* matches squircle-lg fallback radius */
+  /* No border-radius or background — the inner squircle child handles shape.
+     A visible border-radius here creates white "ear" artifacts where the
+     wrapper's rounded corner doesn't match the SVG mask's superellipse curve. */
 }
 
 /* ================================================
