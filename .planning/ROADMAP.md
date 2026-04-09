@@ -143,8 +143,8 @@ Plans:
   5. Opening any of the 6 pages in browser shows glass-styled header, footer, mobile menu, and sticky bar with no visual regression in existing content areas
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 44-01-PLAN.md — SVG defs partial + splicer integration + BUILD markers on all 6 pages
+- [ ] 44-02-PLAN.md — Upgrade 4 chrome partials with glass/squircle classes + header scroll state token overrides
 **UI hint**: yes
 
 ### Phase 45: Simple Pages (404 + Contacts)
@@ -159,8 +159,8 @@ Plans:
   5. make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 45-01-PLAN.md — TBD
+- [ ] 45-02-PLAN.md — TBD
 **UI hint**: yes
 
 ### Phase 46: Service Pages
@@ -175,8 +175,8 @@ Plans:
   5. make build exits 0 and byte-identity check passes; all 3 pages render correctly in light and dark mode
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 46-01-PLAN.md — TBD
+- [ ] 46-02-PLAN.md — TBD
 **UI hint**: yes
 
 ### Phase 47: Index Page
@@ -191,8 +191,8 @@ Plans:
   5. Per-page migration gates pass: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0; make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 47-01-PLAN.md — TBD
+- [ ] 47-02-PLAN.md — TBD
 **UI hint**: yes
 
 ### Phase 48: Verification
@@ -206,8 +206,8 @@ Plans:
   4. Toggling prefers-reduced-motion: reduce in browser settings disables specular shimmer, spring animations, and refraction effect while showing static glass appearance -- visually verified on at least 2 pages
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 48-01-PLAN.md — TBD
+- [ ] 48-02-PLAN.md — TBD
 
 ### Phase 49: Documentation
 **Goal**: The v4.0 design system is documented for future contributors, and a live styleguide page proves the 7th-page invariant (a new page can be authored using only documented components and the splicer pipeline)
@@ -219,8 +219,8 @@ Plans:
   3. styleguide.html builds correctly via make build (proving the 7th-page invariant -- splicer handles a new page with only body content + BUILD markers, zero chrome duplication)
 **Plans**: 2 plans
 Plans:
-- [ ] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [ ] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+- [ ] 49-01-PLAN.md — TBD
+- [ ] 49-02-PLAN.md — TBD
 **UI hint**: yes
 
 ## Progress
@@ -246,7 +246,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
 | 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
 | 43. Liquid Glass Primitives | 2/2 | Complete    | 2026-04-09 |
-| 44. Chrome Partials Upgrade | 0/TBD | Not started | - |
+| 44. Chrome Partials Upgrade | 0/2 | Planning complete | - |
 | 45. Simple Pages (404 + Contacts) | 0/TBD | Not started | - |
 | 46. Service Pages | 0/TBD | Not started | - |
 | 47. Index Page | 0/TBD | Not started | - |
