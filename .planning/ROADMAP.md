@@ -191,8 +191,8 @@ Plans:
   5. Per-page migration gates pass: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0; make build exits 0 and byte-identity check passes
 **Plans**: 2 plans
 Plans:
-- [ ] 47-01-PLAN.md — Migrate Hero + Stats + Sections 2-6 (grid, liquid-card, shimmer CTA, grouped stats-glass)
-- [ ] 47-02-PLAN.md — Migrate Sections 7-11 (FAQ, Form, Final CTA) + GRID-02 cross-page verification
+- [x] 47-01-PLAN.md — Migrate Hero + Stats + Sections 2-6 (grid, liquid-card, shimmer CTA, grouped stats-glass)
+- [x] 47-02-PLAN.md — Migrate Sections 7-11 (FAQ, Form, Final CTA) + GRID-02 cross-page verification
 **UI hint**: yes
 
 ### Phase 48: Verification
@@ -249,6 +249,6 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 44. Chrome Partials Upgrade | 2/2 | Complete    | 2026-04-09 |
 | 45. Simple Pages (404 + Contacts) | 2/2 | Complete    | 2026-04-09 |
 | 46. Service Pages | 0/TBD | Not started | - |
-| 47. Index Page | 0/TBD | Not started | - |
+| 47. Index Page | 2/2 | Complete    | 2026-04-09 |
 | 48. Verification | 0/TBD | Not started | - |
 | 49. Documentation | 0/TBD | Not started | - |
