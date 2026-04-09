@@ -58,8 +58,7 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border-top: 1px solid var(--liquid-border-top);
-  border-bottom: 1px solid var(--liquid-border-bottom);
+  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -75,8 +74,7 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border-top: 1px solid var(--liquid-border-top);
-  border-bottom: 1px solid var(--liquid-border-bottom);
+  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -125,8 +123,7 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border-top: 1px solid var(--liquid-border-top);
-  border-bottom: 1px solid var(--liquid-border-bottom);
+  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -154,8 +151,7 @@
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  border-top: 1px solid var(--liquid-border-top);
-  border-bottom: 1px solid var(--liquid-border-bottom);
+  border: none;
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -249,7 +245,53 @@ html[data-refract="true"] .stats-glass {
 }
 
 /* ================================================
-   Section 9 -- Reduced motion
+   Section 9 -- Section tint backgrounds
+   Alternating cool/warm gradient tints give backdrop-filter
+   something to blur against on light backgrounds.
+   Apply to <section> elements:
+     .section-tint-cool  -- blue-green (brand palette)
+     .section-tint-warm  -- peach-amber (complementary)
+     .section-tint-mint  -- green (checkup / health)
+   Tints are very subtle (~3-5% opacity). Dark mode: hidden
+   via .dark selector (dark backgrounds don't need tints).
+   ================================================ */
+
+.section-tint-cool {
+  background: linear-gradient(
+    168deg,
+    rgba(56, 198, 244, 0.06) 0%,
+    rgba(79, 132, 232, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.section-tint-warm {
+  background: linear-gradient(
+    168deg,
+    rgba(255, 162, 92, 0.05) 0%,
+    rgba(245, 0, 87, 0.03) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.section-tint-mint {
+  background: linear-gradient(
+    168deg,
+    rgba(111, 222, 169, 0.06) 0%,
+    rgba(120, 195, 191, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Dark mode: suppress section tints -- dark bg is sufficient */
+.dark .section-tint-cool,
+.dark .section-tint-warm,
+.dark .section-tint-mint {
+  background: none;
+}
+
+/* ================================================
+   Section 10 -- Reduced motion
    Extends existing theme.css reduced-motion guard
    (which already zeroes animation-duration/transition-duration
    and sets --dur-press/hover/sheet/reveal to 0ms).
