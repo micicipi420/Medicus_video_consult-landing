@@ -63,6 +63,8 @@
           mask-image: var(--squircle-mask-md);
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 .squircle-lg {
@@ -71,6 +73,8 @@
           mask-image: var(--squircle-mask-lg);
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 .squircle-xl {
@@ -79,6 +83,8 @@
           mask-image: var(--squircle-mask-xl);
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 .squircle-full {
