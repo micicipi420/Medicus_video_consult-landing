@@ -129,9 +129,9 @@
 
   <main id="page-content" class="relative z-10 min-h-section-hero-compact pt-section-pt lg:pt-section-pt-lg pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-section-pb">
     <!-- Centered Hero -->
-    <section class="container mx-auto px-4 lg:px-6 mb-16">
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 mb-16">
       <div class="text-center max-w-3xl mx-auto animate-fade-up">
-        <div class="glass-badge inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+        <div class="glass-badge inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue" aria-hidden="true">
             <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
           </svg>
@@ -145,16 +145,17 @@
     </section>
 
     <!-- 2-column: Info + Form -->
-    <section class="container mx-auto px-4 lg:px-6" id="contact-section">
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
+    <section class="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8" id="contact-section">
+      <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
         <!-- Left: Info column -->
-        <div class="contact__info space-y-8 animate-fade-left">
+        <div class="contact__info md:col-span-4 lg:col-span-5 space-y-8 animate-fade-left">
 
           <!-- Coordinator Card -->
-          <div class="coordinator-card bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-glass border border-white/60 shadow-glass-inner">
+          <div class="liquid-card-wrap">
+          <div class="coordinator-card liquid-card squircle-xl p-8">
             <div class="flex flex-col sm:flex-row gap-6 items-center">
-              <div class="w-28 h-28 rounded-full overflow-hidden shadow-glass-sm flex-shrink-0 border-4 border-white/60">
+              <div class="w-28 h-28 squircle-full overflow-hidden flex-shrink-0">
                 <img src="img/coordinator-female.webp" alt="Медицинский координатор Айгерим" loading="lazy" width="128" height="128" class="w-full h-full object-cover">
               </div>
               <div>
@@ -164,54 +165,63 @@
               </div>
             </div>
           </div>
+          </div>
 
           <!-- Contact Method Cards (2x2) -->
           <div class="grid sm:grid-cols-2 gap-4">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-              <div class="w-10 h-10 bg-white/50 backdrop-blur-md rounded-xl flex items-center justify-center text-mu-blue border border-white/60 mb-3">
+            <div class="liquid-card-wrap">
+            <div class="liquid-card squircle-lg p-6">
+              <div class="w-10 h-10 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               </div>
               <p class="text-sm text-mu-text-500 font-bold mb-1">Телефон</p>
               <a href="tel:+77015322478" class="text-mu-text-900 font-bold hover:text-mu-blue-text transition-colors">+7&nbsp;701&nbsp;532&nbsp;24&nbsp;78</a>
             </div>
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-              <div class="w-10 h-10 bg-white/50 backdrop-blur-md rounded-xl flex items-center justify-center text-mu-blue border border-white/60 mb-3">
+            </div>
+            <div class="liquid-card-wrap">
+            <div class="liquid-card squircle-lg p-6">
+              <div class="w-10 h-10 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               </div>
               <p class="text-sm text-mu-text-500 font-bold mb-1">Email</p>
               <a href="mailto:kz@medicusunion.com" class="text-mu-text-900 font-bold hover:text-mu-blue-text transition-colors">kz@medicusunion.com</a>
             </div>
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-              <div class="w-10 h-10 bg-white/50 backdrop-blur-md rounded-xl flex items-center justify-center text-mu-blue border border-white/60 mb-3">
+            </div>
+            <div class="liquid-card-wrap">
+            <div class="liquid-card squircle-lg p-6">
+              <div class="w-10 h-10 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               </div>
               <p class="text-sm text-mu-text-500 font-bold mb-1">Офис</p>
               <p class="text-mu-text-900 font-bold">Алматы, Казахстан</p>
             </div>
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
-              <div class="w-10 h-10 bg-white/50 backdrop-blur-md rounded-xl flex items-center justify-center text-mu-blue border border-white/60 mb-3">
+            </div>
+            <div class="liquid-card-wrap">
+            <div class="liquid-card squircle-lg p-6">
+              <div class="w-10 h-10 liquid-regular squircle-md flex items-center justify-center text-mu-blue mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <p class="text-sm text-mu-text-500 font-bold mb-1">График</p>
               <p class="text-mu-text-900 font-bold">Пн&ndash;Пт 9:00&ndash;18:00</p>
             </div>
+            </div>
           </div>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap gap-3">
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full text-mu-text-900 px-5 py-2.5 text-sm font-bold">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
               На связи 24/7
             </div>
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full text-mu-text-900 px-5 py-2.5 text-sm font-bold">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
               ISO&nbsp;27001
             </div>
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full text-mu-text-900 px-5 py-2.5 text-sm font-bold">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
               Astana&nbsp;Hub&nbsp;Resident
             </div>
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 text-mu-text-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-sm shadow-glass-inner">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full text-mu-text-900 px-5 py-2.5 text-sm font-bold">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
               10&nbsp;000+&nbsp;пациентов
             </div>
@@ -220,8 +230,9 @@
         </div>
 
         <!-- Right: Form -->
-        <div class="form-wrapper animate-fade-right">
-          <div class="bg-white/70 backdrop-blur-3xl rounded-[3rem] p-8 shadow-glass-lg border border-white/60 relative overflow-hidden shadow-glass-inner">
+        <div class="form-wrapper md:col-span-4 lg:col-span-7 animate-fade-right">
+          <div class="liquid-card-wrap">
+          <div class="liquid-card squircle-xl p-8 relative overflow-hidden">
             <!-- Success overlay -->
             <div class="form__success" id="form-success" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="form__success-icon" aria-hidden="true">
@@ -237,19 +248,19 @@
             <form class="contact-form space-y-6" novalidate>
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
-                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль" required autocomplete="name">
+                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль" required autocomplete="name">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
-                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-interest">Что вас интересует</label>
-                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-form-inset appearance-none" required>
+                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-form-inset appearance-none" required>
                   <option value="" disabled selected>Выберите направление</option>
                   <option value="consultation">Онлайн-консультация</option>
                   <option value="treatment">Лечение за рубежом</option>
@@ -261,7 +272,7 @@
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-description">Кратко о&nbsp;вашем случае <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
-                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 rounded-2xl border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
+                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
               </div>
 
               <!-- Honeypot -->
@@ -270,7 +281,7 @@
                 <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
               </div>
 
-              <button class="form__submit w-full bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white py-4 rounded-2xl font-bold shadow-lg shadow-mu-blue/30 hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 text-lg mt-4" type="submit">
+              <button class="form__submit w-full liquid-btn-primary squircle-md py-4 font-bold flex items-center justify-center gap-2 text-lg mt-4" type="submit">
                 Отправить заявку
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="m22 2-7 20-4-9-9-4Z"/>
@@ -281,6 +292,7 @@
               <p class="form__privacy text-sm text-mu-text-700 font-medium text-center">Мы&nbsp;перезвоним в&nbsp;течение 24&nbsp;часов. Ваши данные защищены.</p>
               <div class="form__error" role="alert" aria-live="polite" hidden></div>
             </form>
+          </div>
           </div>
         </div>
 
