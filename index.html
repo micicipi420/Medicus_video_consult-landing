@@ -220,12 +220,12 @@
 
     <!-- SECTION 1: HERO (Hero.tsx) -->
     <section class="relative min-h-section-hero-rich flex items-center justify-center pt-section-pt pb-section-pb lg:pt-section-pt-lg" id="hero">
-      <div class="container mx-auto px-4 lg:px-6 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div class="mx-auto max-w-[1200px] px-4 lg:px-6 relative z-10">
+        <div class="grid grid-cols-12 gap-12 lg:gap-8 items-center">
 
           <!-- Left Content -->
-          <div class="max-w-2xl">
-            <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-[20px] border border-glass-border px-5 py-2.5 rounded-full shadow-glass-sm mb-6">
+          <div class="col-span-12 lg:col-span-7 max-w-2xl">
+            <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-mu-blue"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
               <span class="text-sm font-semibold text-mu-text-900">Австрийская медицинская компания с офисом в&nbsp;Казахстане</span>
             </div>
@@ -239,11 +239,11 @@
             <p class="text-xl text-mu-text-700 mb-10 max-w-xl leading-relaxed font-medium">MedicusUnion &mdash; международная медицинская платформа. Онлайн-консультация с&nbsp;зарубежным врачом, чек-ап в&nbsp;ведущей клинике или полная организация лечения за&nbsp;границей &mdash; мы&nbsp;берём на&nbsp;себя всё, от&nbsp;разбора вашего случая до&nbsp;наблюдения после возвращения.</p>
 
             <div class="flex flex-col sm:flex-row items-center gap-4 mb-12">
-              <a href="#contact" class="w-full sm:w-auto bg-gradient-to-r from-mu-cta-from to-mu-cta-to text-white px-8 py-4 rounded-3xl font-semibold shadow-lg shadow-mu-blue/30 shadow-glass-inner hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 group text-lg">
+              <a href="#contact" class="w-full sm:w-auto liquid-btn-primary squircle-md shimmer-sweep px-8 py-4 text-lg flex items-center justify-center gap-2 group">
                 Обсудить мой случай бесплатно
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </a>
-              <a href="#contact" class="w-full sm:w-auto bg-white/50 backdrop-blur-[20px] text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-glass-border text-lg">
+              <a href="#contact" class="w-full sm:w-auto liquid-btn-secondary squircle-md px-8 py-4 text-lg text-mu-text-900">
                 Оставить заявку
               </a>
             </div>
@@ -253,20 +253,20 @@
           </div>
 
           <!-- Right Content - Photo Composition (Hero.tsx) -->
-          <div class="relative lg:h-[600px] w-full mt-10 lg:mt-0">
+          <div class="col-span-12 lg:col-span-5 relative lg:h-[600px] w-full mt-10 lg:mt-0">
             <!-- Main large image -->
-            <div class="absolute right-0 top-0 w-[85%] h-[85%] rounded-[3rem] overflow-hidden shadow-glass-lg border-[8px] border-white/40 backdrop-blur-3xl z-10 bg-white/20">
+            <div class="absolute right-0 top-0 w-[85%] h-[85%] squircle-xl overflow-hidden z-10">
               <img class="w-full h-full object-cover object-center" src="img/hero-doctor-portrait.webp" width="1080" height="720" alt="Врач на платформе MedicusUnion">
               <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
             </div>
 
             <!-- Secondary overlapping image -->
-            <div class="absolute left-0 bottom-4 w-3/5 h-[45%] rounded-[2.5rem] overflow-hidden shadow-glass-lg border-[6px] border-white/50 backdrop-blur-2xl z-20 bg-white/30">
+            <div class="absolute left-0 bottom-4 w-3/5 h-[45%] squircle-xl overflow-hidden z-20">
               <img class="w-full h-full object-cover" src="img/hero-patient-consult.webp" width="1080" height="720" alt="Консультация с пациентом">
             </div>
 
             <!-- Floating Badge (Hero.tsx) -->
-            <div class="absolute -right-6 top-1/4 bg-white/70 backdrop-blur-[40px] p-4 rounded-[2rem] shadow-glass border border-glass-border-strong z-30 flex items-center gap-4">
+            <div class="absolute -right-6 top-1/4 liquid-regular squircle-lg p-4 z-30 flex items-center gap-4">
               <div class="w-14 h-14 bg-gradient-to-br from-mu-green-500 to-mu-green-600 rounded-2xl flex items-center justify-center text-white shadow-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
               </div>
@@ -277,7 +277,7 @@
             </div>
 
             <!-- Floating Rating (Hero.tsx) -->
-            <div class="absolute left-8 top-12 bg-white/70 backdrop-blur-[40px] px-6 py-4 rounded-[2rem] shadow-glass border border-glass-border-strong z-30 flex items-center gap-3">
+            <div class="absolute left-8 top-12 liquid-regular squircle-lg px-6 py-4 z-30 flex items-center gap-3">
               <div class="w-14 h-14 bg-gradient-to-br from-mu-cta-from to-mu-cta-to rounded-2xl flex items-center justify-center text-white shadow-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
               </div>
@@ -294,23 +294,25 @@
 
     <!-- STATS SECTION (StatsSection.tsx) -->
     <section class="relative py-12 z-20">
-      <div class="container mx-auto px-4 lg:px-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
-            <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue-text relative z-10">43</div>
-            <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">клиники</div>
-          </div>
-          <div class="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
-            <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-teal-text relative z-10">11</div>
-            <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">стран</div>
-          </div>
-          <div class="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
-            <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-orange-text relative z-10">500+</div>
-            <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">врачей</div>
-          </div>
-          <div class="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden">
-            <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-green-text relative z-10">15+</div>
-            <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">лет опыта</div>
+      <div class="mx-auto max-w-[1200px] px-4 lg:px-6">
+        <div class="stats-glass squircle-xl">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="flex flex-col items-center justify-center p-8">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue-text">43</div>
+              <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider">клиники</div>
+            </div>
+            <div class="flex flex-col items-center justify-center p-8">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-teal-text">11</div>
+              <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider">стран</div>
+            </div>
+            <div class="flex flex-col items-center justify-center p-8">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-orange-text">500+</div>
+              <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider">врачей</div>
+            </div>
+            <div class="flex flex-col items-center justify-center p-8">
+              <div class="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-green-text">15+</div>
+              <div class="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider">лет опыта</div>
+            </div>
           </div>
         </div>
       </div>
@@ -318,10 +320,10 @@
 
     <!-- SECTION 2: THREE SERVICE CARDS (ServicesSection.tsx) -->
     <section class="py-16 relative z-10" id="services">
-      <div class="container mx-auto px-4 lg:px-6">
+      <div class="mx-auto max-w-[1200px] px-4 lg:px-6">
         <!-- Section Title -->
         <div class="text-center mb-16 max-w-3xl mx-auto">
-          <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-glass-border px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+          <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-5 py-2.5 mb-6">
             <span class="text-sm font-bold text-mu-accent-blue-text uppercase tracking-wider">Наши Услуги</span>
           </div>
           <h2 class="text-5xl md:text-6xl font-extrabold mb-6">
@@ -330,13 +332,14 @@
         </div>
 
         <!-- Services Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-12 gap-8">
           <!-- Card 1: Online Consultation -->
-          <div class="relative group h-full flex flex-col">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
+          <div class="col-span-12 md:col-span-4 lg:col-span-4 relative group h-full flex flex-col">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
               <!-- Top Image Section -->
               <div class="relative h-56 w-full overflow-hidden p-3">
-                <div class="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 shadow-inner">
+                <div class="relative w-full h-full squircle-lg overflow-hidden border border-white/40 shadow-inner">
                   <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="img/service-online-consult.webp" loading="lazy" width="800" height="1422" alt="Онлайн-консультация с врачом">
                   <!-- Overlay Gradient -->
                   <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
@@ -349,7 +352,7 @@
               <!-- Content Section -->
               <div class="p-8 pt-4 flex-grow flex flex-col">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-5">
+                <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-5">
                   <span class="text-sm font-bold text-mu-accent-blue-text">от&nbsp;450&nbsp;&euro;</span>
                 </div>
                 <h3 class="text-2xl font-bold text-mu-text-900 mb-4">Мнение зарубежного врача &mdash;без&nbsp;перелёта</h3>
@@ -376,19 +379,21 @@
                   </li>
                 </ul>
                 <!-- CTA Button -->
-                <a href="online-consultations.html" class="w-full bg-white/50 backdrop-blur-xl border border-glass-border text-mu-text-900 py-4 rounded-2xl font-bold shadow-glass-sm hover:bg-white/70 hover:shadow-glass transition-all flex items-center justify-center gap-2 group/btn mt-auto">
+                <a href="online-consultations.html" class="w-full liquid-btn-secondary squircle-md py-4 text-mu-text-900 font-bold flex items-center justify-center gap-2 group/btn mt-auto">
                   Записаться на&nbsp;консультацию
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
               </div>
             </div>
+            </div>
           </div>
 
           <!-- Card 2: Treatment Abroad -->
-          <div class="relative group h-full flex flex-col">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
+          <div class="col-span-12 md:col-span-4 lg:col-span-4 relative group h-full flex flex-col">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
               <div class="relative h-56 w-full overflow-hidden p-3">
-                <div class="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 shadow-inner">
+                <div class="relative w-full h-full squircle-lg overflow-hidden border border-white/40 shadow-inner">
                   <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="img/service-hospital-room.webp" loading="lazy" width="800" height="600" alt="Современная клиника">
                   <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                   <div class="absolute top-4 right-4 w-12 h-12 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-glass-border transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
@@ -397,7 +402,7 @@
                 </div>
               </div>
               <div class="p-8 pt-4 flex-grow flex flex-col">
-                <div class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-5">
+                <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-5">
                   <span class="text-sm font-bold text-mu-accent-teal-text">план лечения бесплатно</span>
                 </div>
                 <h3 class="text-2xl font-bold text-mu-text-900 mb-4">Организуем лечение за&nbsp;границей &mdash;под&nbsp;ключ</h3>
@@ -422,19 +427,21 @@
                     <span class="text-mu-text-900 font-medium">Координация до выздоровления</span>
                   </li>
                 </ul>
-                <a href="treatment-abroad.html" class="w-full bg-white/50 backdrop-blur-xl border border-glass-border text-mu-text-900 py-4 rounded-2xl font-bold shadow-glass-sm hover:bg-white/70 hover:shadow-glass transition-all flex items-center justify-center gap-2 group/btn mt-auto">
+                <a href="treatment-abroad.html" class="w-full liquid-btn-secondary squircle-md py-4 text-mu-text-900 font-bold flex items-center justify-center gap-2 group/btn mt-auto">
                   Получить план лечения
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
               </div>
             </div>
+            </div>
           </div>
 
           <!-- Card 3: Checkup -->
-          <div class="relative group h-full flex flex-col">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
+          <div class="col-span-12 md:col-span-4 lg:col-span-4 relative group h-full flex flex-col">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
               <div class="relative h-56 w-full overflow-hidden p-3">
-                <div class="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 shadow-inner">
+                <div class="relative w-full h-full squircle-lg overflow-hidden border border-white/40 shadow-inner">
                   <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="img/service-checkup-mri.webp" loading="lazy" width="800" height="450" alt="Чек-ап обследование">
                   <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                   <div class="absolute top-4 right-4 w-12 h-12 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-glass-border transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
@@ -443,7 +450,7 @@
                 </div>
               </div>
               <div class="p-8 pt-4 flex-grow flex flex-col">
-                <div class="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-5">
+                <div class="inline-flex items-center gap-2 liquid-regular squircle-full px-4 py-1.5 w-fit mb-5">
                   <span class="text-sm font-bold text-mu-green-700">от $350</span>
                 </div>
                 <h3 class="text-2xl font-bold text-mu-text-900 mb-4">Проверьте здоровье в&nbsp;клинике мирового уровня</h3>
@@ -468,11 +475,12 @@
                     <span class="text-mu-text-900 font-medium">Корпоративные чек-апы</span>
                   </li>
                 </ul>
-                <a href="checkup.html" class="w-full bg-white/50 backdrop-blur-xl border border-glass-border text-mu-text-900 py-4 rounded-2xl font-bold shadow-glass-sm hover:bg-white/70 hover:shadow-glass transition-all flex items-center justify-center gap-2 group/btn mt-auto">
+                <a href="checkup.html" class="w-full liquid-btn-secondary squircle-md py-4 text-mu-text-900 font-bold flex items-center justify-center gap-2 group/btn mt-auto">
                   Подобрать программу
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -481,7 +489,7 @@
 
     <!-- SECTION 3: PROBLEM / RECOGNITION (GuideSection.tsx pattern) -->
     <section class="py-16 relative z-10" id="problem">
-      <div class="container mx-auto px-4 lg:px-6 relative z-10">
+      <div class="mx-auto max-w-[1200px] px-4 lg:px-6 relative z-10">
         <!-- Section Title -->
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold text-mu-text-900 mb-4">
@@ -489,10 +497,11 @@
           </h2>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-12 gap-8 max-w-5xl mx-auto">
           <!-- Problem 1 -->
-          <div class="group cursor-pointer flex flex-col h-full">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
+          <div class="col-span-12 md:col-span-6 lg:col-span-6 group cursor-pointer flex flex-col h-full">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
               <div class="p-8 pt-8 flex flex-col flex-grow relative">
                 <div class="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 text-mu-accent-blue transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
@@ -501,10 +510,12 @@
                 <p class="text-mu-text-700 font-medium leading-relaxed mb-6 flex-grow">Разные врачи говорят разное, а&nbsp;решение нужно принимать сейчас. Хотите услышать мнение специалиста, которому можно доверять.</p>
               </div>
             </div>
+            </div>
           </div>
           <!-- Problem 2 -->
-          <div class="group cursor-pointer flex flex-col h-full">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
+          <div class="col-span-12 md:col-span-6 lg:col-span-6 group cursor-pointer flex flex-col h-full">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
               <div class="p-8 pt-8 flex flex-col flex-grow relative">
                 <div class="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 text-mu-accent-teal transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
@@ -513,10 +524,12 @@
                 <p class="text-mu-text-700 font-medium leading-relaxed mb-6 flex-grow">Вам&nbsp;сказали &laquo;нужно ехать за&nbsp;границу&raquo;, но&nbsp;куда именно, к&nbsp;кому и&nbsp;как это организовать &mdash;непонятно. Проверенной информации мало.</p>
               </div>
             </div>
+            </div>
           </div>
           <!-- Problem 3 -->
-          <div class="group cursor-pointer flex flex-col h-full">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
+          <div class="col-span-12 md:col-span-6 lg:col-span-6 group cursor-pointer flex flex-col h-full">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
               <div class="p-8 pt-8 flex flex-col flex-grow relative">
                 <div class="w-14 h-14 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 text-mu-green-600 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
@@ -525,10 +538,12 @@
                 <p class="text-mu-text-700 font-medium leading-relaxed mb-6 flex-grow">Серьёзные заболевания на&nbsp;ранних стадиях не&nbsp;болят. Хотите знать точно, что всё в&nbsp;порядке, а&nbsp;не&nbsp;надеяться на&nbsp;&laquo;авось&raquo;.</p>
               </div>
             </div>
+            </div>
           </div>
           <!-- Problem 4 -->
-          <div class="group cursor-pointer flex flex-col h-full">
-            <div class="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
+          <div class="col-span-12 md:col-span-6 lg:col-span-6 group cursor-pointer flex flex-col h-full">
+            <div class="liquid-card-wrap h-full">
+            <div class="liquid-card squircle-xl transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
               <div class="p-8 pt-8 flex flex-col flex-grow relative">
                 <div class="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 text-mu-accent-orange transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -536,6 +551,7 @@
                 <h3 class="text-2xl font-bold text-mu-text-900 mb-3">Организуете лечение или обследование для близкого</h3>
                 <p class="text-mu-text-700 font-medium leading-relaxed mb-6 flex-grow">На&nbsp;вас ответственность за&nbsp;выбор врача и&nbsp;клиники. Вы&nbsp;не&nbsp;медик, но&nbsp;решение должно быть правильным. И&nbsp;времени на&nbsp;ошибки нет.</p>
               </div>
+            </div>
             </div>
           </div>
         </div>
