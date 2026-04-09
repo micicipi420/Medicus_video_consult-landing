@@ -252,3 +252,13 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 47. Index Page | 2/2 | Complete    | 2026-04-09 |
 | 48. Verification | 2/2 | Complete    | 2026-04-09 |
 | 49. Documentation | 2/2 | Complete    | 2026-04-09 |
+
+### Phase 50: Liquid Glass Design System
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 49
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 50 to break down)
