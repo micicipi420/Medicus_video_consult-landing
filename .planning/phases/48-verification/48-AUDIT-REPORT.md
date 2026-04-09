@@ -527,3 +527,59 @@ html[data-refract="true"] .liquid-regular { ... }
   }
 }
 ```
+
+---
+
+## Fixes Applied (VERIFY-03/04)
+
+### FIX-05: Refraction specificity under reduced-motion (APPLIED)
+
+**Change:** Added `html[data-refract="true"]`-prefixed selectors to the `@media (prefers-reduced-motion: reduce)` block in `src/styles/liquid-glass.css`.
+
+Before:
+```css
+@media (prefers-reduced-motion: reduce) {
+  .liquid-regular, .liquid-card, .liquid-btn-secondary, .stats-glass { ... }
+}
+```
+
+After:
+```css
+@media (prefers-reduced-motion: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-secondary,
+  .stats-glass,
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .stats-glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+```
+
+The added selectors match at specificity (0,2,1), equal to the refraction selectors in Section 7. Since the reduced-motion block appears AFTER the refraction block in source order, it now wins via cascade when specificity is tied. Accessibility guard is no longer bypassed by refraction.
+
+### FIX-06: Squircle mask-image in print (APPLIED)
+
+**Change:** Added `@media print` block to `src/styles/squircles.css` removing `mask-image` on all squircle utility classes.
+
+```css
+@media print {
+  .squircle-md, .squircle-lg, .squircle-xl {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+}
+```
+
+All squircle-masked elements now render with standard `border-radius` fallback in print, ensuring no content is clipped.
+
+### VERIFY-03: Budget Android FPS (DEFERRED -- No Code Change)
+
+No code changes applied. Performance risk is documented with a 3-tier mitigation strategy. Real-device testing required before any blur reduction changes are made.
+
+### Build Verification
+
+`make build` exits 0 after all CSS changes. No compilation errors.

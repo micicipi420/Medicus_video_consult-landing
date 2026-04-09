@@ -88,6 +88,20 @@
 }
 
 /* ------------------------------------------------
+   Print -- remove squircle masks so content
+   is not clipped by mask-image in print engines
+   ------------------------------------------------ */
+
+@media print {
+  .squircle-md,
+  .squircle-lg,
+  .squircle-xl {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+}
+
+/* ------------------------------------------------
    Progressive enhancement -- Chrome 139+
    Native corner-shape removes mask overhead
    ------------------------------------------------ */

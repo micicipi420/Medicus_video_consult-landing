@@ -259,7 +259,10 @@ html[data-refract="true"] .stats-glass {
   .liquid-regular,
   .liquid-card,
   .liquid-btn-secondary,
-  .stats-glass {
+  .stats-glass,
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .stats-glass {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
