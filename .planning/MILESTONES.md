@@ -1,55 +1,5 @@
 # Milestones
 
-## v3.2 Build Pipeline & Chrome Partials (Shipped: 2026-04-08)
-
-**Phases completed:** 2 phases (39, 40), 6 plans, 11/11 requirements (8 LAYOUT + 3 COSMETIC), 32 commits, 20 source files changed (+891/-69)
-
-**Key accomplishments:**
-
-- **Chrome partials architecture** — extracted 4 shared chrome regions (header, footer, sticky-bar, mobile-menu) to `partials/*.html` as single source of truth; POSIX-sh + awk marker splicer (`scripts/build-pages.sh`) with 11-token substitution vocabulary drives 6-page regeneration. Chrome drift becomes structurally impossible.
-- **Byte-identity build pipeline** — `make build` canonical entry point + `build.sh` thin delegator + `Makefile` with 5 targets (build / check / install-hooks / install-tailwind / clean). Tailwind v4.2.2 binary pinned and auto-installed via `install-tailwind` target. `docs/BUILD.md` contributor reference.
-- **First git hook in repo** — `scripts/hooks/pre-commit` enforces byte-identity gate on every commit (runs `make build` + asserts no chrome drift). Dual-mode install via symlink works in both regular clones and git worktrees.
-- **404.html mobile fix at the source** — H1 class stepped from `text-4xl` to `text-3xl` at mobile breakpoint; "Страница не найдена" now fits 320px viewport without relying on the `overflow-x: clip` safety net. Subject+verb nbsp binding preserved. Playwright verified at 320/375/768/1024.
-- **Full favicon set shipped** — `favicon.ico` (multi-size 16/32/48), `favicon.svg` (hand-drawn brand gradient), `apple-touch-icon.png` (180×180), `site.webmanifest`. Assets generated from production Tilda PNG via Python Pillow 11.3.0 (one-shot dev fallback for ImageMagick). 4 `<link>` tags added to `<head>` of all 6 HTML pages (24 total). Browser console silent on first load (previously: favicon 404 on 404.html).
-- **Russian typography range binding** — checkup.html "за 1–2 дня" wrapped in Tailwind `whitespace-nowrap` span. En-dash U+2013 preserved as canonical Russian range separator. Playwright verified at 6 viewports (320/375/768/1024/1440/1920) — phrase renders as exactly 1 client rect at every width.
-
----
-
-## v3.1 Site Foundation & Audit Fixes (Shipped: 2026-04-08)
-
-**Phases completed:** 7 phases (33–38 + 38.1 corrective fix), 45/52 requirements delivered, 7 deferred to v3.2 Phase 36b. RHYTHM-10 verified 2026-04-08 by Phase 38.1 Playwright validation.
-
-**Key accomplishments:**
-
-- Data unification gate passed: Vienna address canonical (`Billrothstrasse 78`), ТОО «MedicusUnion KZ» (no space), Алматы (not Астана), Bruno-Marek-Allee drift eliminated
-- Mobile sticky-bar overlap fixed site-wide with `calc(7rem+env(safe-area-inset-bottom))` for iPhone X+ home indicator safety
-- treatment-abroad.html restored from 14/24 audit score: 20 hardcoded hex strokes → `currentColor` tokens, 3 typewriter dashes → en-dashes, hero photo swapped from inappropriate syringe close-up to medical-team composition, stat bar icon-less pattern matching index.html
-- checkup.html H1 overflow fixed via typography-only (`<br class="hidden lg:block">`) — NO min-h touched per cross-phase constraint
-- Form UX upgraded for 45+ audience across all 5 forms: native `:user-valid` CSS (blur-aware), blur-first validation timing, `aria-invalid` transitions, `max-w-[280px]` error containers, gender-neutral copy ("Помогите выбрать" not "Не определился")
-- Chrome drift eliminated across 5 pages: BEM classes normalized, canonical footer/header/sticky-bar structure, `aria-current="page"` baked in static HTML for each page's own nav link, event delegation for mobile menu, bfcache `pageshow` listener
-- Site metadata: `sitemap.xml` (5 URLs, NO 404, NO changefreq/priority), Yandex-safe `robots.txt` (does NOT block /css/ /js/), canonical URL audit confirmed 0 drift, 404.html H1 upgraded + body copy rewritten, meta descriptions trimmed to 150–160 chars, 10 circle-flags SVGs vendored to `img/flags/` (~6KB)
-- Vertical rhythm system (research-first): canonical `svh`-based hero tokens (rich/medium/compact content-density tiers) in `theme.css :root` + `@theme inline` — smoke test caught Tailwind v4's `--min-height-*` key pattern (not `--height-*`), prevented broken bulk migration. `<body class="min-h-screen">` removed across 6 pages. `scroll-margin-top: 6rem` + `prefers-reduced-motion` guards. Counter animations cached via `sessionStorage` to avoid SPA-nav re-run.
-- Deferred to v3.2 Phase 36b: `partials/` extraction, `scripts/build-pages.sh`, `build.sh`, build-script invocation mechanism (Makefile / pre-commit / CI — exact mechanism TBD in 36b planning), local `./build.sh` byte-identity smoke-test. Deploy target reverted to nginx 2026-04-07; `tailwindcss` binary runs only locally during dev.
-- **Phase 38.1 corrective fix (2026-04-08):** closed RHYTHM-10 after Playwright UX validation surfaced mobile overflow regressions. Root causes fixed: `bg-clip-text` gradient spans with nbsp-bound cross-language content (checkup H1), nbsp misuse between list items (index country cards), decorative absolute elements leaking scrollWidth (`mesh-bg__blob`, hero badges). Added `html { overflow-x: clip }` safety net in `theme.css` @layer base. Replaced invalid `<rect rx="0 0 3 3">` shorthand on 3 flag icons with `<clipPath>` wrappers. All 6 pages now report `scrollWidth === clientWidth` at 320/375/1440.
-
----
-
-## v3.0 SEO, Performance & Polish (Shipped: 2026-04-06)
-
-**Phases completed:** 4 phases, 7 plans, 13 tasks
-
-**Key accomplishments:**
-
-- Branded 404 error page with gradient heading, shared site shell (header, footer, mesh, sticky bar), and home navigation link
-- Normalized header/footer classes, added missing scripts to checkup.html, fixed footer service links, and verified honeypot + FAQ across all pages
-- Complete OG tags with og:image on all 5 pages, clean canonical URLs, and Schema.org MedicalBusiness JSON-LD on index.html
-- Downloaded 11 Unsplash images, converted to local WebP (283KB total vs 660KB JPEG), added lazy loading and CLS-preventing dimensions across 3 HTML files
-- Preload hints for CSS and hero images on all pages, defer on all scripts, Tailwind CSS rebuilt with minification
-- WCAG AA color tokens, focus-visible keyboard ring, and prefers-reduced-motion rule added to theme.css -- foundation for design system compliance across all pages
-- WCAG AA color contrast on 77 CTA buttons, 88 hover states, 62 text elements; ARIA live regions on 20 form errors; Glass-5 form containers across all 6 pages
-
----
-
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks

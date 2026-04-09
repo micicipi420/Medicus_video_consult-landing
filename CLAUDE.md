@@ -3,9 +3,7 @@
 
 **MedicusUnion KZ Landing**
 
-Многостраничный сайт для medicusunion.kz — сервиса онлайн-консультаций с европейскими врачами, лечения за рубежом и чек-апов. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму.
-
-5 страниц: index.html (главная), online-consultations.html, treatment-abroad.html, checkups.html, contacts.html.
+Лендинг для medicusunion.kz — сервиса онлайн-консультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+, которые хотят получить второе мнение от врача из Германии, Израиля, Швейцарии и других стран. Конверсия: заявка на консультацию через форму.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -13,13 +11,10 @@
 
 ### Constraints
 
-- **Stack**: HTML + Tailwind CSS v4 + JS — Tailwind CLI (standalone binary) для сборки CSS, без Node.js в рантайме
-- **Design source**: Redesign/ папка содержит React+Tailwind прототип — эталон для визуала. HTML-страницы должны быть pixel-perfect с прототипом
+- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
 - **Backend**: Directus (self-hosted) — приём заявок с формы
 - **Language**: Только русский
 - **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
-- **Fonts**: SF Pro Display (body) / SF Pro Rounded (headings) — системные шрифты Apple с fallback chain
-- **Animations**: Motion standalone CDN (window.Motion) — scroll-reveal, counters, hover transforms
 - **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
 <!-- GSD:project-end -->
 
@@ -27,13 +22,12 @@
 ## Technology Stack
 
 ## Recommended Stack
-### Frontend (Multi-page Static Site)
+### Frontend (Static Landing Page)
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
-| HTML5 | Current | Page structure | Semantic HTML for accessibility and SEO across 5 pages | HIGH |
-| Tailwind CSS | v4 | Styling | Redesign prototype built on Tailwind — using same utility classes guarantees pixel-perfect match. Tailwind CLI standalone binary, no Node.js runtime needed | HIGH |
-| Vanilla JS (ES6+) | Current | Form handling, UI interactions | Form submission, accordion, phone mask, counters, sticky header, mobile menu | HIGH |
-| Motion (standalone CDN) | 12.x | Scroll-reveal animations | Vanilla JS API from Framer Motion team — inView, animate, spring physics. No React dependency | HIGH |
+| HTML5 | Current | Page structure | Semantic HTML for accessibility and SEO; no build step needed | HIGH |
+| Vanilla CSS | Current | Styling | Project constraint: no frameworks. Modern CSS (custom properties, grid, flexbox) covers all needs for a single landing page | HIGH |
+| Vanilla JS (ES6+) | Current | Form handling, UI interactions | No framework overhead for a single page with one form and a few interactions (accordion, smooth scroll) | HIGH |
 ### Backend / CMS
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
@@ -51,21 +45,17 @@
 | `clean-css-cli` | Minify CSS for production | Build/deploy step |
 | `terser` | Minify JS for production | Build/deploy step |
 | `sharp-cli` or `squoosh-cli` | Convert images to WebP/AVIF | Asset preparation |
-## CSS Approach: Tailwind CSS v4 with Custom Theme
+## CSS Approach: Vanilla CSS with Custom Properties
 ### Rationale
-Redesign prototype (Redesign/ folder) is built on Tailwind v4. Using the same utility classes in HTML pages guarantees pixel-perfect match. Tailwind CLI standalone binary compiles CSS without Node.js.
 ### CSS Architecture for This Project
-- `src/styles/tailwind.css` — Tailwind entry (imports)
-- `src/styles/theme.css` — Custom tokens (@theme inline), brand colors, glass shadows, font families
-- `src/styles/index.css` — Base styles, @layer base overrides
-- `css/styles.css` — Compiled output (from `tailwindcss` CLI)
 ### What NOT to Use
 | Do Not Use | Why |
 |------------|-----|
-| Bootstrap | Heavy bundle; opinionated component styles fight glassmorphism design |
+| Tailwind CSS | Overkill for one page; requires build tooling; violates project constraint |
+| Bootstrap | Heavy bundle; opinionated component styles fight custom brand design |
 | CSS-in-JS | No JS framework to host it; irrelevant for static HTML |
-| Sass/SCSS | Tailwind handles everything; adding Sass is redundant |
-| PostCSS (full pipeline) | Tailwind CLI standalone is sufficient; no need for PostCSS config |
+| Sass/SCSS | CSS custom properties replace variables; nesting now native in CSS; adds build step for marginal benefit |
+| Container queries | Incomplete Firefox support; media queries are simpler and sufficient for a landing page with known breakpoints |
 ## JavaScript Approach: Vanilla ES6+ with Fetch API
 ### What JS Needs to Do
 ### Form Submission Pattern
@@ -101,15 +91,14 @@ Redesign prototype (Redesign/ folder) is built on Tailwind v4. Using the same ut
 ## Fonts
 | Font | Source | Purpose | Why |
 |------|--------|---------|-----|
-| SF Pro Display | System font (Apple) | Body text | Redesign spec. System font = zero download, native rendering |
-| SF Pro Rounded | System font (Apple) | Headings | Redesign spec. Rounded letterforms for friendly medical tone |
-| -apple-system, BlinkMacSystemFont, Segoe UI, Roboto | Fallback chain | Non-Apple devices | Standard system font stack for cross-platform |
+| Inter | Google Fonts or self-hosted | Body text | PROJECT.md brand spec. Excellent readability at all sizes |
+| Manrope | Google Fonts or self-hosted | Headings | PROJECT.md brand spec. Clean geometric sans-serif |
 ## Alternatives Considered
 | Category | Recommended | Alternative | Why Not Alternative |
 |----------|-------------|-------------|---------------------|
-| CSS | Tailwind CSS v4 (CLI standalone) | Vanilla CSS | Redesign prototype is Tailwind — vanilla CSS translation introduced visual bugs; Tailwind gives pixel-perfect match |
-| CSS | Tailwind CSS v4 (CLI standalone) | Bootstrap 5 | Heavy (22KB min CSS); fights glassmorphism design |
-| CSS | Tailwind CSS v4 (CLI standalone) | Sass/SCSS | Tailwind handles design tokens, responsive, and utilities; Sass is redundant |
+| CSS | Vanilla CSS + custom properties | Tailwind CSS | Build tooling overhead; project constraint says no frameworks; one page does not benefit from utility classes |
+| CSS | Vanilla CSS + custom properties | Bootstrap 5 | Heavy (22KB min CSS); fights custom brand design; adds classes for components we can build in 30 lines |
+| CSS | Vanilla CSS + custom properties | Sass/SCSS | Nesting is now native CSS; variables replaced by custom properties; adds build step for near-zero benefit |
 | JS | Vanilla fetch() | @directus/sdk | Full SDK package for a single POST call; unnecessary dependency |
 | JS | Vanilla JS | Alpine.js | Adds 15KB for accordion and form that need ~50 lines of vanilla JS |
 | Database | PostgreSQL 16 | SQLite | Not suitable for production with concurrent writes; no proper backup tooling |
