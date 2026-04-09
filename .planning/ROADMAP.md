@@ -113,7 +113,7 @@ Plans:
   5. make build exits 0; Tailwind CSS output includes squircle classes; no HTML pages are modified yet
 **Plans**: 1 plan
 Plans:
-- [ ] 42-01-PLAN.md — Squircle utility classes, three-tier PE, shadow-wrap docs, build verification
+- [x] 42-01-PLAN.md — Squircle utility classes, three-tier PE, shadow-wrap docs, build verification
 
 ### Phase 43: Liquid Glass Primitives
 **Goal**: A complete Liquid Glass material system and distinctive components exist as reusable CSS/JS, so that any surface can be given glass treatment and the 3 differentiator effects (shimmer, grouped stats, scroll-edge fade) are ready to apply
@@ -244,7 +244,7 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
-| 42. Squircle Primitives | 0/1 | Not started | - |
+| 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
 | 43. Liquid Glass Primitives | 0/TBD | Not started | - |
 | 44. Chrome Partials Upgrade | 0/TBD | Not started | - |
 | 45. Simple Pages (404 + Contacts) | 0/TBD | Not started | - |
