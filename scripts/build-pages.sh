@@ -10,13 +10,14 @@ set -eu
 # Default page list used when no positional args are provided.
 DEFAULT_PAGES="index.html online-consultations.html treatment-abroad.html checkup.html contacts.html 404.html"
 
-# Required partials. All four must exist or the build aborts.
+# Required partials. All five must exist or the build aborts.
 # Supported marker vocabulary (one opening + one closing marker per partial per page):
 #   <!-- BUILD:header -->       ... <!-- /BUILD:header -->
 #   <!-- BUILD:footer -->       ... <!-- /BUILD:footer -->
 #   <!-- BUILD:sticky-bar -->   ... <!-- /BUILD:sticky-bar -->
 #   <!-- BUILD:mobile-menu -->  ... <!-- /BUILD:mobile-menu -->
-PARTIALS="header footer sticky-bar mobile-menu"
+#   <!-- BUILD:svg-defs -->     ... <!-- /BUILD:svg-defs -->
+PARTIALS="header footer sticky-bar mobile-menu svg-defs"
 
 # Defense-in-depth (W4): token values must not contain | because the splicer uses
 # | as the sed delimiter. Any future drift that introduces a pipe character in a
@@ -240,7 +241,7 @@ for FILE in $FILES; do
     rm -f "$EXPANDED"
   done
 
-  echo "[build-pages] $FILE updated (4 partials)"
+  echo "[build-pages] $FILE updated (5 partials)"
   PAGE_COUNT=$((PAGE_COUNT + 1))
 done
 
