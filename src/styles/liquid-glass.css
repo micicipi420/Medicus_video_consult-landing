@@ -62,6 +62,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
+  filter: drop-shadow(0 8px 24px rgba(20, 30, 60, 0.12));
 }
 
 /* ================================================
@@ -78,16 +79,18 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
-  /* padding removed -- cards manage their own padding via Tailwind utilities.
-     Built-in 1.5rem caused double-padding on cards with internal p-8/p-3 children.
-     Use p-6 / p-8 utility on the element as needed. */
+  /* Outer shadow via drop-shadow — renders along mask boundary (superellipse),
+     not along border-radius. This eliminates shadow-wrap artifacts. */
+  filter: drop-shadow(0 16px 40px rgba(20, 30, 60, 0.16));
 }
 
+/* Shadow-wrap wrapper is DEPRECATED.
+   Use filter: drop-shadow() on the masked element instead —
+   drop-shadow renders along the mask boundary (superellipse),
+   not along border-radius (standard round).
+   Keeping .liquid-card-wrap as no-op for HTML backwards compat. */
 .liquid-card-wrap {
-  box-shadow: var(--liquid-shadow-outer);
-  /* No border-radius or background — the inner squircle child handles shape.
-     A visible border-radius here creates white "ear" artifacts where the
-     wrapper's rounded corner doesn't match the SVG mask's superellipse curve. */
+  /* no-op — shadow now on .liquid-card via drop-shadow */
 }
 
 /* ================================================
@@ -157,7 +160,7 @@
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
-  /* padding removed -- use Tailwind p-6 utility on the element. */
+  filter: drop-shadow(0 16px 40px rgba(20, 30, 60, 0.16));
 }
 
 /* ================================================
