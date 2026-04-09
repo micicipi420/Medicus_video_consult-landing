@@ -4,10 +4,10 @@
  * Squircle primitives for MedicusUnion KZ v4.0 Liquid Design System.
  *
  * Uses mask-image + inline SVG data-URI as the production default.
- * Progressive enhancement via corner-shape: superellipse(2) for Chrome 139+.
+ * Progressive enhancement via corner-shape: squircle for Chrome 139+.
  *
  * Three-tier degradation:
- *   Tier 1 (Chrome 139+): corner-shape: superellipse(2) -- native, GPU-accelerated
+ *   Tier 1 (Chrome 139+): corner-shape: squircle -- native, GPU-accelerated
  *   Tier 2 (Safari 17+, Firefox 120+, Chrome <139): mask-image SVG -- production default
  *   Tier 3 (no mask-image support): border-radius rounded corner fallback
  *
@@ -112,13 +112,41 @@
    Native corner-shape removes mask overhead
    ------------------------------------------------ */
 
-@supports (corner-shape: superellipse(2)) {
-  .squircle-md,
-  .squircle-lg,
-  .squircle-xl,
-  .squircle-full {
+@supports (corner-shape: squircle) {
+  .squircle-md {
     -webkit-mask-image: none;
             mask-image: none;
-    corner-shape: superellipse(2);
+    -webkit-mask-size: initial;
+            mask-size: initial;
+    -webkit-mask-repeat: initial;
+            mask-repeat: initial;
+    corner-shape: squircle;
+    border-radius: 6%;
+  }
+
+  .squircle-lg {
+    -webkit-mask-image: none;
+            mask-image: none;
+    -webkit-mask-size: initial;
+            mask-size: initial;
+    -webkit-mask-repeat: initial;
+            mask-repeat: initial;
+    corner-shape: squircle;
+    border-radius: 7%;
+  }
+
+  .squircle-xl {
+    -webkit-mask-image: none;
+            mask-image: none;
+    -webkit-mask-size: initial;
+            mask-size: initial;
+    -webkit-mask-repeat: initial;
+            mask-repeat: initial;
+    corner-shape: squircle;
+    border-radius: 8%;
+  }
+
+  .squircle-full {
+    /* Already border-radius: 9999px, no mask to remove */
   }
 }
