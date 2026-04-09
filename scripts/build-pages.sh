@@ -130,8 +130,8 @@ for FILE in $FILES; do
   INACTIVE_HEADER='class="text-mu-text-700 hover:text-mu-blue-text transition-colors font-medium tracking-tight"'
   ACTIVE_HEADER='aria-current="page" class="text-mu-blue-text font-medium tracking-tight"'
 
-  INACTIVE_MOBILE='class="mobile-menu__link text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight"'
-  ACTIVE_MOBILE='aria-current="page" class="mobile-menu__link text-mu-blue-text bg-mu-blue/5 rounded-2xl px-4 py-3 font-medium tracking-tight"'
+  INACTIVE_MOBILE='class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight"'
+  ACTIVE_MOBILE='aria-current="page" class="mobile-menu__link text-mu-blue-text bg-mu-blue/5 squircle-lg px-4 py-3 font-medium tracking-tight"'
 
   NAV_HEADER_online="$INACTIVE_HEADER"
   NAV_HEADER_treatment="$INACTIVE_HEADER"
