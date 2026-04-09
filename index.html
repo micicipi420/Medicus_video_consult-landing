@@ -116,9 +116,10 @@
 <!-- BUILD:svg-defs -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <filter id="liquid-refract">
-        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4"/>
-        <feDisplacementMap in="SourceGraphic" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+      <filter id="liquid-refract" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="92" result="noise"/>
+        <feGaussianBlur in="noise" stdDeviation="2" result="blurred"/>
+        <feDisplacementMap in="SourceGraphic" in2="blurred" scale="30" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
     </defs>
   </svg>
