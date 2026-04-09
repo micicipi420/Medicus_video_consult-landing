@@ -23,37 +23,6 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preload" href="css/styles.css" as="style">
   <link rel="stylesheet" href="css/styles.css">
-  <style>
-    /* Header scroll state */
-    .header--scrolled {
-      --liquid-bg: rgba(255, 255, 255, 0.45);
-      --liquid-blur-md: 60px;
-      --liquid-saturate: 200%;
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-    }
-    .dark .header--scrolled {
-      --liquid-bg: rgba(30, 40, 60, 0.6);
-      --liquid-blur-md: 60px;
-      --liquid-saturate: 200%;
-    }
-    /* Mobile menu toggle */
-    .mobile-menu-overlay { display: none; }
-    .mobile-menu-overlay.is-open { display: block; }
-    /* Form validation */
-    .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
-    /* Form success/error messages */
-    .form__success, .form__error { display: none; }
-    .form__success.is-visible, .form__error.is-visible { display: block; }
-    /* Form field-level errors */
-    .form__field-error { display: none; color: var(--mu-accent-red, #ef4444); font-size: 0.875rem; margin-top: 0.25rem; }
-    .is-invalid + .form__field-error,
-    .is-invalid ~ .form__field-error { display: block; }
-    /* Visually hidden (honeypot) */
-    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    /* Active nav link */
-    a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
-  </style>
 </head>
 <body class="relative bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-clip">
   <a href="#page-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-mu-text-900 focus:px-4 focus:py-2 focus:squircle-md focus:shadow-lg focus:outline-2 focus:outline-mu-blue-text">Перейти к&nbsp;содержимому</a>

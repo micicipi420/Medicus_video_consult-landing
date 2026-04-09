@@ -24,40 +24,6 @@
   <link rel="preload" href="css/styles.css" as="style">
   <link rel="preload" href="img/hero-doctor-portrait.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="css/styles.css">
-  <style>
-    /* Header scroll state */
-    .header--scrolled {
-      --liquid-bg: rgba(255, 255, 255, 0.45);
-      --liquid-blur-md: 60px;
-      --liquid-saturate: 200%;
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-    }
-    .dark .header--scrolled {
-      --liquid-bg: rgba(30, 40, 60, 0.6);
-      --liquid-blur-md: 60px;
-      --liquid-saturate: 200%;
-    }
-    /* Mobile menu toggle */
-    .mobile-menu-overlay { display: none; }
-    .mobile-menu-overlay.is-open { display: block; }
-    /* Form validation */
-    .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
-    /* FAQ accordion */
-    .faq__answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .faq__answer.is-open { max-height: 500px; }
-    /* Form success/error messages */
-    .form__success, .form__error { display: none; }
-    .form__success.is-visible, .form__error.is-visible { display: block; }
-    /* Form field-level errors */
-    .form__field-error { display: none; color: var(--mu-accent-red, #ef4444); font-size: 0.875rem; margin-top: 0.25rem; }
-    .is-invalid + .form__field-error,
-    .is-invalid ~ .form__field-error { display: block; }
-    /* Visually hidden (honeypot) */
-    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    /* Active nav link */
-    a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
-  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
