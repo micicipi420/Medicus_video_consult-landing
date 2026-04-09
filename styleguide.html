@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Styleguide -- MedicusUnion Design System</title>
+  <meta name="description" content="Визуальный справочник дизайн-системы MedicusUnion KZ v4.0 Liquid Design System.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#38C6F4">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preload" href="css/styles.css" as="style">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Header scroll state */
+    .header--scrolled {
+      --liquid-bg: rgba(255, 255, 255, 0.45);
+      --liquid-blur-md: 60px;
+      --liquid-saturate: 200%;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    .dark .header--scrolled {
+      --liquid-bg: rgba(30, 40, 60, 0.6);
+      --liquid-blur-md: 60px;
+      --liquid-saturate: 200%;
+    }
+    /* Mobile menu toggle */
+    .mobile-menu-overlay { display: none; }
+    .mobile-menu-overlay.is-open { display: block; }
+    /* Form validation */
+    .is-invalid { border-color: var(--mu-accent-red, #ef4444) !important; }
+    /* FAQ accordion */
+    .faq__answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .faq__answer.is-open { max-height: 500px; }
+    /* Form success/error messages */
+    .form__success, .form__error { display: none; }
+    .form__success.is-visible, .form__error.is-visible { display: block; }
+    /* Form field-level errors */
+    .form__field-error { display: none; color: var(--mu-accent-red, #ef4444); font-size: 0.875rem; margin-top: 0.25rem; }
+    .is-invalid + .form__field-error,
+    .is-invalid ~ .form__field-error { display: block; }
+    /* Visually hidden (honeypot) */
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    /* Active nav link */
+    a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
+    /* Styleguide-specific */
+    .sg-section { border-bottom: 1px solid rgba(200, 210, 220, 0.3); }
+    .sg-swatch { min-height: 80px; display: flex; align-items: flex-end; padding: 8px 12px; }
+    .sg-swatch-label { font-size: 0.75rem; font-weight: 600; line-height: 1.3; }
+    .sg-code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 4px; }
+    .sg-note { font-size: 0.875rem; color: var(--mu-text-500); font-style: italic; margin-top: 0.5rem; }
+    .sg-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 640px) { .sg-comparison { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="relative bg-mu-text-50 selection:bg-mu-blue/30 selection:text-mu-text-900 overflow-x-clip">
+  <a href="#page-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-mu-text-900 focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg focus:outline-2 focus:outline-mu-blue-text">Перейти к&nbsp;содержимому</a>
+<!-- BUILD:vars CTA_HREF=#contact CTA_LABEL="Оставить заявку" CURRENT_PAGE=styleguide -->
+<!-- BUILD:svg-defs -->
+<!-- /BUILD:svg-defs -->
+  <!-- Animated Mesh Background (Layout.tsx) -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div class="mesh-bg__blob mesh-bg__blob--1 absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-mu-blue/30 mix-blend-multiply blur-[120px]"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--2 absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-mu-green-300/20 mix-blend-multiply blur-[120px]"></div>
+    <div class="mesh-bg__blob mesh-bg__blob--3 absolute bottom-[-10%] left-[20%] w-[70vw] h-[70vw] rounded-full bg-mu-accent-blue/15 mix-blend-multiply blur-[120px]"></div>
+    <div class="absolute inset-0 bg-white/40 backdrop-blur-[40px] backdrop-saturate-[180%]"></div>
+  </div>
+
+  <!-- Header -->
+<!-- BUILD:header -->
+<!-- /BUILD:header -->
+
+  <!-- Mobile Menu -->
+<!-- BUILD:mobile-menu -->
+<!-- /BUILD:mobile-menu -->
+
+  <!-- Styleguide Content -->
+  <main id="page-content" class="relative z-10 pt-32 pb-16">
+
+    <!-- Page Title -->
+    <div class="mx-auto max-w-[1200px] px-4 md:px-8 mb-16">
+      <h1 class="font-heading text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-4">
+        MedicusUnion Design System
+      </h1>
+      <p class="text-xl text-mu-text-700 font-medium leading-relaxed max-w-3xl">
+        Визуальный справочник компонентов дизайн-системы v4.0 Liquid Glass.
+        Все&nbsp;элементы на&nbsp;этой странице рендерятся с&nbsp;реальными CSS-классами из&nbsp;production-кода.
+      </p>
+    </div>
+
+
+    <!-- ============================================================
+         Section 1: Typography Scale
+         ============================================================ -->
+    <section id="typography" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Типографика</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Шкала заголовков и&nbsp;текстовых стилей дизайн-системы.</p>
+
+        <div class="space-y-8">
+          <div>
+            <h1 class="font-heading text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-mu-text-900">Heading 1 &mdash; Заголовок первого уровня</h1>
+            <p class="sg-note"><span class="sg-code">font-heading text-4xl md:text-5xl font-extrabold tracking-tight</span></p>
+          </div>
+
+          <div>
+            <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900">Heading 2 &mdash; Заголовок второго уровня</h2>
+            <p class="sg-note"><span class="sg-code">font-heading text-3xl md:text-4xl font-extrabold tracking-tight</span></p>
+          </div>
+
+          <div>
+            <h3 class="font-heading text-2xl md:text-3xl font-extrabold tracking-tight leading-tight text-mu-text-900">Heading 3 &mdash; Заголовок третьего уровня</h3>
+            <p class="sg-note"><span class="sg-code">font-heading text-2xl md:text-3xl font-extrabold tracking-tight</span></p>
+          </div>
+
+          <div>
+            <p class="text-mu-text-900 font-medium leading-relaxed text-lg">Основной текст (body). Человек за&nbsp;3&nbsp;секунды понимает: здесь можно получить мнение европейского врача не&nbsp;выходя из&nbsp;дома &mdash; и&nbsp;оставляет заявку. Международный медицинский сервис MedicusUnion работает с&nbsp;2015&nbsp;года.</p>
+            <p class="sg-note"><span class="sg-code">text-mu-text-900 font-medium leading-relaxed text-lg</span></p>
+          </div>
+
+          <div>
+            <p class="text-sm text-mu-text-500 font-medium">Мелкий текст / caption. Ваши данные защищены ISO&nbsp;27001.</p>
+            <p class="sg-note"><span class="sg-code">text-sm text-mu-text-500 font-medium</span></p>
+          </div>
+
+          <div class="liquid-card-wrap inline-block">
+            <div class="liquid-card squircle-lg p-6">
+              <p class="text-sm text-mu-text-700 font-medium"><strong>Body:</strong> SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto</p>
+              <p class="text-sm text-mu-text-700 font-medium mt-1"><strong>Headings:</strong> SF Pro Rounded, SF Pro Display, -apple-system, BlinkMacSystemFont</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 2: Color Palette
+         ============================================================ -->
+    <section id="colors" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Цветовая палитра</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Брендовые цвета, текстовая палитра и&nbsp;акценты.</p>
+
+        <!-- Brand colors -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Брендовые цвета</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#38C6F4;">
+              <span class="sg-swatch-label text-white">mu-blue<br>#38C6F4</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:linear-gradient(135deg,#0E8FB5,#3B6DD0);">
+              <span class="sg-swatch-label text-white">CTA gradient<br>#0E8FB5 &rarr; #3B6DD0</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#35B678;">
+              <span class="sg-swatch-label text-white">mu-green-600<br>#35B678</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#E4FAEF;">
+              <span class="sg-swatch-label text-mu-text-900">mu-green-50<br>#E4FAEF</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#0B7A9A;">
+              <span class="sg-swatch-label text-white">mu-blue-text<br>#0B7A9A</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#1F7A4F;">
+              <span class="sg-swatch-label text-white">mu-green-text<br>#1F7A4F</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text / Neutral ramp -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Текстовая палитра</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-10">
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#1B212C;">
+              <span class="sg-swatch-label text-white">mu-text-900<br>#1B212C</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#4A4E5C;">
+              <span class="sg-swatch-label text-white">mu-text-700<br>#4A4E5C</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#6B6F80;">
+              <span class="sg-swatch-label text-white">mu-text-500<br>#6B6F80</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#C6C9D1;">
+              <span class="sg-swatch-label text-mu-text-900">mu-text-300<br>#C6C9D1</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#D8DDE2;">
+              <span class="sg-swatch-label text-mu-text-900">mu-text-200<br>#D8DDE2</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#F5F6F8;">
+              <span class="sg-swatch-label text-mu-text-900">mu-text-100<br>#F5F6F8</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#FBFBFB; border: 1px solid #eee;">
+              <span class="sg-swatch-label text-mu-text-900">mu-text-50<br>#FBFBFB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accent colors -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Акценты</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#4F84E8;">
+              <span class="sg-swatch-label text-white">mu-accent-blue<br>#4F84E8</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#F50057;">
+              <span class="sg-swatch-label text-white">mu-accent-red<br>#F50057</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#FFA25C;">
+              <span class="sg-swatch-label text-white">mu-accent-orange<br>#FFA25C</span>
+            </div>
+          </div>
+          <div class="squircle-md overflow-hidden">
+            <div class="sg-swatch" style="background:#78C3BF;">
+              <span class="sg-swatch-label text-white">mu-accent-teal<br>#78C3BF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 3: Squircle Masks
+         ============================================================ -->
+    <section id="squircles" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Squircle-маски</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Четыре варианта скругления на&nbsp;основе superellipse (n=5). Прогрессивная деградация: Chrome 139+ &rarr; mask-image SVG &rarr; border-radius.</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="squircle-md bg-mu-blue/20 w-32 h-32 mx-auto mb-3 flex items-center justify-center">
+              <span class="text-mu-blue-text font-bold text-sm">16px</span>
+            </div>
+            <p class="font-bold text-mu-text-900 text-sm">squircle-md</p>
+            <p class="sg-note">border-radius: 16px</p>
+          </div>
+          <div class="text-center">
+            <div class="squircle-lg bg-mu-blue/20 w-32 h-32 mx-auto mb-3 flex items-center justify-center">
+              <span class="text-mu-blue-text font-bold text-sm">24px</span>
+            </div>
+            <p class="font-bold text-mu-text-900 text-sm">squircle-lg</p>
+            <p class="sg-note">border-radius: 24px</p>
+          </div>
+          <div class="text-center">
+            <div class="squircle-xl bg-mu-blue/20 w-32 h-32 mx-auto mb-3 flex items-center justify-center">
+              <span class="text-mu-blue-text font-bold text-sm">40px</span>
+            </div>
+            <p class="font-bold text-mu-text-900 text-sm">squircle-xl</p>
+            <p class="sg-note">border-radius: 40px</p>
+          </div>
+          <div class="text-center">
+            <div class="squircle-full bg-mu-blue/20 w-32 h-32 mx-auto mb-3 flex items-center justify-center">
+              <span class="text-mu-blue-text font-bold text-sm">circle</span>
+            </div>
+            <p class="font-bold text-mu-text-900 text-sm">squircle-full</p>
+            <p class="sg-note">border-radius: 9999px</p>
+          </div>
+        </div>
+
+        <p class="sg-note mt-6">Трёхуровневая деградация: Tier&nbsp;1 (Chrome 139+) &mdash; corner-shape: superellipse(2); Tier&nbsp;2 (Safari 17+, Firefox 120+) &mdash; mask-image SVG; Tier&nbsp;3 &mdash; обычный border-radius.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 4: Glass Cards (Light)
+         ============================================================ -->
+    <section id="glass-cards" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Glass-карточки</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Liquid Glass material &mdash; backdrop-filter + squircle-маски. Shadow-wrap паттерн для&nbsp;внешних теней.</p>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card with shadow-wrap -->
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">liquid-card + wrap</h3>
+            <div class="liquid-card-wrap">
+              <article class="squircle-lg liquid-card">
+                <h3 class="font-extrabold text-mu-text-900 text-lg mb-2">Заголовок карточки</h3>
+                <p class="text-mu-text-700 font-medium">Пример текста внутри glass-карточки с&nbsp;shadow-wrap паттерном. Внешняя тень на&nbsp;обёртке, маска на&nbsp;inner-элементе.</p>
+              </article>
+            </div>
+            <p class="sg-note"><span class="sg-code">.liquid-card-wrap</span> + <span class="sg-code">.squircle-lg .liquid-card</span></p>
+          </div>
+
+          <!-- Stats glass -->
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">stats-glass</h3>
+            <div class="squircle-xl stats-glass">
+              <div class="flex gap-8 justify-center">
+                <div class="text-center">
+                  <span class="text-3xl font-bold text-mu-text-900">43</span><br>
+                  <span class="text-sm text-mu-text-500 font-medium">клиники</span>
+                </div>
+                <div class="text-center">
+                  <span class="text-3xl font-bold text-mu-text-900">11</span><br>
+                  <span class="text-sm text-mu-text-500 font-medium">стран</span>
+                </div>
+                <div class="text-center">
+                  <span class="text-3xl font-bold text-mu-text-900">10k+</span><br>
+                  <span class="text-sm text-mu-text-500 font-medium">пациентов</span>
+                </div>
+              </div>
+            </div>
+            <p class="sg-note"><span class="sg-code">.squircle-xl .stats-glass</span> &mdash; blur-lg (40px)</p>
+          </div>
+
+          <!-- Base liquid-regular -->
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">liquid-regular</h3>
+            <div class="liquid-regular squircle-lg p-6">
+              <p class="text-mu-text-900 font-medium">Базовая стеклянная поверхность. Используется для&nbsp;header, mobile menu, иконок и&nbsp;других UI-элементов.</p>
+            </div>
+            <p class="sg-note"><span class="sg-code">.liquid-regular .squircle-lg</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 5: Button Variants
+         ============================================================ -->
+    <section id="buttons" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Кнопки</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Primary CTA (gradient), Secondary (glass), Shimmer-эффект. Active: scale(0.97).</p>
+
+        <div class="flex flex-wrap gap-6 items-center mb-8">
+          <button class="liquid-btn-primary squircle-md px-8 py-3 text-lg">Primary CTA</button>
+          <button class="liquid-btn-primary squircle-md shimmer-sweep px-8 py-3 text-lg">Shimmer CTA</button>
+          <button class="liquid-btn-secondary squircle-md px-8 py-3 text-lg text-mu-text-900">Secondary</button>
+        </div>
+
+        <div class="space-y-3">
+          <p class="sg-note"><span class="sg-code">.liquid-btn-primary .squircle-md</span> &mdash; gradient fill, specular edge treatment</p>
+          <p class="sg-note"><span class="sg-code">.liquid-btn-primary .squircle-md .shimmer-sweep</span> &mdash; CSS-only hover shimmer (max 1 per viewport)</p>
+          <p class="sg-note"><span class="sg-code">.liquid-btn-secondary .squircle-md</span> &mdash; glass material, для&nbsp;вторичных действий</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 6: Form Elements
+         ============================================================ -->
+    <section id="forms" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Элементы формы</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Поля ввода с&nbsp;glass-эффектом и&nbsp;squircle-масками. Инсетные тени безопасны внутри маски.</p>
+
+        <div class="max-w-lg space-y-6">
+          <div>
+            <label class="block text-sm font-bold text-mu-text-900 mb-2">Text input</label>
+            <input type="text" class="squircle-md w-full px-5 py-4 border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль">
+            <p class="sg-note"><span class="sg-code">.squircle-md</span> + inset shadow &mdash; без shadow-wrap</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-mu-text-900 mb-2">Select</label>
+            <select class="squircle-md w-full px-5 py-4 border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-form-inset appearance-none">
+              <option value="" disabled selected>Выберите направление</option>
+              <option value="consultation">Онлайн-консультация</option>
+              <option value="treatment">Лечение за&nbsp;рубежом</option>
+              <option value="checkup">Чек-ап</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-mu-text-900 mb-2">Textarea</label>
+            <textarea class="squircle-md w-full px-5 py-4 border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" rows="3" placeholder="Опишите вашу ситуацию"></textarea>
+          </div>
+        </div>
+
+        <p class="sg-note mt-4">Элементы формы используют&nbsp;inset-тени (shadow-form-inset) &mdash; безопасны внутри squircle-маски, shadow-wrap не&nbsp;нужен.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 7: Badges / Chips
+         ============================================================ -->
+    <section id="badges" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Бейджи и&nbsp;чипы</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Squircle-md бейджи &mdash; без&nbsp;теней, shadow-wrap не&nbsp;нужен.</p>
+
+        <div class="flex flex-wrap gap-4">
+          <span class="squircle-md bg-mu-green-50 text-mu-green-text px-4 py-1.5 text-sm font-bold">Онкология</span>
+          <span class="squircle-md bg-mu-blue/10 text-mu-blue-text px-4 py-1.5 text-sm font-bold">Кардиология</span>
+          <span class="squircle-md bg-mu-accent-orange-bg text-mu-accent-orange-text px-4 py-1.5 text-sm font-bold">Ортопедия</span>
+          <span class="squircle-md bg-mu-accent-teal-bg text-mu-accent-teal-text px-4 py-1.5 text-sm font-bold">Нейрохирургия</span>
+        </div>
+
+        <p class="sg-note mt-4"><span class="sg-code">.squircle-md bg-mu-green-50 text-mu-green-text</span> &mdash; элементы без&nbsp;тени не&nbsp;требуют обёртки.</p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 8: Shadow-Wrap Pattern Demo
+         ============================================================ -->
+    <section id="shadow-wrap" class="sg-section py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Shadow-Wrap паттерн</h2>
+        <p class="text-mu-text-700 font-medium mb-10">mask-image обрезает box-shadow. Для&nbsp;внешних теней используйте обёртку.</p>
+
+        <div class="sg-comparison">
+          <!-- Correct -->
+          <div>
+            <h3 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно: shadow-wrap
+            </h3>
+            <div class="liquid-card-wrap">
+              <article class="squircle-lg liquid-card">
+                <h4 class="font-bold text-mu-text-900 mb-2">Карточка с&nbsp;тенью</h4>
+                <p class="text-mu-text-700 font-medium text-sm">Внешняя тень на&nbsp;обёртке (.liquid-card-wrap), маска на&nbsp;inner (.squircle-lg .liquid-card).</p>
+              </article>
+            </div>
+            <p class="sg-note mt-2">Тень видна полностью.</p>
+          </div>
+
+          <!-- Anti-pattern -->
+          <div>
+            <h3 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Анти-паттерн: shadow + mask
+            </h3>
+            <article class="squircle-lg liquid-card" style="box-shadow: 0 16px 40px rgba(20,30,60,0.12);">
+              <h4 class="font-bold text-mu-text-900 mb-2">Карточка без&nbsp;обёртки</h4>
+              <p class="text-mu-text-700 font-medium text-sm">box-shadow и&nbsp;mask-image на&nbsp;одном элементе &mdash; тень обрезается маской.</p>
+            </article>
+            <p class="sg-note mt-2">Тень обрезана по&nbsp;контуру маски.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 9: Scroll-Edge Fade
+         ============================================================ -->
+    <section id="scroll-fade" class="py-16">
+      <div class="mx-auto max-w-[1200px] px-4 md:px-8">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Scroll-Edge Fade</h2>
+        <p class="text-mu-text-700 font-medium mb-10">CSS mask-image градиент для&nbsp;плавного затухания контента на&nbsp;границах.</p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">scroll-fade-top</h3>
+            <div class="scroll-fade-top bg-mu-blue/10 squircle-lg p-6 h-48 overflow-hidden">
+              <p class="text-mu-text-700 font-medium mb-3">Этот контент затухает сверху. Класс .scroll-fade-top добавляет градиент mask-image.</p>
+              <p class="text-mu-text-700 font-medium mb-3">Используется на&nbsp;границах прокручиваемых областей для&nbsp;визуального разделения.</p>
+              <p class="text-mu-text-700 font-medium">Размер затухания: 80px (настраивается через --scroll-fade-size).</p>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">scroll-fade-bottom</h3>
+            <div class="scroll-fade-bottom bg-mu-blue/10 squircle-lg p-6 h-48 overflow-hidden">
+              <p class="text-mu-text-700 font-medium mb-3">Этот контент затухает снизу. Класс .scroll-fade-bottom добавляет градиент mask-image.</p>
+              <p class="text-mu-text-700 font-medium mb-3">Используется на&nbsp;границах прокручиваемых областей для&nbsp;визуального разделения.</p>
+              <p class="text-mu-text-700 font-medium">Размер затухания: 80px (настраивается через --scroll-fade-size).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+<!-- BUILD:footer -->
+<!-- /BUILD:footer -->
+
+<!-- BUILD:sticky-bar -->
+<!-- /BUILD:sticky-bar -->
+
+  <script defer src="https://cdn.jsdelivr.net/npm/motion@12.23.24/dist/motion.js"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/animations.js"></script>
+  <script defer src="js/router.js"></script>
+</body>
+</html>
