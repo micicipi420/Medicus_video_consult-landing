@@ -206,8 +206,8 @@ Plans:
   4. Toggling prefers-reduced-motion: reduce in browser settings disables specular shimmer, spring animations, and refraction effect while showing static glass appearance -- visually verified on at least 2 pages
 **Plans**: 2 plans
 Plans:
-- [ ] 48-01-PLAN.md — WCAG AA contrast audit + keyboard/focus audit + fixes
-- [ ] 48-02-PLAN.md — Reduced-motion/print audit + Android FPS assessment + fixes
+- [x] 48-01-PLAN.md — WCAG AA contrast audit + keyboard/focus audit + fixes
+- [x] 48-02-PLAN.md — Reduced-motion/print audit + Android FPS assessment + fixes
 
 ### Phase 49: Documentation
 **Goal**: The v4.0 design system is documented for future contributors, and a live styleguide page proves the 7th-page invariant (a new page can be authored using only documented components and the splicer pipeline)
@@ -250,5 +250,5 @@ Phases 48 and 49 may partially overlap (docs can start during verification).
 | 45. Simple Pages (404 + Contacts) | 2/2 | Complete    | 2026-04-09 |
 | 46. Service Pages | 0/TBD | Not started | - |
 | 47. Index Page | 2/2 | Complete    | 2026-04-09 |
-| 48. Verification | 0/TBD | Not started | - |
+| 48. Verification | 2/2 | Complete    | 2026-04-09 |
 | 49. Documentation | 0/TBD | Not started | - |
