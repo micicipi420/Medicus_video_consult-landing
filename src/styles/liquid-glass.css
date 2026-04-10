@@ -54,11 +54,19 @@
    Section 1 -- Base material
    ================================================ */
 
+/* Safari backdrop-filter fallback strategy (Phase 51 / XBRO-01):
+   Safari ignores CSS custom properties inside -webkit-backdrop-filter.
+   Each glass class has a hardcoded -webkit-backdrop-filter line BEFORE the
+   var()-based line. Safari uses the hardcoded values; Chromium/Firefox use
+   the var() line. Light-mode values are used as the universal fallback --
+   the visual difference vs dark params (28px/160%/115%) is negligible. */
+
 .liquid-regular {
   isolation: isolate;
   position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback -- vars fail in -webkit-backdrop-filter */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   /* No border -- use .border-inset-glass for squircle-safe borders (see squircles.css). */
   box-shadow:
@@ -78,6 +86,7 @@
   position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
@@ -144,6 +153,7 @@
   position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
@@ -173,6 +183,7 @@
   position: relative;
   background: var(--liquid-bg);
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(108%); /* Safari fallback -- uses blur-lg */
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
@@ -428,6 +439,10 @@ html[data-refract="true"] .stats-glass {
    opacity, disables backdrop-filter, and hides all
    pseudo-element decorations.
    ================================================ */
+
+/* Note: prefers-reduced-transparency is Chrome/Edge 118+ only.
+   Safari and Firefox do not support it (as of April 2026).
+   This is progressive enhancement -- no action needed. */
 
 @media (prefers-reduced-transparency: reduce) {
   .liquid-regular,
