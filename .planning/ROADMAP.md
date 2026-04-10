@@ -144,7 +144,7 @@ Plans:
   4. Chrome DevTools Performance panel shows no increase in GPU memory usage exceeding 10% compared to pre-tuning baseline when scrolling through index.html
 **Plans**: 1 plan
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [x] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 54: Adaptive Tinting
@@ -158,7 +158,7 @@ Plans:
   4. Tinting is achieved via background-gradient composite (not mix-blend-mode) as specified in VFEX-01 -- verified by inspecting computed styles in DevTools
 **Plans**: 1 plan
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [x] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 55: Glass Material Variants & Hierarchy
@@ -232,7 +232,7 @@ Strictly linear -- each phase builds on the previous.
 |-------|----------------|--------|-----------|
 | 51. Cross-Browser Hardening | 2/2 | Complete | 2026-04-10 |
 | 52. Token Foundation & Dead Code Cleanup | 2/2 | Complete    | 2026-04-10 |
-| 53. SVG Refraction Tuning | 0/1 | Not started | - |
+| 53. SVG Refraction Tuning | 1/1 | Complete    | 2026-04-10 |
 | 54. Adaptive Tinting | 0/TBD | Not started | - |
 | 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
 | 56. Specular Physics & Interaction States | 0/TBD | Not started | - |
