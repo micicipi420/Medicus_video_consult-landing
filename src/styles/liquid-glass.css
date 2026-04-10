@@ -67,7 +67,17 @@
 .liquid-regular {
   isolation: isolate;
   position: relative;
-  background: var(--liquid-bg);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback -- vars fail in -webkit-backdrop-filter */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -87,7 +97,17 @@
 .liquid-card {
   isolation: isolate;
   position: relative;
-  background: var(--liquid-bg);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -149,7 +169,17 @@
 .liquid-btn-secondary {
   isolation: isolate;
   position: relative;
-  background: var(--liquid-bg);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -179,7 +209,17 @@
 .stats-glass {
   isolation: isolate;
   position: relative;
-  background: var(--liquid-bg);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
   backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(108%); /* Safari fallback -- uses blur-lg */
   -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
@@ -349,6 +389,18 @@ html[data-refract="true"] .stats-glass {
     -webkit-mask-image: none !important;
   }
 }
+
+/* ================================================
+   Section 12.5 -- Glass tint consumption
+   Glass elements inherit --liquid-tint-* from their
+   parent section's .section-tint-* class. The tint is
+   composited as a second background layer beneath
+   --liquid-bg. When --liquid-tint-a is 0 (default),
+   the tint layer is fully transparent -- zero visual
+   impact on untinted sections.
+   Per VFEX-01: background-gradient composite, not
+   mix-blend-mode.
+   ================================================ */
 
 /* ================================================
    Section 12 -- Section tint backgrounds & glass tint properties
