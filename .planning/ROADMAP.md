@@ -158,7 +158,7 @@ Plans:
   4. Tinting is achieved via background-gradient composite (not mix-blend-mode) as specified in VFEX-01 -- verified by inspecting computed styles in DevTools
 **Plans**: 1 plan
 Plans:
-- [x] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [ ] 54-01-PLAN.md &mdash; Adaptive tint properties and glass background composite
 **UI hint**: yes
 
 ### Phase 55: Glass Material Variants & Hierarchy
