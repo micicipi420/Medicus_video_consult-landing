@@ -179,12 +179,10 @@
             <p class="sg-note"><span class="sg-code">text-sm text-mu-text-500 font-medium</span></p>
           </div>
 
-          <div class="liquid-card-wrap inline-block">
-            <div class="liquid-card squircle-lg p-6">
+            <div class="inline-block liquid-card squircle-lg p-6">
               <p class="text-sm text-mu-text-700 font-medium"><strong>Body:</strong> SF Pro Display, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto</p>
               <p class="text-sm text-mu-text-700 font-medium mt-1"><strong>Headings:</strong> SF Pro Rounded, SF Pro Display, -apple-system, BlinkMacSystemFont</p>
             </div>
-          </div>
         </div>
       </div>
     </section>
@@ -354,16 +352,14 @@
         <p class="text-mu-text-700 font-medium mb-10">Liquid Glass material &mdash; backdrop-filter + squircle-маски. Shadow-wrap паттерн для&nbsp;внешних теней.</p>
 
         <div class="grid md:grid-cols-3 gap-8">
-          <!-- Card with shadow-wrap -->
+          <!-- Card (single-element pattern) -->
           <div>
-            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">liquid-card + wrap</h3>
-            <div class="liquid-card-wrap">
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">liquid-card</h3>
               <article class="squircle-lg liquid-card p-6">
                 <h3 class="font-extrabold text-mu-text-900 text-lg mb-2">Заголовок карточки</h3>
-                <p class="text-mu-text-700 font-medium">Пример текста внутри glass-карточки с&nbsp;shadow-wrap паттерном. Внешняя тень на&nbsp;обёртке, маска на&nbsp;inner-элементе.</p>
+                <p class="text-mu-text-700 font-medium">Пример текста внутри glass-карточки. Стекло и&nbsp;padding на&nbsp;одном элементе.</p>
               </article>
-            </div>
-            <p class="sg-note"><span class="sg-code">.liquid-card-wrap</span> + <span class="sg-code">.squircle-lg .liquid-card</span></p>
+            <p class="sg-note"><span class="sg-code">.squircle-lg .liquid-card</span></p>
           </div>
 
           <!-- Stats glass -->
@@ -493,14 +489,12 @@
           <div>
             <h3 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              Правильно: shadow-wrap
+              Правильно: single-element card
             </h3>
-            <div class="liquid-card-wrap">
               <article class="squircle-lg liquid-card">
                 <h4 class="font-bold text-mu-text-900 mb-2">Карточка с&nbsp;тенью</h4>
-                <p class="text-mu-text-700 font-medium text-sm">Внешняя тень на&nbsp;обёртке (.liquid-card-wrap), маска на&nbsp;inner (.squircle-lg .liquid-card).</p>
+                <p class="text-mu-text-700 font-medium text-sm">Стекло и&nbsp;тень на&nbsp;одном элементе (.squircle-lg .liquid-card).</p>
               </article>
-            </div>
             <p class="sg-note mt-2">Тень видна полностью.</p>
           </div>
 
