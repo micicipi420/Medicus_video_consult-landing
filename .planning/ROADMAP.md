@@ -19,7 +19,7 @@
 
 ### v6.0 Next.js Stack Migration (active)
 
-- [ ] **Phase 59: Next.js Scaffold & CSS Foundation** - Next.js 15 project with Tailwind v4, glass tokens, and global glass CSS rendering identically to current site
+- [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
 - [ ] **Phase 60: Component Library & Layout Shell** - shadcn/ui base components and root layout with shared chrome (header, footer, mobile-menu, sticky-bar, svg-defs)
 - [ ] **Phase 61: Index Page Migration** - All 13 index sections as React Server Components with 1:1 visual parity
 - [ ] **Phase 62: Contacts Page & SEO** - Contacts page with glass form + SEO metadata for both pages via Next.js Metadata API
