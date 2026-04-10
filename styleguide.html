@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Styleguide -- MedicusUnion Design System</title>
-  <meta name="description" content="Визуальный справочник дизайн-системы MedicusUnion KZ v4.0 Liquid Design System.">
+  <title>Styleguide -- MedicusUnion Design System v5.0</title>
+  <meta name="description" content="Визуальный справочник дизайн-системы MedicusUnion KZ v5.0 Liquid Glass.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#38C6F4">
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -151,7 +151,7 @@
         MedicusUnion Design System
       </h1>
       <p class="text-xl text-mu-text-700 font-medium leading-relaxed max-w-3xl">
-        Визуальный справочник компонентов дизайн-системы v4.0 Liquid Glass.
+        Визуальный справочник компонентов дизайн-системы v5.0 Liquid Glass.
         Все&nbsp;элементы на&nbsp;этой странице рендерятся с&nbsp;реальными CSS-классами из&nbsp;production-кода.
       </p>
     </div>
@@ -614,6 +614,267 @@
 
 
     <!-- ============================================================
+         Section 8b: Usage Guidelines / Do-Don't
+         ============================================================ -->
+    <section id="usage-guidelines" class="sg-section py-16">
+      <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Рекомендации по&nbsp;использованию</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Правильные и&nbsp;запрещённые паттерны работы со&nbsp;стеклянными поверхностями.</p>
+
+        <!-- Pair 1: Glass + squircle -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Glass + squircle</h3>
+        <div class="sg-comparison mb-12">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <article class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Стекло + squircle на&nbsp;одном элементе</p>
+            </article>
+            <p class="sg-note mt-2"><span class="sg-code">&lt;article class="squircle-lg liquid-card"&gt;</span></p>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">Кастомный blur без&nbsp;токенов класса</p>
+              <code class="sg-code block mt-2 text-xs">backdrop-filter: blur(24px); border-radius: 16px;</code>
+            </div>
+            <p class="sg-note mt-2">Не&nbsp;используйте инлайн backdrop-filter &mdash; только классы.</p>
+          </div>
+        </div>
+
+        <!-- Pair 2: No nested glass -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Нет вложенного стекла</h3>
+        <div class="sg-comparison mb-12">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <article class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Одна стеклянная карточка с&nbsp;контентом</p>
+            </article>
+            <p class="sg-note mt-2">Один уровень glass &mdash; текст читабелен.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">Двойной backdrop-filter = нечитаемый текст</p>
+              <code class="sg-code block mt-2 text-xs">.liquid-card &gt; .liquid-card &mdash; запрещено</code>
+            </div>
+            <p class="sg-note mt-2">Вложенный glass удваивает blur.</p>
+          </div>
+        </div>
+
+        <!-- Pair 3: Shadow on glass -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Shadow на&nbsp;glass</h3>
+        <div class="sg-comparison mb-12">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <article class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">.liquid-card &mdash; тень встроена в&nbsp;класс</p>
+            </article>
+            <p class="sg-note mt-2">Тень из&nbsp;токена --liquid-shadow-outer.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">box-shadow обрезается mask-image</p>
+              <code class="sg-code block mt-2 text-xs">box-shadow + mask-image на&nbsp;одном элементе</code>
+            </div>
+            <p class="sg-note mt-2">Используйте shadow-wrap или встроенные тени класса.</p>
+          </div>
+        </div>
+
+        <!-- Pair 4: will-change -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">will-change</h3>
+        <div class="sg-comparison mb-12">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <div class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">will-change только на&nbsp;:hover/:active</p>
+              <code class="sg-code block mt-2 text-xs">.liquid-card:hover { will-change: filter, transform; }</code>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">will-change на&nbsp;статичных элементах</p>
+              <code class="sg-code block mt-2 text-xs">.liquid-card { will-change: backdrop-filter; }</code>
+            </div>
+            <p class="sg-note mt-2">Расходует GPU-память без&nbsp;пользы.</p>
+          </div>
+        </div>
+
+        <!-- Pair 5: Shimmer -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">Shimmer</h3>
+        <div class="sg-comparison mb-12">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <div class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Максимум 1&nbsp;shimmer на&nbsp;viewport</p>
+              <p class="text-mu-text-500 text-xs mt-1">Только hero CTA-кнопка.</p>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">Несколько shimmer = визуальный шум</p>
+              <code class="sg-code block mt-2 text-xs">Множество .shimmer-sweep на&nbsp;странице</code>
+            </div>
+            <p class="sg-note mt-2">ЦА 45+ &mdash; минимум отвлекающих эффектов.</p>
+          </div>
+        </div>
+
+        <!-- Pair 6: drop-shadow on ancestors -->
+        <h3 class="font-heading text-xl font-extrabold text-mu-text-900 mb-4">drop-shadow на&nbsp;предках</h3>
+        <div class="sg-comparison">
+          <div>
+            <h4 class="font-bold text-mu-green-text mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              Правильно
+            </h4>
+            <div class="squircle-lg liquid-card p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Тень на&nbsp;самом glass-элементе через box-shadow</p>
+            </div>
+            <p class="sg-note mt-2">box-shadow &mdash; безопасен для&nbsp;backdrop-filter потомков.</p>
+          </div>
+          <div>
+            <h4 class="font-bold text-mu-accent-red mb-4 text-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Запрещено
+            </h4>
+            <div class="bg-mu-accent-red/5 squircle-lg p-6">
+              <p class="text-mu-text-700 font-medium text-sm">filter: drop-shadow() на&nbsp;обёртке ломает backdrop-filter потомков</p>
+              <code class="sg-code block mt-2 text-xs">filter: drop-shadow() &mdash; создаёт backdrop root</code>
+            </div>
+            <p class="sg-note mt-2">Используйте box-shadow вместо filter: drop-shadow().</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 8c: Interaction States
+         ============================================================ -->
+    <section id="interaction-states" class="sg-section py-16">
+      <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Состояния взаимодействия</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Hover, press и&nbsp;focus-visible на&nbsp;стеклянных поверхностях. Наведите курсор для&nbsp;проверки.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div class="liquid-nav squircle-lg p-6 cursor-pointer" tabindex="0">
+            <p class="text-mu-text-900 font-bold text-sm mb-1">liquid-nav</p>
+            <p class="text-mu-text-500 text-xs">Наведите курсор или&nbsp;нажмите Tab</p>
+          </div>
+          <div class="liquid-regular squircle-lg p-6 cursor-pointer" tabindex="0">
+            <p class="text-mu-text-900 font-bold text-sm mb-1">liquid-regular</p>
+            <p class="text-mu-text-500 text-xs">Наведите курсор или&nbsp;нажмите Tab</p>
+          </div>
+          <div class="liquid-clear squircle-lg p-6 cursor-pointer" tabindex="0">
+            <p class="text-mu-text-900 font-bold text-sm mb-1">liquid-clear</p>
+            <p class="text-mu-text-500 text-xs">Наведите курсор или&nbsp;нажмите Tab</p>
+          </div>
+          <div class="liquid-fluted squircle-lg p-6 cursor-pointer" tabindex="0">
+            <p class="text-mu-text-900 font-bold text-sm mb-1">liquid-fluted</p>
+            <p class="text-mu-text-500 text-xs">Наведите курсор или&nbsp;нажмите Tab</p>
+          </div>
+        </div>
+
+        <div class="liquid-card squircle-lg p-6 max-w-3xl">
+          <p class="text-mu-text-700 font-medium text-sm">
+            <strong>hover</strong> = brightness(1.04), <strong>press</strong> = brightness(0.96) + scale(0.985), <strong>focus-visible</strong> = outline 2px solid var(--mu-blue-text), offset 4px.
+            Для&nbsp;prefers-reduced-motion анимации мгновенные.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 8d: Specular Highlight & Refraction
+         ============================================================ -->
+    <section id="specular-refraction" class="sg-section py-16">
+      <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Спекулярный блик и&nbsp;преломление</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Мышь управляет положением specular highlight на&nbsp;стеклянных поверхностях (только desktop).</p>
+
+        <div class="sg-comparison mb-8">
+          <div class="liquid-regular squircle-xl p-8">
+            <h3 class="font-bold text-mu-text-900 mb-3 text-lg">Specular highlight</h3>
+            <p class="text-mu-text-700 font-medium text-sm">Наведите мышь &mdash; блик следует за&nbsp;курсором. Работает через CSS --mouse-x/--mouse-y, обновляемые JS (initMouseSpecular).</p>
+          </div>
+          <div class="liquid-card squircle-xl p-8">
+            <h3 class="font-bold text-mu-text-900 mb-3 text-lg">Refraction (SVG)</h3>
+            <p class="text-mu-text-700 font-medium text-sm">Chrome 139+: SVG feTurbulence + feDisplacementMap создают эффект преломления стекла. Три калибровки: sm (бейджи), md (карточки), lg (полноширинные).</p>
+          </div>
+        </div>
+
+        <div class="liquid-card squircle-lg p-6 max-w-3xl">
+          <p class="text-mu-text-700 font-medium text-sm">
+            prefers-reduced-motion отключает параллакс-эффект. Статичные состояния (hover, focus) сохраняются.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         Section 8e: Viewport Budget
+         ============================================================ -->
+    <section id="viewport-budget" class="sg-section py-16">
+      <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Бюджет viewport</h2>
+        <p class="text-mu-text-700 font-medium mb-4">Максимум 6&nbsp;элементов с&nbsp;backdrop-filter одновременно видны в&nbsp;viewport.</p>
+        <p class="text-mu-text-700 font-medium mb-10">IntersectionObserver отслеживает видимые glass-элементы. Если&nbsp;видно более 6, избыточные получают класс .glass-idle &mdash; backdrop-filter заменяется непрозрачным фоном-аппроксимацией. Приоритет: header&nbsp;&gt; nav&nbsp;&gt; cards&nbsp;&gt; buttons.</p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">glass-idle (бюджет исчерпан)</h3>
+            <div class="glass-idle liquid-regular squircle-lg p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Элемент в&nbsp;состоянии .glass-idle &mdash; backdrop-filter отключён, фон-аппроксимация.</p>
+            </div>
+            <p class="sg-note mt-2"><span class="sg-code">.glass-idle .liquid-regular</span></p>
+          </div>
+          <div>
+            <h3 class="font-bold text-mu-text-900 mb-4 text-lg">Активный (в&nbsp;бюджете)</h3>
+            <div class="liquid-regular squircle-lg p-6">
+              <p class="text-mu-text-900 font-medium text-sm">Активный элемент &mdash; backdrop-filter включён.</p>
+            </div>
+            <p class="sg-note mt-2"><span class="sg-code">.liquid-regular</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
          Section 9: Scroll-Edge Fade
          ============================================================ -->
     <section id="scroll-fade" class="py-16">
@@ -638,6 +899,28 @@
               <p class="text-mu-text-700 font-medium">Размер затухания: 80px (настраивается через --scroll-fade-size).</p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Section 10: Print Fallback
+         ============================================================ -->
+    <section id="print-fallback" class="sg-section py-16">
+      <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+        <h2 class="font-heading text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-mu-text-900 mb-2">Печать</h2>
+        <p class="text-mu-text-700 font-medium mb-10">Все стеклянные поверхности рендерятся как непрозрачные в&nbsp;@media print.</p>
+
+        <div class="liquid-card squircle-lg p-6 max-w-3xl mb-8">
+          <p class="text-mu-text-700 font-medium text-sm mb-3">
+            <strong>backdrop-filter:</strong> none. <strong>background:</strong> white. <strong>border:</strong> 1px solid #ccc.
+          </p>
+          <p class="text-mu-text-700 font-medium text-sm mb-3">
+            Pseudo-элементы (specular, shimmer, fluted stripes, dimming) скрыты. Squircle-маски сняты (mask-image: none).
+          </p>
+          <p class="text-mu-text-700 font-medium text-sm">
+            <strong>Проверка:</strong> Откройте Ctrl+P / Cmd+P. Все карточки на&nbsp;этой странице должны отображаться как белые прямоугольники с&nbsp;серой рамкой.
+          </p>
         </div>
       </div>
     </section>
