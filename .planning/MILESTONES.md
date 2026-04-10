@@ -1,5 +1,24 @@
 # Milestones
 
+## v5.0 Full Liquid Glass Rework (Shipped: 2026-04-10)
+
+**Phases completed:** 8 phases, 11 plans, 20 tasks
+
+**Key accomplishments:**
+
+- Commit:
+- Removed ~52 lines of dead shadcn/React legacy tokens (popover, chart, sidebar) and unused green ramp tokens from theme.css, deleted dead index.css reference file
+- Removed 146 dead liquid-card-wrap wrapper divs across 7 HTML pages, deleted CSS class, updated documentation to single-element card pattern
+- Three size-calibrated SVG refraction filters (sm/md/lg) replacing single uniform filter, with per-class CSS mapping and reduced displacement for text legibility
+- Glass elements inherit section-specific cool/warm/mint tint via CSS custom property cascade and background-gradient composite
+- Three glass material variants (.liquid-nav, .liquid-clear, .liquid-fluted) with 3-level hierarchy tokens, adaptive tinting, Safari fallbacks, and full accessibility fallback coverage
+- Unified hover/press/focus-visible interaction states and mouse-tracking specular parallax for all 6 glass surface classes
+- Stripped wasteful inline backdrop-blur from 30+ decorative elements across 7 pages and added targeted will-change to 6 animated glass selectors
+- IntersectionObserver-based backdrop-filter budget capping active glass to 6 elements with priority-based downgrade
+- v5.0 styleguide with 5 new sections (do/don't, interactions, specular, viewport budget, print), DESIGN-SYSTEM.md updated with 6 new subsections, and print CSS gap fixed for .liquid-card pseudo-elements
+
+---
+
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks
