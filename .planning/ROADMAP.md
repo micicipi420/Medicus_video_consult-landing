@@ -130,7 +130,10 @@ See `.planning/milestones/` for full details per milestone.
   3. A test page with `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, `.liquid-nav` classes and squircle masks renders glass surfaces identically to the current production site -- side-by-side screenshot comparison shows no visible difference
   4. CSS import order is deterministic: globals.css imports liquid-glass.css and squircles.css via explicit @import chain, and `"sideEffects": ["*.css"]` is set in package.json -- no CSS ordering bugs between dev (Turbopack) and build (Webpack)
   5. backdrop-filter declarations use standard-first, -webkit- second order to avoid Turbopack stripping bug (#78302)
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 59-01-PLAN.md — Next.js 15 scaffold + Tailwind v4 + font loading + theme tokens
+- [ ] 59-02-PLAN.md — Glass CSS migration (liquid-glass.css + squircles.css) + test page
 **UI hint**: yes
 
 ### Phase 60: Component Library & Layout Shell
@@ -237,7 +240,7 @@ Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 59. Next.js Scaffold & CSS Foundation | 0/TBD | Not started | - |
+| 59. Next.js Scaffold & CSS Foundation | 0/2 | Planned | - |
 | 60. Component Library & Layout Shell | 0/TBD | Not started | - |
 | 61. Index Page Migration | 0/TBD | Not started | - |
 | 62. Contacts Page & SEO | 0/TBD | Not started | - |
