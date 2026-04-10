@@ -1,611 +1,531 @@
-# Technology Stack: Next.js Migration
+# Technology Stack
 
-**Project:** MedicusUnion KZ Landing v6.0
-**Researched:** 2026-04-10
-**Migration from:** Vanilla HTML + Tailwind CSS v4 (standalone CLI) + Vanilla JS + Directus 11
-**Migration to:** Next.js + React + Tailwind CSS v4 + shadcn/ui + Motion + PostgreSQL direct
-
----
-
-## Decision: Next.js 15 (not 16)
-
-**Use Next.js 15.5.x (latest patch: ~15.5.15).**
-
-Next.js 16 (16.2.2 LTS) is available but introduces breaking changes that add migration risk with no benefit for this project:
-- Fully removes synchronous request API access (Next.js 15 has deprecation warnings but still works)
-- Removes AMP support entirely (not used, but signals aggressive API churn)
-- Changes caching to fully opt-in (different mental model, no benefit for a landing page)
-- Turbopack as default bundler -- potential edge cases with custom PostCSS (Tailwind v4)
-
-Next.js 15 is stable, battle-tested, has the widest ecosystem compatibility (shadcn/ui, Motion, Drizzle all verified on 15), and receives security patches. Upgrade to 16 later when the ecosystem is fully settled.
-
-**Confidence: HIGH** -- verified via official docs, release notes, and ecosystem compatibility reports.
+**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
+**Researched:** 2026-03-24
+**Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
 
 ---
 
-## Recommended Stack
+## What This Research Covers
 
-### Core Framework
+Four new CSS/JS capability areas needed for milestone v1.4:
 
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Next.js | 15.5.x | Framework (App Router, SSR/SSG, API routes) | Stable, widest library compat, standalone Docker output, security patches active | HIGH |
-| React | 19.x | UI runtime | Ships with Next.js 15; required by shadcn/ui and Motion 12 | HIGH |
-| TypeScript | 5.x | Type safety | Next.js default; Drizzle ORM type inference requires it | HIGH |
+1. Liquid glass / glassmorphism via `backdrop-filter`
+2. Dark mode toggle with `localStorage` and CSS custom properties
+3. CSS Scroll-Driven Animations API as progressive enhancement
+4. CSS micro-animation patterns for hover and state transitions
 
-### Styling
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Tailwind CSS | 4.x (~4.2) | Utility-first CSS | Already used in current project (standalone CLI); v4 is the default for shadcn/ui now; CSS-first config via `@theme` directive matches existing token architecture | HIGH |
-| @tailwindcss/postcss | 4.x | PostCSS plugin for Next.js | Next.js uses PostCSS pipeline; replaces standalone CLI build | HIGH |
-| tw-animate-css | latest | Animation utilities | Replaces deprecated `tailwindcss-animate`; required by shadcn/ui components (accordion, dialog) | HIGH |
-
-### UI Components
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| shadcn/ui | latest (CLI) | Base component library | Not an npm package -- CLI copies components into `src/components/ui/`. Provides accessible, unstyled-by-default React components (Button, Card, Dialog, Accordion, Form, Input, Select, Textarea). Tailwind v4 + React 19 compatible | HIGH |
-| class-variance-authority | 0.7.x | Component variant API | Dependency of shadcn/ui -- typed variant props for button sizes, card styles | HIGH |
-| clsx + tailwind-merge | latest | Class merging | Dependency of shadcn/ui -- `cn()` utility for conditional + deduplicated Tailwind classes | HIGH |
-| lucide-react | latest | Icons | Default icon library for shadcn/ui; tree-shakeable; replaces inline SVG icons | HIGH |
-
-### Squircle Corners
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| @squircle-js/react | 1.3.0 | Squircle corner rendering (React component) | 2.1kB gzipped; uses JS calculation for iOS-style superellipse corners; provides `<Squircle>` component with `cornerRadius` + `cornerSmoothing` props; SSR fallback via `<SquircleNoScript>` | MEDIUM |
-
-**Integration strategy with existing squircle system:**
-
-The current CSS mask-image SVG approach (in `squircles.css`) is highly optimized and already has 3-tier progressive enhancement (corner-shape: squircle for Chrome 139+, mask-image SVG for Safari/Firefox, border-radius fallback). `@squircle-js/react` uses a different approach (JS-calculated clip paths) that produces similar visual results but loses the mask-image optimization.
-
-**Recommendation:** Keep the existing CSS squircle classes as Tailwind `@layer components` utilities and use them directly in React via className. Only use `@squircle-js/react` if you need squircles on dynamically-sized elements where the SVG mask approach distorts. The CSS approach is zero-JS, zero-bundle-cost, and already battle-tested.
-
-```tsx
-// PREFERRED: CSS class approach (zero JS cost)
-<article className="squircle-lg liquid-card p-6">
-  <h3>Card title</h3>
-</article>
-
-// FALLBACK: @squircle-js/react (for dynamic sizing edge cases only)
-import { Squircle } from '@squircle-js/react';
-<Squircle cornerRadius={24} cornerSmoothing={0.8} className="liquid-card p-6">
-  <h3>Card title</h3>
-</Squircle>
-```
-
-### Animation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| motion | 12.38.x | Mount/hover/scroll-reveal animations | Renamed from framer-motion; import from `motion/react`; no breaking changes in v12; supports React 19; 44kB gzipped but tree-shakeable | HIGH |
-
-**Critical: SSR compatibility pattern.** Motion components require `"use client"` directive. Create a wrapper module:
-
-```tsx
-// src/components/motion/index.tsx
-"use client";
-export { motion, AnimatePresence, useInView, useScroll, useTransform } from "motion/react";
-```
-
-Then import from `@/components/motion` in Server Components without marking the whole page as client.
-
-**Motion tokens from existing CSS:** Map existing `--ease-liquid`, `--dur-hover`, etc. to Motion transition presets:
-
-```tsx
-// src/lib/motion-presets.ts
-export const liquidTransition = {
-  type: "tween" as const,
-  ease: [0.2, 0, 0, 1], // matches --ease-liquid: cubic-bezier(0.2, 0, 0, 1)
-  duration: 0.28,        // matches --dur-hover: 280ms
-};
-
-export const revealTransition = {
-  type: "tween" as const,
-  ease: [0.16, 1, 0.3, 1], // matches --ease-liquid-out
-  duration: 0.6,             // matches --dur-reveal: 600ms
-};
-
-export const pressTransition = {
-  type: "tween" as const,
-  ease: [0.2, 0, 0, 1],
-  duration: 0.12, // matches --dur-press: 120ms
-};
-```
-
-### Glass Refraction (Hero)
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| liquid-glass-react | latest | WebGL refraction effect for hero section | React component; 4 modes (standard, polar, prominent, shader); configurable displacement, blur, saturation, chromatic aberration; arbitrary children support | LOW |
-
-**WARNING: This is a risky dependency.**
-
-Assessment of liquid glass WebGL options:
-
-1. **liquid-glass-react** (rdev) -- React component, npm installable, configurable. But: Chrome/Edge only for full displacement effect (Safari/Firefox show no displacement). New library with unknown stability.
-
-2. **liquidGL** (naughtyduk) -- More mature, shared WebGL canvas, up to 30 elements. But: NO npm package (CDN script only), requires html2canvas, no React API, Safari unstable above 50% viewport.
-
-3. **@specy/liquid-glass-react** -- Three.js powered, React wrapper. But: heavy dependency (Three.js is ~150kB gzipped), expensive initialization, position tracking limitations.
-
-**Recommendation:** Start with pure CSS glass (current `liquid-glass.css` classes work identically in React via className). Add `liquid-glass-react` only for the hero refraction effect as progressive enhancement, with CSS `backdrop-filter` as the universal fallback. Do NOT make WebGL glass a hard dependency.
-
-```tsx
-// Hero glass: progressive enhancement
-"use client";
-import dynamic from 'next/dynamic';
-
-const LiquidGlass = dynamic(
-  () => import('liquid-glass-react').then(mod => mod.LiquidGlass),
-  { ssr: false } // WebGL cannot render server-side
-);
-
-function HeroGlass({ children }: { children: React.ReactNode }) {
-  return (
-    <LiquidGlass
-      mode="standard"
-      displacementScale={50}
-      blurAmount={0.05}
-      saturation={140}
-      cornerRadius={24}
-      className="liquid-card" // CSS fallback styles
-    >
-      {children}
-    </LiquidGlass>
-  );
-}
-```
-
-### Database
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Drizzle ORM | 0.45.x | Type-safe SQL query builder | Lightweight (no heavy runtime like Prisma); SQL-first; type inference from schema; works in Next.js Server Components and API routes without extra config | HIGH |
-| drizzle-kit | latest | Schema migrations, studio | CLI tool for generating/running migrations, introspecting existing DB | HIGH |
-| postgres (postgres.js) | latest | PostgreSQL driver | Faster than `pg` for prepared statements (Drizzle uses them by default); zero native dependencies; ESM-first; simpler API than `pg` | HIGH |
-
-**Database connection pattern for Next.js:**
-
-```tsx
-// src/db/index.ts
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
-import * as schema from './schema';
-
-// Connection pool for server-side queries.
-// IMPORTANT: In Next.js dev mode, hot reload creates new connections.
-// Use globalThis to preserve the client across reloads.
-const globalForDb = globalThis as unknown as {
-  pgClient: ReturnType<typeof postgres> | undefined;
-};
-
-const connectionString = process.env.DATABASE_URL!;
-
-const client = globalForDb.pgClient ?? postgres(connectionString, {
-  max: 10,               // connection pool size
-  idle_timeout: 20,      // seconds
-  connect_timeout: 10,   // seconds
-});
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForDb.pgClient = client;
-}
-
-export const db = drizzle(client, { schema });
-```
-
-**Schema migration from Directus `submissions` table:**
-
-```tsx
-// src/db/schema.ts
-import { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core';
-
-export const submissions = pgTable('submissions', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull(),
-  phone: text('phone').notNull(),
-  specialization: text('specialization').notNull(),
-  description: text('description'),
-  status: text('status').default('new').notNull(),
-  dateCreated: timestamp('date_created').defaultNow().notNull(),
-});
-```
-
-### Infrastructure
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Docker + Docker Compose | latest | Container orchestration | Existing infrastructure; `output: "standalone"` produces minimal Next.js server image (~130MB vs ~1GB full) | HIGH |
-| Node.js | 22.x LTS | Runtime | Next.js 15 requires Node.js 18.18+; 22.x LTS is production-stable through April 2027 | HIGH |
-| Nginx | latest | Reverse proxy, SSL | Already in use; proxies to Next.js on port 3000 instead of serving static files | HIGH |
-
-**Docker Compose structure (Next.js + PostgreSQL):**
-
-```yaml
-# docker-compose.yml
-services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@db:5432/${PG_DATABASE}
-      - NODE_ENV=production
-      - HOSTNAME=0.0.0.0
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-      POSTGRES_DB: ${PG_DATABASE}
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  pgdata:
-```
-
-**Multi-stage Dockerfile:**
-
-```dockerfile
-# Stage 1: Install dependencies
-FROM node:22-alpine AS deps
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
-
-# Stage 2: Build
-FROM node:22-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
-RUN corepack enable && pnpm build
-
-# Stage 3: Production runner
-FROM node:22-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-EXPOSE 3000
-CMD ["node", "server.js"]
-```
-
-### Fonts
-
-| Technology | Approach | Purpose | Why | Confidence |
-|------------|----------|---------|-----|------------|
-| next/font/local | Built-in | Self-hosted font loading | Replaces manual @font-face; automatic `font-display: swap`, preload, no FOUT/FOIT; keeps fonts self-hosted (no Google CDN dependency) | HIGH |
-
-**Current fonts to migrate:**
-
-The current project uses SF Pro Display (body) and SF Pro Rounded (headings) via `local()` system font declarations. These are Apple system fonts -- they only work on macOS/iOS. For cross-platform rendering, the existing `fonts.css` falls through to `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto` etc.
-
-The PROJECT.md references Inter and Manrope as the original brand fonts (self-hosted WOFF2). The current v5.0 switched to SF Pro, which is a system-font-only approach.
-
-**Recommendation:** Use `next/font/local` with the existing WOFF2 files if Inter/Manrope are restored, or `next/font/local` with system font stack if keeping SF Pro:
-
-```tsx
-// src/app/fonts.ts
-import localFont from 'next/font/local';
-
-// Option A: Self-hosted Inter + Manrope (if WOFF2 files exist)
-export const inter = localFont({
-  src: '../fonts/inter-variable.woff2',
-  variable: '--font-body',
-  display: 'swap',
-});
-
-export const manrope = localFont({
-  src: '../fonts/manrope-variable.woff2',
-  variable: '--font-heading',
-  display: 'swap',
-});
-
-// Option B: System font approach (current v5.0 behavior)
-// Just set CSS variables in theme.css -- no next/font needed
-```
+**What is NOT covered:** Backend, build tools, fonts, frameworks — all unchanged from v1.3.
 
 ---
 
-## Supporting Libraries
+## 1. Glassmorphism: `backdrop-filter` + CSS
 
-| Library | Version | Purpose | When to Use |
-|---------|---------|---------|-------------|
-| zod | 3.x | Schema validation | Form validation in API routes + client; used by shadcn/ui Form component |
-| @hookform/resolvers | latest | Connect zod to react-hook-form | Form validation bridge |
-| react-hook-form | 7.x | Form state management | Contact form; shadcn/ui Form component is built on this |
-| sharp | latest | Image optimization | Next.js `<Image>` uses it in production for on-the-fly resizing/WebP/AVIF |
-
----
-
-## What NOT to Install
-
-| Do Not Use | Why |
-|------------|-----|
-| Prisma | Heavy CLI, generates client code (~1.5MB), requires custom binary for Docker Alpine, slower cold starts. For 1 table (`submissions`), Drizzle is dramatically simpler |
-| @directus/sdk | Directus is being removed entirely; PostgreSQL direct via Drizzle replaces it |
-| tailwindcss-animate | Deprecated for Tailwind v4; replaced by tw-animate-css |
-| framer-motion (package name) | Renamed to `motion`; `framer-motion` still works but is deprecated. Import from `motion/react` |
-| Three.js / @specy/liquid-glass-react | 150kB+ for one hero effect; `liquid-glass-react` (rdev) achieves same visual at fraction of bundle cost |
-| Alpine.js | Was used to avoid React; now React IS the framework |
-| Any CSS-in-JS (styled-components, emotion) | Tailwind CSS handles all styling; CSS-in-JS adds runtime overhead and conflicts with RSC |
-| next-themes | Overkill for a single theme toggle; 10 lines of custom code with `useEffect` + `localStorage` + `classList.toggle('dark')` suffice |
-| @next/font (old package) | Renamed to `next/font` (built into Next.js); do not install separately |
-| tRPC | Over-engineering for 1 API endpoint (form submission); plain Next.js API route + Drizzle is sufficient |
-| NextAuth / Auth.js | No user authentication needed; this is a public landing page with a form |
-| @tailwindcss/cli | Was used for standalone builds; Next.js uses @tailwindcss/postcss instead |
-
----
-
-## Installation Commands
-
-```bash
-# Create Next.js 15 project
-pnpm create next-app@15 medicusunion-kz \
-  --typescript --tailwind --eslint --app --src-dir \
-  --import-alias "@/*" --turbopack
-
-cd medicusunion-kz
-
-# Database
-pnpm add drizzle-orm postgres
-pnpm add -D drizzle-kit
-
-# Animation
-pnpm add motion
-
-# UI components (shadcn/ui init -- sets up components.json, cn() utility)
-pnpm dlx shadcn@latest init
-
-# After init, add specific components as needed:
-pnpm dlx shadcn@latest add button card accordion input select textarea form dialog
-
-# Squircle (optional -- prefer CSS class approach first)
-pnpm add @squircle-js/react
-
-# Glass refraction hero (optional -- progressive enhancement only)
-pnpm add liquid-glass-react
-
-# Form validation
-pnpm add zod react-hook-form @hookform/resolvers
-
-# Image optimization (production)
-pnpm add sharp
-```
-
----
-
-## Tailwind v4 Configuration: Token Migration
-
-The existing `theme.css` already uses Tailwind v4's `@theme inline` directive with `--color-*`, `--spacing-*`, `--shadow-*` tokens. This is the exact format Tailwind v4 expects in Next.js.
-
-**Migration approach:** Copy `theme.css` content into the Next.js project's global CSS file (e.g., `src/app/globals.css`) after the Tailwind import. The `@theme inline` block, `:root` variables, and `.dark` overrides transfer 1:1.
+### Technique
 
 ```css
-/* src/app/globals.css */
-@import "tailwindcss";
-@import "tw-animate-css";
+.glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%); /* Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg); /* already 30px */
+}
+```
 
-/* Existing tokens -- copy from src/styles/theme.css */
-@custom-variant dark (&:is(.dark *));
+**Why this approach:**
+- `backdrop-filter: blur()` is the single CSS property that creates the glass blur effect — no JS, no canvas, no SVG filter workaround needed
+- `saturate(180%)` amplifies color behind glass, making the effect richer on medical imagery backgrounds
+- `-webkit-backdrop-filter` is required for Safari 9–17 (pre-2024); Safari 18+ unprefixed works but the prefix costs zero bytes and has no downside
+- `rgba()` background with low alpha (0.08–0.18) is the correct "liquid glass" palette — pure transparent has no color; pure opaque loses the glass effect
+- Explicit `border: 1px solid rgba(255,255,255,0.2)` is required to visually define the glass boundary without a shadow
 
+### Browser Support (as of mid-2025)
+
+| Browser | Support | Notes |
+|---------|---------|-------|
+| Chrome 76+ | Full | Unprefixed |
+| Edge 79+ | Full | Unprefixed |
+| Firefox 103+ | Full | Enabled by default since FF103 (2022) |
+| Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
+| iOS Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
+| Samsung Internet 12+ | Full | |
+| **Global coverage** | ~95%+ | MEDIUM confidence — caniuse.com not accessible for verification |
+
+**Confidence:** MEDIUM. Training data places global support at ~95% for mid-2025. Firefox lagged historically but has supported it since 2022. The `-webkit-` prefix covers all Safari versions in production use.
+
+### Fallback Strategy
+
+```css
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+```
+
+`@supports` is the correct gate — avoids applying transparent background when blur is unavailable (which would produce illegible text).
+
+### Integration with Existing Token System
+
+New tokens to add to `:root`:
+
+```css
 :root {
-  /* All existing --mu-*, --liquid-*, --ease-*, --dur-* tokens */
-  /* ... (copy entire :root block from theme.css) ... */
-}
+  /* Glass surface tokens */
+  --glass-bg-light: rgba(255, 255, 255, 0.12);
+  --glass-bg-medium: rgba(255, 255, 255, 0.18);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
 
-.dark {
-  /* ... (copy entire .dark block from theme.css) ... */
+  /* Dark mode glass (inverted) */
+  --glass-bg-dark: rgba(24, 33, 44, 0.45);
+  --glass-border-dark: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-@theme inline {
-  /* ... (copy entire @theme inline block from theme.css) ... */
-}
-
-/* Existing layer definitions -- copy from theme.css */
-@layer base { /* ... */ }
-@layer components { /* ... */ }
-@layer utilities { /* ... */ }
 ```
 
-**What changes in the migration:**
-- `@import 'tailwindcss' source(none)` becomes `@import "tailwindcss"` (Next.js PostCSS handles source detection automatically)
-- `@source '../../*.html'` is removed (Next.js scans `src/` automatically for class usage)
-- `@import './fonts.css'` is removed (handled by `next/font/local`)
+**Performance note:** `backdrop-filter` triggers GPU compositing. On a landing page with 3–4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
 
-**What stays identical (zero changes):**
-- All `@theme inline` token declarations
-- All `:root` and `.dark` CSS custom properties
-- All `@layer base/components/utilities` rules
-- `squircles.css` classes (import as separate file)
-- `liquid-glass.css` classes (import as separate file)
+### Medical Context Constraint
+
+For the ЦА 45+ audience, glass cards must maintain WCAG AA text contrast. Rule: glass cards with `backdrop-filter` MUST have a minimum background opacity that keeps text at 4.5:1 contrast ratio. Use `rgba(255,255,255,0.85)` minimum for white cards with dark text, or a semi-opaque dark overlay for light text on glass. Pure "trendy" glass with 10% opacity fails contrast — avoid on text-heavy cards.
 
 ---
 
-## next.config.ts
+## 2. Dark Mode: `localStorage` Toggle + CSS Custom Properties
 
-```typescript
-// next.config.ts
-import type { NextConfig } from 'next';
+### Pattern
 
-const nextConfig: NextConfig = {
-  output: 'standalone', // Required for Docker deployment
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    // If serving images from external domains:
-    // remotePatterns: [{ protocol: 'https', hostname: 'medicusunion.kz' }],
-  },
-};
+**CSS side — theme via class on `<html>`:**
 
-export default nextConfig;
+```css
+/* Light mode (default) — already in :root */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #F8FAFB;
+  --color-text-primary: #18212C;
+  --color-text-muted: rgba(24, 33, 44, 0.55);
+  --color-border: rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode — override tokens on html[data-theme="dark"] */
+html[data-theme="dark"] {
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-text-primary: #E6EDF3;
+  --color-text-muted: rgba(230, 237, 243, 0.55);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-white: #161B22;       /* remaps white surfaces */
+  --color-light: #1C2128;       /* remaps light sections */
+}
 ```
 
----
+**Why `data-theme` attribute over CSS class:**
+- `html[data-theme="dark"]` is the current standard pattern (used by MDN, GitHub, Tailwind docs)
+- A class like `.dark` works equally but attribute is semantically clearer and easier to query in JS
+- Avoids class name collision with any BEM classes
 
-## postcss.config.mjs
+**JS side — IIFE pattern (compatible with existing ES5 IIFE codebase):**
 
 ```javascript
-// postcss.config.mjs
-export default {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
-};
-```
+(function () {
+  'use strict';
 
----
+  var STORAGE_KEY = 'mu-theme';
+  var html = document.documentElement;
+  var btn = document.getElementById('theme-toggle');
 
-## Key Integration Points
-
-### 1. shadcn/ui + Liquid Glass Design System
-
-shadcn/ui components use CSS variables from `@theme inline` for colors, radius, shadows. The existing token system (`--background`, `--foreground`, `--card`, `--primary`, `--border`, `--radius`, etc.) is already shadcn/ui-compatible because it was set up following shadcn conventions.
-
-Glass variants layer on TOP of shadcn base components via additional CSS classes:
-
-```tsx
-// A glass card = shadcn Card + liquid-glass CSS class + squircle CSS class
-import { Card, CardContent } from "@/components/ui/card";
-
-export function GlassCard({ children }: { children: React.ReactNode }) {
-  return (
-    <Card className="squircle-lg liquid-card border-inset-glass">
-      <CardContent>{children}</CardContent>
-    </Card>
-  );
-}
-```
-
-### 2. Motion + Next.js App Router
-
-All Motion components are client-only. Strategy:
-
-- **Page-level animations (route transitions):** Wrap `<AnimatePresence>` in a client layout component
-- **Section-level animations (scroll reveal):** Use `useInView` hook in individual section client components
-- **Micro-interactions (hover, press):** Apply `whileHover`, `whileTap` on interactive elements
-- **Reduced motion:** Motion respects `prefers-reduced-motion` automatically when using `layout` prop; for custom animations, check `useReducedMotion()` hook
-
-### 3. Drizzle + Next.js API Routes (replacing Directus)
-
-```tsx
-// src/app/api/submissions/route.ts
-import { db } from '@/db';
-import { submissions } from '@/db/schema';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-
-const submissionSchema = z.object({
-  name: z.string().min(2),
-  phone: z.string().regex(/^\+7\d{10}$/),
-  specialization: z.enum([
-    'oncology', 'cardiology', 'neurosurgery',
-    'orthopedics', 'radiology', 'ivf'
-  ]),
-  description: z.string().optional(),
-});
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  const parsed = submissionSchema.safeParse(body);
-
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.flatten() },
-      { status: 400 }
-    );
+  // Apply saved preference immediately (avoids flash)
+  // This <script> block runs inline in <head>, before render
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
   }
 
-  const [submission] = await db
-    .insert(submissions)
-    .values(parsed.data)
-    .returning();
+  var saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    applyTheme(saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    applyTheme('dark');
+  }
 
-  return NextResponse.json({ id: submission.id }, { status: 201 });
+  // Toggle handler (attached after DOM ready)
+  function init() {
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var current = html.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem(STORAGE_KEY, next);
+      btn.setAttribute('aria-label',
+        next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'
+      );
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+}());
+```
+
+**Why inline `<script>` in `<head>` for theme detection:**
+- The `localStorage` read and `applyTheme()` call MUST happen before first paint — otherwise users with a dark preference see a white flash (FOUC). Place this 8-line block as an inline `<script>` at the end of `<head>`, before the `</head>` tag.
+- This is the same pattern used by every major dark mode implementation (MDN, GitHub, Radix docs)
+
+**`prefers-color-scheme` media query fallback:**
+- If no `localStorage` value, check `window.matchMedia('(prefers-color-scheme: dark)')` to honor OS preference on first visit
+- Browser support: Chrome 76+, Firefox 67+, Safari 12.1+ — essentially universal
+
+### Integration with Existing Tokens
+
+The existing `:root` block has color tokens but they are NOT yet abstracted for dark mode (they reference hardcoded hex values like `--color-white: #FFFFFF`). The migration path:
+
+1. Add semantic tokens (`--color-bg`, `--color-surface`, `--color-border`) to `:root`
+2. Replace hardcoded hex in section backgrounds with semantic tokens
+3. Keep brand colors (`--color-primary`, `--gradient-cta`) unchanged — they work in both modes
+4. Remap `--color-white` in dark mode to a dark surface (this is the key trick that makes `background: var(--color-white)` sections flip automatically)
+
+**Transition for theme switch (no flash):**
+
+```css
+/* Applied to body ONLY after initial load to prevent FOUC */
+body.theme-transitions-ready {
+  transition: background-color 300ms ease, color 300ms ease;
 }
 ```
 
-### 4. Docker: Next.js Standalone + PostgreSQL
+Add `document.body.classList.add('theme-transitions-ready')` in JS after the page loads (not inline in head).
 
-The standalone output produces `server.js` in `.next/standalone/` that includes only the used dependencies. Combined with the multi-stage Dockerfile above, the production image is ~130MB (vs ~1GB without standalone).
+### Confidence: HIGH
 
-**Critical env vars:**
-- `HOSTNAME="0.0.0.0"` -- Without this, Next.js binds to 127.0.0.1 and Docker networking fails (502 errors)
-- `DATABASE_URL` -- Connection string for postgres.js driver
-- `NODE_ENV=production` -- Enables Next.js production optimizations
+This is a well-established pattern with no ambiguity. `localStorage`, `matchMedia`, and CSS custom property cascading all have near-universal browser support.
 
 ---
 
-## Alternatives Considered
+## 3. CSS Scroll-Driven Animations API (2025)
 
-| Category | Recommended | Alternative | Why Not Alternative |
-|----------|-------------|-------------|---------------------|
-| Framework version | Next.js 15.5.x | Next.js 16.2.x | Breaking changes (sync API removal, cache model change) add migration risk for zero benefit on a landing page; 15 gets security patches |
-| ORM | Drizzle ORM | Prisma | Prisma generates a heavy client (~1.5MB), requires custom binary for Docker Alpine, slower cold starts; Drizzle is SQL-first and lighter for 1 table |
-| PG driver | postgres (postgres.js) | pg (node-postgres) | postgres.js is ESM-native, zero native deps, simpler API; pg requires @types/pg and has callback-based API under the hood |
-| Animation | motion 12.x | GSAP, anime.js | motion/react has first-class React integration (component props, layout animations, exit animations); GSAP/anime.js require manual DOM refs and cleanup |
-| Glass refraction | liquid-glass-react | @specy/liquid-glass-react | @specy pulls in Three.js (~150kB); liquid-glass-react uses WebGL directly (~15kB); for one hero effect, smaller is better |
-| Glass refraction | liquid-glass-react | liquidGL (naughtyduk) | No npm package; CDN-only script tag; no React API; requires html2canvas dependency; incompatible with React lifecycle |
-| Squircle | CSS mask-image classes | @squircle-js/react | Existing CSS approach is zero-JS, 3-tier progressive enhancement; @squircle-js adds 2.1kB JS for equivalent visual result |
-| Form handling | react-hook-form + zod | Server Actions only | react-hook-form gives client-side validation feedback (field-level errors, real-time); Server Actions alone require round-trip for validation |
-| Themes | Custom 10-line hook | next-themes | One landing page, one toggle; next-themes adds package for what `classList.toggle('dark')` + localStorage does |
-| Package manager | pnpm | npm / yarn | pnpm handles React 19 peer deps cleanly (no --legacy-peer-deps needed); strict node_modules structure prevents phantom dependencies |
+### What It Is
+
+The CSS Scroll-Driven Animations API (2023 spec, Chrome 115+) replaces IntersectionObserver-based JS animations with pure CSS. It links `@keyframes` animations to scroll position instead of time.
+
+```css
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-scroll {
+  animation: fade-in-up linear both;
+  animation-timeline: view();          /* ties to element's visibility */
+  animation-range: entry 0% entry 40%; /* plays during entry phase */
+}
+```
+
+**Why this technique:**
+- Pure CSS, zero JS — no `IntersectionObserver` wiring, no class toggling
+- Runs on the compositor thread — smoother than JS-driven animations
+- `animation-timeline: view()` fires the animation as the element enters the viewport, exactly replicating current `IntersectionObserver` behavior
+
+### Browser Support (as of mid-2025)
+
+| Browser | Support | Notes |
+|---------|---------|-------|
+| Chrome 115+ | Full | Shipped July 2023 |
+| Edge 115+ | Full | Chromium-based |
+| Safari 18+ | Partial | `scroll-timeline` supported; `view()` / `animation-range` partial. Safari 17 = no support |
+| Firefox 110+ | Partial | `scroll-timeline` supported; `view()` behind flag until FF 128 |
+| **Global coverage** | ~70–75% | MEDIUM confidence — significant Safari/Firefox gaps remain |
+
+**This is a progressive enhancement, not a replacement.** The existing `IntersectionObserver` animations MUST remain as the baseline. Scroll-driven CSS animations layer on top for supporting browsers.
+
+### Progressive Enhancement Pattern
+
+```css
+/* Baseline: element starts visible (works everywhere) */
+.section-card {
+  opacity: 1;
+  transform: none;
+}
+
+/* Enhancement: animate in for browsers that support scroll-driven animations */
+@supports (animation-timeline: scroll()) {
+  .section-card {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fade-in-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+}
+```
+
+**Why `@supports` gate is required:**
+- Browsers without support see `opacity: 0` elements if the animation properties are applied unconditionally — content disappears permanently
+- The `@supports` block ensures elements are visible by default, enhanced only when supported
+
+**Conflict with existing IntersectionObserver:**
+- The current JS adds `.is-visible` classes via IntersectionObserver to trigger CSS transitions
+- With scroll-driven animations, the same element could animate twice (IO transition + CSS scroll animation)
+- Resolution: in the `@supports` block, set `transition: none` to disable IO-triggered transitions on supported browsers, letting the CSS scroll animation take over cleanly
+
+```css
+@supports (animation-timeline: scroll()) {
+  .scroll-animate {
+    transition: none; /* disable IO-based transitions */
+    animation: fade-in-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 50%;
+  }
+}
+```
+
+### Confidence: MEDIUM
+
+Chrome/Edge support confirmed since 2023. Firefox and Safari gaps are real and documented. The `@supports` progressive enhancement pattern is the official W3C-recommended approach for partial support scenarios.
+
+---
+
+## 4. CSS Micro-Animation Patterns
+
+### Hover State Transitions
+
+Existing codebase already uses `transition: var(--transition-fast)` / `var(--transition-normal)`. Enhance with:
+
+**Button hover — transform + shadow lift:**
+
+```css
+.btn {
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+  will-change: transform; /* hint browser to promote layer */
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 198, 126, 0.35);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+  transition-duration: 80ms; /* snappy click feedback */
+}
+```
+
+**Card hover — existing `translateY(-2px)` is correct, add shadow token:**
+
+```css
+.card {
+  transition:
+    transform var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+```
+
+**Icon color shift on parent hover:**
+
+```css
+.feature-card .icon {
+  transition: color var(--transition-normal);
+  color: var(--color-primary-dark);
+}
+
+.feature-card:hover .icon {
+  color: var(--color-primary);
+}
+```
+
+### Focus State (Accessibility — required for ЦА 45+)
+
+```css
+/* Visible focus ring for keyboard/touch navigation */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove focus ring for mouse clicks (browsers that support :focus-visible) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+```
+
+**Why `:focus-visible` over `:focus`:** Shows focus ring for keyboard users (ЦА 45+ often navigates with tab), hides it for mouse users who find the ring distracting. Chrome 86+, Firefox 85+, Safari 15.4+ — ~95% support.
+
+### Form Field Micro-Animations
+
+```css
+.form__input {
+  border: 2px solid rgba(24, 33, 44, 0.15);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form__input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
+  outline: none;
+}
+```
+
+**Ring glow on focus** replaces browser default outline — more polished, still accessible.
+
+### Accordion Animation (existing)
+
+Current implementation uses `max-height` transition. The modern alternative is `grid-template-rows`:
+
+```css
+/* Modern accordion — no fixed max-height needed */
+.faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition-normal);
+  overflow: hidden;
+}
+
+.faq__answer--open {
+  grid-template-rows: 1fr;
+}
+
+.faq__answer > div { /* inner wrapper required */
+  overflow: hidden;
+}
+```
+
+**Why `grid-template-rows: 0fr → 1fr`:** Animates to/from natural content height without needing a fixed `max-height` value. Works in Chrome 57+, Firefox 55+, Safari 10.1+. The existing `max-height` approach works fine — this is an optional upgrade.
+
+### `prefers-reduced-motion` (already handled — reinforce pattern)
+
+The existing codebase already handles `prefers-reduced-motion`. Ensure all new animations follow the same pattern:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Disable ALL new animations and transitions */
+  .glass-card,
+  .btn,
+  .card,
+  .section-card {
+    transition: none;
+    animation: none;
+  }
+}
+```
+
+### Confidence: HIGH
+
+These are stable, well-documented CSS properties. `transition`, `transform`, `:focus-visible`, and `@media (prefers-reduced-motion)` all have universal or near-universal support.
+
+---
+
+## New Token Additions Required
+
+Add to the existing `:root` block in `css/styles.css`:
+
+```css
+:root {
+  /* === NEW in v1.4 === */
+
+  /* Glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-bg-strong: rgba(255, 255, 255, 0.75);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+
+  /* Semantic background tokens (dark mode migration) */
+  --color-bg: var(--color-white);
+  --color-surface: var(--color-light);
+  --color-border: rgba(0, 0, 0, 0.08);
+
+  /* Theme transition */
+  --transition-theme: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+html[data-theme="dark"] {
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-text-primary: #E6EDF3;
+  --color-text-muted: rgba(230, 237, 243, 0.55);
+  --color-white: #161B22;
+  --color-light: #1C2128;
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  /* Glass inverted */
+  --glass-bg: rgba(13, 17, 23, 0.55);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Shadows on dark — more prominent */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+```
+
+---
+
+## What NOT to Add
+
+| Rejected | Why |
+|----------|-----|
+| GSAP / Anime.js | External JS library for animations — violates no-dependency constraint; CSS transitions handle all needs |
+| Framer Motion | React library — irrelevant |
+| CSS `@layer` for theme | Adds complexity without benefit for a single file. `html[data-theme]` attribute override is simpler |
+| `color-scheme` property alone | `color-scheme: dark light` changes scrollbars/inputs but does NOT change your brand colors — must use custom property override |
+| `prefers-color-scheme` media query only | Doesn't allow user toggle — must combine with JS + localStorage |
+| `animation-timeline: scroll()` (not `view()`) | `scroll()` animates relative to scroll container, not element visibility — `view()` is correct for "animate on enter viewport" |
+| Canvas/WebGL glass effects | Heavy, unnecessary — `backdrop-filter` achieves the same visual with 3 CSS properties |
+| JS-driven scroll position detection for animations | Replaced by CSS Scroll-Driven Animations for supported browsers; IntersectionObserver already handles fallback |
+
+---
+
+## Browser Support Summary Table
+
+| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
+|---------|--------|---------|--------|------------|------------|
+| `backdrop-filter` | 76+ | 103+ | 9+ (-webkit-) | 9+ (-webkit-) | MEDIUM |
+| CSS custom properties | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
+| `localStorage` | 4+ | 3.5+ | 4+ | 3.2+ | HIGH |
+| `prefers-color-scheme` | 76+ | 67+ | 12.1+ | 12.2+ | HIGH |
+| `:focus-visible` | 86+ | 85+ | 15.4+ | 15.4+ | HIGH |
+| Scroll-Driven Animations | 115+ | 128+ | 18+ (partial) | 18+ | MEDIUM |
+| `grid-template-rows` transition | 66+ | 66+ | 12.1+ | 12.2+ | HIGH |
+| `@supports` | 28+ | 22+ | 9+ | 9+ | HIGH |
+| `will-change` | 36+ | 36+ | 9.1+ | 9.3+ | HIGH |
+
+**Coverage note:** Scroll-Driven Animations are the only feature with meaningful gaps (~25% non-support). All others are effectively universal (95%+). The `@supports` progressive enhancement pattern handles the gap correctly.
+
+---
+
+## Integration Checklist
+
+Before implementation, verify these touchpoints with existing code:
+
+1. **IntersectionObserver + Scroll-Driven conflict** — `.scroll-animate` JS class toggle must be disabled in `@supports (animation-timeline: scroll())` block
+2. **Glass cards require a non-white background behind them** — sections using glass must have a gradient/image background, not `background: var(--color-bg)` (blur of white = white, no visible effect)
+3. **Dark mode token migration** — global replace of `background: var(--color-white)` → `background: var(--color-bg)` in section rules, otherwise dark mode only affects text color
+4. **Inline `<script>` for FOUC prevention** — theme detection JS must be in `<head>`, before stylesheet link. Order: `<link rel="stylesheet">` then `<script>` inline theme block
+5. **`will-change: transform`** — add only to elements that actually animate; don't apply globally (wastes GPU memory)
+6. **Test on iOS Safari** — `backdrop-filter` requires `-webkit-` prefix; test on real device, not just Chrome DevTools mobile emulation
 
 ---
 
 ## Sources
 
-### Official Documentation (HIGH confidence)
-- [Next.js Deploying Docs](https://nextjs.org/docs/app/getting-started/deploying) -- standalone output, Docker
-- [Next.js Upgrading to v15](https://nextjs.org/docs/app/guides/upgrading/version-15) -- breaking changes, React 19
-- [Next.js Upgrading to v16](https://nextjs.org/docs/app/guides/upgrading/version-16) -- why we skip 16
-- [Next.js Docker Example](https://github.com/vercel/next.js/blob/canary/examples/with-docker/README.md) -- official Dockerfile
-- [Tailwind CSS v4 + Next.js Guide](https://tailwindcss.com/docs/guides/nextjs) -- PostCSS setup
-- [Tailwind CSS v4 Announcement](https://tailwindcss.com/blog/tailwindcss-v4) -- @theme directive, CSS-first config
-- [shadcn/ui Next.js Installation](https://ui.shadcn.com/docs/installation/next) -- init, components.json
-- [shadcn/ui Tailwind v4 Guide](https://ui.shadcn.com/docs/tailwind-v4) -- tw-animate-css, @theme inline
-- [Drizzle ORM PostgreSQL Setup](https://orm.drizzle.team/docs/get-started-postgresql) -- drivers, connection
-- [Motion Installation](https://motion.dev/docs/react-installation) -- motion/react import
-- [Motion Upgrade Guide](https://motion.dev/docs/react-upgrade-guide) -- framer-motion to motion migration
+- MDN Web Docs: `backdrop-filter` — https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter (training data, August 2025 cutoff)
+- MDN Web Docs: CSS Scroll-Driven Animations — https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations (training data)
+- MDN Web Docs: `prefers-color-scheme` — https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme (training data)
+- MDN Web Docs: `:focus-visible` — https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible (training data)
+- W3C CSS Scroll-driven Animations spec — https://drafts.csswg.org/scroll-animations-1/ (training data)
+- Chrome Developers: Scroll-driven Animations — https://developer.chrome.com/docs/css-ui/scroll-driven-animations (training data)
 
-### npm Packages (MEDIUM confidence -- versions verified)
-- [motion@12.38.0](https://www.npmjs.com/package/motion) -- latest as of 2026-03-16
-- [drizzle-orm@0.45.2](https://www.npmjs.com/package/drizzle-orm) -- latest as of 2026-03-29
-- [@squircle-js/react@1.3.0](https://www.npmjs.com/package/@squircle-js/react) -- latest as of 2026-02-03
-- [tw-animate-css](https://www.npmjs.com/package/tw-animate-css) -- shadcn/ui animation dependency
-
-### GitHub Repositories (MEDIUM confidence)
-- [liquid-glass-react](https://github.com/rdev/liquid-glass-react) -- React WebGL glass component
-- [liquidGL](https://github.com/naughtyduk/liquidGL) -- Script-based WebGL glass (no npm)
-- [@squircle-js/react](https://github.com/bring-shrubbery/squircle-js) -- React squircle component
-
-### Community Resources (LOW confidence -- cross-referenced)
-- [Drizzle + Next.js 15 Guide (Strapi blog)](https://strapi.io/blog/how-to-use-drizzle-orm-with-postgresql-in-a-nextjs-15-project)
-- [Next.js 15 vs 16 Comparison](https://www.descope.com/blog/post/nextjs15-vs-nextjs16)
-- [Motion Complete Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers.html)
+**Confidence note:** All browser support figures are from training data (knowledge cutoff August 2025). No live caniuse.com or MDN verification was possible (WebFetch/WebSearch tools unavailable in this session). Flag for verification against caniuse.com before implementation if exact percentages matter for go/no-go decisions.

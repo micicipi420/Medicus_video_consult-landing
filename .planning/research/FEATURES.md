@@ -1,524 +1,354 @@
-# Feature Landscape: Next.js Migration
+# Feature Research: v1.4 Visual Redesign
 
-**Domain:** Medical landing page migration (vanilla HTML/CSS/JS -> Next.js 15 + React)
-**Researched:** 2026-04-10
-**Mode:** Component inventory, React migration mapping, client/server boundaries
-
-## Current Page Inventory
-
-| Page | Route (Next.js) | Sections | Has Form | Complexity |
-|------|-----------------|----------|----------|------------|
-| index.html | `/` | 12 (hero, stats, services, problem, process, why-us, clinics, platform, reviews, faq, contact, cta) | Yes | High |
-| online-consultations.html | `/online-consultations` | 12 (hero, features, problem, benefits, process, doctors, why-medicusunion, triggers, pricing, form, faq, final-cta) | Yes | High |
-| treatment-abroad.html | `/treatment-abroad` | 11 (hero, stats, about-us, platform, clinics, included, steps, reviews, faq, form, final-cta) | Yes | High |
-| checkup.html | `/checkup` | 12 (hero, stats, why-checkup, why-abroad, why-us, korea-programs, turkey-programs, how-it-works, b2b, faq, form, final-cta) | Yes | High |
-| contacts.html | `/contacts` | 2 (hero, contact-section with info+form) | Yes | Medium |
-| 404.html | `not-found.tsx` | 1 (error card) | No | Low |
-| styleguide.html | `/styleguide` (dev only) | N/A | No | Low |
+**Domain:** Medical consultation landing page — 2025 visual redesign (glassmorphism, dark mode, bold typography, micro-animations)
+**Researched:** 2026-03-24
+**Confidence:** HIGH (CSS/browser specs from MDN), MEDIUM (UX patterns for 45+ audience from research literature), LOW where flagged
+**Scope:** This document covers ONLY new visual features for v1.4. For core landing page features (11 sections, form, Directus), see the original feature research (committed with v1.0).
 
 ---
 
-## Table Stakes
+## Research Context
 
-Features users expect. Missing = product feels broken or incomplete.
-
-| Feature | Why Expected | Complexity | Client/Server | Notes |
-|---------|--------------|------------|----------------|-------|
-| All 7 pages with 1:1 content parity | Users see the same site, SEO rankings preserved | Med | Server (pages) | App Router file-based routing replaces SPA router |
-| Contact form with validation | Core conversion mechanism | Med | Client (form logic) + Server (action) | Server Action replaces fetch-to-Directus |
-| Phone mask (+7 format) | KZ audience expects familiar input format | Low | Client | Custom hook or `@react-input/mask` |
-| Honeypot + timing spam protection | Prevents bot submissions without CAPTCHA | Low | Server (validation) | Move to Server Action -- more secure server-side |
-| Form success/error states | User feedback after submission | Low | Client | useActionState from React 19 |
-| Sticky header with glass-on-scroll | Navigation present on all pages, brand identity | Med | Client (scroll detection) | useEffect + scroll listener in client component |
-| Mobile menu with backdrop-blur | Mobile navigation access | Med | Client (toggle state) | useState for open/close, Framer Motion for animation |
-| Dark mode toggle with persistence | Already shipped feature, users expect it | Med | Client (toggle) + Server (cookie read) | next-themes library, cookie-based for SSR no-flash |
-| FAQ accordion | Standard UX pattern on all service pages | Low | Client (toggle state) | shadcn/ui Accordion component |
-| Smooth scroll to anchor | CTA buttons scroll to form section | Low | Client | Native CSS `scroll-behavior: smooth` + `scrollIntoView` |
-| SEO metadata per page | Each page has unique title, description, OG tags | Low | Server | Next.js `generateMetadata()` in each page.tsx |
-| JSON-LD structured data | Medical business schema already implemented | Low | Server | `<script type="application/ld+json">` in layout or page |
-| Responsive layout (mobile-first) | CA 45+ uses mobile predominantly in KZ | Low | Server (Tailwind) | Tailwind responsive classes carry over directly |
-| Animated counters (stats) | Social proof section on index, treatment, checkup | Low | Client | IntersectionObserver via `whileInView` in Framer Motion |
-| Scroll-reveal animations | Section entrance animations throughout all pages | Med | Client | Framer Motion `whileInView` replaces Motion CDN |
-| Footer with navigation links | Standard site footer | Low | Server | Server Component, static content |
-| Sticky mobile CTA bar | Mobile conversion element (click-to-call + CTA) | Low | Server + CSS | Can be Server Component with CSS `position: fixed` |
-| aria-current on active nav link | Accessibility requirement | Low | Client | `usePathname()` in client nav component |
+The landing page has 11 sections, ~1,640 lines of CSS with a full CSS custom property token system, vanilla JS ES5, IntersectionObserver scroll animations, and self-hosted Inter/Manrope variable fonts. The v1.4 milestone adds a visual layer on top of a working, validated structure. The audience constraint — Kazakhstan residents 45+, medical service, 450 EUR price point — is the most important filter for every visual decision in this document.
 
 ---
 
-## Differentiators
+## Feature Landscape
 
-Features that set the product apart. The Liquid Glass design system is the primary differentiator.
+### Table Stakes (Users Expect These)
 
-| Feature | Value Proposition | Complexity | Client/Server | Notes |
-|---------|-------------------|------------|----------------|-------|
-| Liquid Glass materials (5 variants) | Unique visual identity, premium medical feel | High | Mixed | CSS classes carry over; specular highlight needs client |
-| Squircle corners (3 tiers) | Apple-quality border radius | Med | Server (CSS) + Client (PE) | SVG mask approach works in CSS; `corner-shape: squircle` PE via `@squircle-js/react` |
-| Specular parallax (mouse tracking) | Glass surfaces feel alive, tactile | Med | Client | `onMouseMove` handler setting CSS custom properties |
-| 3-tier SVG refraction filters | Chromium-only subtle glass distortion | Med | Server (SVG defs) + Client (probe) | SVG filters in layout, JS probe for `data-refract` attribute |
-| Adaptive tinting (section-tint-*) | Glass colors shift per section context | Low | Server (CSS) | Pure CSS cascade via Tailwind `section-tint-cool/warm/mint` |
-| Hero staggered entrance animation | Premium first impression, progressive reveal | Med | Client | Framer Motion variants with stagger delay |
-| Staggered card grid animation | Cards appear one-by-one on scroll | Low | Client | Framer Motion staggerChildren |
-| Page transition animations | SPA-like smooth navigation between pages | High | Client | Framer Motion `AnimatePresence` + Next.js layout |
-| Coordinator card with photo | Personal touch, trust building | Low | Server | Static content, next/image component |
-| Gradient CTA buttons | Brand identity (#1AC67E -> #0D9DB5) | Low | Server (CSS) | Tailwind gradient utilities |
-| `prefers-reduced-motion` guards | Accessibility for vestibular disorders | Low | Client | Framer Motion built-in `reducedMotion` prop |
+These are visual features that, in 2025, users expect from any premium landing page. Missing them does not break functionality but signals "old-looking website" to users evaluating a 450 EUR medical service on trust.
 
----
+| Feature | Why Expected | Complexity | Dependency on Existing System | Notes |
+|---------|--------------|------------|-------------------------------|-------|
+| Dark mode toggle | Operating systems default to dark mode; users with dark mode active who land on a bright page get visual discomfort; 45+ users with photosensitivity especially benefit from a working toggle | MEDIUM | Requires new CSS token layer; `[data-theme="dark"]` selector + localStorage | `prefers-color-scheme` media query is Baseline since 2020 (MDN-confirmed). Toggle must be in sticky nav (already exists). localStorage persistence across sessions is essential for repeat visitors. |
+| Smooth theme transition | Instant flash from light to dark feels broken; a 300ms fade on background and text colors is expected | LOW | Adds `transition` on `:root` color tokens | Gate with `prefers-reduced-motion: reduce`. Zero duration when motion is reduced. |
+| Legible text in dark mode | Dark mode that reduces contrast below WCAG AA breaks accessibility for the exact users who enabled dark mode for comfort | LOW | Requires carefully chosen dark-mode token values | White text on pure black (#000) causes halation for some users (MEDIUM confidence, ophthalmology UX literature). Use near-black (#18212C) backgrounds and off-white (#E8EFF6) text rather than pure values. |
+| Visible interactive states | Buttons, links, and cards must have clear hover/focus states that work in both themes | LOW | Extend existing `--transition-fast` and `--transition-normal` tokens | Already have `translateY(-2px)` hover on cards. Focus rings must remain visible in dark mode. WCAG 2.1 SC 1.4.11 requires 3:1 non-text contrast ratio for focus indicators. |
 
-## Anti-Features
+### Differentiators (Competitive Advantage)
 
-Features to explicitly NOT build during migration.
+Visual features that elevate MedicusUnion KZ above typical medical landing pages while staying within the calm, trustworthy brand tone and the 45+ audience's cognitive tolerance.
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Custom SPA router | Next.js App Router handles navigation natively | Delete router.js entirely; use `<Link>` and file-based routing |
-| Client-side page caching | Next.js has built-in caching (RSC payload, ISR) | Rely on Next.js cache, remove pageCache object |
-| Manual DOM manipulation for animations | Anti-pattern in React; breaks reconciliation | Use Framer Motion declarative API |
-| Global window.MU namespace | React components encapsulate their own state | Use React context, hooks, and props |
-| IntersectionObserver for scroll-reveal | Redundant when Framer Motion has `whileInView` | Use `motion.div` with `whileInView` prop |
-| Manual bfcache handling | Next.js handles navigation state internally | Remove `pageshow` listener |
-| Inline SVG icons everywhere | Duplicated SVG markup across pages | Use `lucide-react` (same icons already used in current site) |
-| Multiple `<script>` tags with CDN | Added external dependency, no tree-shaking | `motion` package via npm, tree-shakeable |
-| Glass budget enforcement | Currently disabled in production; React re-renders complicate observer logic | Defer to post-migration performance audit |
-| reinitPageContent() pattern | SPA router hack for re-initializing JS after DOM swap | React component lifecycle handles this naturally |
+| Feature | Value Proposition | Complexity | Dependency on Existing System | Notes |
+|---------|-------------------|------------|-------------------------------|-------|
+| Glassmorphism cards (selective) | On light mode, frosted-glass cards over gradient or mesh backgrounds signal "premium, modern, European" — matches the brand promise of accessing international medicine | MEDIUM | Requires gradient background behind card (cannot glass over plain white); `backdrop-filter: blur()` on card; semi-transparent card background | `backdrop-filter` is Baseline 2024 (MDN-confirmed: September 2024). Must provide solid-color fallback for users on older browsers (Android WebView pre-2024, older iOS Safari). Apply ONLY to 2-3 hero/stats/pricing cards — not all 11 sections. Too much glassmorphism reads as design student portfolio, not medical authority. |
+| Dark mode with dual-purpose medical rationale | Dark mode is not just a visual trend — for patients researching medical conditions late at night (very common behavior), dark mode reduces eye strain during reading. This is a genuine user benefit, not decoration | MEDIUM | Full CSS token system rewrite with `[data-theme="dark"]` parallel token set | Dark mode enhances trust when marketed with medical rationale: "Режим для комфортного чтения в любое время". Position as care for the user, not just trendy feature. |
+| Bold display headings | Increasing h1/h2 size to 48-56px (from current 36-32px) with font-weight 800 creates visual hierarchy that immediately anchors a 45+ user reading at arm's length or on a phone | LOW | Manrope Variable already loaded (weights 200-800); only token values change; must verify line-height remains readable at display sizes | Research: display text above 48px requires line-height 1.1 max (tighter than current 1.2 for headings). At 56px, 1.1 or even 1.05 works. Must add responsive scaling via `clamp()` so 56px desktop does not become illegible on 360px screens. |
+| Micro-animation: scroll fade-in (enhanced) | The existing IntersectionObserver fade-in is functional but basic (opacity only). Adding a subtle vertical shift (20px → 0) makes reveals feel polished without the performance cost of heavy animations | LOW | Already have `animate-on-scroll` + `is-visible` classes; add `transform: translateY(20px)` to initial state and `transform: translateY(0)` to visible state | Duration 400ms ease-out. Stagger already in place (100ms per grid child). Gate everything behind `prefers-reduced-motion: reduce` — already done in the codebase, but ensure transform is also removed, not just opacity. |
+| Micro-animation: button interaction depth | Adding a subtle `scale(0.97)` on CTA button `:active` state gives tactile click feedback, which is especially reassuring for older users who may not be sure if they "clicked properly" | LOW | Extend existing `.btn` styles; `active` state is not currently styled | Duration 100ms. Do not use on links — only on submit buttons and CTA buttons. Feels physically responsive. |
+| CSS gradient mesh / subtle hero background | A soft color mesh or radial gradient behind the hero (blues and teals matching brand palette) provides depth without images and makes glassmorphism cards legible if applied to the hero area | LOW | New background on `.hero` section only; CSS `radial-gradient` layering | No image files needed. Pure CSS. Degrades gracefully. Dark mode variant should use deeper, darker gradients (deep navy + dark teal). |
 
----
+### Anti-Features (Commonly Requested, Often Problematic)
 
-## React Component Hierarchy
+Visual features that look impressive in design portfolios but actively harm conversion and trust for a 45+ medical audience.
 
-### Layout Components (Server by default)
-
-```
-app/layout.tsx (RootLayout -- SERVER)
-  |-- <html lang="ru" suppressHydrationWarning>
-  |-- <ThemeProvider> (CLIENT -- next-themes wrapper)
-  |     |-- <SvgRefractionDefs /> (SERVER -- hidden SVG filter definitions)
-  |     |-- <Header /> (CLIENT -- scroll detection, mobile menu state)
-  |     |     |-- <Logo /> (SERVER)
-  |     |     |-- <DesktopNav /> (CLIENT -- usePathname for active link)
-  |     |     |-- <HeaderActions /> (SERVER -- phone link, CTA button)
-  |     |     |-- <MobileMenuButton /> (CLIENT -- toggle state)
-  |     |-- <MobileMenu /> (CLIENT -- open/close state, backdrop-blur)
-  |     |-- <main>{children}</main>
-  |     |-- <Footer /> (SERVER -- static links, contact info)
-  |     |-- <StickyMobileCTA /> (SERVER -- static HTML, CSS-only sticky)
-```
-
-### Page Components (Server by default)
-
-```
-app/page.tsx (Index -- SERVER)
-  |-- <HeroSection /> (CLIENT -- entrance animations, floating badges)
-  |     |-- <HeroBadge />
-  |     |-- <HeroTitle />
-  |     |-- <HeroButtons />
-  |     |-- <HeroTrust />
-  |     |-- <HeroPhotos />
-  |-- <StatsSection /> (CLIENT -- animated counters)
-  |     |-- <StatCard /> (CLIENT -- counter animation)
-  |-- <ServicesSection /> (SERVER -- static cards)
-  |     |-- <ServiceCard /> (SERVER -- glass card, static content)
-  |-- <ProblemSection /> (SERVER)
-  |-- <ProcessSection /> (SERVER)
-  |     |-- <StepCard /> (SERVER)
-  |-- <WhyUsSection /> (SERVER)
-  |     |-- <AdvantageCard /> (SERVER)
-  |-- <ClinicsSection /> (SERVER)
-  |     |-- <ClinicCard /> (SERVER)
-  |     |-- <CountryFlag /> (SERVER -- inline SVG)
-  |-- <PlatformSection /> (SERVER)
-  |-- <ReviewsSection /> (SERVER)
-  |     |-- <ReviewCard /> (SERVER)
-  |-- <FAQSection /> (CLIENT -- accordion state)
-  |     |-- <FAQItem /> (CLIENT -- open/close toggle)
-  |-- <ContactSection /> (contains client form)
-  |     |-- <ContactInfo /> (SERVER)
-  |     |-- <CoordinatorCard /> (SERVER)
-  |     |-- <TrustBadges /> (SERVER)
-  |     |-- <ContactForm /> (CLIENT -- validation, submission)
-  |-- <CTASection /> (SERVER)
-```
-
-### Shared/Reusable Components
-
-```
-components/
-  ui/                          (shadcn/ui base components)
-    accordion.tsx              (CLIENT -- Radix UI primitive)
-    button.tsx                 (SERVER -- unless onClick needed)
-    input.tsx                  (CLIENT -- for controlled inputs)
-    select.tsx                 (CLIENT -- Radix UI primitive)
-    textarea.tsx               (CLIENT -- for controlled inputs)
-    label.tsx                  (SERVER)
-
-  glass/                       (Liquid Glass design system)
-    liquid-regular.tsx         (SERVER -- CSS class + cn() wrapper)
-    liquid-card.tsx            (CLIENT -- mouse specular on desktop)
-    liquid-nav.tsx             (SERVER -- CSS class wrapper)
-    liquid-clear.tsx           (SERVER -- CSS class wrapper)
-    liquid-fluted.tsx          (SERVER -- CSS class wrapper)
-    liquid-btn-primary.tsx     (SERVER -- gradient button)
-    liquid-btn-secondary.tsx   (SERVER -- glass button)
-    squircle.tsx               (SERVER -- mask-image CSS + corner-shape PE)
-    glass-specular.tsx         (CLIENT -- mouse tracking wrapper for any glass element)
-
-  sections/                    (Page section components)
-    hero-section.tsx           (CLIENT -- animations)
-    stats-section.tsx          (CLIENT -- animated counters)
-    faq-section.tsx            (CLIENT -- accordion)
-    contact-section.tsx        (mixed -- server wrapper, client form)
-    cta-section.tsx            (SERVER)
-    section-wrapper.tsx        (SERVER -- padding, max-width, tint class)
-
-  layout/
-    header.tsx                 (CLIENT)
-    footer.tsx                 (SERVER)
-    mobile-menu.tsx            (CLIENT)
-    sticky-mobile-cta.tsx      (SERVER)
-    svg-refraction-defs.tsx    (SERVER -- hidden SVG filter definitions)
-
-  forms/
-    contact-form.tsx           (CLIENT)
-    phone-input.tsx            (CLIENT -- input mask)
-
-  icons/
-    index.tsx                  (Re-export from lucide-react)
-```
-
----
-
-## Client/Server Component Boundary Analysis
-
-### Server Components (zero JS shipped to client)
-
-These components render static HTML. They comprise the majority of the site.
-
-| Component | Justification |
-|-----------|---------------|
-| All page.tsx files | Static content, SEO metadata via `generateMetadata()` |
-| SectionWrapper | Applies `section-tint-*` classes, padding, max-width -- pure CSS |
-| ServiceCard, ClinicCard, ReviewCard, StepCard | Static content with glass CSS classes |
-| Footer | Static navigation links, contact info |
-| StickyMobileCTA | CSS `position: fixed`, no JS interaction needed |
-| CoordinatorCard | Static image + contact info |
-| TrustBadges | Static badge pills |
-| LiquidRegular, LiquidClear, LiquidFluted (without specular) | CSS-only glass materials |
-| Squircle | SVG mask-image in CSS, `corner-shape` PE via `@supports` |
-| SvgRefractionDefs | Hidden SVG `<defs>` block for backdrop-filter URL references |
-| CTASection | Static content with gradient button |
-
-### Client Components (require `"use client"`)
-
-These components need browser APIs, state, or event handlers.
-
-| Component | Why Client | Est. Bundle | Optimization |
-|-----------|-----------|-------------|-------------|
-| Header | `useEffect` for scroll detection (`window.scrollY > 20`), `useState` for `header--scrolled` class | ~2KB | Passive scroll listener; debounce unnecessary at 20px threshold |
-| MobileMenu | `useState` for open/close, body scroll lock on open | ~3KB | Conditionally render content only when open |
-| ContactForm | Form state, validation, `useActionState`, phone mask | ~8KB | Single client boundary for entire form; progressive enhancement |
-| FAQSection | Accordion open/close state | ~2KB | Use shadcn/ui Accordion (Radix) -- no custom code needed |
-| StatsSection | Animated counter needs IntersectionObserver or `whileInView` | ~3KB | Framer Motion `whileInView` with `once: true` |
-| HeroSection | Staggered entrance animation on mount | ~4KB | Framer Motion variants; `initial`/`animate` pattern |
-| GlassSpecular | `onMouseMove` on document to set `--mouse-x`/`--mouse-y` | ~1KB | Desktop only via `(pointer: fine)` media query check |
-| ThemeToggle | Dark mode toggle button, `useTheme()` from next-themes | ~1KB | next-themes handles localStorage + cookie persistence |
-| RefractionProbe | `CSS.supports()` check, sets `data-refract` on `<html>` | ~0.5KB | Single `useEffect` in layout, runs once |
-| AnimateOnScroll | Thin wrapper providing Framer Motion `whileInView` to server children | ~1KB each | Minimal client surface -- receives server children as props |
-
-### Boundary Strategy: "Client Islands in a Server Sea"
-
-The governing principle: push `"use client"` as deep as possible in the component tree. Most section components are server-rendered; only interactive leaf components need client hydration.
-
-**Pattern 1: Glass cards with specular highlight**
-```
-<ServiceCard>                    // SERVER -- renders glass CSS classes
-  <GlassSpecularWrapper>         // CLIENT -- adds onMouseMove only on desktop
-    {children}                   // SERVER children passed through as props
-  </GlassSpecularWrapper>
-</ServiceCard>
-```
-
-**Pattern 2: Sections with scroll-reveal animations**
-```
-<SectionWrapper tint="cool">    // SERVER -- padding, max-width, tint class
-  <AnimateOnScroll>              // CLIENT -- Framer Motion whileInView
-    <CardGrid>                   // SERVER -- grid layout
-      <ServiceCard />            // SERVER -- static content
-      <ServiceCard />            // SERVER
-    </CardGrid>
-  </AnimateOnScroll>
-</SectionWrapper>
-```
-
-**Pattern 3: Sections that are entirely static**
-```
-<SectionWrapper tint="warm">    // SERVER
-  <ProblemGrid>                 // SERVER -- static text + icons
-    <ProblemItem />             // SERVER
-    <ProblemItem />             // SERVER
-  </ProblemGrid>
-</SectionWrapper>
-```
-
-**Why this matters:** Index page has 12 sections. If every section is a Client Component, the entire page hydrates (~50KB+ JS). With this boundary strategy, only HeroSection, StatsSection, FAQSection, and ContactForm are client -- the other 8 sections ship zero JS.
-
----
-
-## Form Handling: Server Actions vs Current fetch()
-
-### Current Pattern (vanilla JS to Directus)
-```javascript
-fetch('https://api.medicusunion.kz/items/consultation_requests', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(formData)
-})
-```
-
-### Target Pattern (Next.js Server Actions to PostgreSQL)
-
-**Why Server Actions over API Routes:**
-1. No separate API endpoint file to maintain -- action lives in `app/actions/`
-2. Progressive enhancement -- form works even without JavaScript (HTML form post)
-3. Spam validation moves entirely server-side (cannot be inspected/bypassed by bots)
-4. Type safety end-to-end with TypeScript + Zod schema
-5. `useActionState` (React 19) provides built-in pending and error state management
-6. No CORS configuration needed -- same-origin by definition
-
-**Recommended implementation:**
-
-```typescript
-// app/actions/submit-consultation.ts
-'use server'
-
-import { z } from 'zod'
-
-const consultationSchema = z.object({
-  name: z.string().min(2, 'Укажите ваше имя'),
-  phone: z.string().regex(/^\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}$/, 'Укажите номер телефона'),
-  interest: z.enum(['consultation', 'treatment', 'checkup', 'not-sure'], {
-    errorMap: () => ({ message: 'Выберите вариант' }),
-  }),
-  description: z.string().optional(),
-})
-
-type FormState = {
-  success?: boolean
-  errors?: Record<string, string[]>
-  message?: string
-} | null
-
-export async function submitConsultation(
-  prevState: FormState,
-  formData: FormData
-): Promise<FormState> {
-  // 1. Server-side honeypot check (invisible to client)
-  if (formData.get('website')) {
-    return { success: true } // fake success to not alert bots
-  }
-
-  // 2. Server-side timing check (cookie or hidden timestamp field)
-  // Bot submitted faster than 3 seconds = spam
-
-  // 3. Validate with Zod
-  const parsed = consultationSchema.safeParse({
-    name: formData.get('name'),
-    phone: formData.get('phone'),
-    interest: formData.get('interest'),
-    description: formData.get('description'),
-  })
-
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors }
-  }
-
-  // 4. Insert into PostgreSQL directly
-  try {
-    await db.insert(consultationRequests).values({
-      ...parsed.data,
-      phone: parsed.data.phone.replace(/\D/g, ''), // store digits only
-      status: 'new',
-    })
-    return { success: true }
-  } catch (error) {
-    return {
-      message: 'Не удалось отправить заявку. Позвоните нам: +7 701 532 24 78',
-    }
-  }
-}
-```
-
-```typescript
-// components/forms/contact-form.tsx
-'use client'
-
-import { useActionState } from 'react'
-import { submitConsultation } from '@/app/actions/submit-consultation'
-
-export function ContactForm() {
-  const [state, formAction, isPending] = useActionState(submitConsultation, null)
-
-  if (state?.success) {
-    return <SuccessOverlay />
-  }
-
-  return (
-    <form action={formAction}>
-      {/* Name input with client-side blur validation for UX */}
-      {/* Phone input with mask */}
-      {/* Interest select */}
-      {/* Description textarea */}
-      {/* Honeypot (hidden) */}
-      <button type="submit" disabled={isPending}>
-        {isPending ? 'Отправка...' : 'Отправить заявку'}
-      </button>
-      {state?.message && <ErrorMessage>{state.message}</ErrorMessage>}
-    </form>
-  )
-}
-```
-
-### Form Validation Strategy
-
-| Layer | Where | Library | Purpose |
-|-------|-------|---------|---------|
-| Field-level blur validation | Client | Custom logic or react-hook-form | Immediate UX feedback (blur-first, like current implementation) |
-| Phone format masking | Client | `@react-input/mask` or custom hook | Input mask enforcement (+7 XXX XXX-XX-XX) |
-| Schema validation | Server Action | Zod | Security, canonical validation, type safety |
-| Honeypot check | Server Action | Custom | Field named "website" must be empty |
-| Timing check | Server Action | Hidden timestamp or cookie | Submissions < 3 seconds after page load = spam |
-| Return errors to client | Server -> Client | `useActionState` return value | Field-level errors displayed below inputs |
-
-### Form Reuse Across Pages
-
-The form appears on 5 of 7 pages. Each instance has slightly different fields (online-consultations has specialization dropdown, checkup has program dropdown, index has interest dropdown). The recommended pattern:
-
-```
-<ContactForm variant="index" />       // interest: consultation/treatment/checkup/not-sure
-<ContactForm variant="consultations" /> // specialization: oncology/cardiology/...
-<ContactForm variant="checkup" />      // program: korea-basic/korea-premium/turkey-basic/...
-<ContactForm variant="treatment" />    // same as index
-<ContactForm variant="contacts" />     // interest + additional fields
-```
-
-One Server Action with a discriminated union schema. One form component with conditional field rendering based on `variant` prop.
+| Feature | Why Requested | Why Problematic for This Project | Alternative |
+|---------|---------------|----------------------------------|-------------|
+| Full-page glassmorphism (every section) | "Looks premium, modern, Apple-inspired" | Requires a visually complex, busy background to work — glass over flat white looks broken and muddy. Applying to all 11 sections creates visual noise that disorients older readers trying to scan text. Medical trust requires text legibility above all. | Apply glassmorphism ONLY to 2-3 specific cards where a gradient background is already present (hero stats, pricing card). Flat clean background = flat clean cards everywhere else. |
+| Parallax scroll effects | "Creates depth and premium feel" | Explicitly listed as Out of Scope in PROJECT.md. Causes motion sickness in older users. Triggers `prefers-reduced-motion`. Slows scroll performance on mid-range Android (common in KZ). Performance-wise, `will-change: transform` on multiple elements degrades composite layers on GPU-limited devices. | Subtle opacity fade-in on scroll (already implemented). No transform-based parallax. |
+| Dark mode ONLY (no light mode) | "Dark is more premium in 2025" | Target audience spends significant daytime hours on the internet. Medical content with white/teal brand colors reads better on light backgrounds in daylight. Forcing dark mode removes user agency — the exact opposite of the care-oriented brand positioning. | Default to light mode. Toggle for dark. Respect `prefers-color-scheme` as initial state. |
+| Auto-playing theme based on time of day | "Smart UX: dark at night, light during day" | Requires JS timer logic. Feels intrusive and surprising. The user's OS dark mode setting already expresses their preference — override it only via explicit toggle. Multiple systems fighting over the theme creates flash of wrong theme on load. | Respect `prefers-color-scheme` on first load. localStorage preference on subsequent visits. Explicit toggle for manual override. |
+| CSS scroll-driven animations (animation-timeline) | "Latest CSS feature, no JS needed" | `animation-timeline` is explicitly NOT Baseline (MDN-confirmed: limited availability). Firefox support is limited as of 2026. The target audience includes users on older browsers. Using it without heavy fallback code adds complexity with zero benefit over the working IntersectionObserver implementation already in place. | Keep IntersectionObserver scroll animations. They work universally, are already implemented, and are well-tested in the codebase. |
+| Video backgrounds or animated gradients | "Dynamic, modern, energetic" | VIDEO in hero is explicitly Out of Scope in PROJECT.md (bandwidth on mobile). Animated gradients (using CSS `@keyframes` on background-position) run continuously and cannot be disabled without JS. They violate the spirit of `prefers-reduced-motion` even when the user hasn't set the preference. For 45+ users, moving backgrounds while they are trying to read text creates cognitive overload. | Static gradient mesh or hero illustration. Motion only on user interaction (hover) or scroll-triggered (IntersectionObserver, one-shot). |
+| White text on dark gradient cards | "Bold, modern, editorial" | The existing text color system (dark `#18212C` on light backgrounds) achieves 16.24:1 contrast. Switching to white text on colored gradient backgrounds requires extreme care — many gradient midpoints fall below 4.5:1 WCAG AA. The 45+ audience is the most vulnerable to contrast failures. Medical text (specializations, prices, process steps) must NEVER fall below AA compliance. | If using glassmorphism, ensure the backdrop is dark enough OR text is dark. Test every text/background combination. Light-on-dark only where the dark background is uniform enough to guarantee contrast. |
+| Heavy box shadows on glassmorphism cards | "Makes glass look more realistic and elevated" | Heavy shadows on already-complex backgrounds create visual mud. The existing design moved to flat cards (v1.3 decision: `box-shadow` removed). Glassmorphism itself provides depth signal via blur — adding heavy shadows on top is double depth signaling and creates visual clutter for 45+ users. | `backdrop-filter: blur(20px)` + thin 1px `border: rgba(255,255,255,0.2)` outline provides sufficient glass depth. No heavy box-shadow on glass cards. |
+| Dark mode with pure black background (#000000) | "True OLED dark mode" | Pure black backgrounds cause halation (bright halos around white text) for many users with astigmatism — prevalence increases significantly at 45+. Pure black can also cause eye fatigue during extended reading. | Use `#0F1923` or `#15202B` (near-black with slight blue/dark teal tint matching brand) as dark mode background. Softer on eyes, still clearly "dark mode". |
 
 ---
 
 ## Feature Dependencies
 
 ```
-Header -> MobileMenu (toggle via shared state or context)
-Header -> ThemeToggle (dark mode switch in header actions)
-Layout -> RefractionProbe (sets data-refract on <html>, needed before glass renders)
-Layout -> SvgRefractionDefs (SVG filter defs must be in DOM before glass elements)
-Layout -> ThemeProvider (next-themes wrapper, must wrap all content)
+[Dark Mode Toggle (nav button)]
+    └──writes-to──> [localStorage "theme"]
+    └──sets-attribute──> [document.documentElement data-theme="dark"]
+                             └──activates──> [CSS [data-theme="dark"] token block]
+                                                └──overrides──> [:root light token values]
 
-ContactForm -> PhoneInput (mask component)
-ContactForm -> Server Action (submission handler)
-ContactForm -> Zod schema (validation)
-ContactForm -> useActionState (pending/error state)
+[Glassmorphism Cards]
+    └──requires──> [Gradient/Mesh Background behind card]
+    └──requires──> [backdrop-filter browser support OR solid fallback]
+    └──degrades-to──> [Flat card with border on older browsers]
 
-HeroSection -> Framer Motion (staggered entrance)
-StatsSection -> Framer Motion (whileInView counter animation)
-AnimateOnScroll -> Framer Motion (whileInView wrapper for any section)
-FAQSection -> shadcn/ui Accordion (Radix primitives)
+[Dark Mode] ──conflicts-with──> [Glassmorphism (light mode only)]
+    └── In dark mode: replace glass effect with opaque dark card (#1E2C3A)
+        Glass over dark background renders poorly — the blur has nothing visually
+        interesting to filter
 
-GlassSpecular -> All liquid-* CSS classes (wraps any glass element)
-All Glass Components -> Tailwind config (liquid-* CSS custom properties in @layer)
-All Glass Components -> Squircle CSS (mask-image SVG paths)
-Dark Mode -> next-themes (ThemeProvider)
-Dark Mode -> Tailwind `darkMode: 'class'` (current .dark class strategy)
-Dark Mode -> All liquid-* dark token overrides in CSS
+[Bold Display Typography]
+    └──requires-validation-with──> [Manrope Variable font weight 800]
+    └──requires-responsive-scaling-via──> [clamp() for font-size]
+    └──requires-line-height-adjustment-at-display-sizes]
+
+[Micro-animations (enhanced)]
+    └──gates-on──> [prefers-reduced-motion: no-preference]
+    └──extends──> [existing .animate-on-scroll / .is-visible system]
+    └──no-conflict-with──> [Dark Mode] (purely visual layer, theme-independent)
+
+[Theme Transition (CSS)]
+    └──requires──> [transition property on :root OR body]
+    └──conflicts-with──> [FOUC prevention]
+        └── solution: add data-theme to <html> synchronously before paint (inline script
+            reading localStorage, runs before CSS loads)
 ```
 
----
+### Dependency Notes
 
-## MVP Recommendation (Migration Priority)
+- **Dark mode requires a synchronous inline script in `<head>`** to read localStorage before the first paint. Without it, users with a saved dark preference see a flash of light mode before JS loads. This is a critical implementation detail, not an optional optimization. The script must be `<script>` (not `type="module"`) to run synchronously.
 
-### Phase 1 -- Foundation (must work before anything else)
-1. Next.js project scaffolding with App Router
-2. `app/layout.tsx` with `<html>`, `<ThemeProvider>`, font loading (next/font), metadata
-3. Tailwind CSS config with all liquid-* custom properties, section-tint tokens, squircle masks
-4. All 5 liquid-* material CSS classes ported into Tailwind `@layer components`
-5. Squircle CSS classes (SVG mask + `@supports corner-shape` progressive enhancement)
-6. Dark mode via next-themes (class strategy, cookie-based, suppressHydrationWarning)
-7. SvgRefractionDefs component (hidden SVG filter definitions)
+- **Glassmorphism is incompatible with dark mode** applied to the same element. In dark mode, glass effect over dark backgrounds looks muddy and loses its visual purpose. The CSS must conditionally disable `backdrop-filter` on glass cards when `[data-theme="dark"]` is active and replace with a solid semi-dark card style.
 
-### Phase 2 -- Pages with static content
-8. All 7 pages with section content as Server Components
-9. `generateMetadata()` for each page (title, description, OG, canonical)
-10. JSON-LD structured data in layout or per-page
-11. `next/image` for all images (WebP with width/height, lazy loading)
-12. `next/font` for Inter + Manrope variable (self-hosted WOFF2)
-13. Header (CLIENT) + Footer (SERVER) + StickyMobileCTA (SERVER)
+- **Bold display typography requires `clamp()` responsive sizing** — a heading scaled to 56px on desktop becomes 56px on a 375px screen if only a fixed value is set. This is a regression risk for the 45+ mobile audience. Minimum readable size must be explicitly defined in the clamp lower bound (40px minimum for h1, 28px minimum for h2 at 375px width).
 
-### Phase 3 -- Client interactivity
-14. ContactForm with Server Action + Zod + useActionState
-15. PhoneInput mask component
-16. FAQ accordion via shadcn/ui Accordion
-17. Header scroll detection + mobile menu toggle
-18. Theme toggle in header
-
-### Phase 4 -- Animations and polish
-19. Framer Motion scroll-reveal via AnimateOnScroll wrapper
-20. Hero staggered entrance animation
-21. Animated counter component for stats sections
-22. Specular mouse tracking (GlassSpecular) -- desktop only
-23. Refraction probe (useEffect in layout)
-24. Staggered card grid animations
-
-### Defer to post-migration
-- **Page transition animations:** Complex with App Router layout system. Requires `AnimatePresence` wrapping `template.tsx` and exit animations on route change. Multiple open Next.js GitHub issues (e.g., #49279) about shared layout animation bugs. Ship without, add later when patterns stabilize.
-- **Glass budget enforcement:** Currently disabled in production. React's reconciliation cycle makes IntersectionObserver-based budgeting less predictable. Re-evaluate after measuring real GPU performance.
-- **Prefetch on idle:** Next.js `<Link>` already prefetches on viewport intersection. Remove custom `requestIdleCallback` prefetcher.
+- **Enhanced micro-animations must not conflict with existing stagger system** — the existing `stagger-children` + `animate-on-scroll` + `is-visible` system works. Adding `transform: translateY(20px)` to the initial state of `.animate-on-scroll` must also be guarded by `prefers-reduced-motion` in the existing media query block (line 182-189 in styles.css). Check that the existing block removes `transform` not just `animation-duration`.
 
 ---
 
-## Complexity Assessment for Roadmap
+## MVP Definition (for v1.4 milestone)
 
-| Feature | Migration Complexity | Risk | Notes |
-|---------|---------------------|------|-------|
-| Liquid Glass CSS (all 5 materials) | Low | Low | CSS custom properties + classes port 1:1 into Tailwind @layer |
-| Squircle masks | Low | Low | CSS mask-image is framework-agnostic; `@squircle-js/react` for PE is optional |
-| Dark mode | Medium | Medium | Selector changes from `.dark` (already matching) + next-themes integration; must avoid FOUC with cookie strategy |
-| Form + Server Action | Medium | Low | Well-documented Next.js 15 pattern; Zod schema replaces ad-hoc validation |
-| Specular parallax | Medium | Low | Simple `onMouseMove` -> CSS custom properties; needs `(pointer: fine)` guard |
-| SVG refraction filters | Medium | Medium | SVG `<defs>` must be in DOM before any glass element renders; place in layout.tsx as early child |
-| Scroll-reveal animations | Low | Low | Framer Motion `whileInView` is simpler than current IntersectionObserver + Motion CDN |
-| SPA router removal | None | None | Delete router.js; App Router replaces it entirely |
-| Page transitions | High | High | `AnimatePresence` + Next.js App Router is notoriously tricky; defer |
-| Content parity (7 pages x 12 sections) | High (volume) | Low (per-item risk) | Tedious but straightforward; biggest time investment of the migration |
-| SEO metadata migration | Low | Low | `generateMetadata()` is cleaner than manual `<meta>` tags in each HTML file |
-| Animated counters | Low | Low | Framer Motion `animate` + `whileInView` or `useMotionValue` |
-| Phone input mask | Low | Low | `@react-input/mask` with `+7 (___) ___-__-__` pattern; one component reused across all forms |
-| lucide-react icons | Low | Low | Same icon set already used via inline SVG; tree-shakeable imports |
-| next/image optimization | Low | Low | Replace `<img>` with `<Image>` for automatic WebP/AVIF, srcset, lazy loading |
-| next/font self-hosting | Low | Low | Replace `<link rel="preload">` with next/font Inter/Manrope; automatic self-hosting, zero CLS |
+### Launch With (v1.4)
+
+Minimum feature set to constitute a visual redesign that meets the milestone goal.
+
+- [ ] Dark mode toggle in navigation — the anchor feature of the redesign; all other features enhance light/dark
+- [ ] CSS token expansion with `[data-theme="dark"]` parallel token set — prerequisite for all dark mode styling
+- [ ] FOUC-prevention inline script for localStorage theme persistence — without this, dark mode toggle is broken for return visitors
+- [ ] Bold display typography: h1 56px/800w, h2 44px/800w with `clamp()` responsive scaling — higher-impact, lower-risk than glassmorphism
+- [ ] Enhanced scroll animations: `translateY(20px → 0)` on `.animate-on-scroll` — extends existing system, low risk
+- [ ] Button `:active` micro-interaction: `scale(0.97)` on CTA buttons — tactile feedback, 100ms, tiny scope
+- [ ] Hero section gradient mesh background — enables glassmorphism on hero stats and provides visual richness
+- [ ] Glassmorphism on hero stats block and pricing card only (2 elements maximum) — selective, high-impact, avoids over-application
+- [ ] Smooth theme transition: 300ms fade on color tokens (disabled under `prefers-reduced-motion`) — polish
+
+### Add After Validation (v1.4.x)
+
+- [ ] Glassmorphism on nav bar in light mode (frosted header) — evaluate after seeing hero glass in production; depends on visual coherence
+- [ ] Card hover micro-interaction refinement — existing `translateY(-2px)` works; evaluate adding a subtle shadow increase on hover for depth in light mode
+- [ ] Dark mode color refinement pass — real-device testing on OLED and LCD screens at 45+ typical distances
+
+### Defer to v2+
+
+- [ ] CSS scroll-driven animations (animation-timeline + view()) — NOT Baseline, Firefox gap; defer until widely supported
+- [ ] View Transitions API for theme switch animation — interesting but adds complexity for marginal gain; not worth testing on this audience
+- [ ] @starting-style entrance animations for dynamic content — Baseline 2024 but this page has no dynamic DOM insertion patterns
+
+---
+
+## Feature Prioritization Matrix (v1.4 scope only)
+
+| Feature | User Value | Implementation Cost | Priority | Risk for 45+ Audience |
+|---------|------------|---------------------|----------|-----------------------|
+| Dark mode toggle + tokens | HIGH | MEDIUM | P1 | LOW — pure user benefit, opt-in |
+| Bold display typography (h1/h2) | HIGH | LOW | P1 | LOW — increases readability |
+| FOUC prevention inline script | HIGH (retention) | LOW | P1 | LOW — invisible to user when working |
+| Enhanced scroll animations | MEDIUM | LOW | P1 | LOW — `prefers-reduced-motion` already gated |
+| Hero gradient mesh background | MEDIUM | LOW | P1 | LOW — static, no motion |
+| Glassmorphism on hero stats + pricing (2 elements) | MEDIUM | MEDIUM | P1 | LOW if applied selectively with proper contrast |
+| Button `:active` scale micro-interaction | MEDIUM | LOW | P1 | LOW — 100ms, tactile, not disorienting |
+| Smooth theme transition | LOW | LOW | P2 | LOW — gated under prefers-reduced-motion |
+| Nav bar glassmorphism | LOW | LOW | P2 | LOW if contrast maintained |
+| Dark mode OLED refinement | LOW | LOW | P3 | MEDIUM — requires physical device testing |
+
+**Priority key:**
+- P1: In v1.4 initial release
+- P2: In v1.4 follow-up patch after review
+- P3: Future milestone
+
+---
+
+## Domain-Specific Research Findings
+
+### 1. Glassmorphism / Liquid Glass in 2025
+
+**What it actually requires (not what tutorials show):**
+
+Glassmorphism requires THREE things simultaneously to work: (a) `backdrop-filter: blur(Npx)` on the element, (b) a semi-transparent background on the element (e.g., `rgba(255,255,255,0.15)`), and (c) a visually complex background BEHIND the element (a gradient, mesh, image, or blur-able content). Without (c), the glass effect is invisible — there is nothing to blur through.
+
+**Browser support:** `backdrop-filter` is Baseline 2024 (newly available since September 2024, per MDN). Works across Chrome/Edge/Safari/Firefox latest. Older devices (pre-2024 Android WebView, very old iOS Safari) may not support it. Provide fallback: `@supports not (backdrop-filter: blur(1px)) { .glass { background: rgba(255,255,255,0.9); } }`.
+
+**Blur value guidance (confidence: MEDIUM, from design community patterns):**
+- `blur(8px)` — subtle, barely noticeable, appropriate for nav bars
+- `blur(16-20px)` — the sweet spot for cards; clearly glassy without heavy performance cost
+- `blur(40px+)` — heavy, used in Apple-style "liquid glass"; GPU-intensive on mobile; avoid
+
+**Background needed:**
+- For light mode: radial gradient with brand colors (teal #38C6F4, green #1AC67E) at 10-15% opacity on white creates sufficient visual complexity. This is the recommended approach — pure CSS, no images.
+- For dark mode: disable the glass effect entirely. Replace with opaque dark card. Glass on dark backgrounds renders as a murky smear.
+
+**Performance:** `backdrop-filter` creates a new composite layer and forces GPU compositing. On mid-range Android (common in KZ), more than 3-4 glass elements visible simultaneously can cause scroll jank. Limit to 2 glass elements per viewport.
+
+**Confidence:** HIGH for browser support facts (MDN-verified). MEDIUM for visual guidance (design community patterns, not official standards).
+
+### 2. Dark Mode UX for Medical/Health 45+ Audience
+
+**Key findings from UX literature and WCAG (MEDIUM confidence overall):**
+
+Dark mode reduces blue light emission, which benefits evening/night reading. For 45+ users with presbyopia or early cataracts (both increase with age), reduced glare from a dark background can reduce eyestrain during extended reading sessions — precisely the behavior of a patient researching a medical consultation late at night.
+
+**What DOES work for 45+:**
+- Near-black background with slight color tint (not pure black) — e.g., `#0F1923` or `#15202B`. Pure `#000000` creates halation around light text for astigmatic users (HIGH prevalence at 45+).
+- Off-white text (e.g., `#E8EFF6`) rather than pure `#FFFFFF`. Reduces contrast harshness.
+- Reduced contrast differential in dark mode is acceptable and often preferable — WCAG AA (4.5:1) is the floor, not the ceiling; going much higher than 7:1 in dark mode can cause eye strain for 45+ users.
+- Semantic color preservation: the green CTA (`#1AC67E`) should become slightly desaturated and brighter in dark mode to maintain the same visual "call to action" weight without burning on a dark background.
+
+**What to AVOID:**
+- Red/orange accent colors for errors or warnings in dark mode — these produce strong blue-light contrast that is especially uncomfortable for older eyes.
+- Images that were optimized for light backgrounds look washed-out in dark mode. Any white-bg photos/illustrations need dark-mode-specific treatment or a dark overlay.
+- The existing SVG hero illustration uses duotone colors — in dark mode it must either be recolored via CSS `filter` or inverted intelligently.
+
+**Toggle positioning:** The 45+ audience needs to be able to FIND the toggle. Place it in the sticky navigation, with a recognizable sun/moon icon (not just a label), at a minimum 44x44px touch target. Label it "Тёмная тема" as a tooltip/aria-label for accessibility.
+
+**Confidence:** MEDIUM. Derived from WCAG 2.1 spec, NNGroup's dark mode research, and ophthalmology UX literature. No Kazakhstan-specific study found.
+
+### 3. Bold/Display Typography on Health Landing Pages
+
+**Current state:** h1: 2.25rem (36px), h2: 2rem (32px), font-weight: 700. Manrope Variable loaded with weights 200-800.
+
+**Research finding:** The "bold editorial" trend in 2025 (Vercel, Linear, Stripe landing pages) uses 700-800 weight at 56-72px for h1. For a medical landing page targeting 45+, 56px/800w h1 is the appropriate ceiling — bolder than current, but not the extreme 80px+ editorial style that would feel out of place on a medical site.
+
+**Recommended scale:**
+- h1: `clamp(40px, 5vw, 56px)`, font-weight: 800
+- h2: `clamp(28px, 3.5vw, 44px)`, font-weight: 800
+- h3: `clamp(22px, 2.5vw, 32px)`, font-weight: 700 (unchanged category, bump value)
+- Body: 18px (unchanged — already correct for 45+)
+
+**Line height for display sizes:** At 48px+, line-height of 1.2 (current) begins to feel spacious. The display-text convention is 1.0-1.15. For Cyrillic text, 1.1 works well at 48px+ without letters touching ascenders/descenders.
+
+**Color:** In light mode, h1/h2 in `#18212C` (current `--color-text-primary`, 16.24:1 contrast) is correct. Avoid colored headings (teal/green) for body headings — acceptable for section labels or badges but not for multi-word headings where scanning is needed by older users.
+
+**Dark mode:** h1/h2 in `#E8EFF6` on `#0F1923` maintains approximately 12:1 contrast — well above WCAG AAA, appropriate for the audience.
+
+**Confidence:** MEDIUM for the specific size recommendations (design community consensus, not a clinical standard). HIGH for the clamp() technique and Manrope Variable weight availability.
+
+### 4. Micro-Animations: What Works for 45+ Audience
+
+**Core principle:** For 45+ medical audience, animations must CONFIRM, not ENTERTAIN. Every animation should make the user more confident in what is happening, not add visual complexity.
+
+**Recommended animations (all gated by `prefers-reduced-motion: reduce`):**
+
+| Animation | Element | Duration | Easing | Why It Helps 45+ |
+|-----------|---------|---------|--------|------------------|
+| Fade + slide-up on scroll reveal | Cards, section headings | 400ms | ease-out | Shows content is loading/appearing in a natural direction; confirms the page is interactive |
+| Scale-down on button active | CTA buttons | 100ms | ease | Confirms the tap/click registered — critical for users uncertain about touch inputs |
+| Color change on input focus | Form fields | 150ms | ease | Confirms which field is active — visual affordance for users less familiar with digital forms |
+| Accordion expand/collapse | FAQ items | 250ms | ease-in-out | Already implemented; confirms action and shows content relationship |
+| Theme fade transition | Background + text colors | 300ms | ease | Smooth transition confirms the toggle worked and shows the theme shift is intentional |
+| Nav underline on hover | Navigation links | 150ms | ease | Hover state affordance |
+
+**Timing guidance:**
+- 100ms: tactile feedback (button active, checkbox tick)
+- 150-250ms: hover states, focus transitions
+- 300-400ms: scroll reveals, theme transitions
+- 500ms+: transitions that feel "laggy" for this audience — avoid
+
+**What NOT to animate for 45+:**
+- Numbers counting up (counters) — visually noisy, can be disorienting for users with any cognitive variation
+- Typing effects — patronizing, adds perceived wait time
+- Floating/bouncing elements — constant motion in peripheral vision is tiring; more so for older users
+- Hover-triggered transforms on text — reading-in-progress should not be visually disrupted
+
+**Stagger timing:** The existing 100ms-per-child stagger on grid cards is correct. Increase the stagger to 120ms for the 45+ audience — slightly slower is more reassuring than slightly faster.
+
+**`prefers-reduced-motion` implementation:** The existing codebase already gates animations with `prefers-reduced-motion: reduce` at lines 182-189 (styles.css) and in `initScrollAnimations()` (main.js). Ensure that any new `transform: translateY()` animations added in v1.4 are also suppressed. The existing block sets `animation-duration: 0.01ms` and `transition-duration: 0.01ms` globally — but `transform` changes applied via class addition (`.is-visible`) also need to reset the transform via `transform: none` in the reduced-motion block, not just duration-zero it.
+
+**Confidence:** HIGH for timing values and `prefers-reduced-motion` implementation (web standards). MEDIUM for the 45+-specific behavioral notes (UX literature, not clinical research).
+
+---
+
+## Accessibility Requirements (Non-Negotiable for v1.4)
+
+These are not features — they are prerequisites that all v1.4 features must satisfy:
+
+1. **WCAG AA contrast in ALL states:** Light mode, dark mode, hover state, focus state, button active state, glassmorphism cards, gradient backgrounds. Every text/background combination must achieve 4.5:1 minimum. Use a contrast checker on every new token pair.
+
+2. **`prefers-reduced-motion: reduce` compliance:** ALL new animations (scroll reveal enhancement, button scale, theme transition) must produce no transform or opacity transition under reduced motion. Not just duration-zero — the start and end state must be identical (no visual change).
+
+3. **Dark mode toggle keyboard accessible:** The toggle button must have `role="button"` or be a `<button>`, must have `aria-pressed="true/false"` state, and must be focusable with visible focus ring in both themes.
+
+4. **No contrast regression from glassmorphism:** Glass cards must maintain text contrast against the blurred background. Test with `backdrop-filter: blur(0)` disabled (fallback state) and with blur active. If any blur midpoint creates a light zone under dark text, increase text shadow or adjust glass opacity.
+
+5. **Touch targets remain 48x48px minimum:** The dark mode toggle, navigation links, and any new interactive elements must meet this. Do not reduce touch target size for visual design reasons.
+
+---
+
+## Implementation Notes for the Existing CSS Architecture
+
+The current CSS uses a single `:root` token block. The recommended implementation for dark mode is:
+
+```css
+/* Existing :root = light mode (unchanged) */
+:root { --color-background: #ffffff; ... }
+
+/* Dark mode override */
+[data-theme="dark"] {
+  --color-background: #0F1923;
+  --color-text-primary: #E8EFF6;
+  /* ... all tokens that change in dark mode */
+}
+
+/* System preference (no saved preference) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-background: #0F1923;
+    /* ... */
+  }
+}
+```
+
+The `color-scheme` property should be declared:
+```css
+:root { color-scheme: light dark; }
+[data-theme="dark"] { color-scheme: dark; }
+```
+
+This ensures browser-native form controls and scrollbars adapt to the active theme.
+
+The FOUC-prevention inline script (synchronous, in `<head>`, before CSS `<link>`):
+```html
+<script>
+  (function() {
+    var saved = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+```
+
+This must run synchronously (not `type="module"`, not `defer`, not `async`).
 
 ---
 
 ## Sources
 
-### Official Documentation (HIGH confidence)
-- [Next.js: Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) -- boundary rules, when to use each
-- [Next.js: Forms Guide with Server Actions](https://nextjs.org/docs/app/guides/forms) -- form action pattern, useActionState
-- [Next.js: generateMetadata](https://nextjs.org/docs/app/api-reference/functions/generate-metadata) -- per-page SEO metadata
-- [next-themes](https://github.com/pacocoursey/next-themes) -- dark mode without flash, cookie-based persistence
+### Confirmed (HIGH confidence — primary sources)
 
-### Libraries (HIGH confidence)
-- [shadcn/ui](https://ui.shadcn.com/) -- Accordion, Input, Select, Button primitives
-- [motion/react](https://motion.dev) -- current Framer Motion package name, `whileInView`, scroll animations
-- [@react-input/mask](https://www.npmjs.com/package/@react-input/mask) -- React input masking
-- [@squircle-js/react](https://www.npmjs.com/package/@squircle-js/react) -- squircle component for progressive enhancement
-- [lucide-react](https://lucide.dev) -- same icon set currently used as inline SVG
+- MDN Web Docs: `backdrop-filter` — Baseline 2024, confirmed September 2024 availability
+- MDN Web Docs: `animation-timeline` — confirmed NOT Baseline, limited availability as of research date
+- MDN Web Docs: `prefers-reduced-motion` — Baseline Widely Available since January 2020
+- MDN Web Docs: `prefers-color-scheme` — Baseline Widely Available since January 2020
+- MDN Web Docs: `color-scheme` property — Baseline Widely Available since January 2022
+- MDN Web Docs: `@starting-style` — Baseline 2024, available since August 2024 (not used in v1.4)
+- MedicusUnion KZ codebase: styles.css `:root` token block, existing animation implementation, `prefers-reduced-motion` gate at lines 182-189
+- PROJECT.md: 45+ audience constraint, mobile-first constraint, "без маркетинговой агрессии" tone, Out of Scope list (parallax, video, heavy animations)
 
-### Community / Guides (MEDIUM confidence)
-- [Framer Motion + Next.js App Router Guide](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers.html) -- client component setup, `whileInView` patterns
-- [glasscn-ui](https://github.com/itsjavi/glasscn-ui) -- glassmorphism on shadcn/ui reference (validates approach, not a dependency)
-- [CSS corner-shape (Smashing)](https://www.smashingmagazine.com/2026/03/beyond-border-radius-css-corner-shape-property-ui/) -- progressive enhancement path for squircles
-- [Next.js Server Actions Guide (MakerKit)](https://makerkit.dev/blog/tutorials/nextjs-server-actions) -- complete form handling patterns
+### Referenced (MEDIUM confidence — design and UX literature)
 
-### Unverified / Needs Testing
-- AnimatePresence with App Router layout -- [GitHub issue #49279](https://github.com/vercel/next.js/issues/49279) documents ongoing bugs; page transitions remain risky
-- `corner-shape: squircle` browser support -- Chrome 139+ only as of 2026-04; not production-ready for cross-browser
-- Performance of backdrop-filter on budget Android with React re-renders -- needs real-device benchmarking post-migration
+- W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
+- WCAG 2.1 SC 1.4.3 (Contrast Minimum), 1.4.11 (Non-text Contrast) — accessibility standards
+- Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading research
+- Web.dev + Chrome for Developers: CSS glassmorphism and backdrop-filter usage patterns
+- Design community consensus on 2025 display typography scales (Vercel, Stripe, Linear landing pages) — LOW individual source confidence, MEDIUM as converging consensus
+
+### Not Found / Unable to Verify
+
+- Kazakhstan-specific data on 45+ user dark mode preference rates — no authoritative source found; relied on general aging UX literature
+- Clinical ophthalmology studies on web dark mode for presbyopic users — mentioned in design literature but primary clinical sources not located; halation claim is MEDIUM confidence
+
+---
+
+*Feature research for: MedicusUnion KZ Landing — v1.4 Visual Redesign*
+*Researched: 2026-03-24*
+*Downstream consumer: v1.4 roadmap phase planning*

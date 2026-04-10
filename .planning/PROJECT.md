@@ -12,11 +12,9 @@
 
 ## Current State
 
-**Shipped:** v5.0 Full Liquid Glass Rework (2026-04-10)
-**In progress:** v6.0 Next.js Stack Migration
-**Codebase:** 7 production pages + styleguide, Liquid Glass design system (squircle masks, 4 glass materials, adaptive tinting, specular physics, 3 refraction tiers), full SEO/a11y/WCAG AA baseline
-**Stack (current):** HTML + Tailwind CSS v4 + vanilla JS, Directus 11 + PostgreSQL 16 via Docker
-**Stack (target):** Next.js 15 + React + Tailwind CSS + shadcn/ui + Framer Motion, PostgreSQL via Next.js API routes, Docker self-hosted
+**Shipped:** v1.4 2025 Visual Redesign (2026-03-24)
+**Codebase:** ~3,152 LOC (762 HTML + 1,900 CSS + 490 JS)
+**Stack:** Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 
 ## Requirements
 
@@ -67,21 +65,6 @@
 
 ### Active
 
-## Current Milestone: v6.0 Next.js Stack Migration
-
-**Goal:** Переписать проект с vanilla HTML/CSS/JS на Next.js + React + Tailwind CSS с 1:1 переносом дизайна и контента, встроенным API вместо Directus, self-hosted Docker деплой.
-
-**Target features:**
-- Next.js 15 App Router с SSR/SSG для всех страниц
-- React-компоненты из shadcn/ui + glass-варианты поверх
-- Tailwind CSS с theme.extend из текущих glass-токенов
-- @squircle-js/react для squircle-углов + corner-shape PE
-- Framer Motion для анимаций (mount, hover, scroll-reveal)
-- liquidGL для refraction на hero (fallback на CSS blur)
-- Next.js API routes + PostgreSQL вместо Directus
-- Docker Compose для self-hosted деплоя
-- 1:1 визуальное соответствие текущему сайту
-
 ### Out of Scope
 
 - Казахский язык — только русский в v1
@@ -111,8 +94,8 @@
 
 ## Constraints
 
-- **Stack**: Next.js 15 + React + Tailwind CSS + shadcn/ui (миграция с vanilla HTML/CSS/JS)
-- **Backend**: Next.js API routes + PostgreSQL (миграция с Directus)
+- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
+- **Backend**: Directus (self-hosted) — приём заявок с формы
 - **Language**: Только русский
 - **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
 - **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
@@ -165,4 +148,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after v6.0 milestone start*
+*Last updated: 2026-03-24 after v1.4 milestone completion*

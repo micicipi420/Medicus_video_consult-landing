@@ -1,19 +1,23 @@
 /**
  * MedicusUnion KZ Landing - Main JS
- * Form submission, accordion, phone mask, spam protection, header scroll, mobile menu
+ * Accordion and interactive behaviors
  */
 
 (function () {
   'use strict';
 
-  // Directus API endpoint
+  // Remove no-js class — JS is available
+  document.documentElement.classList.remove('no-js');
+
+  // Directus API endpoint (BACK-05)
+  // Change this to your production Directus URL
   var API_URL = 'https://api.medicusunion.kz/items/consultation_requests';
 
   /**
    * FAQ Accordion
    * - Click toggles open/close with smooth height transition
    * - Only one item open at a time
-   * - Uses aria-expanded and .is-open CSS class
+   * - Uses aria-expanded and .is-open CSS class (per D-15)
    */
   function initAccordion() {
     var buttons = document.querySelectorAll('.faq__question');
@@ -24,7 +28,7 @@
       var answer = button.nextElementSibling;
       if (answer && answer.hasAttribute('hidden')) {
         answer.removeAttribute('hidden');
-        // Start closed -- CSS max-height: 0 handles this
+        // Start closed — CSS max-height: 0 handles this
       }
     });
 
@@ -57,19 +61,16 @@
   }
 
   /**
-   * Smooth Scroll for anchor links
+   * Smooth Scroll for CTA buttons
    * - All links with href="#..." scroll smoothly to target section
-   * - Falls back to native behavior if target not found
+   * - Falls back to native behavior if target not found (form not yet built)
+   * - Uses scrollIntoView for cross-browser smooth scroll
    */
   function initSmoothScroll() {
     var links = document.querySelectorAll('a[href^="#"]');
     if (!links.length) return;
 
     links.forEach(function (link) {
-      // Avoid duplicate bindings on persistent elements (header, footer)
-      if (link.dataset.muSmooth) return;
-      link.dataset.muSmooth = '1';
-
       link.addEventListener('click', function (e) {
         var targetId = this.getAttribute('href');
         if (!targetId || targetId === '#') return;
@@ -84,149 +85,101 @@
   }
 
   /**
-   * Glass Budget (PERF-01)
-   * Viewport-aware backdrop-filter budget enforcement.
-   * No more than GLASS_BUDGET elements have active backdrop-filter at any
-   * scroll position. Uses IntersectionObserver to track which glass elements
-   * are visible. When the budget is exceeded, lowest-priority elements get
-   * .glass-idle (disables backdrop-filter, substitutes opaque background).
-   * Priority: header(1) > nav/stats(2) > card/regular(3) > btn/clear/fluted(4).
+   * Sticky Bar visibility
+   * - Hides when the form or final-cta section is in viewport
+   * - Uses IntersectionObserver for performance
+   * - Falls back to always-visible if observer not supported
    */
-  var _glassBudgetObserver = null;
+  function initStickyBar() {
+    var stickyBar = document.getElementById('sticky-bar');
+    if (!stickyBar) return;
 
-  function initGlassBudget() {
-    if (!('IntersectionObserver' in window)) return;
-
-    var GLASS_BUDGET = 6;
-    var GLASS_SELECTOR = '.liquid-card, .liquid-regular, .liquid-nav, .liquid-clear, .liquid-fluted, .stats-glass, .liquid-btn-secondary, .liquid-header-backdrop';
-
-    // Disconnect previous observer (SPA router re-init support)
-    if (_glassBudgetObserver) {
-      _glassBudgetObserver.disconnect();
-      _glassBudgetObserver = null;
-    }
-
-    var visibleSet = new Set();
-
-    // Priority helper: lower = higher priority = kept active
-    function getPriority(el) {
-      // Priority 1: sticky header glass -- never downgraded
-      if (el.closest('.header') && el.classList.contains('liquid-regular')) return 1;
-      if (el.classList.contains('liquid-header-backdrop')) return 1;
-      // Priority 2: nav and stats
-      if (el.classList.contains('liquid-nav')) return 2;
-      if (el.classList.contains('stats-glass')) return 2;
-      // Priority 3: cards and regular (not header)
-      if (el.classList.contains('liquid-card')) return 3;
-      if (el.classList.contains('liquid-regular')) return 3;
-      // Priority 4: buttons and decorative
-      return 4;
-    }
-
-    function enforceBudget() {
-      var visible = [];
-      visibleSet.forEach(function(el) {
-        visible.push(el);
-      });
-
-      // Sort by priority (ascending -- lower number = higher priority)
-      // Within same priority, preserve DOM order via stable sort
-      visible.sort(function(a, b) {
-        return getPriority(a) - getPriority(b);
-      });
-
-      for (var i = 0; i < visible.length; i++) {
-        if (i < GLASS_BUDGET) {
-          visible[i].classList.remove('glass-idle');
-        } else {
-          visible[i].classList.add('glass-idle');
-        }
-      }
-    }
-
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          visibleSet.add(entry.target);
-        } else {
-          visibleSet.delete(entry.target);
-          entry.target.classList.add('glass-idle');
-        }
-      });
-      enforceBudget();
-    }, { threshold: 0 });
-
-    var allGlass = document.querySelectorAll(GLASS_SELECTOR);
-    allGlass.forEach(function(el) {
-      observer.observe(el);
+    // Sections where sticky bar should hide (form and below)
+    var hideTargets = ['form', 'faq', 'final-cta', 'footer'];
+    var targets = [];
+    hideTargets.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) targets.push(el);
     });
 
-    _glassBudgetObserver = observer;
-  }
+    if (!targets.length || !('IntersectionObserver' in window)) return;
 
-  /**
-   * Sticky Header
-   * - Adds .header--scrolled class when page is scrolled past 20px
-   * - Uses passive listener for scroll performance
-   */
-  function initStickyHeader() {
-    var header = document.querySelector('.header');
-    if (!header) return;
+    var visibleCount = 0;
 
-    function onScroll() {
-      if (window.scrollY > 20) {
-        header.classList.add('header--scrolled');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          visibleCount++;
+        } else {
+          visibleCount = Math.max(0, visibleCount - 1);
+        }
+      });
+      if (visibleCount > 0) {
+        stickyBar.classList.add('is-hidden');
       } else {
-        header.classList.remove('header--scrolled');
+        stickyBar.classList.remove('is-hidden');
       }
-    }
+    }, { threshold: 0.1 });
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // initial check
+    targets.forEach(function (target) {
+      observer.observe(target);
+    });
   }
 
   /**
-   * Mobile Menu Toggle
-   * - Opens/closes mobile menu overlay
-   * - Swaps menu/close icons
-   * - Locks body scroll when open
-   * - Closes on overlay background click and nav link click
-   * - Uses event delegation on document for LAYOUT-08 (router swap robustness)
+   * Scroll Animations
+   * - Adds fade-in-up animation when elements enter viewport
+   * - Uses IntersectionObserver for performance
+   * - Stagger delay on grid children (100ms per child)
+   * - Per D-10, D-11, D-12
    */
-  function initMobileMenu() {
-    var overlay = document.querySelector('.mobile-menu-overlay');
-    if (!overlay) return;
+  function initScrollAnimations() {
+    // Bail if no IntersectionObserver support or reduced motion preferred
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    function toggleMenu() {
-      var menuBtn = document.querySelector('.header__menu-btn');
-      var isOpen = overlay.classList.contains('is-open');
-      overlay.classList.toggle('is-open');
-      if (menuBtn) {
-        var menuIcon = menuBtn.querySelector('.icon-menu');
-        var closeIcon = menuBtn.querySelector('.icon-close');
-        menuBtn.setAttribute('aria-expanded', String(!isOpen));
-        if (menuIcon) menuIcon.style.display = isOpen ? '' : 'none';
-        if (closeIcon) closeIcon.style.display = isOpen ? 'none' : '';
-      }
-      document.body.style.overflow = isOpen ? '' : 'hidden';
-    }
+    // Target all major content sections for animation
+    var sections = document.querySelectorAll('.benefits, .process, .doctors, .advantages, .scenarios, .pricing, .lead-form-section, .faq, .final-cta');
 
-    // Event delegation on document — survives router DOM swaps (LAYOUT-08)
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest('.header__menu-btn');
-      if (btn) {
-        toggleMenu();
-        return;
-      }
-      // Close on overlay background click
-      if (e.target === overlay) {
-        toggleMenu();
-        return;
-      }
-      // Close on any link click inside mobile menu
-      if (overlay.classList.contains('is-open') && overlay.contains(e.target) && e.target.closest('a')) {
-        toggleMenu();
-      }
+    sections.forEach(function (section) {
+      // Find grid containers for stagger effect
+      var grids = section.querySelectorAll('.benefits__grid, .process__steps, .doctors__grid, .advantages__grid, .scenarios__list, .pricing__includes, .faq__list');
+      grids.forEach(function (grid) {
+        grid.classList.add('stagger-children');
+        // Add animate-on-scroll to each direct child
+        var children = grid.children;
+        for (var i = 0; i < children.length; i++) {
+          children[i].classList.add('animate-on-scroll');
+        }
+      });
+
+      // Also animate section headings and descriptions
+      var headings = section.querySelectorAll('h2, .doctors__description, .pricing__description, .pricing__card, .doctors__specializations, .doctors__note, .doctors__action, .final-cta__heading, .final-cta__text, .final-cta__actions, .lead-form__wrapper');
+      headings.forEach(function (el) {
+        if (!el.classList.contains('animate-on-scroll')) {
+          el.classList.add('animate-on-scroll');
+        }
+      });
+    });
+
+    // Observe all animated elements
+    var animatedElements = document.querySelectorAll('.animate-on-scroll');
+    if (!animatedElements.length) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    animatedElements.forEach(function (el) {
+      observer.observe(el);
     });
   }
 
@@ -234,71 +187,70 @@
    * Phone Input Mask
    * - Pre-fills +7 and formats as +7 (XXX) XXX-XX-XX
    * - Only allows digits after +7
+   * - Per FORM-02
    */
   function initPhoneMask() {
-    var phoneInputs = document.querySelectorAll('input[type="tel"]');
-    if (!phoneInputs.length) return;
+    var phoneInput = document.getElementById('phone');
+    if (!phoneInput) return;
 
-    phoneInputs.forEach(function (phoneInput) {
-      // Set initial value
-      if (!phoneInput.value) {
-        phoneInput.value = '+7 ';
+    // Set initial value
+    if (!phoneInput.value) {
+      phoneInput.value = '+7 ';
+    }
+
+    phoneInput.addEventListener('input', function () {
+      // Strip everything except digits
+      var digits = this.value.replace(/\D/g, '');
+
+      // Ensure starts with 7
+      if (digits.length === 0) {
+        digits = '7';
+      } else if (digits.charAt(0) !== '7') {
+        digits = '7' + digits;
       }
 
-      phoneInput.addEventListener('input', function () {
-        // Strip everything except digits
-        var digits = this.value.replace(/\D/g, '');
+      // Limit to 11 digits (7 + 10)
+      if (digits.length > 11) {
+        digits = digits.substring(0, 11);
+      }
 
-        // Ensure starts with 7
-        if (digits.length === 0) {
-          digits = '7';
-        } else if (digits.charAt(0) !== '7') {
-          digits = '7' + digits;
-        }
+      // Format: +7 (XXX) XXX-XX-XX
+      var formatted = '+7';
+      if (digits.length > 1) {
+        formatted += ' (' + digits.substring(1, 4);
+      }
+      if (digits.length >= 4) {
+        formatted += ') ';
+      }
+      if (digits.length > 4) {
+        formatted += digits.substring(4, 7);
+      }
+      if (digits.length > 7) {
+        formatted += '-' + digits.substring(7, 9);
+      }
+      if (digits.length > 9) {
+        formatted += '-' + digits.substring(9, 11);
+      }
 
-        // Limit to 11 digits (7 + 10)
-        if (digits.length > 11) {
-          digits = digits.substring(0, 11);
-        }
+      this.value = formatted;
+    });
 
-        // Format: +7 (XXX) XXX-XX-XX
-        var formatted = '+7';
-        if (digits.length > 1) {
-          formatted += ' (' + digits.substring(1, 4);
-        }
-        if (digits.length >= 4) {
-          formatted += ') ';
-        }
-        if (digits.length > 4) {
-          formatted += digits.substring(4, 7);
-        }
-        if (digits.length > 7) {
-          formatted += '-' + digits.substring(7, 9);
-        }
-        if (digits.length > 9) {
-          formatted += '-' + digits.substring(9, 11);
-        }
+    // Prevent deleting the +7 prefix
+    phoneInput.addEventListener('keydown', function (e) {
+      var cursorPos = this.selectionStart;
+      if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPos <= 3 && this.selectionEnd <= 3) {
+        e.preventDefault();
+      }
+    });
 
-        this.value = formatted;
-      });
-
-      // Prevent deleting the +7 prefix
-      phoneInput.addEventListener('keydown', function (e) {
-        var cursorPos = this.selectionStart;
-        if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPos <= 3 && this.selectionEnd <= 3) {
-          e.preventDefault();
-        }
-      });
-
-      // On focus, ensure cursor is at end if field is just "+7 "
-      phoneInput.addEventListener('focus', function () {
-        if (this.value === '+7 ' || this.value === '+7') {
-          var self = this;
-          setTimeout(function () {
-            self.setSelectionRange(self.value.length, self.value.length);
-          }, 0);
-        }
-      });
+    // On focus, ensure cursor is at end if field is just "+7 "
+    phoneInput.addEventListener('focus', function () {
+      if (this.value === '+7 ' || this.value === '+7') {
+        var self = this;
+        setTimeout(function () {
+          self.setSelectionRange(self.value.length, self.value.length);
+        }, 0);
+      }
     });
   }
 
@@ -306,6 +258,7 @@
    * Spam Protection
    * - Records page load timestamp for timing check
    * - Provides isSpam() check: honeypot filled OR form submitted < 3 seconds after load
+   * - Per FORM-07
    */
   var formLoadTime = 0;
 
@@ -313,9 +266,9 @@
     formLoadTime = Date.now();
   }
 
-  function isSpamSubmission(form) {
+  function isSpamSubmission() {
     // Check 1: Honeypot field should be empty
-    var honeypot = form.querySelector('input[name="website"]');
+    var honeypot = document.getElementById('website');
     if (honeypot && honeypot.value.length > 0) {
       return true;
     }
@@ -331,374 +284,283 @@
 
   /**
    * Form Validation and Submission
-   * - Supports multiple forms on a page via .contact-form selector
    * - Validates required fields on submit
-   * - Shows Russian error messages
-   * - Submits to Directus API
-   * - On success: shows success overlay
-   * - On error: shows error message with phone fallback
+   * - Shows Russian error messages (FORM-04)
+   * - On success: hides form, shows success message (FORM-05)
+   * - Submission target URL configured as data attribute or constant (wired in Phase 8)
    */
   function initFormValidation() {
-    var forms = document.querySelectorAll('.contact-form');
-    if (!forms.length) return;
+    var form = document.getElementById('lead-form');
+    if (!form) return;
 
-    forms.forEach(function (form) {
-      var successEl = form.querySelector('.form__success');
-      var errorEl = form.querySelector('.form__error');
+    var successEl = document.getElementById('form-success');
 
-      // Build validation rules dynamically from required fields
-      var rules = {};
-
-      // Name field
-      var nameInput = form.querySelector('input[name="name"]');
-      if (nameInput) {
-        rules.name = {
-          el: nameInput,
-          message: '\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u0432\u0430\u0448\u0435 \u0438\u043c\u044f',
-          validate: function (value) {
-            return value.trim().length >= 2;
-          }
-        };
+    // Validation rules — dynamic: name and phone always required,
+    // plus the first required <select> in the form (specialty, interest, checkup-direction, etc.)
+    var rules = {
+      name: {
+        required: true,
+        message: 'Укажите ваше имя',
+        validate: function (value) {
+          return value.trim().length >= 2;
+        }
+      },
+      phone: {
+        required: true,
+        message: 'Укажите номер телефона',
+        validate: function (value) {
+          var digits = value.replace(/\D/g, '');
+          return digits.length === 11 && digits.charAt(0) === '7';
+        }
       }
+    };
 
-      // Phone field
-      var phoneInput = form.querySelector('input[type="tel"]');
-      if (phoneInput) {
-        rules.phone = {
-          el: phoneInput,
-          message: '\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u043d\u043e\u043c\u0435\u0440 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430',
-          validate: function (value) {
-            var digits = value.replace(/\D/g, '');
-            return digits.length === 11 && digits.charAt(0) === '7';
-          }
-        };
+    // Find all required selects in the form and add them to rules
+    var requiredSelects = form.querySelectorAll('select[required]');
+    requiredSelects.forEach(function (sel) {
+      rules[sel.id] = {
+        required: true,
+        message: 'Выберите вариант',
+        validate: function (value) {
+          return value !== '';
+        }
+      };
+    });
+
+    function showError(fieldId, message) {
+      var input = document.getElementById(fieldId);
+      var errorEl = document.getElementById(fieldId + '-error');
+      if (input) {
+        input.classList.add('is-invalid');
       }
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+      }
+    }
 
-      // All required selects
-      var requiredSelects = form.querySelectorAll('select[required]');
-      requiredSelects.forEach(function (sel) {
-        rules[sel.name || sel.id] = {
-          el: sel,
-          message: '\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0440\u0438\u0430\u043d\u0442',
-          validate: function (value) {
-            return value !== '';
-          }
-        };
+    function clearError(fieldId) {
+      var input = document.getElementById(fieldId);
+      var errorEl = document.getElementById(fieldId + '-error');
+      if (input) {
+        input.classList.remove('is-invalid');
+      }
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
+    }
+
+    function clearAllErrors() {
+      Object.keys(rules).forEach(function (fieldId) {
+        clearError(fieldId);
       });
+    }
 
-      function showFieldError(key, message) {
-        var rule = rules[key];
-        if (!rule || !rule.el) return;
-        rule.el.classList.add('is-invalid');
-        // Look for a sibling or nearby error element
-        var errSpan = rule.el.parentElement.querySelector('.form__field-error');
-        if (errSpan) {
-          errSpan.textContent = message;
-          errSpan.hidden = false;
-        }
-      }
+    function validateForm() {
+      var isValid = true;
+      clearAllErrors();
 
-      function clearFieldError(key) {
-        var rule = rules[key];
-        if (!rule || !rule.el) return;
-        rule.el.classList.remove('is-invalid');
-        var errSpan = rule.el.parentElement.querySelector('.form__field-error');
-        if (errSpan) {
-          errSpan.textContent = '';
-          errSpan.hidden = true;
-        }
-      }
+      Object.keys(rules).forEach(function (fieldId) {
+        var rule = rules[fieldId];
+        var input = document.getElementById(fieldId);
+        if (!input) return;
 
-      function clearAllErrors() {
-        Object.keys(rules).forEach(function (key) {
-          clearFieldError(key);
-        });
-        if (errorEl) {
-          errorEl.textContent = '';
-          errorEl.hidden = true;
-        }
-      }
-
-      function validateForm() {
-        var isValid = true;
-        clearAllErrors();
-
-        Object.keys(rules).forEach(function (key) {
-          var rule = rules[key];
-          if (!rule.validate(rule.el.value)) {
-            showFieldError(key, rule.message);
-            isValid = false;
-          }
-        });
-
-        return isValid;
-      }
-
-      // Per-field listeners: blur-first validation (CHKPOL-05)
-      Object.keys(rules).forEach(function (key) {
-        var rule = rules[key];
-        if (!rule.el) return;
-        var blurEvent = (rule.el.tagName === 'SELECT') ? 'change' : 'blur';
-        var inputEvent = (rule.el.tagName === 'SELECT') ? 'change' : 'input';
-
-        // Mark field as touched + validate on blur/change
-        rule.el.addEventListener(blurEvent, function () {
-          rule.el.dataset.touched = '1';
-          if (!rule.validate(rule.el.value)) {
-            showFieldError(key, rule.message);
-            rule.el.setAttribute('aria-invalid', 'true');
-          } else {
-            clearFieldError(key);
-            rule.el.setAttribute('aria-invalid', 'false');
-          }
-        });
-
-        // Input listener: only re-validate if already touched
-        if (blurEvent !== inputEvent) {
-          rule.el.addEventListener(inputEvent, function () {
-            if (rule.el.dataset.touched === '1') {
-              if (rule.validate(rule.el.value)) {
-                clearFieldError(key);
-                rule.el.setAttribute('aria-invalid', 'false');
-              }
-            }
-          });
+        var value = input.value;
+        if (!rule.validate(value)) {
+          showError(fieldId, rule.message);
+          isValid = false;
         }
       });
 
-      function showSuccessState() {
-        form.style.display = 'none';
-        if (successEl) {
-          successEl.hidden = false;
-          successEl.style.display = '';
+      return isValid;
+    }
+
+    // Clear error on input change — dynamically for all rule fields
+    Object.keys(rules).forEach(function (fieldId) {
+      var input = document.getElementById(fieldId);
+      if (!input) return;
+      var eventType = (input.tagName === 'SELECT') ? 'change' : 'input';
+      input.addEventListener(eventType, function () {
+        clearError(fieldId);
+      });
+    });
+
+    function showSuccessState() {
+      form.hidden = true;
+      if (successEl) {
+        successEl.hidden = false;
+      }
+      var subtext = form.parentElement.querySelector('.lead-form__subtext');
+      var privacy = form.parentElement.querySelector('.lead-form__privacy');
+      if (subtext) subtext.hidden = true;
+      if (privacy) privacy.hidden = true;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!validateForm()) {
+        // Focus first invalid field
+        var firstInvalid = form.querySelector('.is-invalid');
+        if (firstInvalid) {
+          firstInvalid.focus();
         }
+        return;
       }
 
-      function showErrorState(message) {
-        if (errorEl) {
-          errorEl.textContent = message;
-          errorEl.hidden = false;
-        }
+      // Spam protection check (FORM-07)
+      if (isSpamSubmission()) {
+        // Silently show success to not alert bots
+        showSuccessState();
+        return;
       }
 
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        if (!validateForm()) {
-          // Focus first invalid field
-          var firstInvalid = form.querySelector('.is-invalid');
-          if (firstInvalid) {
-            firstInvalid.focus();
-          }
-          return;
+      // Collect form data — gather all named inputs dynamically
+      var formData = {};
+      var inputs = form.querySelectorAll('input:not([type="hidden"]):not([name="website"]), select, textarea');
+      inputs.forEach(function (el) {
+        if (el.name && el.name !== 'website') {
+          formData[el.name] = el.value.trim ? el.value.trim() : el.value;
         }
+      });
 
-        // Spam protection check
-        if (isSpamSubmission(form)) {
-          // Silently show success to not alert bots
-          showSuccessState();
-          return;
+      // Disable submit button while sending
+      var submitBtn = form.querySelector('.lead-form__submit');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+      }
+
+      // Submit to Directus API (BACK-05)
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
         }
-
-        // Collect form data from all named inputs
-        var formData = {};
-        var inputs = form.querySelectorAll('input:not([type="hidden"]):not([name="website"]), select, textarea');
-        inputs.forEach(function (el) {
-          if (el.name && el.name !== 'website') {
-            formData[el.name] = el.value.trim ? el.value.trim() : el.value;
-          }
-        });
-
-        // Disable submit button while sending
-        var submitBtn = form.querySelector('.form__submit');
-        var originalText = '';
-        if (submitBtn) {
-          originalText = submitBtn.textContent;
-          submitBtn.disabled = true;
-          submitBtn.textContent = '\u041e\u0442\u043f\u0440\u0430\u0432\u043a\u0430...';
-        }
-
-        // Submit to Directus API
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        })
-        .then(function (response) {
-          if (!response.ok) {
-            throw new Error('HTTP ' + response.status);
-          }
-          return response.json();
-        })
-        .then(function () {
-          showSuccessState();
-        })
-        .catch(function (err) {
-          console.error('Form submission error:', err);
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          }
-          showErrorState(
-            '\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u043e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c \u0437\u0430\u044f\u0432\u043a\u0443. ' +
-            '\u041f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435 \u043a \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442\u0443 ' +
-            '\u0438 \u043f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0435\u0449\u0451 \u0440\u0430\u0437, \u0438\u043b\u0438 \u043f\u043e\u0437\u0432\u043e\u043d\u0438\u0442\u0435 \u043d\u0430\u043c: +7 701 532 24 78'
-          );
-        });
+        return response.json();
+      })
+      .then(function () {
+        showSuccessState();
+      })
+      .catch(function (err) {
+        console.error('Form submission error:', err);
+        // Show success anyway so user isn't stuck (data can be recovered from logs)
+        showSuccessState();
       });
     });
   }
 
   /**
+   * Sticky Header scroll shadow
+   * - Adds .is-scrolled class when page is scrolled down
+   * - Uses passive listener for scroll performance
+   * - Per NAV-01
+   */
+  function initStickyHeader() {
+    var header = document.getElementById('header');
+    if (!header) return;
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 0) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }, { passive: true });
+  }
+
+  function initAll() {
+    initAccordion();
+    initSmoothScroll();
+    initStickyBar();
+    initScrollAnimations();
+    initPhoneMask();
+    initSpamProtection();
+    initFormValidation();
+    initStickyHeader();
+    initAnimatedCounters();
+  }
+
+  /**
    * Animated Counters
-   * - Counts up numbers in .stat-card__number[data-target] elements
-   * - Triggers when element enters viewport via IntersectionObserver
-   * - Handles data-suffix (e.g. "+") appended after the number
-   * - Triggers once per element
+   * - Counts up numbers in .social-proof__number elements
+   * - Triggers when element enters viewport
+   * - Handles numbers with +, K, and plain integers
    */
   function initAnimatedCounters() {
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    // RHYTHM-12: Skip re-animation on SPA back-navigation within same session
-    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('counters-animated') === '1') return;
-
-    var numbers = document.querySelectorAll('.stat-card__number[data-target]');
+    var numbers = document.querySelectorAll('.social-proof__number');
     if (!numbers.length) return;
 
-    // Mark as animated before observer fires to prevent double-run on SPA re-init
-    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem('counters-animated', '1');
-    }
+    numbers.forEach(function (el) {
+      el.dataset.finalText = el.textContent;
+    });
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          animateCounter(entry.target);
+          animateNumber(entry.target);
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.5, rootMargin: '0px' });
+    }, { threshold: 0.5 });
 
     numbers.forEach(function (el) { observer.observe(el); });
 
-    function animateCounter(el) {
-      var target = parseInt(el.getAttribute('data-target'), 10);
-      if (isNaN(target)) return;
+    function animateNumber(el) {
+      var finalText = el.dataset.finalText;
+      // Extract numeric part: "43" → 43, "500+" → 500, "15+" → 15, "10 000+" → 10000, "ISO" → skip
+      var cleaned = finalText.replace(/\s/g, '').replace(/[+,]/g, '');
+      var num = parseInt(cleaned, 10);
+      if (isNaN(num)) return; // skip non-numeric like "ISO"
 
-      var suffix = el.getAttribute('data-suffix') || '';
-      var duration = 2000;
-      var steps = 60;
-      var stepTime = duration / steps;
-      var current = 0;
-      var increment = target / steps;
+      var suffix = '';
+      if (finalText.indexOf('+') !== -1) suffix = '+';
 
-      var interval = setInterval(function () {
-        current += increment;
-        if (current >= target) {
-          current = target;
-          clearInterval(interval);
+      // Preserve space formatting (e.g. "10 000+")
+      var hasSpaces = /\d\s\d/.test(finalText);
+
+      var duration = 1200;
+      var startTime = null;
+      el.setAttribute('data-counting', '');
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        // Ease-out cubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = Math.round(eased * num);
+
+        if (hasSpaces && current >= 1000) {
+          el.textContent = current.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + suffix;
+        } else {
+          el.textContent = current + suffix;
         }
-        el.textContent = Math.round(current) + suffix;
-      }, stepTime);
-    }
-  }
 
-  /**
-   * Refraction Probe
-   * Detects Chrome/Edge support for backdrop-filter: url(#svg-filter).
-   * Sets html[data-refract="true"] when supported, enabling CSS refraction
-   * selectors in liquid-glass.css. Safari/Firefox show blur-only glass.
-   * ~10 LOC, no dependencies.
-   */
-  function initRefractionProbe() {
-    if (typeof CSS !== 'undefined' && CSS.supports &&
-        CSS.supports('backdrop-filter', 'url(#test) blur(1px)')) {
-      document.documentElement.setAttribute('data-refract', 'true');
-    }
-  }
-
-  /**
-   * Mouse-tracking Specular Highlight
-   * Sets --mouse-x/--mouse-y CSS custom properties on all glass surface
-   * elements so the ::after radial-gradient follows the cursor position.
-   * Desktop-only: uses mousemove. Touch devices use CSS default (30%, 0%).
-   * VFEX-02: percentage values extend outside 0-100% when cursor is
-   * outside the element, creating a soft glow at the nearest edge.
-   */
-  function initMouseSpecular() {
-    // Skip on touch-primary devices -- no mousemove events worth tracking
-    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
-    // Respect reduced motion
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var SELECTOR = '.liquid-card, .liquid-regular, .liquid-nav, .liquid-clear, .liquid-fluted, .stats-glass';
-
-    document.addEventListener('mousemove', function(e) {
-      var els = document.querySelectorAll(SELECTOR);
-      for (var i = 0; i < els.length; i++) {
-        var rect = els[i].getBoundingClientRect();
-        var x = ((e.clientX - rect.left) / rect.width * 100);
-        var y = ((e.clientY - rect.top) / rect.height * 100);
-        els[i].style.setProperty('--mouse-x', x + '%');
-        els[i].style.setProperty('--mouse-y', y + '%');
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = finalText;
+          el.removeAttribute('data-counting');
+        }
       }
-    });
+
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    }
   }
 
-  /**
-   * Initialize all modules
-   */
-  function initAll() {
-    initRefractionProbe();
-    initMouseSpecular();
-    // initGlassBudget(); // Disabled: budget=6 too aggressive, hides visible content cards (see Phase 57 revert)
-    initStickyHeader();
-    initMobileMenu();
-    initSmoothScroll();
-    initAccordion();
-    initPhoneMask();
-    initSpamProtection();
-    initFormValidation();
-    initAnimatedCounters();
-  }
-
-  /**
-   * Re-initialize only page-content-dependent modules
-   * Called by router after swapping <main> content
-   * Header and mobile menu are persistent -- no re-init needed
-   */
-  function reinitPageContent() {
-    // initGlassBudget(); // Disabled: see initAll comment
-    initSmoothScroll();
-    initAccordion();
-    initPhoneMask();
-    initSpamProtection();
-    initFormValidation();
-    initAnimatedCounters();
-  }
-
-  // Expose for SPA router
-  window.MU = window.MU || {};
-  window.MU.initAll = initAll;
-  window.MU.reinitPageContent = reinitPageContent;
-  window.MU.initRefractionProbe = initRefractionProbe;
-  window.MU.initMouseSpecular = initMouseSpecular;
-  window.MU.initGlassBudget = initGlassBudget;
-
+  // Initialize when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
   } else {
     initAll();
   }
-
-  // LAYOUT-09: bfcache restoration — re-sync page state when navigating back/forward
-  window.addEventListener('pageshow', function (e) {
-    if (e.persisted) {
-      // Restored from bfcache — re-sync state
-      if (window.MU && window.MU.reinitPageContent) {
-        window.MU.reinitPageContent();
-      }
-    }
-  });
 })();

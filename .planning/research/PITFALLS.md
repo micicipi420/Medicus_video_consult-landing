@@ -1,793 +1,370 @@
-# Domain Pitfalls: Next.js 15 Migration of Liquid Glass Landing Page
+# Pitfalls Research
 
-**Domain:** Migrating a production static landing page with advanced glass effects (backdrop-filter, SVG refraction filters, squircle mask-image, adaptive tinting, dark mode) from vanilla HTML/Tailwind CSS v4 to Next.js 15 + React + App Router
-**Researched:** 2026-04-10
-**Confidence:** HIGH for Turbopack/CSS bugs (verified via official GitHub issues #78302, #79531, #79535); HIGH for Framer Motion bundle (verified via official motion.dev docs); MEDIUM for SVG filter hydration (multiple credible sources but no exact replication of this project's filter set); HIGH for Docker standalone (verified via official Next.js docs); HIGH for dark mode FOUC (verified via next-themes + Next.js discussions)
+**Domain:** Visual redesign of medical landing page — glassmorphism, dark mode, bold typography, micro-animations (v1.4 milestone, 45+ audience, Kazakhstan)
+**Researched:** 2026-03-24
+**Confidence:** HIGH (glassmorphism/animation sourced from MDN verified specs; typography/dark-mode from established WCAG 2.1/2.2 patterns; audience-specific claims from established UX research consensus)
 
 ---
 
 ## Critical Pitfalls
 
-Mistakes that cause visual breakage, production failures, or require architectural rework.
-
----
-
-### Pitfall 1: Turbopack Strips backdrop-filter When -webkit- Prefix Comes First
+### Pitfall 1: Glassmorphism Text Falls Below WCAG Contrast Minimum
 
 **What goes wrong:**
-In Next.js 15.3.0+ with Turbopack (`next dev --turbo`), when `-webkit-backdrop-filter` is declared before the standard `backdrop-filter` in CSS, Turbopack's CSS processing silently drops the standard `backdrop-filter` declaration. Every glass element renders with zero blur/saturate/brightness in Chrome and Firefox during development.
+Semi-transparent `backdrop-filter` cards place text over a dynamically shifting background. The contrast ratio between the text and the blurred background is not a fixed value — it changes depending on what content sits behind the card at that scroll position. A contrast-checker pass on a static mockup does not guarantee real-world compliance. Text that reads cleanly against a white hero background fails when the card scrolls over a dark image or gradient section.
 
 **Why it happens:**
-Turbopack's CSS parser (LightningCSS-based) mishandles the vendor-prefixed + unprefixed property pair ordering. It treats the `-webkit-` line as the canonical declaration and removes the unprefixed line as a "duplicate." This is the opposite of how browsers interpret cascade -- browsers use the LAST matching declaration.
+Designers measure contrast against the intended background colour. They do not account for the fact that the effective background of a glass card is the visual average of whatever pixels the blur kernel is averaging. When a colourful image or another card moves behind the glass, that average shifts unpredictably.
 
-**Consequences:**
-All 6 glass material classes in `liquid-glass.css` use the pattern `-webkit-backdrop-filter` (hardcoded fallback) followed by `-webkit-backdrop-filter` (var-based) followed by `backdrop-filter` (var-based). Turbopack will strip the third line, breaking glass in Chrome/Firefox during dev. Production builds (Webpack) may render correctly, creating a dev/prod visual mismatch that delays bug discovery.
+**How to avoid:**
+- Apply a solid minimum-opacity fill underneath glass text. Use `background: rgba(255,255,255,0.75)` (light mode) or `rgba(18,18,18,0.80)` (dark mode) as a floor — not a decorative translucency of 20-30%.
+- Test contrast using the *worst-case* background, not the design-intent background. Place the card over the darkest and lightest content it will ever scroll past.
+- Guarantee WCAG AA minimum 4.5:1 for body text, 3:1 for large text (18px+ bold or 24px+ regular). For 45+ audience targeting, aim for 7:1 (AAA) for body text.
+- Add a semi-opaque border (`border: 1px solid rgba(255,255,255,0.3)`) to visually separate the card from backgrounds — this is structural, not decorative.
+- If a section has a complex image background, do not apply glassmorphism to cards within it. Use solid or near-solid cards instead.
 
-**Detection:**
-Glass elements appear as plain semi-transparent boxes (no blur, no saturate) in Chrome during `next dev --turbo`. Safari may still work because it reads `-webkit-backdrop-filter`.
+**Warning signs:**
+- Card background opacity below 0.6 in any context
+- Contrast only checked against hero/default background, not all section contexts
+- Text contrast ratio passing in Figma but failing in browser against real content
 
-**Prevention:**
-1. **Reverse the declaration order** in all glass classes: place `backdrop-filter` BEFORE `-webkit-backdrop-filter`:
-   ```css
-   /* Standard first -- Turbopack keeps it */
-   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-   /* Safari fallback: hardcoded values, then var-based override */
-   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
-   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-   ```
-2. **Pin Next.js version** to a known-good release and test with Turbopack before upgrading. This is a confirmed open bug ([GitHub #78302](https://github.com/vercel/next.js/issues/78302), status: OPEN as of 2026-04-10).
-3. **Add a visual regression test** (Playwright screenshot comparison) that runs in both Turbopack dev and Webpack prod modes to catch glass rendering differences.
-
-**Affected files:** `src/styles/liquid-glass.css` lines 88-90, 121-122, 152-154, 200-202, 246-248, 319-321, 360-362, 473-476 (every `.liquid-*` class).
-
-**Phase:** Must be addressed in Phase 1 (CSS migration) before any glass component work begins.
-
-**Sources:**
-- [GitHub Issue #78302: CSS backdrop-filter property disappear in Next.js 15.3.0/15.3.1 dev mode with Turbopack](https://github.com/vercel/next.js/issues/78302)
+**Phase to address:**
+Phase delivering glassmorphism cards — before any section applies glass styling.
 
 ---
 
-### Pitfall 2: CSS Import Order Diverges Between Turbopack (dev) and Webpack (prod)
+### Pitfall 2: backdrop-filter Kills Performance on Mid-Range Android (Kazakhstan's Dominant Device)
 
 **What goes wrong:**
-Turbopack follows JavaScript import order to determine CSS concatenation order. Webpack sometimes ignores import order when it infers a module is side-effect-free. The current project imports CSS in a specific cascade: `fonts.css` -> `tailwindcss` -> `theme.css` -> `squircles.css` -> `liquid-glass.css`. If Webpack reorders these, glass token overrides in `theme.css` may load AFTER `liquid-glass.css`, or `squircles.css` mask overrides from `@supports (corner-shape: squircle)` may not cascade correctly.
+`backdrop-filter: blur()` requires the browser to create a separate compositing layer and apply a per-frame GPU blur operation. On mid-range and budget Android phones (Samsung Galaxy A-series, Xiaomi Redmi, which dominate 45+ users in Kazakhstan), this causes visible frame drops (below 30fps) during scroll when multiple glass elements are visible simultaneously. The page feels broken, not premium.
 
 **Why it happens:**
-Turbopack and Webpack use different heuristics for CSS ordering. Turbopack strictly follows JS import graph order. Webpack may reorder CSS from modules it considers side-effect-free (no explicit `sideEffects: true` in package.json or no export-only modules).
+`backdrop-filter` was Baseline-stable as of September 2024, meaning it works in all modern browsers — but "works" means renders correctly, not performs well. The blur radius and number of simultaneously composited elements is the bottleneck, not browser support. A single hero glass card with `blur(20px)` is fine. Five card grid with `blur(20px)` each causes simultaneous layer compositing that overwhelms the mobile GPU.
 
-**Consequences:**
-Glass tokens defined in `:root` (theme.css) may not be available when `liquid-glass.css` is parsed, causing fallback to browser defaults (transparent backgrounds, zero blur). Squircle `@supports` progressive enhancement block may be overridden by base styles if load order flips.
+**How to avoid:**
+- Limit `backdrop-filter` to one or two focal elements (hero card, single CTA panel). Do not apply it to a grid of 4-6 cards.
+- Use the minimum blur radius that achieves the visual effect: `blur(8px)` is usually sufficient; avoid `blur(20px)` or higher.
+- Apply `will-change: transform` only to elements that are actually animating — do NOT apply it globally or to all glass cards as a performance "fix" (this creates layers for every element, making the problem worse).
+- Provide `@supports` fallback: `@supports not (backdrop-filter: blur(1px)) { .glass-card { background: rgba(255,255,255,0.95); } }` — renders as a solid near-white card. Users on older devices get a clean, accessible fallback.
+- Test on a real mid-range Android device or Chrome DevTools with CPU throttling set to 4x slowdown, GPU rasterization enabled. Look for frame drops in DevTools Performance panel during scroll.
 
-**Detection:**
-- Glass cards appear transparent/broken in production but work in dev, or vice versa
-- `@supports (corner-shape: squircle)` styles don't apply even in Chrome 139+
-- Dark mode glass tokens show light-mode values
+**Warning signs:**
+- Glass applied to entire card grids (doctors, services, pricing)
+- `blur()` radius above 12px
+- No `@supports` fallback for non-supporting browsers
+- Testing only on MacBook or modern iPhone
 
-**Prevention:**
-1. Mark CSS files as having side effects in `package.json`:
-   ```json
-   {
-     "sideEffects": ["*.css"]
-   }
-   ```
-2. Use a single CSS entry point (`globals.css`) with explicit `@import` ordering instead of JS-level imports. In Next.js App Router, import ONLY `globals.css` from `app/layout.tsx`:
-   ```tsx
-   // app/layout.tsx
-   import '@/styles/globals.css'; // Single entry point
-   ```
-   Where `globals.css` contains the same `@import` chain as current `tailwind.css`:
-   ```css
-   @import './fonts.css';
-   @import 'tailwindcss' source(none);
-   @source '../app/**/*.{tsx,ts}';
-   @import './theme.css';
-   @import './squircles.css';
-   @import './liquid-glass.css';
-   ```
-3. **Never import CSS from individual component files** -- all glass/squircle/theme CSS must flow through the single entry point to guarantee order.
-4. Test production build (`next build && next start`) against dev (`next dev --turbo`) visually after every CSS structure change.
-
-**Phase:** Phase 1 (CSS migration). This is the very first thing to set up.
-
-**Sources:**
-- [GitHub Issue #79531: CSS import order differs between dev turbopack and prod webpack](https://github.com/vercel/next.js/issues/79531)
-- [GitHub Issue #79535: Missing CSS styles after upgrading from 15.2.x to 15.3.x](https://github.com/vercel/next.js/issues/79535)
+**Phase to address:**
+Phase delivering glassmorphism — define performance budget before implementation.
 
 ---
 
-### Pitfall 3: SVG Filter IDs Break When Multiple Instances Render on Same Page
+### Pitfall 3: Dark Mode Inverts Medical Trust Signals
 
 **What goes wrong:**
-The current `partials/svg-defs.html` defines three SVG filters (`liquid-refract-sm`, `liquid-refract-md`, `liquid-refract-lg`) that are referenced by CSS via `url(#liquid-refract-md)`. In React, if this SVG defs block is rendered by a component that mounts multiple times (e.g., in a shared layout + individual page), the DOM will contain duplicate `id` attributes. The browser resolves `url(#liquid-refract-md)` to the FIRST matching ID, which may be inside an unmounted or stale component tree.
+Dark backgrounds psychologically signal entertainment, gaming, or technology products. Medical and healthcare contexts rely heavily on white/light backgrounds as a signal of clinical cleanliness, trustworthiness, and sterility. Users (especially 45+, who associate white-background interfaces with official, credible services) experience a subconscious reduction in trust when visiting a medical site in dark mode for the first time. Additionally, dark mode can make the site look like it is "off" or in an error state to users unfamiliar with the convention.
 
 **Why it happens:**
-React renders components to a virtual DOM that maps to real DOM nodes. Unlike raw HTML where you control exactly one `<svg>` defs block, a React component containing the SVG defs can be instantiated multiple times if included in a shared layout component or rendered in both server and client passes.
+Dark mode is a highly visible 2025 trend. Developers add it because it is technically interesting and peer-reviewed as "modern." The audience-specific implication for medical services is not investigated. The site's main competitor (medicusunion.com) uses a light theme.
 
-**Consequences:**
-- Refraction filters reference stale or wrong SVG filter definitions
-- On route transitions (App Router soft navigation), the referenced filter ID may point to a removed DOM node, causing refraction to silently disappear
-- React strict mode (development) double-renders components, creating temporary duplicate IDs
+**How to avoid:**
+- Make light mode the default. Always. The site loads in light mode for all new visitors regardless of OS preference. This matches what a 45+ Kazakhstan user expects from a medical service.
+- Dark mode should be an opt-in toggle, not an OS-preference-driven automatic switch. Use `data-theme="dark"` on `<html>` controlled by JS, not `@media (prefers-color-scheme: dark)` as the primary mechanism.
+- Store the user choice in `localStorage`. On page load, read localStorage first; if absent, default to light. Never default to OS dark mode.
+- In dark mode, keep medical imagery, trust badges, and doctor photos visible with appropriate contrast — do not make them appear dim or inactive.
+- If dark mode is skipped entirely for v1.4, this is a defensible decision. Dark mode adds ~40-60 new CSS token pairs and doubles QA surface. For a conversion-focused medical landing, the ROI is unclear for a 45+ audience.
 
-**Detection:**
-Refraction effects work on initial load but break after client-side navigation, or work on some pages but not others.
+**Warning signs:**
+- `@media (prefers-color-scheme: dark)` used as the primary dark mode trigger without a localStorage override
+- Dark mode active by default on first visit
+- No audit of trust signals (testimonials, badges, logos) in dark mode context
+- Medical imagery looks desaturated or dim in dark theme
 
-**Prevention:**
-1. **Render SVG defs exactly once** in the root layout (`app/layout.tsx`), outside any component that re-renders:
-   ```tsx
-   // app/layout.tsx
-   export default function RootLayout({ children }) {
-     return (
-       <html>
-         <body>
-           <SvgDefs /> {/* Render ONCE at the root */}
-           {children}
-         </body>
-       </html>
-     );
-   }
-   ```
-2. **Use a dedicated `SvgDefs` component** with the SVG filter definitions written as JSX (not `dangerouslySetInnerHTML`). React's JSX natively supports SVG filter elements:
-   ```tsx
-   // components/svg-defs.tsx
-   export function SvgDefs() {
-     return (
-       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-         <defs>
-           <filter id="liquid-refract-sm" colorInterpolationFilters="sRGB">
-             <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves={1} seed={92} result="noise" />
-             <feGaussianBlur in="noise" stdDeviation={1} result="blurred" />
-             <feDisplacementMap in="SourceGraphic" in2="blurred" scale={0} xChannelSelector="R" yChannelSelector="G" />
-           </filter>
-           {/* ... md, lg filters ... */}
-         </defs>
-       </svg>
-     );
-   }
-   ```
-3. **Note the JSX attribute differences from HTML:**
-   - `color-interpolation-filters` becomes `colorInterpolationFilters`
-   - Numeric attributes (`numOctaves`, `seed`, `scale`, `stdDeviation`) can be passed as numbers: `numOctaves={1}`
-   - `baseFrequency`, `numOctaves`, `stdDeviation`, `xChannelSelector`, `yChannelSelector` are NOT camelCased -- they already use camelCase in the SVG spec and React passes them through as-is
-   - Do NOT use `dangerouslySetInnerHTML` for this -- JSX handles SVG filter elements natively
-
-**Phase:** Phase 2 (component extraction). Critical to get right before any glass component uses refraction.
-
-**Sources:**
-- [React DOM Components: SVG support](https://react.dev/reference/react-dom/components)
-- Current codebase: `partials/svg-defs.html`
+**Phase to address:**
+Phase delivering dark mode — establish default-light policy in the CSS token architecture before writing a single dark token.
 
 ---
 
-### Pitfall 4: Dark Mode FOUC -- localStorage Unreadable on Server, Cookies Force Dynamic Rendering
+### Pitfall 4: Dark Mode Fails WCAG Contrast — Especially for Secondary Text
 
 **What goes wrong:**
-The current codebase uses `localStorage` to persist theme preference and a `[data-theme="dark"]` attribute selector. In Next.js with SSR/SSG, `localStorage` is unavailable on the server. The server renders light mode HTML. When JS hydrates on the client, it reads `localStorage`, discovers dark mode, and switches -- causing a visible flash of light-to-dark (FOUC). The current system uses `@custom-variant dark (&:is(.dark *))` in Tailwind, meaning the `.dark` class on an ancestor drives all dark styles.
+Light mode WCAG contrast is checked at launch. Dark mode is added as an afterthought with approximate colour substitutions. Secondary text (descriptions, disclaimers, form labels) that was borderline-acceptable at 4.6:1 in light mode is not re-checked in dark mode, and the dark equivalents fail at 3.2:1. Disabled state colours, placeholder text, and icon fills are particularly likely to fail. For 45+ users with common age-related contrast sensitivity reduction, this means sections of the page become literally unreadable in dark mode.
 
 **Why it happens:**
-Server Components and Static Generation both execute without `window` or `localStorage`. They can only read cookies (via `next/headers`). But using `cookies()` in a layout opts the ENTIRE route into dynamic rendering, disabling static generation and Partial Pre-Rendering for every page under that layout. For a landing page that should be statically generated for performance, this is a significant tradeoff.
+Dark mode colour tokens are derived by "inverting" or "darkening" the light palette without running each pair through a contrast checker. The assumption is that if light mode passes, dark mode will too. It does not — the mathematical relationship is non-linear.
 
-**Consequences:**
-- **Option A (localStorage only):** Every page load flashes light mode for 50-200ms before JS applies dark class. For CA 45+, this is jarring and feels broken.
-- **Option B (cookies in layout):** Zero FOUC, but the entire site becomes dynamically rendered. TTFB increases. No ISR/SSG benefits. CDN caching becomes complex.
-- **Option C (next-themes):** Injects a blocking `<script>` tag that reads localStorage before paint. Works, but adds a render-blocking script that Lighthouse flags, and does not work with streaming SSR.
+**How to avoid:**
+- Create a full colour token table for dark mode: for every light mode `color / background` pair, define and check the corresponding dark pair explicitly with a tool (contrast.tools, whocanuse.com, or browser DevTools accessibility panel).
+- Minimum targets: Body text 7:1 (AAA) for 45+ audience. Large text 4.5:1 (AA). Secondary/label text 4.5:1 minimum.
+- Placeholder text: WCAG requires 3:1, but 45+ users need 4.5:1 minimum. Do not use `rgba(255,255,255,0.4)` as placeholder in dark mode — it will fail.
+- Grey-on-dark patterns are the most common failure: `#888888` text on `#1a1a1a` background is only 3.6:1.
+- Lint CSS custom properties: define both `--color-text-secondary-light` and `--color-text-secondary-dark` explicitly, never `calc()` or percentage-lightness-shift a single variable.
 
-**Detection:**
-Flash of white background and light-colored text on page load for users who have dark mode enabled.
+**Warning signs:**
+- Dark mode colours derived by opacity or filter: invert() rather than explicit token pairs
+- Secondary/helper text not re-checked after dark mode implementation
+- Placeholder colour in dark mode below 4.5:1 contrast
+- No accessibility overlay or colour contrast audit run specifically on the dark mode state
 
-**Prevention:**
-Use the **middleware + cookie approach** (best balance for this project):
-1. **Theme toggle sets both localStorage AND a cookie:**
-   ```tsx
-   function setTheme(theme: 'light' | 'dark') {
-     document.documentElement.classList.toggle('dark', theme === 'dark');
-     localStorage.setItem('theme', theme);
-     document.cookie = `theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
-   }
-   ```
-2. **Middleware reads the cookie and sets a request header:**
-   ```tsx
-   // middleware.ts
-   import { NextResponse } from 'next/server';
-   import type { NextRequest } from 'next/server';
-   
-   export function middleware(request: NextRequest) {
-     const theme = request.cookies.get('theme')?.value || 'light';
-     const response = NextResponse.next();
-     response.headers.set('x-theme', theme);
-     return response;
-   }
-   ```
-3. **Root layout reads the header (NOT cookies()) to stay static:**
-   ```tsx
-   // app/layout.tsx
-   import { headers } from 'next/headers';
-   
-   export default async function RootLayout({ children }) {
-     const headersList = await headers();
-     const theme = headersList.get('x-theme') || 'light';
-     return (
-       <html className={theme === 'dark' ? 'dark' : ''}>
-         <body>{children}</body>
-       </html>
-     );
-   }
-   ```
-   **IMPORTANT:** Using `headers()` still opts into dynamic rendering. For a fully static approach with zero FOUC, consider the inline script approach from next-themes as a pragmatic compromise, since this is a landing page where SEO matters more than perfect streaming SSR.
-
-4. **Default to light mode** (current behavior, validated for CA 45+ who associate light with medical authority per PROJECT.md Key Decision).
-
-**Affected config:** `@custom-variant dark (&:is(.dark *))` in `theme.css` must become `@custom-variant dark (&:is(.dark *))` (already compatible) or use Tailwind's `darkMode: 'selector'` if using Tailwind config file.
-
-**Phase:** Phase 1 (project scaffolding). Theme infrastructure must be in place before any component renders dark-mode-aware glass tokens.
-
-**Sources:**
-- [Next.js Discussion #53063: Implementing light/dark mode with app router + RSC](https://github.com/vercel/next.js/discussions/53063)
-- [Fixing Dark Mode Flickering (FOUC) in React and Next.js](https://notanumber.in/blog/fixing-react-dark-mode-flickering)
-- [next-themes GitHub](https://github.com/pacocoursey/next-themes)
-- Current codebase: `theme.css` line 1: `@custom-variant dark (&:is(.dark *))`
+**Phase to address:**
+Phase delivering dark mode token system — run contrast audit before theming any component.
 
 ---
 
-### Pitfall 5: Framer Motion Adds 34KB to Client Bundle -- Breaks Lightweight Landing Page Goal
+### Pitfall 5: Display Typography at 72px+ Triggers Line Length and Reflow Problems on Mobile
 
 **What goes wrong:**
-The current landing page is ~64KB total (HTML + CSS + JS). Importing `motion` from `framer-motion` (now `motion` package) adds a minimum of 34KB gzipped to the client JavaScript bundle. With the "use client" directive required for every component using motion, entire component subtrees get excluded from Server Component benefits, inflating the JS sent to the client.
+Bold display typography looks powerful in desktop mockups at 72-96px. On a 390px wide mobile screen, a 72px headline is three or four words wide, forcing single-word lines, breaking Russian hyphenation rules, and creating visual clutter. Cyrillic characters at very large sizes also expose font metric differences — Inter and Manrope's Cyrillic glyphs are tighter than their Latin equivalents, causing inconsistent optical weight across headline words that mix Latin (MedicusUnion brand name) and Cyrillic.
 
 **Why it happens:**
-Framer Motion's declarative API (`animate`, `variants`, `layout`, `drag`, `whileHover`, `whileTap`) is not tree-shakeable because the props-driven design means the bundler cannot statically analyze which features are used. The `motion.div` component includes the full animation engine regardless of which props you pass.
+Display typography is designed at 1440px desktop width. The typographic scale is not adjusted for mobile breakpoints. Responsive font sizing using `clamp()` is applied as a single rule without checking how each specific headline breaks at narrowest viewport.
 
-**Consequences:**
-- Bundle size balloons from ~64KB total to 100KB+ for JS alone
-- Every component using `motion.*` must be a Client Component (`"use client"`)
-- Client Components cannot use `async/await`, `cookies()`, `headers()`, or other server-only APIs
-- The "use client" boundary propagates: a parent using `motion.div` forces all children to be client components too
-- For CA 45+ on budget Android devices common in KZ market, the extra JS parsing time is significant
+**How to avoid:**
+- Use `clamp()` with verified min/max values per heading level tested at 320px, 390px, and 768px. Example: `font-size: clamp(2rem, 8vw, 4.5rem)` — verify all three anchor points manually.
+- Check every Russian headline at narrowest viewport for orphaned single words (a word alone on the last line). Adjust max-width or use `text-wrap: balance` (Baseline 2023, supported in all modern browsers) to prevent this.
+- Keep body-level Russian text at 18-20px. Do not apply display scaling to any text that needs to be read in full — only to decorative headlines (hero tagline, section openers).
+- For 45+ users: large type helps comprehension only when it does not break lines unexpectedly. A 45+ user reading a three-word fragment is not helped by large type — they are confused by the broken sentence.
+- Use `letter-spacing: -0.02em` only on Latin headlines. Cyrillic at large sizes does not need tracking adjustment and can look awkward with tighter tracking.
 
-**Detection:**
-Run `npx @next/bundle-analyzer` and check the client bundle. Any chunk containing `framer-motion` or `motion` will be 30KB+.
+**Warning signs:**
+- Headlines tested only at 1440px during design
+- Single Russian words appearing on their own line at 390px width
+- Same `clamp()` values used across all heading levels without mobile review
+- `font-size` above 4rem on mobile (`min` value in clamp above 3.5rem at 320px)
 
-**Prevention:**
-1. **Use `LazyMotion` + `m` component** to reduce initial bundle to ~5KB:
-   ```tsx
-   // app/providers.tsx
-   'use client';
-   import { LazyMotion, domAnimation } from 'framer-motion';
-   
-   export function AnimationProvider({ children }: { children: React.ReactNode }) {
-     return <LazyMotion features={domAnimation}>{children}</LazyMotion>;
-   }
-   ```
-   Then use `m.div` instead of `motion.div` in all components:
-   ```tsx
-   import { m } from 'framer-motion';
-   // NOT: import { motion } from 'framer-motion';
-   ```
-2. **CRITICAL: Never render `motion.*` inside `LazyMotion`** -- this breaks tree shaking. Always use `m.*` when LazyMotion is the provider.
-3. **Prefer CSS animations for simple effects.** The current codebase already has:
-   - Shimmer sweep (`@keyframes glint` in liquid-glass.css) -- keep as CSS
-   - Scroll-reveal (`translateY(20px)/0.4s`) -- use `@starting-style` or Intersection Observer + CSS transitions instead of Framer Motion
-   - Button `:active scale(0.97)` -- pure CSS, no JS needed
-   - FAQ accordion -- CSS `max-height` transition, no Framer Motion needed
-4. **Reserve Framer Motion for interactions that CSS cannot do:**
-   - Layout animations (`layoutId` for shared element transitions between routes)
-   - Gesture-driven animations (drag, pinch)
-   - Spring physics (if CSS `linear()` easing is insufficient)
-   - Exit animations (`AnimatePresence`)
-5. **Isolate motion components** at the leaf level, not the layout level:
-   ```tsx
-   // GOOD: Small client component island
-   // components/animated-card.tsx
-   'use client';
-   import { m } from 'framer-motion';
-   export function AnimatedCard({ children }) { /* ... */ }
-   
-   // BAD: Entire section is a client component
-   // components/services-section.tsx
-   'use client'; // Forces ALL children to be client-rendered
-   import { motion } from 'framer-motion';
-   ```
-
-**Phase:** Phase 3 (animation migration). Must audit every current animation and decide CSS vs Framer Motion before writing any animation code.
-
-**Sources:**
-- [Reduce bundle size of Framer Motion](https://motion.dev/docs/react-reduce-bundle-size)
-- [Framer Motion: Complete React & Next.js Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers)
-- Current codebase: PROJECT.md states total size is ~64KB
+**Phase to address:**
+Phase delivering typography system — review every headline variant at 320px and 390px before wider integration.
 
 ---
 
-## Moderate Pitfalls
-
-Issues that cause significant debugging time or visual regressions but are recoverable without architectural rework.
-
----
-
-### Pitfall 6: Squircle mask-image SVG Data URIs Cause Hydration Warnings
+### Pitfall 6: Bold Typography Drops Below WCAG Contrast for Thin-Weight Numerals and Light Text Variants
 
 **What goes wrong:**
-The current squircle system uses CSS custom properties containing inline SVG data URIs (e.g., `--squircle-mask-md: url("data:image/svg+xml,<svg ...>")`). These long data URIs contain characters that React's HTML serializer and the browser may encode differently during SSR vs client hydration. Specifically, the `<`, `>`, and `'` characters in the SVG data URI may be entity-encoded differently by the server (Node.js) and the browser's HTML parser, causing React to log hydration mismatch warnings.
+The design uses a bold/light typographic contrast system: a 700-weight hero headline paired with 300-weight supporting descriptor text. The 300-weight text at any colour has lower effective contrast because thin strokes are perceived with less contrast than the same colour in 400-weight. For 45+ users, this creates readability failures even when the colour technically passes WCAG contrast ratios. WCAG 2.1 defines "large text" as 18pt (24px) or 14pt (18.67px) bold — 300-weight text at any size is treated as normal text and requires 4.5:1.
 
 **Why it happens:**
-React 18+ performs strict hydration checking. When the server renders a `style` attribute or CSS custom property containing `url("data:image/svg+xml,<svg ...")`, Node.js's HTML serializer may encode angle brackets as `&lt;`/`&gt;`. The browser then decodes these during parsing, producing different innerHTML than what React expects during hydration comparison.
+Typography systems use font-weight as a hierarchy signal. Designers do not recalculate contrast ratios when changing weight — they assume the colour passes at all weights. Thin-weight Cyrillic numerals (like the "450€" price display) are common failure points.
 
-**Consequences:**
-- Console floods with hydration mismatch warnings in development
-- React may discard server-rendered markup and re-render client-side (performance hit)
-- In React 19 (used by Next.js 15), hydration errors are more prominent and visible
+**How to avoid:**
+- Do not use font-weight below 400 for any text that conveys information. Use 400 as the minimum for body/descriptor text.
+- For light-mode supporting text, ensure the colour passes 4.5:1 against its background regardless of weight.
+- The pricing display (`от 450 EUR`) is the highest-stakes text on the page after the CTA button. Check its contrast at every weight used. If displayed in a glass card, check against worst-case background.
+- If font-weight 300 is used purely decoratively (e.g., a large transparent watermark numeral), it must not convey required information.
 
-**Detection:**
-Console warnings: "Text content did not match" or "Hydration failed because the initial UI does not match what was rendered on the server."
+**Warning signs:**
+- Font-weight 300 used for any text containing price, specialisation, or call-to-action information
+- Light descriptor text below `#767676` on white (fails 4.5:1)
+- Pricing or statistics displayed in thin weight without contrast check
 
-**Prevention:**
-1. **Keep squircle masks in CSS files, NOT in JSX inline styles.** The current approach of defining `--squircle-mask-*` in `theme.css` via `@theme inline` and consuming via `.squircle-*` utility classes in `squircles.css` is already correct. Do NOT move these to React inline styles.
-2. **If using `@squircle-js/react`** (as mentioned in PROJECT.md target features): this library uses JavaScript to compute mask paths at runtime. It provides a `SquircleNoScript` component for SSR fallback. Wrap squircle components with `suppressHydrationWarning` if client-computed paths differ from server fallback:
-   ```tsx
-   <div suppressHydrationWarning className="squircle-wrapper">
-     <Squircle cornerRadius={24} cornerSmoothing={0.6}>
-       {children}
-     </Squircle>
-   </div>
-   ```
-3. **Recommended approach for this project:** Keep the current CSS-only squircle system (`mask-image` + `@supports (corner-shape: squircle)` PE) rather than adding `@squircle-js/react`. The CSS approach has zero hydration risk, zero JS cost, and already works across the three-tier degradation path. The React library adds JS dependency for something CSS handles.
-
-**Phase:** Phase 2 (component extraction). Decision needed: CSS squircles (keep) vs @squircle-js/react (adds complexity).
-
-**Sources:**
-- [Next.js: Text content does not match server-rendered HTML](https://nextjs.org/docs/messages/react-hydration-error)
-- Current codebase: `theme.css` lines 93-96, `squircles.css` lines 56-148
+**Phase to address:**
+Phase delivering typography system — establish weight-to-contrast policy as part of token definition.
 
 ---
 
-### Pitfall 7: Docker Standalone Output Missing Static Assets and Sharp Binary
+### Pitfall 7: Micro-Animations Trigger Vestibular Disorders Without prefers-reduced-motion Guard
 
 **What goes wrong:**
-Two compounding issues with `output: 'standalone'` in Next.js Docker deployments:
-
-**Issue A:** The standalone output does NOT copy the `public/` folder or `.next/static/` folder. If you only copy `.next/standalone/` into your Docker image, all static assets (images, fonts, favicons) return 404 in production.
-
-**Issue B:** The `sharp` package (required for `next/image` optimization) is not included in standalone output by default. If you use `<Image>` components (which you should for WebP/AVIF conversion), the image optimization endpoint crashes with "sharp is required to be installed in standalone mode."
-
-**Issue C:** Sharp's native binaries are platform-specific. If you build on macOS (arm64) and deploy to Linux Docker (x64), the sharp binary is for the wrong platform.
+Scroll-driven animations (elements flying in from the sides), parallax-like effects, and continuous hover micro-animations all qualify as motion that can trigger nausea, dizziness, and vertigo in users with vestibular disorders. The WCAG 2.1 Success Criterion 2.3.3 (Animation from Interactions, Level AAA) requires providing an option to disable such motion. For a 45+ audience, the prevalence of balance disorders increases significantly with age — approximately 35% of adults over 40 experience some degree of vestibular dysfunction.
 
 **Why it happens:**
-Standalone mode is designed for minimal deployment footprint. It intentionally excludes static files (expected to be served by CDN/Nginx) and optional native dependencies. This is documented but consistently missed in Docker configurations.
+Micro-animations are added to individual components without a global motion policy. The `prefers-reduced-motion` media query is either not implemented or applied only to a subset of animations. Scroll-driven animations using IntersectionObserver or CSS `animation-timeline` often have no reduced-motion variant because the developer thinks only "bouncing" animations are the problem. Any translating, scaling, or repositioning animation counts.
 
-**Consequences:**
-- All self-hosted Inter/Manrope fonts return 404 (currently in `fonts/` directory)
-- Hero illustrations and SVG icons don't load
-- `next/image` optimization fails, serving unoptimized images or crashing
-- Production deploy appears to work (server starts) but pages are visually broken
+**How to avoid:**
+- Establish a single global CSS rule at the top of the animation stylesheet: `@media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }`. This is the nuclear option — all animation is neutralised for users who request it.
+- For scroll-reveal animations (the existing IntersectionObserver pattern): in the reduced-motion branch, set elements to visible immediately without the translate/opacity animation. The content appears, just without motion.
+- CSS scroll-driven animations (`animation-timeline: scroll()`) are not yet Baseline stable as of early 2026 — Firefox support is incomplete. Do not use them as primary animation mechanism. The existing IntersectionObserver pattern is more reliable and controllable.
+- Replace translate-based entrances with opacity-only fades for micro-animations. An opacity fade from 0 to 1 is classified as non-vestibular motion and is acceptable even without reduced-motion guard (though still guard it).
+- Button hover micro-animations: `transform: translateY(-2px)` is acceptable and the current pattern. Do not increase this or add simultaneous scale. `transform: scale(1.05)` on hover is a vestibular risk.
 
-**Detection:**
-- 404 errors in browser DevTools for font files, images, and static JS chunks
-- Console error: "sharp is required to be installed in standalone mode"
-- Pages load with system fonts instead of Inter/Manrope
+**Warning signs:**
+- No `@media (prefers-reduced-motion)` block in CSS
+- IntersectionObserver animations do not check `window.matchMedia('(prefers-reduced-motion: reduce)').matches` before applying motion classes
+- Any animation using `transform: scale()`, `perspective()`, `rotate()`, or translate values above 10px
+- Continuous animations (pulsing, rotating loading indicators) without a stop condition
 
-**Prevention:**
-1. **Dockerfile must explicitly copy static assets:**
-   ```dockerfile
-   FROM node:20-slim AS runner
-   WORKDIR /app
-   
-   COPY --from=builder /app/.next/standalone ./
-   COPY --from=builder /app/.next/static ./.next/static
-   COPY --from=builder /app/public ./public
-   
-   # NOT Alpine! Sharp has issues with Alpine musl libc
-   ENV NODE_ENV=production
-   ENV PORT=3000
-   ENV HOSTNAME="0.0.0.0"
-   
-   EXPOSE 3000
-   CMD ["node", "server.js"]
-   ```
-2. **Install sharp explicitly and configure file tracing:**
-   ```bash
-   npm install sharp
-   ```
-   In `next.config.ts`:
-   ```ts
-   const nextConfig = {
-     output: 'standalone',
-     experimental: {
-       outputFileTracingIncludes: {
-         '/*': ['./node_modules/sharp/**/*', './node_modules/@img/**/*'],
-       },
-     },
-   };
-   ```
-3. **Use `node:20-slim` (Debian), NOT `node:20-alpine`** -- Sharp's native binaries have known compatibility issues with Alpine's musl libc.
-4. **Build inside Docker** (multi-stage) to ensure sharp compiles for the target architecture:
-   ```dockerfile
-   FROM node:20-slim AS builder
-   WORKDIR /app
-   COPY package*.json ./
-   RUN npm ci
-   COPY . .
-   RUN npm run build
-   ```
-
-**Phase:** Phase 5 (Docker/deployment). Should be set up early as a deployment skeleton.
-
-**Sources:**
-- [Next.js: output standalone docs](https://nextjs.org/docs/pages/api-reference/config/next-config-js/output)
-- [Next.js: Sharp Missing In Production](https://nextjs.org/docs/messages/sharp-missing-in-production)
-- [Next.js 15 Standalone Mode & Docker Optimization](https://javascript.plainenglish.io/next-js-15-self-hosting-with-docker-complete-guide-0826e15236da)
+**Phase to address:**
+Phase delivering micro-animations — the reduced-motion guard must be the first rule written, before any animation is added.
 
 ---
 
-### Pitfall 8: next/font/local Configuration Does Not Accept System Font local() Sources
+### Pitfall 8: Micro-Animations Increase Cognitive Load and Reduce Trust on Medical Pages
 
 **What goes wrong:**
-The current project uses `local()` sources in `@font-face` to reference system-installed SF Pro Display and SF Pro Rounded (Apple system fonts). `next/font/local` requires actual font files (`.woff2`, `.ttf`, `.otf`) in the project -- it cannot reference system-installed fonts via `local()` source descriptors. Attempting to use `next/font/local` without providing font files will fail at build time.
+Every animation on a page is a distraction event that consumes cognitive bandwidth. For 45+ users, who are already processing unfamiliar medical terminology and making high-stakes decisions about their health, unnecessary motion pulls attention away from the content they need to evaluate. On a medical landing page specifically, a playful or exuberant animation style (bouncing cards, celebratory micro-interactions, particle effects) triggers dissonance — the tone says "fun tech product" while the content says "serious medical consultation at 450 EUR." This dissonance reduces trust and increases abandonment.
 
 **Why it happens:**
-`next/font/local` optimizes font delivery by hashing, subsetting, and preloading font files. It needs actual binary font files to process. The current `fonts.css` only uses `local('SF Pro Display')` which tells the browser "use the system font if installed, otherwise skip." This is a fundamentally different approach.
+Micro-animations are added to improve "delight" and "engagement." These are valid goals for consumer apps. For medical services targeting older users making costly, high-stakes decisions, the calculus is different. No research supports the idea that scroll-in animations increase medical consultation conversion.
 
-**Consequences:**
-- Build error: `next/font/local` cannot find font file
-- If bypassed by keeping raw `@font-face` in CSS, you lose `next/font`'s automatic font-display optimization, CSS variable injection, and preload hints
-- Users without Apple devices (most of the KZ market, which is Android-dominated) see fallback system fonts with no custom font at all
+**How to avoid:**
+- Restrict animations to functional purpose only: form feedback (submission spinner, success state fade), accordion expand/collapse, dark mode theme transition.
+- Scroll-reveal animations (existing pattern) are acceptable at low intensity — opacity + 8px translateY over 400ms. They signal "this content is important and just appeared." Do not add stagger delays above 100ms between sibling elements or the page feels slow.
+- Prohibit: parallax, floating/pulsing elements, animated counters on statistics (common on medical pages, but disorienting for older users), animated SVG illustrations.
+- The theme transition animation (light→dark) must be short: 200-300ms. Do not use a "cinema" fade or sweeping wipe — it reads as the page malfunctioning.
+- Keep the total animation budget: maximum 4-5 distinct animation types on the entire page. Each type should serve a clear UX function.
 
-**Detection:**
-Build-time error from `next/font/local`, or visual inspection showing system sans-serif instead of branded font on non-Apple devices.
+**Warning signs:**
+- Animated counters on the "social proof" statistics section
+- Stagger delay above 100ms applied to card grids
+- Any looping or continuous animation visible in the viewport at rest
+- Theme switch animation above 400ms duration
 
-**Prevention:**
-1. **Decision required: keep SF Pro as system-font-only, or bundle actual WOFF2 files?**
-   - SF Pro is Apple-proprietary. You CANNOT legally bundle SF Pro WOFF2 files for web distribution unless serving to Apple devices only.
-   - PROJECT.md history shows Inter + Manrope were the original brand fonts. SF Pro was introduced later.
-2. **Recommended approach: revert to Inter + Manrope with `next/font/google` or `next/font/local`:**
-   ```tsx
-   // app/layout.tsx
-   import { Inter, Manrope } from 'next/font/google';
-   
-   const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-body' });
-   const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-heading' });
-   
-   export default function RootLayout({ children }) {
-     return (
-       <html className={`${inter.variable} ${manrope.variable}`}>
-         <body>{children}</body>
-       </html>
-     );
-   }
-   ```
-   Or for self-hosted (recommended for data sovereignty compliance per PROJECT.md):
-   ```tsx
-   import localFont from 'next/font/local';
-   
-   const inter = localFont({
-     src: './fonts/Inter-Variable.woff2',
-     variable: '--font-body',
-     display: 'swap',
-   });
-   ```
-3. **Include `cyrillic` subset** -- the site is Russian-only. Missing Cyrillic subset means Cyrillic characters fall back to system font.
-4. **Update CSS tokens:** Replace `--font-family-body: 'SF Pro Display'` with `--font-family-body: var(--font-body)` to consume the CSS variable injected by `next/font`.
-
-**Phase:** Phase 1 (project scaffolding). Fonts must be configured before any component work.
-
-**Sources:**
-- [Next.js Font Optimization docs](https://nextjs.org/docs/app/getting-started/fonts)
-- [Fonts in Next.js (2026): next/font patterns, performance, and production pitfalls](https://thelinuxcode.com/fonts-in-nextjs-2026-nextfont-patterns-performance-and-production-pitfalls/)
-- Current codebase: `src/styles/fonts.css`
+**Phase to address:**
+Phase delivering micro-animations — define the animation catalogue (what will animate and why) before writing a single `@keyframes`.
 
 ---
 
-### Pitfall 9: Server Actions Form Validation Loses Progressive Enhancement Without Careful Architecture
+### Pitfall 9: Dark Mode Toggle is Invisible or Inaccessible to 45+ Users
 
 **What goes wrong:**
-The current form uses vanilla JS `fetch()` with client-side honeypot + timing-based spam protection. When migrating to Server Actions, developers commonly wire up the form with `useActionState` + Zod validation and assume progressive enhancement "just works." But several patterns break progressive enhancement (form works without JS):
-
-1. Using `onClick` handlers instead of `action` prop on `<form>`
-2. Using `event.preventDefault()` anywhere in the submit chain
-3. Relying on client-side state for form field values (controlled inputs)
-4. Not providing a `name` attribute on form fields (Server Actions read FormData)
+The dark mode toggle is implemented as a small sun/moon icon button in the navigation, styled to be visually subtle (to avoid "cluttering the nav"). For 45+ users with reduced visual acuity, a 24x24px icon button with no visible label is not discoverable. Users do not find it, do not know it exists, and if they accidentally trigger it, do not know how to undo it — the page appears "broken."
 
 **Why it happens:**
-React 19's Server Actions are progressively enhanced by default ONLY when used correctly: `<form action={serverAction}>`. Any deviation (like wrapping in `useTransition` with manual `event.preventDefault()`, or using a submit button with an `onClick`) breaks the native form POST fallback.
+Dark mode toggles are designed by developers who know they exist. The toggle is treated as a power-user feature and styled minimally. There is no user testing with 45+ users who have never encountered a theme toggle before.
 
-**Consequences:**
-- Form appears to work during development (JS always loaded) but fails in production when:
-  - JS bundle hasn't loaded yet (user clicks submit during hydration)
-  - JS fails to load (network error, ad blocker)
-  - User has JS disabled
-- Honeypot spam protection (hidden field) still works with Server Actions
-- Timing-based spam protection (client-side timestamp) breaks without JS -- needs server-side alternative
+**How to avoid:**
+- The toggle must be minimum 44x44px tap target (WCAG 2.5.5), preferably 48x48px.
+- Include a visible text label alongside the icon, at least on mobile: "Тёмная тема" or simply display the current state label: "Светлая / Тёмная". The icon alone is insufficient for this audience.
+- The toggle state must be clearly visible — the current mode is communicated by icon + colour change, not icon position alone (switches are less intuitive than labelled buttons for older users).
+- On first-time dark mode activation, show a brief toast or text feedback: "Тёмный режим включён" — confirms the action was intentional.
+- Do not animate the toggle icon itself (rotating sun, morphing moon) — this is cognitive noise. A simple colour or label change is sufficient.
+- Consider whether the 45+ Kazakhstan user actually benefits from dark mode. If not, defer the feature to v1.5 and focus the phase budget on typography and glass quality.
 
-**Detection:**
-Disable JavaScript in browser DevTools and attempt to submit the form. If nothing happens, progressive enhancement is broken.
+**Warning signs:**
+- Toggle smaller than 44x44px
+- Icon-only toggle with no text label
+- No visible state indication of current theme
+- Toggle placed in a position that overlaps with nav links on mobile
 
-**Prevention:**
-1. **Use the `action` prop pattern, not `onSubmit`:**
-   ```tsx
-   // GOOD: Progressive enhancement works
-   <form action={submitConsultation}>
-     <input name="name" required />
-     <input name="phone" required type="tel" />
-     <select name="specialization" required>{/* options */}</select>
-     <textarea name="description" />
-     <input type="hidden" name="honeypot" value="" />
-     <button type="submit">Submit</button>
-   </form>
-   ```
-2. **Validate with Zod on the server AND use HTML validation attributes on the client:**
-   ```tsx
-   // actions/submit-consultation.ts
-   'use server';
-   import { z } from 'zod';
-   
-   const schema = z.object({
-     name: z.string().min(2),
-     phone: z.string().regex(/^\+7\d{10}$/),
-     specialization: z.enum(['oncology', 'cardiology', ...]),
-     description: z.string().optional(),
-     honeypot: z.literal(''), // Must be empty
-   });
-   ```
-3. **Replace timing-based spam protection** with a server-side approach:
-   - Include a hidden timestamp field set by JS on page load
-   - Server Action checks: if timestamp is missing (no JS), allow submission but flag for manual review
-   - If timestamp is present, check minimum elapsed time (e.g., >3 seconds)
-4. **Use `useActionState` for pending state display** (shows loading indicator WITH JS, degrades gracefully WITHOUT JS):
-   ```tsx
-   'use client';
-   import { useActionState } from 'react';
-   
-   function ConsultationForm() {
-     const [state, formAction, isPending] = useActionState(submitConsultation, initialState);
-     return (
-       <form action={formAction}>
-         {/* fields */}
-         <button type="submit" disabled={isPending}>
-           {isPending ? 'Sending...' : 'Submit'}
-         </button>
-       </form>
-     );
-   }
-   ```
-
-**Phase:** Phase 4 (form migration). High-impact for conversion -- must be tested with JS disabled.
-
-**Sources:**
-- [Next.js: How to create forms with Server Actions](https://nextjs.org/docs/app/guides/forms)
-- [Mastering forms in Next.js 15 and React 19](https://engineering.udacity.com/mastering-forms-in-next-js-15-and-react-19-e3d2d783946b)
-- Current codebase: PROJECT.md constraint -- form is the primary conversion mechanism
+**Phase to address:**
+Phase delivering dark mode toggle UI — defined as part of the navigation component work.
 
 ---
 
-### Pitfall 10: PostgreSQL Connection Exhaustion in Serverless-Style API Routes
+### Pitfall 10: Full Visual Redesign Breaks Existing Working CSS Without Regression Testing
 
 **What goes wrong:**
-Next.js API routes (and Server Actions) run in a serverless-like model even in self-hosted mode: each request may spawn a new handler. Without connection pooling, each API route invocation opens a new PostgreSQL connection. Under moderate traffic (e.g., multiple concurrent form submissions), PostgreSQL hits its `max_connections` limit (default: 100) and begins rejecting connections.
+The v1.4 redesign adds new CSS token layers (dark mode tokens, glass tokens, animation tokens) on top of the existing v1.3 CSS architecture (~1,640 lines). CSS specificity conflicts, cascade ordering issues, and token name collisions silently break existing components — form validation states lose their colours, the sticky mobile bar overlaps incorrectly, wave dividers misalign, or FAQ accordion animation conflicts with the new animation system. These breakages often appear only on specific mobile viewpoints or in specific scroll states, making them easy to miss in a desktop review.
 
 **Why it happens:**
-The current Directus-based setup handles connection pooling internally. When replacing Directus with direct PostgreSQL access via `pg` or Prisma, connection management becomes the application's responsibility. Next.js does not provide built-in connection pooling.
+New CSS is added incrementally. Each phase works in isolation. The cumulative effect of adding glass styles + dark mode overrides + animation classes is not tested holistically. Token names added in v1.4 can shadow v1.3 tokens if both define a `--color-primary` variant.
 
-**Consequences:**
-- Form submissions fail intermittently under load: "too many connections for role"
-- Connection exhaustion cascades: one failed connection attempt holds a slot, making subsequent attempts fail faster
-- PostgreSQL performance degrades even before hitting the hard limit (each idle connection consumes ~5-10MB RAM)
+**How to avoid:**
+- Before starting v1.4 implementation, establish a visual regression baseline: screenshot every section at 390px and 1440px. Compare after each phase.
+- Use a strict CSS token namespace for new v1.4 additions: `--glass-*`, `--dark-*`, `--anim-*`. Never override existing `--color-*` or `--spacing-*` tokens from v1.3.
+- The dark mode override block should be scoped exclusively to `[data-theme="dark"]` selector. It must never apply to elements outside this scope.
+- After every implementation phase, manually test: form submission flow (all states), FAQ accordion, sticky header on scroll, sticky mobile bar, wave dividers at section boundaries, CTA button states.
+- The 11-section structure is the conversion funnel. Any phase that breaks the form, the CTAs, or the trust sections has broken the product's core purpose — treat this as a blocker, not a cosmetic issue.
 
-**Detection:**
-PostgreSQL logs: `FATAL: too many connections for role "xxx"`. Intermittent 500 errors on form submission endpoint.
+**Warning signs:**
+- New CSS token names that overlap with existing `--color-primary`, `--color-cta`, `--gradient-cta`
+- No visual comparison run between v1.3 state and new state
+- CSS added with `!important` to override existing styles (means specificity war started)
+- No test of form submission after adding dark mode CSS
 
-**Prevention:**
-1. **Use a singleton connection pool pattern:**
-   ```tsx
-   // lib/db.ts
-   import { Pool } from 'pg';
-   
-   const globalForDb = globalThis as unknown as { pool: Pool };
-   
-   export const pool = globalForDb.pool ?? new Pool({
-     connectionString: process.env.DATABASE_URL,
-     max: 10, // Max pool size
-     idleTimeoutMillis: 30000,
-   });
-   
-   if (process.env.NODE_ENV !== 'production') {
-     globalForDb.pool = pool;
-   }
-   ```
-   The `globalThis` pattern prevents creating a new pool on every hot reload in development.
-
-2. **If using Prisma:**
-   ```tsx
-   // lib/prisma.ts
-   import { PrismaClient } from '@prisma/client';
-   
-   const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
-   
-   export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-   
-   if (process.env.NODE_ENV !== 'production') {
-     globalForPrisma.prisma = prisma;
-   }
-   ```
-
-3. **Add PgBouncer in Docker Compose** for production:
-   ```yaml
-   services:
-     pgbouncer:
-       image: edoburu/pgbouncer:latest
-       environment:
-         DATABASE_URL: postgres://user:pass@postgres:5432/medicus
-         POOL_MODE: transaction
-         MAX_CLIENT_CONN: 200
-         DEFAULT_POOL_SIZE: 20
-       ports:
-         - "6432:6432"
-   ```
-   Point the Next.js app at PgBouncer (port 6432) instead of PostgreSQL directly.
-
-4. **Do NOT use Edge Runtime** for database-connected routes. Edge Runtime cannot use `pg` native module or Prisma's query engine. Keep API routes on Node.js runtime:
-   ```tsx
-   // app/api/submissions/route.ts
-   export const runtime = 'nodejs'; // Explicit -- do NOT use 'edge'
-   ```
-
-**Phase:** Phase 4 (API routes / database). Must be configured before any database-connected endpoint goes live.
-
-**Sources:**
-- [PgBouncer: Database Connection Pooling](https://dev.to/whoffagents/pgbouncer-database-connection-pooling-that-actually-scales-4ek4)
-- [Scaling PostgreSQL with PgBouncer: Complete 2026 Guide](https://www.tamiltech.in/article/scaling-postgresql-connections-with-pgbouncer-the-complete-guide-for-2026)
+**Phase to address:**
+Every v1.4 phase — regression testing is a success criterion for each phase, not a final QA step.
 
 ---
 
-## Minor Pitfalls
+## Technical Debt Patterns
 
-Issues that cause confusion or wasted time but are quickly fixable.
-
----
-
-### Pitfall 11: Metadata Streaming Places OG Tags Outside `<head>` on Client Navigation
-
-**What goes wrong:**
-Next.js 15.1+ uses metadata streaming, which can cause `<meta>` tags (including Open Graph tags critical for social sharing) to render inside `<body>` instead of `<head>` during client-side navigation. Initial SSR renders metadata correctly in `<head>`, but after a soft navigation via `<Link>`, metadata may migrate.
-
-**Why it happens:**
-Streaming SSR sends the `<head>` content before the page component resolves. When `generateMetadata` is async (e.g., fetching data), the metadata may arrive after the `<head>` has already been flushed to the client. On client navigation, React reconciles metadata differently than on initial load.
-
-**Consequences:**
-- Social sharing previews (WhatsApp, Telegram -- primary sharing channels for KZ audience) may show incorrect or missing OG data if the share URL is a client-navigated page
-- SEO crawlers that execute JS may index metadata from the wrong location
-- Lighthouse SEO audit may flag missing meta tags
-
-**Prevention:**
-1. **Use static `metadata` export (not `generateMetadata`) for all pages** -- this landing site has no dynamic content that requires async metadata resolution:
-   ```tsx
-   // app/page.tsx
-   import type { Metadata } from 'next';
-   
-   export const metadata: Metadata = {
-     title: 'MedicusUnion KZ - Online Consultations with European Doctors',
-     description: 'Get a second opinion from doctors in Germany, Israel, Switzerland...',
-     openGraph: {
-       title: 'MedicusUnion KZ',
-       description: '...',
-       images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
-     },
-   };
-   ```
-2. **Do NOT use `generateMetadata` unless you genuinely need dynamic data** (e.g., CMS-driven page titles). For a static landing page, the static export is always correct.
-3. **Test social sharing** with the actual production URL using Facebook Sharing Debugger and Telegram's link preview by pasting the URL.
-
-**Phase:** Phase 1 (scaffolding). Set up correct metadata pattern from the start.
-
-**Sources:**
-- [The metadata streaming controversy in Next.js 15.1+](https://neuralcovenant.com/2025/06/the-metadata-streaming-controversy-in-next.js-15.1-/)
-- [Next.js: generateMetadata docs](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
+| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
+|----------|-------------------|----------------|-----------------|
+| Apply `backdrop-filter` to all card components in one global rule | Fast implementation | Performance failures on mid-range Android; impossible to tune per-section | Never — apply selectively, per context |
+| Use `@media (prefers-color-scheme: dark)` as the primary dark mode mechanism | No JS needed | Dark mode activates automatically, overriding the medical-trust default-light policy | Never for this project |
+| Copy dark mode palette from a design system example without contrast-checking each pair | Fast palette creation | Silently failing WCAG contrast for 45+ audience in dark state | Never |
+| Add `prefers-reduced-motion` only to the "obvious" animations (fly-in cards) | Appears compliant | Continuous animations, hover transforms, and theme transitions remain unguarded | Never — apply globally first, then refine |
+| Skip visual regression screenshots between phases | Saves time | CSS cascade errors accumulate silently until a hard-to-diagnose breakage | Never during a full visual redesign |
+| Use a 16px toggle icon for dark mode switch to "keep nav clean" | Cleaner nav visually | 45+ users cannot find or operate it; accessibility failure | Never — 44px minimum |
 
 ---
 
-### Pitfall 12: Tailwind v4 @theme inline Tokens May Not Survive Next.js PostCSS Pipeline Without Explicit Configuration
+## Performance Traps
 
-**What goes wrong:**
-The current project uses Tailwind v4's `@theme inline` directive in `theme.css` to register 60+ custom design tokens (colors, shadows, spacing, squircle masks). When migrating to Next.js, the PostCSS pipeline may process CSS differently than the current standalone Tailwind CLI build. If Tailwind v4 is not correctly configured as the PostCSS plugin, `@theme inline`, `@custom-variant`, and `@source` directives may be passed through as raw text (unprocessed), causing all utility classes to be missing.
-
-**Why it happens:**
-Next.js has its own PostCSS pipeline. Tailwind v4 can run as either a standalone CLI or a PostCSS plugin. If `postcss.config.js` is missing or misconfigured, Next.js uses its default PostCSS setup which does not include Tailwind v4. Unlike Tailwind v3 which required explicit `tailwindcss` in PostCSS config, Tailwind v4 auto-detects but only when properly installed.
-
-**Consequences:**
-- Zero Tailwind utility classes render -- all `bg-mu-green-50`, `text-mu-text-900`, etc. produce no CSS
-- Glass shadow tokens (`--shadow-glass-*`), squircle mask tokens (`--squircle-mask-*`), and spacing tokens don't exist
-- The page appears completely unstyled or only has base HTML styling
-
-**Detection:**
-- Page renders with default browser styles (Times New Roman, no colors, no spacing)
-- Browser DevTools shows no Tailwind-generated CSS rules
-- Build warnings about unrecognized CSS at-rules (`@theme`, `@custom-variant`, `@source`)
-
-**Prevention:**
-1. **Install Tailwind v4 as a PostCSS plugin for Next.js:**
-   ```bash
-   npm install tailwindcss@latest @tailwindcss/postcss
-   ```
-2. **Create `postcss.config.mjs`:**
-   ```js
-   export default {
-     plugins: {
-       '@tailwindcss/postcss': {},
-     },
-   };
-   ```
-3. **Update `@source` directive** in the CSS entry point to scan `.tsx` files instead of `.html`:
-   ```css
-   /* Current: */
-   @source '../../*.html';
-   /* Migration: */
-   @source '../app/**/*.{tsx,ts}';
-   @source '../components/**/*.{tsx,ts}';
-   ```
-4. **Verify by checking the rendered page** for any Tailwind utility class applying correctly (e.g., `bg-background` should produce a white background).
-
-**Phase:** Phase 1 (project scaffolding). This blocks everything -- no styling works without it.
-
-**Sources:**
-- [Tailwind CSS v4 docs: PostCSS plugin](https://tailwindcss.com/docs/installation/using-postcss)
-- Current codebase: `src/styles/tailwind.css`, `src/styles/theme.css`
+| Trap | Symptoms | Prevention | When It Breaks |
+|------|----------|------------|----------------|
+| Multiple simultaneous `backdrop-filter` elements in viewport | Frame drops to 20-25fps during scroll on mid-range Android | Limit glass elements to 1-2 in any single viewport; test on 4x CPU throttle | Budget Android devices (Samsung A-series) under sustained scroll |
+| CSS `animation-timeline: scroll()` without Firefox fallback | Animations absent for ~6% of desktop Firefox users; no error shown | Use IntersectionObserver as primary; scroll-driven CSS as progressive enhancement behind `@supports` | Firefox as of early 2026 |
+| Dark mode CSS loaded synchronously before render | Flash of light mode on first dark-mode-preference visit (FOUC) | Read `localStorage` in a `<script>` in `<head>` before `<body>` renders; apply `data-theme` attribute immediately | Every dark-mode user on first visit |
+| `will-change: transform` applied to all animated elements | Excessive GPU memory use; mobile browser crashes on low-RAM devices | Apply `will-change` only immediately before animation starts, remove after | Devices with 2GB RAM or less (budget Android) |
+| Theme transition `transition: all 0.5s` on `<html>` or `<body>` | Every CSS property on every element transitions during theme switch; jank | Scope transitions to specific properties: `color, background-color, border-color` only | Any device during theme switch |
 
 ---
 
-## Phase-Specific Warnings
+## UX Pitfalls
 
-| Phase | Likely Pitfall | Mitigation | Severity |
-|-------|---------------|------------|----------|
-| Phase 1: Scaffolding | Tailwind v4 @theme not processed (Pitfall 12) | Verify PostCSS config FIRST before any other work | BLOCKER |
-| Phase 1: Scaffolding | CSS import order diverges dev/prod (Pitfall 2) | Single CSS entry point, `sideEffects: ["*.css"]` | HIGH |
-| Phase 1: Scaffolding | Dark mode FOUC (Pitfall 4) | Middleware + cookie, or next-themes with inline script | HIGH |
-| Phase 1: Scaffolding | Font configuration failure (Pitfall 8) | next/font/local with actual WOFF2 files, not local() sources | HIGH |
-| Phase 1: Scaffolding | Metadata placement (Pitfall 11) | Static metadata export, not generateMetadata | MEDIUM |
-| Phase 2: Components | backdrop-filter stripped by Turbopack (Pitfall 1) | Reverse declaration order: standard before -webkit- | HIGH |
-| Phase 2: Components | SVG filter ID conflicts (Pitfall 3) | Single SvgDefs component in root layout | HIGH |
-| Phase 2: Components | Squircle hydration warnings (Pitfall 6) | Keep CSS-only squircles, avoid @squircle-js/react | MEDIUM |
-| Phase 3: Animations | Framer Motion bundle bloat (Pitfall 5) | LazyMotion + m components, CSS for simple animations | HIGH |
-| Phase 4: Forms/API | Form progressive enhancement broken (Pitfall 9) | form action={}, not onSubmit; test with JS disabled | HIGH |
-| Phase 4: Forms/API | PostgreSQL connection exhaustion (Pitfall 10) | Singleton pool + PgBouncer in Docker Compose | HIGH |
-| Phase 5: Deployment | Docker missing static assets / sharp (Pitfall 7) | Explicit COPY for public/ and .next/static/, install sharp, use node:20-slim | HIGH |
+| Pitfall | User Impact | Better Approach |
+|---------|-------------|-----------------|
+| Glass cards with colourful background images visible through blur | Text unreadable; image is distorted to "noise" with no information value | Use glass only over solid or near-solid colour backgrounds; avoid glass over photo sections |
+| Dark mode default with no visible toggle to return to light | 45+ user thinks page is broken, cannot recover, leaves | Default light, prominent toggle with text label, localStorage persistence |
+| Bold hero headline breaks into 1-word lines on mobile | Reads as broken sentence fragments; 45+ user re-reads multiple times | `text-wrap: balance` on headlines; test at 320px and 390px; adjust clamp min value |
+| Scroll-reveal animations delay content appearing (high stagger) | Users with reading disabilities or slow cognition miss content that has not animated in yet; feels slow | Stagger below 100ms; reduced-motion: content visible immediately |
+| Animated statistics counter (numbers rolling up) in social proof section | Distracting, potentially vestibular; delays trust signal perception for 45+ users who need to read static numbers | Display numbers statically; no animation on trust/social-proof data |
+| Dark mode desaturates the hero medical illustration | Illustration looks washed-out; medical credibility reduced | Either exclude the hero illustration from dark-mode colour treatment, or create a purpose-made dark-mode version |
 
 ---
 
-## Cross-Cutting Concerns
+## "Looks Done But Isn't" Checklist
 
-### Glass Effects Are the Highest-Risk Migration Area
+- [ ] **Glass contrast:** Text contrast checked against worst-case background (darkest content behind card), not design-intent background
+- [ ] **prefers-reduced-motion:** Global CSS rule present AND IntersectionObserver JS checks the media query before adding animation classes
+- [ ] **Dark mode default:** `localStorage` read in `<head>` script; page loads in correct theme without flash (test in Chrome Incognito with OS dark preference)
+- [ ] **Dark mode WCAG:** Every colour token pair (foreground/background) in dark mode passed through contrast checker — not just primary text
+- [ ] **Glass performance:** Tested with Chrome DevTools CPU 4x throttle during scroll; frame rate stays above 50fps
+- [ ] **Mobile typography:** Every headline reviewed at 390px viewport; no single-word orphaned lines in Russian
+- [ ] **Dark mode toggle:** Toggle tap target measured at 44px minimum in DevTools
+- [ ] **Existing functionality:** Form submission flow tested end-to-end after each visual change (submit → loading → success/error state)
+- [ ] **CSS token namespace:** No v1.4 token names collide with existing v1.3 token names — grep for duplicates
+- [ ] **Theme transition:** FOUC test — hard refresh in Chrome with OS dark mode; page should load in correct theme immediately
 
-The glass design system (`liquid-glass.css` at 568 lines, `squircles.css` at 148 lines, `theme.css` at 418 lines) represents the most fragile part of the migration. Three separate pitfalls (#1, #2, #6) directly affect glass rendering. The glass system relies on:
+---
 
-1. **CSS custom property cascade** (theme.css -> liquid-glass.css) -- broken by import order divergence
-2. **Vendor prefix ordering** (-webkit-backdrop-filter before backdrop-filter) -- broken by Turbopack
-3. **SVG data URI mask-image** -- potential hydration serialization differences
-4. **SVG filter ID references** -- broken by React component instantiation model
-5. **`::before`/`::after` pseudo-elements** for specular highlights, glint borders, fluted textures -- these render correctly in React but need explicit `content: ''` (CSS handles this, not JSX)
+## Recovery Strategies
 
-**Recommendation:** Migrate glass CSS files AS-IS (no rewrite to Tailwind utilities) and wrap in a visual regression test suite before touching any glass-related code. The glass CSS is 100% framework-agnostic -- it works identically whether consumed by HTML or React.
+| Pitfall | Recovery Cost | Recovery Steps |
+|---------|---------------|----------------|
+| Glass contrast failure discovered post-launch | LOW | Increase `background` opacity on glass element from 0.3 to 0.75; redeploy single CSS file |
+| Vestibular complaints / reduced-motion not implemented | LOW | Add global `prefers-reduced-motion` rule to top of animations CSS; redeploy |
+| Dark mode FOUC on first visit | LOW | Add `<script>` in `<head>` that reads localStorage and sets `data-theme` before body renders |
+| Glass performance janking on mobile | MEDIUM | Remove `backdrop-filter` from grid cards; apply only to hero/CTA panel; redeploy |
+| CSS token collision breaks existing components | MEDIUM | Namespace new tokens with v1.4 prefix; audit cascade order; test all 11 sections |
+| Dark mode default activating for 45+ users expecting light | LOW-MEDIUM | Remove `prefers-color-scheme` media query trigger; add localStorage-only control; redeploy |
+| Typography breakage on mobile (word orphans, overflow) | LOW | Adjust `clamp()` min value per heading level; add `text-wrap: balance`; test at 320px |
 
-### The "use client" Boundary Tax
+---
 
-Every component that uses Framer Motion, dark mode toggle, form state, or any browser API must be marked `"use client"`. This creates a "boundary tax" where Server Component benefits (zero JS shipped, direct database access, streaming) are lost for that subtree. For a landing page where the entire visible content is interactive (glass hover effects, scroll animations, accordion, form), the risk is that EVERYTHING becomes a Client Component, making the Next.js migration a net negative for performance.
+## Pitfall-to-Phase Mapping
 
-**Mitigation:** Design the component tree so that content-heavy sections (text, images, static glass cards) are Server Components, and only interactive leaves (animated cards, theme toggle, form) are Client Components. This requires explicit architectural planning BEFORE component extraction.
+| Pitfall | Prevention Phase | Verification |
+|---------|------------------|--------------|
+| Glass contrast failure | Phase: Glassmorphism implementation | Contrast checker on every glass element against darkest and lightest context background |
+| backdrop-filter performance on Android | Phase: Glassmorphism implementation | Chrome DevTools 4x CPU throttle scroll test; FPS stays above 50 |
+| Dark mode reduces medical trust | Phase: Dark mode architecture | Dark mode is opt-in; default is light; confirmed by loading page without localStorage entry |
+| Dark mode WCAG failures | Phase: Dark mode token system | Full token pair audit with contrast tool before any component receives dark tokens |
+| Mobile typography orphans | Phase: Bold typography system | Every heading reviewed at 320px, 390px viewports |
+| Light weight text contrast | Phase: Bold typography system | All text using font-weight < 400 checked against 4.5:1 minimum |
+| No prefers-reduced-motion guard | Phase: Micro-animations | Global CSS rule present; JS IntersectionObserver checks media query |
+| Animation cognitive overload | Phase: Micro-animations | Animation catalogue defined (max 4-5 types); no looping animations in viewport at rest |
+| Dark mode toggle inaccessible | Phase: Dark mode UI | Toggle measured at 44px minimum; has visible text label; tested by a non-developer |
+| CSS regression from layered changes | Every v1.4 phase | Screenshot comparison vs. v1.3 baseline; form submission flow tested after each phase |
 
 ---
 
 ## Sources
 
-- [GitHub Issue #78302: CSS backdrop-filter disappears in Next.js 15.3.0/15.3.1 with Turbopack](https://github.com/vercel/next.js/issues/78302) -- OPEN, confirmed by Turbopack team
-- [GitHub Issue #79531: CSS import order differs between dev turbopack and prod webpack](https://github.com/vercel/next.js/issues/79531) -- confirmed
-- [GitHub Issue #79535: Missing CSS styles after upgrading from 15.2.x to 15.3.x](https://github.com/vercel/next.js/issues/79535)
-- [GitHub PR #13997: Always generate -webkit-backdrop-filter property](https://github.com/tailwindlabs/tailwindcss/pull/13997) -- Tailwind v4 fix
-- [Motion.dev: Reduce bundle size](https://motion.dev/docs/react-reduce-bundle-size) -- official LazyMotion docs
-- [Next.js: Font Optimization](https://nextjs.org/docs/app/getting-started/fonts) -- next/font/local and next/font/google
-- [Next.js: Output Standalone](https://nextjs.org/docs/pages/api-reference/config/next-config-js/output) -- Docker standalone docs
-- [Next.js: Sharp Missing In Production](https://nextjs.org/docs/messages/sharp-missing-in-production)
-- [Next.js: Server Actions and Forms](https://nextjs.org/docs/app/guides/forms)
-- [Next.js: generateMetadata](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
-- [Next.js: Hydration Error Messages](https://nextjs.org/docs/messages/react-hydration-error)
-- [next-themes GitHub: Perfect Next.js dark mode](https://github.com/pacocoursey/next-themes)
-- [Next.js Discussion #53063: Dark mode with App Router + RSC](https://github.com/vercel/next.js/discussions/53063)
-- [Fixing Dark Mode Flickering (FOUC) in React and Next.js](https://notanumber.in/blog/fixing-react-dark-mode-flickering)
-- [Framer Motion: Complete React & Next.js Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers)
-- [Next.js 15 Standalone Mode & Docker Optimization](https://javascript.plainenglish.io/next-js-15-self-hosting-with-docker-complete-guide-0826e15236da)
-- [Fonts in Next.js (2026): next/font patterns and production pitfalls](https://thelinuxcode.com/fonts-in-nextjs-2026-nextfont-patterns-performance-and-production-pitfalls/)
-- [The metadata streaming controversy in Next.js 15.1+](https://neuralcovenant.com/2025/06/the-metadata-streaming-controversy-in-next.js-15.1-/)
+- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — vestibular disorders, animation categories, platform support (HIGH confidence)
+- [MDN: prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) — manual toggle pattern, localStorage approach, FOUC prevention (HIGH confidence)
+- [MDN: backdrop-filter — Baseline 2024](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) — support status, GPU compositing (HIGH confidence)
+- [MDN: CSS Scroll-Driven Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations) — draft spec, incomplete Firefox support as of early 2026 (HIGH confidence)
+- WCAG 2.1 SC 1.4.3 Contrast Minimum — 4.5:1 normal text, 3:1 large text (HIGH confidence — W3C specification)
+- WCAG 2.1 SC 2.3.3 Animation from Interactions (AAA) — vestibular motion guidelines (HIGH confidence — W3C specification)
+- WCAG 2.1 SC 2.5.5 Target Size — 44x44px minimum (HIGH confidence — W3C specification)
+- WCAG 2.2 SC 2.5.8 Target Size Minimum — 24px minimum, 44px recommended (HIGH confidence — W3C specification)
+- CSS `text-wrap: balance` — Baseline 2023, all modern browsers (HIGH confidence)
+- Manrope/Inter Cyrillic optical characteristics — based on rendered behaviour in existing v1.3 codebase (MEDIUM confidence)
+- 45+ vestibular disorder prevalence (~35% of adults over 40) — established audiological/neurological research consensus (MEDIUM confidence)
+- Medical trust and background colour — UX research consensus on professional/clinical colour associations (MEDIUM confidence; no single authoritative source)
+
+---
+*Pitfalls research for: v1.4 Visual Redesign — glassmorphism, dark mode, bold typography, micro-animations on medical landing page (45+ audience)*
+*Researched: 2026-03-24*
