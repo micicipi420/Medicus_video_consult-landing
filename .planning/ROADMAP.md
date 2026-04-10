@@ -200,9 +200,10 @@ Plans:
   2. will-change is present only on elements that animate (hover transitions, specular shift, shimmer) and absent from all static glass surfaces -- grep for will-change shows it on animation-related selectors only
   3. Chrome DevTools Performance recording of a full scroll through index.html shows zero long frames (>50ms) attributable to paint/composite operations on glass elements
   4. Budget Android proxy test (4x CPU throttle in DevTools) achieves scroll FPS >= 30 on index.html with all glass effects active
-**Plans**: 1 plan
+**Plans**: 2 plans
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [ ] 57-01-PLAN.md — Inline backdrop-blur removal and will-change hygiene
+- [ ] 57-02-PLAN.md — Viewport budget enforcement via IntersectionObserver
 
 ### Phase 58: Design System Docs & Print
 **Goal**: The styleguide page documents all v5.0 glass variants with usage guidelines, and the print stylesheet covers every new variant with opaque fallback
@@ -236,5 +237,5 @@ Strictly linear -- each phase builds on the previous.
 | 54. Adaptive Tinting | 1/1 | Complete    | 2026-04-10 |
 | 55. Glass Material Variants & Hierarchy | 1/1 | Complete   | 2026-04-10 |
 | 56. Specular Physics & Interaction States | 1/1 | Complete    | 2026-04-10 |
-| 57. GPU Performance Audit | 0/TBD | Not started | - |
+| 57. GPU Performance Audit | 0/2 | Not started | - |
 | 58. Design System Docs & Print | 0/TBD | Not started | - |
