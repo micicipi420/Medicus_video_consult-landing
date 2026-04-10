@@ -5,15 +5,22 @@
  *
  * Provides reusable CSS classes that encode the complete glass visual language:
  *   - Base material (.liquid-regular)
+ *   - Nav material (.liquid-nav)
+ *   - Clear material (.liquid-clear)
+ *   - Fluted material (.liquid-fluted)
  *   - Card material (.liquid-card)
  *   - Button variants (.liquid-btn-primary, .liquid-btn-secondary)
  *   - Grouped stats backdrop (.stats-glass)
  *   - Shimmer sweep (.shimmer-sweep)
  *   - Scroll-edge fade (.scroll-fade-top, .scroll-fade-bottom)
  *
- * Single variant: Regular only.
- *   Clear glass is an anti-feature for medical CA 45+ audience --
- *   contrast and legibility take priority over visual novelty.
+ * Glass hierarchy (GLAS-03):
+ *   Level 1 - Nav:     .liquid-nav     -- lightest blur (16px), highest transparency, no outer shadow
+ *   Level 2 - Regular: .liquid-regular  -- medium blur (24px), standard opacity, full shadow
+ *   Level 3 - Clear:   .liquid-clear    -- highest transparency, dimming layer, subtle shadow
+ *   Texture:  Fluted:  .liquid-fluted   -- regular-weight + vertical ribbed streaks
+ *
+ * Variants: Regular (default), Nav (lightest), Clear (overlay), Fluted (ribbed texture).
  *
  * Tokens declared in: theme.css :root (--liquid-*) and .dark cascade.
  * Companion file: squircles.css (shape primitives).
@@ -86,6 +93,129 @@
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
     var(--liquid-shadow-outer);
+}
+
+/* ================================================
+   Section 1.1 -- Nav-weight material (GLAS-03 Level 1)
+   Lightest glass: minimal blur, highest transparency,
+   no outer shadow. For navigation bars, toolbars.
+   Formalizes the "navigation weight" from the glass
+   hierarchy: nav < regular < clear.
+   ================================================ */
+
+.liquid-nav {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-nav-bg),
+      var(--liquid-nav-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  /* No outer shadow -- nav floats light */
+}
+
+/* ================================================
+   Section 1.2 -- Clear-weight material (GLAS-01 / GLAS-03 Level 3)
+   Highest transparency + dimming backdrop layer.
+   For overlay contexts: modals, lightboxes, drawers.
+   The ::after pseudo creates a dark scrim behind the
+   glass surface (dimming layer).
+   Hierarchy: nav < regular < clear.
+   ================================================ */
+
+.liquid-clear {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-clear-bg),
+      var(--liquid-clear-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-clear-shadow-outer);
+}
+
+/* Dimming layer -- sits behind glass content, darkens the backdrop area */
+.liquid-clear::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--liquid-clear-dim);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ================================================
+   Section 1.3 -- Fluted material (GLAS-02)
+   Regular-weight glass with vertical ribbed streaks
+   overlaid via repeating-linear-gradient. Produces
+   the "fluted glass" texture (iOS-inspired ribbing).
+   Uses ::after for the streak layer so it composites
+   above the backdrop-filter blur.
+   ================================================ */
+
+.liquid-fluted {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-shadow-outer);
+}
+
+/* Vertical ribbed streaks -- composites above the blurred backdrop */
+.liquid-fluted::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--liquid-fluted-stripe-color) 0px,
+    var(--liquid-fluted-stripe-color) var(--liquid-fluted-stripe-width),
+    transparent var(--liquid-fluted-stripe-width),
+    transparent calc(var(--liquid-fluted-stripe-width) + var(--liquid-fluted-stripe-gap))
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ================================================
@@ -279,6 +409,8 @@
    ================================================ */
 
 .liquid-regular::before,
+.liquid-nav::before,
+.liquid-fluted::before,
 .liquid-btn-secondary::before,
 .stats-glass::before {
   content: '';
@@ -360,6 +492,24 @@ html[data-refract="true"] .stats-glass {
   -webkit-backdrop-filter: url(#liquid-refract-lg) blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
 }
 
+/* Nav refraction: use small displacement (lightest) */
+html[data-refract="true"] .liquid-nav {
+  backdrop-filter: url(#liquid-refract-sm) blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-sm) blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Clear refraction: use medium displacement */
+html[data-refract="true"] .liquid-clear {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Fluted refraction: use medium displacement (same weight as regular) */
+html[data-refract="true"] .liquid-fluted {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
 /* ================================================
    Section 11 -- Print stylesheet
    All glass surfaces render as opaque white
@@ -369,6 +519,9 @@ html[data-refract="true"] .stats-glass {
 @media print {
   .liquid-regular,
   .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
   .liquid-btn-primary,
   .liquid-btn-secondary,
   .stats-glass {
@@ -377,6 +530,11 @@ html[data-refract="true"] .stats-glass {
     background: white !important;
     border: 1px solid #ccc !important;
     box-shadow: none !important;
+  }
+
+  .liquid-clear::after,
+  .liquid-fluted::after {
+    display: none !important;
   }
 
   .shimmer-sweep::before {
@@ -504,6 +662,19 @@ html[data-refract="true"] .stats-glass {
   opacity: 0.4;
 }
 
+.dark .liquid-nav::before,
+.dark .liquid-fluted::before {
+  opacity: 0.3;
+}
+
+.dark .liquid-fluted::after {
+  opacity: 0.5;
+}
+
+.dark .liquid-clear::after {
+  opacity: 0.7;
+}
+
 /* ================================================
    Section 13 -- Reduced motion
    Extends existing theme.css reduced-motion guard
@@ -516,10 +687,16 @@ html[data-refract="true"] .stats-glass {
 @media (prefers-reduced-motion: reduce) {
   .liquid-regular,
   .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
   .liquid-btn-secondary,
   .stats-glass,
   html[data-refract="true"] .liquid-regular,
   html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .liquid-nav,
+  html[data-refract="true"] .liquid-clear,
+  html[data-refract="true"] .liquid-fluted,
   html[data-refract="true"] .stats-glass {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -549,10 +726,16 @@ html[data-refract="true"] .stats-glass {
 @media (prefers-reduced-transparency: reduce) {
   .liquid-regular,
   .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
   .liquid-btn-secondary,
   .stats-glass,
   html[data-refract="true"] .liquid-regular,
   html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .liquid-nav,
+  html[data-refract="true"] .liquid-clear,
+  html[data-refract="true"] .liquid-fluted,
   html[data-refract="true"] .stats-glass {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: none;
@@ -568,11 +751,26 @@ html[data-refract="true"] .stats-glass {
     -webkit-backdrop-filter: none;
   }
 
+  .dark .liquid-nav,
+  .dark .liquid-clear,
+  .dark .liquid-fluted {
+    background: rgba(30, 40, 60, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .liquid-card::after {
     display: none;
   }
 
+  .liquid-clear::after,
+  .liquid-fluted::after {
+    display: none;
+  }
+
   .liquid-regular::before,
+  .liquid-nav::before,
+  .liquid-fluted::before,
   .liquid-btn-secondary::before,
   .stats-glass::before,
   .liquid-card::before {
@@ -598,6 +796,13 @@ html[data-refract="true"] .stats-glass {
     -webkit-backdrop-filter: none;
   }
 
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
   .liquid-header-backdrop {
     background: rgba(255, 255, 255, 0.85);
     -webkit-backdrop-filter: none;
@@ -607,6 +812,13 @@ html[data-refract="true"] .stats-glass {
   .dark .liquid-card,
   .dark .liquid-btn-secondary,
   .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-nav,
+  .dark .liquid-clear,
+  .dark .liquid-fluted {
     background: rgba(30, 40, 60, 0.85);
     -webkit-backdrop-filter: none;
   }
