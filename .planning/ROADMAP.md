@@ -111,7 +111,10 @@ See `.planning/milestones/` for full details per milestone.
   2. Firefox users on versions without backdrop-filter support see glass elements rendered as opaque semi-transparent surfaces via opacity fallback -- no broken/invisible cards
   3. .liquid-card-wrap usage across the codebase has a single documented strategy: either all instances carry a deprecation comment pointing to the replacement pattern, or all instances are already replaced -- grep confirms zero contradictory comments
   4. make build exits 0 and all 7 pages render without visual regression in Chrome, Safari, and Firefox
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 51-01-PLAN.md -- Safari hardcoded -webkit-backdrop-filter fallbacks + Firefox fallback verification
+- [ ] 51-02-PLAN.md -- Shadow-wrap strategy resolution and documentation correction
 **UI hint**: yes
 
 ### Phase 52: Token Foundation & Dead Code Cleanup
@@ -209,7 +212,7 @@ Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 51. Cross-Browser Hardening | 0/TBD | Not started | - |
+| 51. Cross-Browser Hardening | 0/2 | Planned | - |
 | 52. Token Foundation & Dead Code Cleanup | 0/TBD | Not started | - |
 | 53. SVG Refraction Tuning | 0/TBD | Not started | - |
 | 54. Adaptive Tinting | 0/TBD | Not started | - |
