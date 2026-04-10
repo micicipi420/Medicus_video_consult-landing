@@ -1,8 +1,8 @@
-# Liquid Design System v4.0
+# Liquid Design System v5.0
 
 ## 1. Overview
 
-Liquid Design System v4.0 -- визуальный язык лендинга MedicusUnion KZ (medicusunion.kz). Система объединяет squircle-формы (суперэллиптические скругления), liquid glass-материалы (стеклянные поверхности с backdrop-filter) и&nbsp;токенизированную тему с&nbsp;автоматическим тёмным режимом. Целевая аудитория -- жители Казахстана 45+, поэтому приоритет отдаётся контрасту, читабельности и&nbsp;минимальному движению. Сайт состоит из&nbsp;5 страниц (index, online-consultations, treatment-abroad, checkup, contacts) плюс 404.
+Liquid Design System v5.0 -- визуальный язык лендинга MedicusUnion KZ (medicusunion.kz). Система объединяет squircle-формы (суперэллиптические скругления), liquid glass-материалы (стеклянные поверхности с backdrop-filter) и&nbsp;токенизированную тему с&nbsp;автоматическим тёмным режимом. В&nbsp;v5.0 добавлены: иерархия glass-материалов (nav/regular/clear/fluted), адаптивный тинт секций, спекулярные блики с&nbsp;отслеживанием мыши, состояния взаимодействия (hover/press/focus), GPU viewport budget и&nbsp;SVG-преломление. Целевая аудитория -- жители Казахстана 45+, поэтому приоритет отдаётся контрасту, читабельности и&nbsp;минимальному движению. Сайт состоит из&nbsp;5 страниц (index, online-consultations, treatment-abroad, checkup, contacts) плюс 404.
 
 Стек: HTML + Tailwind CSS v4 (CLI standalone) + Vanilla JS. Без фреймворков, без Node.js в&nbsp;рантайме.
 
@@ -48,6 +48,19 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 | `--liquid-shadow-outer` | `0 16px 40px rgba(20, 30, 60, 0.12)` | Внешняя тень (для shadow-wrap) |
 | `--liquid-shadow-inset-top` | `inset 0 1px 0 rgba(255, 255, 255, 0.8)` | Внутренний блик сверху |
 | `--liquid-shadow-inset-bottom` | `inset 0 -1px 0 rgba(255, 255, 255, 0.15)` | Внутренняя тень снизу |
+| `--liquid-nav-bg` | `rgba(255, 255, 255, 0.28)` | Nav-фон (прозрачнее --liquid-bg) |
+| `--liquid-nav-blur` | `16px` | Nav blur (легче базового) |
+| `--liquid-clear-bg` | `rgba(255, 255, 255, 0.18)` | Clear-фон (самый прозрачный) |
+| `--liquid-clear-blur` | `20px` | Clear blur |
+| `--liquid-clear-shadow-outer` | `0 8px 24px rgba(20, 30, 60, 0.08)` | Clear внешняя тень (легче regular) |
+| `--liquid-clear-dim` | `rgba(0, 0, 0, 0.04)` | Clear dimming layer |
+| `--liquid-fluted-stripe-color` | `rgba(255, 255, 255, 0.12)` | Цвет полос fluted |
+| `--liquid-fluted-stripe-width` | `1px` | Ширина полосы fluted |
+| `--liquid-fluted-stripe-gap` | `8px` | Расстояние между полосами fluted |
+| `--liquid-tint-h` | `0` | Тинт: тон (HSL H) |
+| `--liquid-tint-s` | `0%` | Тинт: насыщенность (HSL S) |
+| `--liquid-tint-l` | `50%` | Тинт: светлота (HSL L) |
+| `--liquid-tint-a` | `0` | Тинт: прозрачность (0 = нет тинта) |
 
 ### 2.4 Liquid Glass Tokens (Dark)
 
@@ -118,12 +131,92 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 | `.shimmer-sweep` | Shimmer-эффект при hover на hero CTA (максимум 1 на viewport) | `.liquid-btn-primary` |
 | `.scroll-fade-top` | CSS mask-gradient fade сверху (80px) | Контейнеры с&nbsp;прокруткой |
 | `.scroll-fade-bottom` | CSS mask-gradient fade снизу (80px) | Контейнеры с&nbsp;прокруткой |
+| `.liquid-nav` | Nav-weight стекло (Level 1). Минимальный blur, без&nbsp;внешней тени | `.squircle-lg` или `.squircle-xl` |
+| `.liquid-clear` | Clear-weight стекло (Level 3). Максимальная прозрачность + dimming layer | `.squircle-lg` или `.squircle-xl` |
+| `.liquid-fluted` | Рифлёное стекло. Regular-weight + вертикальные полосы (repeating-linear-gradient) | `.squircle-lg` или `.squircle-xl` |
+| `.glass-idle` | Viewport budget idle state. Заменяет backdrop-filter непрозрачным фоном | Добавляется JS (initViewportBudget) |
 
 **Refraction progressive enhancement:** Chrome 139+ получает дополнительный SVG-фильтр преломления через `html[data-refract="true"]` (JS probe устанавливает атрибут).
 
 **Печать:** все стеклянные поверхности рендерятся как непрозрачный белый фон с&nbsp;`1px solid #ccc` рамкой. `backdrop-filter: none`, shimmer скрыт, fade-маски убраны.
 
 **Reduced motion:** `@media (prefers-reduced-motion: reduce)` -- blur снижается до&nbsp;8px, shimmer скрыт.
+
+### 3.3 Glass Hierarchy (GLAS-03)
+
+Три уровня глубины + одна текстура. Каждый уровень оптимизирован под свою роль в&nbsp;интерфейсе:
+
+| Уровень | Класс | Роль | blur | alpha | Тень |
+|---------|-------|------|------|-------|------|
+| Level 1 | `.liquid-nav` | Навигация, тулбары | 16px | 0.28 | Без внешней тени |
+| Level 2 | `.liquid-regular` | Карточки, контейнеры | 24px | 0.42 | Полная (--liquid-shadow-outer) |
+| Level 3 | `.liquid-clear` | Модалки, оверлеи | 20px | 0.18 | Лёгкая + dimming ::after layer |
+| Текстура | `.liquid-fluted` | Декоративные панели | 24px | 0.42 | Regular-weight + вертикальные рёбра |
+
+Визуальная иерархия: nav (легчайшее) < regular (стандарт) < clear (оверлей). Fluted &mdash; текстурный вариант regular-weight.
+
+### 3.4 Adaptive Tinting (VFEX-01)
+
+Секции страницы задают цвет тинта через CSS custom properties. Glass-элементы внутри секции наследуют тинт автоматически.
+
+| Класс | Тинт | --liquid-tint-h |
+|-------|------|-----------------|
+| `.section-tint-cool` | Сине-зелёный (брендовый) | 197 |
+| `.section-tint-warm` | Персиково-янтарный (комплементарный) | 28 |
+| `.section-tint-mint` | Зелёный (здоровье, чек-ап) | 153 |
+| (без класса) | Нет тинта | --liquid-tint-a: 0 |
+
+Тинт composited как background-gradient layer, не&nbsp;mix-blend-mode. При --liquid-tint-a: 0 тинт-слой полностью прозрачен &mdash; нулевое влияние на&nbsp;нетинтированные секции.
+
+### 3.5 Interaction States (VFEX-03)
+
+Все glass-поверхности (кроме кнопок, у&nbsp;которых свои состояния) реагируют на&nbsp;пользовательские действия:
+
+| Состояние | CSS | Эффект |
+|-----------|-----|--------|
+| hover | `filter: brightness(1.04)` | Лёгкое осветление поверхности |
+| active/press | `filter: brightness(0.96)`, `transform: scale(0.985)` | Затемнение + лёгкое сжатие |
+| focus-visible | `outline: 2px solid var(--mu-blue-text)`, `outline-offset: 4px` | Контрастное кольцо фокуса |
+
+**Кнопки исключены** &mdash; .liquid-btn-primary и&nbsp;.liquid-btn-secondary имеют собственные состояния.
+
+**Reduced motion:** длительности обнуляются, но&nbsp;сами изменения состояний сохраняются (brightness, outline).
+
+### 3.6 Specular Highlight (VFEX-02)
+
+Mouse-tracking radial-gradient создаёт блик на&nbsp;стеклянных поверхностях:
+
+- **CSS:** `radial-gradient` с&nbsp;позицией через `--mouse-x` / `--mouse-y`
+- **JS:** `initMouseSpecular()` обновляет координаты при hover
+- **::after** на&nbsp;`.liquid-regular`, `.liquid-nav`, `.stats-glass`
+- **::before** на&nbsp;`.liquid-clear` (::after занят dimming layer)
+- **Fluted:** блик встроен в&nbsp;background property (не&nbsp;требует отдельного pseudo-элемента)
+- **Touch-устройства:** статичная позиция по&nbsp;умолчанию (30%, 0%)
+- **prefers-reduced-motion:** параллакс отключён, статичные состояния сохраняются
+
+### 3.7 Viewport Budget (PERF-01)
+
+Максимум 6&nbsp;одновременных backdrop-filter элементов в&nbsp;viewport для&nbsp;GPU-оптимизации:
+
+- **IntersectionObserver** отслеживает видимые glass-элементы
+- Избыточные элементы получают класс `.glass-idle`
+- `.glass-idle` заменяет backdrop-filter непрозрачным фоном-аппроксимацией
+- **Приоритет:** header > nav > cards > buttons
+- JS: `initViewportBudget()` &mdash; автоматическое управление
+
+### 3.8 SVG Refraction (PERF-03)
+
+Эффект преломления стекла через SVG-фильтры (Chrome 139+ only):
+
+| Размер | Filter ID | scale | Применение |
+|--------|-----------|-------|------------|
+| sm | `liquid-refract-sm` | 0 | Бейджи, навигация |
+| md | `liquid-refract-md` | 18 | Карточки |
+| lg | `liquid-refract-lg` | 12 | Полноширинные блоки |
+
+- **Gate:** `html[data-refract="true"]` &mdash; атрибут устанавливается JS (initRefractionProbe)
+- **SVG defs:** в&nbsp;`partials/svg-defs.html`
+- **feTurbulence + feDisplacementMap** создают subtle distortion
 
 ---
 
@@ -182,6 +275,10 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 6. **NEVER** использовать shimmer на не-hero элементах. Максимум 1 shimmer на viewport -- большее количество = визуальный шум для ЦА 45+.
 
 7. **NEVER** использовать `border` на masked glass (squircle обрежет рамку). Используйте `inset box-shadow` (rim lighting токены уже это делают).
+
+8. **NEVER** использовать `filter: drop-shadow()` на&nbsp;предках glass-элементов. Создаёт backdrop root, ломающий backdrop-filter у&nbsp;потомков.
+
+9. **NEVER** превышать 6&nbsp;одновременных backdrop-filter элементов в&nbsp;viewport. Используйте `.glass-idle` для&nbsp;элементов вне&nbsp;экрана или&nbsp;при исчерпании бюджета.
 
 ---
 
@@ -320,7 +417,7 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 
 ## 9. Scope Creep Guards
 
-Что **не входит** в дизайн-систему v4.0:
+Что **не входит** в дизайн-систему v5.0:
 
 - Нет JavaScript-фреймворков (React, Vue, Alpine.js)
 - Нет CSS-in-JS
