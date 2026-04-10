@@ -203,7 +203,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 57-01-PLAN.md — Inline backdrop-blur removal and will-change hygiene
-- [ ] 57-02-PLAN.md — Viewport budget enforcement via IntersectionObserver
+- [x] 57-02-PLAN.md — Viewport budget enforcement via IntersectionObserver
 
 ### Phase 58: Design System Docs & Print
 **Goal**: The styleguide page documents all v5.0 glass variants with usage guidelines, and the print stylesheet covers every new variant with opaque fallback
@@ -237,5 +237,5 @@ Strictly linear -- each phase builds on the previous.
 | 54. Adaptive Tinting | 1/1 | Complete    | 2026-04-10 |
 | 55. Glass Material Variants & Hierarchy | 1/1 | Complete   | 2026-04-10 |
 | 56. Specular Physics & Interaction States | 1/1 | Complete    | 2026-04-10 |
-| 57. GPU Performance Audit | 1/2 | In Progress|  |
+| 57. GPU Performance Audit | 2/2 | Complete    | 2026-04-10 |
 | 58. Design System Docs & Print | 0/TBD | Not started | - |
