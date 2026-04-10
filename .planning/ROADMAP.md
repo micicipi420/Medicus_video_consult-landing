@@ -158,7 +158,7 @@ Plans:
   4. Tinting is achieved via background-gradient composite (not mix-blend-mode) as specified in VFEX-01 -- verified by inspecting computed styles in DevTools
 **Plans**: 1 plan
 Plans:
-- [ ] 54-01-PLAN.md &mdash; Adaptive tint properties and glass background composite
+- [x] 54-01-PLAN.md &mdash; Adaptive tint properties and glass background composite
 **UI hint**: yes
 
 ### Phase 55: Glass Material Variants & Hierarchy
@@ -233,7 +233,7 @@ Strictly linear -- each phase builds on the previous.
 | 51. Cross-Browser Hardening | 2/2 | Complete | 2026-04-10 |
 | 52. Token Foundation & Dead Code Cleanup | 2/2 | Complete    | 2026-04-10 |
 | 53. SVG Refraction Tuning | 1/1 | Complete    | 2026-04-10 |
-| 54. Adaptive Tinting | 0/TBD | Not started | - |
+| 54. Adaptive Tinting | 1/1 | Complete    | 2026-04-10 |
 | 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
 | 56. Specular Physics & Interaction States | 0/TBD | Not started | - |
 | 57. GPU Performance Audit | 0/TBD | Not started | - |
