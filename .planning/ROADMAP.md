@@ -142,7 +142,9 @@ Plans:
   2. Large glass surfaces (hero, full-width sections) show subtle refraction distortion that reads as "glass" without distracting text behind -- text remains legible through the refraction layer
   3. Small glass elements (badges, nav items) have minimal or zero refraction to avoid visual noise at small scale
   4. Chrome DevTools Performance panel shows no increase in GPU memory usage exceeding 10% compared to pre-tuning baseline when scrolling through index.html
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 54: Adaptive Tinting
@@ -154,7 +156,9 @@ Plans:
   2. Glass cards in the hero section show a warm tint, glass cards in a teal/dark section show a cool tint, and glass cards in a neutral section show minimal tint -- visually distinguishable when scrolling through index.html
   3. Dark mode tinting adapts appropriately -- tint colors shift to complement the dark palette without producing muddy or low-contrast surfaces
   4. Tinting is achieved via background-gradient composite (not mix-blend-mode) as specified in VFEX-01 -- verified by inspecting computed styles in DevTools
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 55: Glass Material Variants & Hierarchy
@@ -167,7 +171,9 @@ Plans:
   3. Glass hierarchy is formalized with 3 documented levels: .liquid-nav (navigation-weight: lightest blur, highest transparency), .liquid-regular (standard cards: medium blur/opacity/shadow), .liquid-clear (overlay: highest transparency + dimming) -- each level has distinct blur, opacity, and shadow values visible in DevTools
   4. All 3 variants work correctly in both light and dark mode, and all 3 inherit adaptive tinting from their parent section
   5. make build exits 0; styleguide.html can demonstrate all 3 variants side by side
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 56: Specular Physics & Interaction States
@@ -180,7 +186,9 @@ Plans:
   3. Focus-visible state on all glass elements shows a clear ring that meets WCAG AA visibility requirements -- verified by keyboard-tabbing through glass elements
   4. All interaction states (hover, press, focus) work consistently across .liquid-regular, .liquid-clear, .liquid-fluted, and .liquid-nav variants
   5. prefers-reduced-motion disables the specular parallax effect while keeping static interaction states (hover brightness, press darken, focus ring)
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ### Phase 57: GPU Performance Audit
@@ -192,7 +200,9 @@ Plans:
   2. will-change is present only on elements that animate (hover transitions, specular shift, shimmer) and absent from all static glass surfaces -- grep for will-change shows it on animation-related selectors only
   3. Chrome DevTools Performance recording of a full scroll through index.html shows zero long frames (>50ms) attributable to paint/composite operations on glass elements
   4. Budget Android proxy test (4x CPU throttle in DevTools) achieves scroll FPS >= 30 on index.html with all glass effects active
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 
 ### Phase 58: Design System Docs & Print
 **Goal**: The styleguide page documents all v5.0 glass variants with usage guidelines, and the print stylesheet covers every new variant with opaque fallback
@@ -203,7 +213,9 @@ Plans:
   2. styleguide.html demonstrates adaptive tinting by placing glass cards over different colored section backgrounds
   3. Print stylesheet renders all glass variants (fluted, clear, nav, regular) as opaque surfaces with visible borders -- verified by print preview in Chrome showing no transparent/broken cards
   4. make build exits 0; styleguide.html builds correctly via splicer pipeline
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
 **UI hint**: yes
 
 ## Progress
@@ -220,7 +232,7 @@ Strictly linear -- each phase builds on the previous.
 |-------|----------------|--------|-----------|
 | 51. Cross-Browser Hardening | 2/2 | Complete | 2026-04-10 |
 | 52. Token Foundation & Dead Code Cleanup | 2/2 | Complete    | 2026-04-10 |
-| 53. SVG Refraction Tuning | 0/TBD | Not started | - |
+| 53. SVG Refraction Tuning | 0/1 | Not started | - |
 | 54. Adaptive Tinting | 0/TBD | Not started | - |
 | 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
 | 56. Specular Physics & Interaction States | 0/TBD | Not started | - |
