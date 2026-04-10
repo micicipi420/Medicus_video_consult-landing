@@ -11,21 +11,38 @@
 - v3.0 SEO, Performance & Polish -- Phases 29-32 (shipped 2026-04-06)
 - v3.1 Site Foundation & Audit Fixes -- Phases 33-38 + 38.1 (shipped 2026-04-08)
 - v3.2 Build Pipeline & Chrome Partials -- Phases 39-40 (shipped 2026-04-08)
-- ✅ v4.0 Liquid Design System -- Phases 41-49 (shipped 2026-04-09)
+- v4.0 Liquid Design System -- Phases 41-49 (shipped 2026-04-09)
+- v5.0 Full Liquid Glass Rework -- Phases 51-58 (in progress)
 
 ## Phases
 
-### v4.0 Liquid Design System (active)
+### v5.0 Full Liquid Glass Rework (active)
 
-- [x] **Phase 41: Foundation Tokens** - theme.css extension: grid/squircle/liquid/motion tokens, focus-visible migration to outline, dark selector audit -- completed 2026-04-09
-- [x] **Phase 42: Squircle Primitives** - squircles.css with 4 SVG mask data-URIs, @supports corner-shape PE, shadow-wrap pattern -- completed 2026-04-09
-- [x] **Phase 43: Liquid Glass Primitives** - liquid-glass.css with Regular material, dark recipe, print fallback, refraction PE, reduced-motion extension, shimmer/stats/scroll-edge differentiators -- completed 2026-04-09
-- [x] **Phase 44: Chrome Partials Upgrade** - SVG defs partial + 4 chrome partials restyled with glass/squircle/grid; atomic commit under byte-identity gate -- completed 2026-04-09
-- [x] **Phase 45: Simple Pages (404 + Contacts)** - Grid/squircle/liquid migration on simplest pages; canary for stacking contexts and protected legacy -- completed 2026-04-09
-- [x] **Phase 46: Service Pages** - checkup + online-consultations + treatment-abroad migration; 3 parallelizable streams -- completed 2026-04-09
-- [x] **Phase 47: Index Page** - Full grid/liquid/squircle treatment on 13-section index; floating cards, z-index map, mesh-bg compatibility -- completed 2026-04-09
-- [x] **Phase 48: Verification** - WCAG AA contrast on glass, keyboard tab order, budget Android FPS, reduced-motion visual audit -- completed 2026-04-09
-- [x] **Phase 49: Documentation** - DESIGN-SYSTEM.md + styleguide.html live reference page -- completed 2026-04-09
+- [ ] **Phase 51: Cross-Browser Hardening** - Safari backdrop-filter fallback, Firefox opacity fallback, shadow-wrap deprecation strategy
+- [ ] **Phase 52: Token Foundation & Dead Code Cleanup** - Remove unused CSS tokens, eliminate .liquid-card-wrap wrappers, delete dead files
+- [ ] **Phase 53: SVG Refraction Tuning** - Per-element displacement scale and noise calibration for visual fidelity vs GPU balance
+- [ ] **Phase 54: Adaptive Tinting** - Glass elements inherit section tint color via CSS cascade
+- [ ] **Phase 55: Glass Material Variants & Hierarchy** - Clear glass, fluted glass, and formalized 3-level glass hierarchy
+- [ ] **Phase 56: Specular Physics & Interaction States** - Desktop parallax specular highlight and unified hover/press/focus states on glass
+- [ ] **Phase 57: GPU Performance Audit** - Composite layer budget enforcement and will-change hygiene
+- [ ] **Phase 58: Design System Docs & Print** - Styleguide update with all glass variants and print stylesheet coverage
+
+<details>
+<summary>v4.0 Liquid Design System (Phases 41-49) -- SHIPPED 2026-04-09</summary>
+
+- [x] Phase 41: Foundation Tokens (2/2 plans) -- completed 2026-04-09
+- [x] Phase 42: Squircle Primitives (1/1 plan) -- completed 2026-04-09
+- [x] Phase 43: Liquid Glass Primitives (2/2 plans) -- completed 2026-04-09
+- [x] Phase 44: Chrome Partials Upgrade (2/2 plans) -- completed 2026-04-09
+- [x] Phase 45: Simple Pages (2/2 plans) -- completed 2026-04-09
+- [x] Phase 46: Service Pages (0/TBD) -- completed 2026-04-09
+- [x] Phase 47: Index Page (2/2 plans) -- completed 2026-04-09
+- [x] Phase 48: Verification (2/2 plans) -- completed 2026-04-09
+- [x] Phase 49: Documentation (2/2 plans) -- completed 2026-04-09
+
+Full details: `.planning/milestones/v4.0-ROADMAP.md`
+
+</details>
 
 <details>
 <summary>v3.2 Build Pipeline & Chrome Partials (Phases 39-40) -- SHIPPED 2026-04-08</summary>
@@ -85,180 +102,118 @@ See `.planning/milestones/` for full details per milestone.
 
 ## Phase Details
 
-### Phase 41: Foundation Tokens
-**Goal**: All design tokens for v4.0 exist in theme.css, and the focus-visible ring mechanism is safe for mask-image elements -- so that Phases 42-49 can reference tokens without back-patching theme.css
-**Depends on**: Nothing (first v4.0 phase; v3.2 build pipeline is prerequisite infrastructure)
-**Requirements**: GRID-01 (token infrastructure only -- grid classes applied in Phases 45-47), SQUIRCLE-03
+### Phase 51: Cross-Browser Hardening
+**Goal**: Glass elements render correctly across Safari, Firefox, and Chrome -- eliminating the known Safari backdrop-filter var() bug and providing graceful Firefox fallbacks
+**Depends on**: Nothing (first v5.0 phase; builds on v4.0 shipped glass primitives)
+**Requirements**: XBRO-01, XBRO-02, XBRO-03
 **Success Criteria** (what must be TRUE):
-  1. theme.css contains grid tokens (--container-max-content: 1200px as @theme inline, gutter tokens for 16/24/32px) and max-w-content utility resolves in Tailwind CSS build output
-  2. theme.css contains squircle tokens (4 mask data-URI references: md/lg/xl/full), liquid glass tokens (light recipe: --liquid-bg, --liquid-blur-md, --liquid-saturate, --liquid-brightness, rim shadows), and motion tokens (--ease-liquid, --dur-press, --dur-hover, --dur-sheet)
-  3. Dark-mode glass tokens exist under the correct selector (.dark or [data-theme="dark"] -- whichever js/main.js toggle actually sets), with tuned dark recipe values (rgba(30,40,60,0.45) base, blur 28px, saturate 160%, brightness 115%)
-  4. Focus-visible ring uses outline: 2px solid var(--mu-blue-text); outline-offset: 3px instead of box-shadow -- verified by inspecting a focused button in browser DevTools and confirming outline renders outside any mask-image clip boundary
-  5. make build exits 0 and byte-identity check passes; no HTML files are modified in this phase
-**Plans**: 2 plans
-Plans:
-- [x] 41-01-PLAN.md — Add v4.0 token blocks (grid, squircle masks, liquid glass, motion) to theme.css
-- [x] 41-02-PLAN.md — Refactor focus-visible ring from box-shadow to outline
+  1. Safari users see glass surfaces with correct blur/saturation -- hardcoded fallback values precede var()-based declarations in all backdrop-filter rules, verified by toggling custom properties off in Safari Web Inspector
+  2. Firefox users on versions without backdrop-filter support see glass elements rendered as opaque semi-transparent surfaces via opacity fallback -- no broken/invisible cards
+  3. .liquid-card-wrap usage across the codebase has a single documented strategy: either all instances carry a deprecation comment pointing to the replacement pattern, or all instances are already replaced -- grep confirms zero contradictory comments
+  4. make build exits 0 and all 7 pages render without visual regression in Chrome, Safari, and Firefox
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 42: Squircle Primitives
-**Goal**: A complete squircle utility system exists as reusable CSS classes, so that any element can be given a superellipse shape by adding a single class
-**Depends on**: Phase 41 (focus-visible must be outline-based before any mask-image is applied; squircle tokens must exist in theme.css)
-**Requirements**: SQUIRCLE-01, SQUIRCLE-02, SQUIRCLE-04
+### Phase 52: Token Foundation & Dead Code Cleanup
+**Goal**: The CSS codebase is free of legacy dead weight -- unused tokens, wrapper div artifacts, and dead files are removed so that subsequent phases build on a clean foundation
+**Depends on**: Phase 51 (shadow-wrap deprecation strategy from XBRO-03 must be resolved before removing wrappers in CLEN-02)
+**Requirements**: CLEN-01, CLEN-02, CLEN-03
 **Success Criteria** (what must be TRUE):
-  1. src/styles/squircles.css exists with .squircle-md, .squircle-lg, .squircle-xl, .squircle-full classes, each applying mask-image with an inline SVG data-URI superellipse path and mask-size: 100% 100%
-  2. Chrome 139+ users see native corner-shape: superellipse(2) via @supports (corner-shape: superellipse(2)) block that removes the mask and applies native rendering
-  3. Browsers without mask-image support gracefully fall back to standard border-radius (verified via @supports not (mask-image: url(...)) or absence of mask)
-  4. Shadow-wrap pattern documented and testable: an element with .squircle-lg inside a wrapper div renders box-shadow on the wrapper (outside the mask) while the inner element carries the squircle clip -- visible in browser DevTools
-  5. make build exits 0; Tailwind CSS output includes squircle classes; no HTML pages are modified yet
-**Plans**: 1 plan
-Plans:
-- [x] 42-01-PLAN.md — Squircle utility classes, three-tier PE, shadow-wrap docs, build verification
+  1. All shadcn/React legacy CSS tokens (popover, chart, sidebar families) are removed from theme.css -- grep for "popover\|chart-\|sidebar" returns zero matches in any CSS file
+  2. All .liquid-card-wrap wrapper divs are removed from HTML across all 7 pages (70+ elements eliminated) and the .liquid-card-wrap CSS class is deleted -- grep confirms zero occurrences in both HTML and CSS
+  3. src/styles/index.css is deleted; unused green ramp tokens (--mu-green-200, --mu-green-400, --mu-green-900) are removed from theme.css -- file system confirms deletion, grep confirms token removal
+  4. make build exits 0, byte-identity check passes, and all 7 pages render identically to pre-cleanup state (visual regression check)
 
-### Phase 43: Liquid Glass Primitives
-**Goal**: A complete Liquid Glass material system and distinctive components exist as reusable CSS/JS, so that any surface can be given glass treatment and the 3 differentiator effects (shimmer, grouped stats, scroll-edge fade) are ready to apply
-**Depends on**: Phase 41 (liquid tokens and dark selector must be resolved); can run parallel with Phase 42 after Phase 41
-**Requirements**: LIQUID-01, LIQUID-02, LIQUID-03, LIQUID-04, LIQUID-05, LIQUID-06, LIQUID-07, DIFF-01, DIFF-02, DIFF-03
+### Phase 53: SVG Refraction Tuning
+**Goal**: The SVG refraction filter is calibrated per-element for optimal visual fidelity without excessive GPU cost -- displacement scale and noise frequency are tuned to each glass surface's size and context
+**Depends on**: Phase 52 (clean codebase without dead wrappers ensures refraction targets correct elements)
+**Requirements**: PERF-03
 **Success Criteria** (what must be TRUE):
-  1. src/styles/liquid-glass.css exists with .liquid-regular class applying backdrop-filter: blur + saturate + brightness with tint overlay and rim lighting (asymmetric inset shadow top + bottom) -- visible on a test element placed over colored content
-  2. Dark mode (toggling to dark) shows glass surfaces with the tuned dark recipe (dark tint, increased blur/saturate/brightness) -- no "murky navy smear" (the v1.4 failure mode)
-  3. Primary CTA retains gradient fill (green-to-teal) with specular edge treatment (not clear glass); secondary/tertiary buttons use .liquid-regular glass with semibold label, hover brightening, press scale(0.97), and icon+arrow affordance
-  4. Print stylesheet renders glass surfaces as opaque with border; reduced-motion disables specular shimmer and spring animations while keeping static glass appearance; shimmer sweep (DIFF-01), grouped stats backdrop (DIFF-02), and scroll-edge fade (DIFF-03) classes exist and are testable
-  5. Chrome 139+ users with JS enabled see refraction effect (SVG feTurbulence + feDisplacementMap) via html[data-refract] attribute set by ~10 LOC JS probe; Safari/Firefox show blur-only glass
-**Plans**: 2 plans
-Plans:
-- [x] 43-01-PLAN.md — Create liquid-glass.css with all glass material and differentiator CSS classes
-- [x] 43-02-PLAN.md — Add refraction JS probe to main.js + visual verification checkpoint
+  1. SVG feTurbulence baseFrequency and feDisplacementMap scale values are differentiated for at least 3 element size categories (small: badges/chips, medium: cards, large: hero/full-width) -- visible in SVG defs or CSS custom properties
+  2. Large glass surfaces (hero, full-width sections) show subtle refraction distortion that reads as "glass" without distracting text behind -- text remains legible through the refraction layer
+  3. Small glass elements (badges, nav items) have minimal or zero refraction to avoid visual noise at small scale
+  4. Chrome DevTools Performance panel shows no increase in GPU memory usage exceeding 10% compared to pre-tuning baseline when scrolling through index.html
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 44: Chrome Partials Upgrade
-**Goal**: All 4 shared chrome partials and the new SVG defs partial use glass/squircle/grid styling, so that every page inherits the v4.0 visual language through the existing splicer pipeline with zero per-page chrome edits
-**Depends on**: Phase 42 + Phase 43 (squircle and liquid classes must exist before chrome references them)
-**Requirements**: CHROME-01, CHROME-02
+### Phase 54: Adaptive Tinting
+**Goal**: Glass elements automatically shift their tint color based on the section they sit in -- creating the characteristic Apple Liquid Glass effect where glass reflects its environment
+**Depends on**: Phase 53 (refraction calibration must be complete before adding tinting layer that compounds visual complexity)
+**Requirements**: VFEX-01
 **Success Criteria** (what must be TRUE):
-  1. partials/svg-defs.html exists with hidden SVG defs containing filter id="liquid-refract", and scripts/build-pages.sh line 19 includes svg-defs in the PARTIALS list
-  2. All 6 HTML pages contain BUILD:svg-defs / /BUILD:svg-defs marker pairs, and make build splices the SVG defs partial into every page
-  3. partials/header.html uses .liquid-nav glass treatment + squircle radius + max-w-content grid alignment; partials/footer.html, partials/mobile-menu.html, partials/sticky-bar.html each use appropriate glass/squircle classes
-  4. make build exits 0 and byte-identity check passes -- the atomic commit includes both the new partial and all 6 page marker insertions
-  5. Opening any of the 6 pages in browser shows glass-styled header, footer, mobile menu, and sticky bar with no visual regression in existing content areas
-**Plans**: 2 plans
-Plans:
-- [x] 44-01-PLAN.md — SVG defs partial + splicer integration + BUILD markers on all 6 pages
-- [x] 44-02-PLAN.md — Upgrade 4 chrome partials with glass/squircle classes + header scroll state token overrides
+  1. Each major section sets --liquid-tint-* custom properties on its container, and glass elements within that section inherit the tint via CSS cascade -- no JavaScript required for tinting
+  2. Glass cards in the hero section show a warm tint, glass cards in a teal/dark section show a cool tint, and glass cards in a neutral section show minimal tint -- visually distinguishable when scrolling through index.html
+  3. Dark mode tinting adapts appropriately -- tint colors shift to complement the dark palette without producing muddy or low-contrast surfaces
+  4. Tinting is achieved via background-gradient composite (not mix-blend-mode) as specified in VFEX-01 -- verified by inspecting computed styles in DevTools
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 45: Simple Pages (404 + Contacts)
-**Goal**: 404.html and contacts.html are fully migrated to the v4.0 design language (grid + squircle + liquid glass), serving as canary deployments that validate stacking contexts, protected legacy items, and the migration pattern before tackling complex pages
-**Depends on**: Phase 44 (chrome must be upgraded before page migrations -- partials propagate the new visual language)
-**Requirements**: MIGRATE-01, MIGRATE-02
+### Phase 55: Glass Material Variants & Hierarchy
+**Goal**: Three distinct glass materials exist (clear, fluted, regular) with a formalized 3-level hierarchy -- giving designers explicit choices for different UI contexts
+**Depends on**: Phase 54 (adaptive tinting must work before adding new glass variants that need to support tinting)
+**Requirements**: GLAS-01, GLAS-02, GLAS-03
 **Success Criteria** (what must be TRUE):
-  1. 404.html uses grid wrapper with max-w-content, squircle CTA button, and liquid card surface -- visually distinct from v3.2 flat design when viewed side-by-side
-  2. contacts.html uses grid wrapper, liquid glass form container, squircle inputs/select, and glass contact info card -- form submission still works (Directus POST returns 200)
-  3. Protected legacy preserved on both pages: nbsp count unchanged (grep -c '&nbsp;'), ARIA attribute count unchanged (grep -c 'role="alert"\|aria-live'), head metadata diff is append-only, honeypot field present, zero text-wrap: balance instances
-  4. Stacking contexts validated: form success overlay renders above glass surfaces; dark mode toggle produces correct glass appearance on both pages; no z-index collisions visible
-  5. make build exits 0 and byte-identity check passes
-**Plans**: 2 plans
-Plans:
-- [x] 45-01-PLAN.md — Migrate 404.html main content (grid wrapper + liquid card + squircle CTA)
-- [x] 45-02-PLAN.md — Migrate contacts.html main content (grid + liquid glass cards/form + squircle inputs/buttons)
+  1. .liquid-clear class exists and produces higher transparency with a dimming layer suitable for overlay contexts (modals, lightboxes) -- visually distinct from .liquid-regular when placed side by side
+  2. .liquid-fluted class exists and produces vertical streak patterns via repeating-linear-gradient -- the "fluted glass" texture is visible and distinct from regular glass
+  3. Glass hierarchy is formalized with 3 documented levels: .liquid-nav (navigation-weight: lightest blur, highest transparency), .liquid-regular (standard cards: medium blur/opacity/shadow), .liquid-clear (overlay: highest transparency + dimming) -- each level has distinct blur, opacity, and shadow values visible in DevTools
+  4. All 3 variants work correctly in both light and dark mode, and all 3 inherit adaptive tinting from their parent section
+  5. make build exits 0; styleguide.html can demonstrate all 3 variants side by side
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 46: Service Pages
-**Goal**: checkup.html, online-consultations.html, and treatment-abroad.html are fully migrated to v4.0 design language, proving the grid/squircle/liquid pattern at moderate complexity across 3 independent page structures
-**Depends on**: Phase 45 (simple pages validate patterns before service pages)
-**Requirements**: MIGRATE-03, MIGRATE-04, MIGRATE-05
+### Phase 56: Specular Physics & Interaction States
+**Goal**: Glass surfaces respond to cursor position with a subtle specular highlight shift, and all glass elements have consistent hover/press/focus interaction states
+**Depends on**: Phase 55 (all glass variants must exist before applying interaction states across them)
+**Requirements**: VFEX-02, VFEX-03
 **Success Criteria** (what must be TRUE):
-  1. checkup.html uses grid + squircle on program/stats/B2B/form cards + liquid surfaces; whitespace-nowrap span on "za 1-2 dnya" preserved; nbsp bindings preserved; stat bar uses grouped glass backdrop (DIFF-02 surface applied here)
-  2. online-consultations.html uses grid + squircle on doctor/pricing/trigger cards + liquid surfaces; pricing card badge and gradient CTA intact
-  3. treatment-abroad.html uses grid + squircle on clinic/step/review cards + liquid surfaces; review cards with glass treatment
-  4. Per-page migration gates pass on all 3 pages: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0
-  5. make build exits 0 and byte-identity check passes; all 3 pages render correctly in light and dark mode
-**Plans**: 2 plans
-Plans:
-- [ ] 46-01-PLAN.md — TBD
-- [ ] 46-02-PLAN.md — TBD
+  1. On desktop, moving the cursor near (but outside) a glass card produces a soft specular highlight shift via CSS custom properties updated by lightweight JS -- the light "follows" the cursor direction
+  2. Hover state on any glass element brightens the surface subtly; press/active state darkens it -- transitions are smooth (200-300ms)
+  3. Focus-visible state on all glass elements shows a clear ring that meets WCAG AA visibility requirements -- verified by keyboard-tabbing through glass elements
+  4. All interaction states (hover, press, focus) work consistently across .liquid-regular, .liquid-clear, .liquid-fluted, and .liquid-nav variants
+  5. prefers-reduced-motion disables the specular parallax effect while keeping static interaction states (hover brightness, press darken, focus ring)
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 47: Index Page
-**Goal**: index.html (the highest-complexity page with 13 sections) is fully migrated to v4.0 design language, and the responsive grid system is verified working on all 6 pages (with index being the hardest case)
-**Depends on**: Phase 46 (service pages prove patterns at scale before index)
-**Requirements**: MIGRATE-06, GRID-02
+### Phase 57: GPU Performance Audit
+**Goal**: Glass rendering stays within a strict GPU budget -- no more than 6 simultaneous backdrop-filter elements per viewport, and will-change is applied only where it measurably helps
+**Depends on**: Phase 56 (all visual effects and variants must be in place before performance audit -- audit the final state, not an intermediate one)
+**Requirements**: PERF-01, PERF-02
 **Success Criteria** (what must be TRUE):
-  1. index.html uses full grid + liquid + squircle treatment across all 13 sections, including floating hero cards with correct z-index layering, glass stat bar, service cards, pricing, FAQ, form, and CTA sections
-  2. Mesh-bg blob compatibility maintained -- blobs render behind glass surfaces without visual artifacts; icon chip rotate-vs-squircle resolved (either rotation dropped or squircle skipped on rotated chips)
-  3. GRID-02 verified: text-bearing cards occupy minimum 4 columns on tablet breakpoint (8-col) across ALL 6 pages -- Russian compound words do not overflow card boundaries at 768px viewport
-  4. Hero CTA has shimmer sweep animation on hover (DIFF-01 surface applied); scroll-edge fade (DIFF-03) visible at chrome/content overlap boundaries
-  5. Per-page migration gates pass: nbsp count preserved, ARIA attribute count preserved, head metadata append-only, honeypot field present, text-wrap: balance count = 0; make build exits 0 and byte-identity check passes
-**Plans**: 2 plans
-Plans:
-- [x] 47-01-PLAN.md — Migrate Hero + Stats + Sections 2-6 (grid, liquid-card, shimmer CTA, grouped stats-glass)
-- [x] 47-02-PLAN.md — Migrate Sections 7-11 (FAQ, Form, Final CTA) + GRID-02 cross-page verification
-**UI hint**: yes
+  1. At no scroll position on any of the 7 pages are more than 6 elements with active backdrop-filter simultaneously visible in the viewport -- verified by DevTools Layers panel inspection at multiple scroll positions
+  2. will-change is present only on elements that animate (hover transitions, specular shift, shimmer) and absent from all static glass surfaces -- grep for will-change shows it on animation-related selectors only
+  3. Chrome DevTools Performance recording of a full scroll through index.html shows zero long frames (>50ms) attributable to paint/composite operations on glass elements
+  4. Budget Android proxy test (4x CPU throttle in DevTools) achieves scroll FPS >= 30 on index.html with all glass effects active
+**Plans**: TBD
 
-### Phase 48: Verification
-**Goal**: All 6 pages pass accessibility, performance, and reduced-motion audits -- confirming that the v4.0 visual upgrade did not regress the WCAG AA and usability baseline established in v3.0-v3.2
-**Depends on**: Phase 47 (all pages must be migrated before verification audit)
-**Requirements**: VERIFY-01, VERIFY-02, VERIFY-03, VERIFY-04
-**Success Criteria** (what must be TRUE):
-  1. WCAG AA contrast (>= 4.5:1) manually verified on all text over glass surfaces in both light and dark mode across all 6 pages -- pixel-sampled, not just declared-color checked
-  2. Keyboard tab order is correct and focus-visible outline (outline, not box-shadow) is visible on all interactive elements across all 6 pages -- verified by tabbing through each page start-to-finish
-  3. Budget Android device (Samsung Galaxy A32/A52 or Xiaomi Redmi Note 10) achieves scroll FPS >= 30 on index.html (the heaviest page) -- measured on a real physical device, not DevTools throttle
-  4. Toggling prefers-reduced-motion: reduce in browser settings disables specular shimmer, spring animations, and refraction effect while showing static glass appearance -- visually verified on at least 2 pages
-**Plans**: 2 plans
-Plans:
-- [x] 48-01-PLAN.md — WCAG AA contrast audit + keyboard/focus audit + fixes
-- [x] 48-02-PLAN.md — Reduced-motion/print audit + Android FPS assessment + fixes
-
-### Phase 49: Documentation
-**Goal**: The v4.0 design system is documented for future contributors, and a live styleguide page proves the 7th-page invariant (a new page can be authored using only documented components and the splicer pipeline)
-**Depends on**: Phase 47 (all pages migrated; docs reference final class names and patterns); can partially overlap with Phase 48
+### Phase 58: Design System Docs & Print
+**Goal**: The styleguide page documents all v5.0 glass variants with usage guidelines, and the print stylesheet covers every new variant with opaque fallback
+**Depends on**: Phase 57 (all variants and effects must be finalized before documenting them)
 **Requirements**: DOCS-01, DOCS-02
 **Success Criteria** (what must be TRUE):
-  1. docs/DESIGN-SYSTEM.md exists and documents: shadow-wrap idiom with code examples, complete class inventory (.squircle-*, .liquid-*), token scale (grid/squircle/liquid/motion), anti-patterns list, Russian typography rules (nbsp binding, orphan prevention, whitespace-nowrap), protected files list, and scope creep guards
-  2. styleguide.html exists as a live visual reference page showing all design system components: glass cards (light + dark), squircle mask variants (md/lg/xl/full), typography scale, button variants (primary gradient, secondary glass, icon), form elements (input, select, textarea), badge/chip -- all rendered with real CSS, not screenshots
-  3. styleguide.html builds correctly via make build (proving the 7th-page invariant -- splicer handles a new page with only body content + BUILD markers, zero chrome duplication)
-**Plans**: 2 plans
-Plans:
-- [x] 49-01-PLAN.md — Create docs/DESIGN-SYSTEM.md with complete v4.0 design system reference
-- [x] 49-02-PLAN.md — Create styleguide.html + wire into build pipeline (7th-page invariant)
+  1. styleguide.html shows all glass variants (.liquid-regular, .liquid-clear, .liquid-fluted, .liquid-nav) with live rendered examples, do/don't guidance, and hierarchy explanation
+  2. styleguide.html demonstrates adaptive tinting by placing glass cards over different colored section backgrounds
+  3. Print stylesheet renders all glass variants (fluted, clear, nav, regular) as opaque surfaces with visible borders -- verified by print preview in Chrome showing no transparent/broken cards
+  4. make build exits 0; styleguide.html builds correctly via splicer pipeline
+**Plans**: TBD
 **UI hint**: yes
 
 ## Progress
 
-### v4.0 Liquid Design System
+### v5.0 Full Liquid Glass Rework
 
 **Execution Order:**
-Phases execute in numeric order: 41 -> 42 -> 43 -> 44 -> 45 -> 46 -> 47 -> 48 -> 49.
-Phases 42 and 43 may execute in parallel after Phase 41 completes (no cross-dependency).
-Phases 48 and 49 may partially overlap (docs can start during verification).
+Phases execute in numeric order: 51 -> 52 -> 53 -> 54 -> 55 -> 56 -> 57 -> 58.
+Strictly linear -- each phase builds on the previous.
 
 **Universal gate after every phase:** make build exits 0 + byte-identity check passes.
 
-**Per-page migration gates (Phases 45-47):**
-- nbsp count preserved (grep -c '&nbsp;')
-- ARIA attribute count preserved (grep -c 'role="alert"\|aria-live')
-- Head metadata diff is append-only
-- Honeypot field preserved
-- text-wrap: balance count remains zero
-
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 41. Foundation Tokens | 2/2 | Complete    | 2026-04-09 |
-| 42. Squircle Primitives | 1/1 | Complete    | 2026-04-09 |
-| 43. Liquid Glass Primitives | 2/2 | Complete    | 2026-04-09 |
-| 44. Chrome Partials Upgrade | 2/2 | Complete    | 2026-04-09 |
-| 45. Simple Pages (404 + Contacts) | 2/2 | Complete    | 2026-04-09 |
-| 46. Service Pages | 0/TBD | Not started | - |
-| 47. Index Page | 2/2 | Complete    | 2026-04-09 |
-| 48. Verification | 2/2 | Complete    | 2026-04-09 |
-| 49. Documentation | 2/2 | Complete    | 2026-04-09 |
-
-### Phase 50: Liquid Glass Design System
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 49
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd-plan-phase 50 to break down)
+| 51. Cross-Browser Hardening | 0/TBD | Not started | - |
+| 52. Token Foundation & Dead Code Cleanup | 0/TBD | Not started | - |
+| 53. SVG Refraction Tuning | 0/TBD | Not started | - |
+| 54. Adaptive Tinting | 0/TBD | Not started | - |
+| 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
+| 56. Specular Physics & Interaction States | 0/TBD | Not started | - |
+| 57. GPU Performance Audit | 0/TBD | Not started | - |
+| 58. Design System Docs & Print | 0/TBD | Not started | - |

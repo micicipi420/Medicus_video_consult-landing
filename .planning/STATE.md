@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v5.0
 milestone_name: Full Liquid Glass Rework
-status: Defining requirements
+status: Ready to plan
 stopped_at: null
 last_updated: "2026-04-10T00:00:00.000Z"
 progress:
-  total_phases: 0
+  total_phases: 8
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,21 +17,25 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-23)
+See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 24 — liquid-glass-enhancement
+**Current focus:** Phase 51 -- Cross-Browser Hardening
 
 ## Current Position
 
-Phase: 49
+Phase: 51 of 58 (Cross-Browser Hardening)
 Plan: Not started
+Status: Ready to plan
+Last activity: 2026-04-10 -- Roadmap created for v5.0 (8 phases, 17 requirements)
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 9
+- Total plans completed: 0
 - Average duration: --
 - Total execution time: 0 hours
 
@@ -39,19 +43,7 @@ Plan: Not started
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 17 | 0/TBD | - | - |
-| 18 | 0/TBD | - | - |
-| Phase 17 P01 | 2min | 2 tasks | 1 files |
-| Phase 18 P01 | 8 | 3 tasks | 1 files |
-| Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
-| Phase 20 P01 | 2 | 2 tasks | 2 files |
-| Phase 20 P02 | 10 | 2 tasks | 2 files |
-| Phase 21 P01 | 15 | 2 tasks | 1 files |
-| Phase 22 P01 | 2 | 3 tasks | 2 files |
-| 46 | 3 | - | - |
-| 47 | 2 | - | - |
-| 48 | 2 | - | - |
-| 49 | 2 | - | - |
+| - | - | - | - |
 
 ## Accumulated Context
 
@@ -60,42 +52,20 @@ Plan: Not started
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [v1.2]: Separate --color-cta from --color-primary (green CTA, cyan accents)
-- [v1.3]: Gradient CTA replaces solid green -- align with medicusunion.kz
-- [Phase 17]: Opacity hover (0.85) for gradient CTA compatibility
-- [Phase 18]: Flat card design (no shadows) matches medicusunion.kz reference — removed all card box-shadows
-- [Phase 18]: Mint badge palette (#d0fae4 bg / #007955 text) as CSS custom properties for pricing badge
-- [Phase 19-v1-3-cleanup]: Removed --color-cta-hover-kz token declared in Phase 17 but never used — hover relies on opacity: 0.85
-- [Phase 19-v1-3-cleanup]: Removed box-shadow from .pricing__card to complete flat design intent missed in Phase 18
-- [Phase 20]: navy #0F1923 as dark mode base — avoids pure black halation for astigmatic 45+ users
-- [Phase 20]: [data-theme='dark'] redefines exact same --color-* token names — never parallel names like --color-white-dark; all component CSS auto-updates via cascade
-- [Phase 20]: Default-light policy (DM-04): @media prefers-color-scheme scoped to :root:not([data-theme='light']) — OS dark is hint-only, explicit toggle always wins
-- [Phase 20]: initDarkMode() placed last in initAll() so all other UI is initialised before theme state reconciliation
-- [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
-- [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
-- [Phase 21]: h1/h2 weight 800 (Manrope Variable), h3 stays 700; --line-height-display: 1.1 added for display-scale headings; text-wrap: balance on all h1/h2/h3 prevents Cyrillic orphan lines
-- [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
-- [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
-- [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
+- [v4.0]: Shadow-wrap pattern (.liquid-card-wrap) introduced for box-shadow on masked elements
+- [v4.0]: SVG refraction via feTurbulence + feDisplacementMap behind html[data-refract] JS probe
+- [v4.0]: Dark mode disables backdrop-filter on glass -- opaque dark surface instead
 
-### Roadmap Evolution
+### Pending Todos
 
-- Phase 24 added: Liquid Glass Enhancement
-- Phase 50 added: Liquid Glass Design System
+None yet.
 
 ### Blockers/Concerns
 
-- Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
-- Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
-
-### Quick Tasks Completed
-
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
-| 260409-wxf | Enhance liquid glass CSS with Apple Liquid Glass research improvements | 2026-04-09 | 9fd2e99 | [260409-wxf-enhance-liquid-glass-css-with-apple-liqu](./quick/260409-wxf-enhance-liquid-glass-css-with-apple-liqu/) |
-| 260410-014 | Maximize Liquid Glass fidelity with all remaining effects | 2026-04-10 | c7310bf | [260410-014-maximize-liquid-glass-fidelity-with-all-](./quick/260410-014-maximize-liquid-glass-fidelity-with-all-/) |
+- Safari backdrop-filter + var() bug is the primary cross-browser risk -- must be resolved before any new glass work
+- CLEN-02 (removing 70+ wrapper divs) is high-touch HTML change across all 7 pages -- needs careful visual regression check
 
 ## Session Continuity
 
-Last activity: 2026-04-10 — Milestone v5.0 started: Full Liquid Glass Rework
-Resume file: .planning/HANDOFF.json
+Last activity: 2026-04-10 -- v5.0 roadmap created (8 phases: 51-58)
+Resume file: None

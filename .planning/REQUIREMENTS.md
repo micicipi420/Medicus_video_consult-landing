@@ -55,20 +55,20 @@ _None deferred — all features scoped to v5.0._
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| XBRO-01 | TBD | Pending |
-| XBRO-02 | TBD | Pending |
-| XBRO-03 | TBD | Pending |
-| GLAS-01 | TBD | Pending |
-| GLAS-02 | TBD | Pending |
-| GLAS-03 | TBD | Pending |
-| VFEX-01 | TBD | Pending |
-| VFEX-02 | TBD | Pending |
-| VFEX-03 | TBD | Pending |
-| PERF-01 | TBD | Pending |
-| PERF-02 | TBD | Pending |
-| PERF-03 | TBD | Pending |
-| CLEN-01 | TBD | Pending |
-| CLEN-02 | TBD | Pending |
-| CLEN-03 | TBD | Pending |
-| DOCS-01 | TBD | Pending |
-| DOCS-02 | TBD | Pending |
+| XBRO-01 | Phase 51 | Pending |
+| XBRO-02 | Phase 51 | Pending |
+| XBRO-03 | Phase 51 | Pending |
+| CLEN-01 | Phase 52 | Pending |
+| CLEN-02 | Phase 52 | Pending |
+| CLEN-03 | Phase 52 | Pending |
+| PERF-03 | Phase 53 | Pending |
+| VFEX-01 | Phase 54 | Pending |
+| GLAS-01 | Phase 55 | Pending |
+| GLAS-02 | Phase 55 | Pending |
+| GLAS-03 | Phase 55 | Pending |
+| VFEX-02 | Phase 56 | Pending |
+| VFEX-03 | Phase 56 | Pending |
+| PERF-01 | Phase 57 | Pending |
+| PERF-02 | Phase 57 | Pending |
+| DOCS-01 | Phase 58 | Pending |
+| DOCS-02 | Phase 58 | Pending |
