@@ -173,7 +173,7 @@ Plans:
   5. make build exits 0; styleguide.html can demonstrate all 3 variants side by side
 **Plans**: 1 plan
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [ ] 55-01-PLAN.md — Glass material variants, hierarchy tokens, and styleguide demos
 **UI hint**: yes
 
 ### Phase 56: Specular Physics & Interaction States
@@ -234,7 +234,7 @@ Strictly linear -- each phase builds on the previous.
 | 52. Token Foundation & Dead Code Cleanup | 2/2 | Complete    | 2026-04-10 |
 | 53. SVG Refraction Tuning | 1/1 | Complete    | 2026-04-10 |
 | 54. Adaptive Tinting | 1/1 | Complete    | 2026-04-10 |
-| 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
+| 55. Glass Material Variants & Hierarchy | 0/1 | Planned | - |
 | 56. Specular Physics & Interaction States | 0/TBD | Not started | - |
 | 57. GPU Performance Audit | 0/TBD | Not started | - |
 | 58. Design System Docs & Print | 0/TBD | Not started | - |
