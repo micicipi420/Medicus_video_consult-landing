@@ -62,7 +62,7 @@ install-tailwind:
 
 build: install-tailwind
 	@echo "[build] compiling Tailwind CSS..."
-	@./tailwindcss -i src/styles/tailwind.css -o css/styles.css --minify
+	@./tailwindcss -i src/styles/tailwind.css -o css/styles.css
 	@echo "[build] splicing chrome partials..."
 	@./scripts/build-pages.sh $(PAGES)
 	@echo "[build] done"

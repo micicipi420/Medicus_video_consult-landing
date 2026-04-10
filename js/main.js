@@ -652,7 +652,7 @@
   function initAll() {
     initRefractionProbe();
     initMouseSpecular();
-    initGlassBudget();
+    // initGlassBudget(); // Disabled: budget=6 too aggressive, hides visible content cards (see Phase 57 revert)
     initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
@@ -669,7 +669,7 @@
    * Header and mobile menu are persistent -- no re-init needed
    */
   function reinitPageContent() {
-    initGlassBudget();
+    // initGlassBudget(); // Disabled: see initAll comment
     initSmoothScroll();
     initAccordion();
     initPhoneMask();
