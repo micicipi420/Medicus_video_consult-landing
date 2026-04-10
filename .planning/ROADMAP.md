@@ -128,6 +128,10 @@ Plans:
   2. All .liquid-card-wrap wrapper divs are removed from HTML across all 7 pages (70+ elements eliminated) and the .liquid-card-wrap CSS class is deleted -- grep confirms zero occurrences in both HTML and CSS
   3. src/styles/index.css is deleted; unused green ramp tokens (--mu-green-200, --mu-green-400, --mu-green-900) are removed from theme.css -- file system confirms deletion, grep confirms token removal
   4. make build exits 0, byte-identity check passes, and all 7 pages render identically to pre-cleanup state (visual regression check)
+**Plans**: 2 plans
+Plans:
+- [ ] 52-01-PLAN.md — Remove legacy tokens and dead CSS file
+- [ ] 52-02-PLAN.md — Remove liquid-card-wrap wrappers from HTML and CSS
 
 ### Phase 53: SVG Refraction Tuning
 **Goal**: The SVG refraction filter is calibrated per-element for optimal visual fidelity without excessive GPU cost -- displacement scale and noise frequency are tuned to each glass surface's size and context

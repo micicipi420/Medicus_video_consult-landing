@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v5.0
 milestone_name: Full Liquid Glass Rework
-status: Phase 51 complete — starting Phase 52
-stopped_at: Phase 51 verified (human_needed 8/9)
-last_updated: "2026-04-10T12:00:00.000Z"
+status: Executing Phase 52
+stopped_at: Completed 51-02-PLAN.md
+last_updated: "2026-04-10T11:24:07.412Z"
 progress:
   total_phases: 8
   completed_phases: 1
-  total_plans: 2
+  total_plans: 4
   completed_plans: 2
-  percent: 12
+  percent: 50
 ---
 
 # Project State
@@ -20,11 +20,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** v5.0 Full Liquid Glass Rework — Phase 52 next
+**Current focus:** Phase 52 — Token Foundation & Dead Code Cleanup
 
 ## Current Position
 
-Phase: 51 (cross-browser-hardening) — COMPLETE ✅ (human_needed 8/9)
+Phase: 52 (Token Foundation & Dead Code Cleanup) — EXECUTING
+Plan: 1 of 2
 Next: Phase 52 (token-foundation-dead-code-cleanup)
 
 ## Performance Metrics
