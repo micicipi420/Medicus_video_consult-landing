@@ -300,14 +300,24 @@
 /* ================================================
    Section 10 -- Refraction progressive enhancement
    Chrome 139+ only. Gated by html[data-refract="true"]
-   attribute set by JS probe (added in Plan 02).
+   attribute set by JS probe (initRefractionProbe).
+   Three size-calibrated filters (Phase 53 / PERF-03):
+     sm = zero displacement (badges/chips -- reserved for future variants)
+     md = card-scale displacement (cards, header, nav chrome)
+     lg = subtle wide-area displacement (stats-glass, full-width sections)
    ================================================ */
 
+/* Medium refraction: cards and navigation chrome */
 html[data-refract="true"] .liquid-regular,
-html[data-refract="true"] .liquid-card,
+html[data-refract="true"] .liquid-card {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Large refraction: full-width stat containers */
 html[data-refract="true"] .stats-glass {
-  backdrop-filter: url(#liquid-refract) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  -webkit-backdrop-filter: url(#liquid-refract) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: url(#liquid-refract-lg) blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-lg) blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
 }
 
 /* ================================================
