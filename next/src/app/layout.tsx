@@ -2,6 +2,11 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { StickyBar } from '@/components/layout/StickyBar';
+import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
+
 const inter = localFont({
   src: [
     { path: '../fonts/inter-latin-wght-normal.woff2', weight: '100 900', style: 'normal' },
@@ -29,7 +34,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${inter.variable} ${manrope.variable}`}>
       <body className="relative bg-mu-text-50 text-mu-text-900 overflow-x-clip">
-        {children}
+        <SvgRefractionDefs />
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <StickyBar />
       </body>
     </html>
   );
