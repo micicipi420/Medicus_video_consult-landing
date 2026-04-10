@@ -1,354 +1,502 @@
-# Feature Research: v1.4 Visual Redesign
+# Feature Landscape: v5.0 Full Liquid Glass Rework
 
-**Domain:** Medical consultation landing page — 2025 visual redesign (glassmorphism, dark mode, bold typography, micro-animations)
-**Researched:** 2026-03-24
-**Confidence:** HIGH (CSS/browser specs from MDN), MEDIUM (UX patterns for 45+ audience from research literature), LOW where flagged
-**Scope:** This document covers ONLY new visual features for v1.4. For core landing page features (11 sections, form, Directus), see the original feature research (committed with v1.0).
-
----
-
-## Research Context
-
-The landing page has 11 sections, ~1,640 lines of CSS with a full CSS custom property token system, vanilla JS ES5, IntersectionObserver scroll animations, and self-hosted Inter/Manrope variable fonts. The v1.4 milestone adds a visual layer on top of a working, validated structure. The audience constraint — Kazakhstan residents 45+, medical service, 450 EUR price point — is the most important filter for every visual decision in this document.
+**Domain:** Medical consultation landing page -- Liquid Glass visual refinement to Apple WWDC 2025 fidelity
+**Researched:** 2026-04-09
+**Confidence:** HIGH for CSS techniques, MEDIUM for Apple Liquid Glass behavioral parity, LOW where flagged
+**Scope:** NEW features only. Existing implementation (liquid-regular, liquid-card, liquid-btn-primary/secondary, stats-glass, specular rim-light, animated glint, mouse-tracking specular, SVG refraction, extended header backdrop, dark mode, section tints, shimmer sweep, scroll-edge fades) is documented but not re-specified.
 
 ---
 
-## Feature Landscape
+## Existing Implementation Inventory
 
-### Table Stakes (Users Expect These)
+Before defining new features, what is already built and working in v4.0:
 
-These are visual features that, in 2025, users expect from any premium landing page. Missing them does not break functionality but signals "old-looking website" to users evaluating a 450 EUR medical service on trust.
+| Feature | Class/Mechanism | Status |
+|---------|----------------|--------|
+| Base glass material | `.liquid-regular` with `backdrop-filter: blur() saturate() brightness()` | Shipped |
+| Card glass material | `.liquid-card` with same filter + mouse-tracking `::after` | Shipped |
+| Button glass (secondary) | `.liquid-btn-secondary` with glass material | Shipped |
+| Button solid (primary) | `.liquid-btn-primary` with gradient fill | Shipped |
+| Stats grouped glass | `.stats-glass` with larger blur radius | Shipped |
+| Specular rim-light | `::before` pseudo on regular/btn-secondary/stats | Shipped |
+| Animated glint border | `::before` pseudo on liquid-card with mask-composite | Shipped |
+| Mouse-tracking specular | `--mouse-x`/`--mouse-y` CSS vars via JS mousemove | Shipped |
+| SVG refraction | `feTurbulence` + `feDisplacementMap`, Chromium-only via `data-refract` | Shipped |
+| Extended header backdrop | 200% height + mask-image (Josh Comeau technique) | Shipped |
+| Dark mode token cascade | `.dark` class with `--liquid-*` overrides | Shipped |
+| Section tint backgrounds | `.section-tint-cool/warm/mint` gradient overlays | Shipped |
+| Shimmer sweep | `.shimmer-sweep` hover animation on CTA | Shipped |
+| Scroll-edge fades | `.scroll-fade-top/bottom` mask-image gradients | Shipped |
+| Squircle masks | `.squircle-md/lg/xl` with SVG mask + corner-shape progressive enhancement | Shipped |
+| Print/reduced-motion/reduced-transparency | Full media query fallbacks | Shipped |
 
-| Feature | Why Expected | Complexity | Dependency on Existing System | Notes |
-|---------|--------------|------------|-------------------------------|-------|
-| Dark mode toggle | Operating systems default to dark mode; users with dark mode active who land on a bright page get visual discomfort; 45+ users with photosensitivity especially benefit from a working toggle | MEDIUM | Requires new CSS token layer; `[data-theme="dark"]` selector + localStorage | `prefers-color-scheme` media query is Baseline since 2020 (MDN-confirmed). Toggle must be in sticky nav (already exists). localStorage persistence across sessions is essential for repeat visitors. |
-| Smooth theme transition | Instant flash from light to dark feels broken; a 300ms fade on background and text colors is expected | LOW | Adds `transition` on `:root` color tokens | Gate with `prefers-reduced-motion: reduce`. Zero duration when motion is reduced. |
-| Legible text in dark mode | Dark mode that reduces contrast below WCAG AA breaks accessibility for the exact users who enabled dark mode for comfort | LOW | Requires carefully chosen dark-mode token values | White text on pure black (#000) causes halation for some users (MEDIUM confidence, ophthalmology UX literature). Use near-black (#18212C) backgrounds and off-white (#E8EFF6) text rather than pure values. |
-| Visible interactive states | Buttons, links, and cards must have clear hover/focus states that work in both themes | LOW | Extend existing `--transition-fast` and `--transition-normal` tokens | Already have `translateY(-2px)` hover on cards. Focus rings must remain visible in dark mode. WCAG 2.1 SC 1.4.11 requires 3:1 non-text contrast ratio for focus indicators. |
+---
 
-### Differentiators (Competitive Advantage)
+## Table Stakes
 
-Visual features that elevate MedicusUnion KZ above typical medical landing pages while staying within the calm, trustworthy brand tone and the 45+ audience's cognitive tolerance.
+Features that v5.0 MUST deliver. Without these, the Liquid Glass system feels incomplete -- a 70% reproduction of Apple's language rather than a convincing implementation. These are the features that separate "has glass effects" from "has a glass SYSTEM."
 
-| Feature | Value Proposition | Complexity | Dependency on Existing System | Notes |
-|---------|-------------------|------------|-------------------------------|-------|
-| Glassmorphism cards (selective) | On light mode, frosted-glass cards over gradient or mesh backgrounds signal "premium, modern, European" — matches the brand promise of accessing international medicine | MEDIUM | Requires gradient background behind card (cannot glass over plain white); `backdrop-filter: blur()` on card; semi-transparent card background | `backdrop-filter` is Baseline 2024 (MDN-confirmed: September 2024). Must provide solid-color fallback for users on older browsers (Android WebView pre-2024, older iOS Safari). Apply ONLY to 2-3 hero/stats/pricing cards — not all 11 sections. Too much glassmorphism reads as design student portfolio, not medical authority. |
-| Dark mode with dual-purpose medical rationale | Dark mode is not just a visual trend — for patients researching medical conditions late at night (very common behavior), dark mode reduces eye strain during reading. This is a genuine user benefit, not decoration | MEDIUM | Full CSS token system rewrite with `[data-theme="dark"]` parallel token set | Dark mode enhances trust when marketed with medical rationale: "Режим для комфортного чтения в любое время". Position as care for the user, not just trendy feature. |
-| Bold display headings | Increasing h1/h2 size to 48-56px (from current 36-32px) with font-weight 800 creates visual hierarchy that immediately anchors a 45+ user reading at arm's length or on a phone | LOW | Manrope Variable already loaded (weights 200-800); only token values change; must verify line-height remains readable at display sizes | Research: display text above 48px requires line-height 1.1 max (tighter than current 1.2 for headings). At 56px, 1.1 or even 1.05 works. Must add responsive scaling via `clamp()` so 56px desktop does not become illegible on 360px screens. |
-| Micro-animation: scroll fade-in (enhanced) | The existing IntersectionObserver fade-in is functional but basic (opacity only). Adding a subtle vertical shift (20px → 0) makes reveals feel polished without the performance cost of heavy animations | LOW | Already have `animate-on-scroll` + `is-visible` classes; add `transform: translateY(20px)` to initial state and `transform: translateY(0)` to visible state | Duration 400ms ease-out. Stagger already in place (100ms per grid child). Gate everything behind `prefers-reduced-motion: reduce` — already done in the codebase, but ensure transform is also removed, not just opacity. |
-| Micro-animation: button interaction depth | Adding a subtle `scale(0.97)` on CTA button `:active` state gives tactile click feedback, which is especially reassuring for older users who may not be sure if they "clicked properly" | LOW | Extend existing `.btn` styles; `active` state is not currently styled | Duration 100ms. Do not use on links — only on submit buttons and CTA buttons. Feels physically responsive. |
-| CSS gradient mesh / subtle hero background | A soft color mesh or radial gradient behind the hero (blues and teals matching brand palette) provides depth without images and makes glassmorphism cards legible if applied to the hero area | LOW | New background on `.hero` section only; CSS `radial-gradient` layering | No image files needed. Pure CSS. Degrades gracefully. Dark mode variant should use deeper, darker gradients (deep navy + dark teal). |
+| Feature | Why Expected | Complexity | Depends On | Web Feasibility |
+|---------|--------------|------------|------------|-----------------|
+| Glass hierarchy system (3 tiers) | Apple defines glass as a material with explicit hierarchy: Regular (default), Clear (transparent), and navigation-level variants. Having only one `.liquid-regular` material means every glass element looks identical -- no visual hierarchy between nav, cards, and stats. | MEDIUM | Existing token architecture in theme.css | HIGH -- pure CSS token differentiation |
+| Interaction states on glass (hover, press, focus) | v4.0 has hover on buttons (`brightness(1.08)`, `scale(0.97)`) but glass cards and glass surfaces have NO interaction feedback beyond the mouse-tracking specular. Apple's glass "illuminates from within" on touch and has spring-based feedback. | MEDIUM | liquid-glass.css, existing `--dur-hover`/`--dur-press` tokens | HIGH -- CSS transitions + radial-gradient manipulation |
+| Adaptive tinting (background-aware glass color) | Apple's defining differentiator: glass shifts its tint based on the content behind it. Currently all glass elements use the same fixed `--liquid-bg: rgba(255,255,255,0.42)` regardless of section background. Glass over a cool-tint section looks the same as glass over a warm-tint section. | MEDIUM | Section tint system already in place | MEDIUM -- `mix-blend-mode` or per-section CSS variable override |
+| Dark mode glass refinement | Current dark mode glass uses `rgba(30,40,60,0.45)` uniformly. Apple's dark glass is more nuanced: lighter edges, deeper center, stronger specular rim. The current dark glass looks flat. | LOW | `.dark` token cascade in theme.css | HIGH -- token value tuning only |
 
-### Anti-Features (Commonly Requested, Often Problematic)
+### Table Stakes: Detailed Specifications
 
-Visual features that look impressive in design portfolios but actively harm conversion and trust for a 45+ medical audience.
+#### 1. Glass Hierarchy System (3 Tiers)
 
-| Feature | Why Requested | Why Problematic for This Project | Alternative |
-|---------|---------------|----------------------------------|-------------|
-| Full-page glassmorphism (every section) | "Looks premium, modern, Apple-inspired" | Requires a visually complex, busy background to work — glass over flat white looks broken and muddy. Applying to all 11 sections creates visual noise that disorients older readers trying to scan text. Medical trust requires text legibility above all. | Apply glassmorphism ONLY to 2-3 specific cards where a gradient background is already present (hero stats, pricing card). Flat clean background = flat clean cards everywhere else. |
-| Parallax scroll effects | "Creates depth and premium feel" | Explicitly listed as Out of Scope in PROJECT.md. Causes motion sickness in older users. Triggers `prefers-reduced-motion`. Slows scroll performance on mid-range Android (common in KZ). Performance-wise, `will-change: transform` on multiple elements degrades composite layers on GPU-limited devices. | Subtle opacity fade-in on scroll (already implemented). No transform-based parallax. |
-| Dark mode ONLY (no light mode) | "Dark is more premium in 2025" | Target audience spends significant daytime hours on the internet. Medical content with white/teal brand colors reads better on light backgrounds in daylight. Forcing dark mode removes user agency — the exact opposite of the care-oriented brand positioning. | Default to light mode. Toggle for dark. Respect `prefers-color-scheme` as initial state. |
-| Auto-playing theme based on time of day | "Smart UX: dark at night, light during day" | Requires JS timer logic. Feels intrusive and surprising. The user's OS dark mode setting already expresses their preference — override it only via explicit toggle. Multiple systems fighting over the theme creates flash of wrong theme on load. | Respect `prefers-color-scheme` on first load. localStorage preference on subsequent visits. Explicit toggle for manual override. |
-| CSS scroll-driven animations (animation-timeline) | "Latest CSS feature, no JS needed" | `animation-timeline` is explicitly NOT Baseline (MDN-confirmed: limited availability). Firefox support is limited as of 2026. The target audience includes users on older browsers. Using it without heavy fallback code adds complexity with zero benefit over the working IntersectionObserver implementation already in place. | Keep IntersectionObserver scroll animations. They work universally, are already implemented, and are well-tested in the codebase. |
-| Video backgrounds or animated gradients | "Dynamic, modern, energetic" | VIDEO in hero is explicitly Out of Scope in PROJECT.md (bandwidth on mobile). Animated gradients (using CSS `@keyframes` on background-position) run continuously and cannot be disabled without JS. They violate the spirit of `prefers-reduced-motion` even when the user hasn't set the preference. For 45+ users, moving backgrounds while they are trying to read text creates cognitive overload. | Static gradient mesh or hero illustration. Motion only on user interaction (hover) or scroll-triggered (IntersectionObserver, one-shot). |
-| White text on dark gradient cards | "Bold, modern, editorial" | The existing text color system (dark `#18212C` on light backgrounds) achieves 16.24:1 contrast. Switching to white text on colored gradient backgrounds requires extreme care — many gradient midpoints fall below 4.5:1 WCAG AA. The 45+ audience is the most vulnerable to contrast failures. Medical text (specializations, prices, process steps) must NEVER fall below AA compliance. | If using glassmorphism, ensure the backdrop is dark enough OR text is dark. Test every text/background combination. Light-on-dark only where the dark background is uniform enough to guarantee contrast. |
-| Heavy box shadows on glassmorphism cards | "Makes glass look more realistic and elevated" | Heavy shadows on already-complex backgrounds create visual mud. The existing design moved to flat cards (v1.3 decision: `box-shadow` removed). Glassmorphism itself provides depth signal via blur — adding heavy shadows on top is double depth signaling and creates visual clutter for 45+ users. | `backdrop-filter: blur(20px)` + thin 1px `border: rgba(255,255,255,0.2)` outline provides sufficient glass depth. No heavy box-shadow on glass cards. |
-| Dark mode with pure black background (#000000) | "True OLED dark mode" | Pure black backgrounds cause halation (bright halos around white text) for many users with astigmatism — prevalence increases significantly at 45+. Pure black can also cause eye fatigue during extended reading. | Use `#0F1923` or `#15202B` (near-black with slight blue/dark teal tint matching brand) as dark mode background. Softer on eyes, still clearly "dark mode". |
+Apple's Liquid Glass has three material variants. The web implementation needs three distinct visual tiers that create hierarchy through transparency, blur, and specular intensity.
+
+**Tier 1: Navigation glass (`.liquid-nav`)**
+- Purpose: Sticky header, toolbars, navigation bars
+- Character: Highest blur (already `--liquid-blur-xl: 60px` on scroll), most opaque, minimal specular
+- Reasoning: Navigation glass must be legible above all else. It is the substrate on which interactive controls sit. Apple explicitly reserves the heaviest glass treatment for navigation.
+- Implementation: Already partially exists as `.header--scrolled` overrides. Formalize into a named class with its own token set.
+
+**Tier 2: Surface glass (`.liquid-regular` -- existing, refined)**
+- Purpose: Cards, grouped content containers, stat blocks
+- Character: Medium blur (`--liquid-blur-md: 24px`), medium opacity, full specular + glint
+- Reasoning: This is the workhorse material. Most of the visual personality lives here.
+- Implementation: Already shipped. Token values may need tuning for contrast against the new Clear variant.
+
+**Tier 3: Clear glass (`.liquid-clear`)**
+- Purpose: Overlay panels, hero accent elements, decorative surfaces where background content should show through
+- Character: Lower opacity, lower blur, requires dimming layer, bold/bright content only
+- Reasoning: Apple's Clear variant deliberately sacrifices legibility for visual richness. Use ONLY where the background is media-rich and the foreground is bold (icons, large numbers).
+- Implementation: New class. Requires a `::after` dimming pseudo-element.
+
+**Confidence:** HIGH for the three-tier concept (directly from Apple's WWDC 2025 "Meet Liquid Glass" session). MEDIUM for the specific CSS values -- will need visual tuning.
+
+**Why NOT four or five tiers:** Apple has Regular, Clear, and Identity. Identity is "no glass" -- just the content. For a landing page with known, finite use cases, three tiers plus "no glass" covers every element.
+
+#### 2. Interaction States on Glass
+
+Apple's glass material provides four distinct interaction responses:
+
+**Hover (desktop):**
+- Glass surface brightens subtly (increase `--liquid-brightness` from 108% to ~115%)
+- Specular highlight intensifies (increase `::after` opacity from 0.15 to 0.25)
+- Inset shadow lightens (top highlight becomes more prominent)
+- Transition: `280ms` using `--ease-liquid` (already tokenized)
+
+**Press/Active:**
+- Glass surface dims slightly (decrease brightness to ~100%)
+- Element scales down: `transform: scale(0.98)` (already 0.97 on buttons, extend to cards)
+- Specular highlight concentrates under the press point (narrow the `::after` radial-gradient)
+- Apple describes this as "the glow spreads throughout the element starting from under your fingertips"
+- Transition: `120ms` using `--ease-liquid`
+
+**Focus (keyboard):**
+- Outer focus ring: `2px solid var(--mu-blue-text)` with `outline-offset: 3px` (already implemented globally)
+- Inner glass: increase specular rim opacity to ensure the focused element is visually distinct even when the focus ring is subtle
+- Glass cards should receive the same focus treatment as buttons
+
+**Glow spread (interaction feedback):**
+- When a glass element is interacted with, a subtle glow radiates from the interaction point
+- CSS implementation: transition the `::after` radial-gradient from tight (30% spread) to wide (80% spread) on `:active`, then ease back on release
+- This is Apple's "illuminates from within" behavior
+
+**Confidence:** MEDIUM. The behavioral descriptions come from WWDC session summaries and Apple's HIG. Exact CSS values are my recommendations based on what works visually -- they will need tuning.
+
+**What NOT to do:**
+- Do NOT add spring physics (bounce on release). This requires JS animation libraries and is excessive for a static landing page with a 45+ audience. A smooth CSS ease-out is sufficient.
+- Do NOT animate `backdrop-filter` values directly. GPU-intensive, causes frame drops on Android.
+
+#### 3. Adaptive Tinting
+
+Apple's glass dynamically shifts its tint based on what is behind it. On the web, true per-pixel tinting is not possible without WebGL. However, the project already has section-level tinting (`.section-tint-cool/warm/mint`), which provides a practical approximation.
+
+**Implementation approach: CSS custom property cascade per section.**
+
+Each section with a tint already declares a gradient background. Extend this by also declaring a `--liquid-tint` override that glass elements inside that section inherit:
+
+```css
+/* In theme.css or liquid-glass.css */
+.section-tint-cool  { --liquid-tint: rgba(56, 198, 244, 0.06); }
+.section-tint-warm  { --liquid-tint: rgba(255, 162, 92, 0.05); }
+.section-tint-mint  { --liquid-tint: rgba(111, 222, 169, 0.06); }
+
+/* In .liquid-regular, .liquid-card, etc. */
+.liquid-card {
+  background: color-mix(in srgb, var(--liquid-bg), var(--liquid-tint, transparent) 30%);
+  /* Falls back to --liquid-bg when --liquid-tint is not set */
+}
+```
+
+**Alternative approach: `mix-blend-mode`.**
+Overlay a pseudo-element with `mix-blend-mode: color` and a background matching the section tint. This creates a color-shift effect on the glass surface. However, `mix-blend-mode` interacts unpredictably with `backdrop-filter` stacking contexts. The CSS variable approach is safer and more controllable.
+
+**Confidence:** LOW for `color-mix()` approach (needs browser testing -- `color-mix()` is Baseline 2023 per MDN, should be fine). MEDIUM for the design concept (Apple's tinting is GPU-shader-level; this is a deliberate simplification).
+
+**Risk:** Over-tinting makes glass look dirty or muddy, especially on warm sections. Keep tint contribution under 30% blend ratio. Test visually per section.
+
+#### 4. Dark Mode Glass Refinement
+
+Current dark mode glass is flat: `rgba(30, 40, 60, 0.45)` with reduced specular. Apple's dark glass has more depth:
+
+- **Stronger edge highlights:** Increase `--liquid-shadow-inset-top` from `rgba(255,255,255,0.15)` to `rgba(255,255,255,0.22)`. The rim-light on dark glass is what defines the shape.
+- **Deeper center:** Reduce `--liquid-bg` from `rgba(30,40,60,0.45)` to `rgba(20,30,50,0.5)` -- darker center creates the "well" effect.
+- **Subtle gradient fill:** Replace flat `rgba()` with a top-to-bottom gradient (`rgba(40,50,70,0.35)` to `rgba(20,30,50,0.55)`) so dark glass has internal depth.
+- **Specular rim stays visible:** `::before` rim-light opacity in dark mode should be 0.4, not current 0.3.
+
+**Confidence:** HIGH -- these are token value changes in existing `.dark` cascade.
+
+---
+
+## Differentiators
+
+Features that elevate the Liquid Glass implementation beyond basic glassmorphism. Not expected, but create the "wow, that looks like Apple" reaction. These are the features that justify calling it "Liquid Glass" rather than "glassmorphism."
+
+| Feature | Value Proposition | Complexity | Depends On | Web Feasibility |
+|---------|-------------------|------------|------------|-----------------|
+| Fluted glass variant (`.liquid-fluted`) | Vertical streak pattern that resembles privacy glass / reeded glass. Apple uses this sparingly for decorative panels. Creates visual variety within the glass system without adding a fundamentally new material. | MEDIUM | Existing glass base, `repeating-linear-gradient` | HIGH -- pure CSS |
+| Specular highlight physics (tilt response) | Mouse-tracking specular already exists but the highlight is a fixed radial gradient that follows the cursor. Physics-based specular would adjust the highlight SHAPE and INTENSITY based on the cursor angle from the element center, creating a more convincing light simulation. | HIGH | Existing `--mouse-x`/`--mouse-y` JS system | MEDIUM -- requires JS enhancement |
+| Glass-on-content dimming layer | Apple's Clear glass variant requires a dimming layer behind it when placed over content. This creates a subtle vignette/darkening effect that improves text legibility without fully obscuring the background. | LOW | `.liquid-clear` class (new) | HIGH -- `::before` pseudo with gradient overlay |
+| SVG refraction tuning (per-element calibration) | Current refraction uses one global `feTurbulence` filter with fixed parameters (`baseFrequency="0.008"`, `scale="30"`). Per-element calibration would vary the displacement scale based on element size -- large surfaces get subtler refraction, small elements get more pronounced bending. | MEDIUM | Existing SVG filter infrastructure, `data-refract` probe | MEDIUM -- multiple SVG filters or JS parameter injection |
+| Concentric corner radius | Apple's glass nests shapes concentrically: inner elements subtract padding from the parent's corner radius. Currently all squircle tiers are independent. Adding concentric radius calculation (parent radius - padding = child radius) creates the "set within" look. | LOW | Existing squircle system | HIGH -- `calc()` with CSS custom properties |
+
+### Differentiators: Detailed Specifications
+
+#### 5. Fluted Glass Variant (`.liquid-fluted`)
+
+Fluted glass (also called reeded glass or ribbed glass) features vertical parallel streaks that partially distort what is behind them while maintaining the frosted quality. In Apple's system, this is a texture variant applied to decorative surfaces.
+
+**CSS implementation:**
+
+```css
+.liquid-fluted {
+  /* Base glass material (same as .liquid-regular) */
+  isolation: isolate;
+  position: relative;
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate));
+}
+
+.liquid-fluted::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+```
+
+**Use cases on this landing page:**
+- Hero section decorative accent panel
+- Stat block background as an alternative to `.stats-glass`
+- Potentially the FAQ section background
+
+**When NOT to use fluted glass:**
+- NEVER on text-heavy content areas -- the vertical lines interfere with horizontal text reading for 45+ users
+- NEVER on cards with body text -- only on elements where the primary content is icons, numbers, or large headings
+- NEVER nested inside another glass element
+
+**Confidence:** MEDIUM. The CSS technique is straightforward (repeating-linear-gradient is universally supported), but the visual tuning (line width, spacing, opacity) needs real-device testing. The shadcn-glass-ui library includes a "fluted" variant confirming this is an established pattern in the Liquid Glass ecosystem.
+
+#### 6. Specular Highlight Physics (Enhanced Mouse Tracking)
+
+The current mouse-tracking specular is a radial gradient at the cursor position. To simulate light physics, the highlight should respond to the cursor's ANGLE relative to the element center, not just position.
+
+**Enhancement approach (JS modification to `initMouseSpecular()`):**
+
+1. Calculate the angle from element center to cursor position
+2. Calculate the distance from center (0-1 normalized)
+3. Map angle to an ellipse orientation (the specular "stretch")
+4. Map distance to opacity falloff (brighter at edge, dimmer at center)
+
+```javascript
+// Pseudocode for enhanced specular
+var cx = rect.width / 2;
+var cy = rect.height / 2;
+var dx = (e.clientX - rect.left) - cx;
+var dy = (e.clientY - rect.top) - cy;
+var angle = Math.atan2(dy, dx) * (180 / Math.PI);
+var dist = Math.min(1, Math.sqrt(dx*dx + dy*dy) / Math.max(cx, cy));
+
+card.style.setProperty('--spec-angle', angle + 'deg');
+card.style.setProperty('--spec-dist', dist);
+card.style.setProperty('--mouse-x', x + '%');
+card.style.setProperty('--mouse-y', y + '%');
+```
+
+```css
+.liquid-card::after {
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
+    rgba(255, 255, 255, calc(0.08 + 0.12 * var(--spec-dist, 0))) 0%,
+    transparent calc(40% + 20% * var(--spec-dist, 0))
+  );
+}
+```
+
+**Mobile consideration:** On touch devices, specular could respond to `DeviceOrientationEvent` (gyroscope) to create a tilt-responsive highlight. However:
+- `DeviceOrientationEvent` requires user permission on iOS 13+ (`DeviceOrientationEvent.requestPermission()`)
+- The 45+ audience will NOT grant motion permissions for a medical landing page
+- Recommendation: Skip gyroscope. Keep CSS default fallback (`--mouse-x: 30%; --mouse-y: 0%`) on touch devices.
+
+**Confidence:** MEDIUM for the approach. LOW for gyroscope -- explicitly recommend skipping it for this audience.
+
+#### 7. Glass-on-Content Dimming Layer
+
+Apple's Clear glass variant requires a dimming layer to maintain legibility. This is a semi-transparent overlay between the background content and the glass surface.
+
+**Implementation:**
+
+```css
+.liquid-clear-dimming {
+  position: relative;
+}
+
+.liquid-clear-dimming::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.08);
+  z-index: 0;
+}
+
+/* Dark mode: stronger dimming */
+.dark .liquid-clear-dimming::before {
+  background: rgba(0, 0, 0, 0.25);
+}
+```
+
+The dimming layer sits BELOW the glass element's content but ABOVE the page background. It is the "softener" that makes bold white text readable over busy backgrounds without needing opaque glass.
+
+**Confidence:** HIGH. Simple CSS technique, well-documented in Apple's guidelines.
+
+#### 8. SVG Refraction Tuning
+
+Current filter: `baseFrequency="0.008"`, `numOctaves="2"`, `scale="30"`.
+
+Recommended calibration per element size:
+
+| Element Type | Scale | baseFrequency | Rationale |
+|-------------|-------|---------------|-----------|
+| Header (wide, thin) | 15 | 0.012 | Wide surfaces need subtler, higher-freq noise |
+| Cards (medium) | 30 | 0.008 | Current values -- working well |
+| Stats block (large) | 20 | 0.006 | Large area needs lower freq to avoid "noise carpet" |
+| Buttons (small) | 40 | 0.015 | Small surfaces benefit from more visible distortion |
+
+**Implementation:** Define multiple SVG filter elements with different parameters:
+
+```xml
+<filter id="refract-sm" ...><feTurbulence baseFrequency="0.015" .../><feDisplacementMap scale="40" .../></filter>
+<filter id="refract-md" ...><feTurbulence baseFrequency="0.008" .../><feDisplacementMap scale="30" .../></filter>
+<filter id="refract-lg" ...><feTurbulence baseFrequency="0.006" .../><feDisplacementMap scale="20" .../></filter>
+```
+
+Then reference via CSS:
+```css
+html[data-refract="true"] .liquid-btn-secondary {
+  backdrop-filter: url(#refract-sm) blur(...);
+}
+html[data-refract="true"] .stats-glass {
+  backdrop-filter: url(#refract-lg) blur(...);
+}
+```
+
+**Confidence:** MEDIUM. The approach is sound (Chromium-only, already gated). The specific parameter values need visual calibration.
+
+#### 9. Concentric Corner Radius
+
+Apple's nested glass shapes use concentric radius: `child_radius = parent_radius - padding`.
+
+**Implementation with CSS custom properties:**
+
+```css
+.liquid-card {
+  --card-radius: 24px;
+  --card-padding: 24px;
+  --card-inner-radius: calc(var(--card-radius) - var(--card-padding));
+  border-radius: var(--card-radius);
+}
+
+.liquid-card > .inner-content {
+  border-radius: var(--card-inner-radius);
+}
+```
+
+This creates the "set within" look where the inner content hugs the parent's curve smoothly rather than having an independent corner radius.
+
+**Confidence:** HIGH. Pure CSS `calc()`, universally supported. The squircle mask system would also need to adapt -- the inner element may need a tighter squircle mask.
+
+---
+
+## Anti-Features
+
+Features to explicitly NOT build. These are commonly requested or seem obvious for a "Liquid Glass" implementation but would harm the project.
+
+| Anti-Feature | Why Tempting | Why Wrong for This Project | What to Do Instead |
+|--------------|-------------|---------------------------|-------------------|
+| Glass-on-glass nesting | "More glass = more premium" | Apple explicitly warns against stacking glass on glass. Double `backdrop-filter` compounds blur, kills readability, and doubles GPU cost. The 45+ audience cannot read text through double-blurred surfaces. | Use hierarchy tiers (nav=opaque-ish glass, card=medium glass, clear=transparent glass). Each tier differs in opacity and blur, but they never overlap. |
+| Gyroscope/DeviceOrientation specular on mobile | "Apple's glass responds to device tilt" | Requires permission prompt that 45+ medical users will not understand or trust. `DeviceOrientationEvent.requestPermission()` popup looks like a privacy invasion on a medical site. Even if granted, the effect is disorienting for vestibular-sensitive older users. | Use fixed specular position (top-left light source) on touch devices. The CSS default `--mouse-x: 30%; --mouse-y: 0%` already does this. |
+| WebGL/Three.js glass shader | "True refraction, most faithful reproduction" | @specy/liquid-glass-react uses html2canvas + WebGL. This adds ~200KB+ of JS dependencies, requires a build step (violates project constraint), and creates a canvas overlay that breaks text selection, accessibility, and print. Performance on mid-range Android is catastrophic. | SVG `feDisplacementMap` (already implemented) is the maximum fidelity appropriate for a production landing page. It is Chromium-only but degrades gracefully. |
+| Animated backdrop-filter values | "Blur intensity changes during hover for a living glass feel" | Animating `backdrop-filter: blur()` forces a full GPU recomposite on every frame. On M4 Macs this might be smooth; on a Redmi Note in Kazakhstan it will drop to 5fps and drain battery. Apple's own implementation uses GPU shaders, not CSS animation. | Animate the `::after` pseudo-element opacity and gradient instead. The glass surface stays static; only the specular overlay transitions. This is compositable and GPU-friendly. |
+| Background video behind glass | "Glass over moving content shows refraction beautifully" | Video in hero is explicitly Out of Scope in PROJECT.md. Bandwidth constraint in KZ market. autoplay video + glass = guaranteed jank on budget devices. | Static gradient mesh backgrounds. The section tint system already provides color variety for glass to blur against. |
+| Glass on text-heavy sections (FAQ, process steps) | "Consistent glass language across all sections" | Text-heavy content behind glass reduces readability. The FAQ section has paragraph-length answers. The process section has multi-line descriptions. Glass over these areas forces either illegible text or opaque-enough glass that defeats the purpose. | Apply glass to CONTAINER elements (card wrappers, stat blocks) where content is SHORT (1-2 lines, numbers, icons). Leave text-heavy sections on solid/tinted backgrounds. |
+| Spring physics / bounce animations on glass | "Apple's glass has gel-like flexibility and spring-based response" | Requires a JS animation library (GSAP, Motion, Spring.js) or the Web Animations API with spring timing. Adds weight and complexity. For a 45+ medical audience, bouncy UI elements feel frivolous, not professional. The calm/confident tone specified in PROJECT.md is incompatible with bouncing cards. | Use `--ease-liquid: cubic-bezier(0.2, 0, 0, 1)` (already tokenized). This is Apple's system ease -- fast start, gentle settle. It has the "responsive" feel without the "playful bounce." |
+| Multiple shimmer sweeps per viewport | "Glass cards should all shimmer" | Already documented as anti-pattern in liquid-glass.css. More than 1 shimmer per viewport is visual noise. Shimmer is a CTA draw, not a decoration. | Keep shimmer on hero CTA only. Other cards use the glint border (already implemented) which is subtler. |
 
 ---
 
 ## Feature Dependencies
 
 ```
-[Dark Mode Toggle (nav button)]
-    └──writes-to──> [localStorage "theme"]
-    └──sets-attribute──> [document.documentElement data-theme="dark"]
-                             └──activates──> [CSS [data-theme="dark"] token block]
-                                                └──overrides──> [:root light token values]
+[Glass Hierarchy System]
+    |-- .liquid-nav (new)
+    |     `-- depends on: header--scrolled values (refactor into named class)
+    |-- .liquid-regular (existing, unchanged)
+    |-- .liquid-clear (new)
+    |     `-- depends on: dimming layer (anti-feature for text-heavy areas)
+    |     `-- rule: ONLY use over media-rich backgrounds with bold/bright content
+    `-- token differentiation in theme.css :root and .dark
 
-[Glassmorphism Cards]
-    └──requires──> [Gradient/Mesh Background behind card]
-    └──requires──> [backdrop-filter browser support OR solid fallback]
-    └──degrades-to──> [Flat card with border on older browsers]
+[Interaction States]
+    |-- hover: brightness/specular transition
+    |     `-- depends on: existing --dur-hover, --ease-liquid tokens
+    |-- press: scale + glow spread
+    |     `-- depends on: existing --dur-press token
+    |-- focus: enhanced glass rim
+    |     `-- depends on: existing focus-visible ring system
+    `-- all states must degrade under prefers-reduced-motion
 
-[Dark Mode] ──conflicts-with──> [Glassmorphism (light mode only)]
-    └── In dark mode: replace glass effect with opaque dark card (#1E2C3A)
-        Glass over dark background renders poorly — the blur has nothing visually
-        interesting to filter
+[Adaptive Tinting]
+    |-- per-section --liquid-tint CSS variable
+    |     `-- depends on: .section-tint-cool/warm/mint classes (already exist)
+    `-- glass elements pick up tint via var() inheritance
+         `-- no change to HTML needed -- CSS cascade handles it
 
-[Bold Display Typography]
-    └──requires-validation-with──> [Manrope Variable font weight 800]
-    └──requires-responsive-scaling-via──> [clamp() for font-size]
-    └──requires-line-height-adjustment-at-display-sizes]
+[Fluted Glass]
+    |-- .liquid-fluted (new class)
+    |     `-- depends on: base glass tokens
+    |     `-- conflict: consumes ::after pseudo (cannot have mouse-tracking specular AND fluted texture on same element)
+    `-- restricted to non-text-heavy elements only
 
-[Micro-animations (enhanced)]
-    └──gates-on──> [prefers-reduced-motion: no-preference]
-    └──extends──> [existing .animate-on-scroll / .is-visible system]
-    └──no-conflict-with──> [Dark Mode] (purely visual layer, theme-independent)
+[Specular Physics Enhancement]
+    |-- JS enhancement to initMouseSpecular()
+    |     `-- depends on: existing --mouse-x/--mouse-y system
+    |     `-- adds: --spec-angle, --spec-dist variables
+    `-- CSS update to ::after gradient (use new variables)
 
-[Theme Transition (CSS)]
-    └──requires──> [transition property on :root OR body]
-    └──conflicts-with──> [FOUC prevention]
-        └── solution: add data-theme to <html> synchronously before paint (inline script
-            reading localStorage, runs before CSS loads)
+[SVG Refraction Tuning]
+    |-- multiple SVG filter definitions (refract-sm/md/lg)
+    |     `-- depends on: existing <filter id="liquid-refract"> in index.html
+    |     `-- depends on: existing data-refract JS probe
+    `-- per-class CSS backdrop-filter references
+
+[Concentric Corner Radius]
+    |-- CSS calc() based on parent padding
+    |     `-- depends on: squircle mask system (may need inner squircle masks)
+    `-- mostly affects .liquid-card internal layout
 ```
 
-### Dependency Notes
+### Pseudo-element Budget
 
-- **Dark mode requires a synchronous inline script in `<head>`** to read localStorage before the first paint. Without it, users with a saved dark preference see a flash of light mode before JS loads. This is a critical implementation detail, not an optional optimization. The script must be `<script>` (not `type="module"`) to run synchronously.
+Critical constraint: CSS pseudo-elements (`::before`, `::after`) are limited to 2 per element. The existing implementation already uses both:
 
-- **Glassmorphism is incompatible with dark mode** applied to the same element. In dark mode, glass effect over dark backgrounds looks muddy and loses its visual purpose. The CSS must conditionally disable `backdrop-filter` on glass cards when `[data-theme="dark"]` is active and replace with a solid semi-dark card style.
+| Class | `::before` | `::after` |
+|-------|-----------|----------|
+| `.liquid-regular` | specular rim-light | **available** |
+| `.liquid-card` | animated glint border | mouse-tracking specular |
+| `.liquid-btn-secondary` | specular rim-light | **available** |
+| `.stats-glass` | specular rim-light | **available** |
 
-- **Bold display typography requires `clamp()` responsive sizing** — a heading scaled to 56px on desktop becomes 56px on a 375px screen if only a fixed value is set. This is a regression risk for the 45+ mobile audience. Minimum readable size must be explicitly defined in the clamp lower bound (40px minimum for h1, 28px minimum for h2 at 375px width).
+**Implication:** `.liquid-card` has NO pseudo-elements available for fluted texture or dimming layer. Fluted glass must be a SEPARATE class that cannot be composed with `.liquid-card`. The Clear variant's dimming layer needs a wrapper element or a separate DOM element, not a pseudo.
 
-- **Enhanced micro-animations must not conflict with existing stagger system** — the existing `stagger-children` + `animate-on-scroll` + `is-visible` system works. Adding `transform: translateY(20px)` to the initial state of `.animate-on-scroll` must also be guarded by `prefers-reduced-motion` in the existing media query block (line 182-189 in styles.css). Check that the existing block removes `transform` not just `animation-duration`.
-
----
-
-## MVP Definition (for v1.4 milestone)
-
-### Launch With (v1.4)
-
-Minimum feature set to constitute a visual redesign that meets the milestone goal.
-
-- [ ] Dark mode toggle in navigation — the anchor feature of the redesign; all other features enhance light/dark
-- [ ] CSS token expansion with `[data-theme="dark"]` parallel token set — prerequisite for all dark mode styling
-- [ ] FOUC-prevention inline script for localStorage theme persistence — without this, dark mode toggle is broken for return visitors
-- [ ] Bold display typography: h1 56px/800w, h2 44px/800w with `clamp()` responsive scaling — higher-impact, lower-risk than glassmorphism
-- [ ] Enhanced scroll animations: `translateY(20px → 0)` on `.animate-on-scroll` — extends existing system, low risk
-- [ ] Button `:active` micro-interaction: `scale(0.97)` on CTA buttons — tactile feedback, 100ms, tiny scope
-- [ ] Hero section gradient mesh background — enables glassmorphism on hero stats and provides visual richness
-- [ ] Glassmorphism on hero stats block and pricing card only (2 elements maximum) — selective, high-impact, avoids over-application
-- [ ] Smooth theme transition: 300ms fade on color tokens (disabled under `prefers-reduced-motion`) — polish
-
-### Add After Validation (v1.4.x)
-
-- [ ] Glassmorphism on nav bar in light mode (frosted header) — evaluate after seeing hero glass in production; depends on visual coherence
-- [ ] Card hover micro-interaction refinement — existing `translateY(-2px)` works; evaluate adding a subtle shadow increase on hover for depth in light mode
-- [ ] Dark mode color refinement pass — real-device testing on OLED and LCD screens at 45+ typical distances
-
-### Defer to v2+
-
-- [ ] CSS scroll-driven animations (animation-timeline + view()) — NOT Baseline, Firefox gap; defer until widely supported
-- [ ] View Transitions API for theme switch animation — interesting but adds complexity for marginal gain; not worth testing on this audience
-- [ ] @starting-style entrance animations for dynamic content — Baseline 2024 but this page has no dynamic DOM insertion patterns
+This is a hard architectural constraint that shapes which features can compose with which.
 
 ---
 
-## Feature Prioritization Matrix (v1.4 scope only)
+## MVP Recommendation for v5.0
 
-| Feature | User Value | Implementation Cost | Priority | Risk for 45+ Audience |
-|---------|------------|---------------------|----------|-----------------------|
-| Dark mode toggle + tokens | HIGH | MEDIUM | P1 | LOW — pure user benefit, opt-in |
-| Bold display typography (h1/h2) | HIGH | LOW | P1 | LOW — increases readability |
-| FOUC prevention inline script | HIGH (retention) | LOW | P1 | LOW — invisible to user when working |
-| Enhanced scroll animations | MEDIUM | LOW | P1 | LOW — `prefers-reduced-motion` already gated |
-| Hero gradient mesh background | MEDIUM | LOW | P1 | LOW — static, no motion |
-| Glassmorphism on hero stats + pricing (2 elements) | MEDIUM | MEDIUM | P1 | LOW if applied selectively with proper contrast |
-| Button `:active` scale micro-interaction | MEDIUM | LOW | P1 | LOW — 100ms, tactile, not disorienting |
-| Smooth theme transition | LOW | LOW | P2 | LOW — gated under prefers-reduced-motion |
-| Nav bar glassmorphism | LOW | LOW | P2 | LOW if contrast maintained |
-| Dark mode OLED refinement | LOW | LOW | P3 | MEDIUM — requires physical device testing |
+### Phase 1: Foundation (Hierarchy + Interaction States)
 
-**Priority key:**
-- P1: In v1.4 initial release
-- P2: In v1.4 follow-up patch after review
-- P3: Future milestone
+1. **Glass hierarchy system** -- define `.liquid-nav`, refine `.liquid-regular`, add `.liquid-clear` with tokens
+2. **Interaction states** -- hover/press/focus transitions on all glass surfaces
+3. **Dark mode glass refinement** -- tune dark token values for depth
 
----
+Rationale: These are pure CSS changes with no JS modifications. They establish the vocabulary before adding texture and physics.
 
-## Domain-Specific Research Findings
+### Phase 2: Tinting + Texture
 
-### 1. Glassmorphism / Liquid Glass in 2025
+4. **Adaptive tinting** -- per-section `--liquid-tint` cascade
+5. **Fluted glass variant** -- new `.liquid-fluted` class with vertical streak pattern
 
-**What it actually requires (not what tutorials show):**
+Rationale: These add visual variety to the glass system. Tinting is low-risk (CSS variable cascade). Fluted is medium-risk (visual tuning needed, pseudo-element constraints).
 
-Glassmorphism requires THREE things simultaneously to work: (a) `backdrop-filter: blur(Npx)` on the element, (b) a semi-transparent background on the element (e.g., `rgba(255,255,255,0.15)`), and (c) a visually complex background BEHIND the element (a gradient, mesh, image, or blur-able content). Without (c), the glass effect is invisible — there is nothing to blur through.
+### Phase 3: Physics + Refinement
 
-**Browser support:** `backdrop-filter` is Baseline 2024 (newly available since September 2024, per MDN). Works across Chrome/Edge/Safari/Firefox latest. Older devices (pre-2024 Android WebView, very old iOS Safari) may not support it. Provide fallback: `@supports not (backdrop-filter: blur(1px)) { .glass { background: rgba(255,255,255,0.9); } }`.
+6. **Specular highlight physics** -- JS enhancement to mouse tracking
+7. **SVG refraction tuning** -- per-element filter calibration
+8. **Concentric corner radius** -- calc()-based inner radius
 
-**Blur value guidance (confidence: MEDIUM, from design community patterns):**
-- `blur(8px)` — subtle, barely noticeable, appropriate for nav bars
-- `blur(16-20px)` — the sweet spot for cards; clearly glassy without heavy performance cost
-- `blur(40px+)` — heavy, used in Apple-style "liquid glass"; GPU-intensive on mobile; avoid
+Rationale: These require JS changes and visual calibration. Ship after the CSS foundation is stable.
 
-**Background needed:**
-- For light mode: radial gradient with brand colors (teal #38C6F4, green #1AC67E) at 10-15% opacity on white creates sufficient visual complexity. This is the recommended approach — pure CSS, no images.
-- For dark mode: disable the glass effect entirely. Replace with opaque dark card. Glass on dark backgrounds renders as a murky smear.
+### Defer
 
-**Performance:** `backdrop-filter` creates a new composite layer and forces GPU compositing. On mid-range Android (common in KZ), more than 3-4 glass elements visible simultaneously can cause scroll jank. Limit to 2 glass elements per viewport.
-
-**Confidence:** HIGH for browser support facts (MDN-verified). MEDIUM for visual guidance (design community patterns, not official standards).
-
-### 2. Dark Mode UX for Medical/Health 45+ Audience
-
-**Key findings from UX literature and WCAG (MEDIUM confidence overall):**
-
-Dark mode reduces blue light emission, which benefits evening/night reading. For 45+ users with presbyopia or early cataracts (both increase with age), reduced glare from a dark background can reduce eyestrain during extended reading sessions — precisely the behavior of a patient researching a medical consultation late at night.
-
-**What DOES work for 45+:**
-- Near-black background with slight color tint (not pure black) — e.g., `#0F1923` or `#15202B`. Pure `#000000` creates halation around light text for astigmatic users (HIGH prevalence at 45+).
-- Off-white text (e.g., `#E8EFF6`) rather than pure `#FFFFFF`. Reduces contrast harshness.
-- Reduced contrast differential in dark mode is acceptable and often preferable — WCAG AA (4.5:1) is the floor, not the ceiling; going much higher than 7:1 in dark mode can cause eye strain for 45+ users.
-- Semantic color preservation: the green CTA (`#1AC67E`) should become slightly desaturated and brighter in dark mode to maintain the same visual "call to action" weight without burning on a dark background.
-
-**What to AVOID:**
-- Red/orange accent colors for errors or warnings in dark mode — these produce strong blue-light contrast that is especially uncomfortable for older eyes.
-- Images that were optimized for light backgrounds look washed-out in dark mode. Any white-bg photos/illustrations need dark-mode-specific treatment or a dark overlay.
-- The existing SVG hero illustration uses duotone colors — in dark mode it must either be recolored via CSS `filter` or inverted intelligently.
-
-**Toggle positioning:** The 45+ audience needs to be able to FIND the toggle. Place it in the sticky navigation, with a recognizable sun/moon icon (not just a label), at a minimum 44x44px touch target. Label it "Тёмная тема" as a tooltip/aria-label for accessibility.
-
-**Confidence:** MEDIUM. Derived from WCAG 2.1 spec, NNGroup's dark mode research, and ophthalmology UX literature. No Kazakhstan-specific study found.
-
-### 3. Bold/Display Typography on Health Landing Pages
-
-**Current state:** h1: 2.25rem (36px), h2: 2rem (32px), font-weight: 700. Manrope Variable loaded with weights 200-800.
-
-**Research finding:** The "bold editorial" trend in 2025 (Vercel, Linear, Stripe landing pages) uses 700-800 weight at 56-72px for h1. For a medical landing page targeting 45+, 56px/800w h1 is the appropriate ceiling — bolder than current, but not the extreme 80px+ editorial style that would feel out of place on a medical site.
-
-**Recommended scale:**
-- h1: `clamp(40px, 5vw, 56px)`, font-weight: 800
-- h2: `clamp(28px, 3.5vw, 44px)`, font-weight: 800
-- h3: `clamp(22px, 2.5vw, 32px)`, font-weight: 700 (unchanged category, bump value)
-- Body: 18px (unchanged — already correct for 45+)
-
-**Line height for display sizes:** At 48px+, line-height of 1.2 (current) begins to feel spacious. The display-text convention is 1.0-1.15. For Cyrillic text, 1.1 works well at 48px+ without letters touching ascenders/descenders.
-
-**Color:** In light mode, h1/h2 in `#18212C` (current `--color-text-primary`, 16.24:1 contrast) is correct. Avoid colored headings (teal/green) for body headings — acceptable for section labels or badges but not for multi-word headings where scanning is needed by older users.
-
-**Dark mode:** h1/h2 in `#E8EFF6` on `#0F1923` maintains approximately 12:1 contrast — well above WCAG AAA, appropriate for the audience.
-
-**Confidence:** MEDIUM for the specific size recommendations (design community consensus, not a clinical standard). HIGH for the clamp() technique and Manrope Variable weight availability.
-
-### 4. Micro-Animations: What Works for 45+ Audience
-
-**Core principle:** For 45+ medical audience, animations must CONFIRM, not ENTERTAIN. Every animation should make the user more confident in what is happening, not add visual complexity.
-
-**Recommended animations (all gated by `prefers-reduced-motion: reduce`):**
-
-| Animation | Element | Duration | Easing | Why It Helps 45+ |
-|-----------|---------|---------|--------|------------------|
-| Fade + slide-up on scroll reveal | Cards, section headings | 400ms | ease-out | Shows content is loading/appearing in a natural direction; confirms the page is interactive |
-| Scale-down on button active | CTA buttons | 100ms | ease | Confirms the tap/click registered — critical for users uncertain about touch inputs |
-| Color change on input focus | Form fields | 150ms | ease | Confirms which field is active — visual affordance for users less familiar with digital forms |
-| Accordion expand/collapse | FAQ items | 250ms | ease-in-out | Already implemented; confirms action and shows content relationship |
-| Theme fade transition | Background + text colors | 300ms | ease | Smooth transition confirms the toggle worked and shows the theme shift is intentional |
-| Nav underline on hover | Navigation links | 150ms | ease | Hover state affordance |
-
-**Timing guidance:**
-- 100ms: tactile feedback (button active, checkbox tick)
-- 150-250ms: hover states, focus transitions
-- 300-400ms: scroll reveals, theme transitions
-- 500ms+: transitions that feel "laggy" for this audience — avoid
-
-**What NOT to animate for 45+:**
-- Numbers counting up (counters) — visually noisy, can be disorienting for users with any cognitive variation
-- Typing effects — patronizing, adds perceived wait time
-- Floating/bouncing elements — constant motion in peripheral vision is tiring; more so for older users
-- Hover-triggered transforms on text — reading-in-progress should not be visually disrupted
-
-**Stagger timing:** The existing 100ms-per-child stagger on grid cards is correct. Increase the stagger to 120ms for the 45+ audience — slightly slower is more reassuring than slightly faster.
-
-**`prefers-reduced-motion` implementation:** The existing codebase already gates animations with `prefers-reduced-motion: reduce` at lines 182-189 (styles.css) and in `initScrollAnimations()` (main.js). Ensure that any new `transform: translateY()` animations added in v1.4 are also suppressed. The existing block sets `animation-duration: 0.01ms` and `transition-duration: 0.01ms` globally — but `transform` changes applied via class addition (`.is-visible`) also need to reset the transform via `transform: none` in the reduced-motion block, not just duration-zero it.
-
-**Confidence:** HIGH for timing values and `prefers-reduced-motion` implementation (web standards). MEDIUM for the 45+-specific behavioral notes (UX literature, not clinical research).
+- Gyroscope specular -- skip entirely (anti-feature for this audience)
+- WebGL shader -- skip entirely (violates project constraints)
+- Spring animations -- skip entirely (tone mismatch)
 
 ---
 
-## Accessibility Requirements (Non-Negotiable for v1.4)
+## Complexity Assessment
 
-These are not features — they are prerequisites that all v1.4 features must satisfy:
-
-1. **WCAG AA contrast in ALL states:** Light mode, dark mode, hover state, focus state, button active state, glassmorphism cards, gradient backgrounds. Every text/background combination must achieve 4.5:1 minimum. Use a contrast checker on every new token pair.
-
-2. **`prefers-reduced-motion: reduce` compliance:** ALL new animations (scroll reveal enhancement, button scale, theme transition) must produce no transform or opacity transition under reduced motion. Not just duration-zero — the start and end state must be identical (no visual change).
-
-3. **Dark mode toggle keyboard accessible:** The toggle button must have `role="button"` or be a `<button>`, must have `aria-pressed="true/false"` state, and must be focusable with visible focus ring in both themes.
-
-4. **No contrast regression from glassmorphism:** Glass cards must maintain text contrast against the blurred background. Test with `backdrop-filter: blur(0)` disabled (fallback state) and with blur active. If any blur midpoint creates a light zone under dark text, increase text shadow or adjust glass opacity.
-
-5. **Touch targets remain 48x48px minimum:** The dark mode toggle, navigation links, and any new interactive elements must meet this. Do not reduce touch target size for visual design reasons.
-
----
-
-## Implementation Notes for the Existing CSS Architecture
-
-The current CSS uses a single `:root` token block. The recommended implementation for dark mode is:
-
-```css
-/* Existing :root = light mode (unchanged) */
-:root { --color-background: #ffffff; ... }
-
-/* Dark mode override */
-[data-theme="dark"] {
-  --color-background: #0F1923;
-  --color-text-primary: #E8EFF6;
-  /* ... all tokens that change in dark mode */
-}
-
-/* System preference (no saved preference) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-background: #0F1923;
-    /* ... */
-  }
-}
-```
-
-The `color-scheme` property should be declared:
-```css
-:root { color-scheme: light dark; }
-[data-theme="dark"] { color-scheme: dark; }
-```
-
-This ensures browser-native form controls and scrollbars adapt to the active theme.
-
-The FOUC-prevention inline script (synchronous, in `<head>`, before CSS `<link>`):
-```html
-<script>
-  (function() {
-    var saved = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  })();
-</script>
-```
-
-This must run synchronously (not `type="module"`, not `defer`, not `async`).
+| Feature | Lines of CSS | Lines of JS | Risk Level | Performance Impact |
+|---------|-------------|-------------|------------|-------------------|
+| Glass hierarchy (3 tiers) | ~60 | 0 | LOW | None -- token changes only |
+| Interaction states | ~80 | 0 | LOW | Minimal -- CSS transitions on existing composited layers |
+| Adaptive tinting | ~30 | 0 | MEDIUM | None -- CSS variable cascade |
+| Dark mode glass refinement | ~20 | 0 | LOW | None -- token value changes |
+| Fluted glass variant | ~40 | 0 | MEDIUM | LOW -- repeating-linear-gradient is cheap |
+| Specular physics | ~20 | ~30 | MEDIUM | LOW -- math in existing mousemove handler |
+| SVG refraction tuning | ~30 | 0 | MEDIUM | None -- same filters, different params |
+| Concentric corners | ~15 | 0 | LOW | None -- calc() on existing properties |
+| **Total new code** | **~295** | **~30** | | |
 
 ---
 
 ## Sources
 
-### Confirmed (HIGH confidence — primary sources)
+### Confirmed (HIGH confidence)
 
-- MDN Web Docs: `backdrop-filter` — Baseline 2024, confirmed September 2024 availability
-- MDN Web Docs: `animation-timeline` — confirmed NOT Baseline, limited availability as of research date
-- MDN Web Docs: `prefers-reduced-motion` — Baseline Widely Available since January 2020
-- MDN Web Docs: `prefers-color-scheme` — Baseline Widely Available since January 2020
-- MDN Web Docs: `color-scheme` property — Baseline Widely Available since January 2022
-- MDN Web Docs: `@starting-style` — Baseline 2024, available since August 2024 (not used in v1.4)
-- MedicusUnion KZ codebase: styles.css `:root` token block, existing animation implementation, `prefers-reduced-motion` gate at lines 182-189
-- PROJECT.md: 45+ audience constraint, mobile-first constraint, "без маркетинговой агрессии" tone, Out of Scope list (parallax, video, heavy animations)
+- Apple WWDC 2025 "Meet Liquid Glass" session (Session 219) -- glass hierarchy, clear vs regular rules, adaptive tinting concept, interaction principles
+- [CSS-Tricks: Getting Clarity on Apple's Liquid Glass](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/) -- three-layer composition (highlight, shadow, illumination), clear variant rules
+- [Kube.io: Liquid Glass in the Browser](https://kube.io/blog/liquid-glass-css-svg/) -- SVG refraction approach, specular as rim-light overlay, Chromium-only limitation confirmed
+- [Josh Comeau: Next-level frosted glass](https://www.joshwcomeau.com/css/backdrop-filter/) -- extended backdrop technique (already implemented)
+- MDN Web Docs: `backdrop-filter` Baseline 2024, `mix-blend-mode` widely available, `repeating-linear-gradient` widely available, `color-mix()` Baseline 2023
+- Existing codebase: liquid-glass.css, theme.css, squircles.css, main.js -- pseudo-element usage audit, token architecture, JS mouse-tracking system
 
-### Referenced (MEDIUM confidence — design and UX literature)
+### Referenced (MEDIUM confidence)
 
-- W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
-- WCAG 2.1 SC 1.4.3 (Contrast Minimum), 1.4.11 (Non-text Contrast) — accessibility standards
-- Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading research
-- Web.dev + Chrome for Developers: CSS glassmorphism and backdrop-filter usage patterns
-- Design community consensus on 2025 display typography scales (Vercel, Stripe, Linear landing pages) — LOW individual source confidence, MEDIUM as converging consensus
+- [LogRocket: Adopting Liquid Glass best practices](https://blog.logrocket.com/ux-design/adopting-liquid-glass-examples-best-practices/) -- clear variant three-condition rule, hierarchy guidance
+- [Apple Newsroom: Liquid Glass announcement](https://www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/) -- spring animations, "illuminates from within" interaction description
+- [DesignFast: CSS Liquid Glass Effects](https://designfast.io/liquid-glass) -- three-layer structure confirmation
+- [DEV Community: Recreating Liquid Glass with CSS](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl) -- CSS-only approach patterns
+- shadcn-glass-ui library (npm) -- confirmed "fluted" variant exists as established pattern with vertical streaks
 
 ### Not Found / Unable to Verify
 
-- Kazakhstan-specific data on 45+ user dark mode preference rates — no authoritative source found; relied on general aging UX literature
-- Clinical ophthalmology studies on web dark mode for presbyopic users — mentioned in design literature but primary clinical sources not located; halation claim is MEDIUM confidence
+- Apple's exact spring constant values for glass interaction animations -- not publicly documented for web
+- Specific `backdrop-filter` performance benchmarks on budget Android devices common in Kazakhstan market -- relied on community reports (HN: "M4-Max MacBook Pro judders")
+- Whether `color-mix()` interacts well with `backdrop-filter` in the same element -- needs browser testing
+- Exact opacity thresholds for adaptive tinting that maintain WCAG AA contrast -- needs per-section visual audit
 
 ---
 
-*Feature research for: MedicusUnion KZ Landing — v1.4 Visual Redesign*
-*Researched: 2026-03-24*
-*Downstream consumer: v1.4 roadmap phase planning*
+*Feature research for: MedicusUnion KZ Landing -- v5.0 Full Liquid Glass Rework*
+*Researched: 2026-04-09*
+*Downstream consumer: v5.0 roadmap phase planning*

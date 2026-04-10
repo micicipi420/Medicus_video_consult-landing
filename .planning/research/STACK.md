@@ -1,473 +1,626 @@
 # Technology Stack
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
-**Researched:** 2026-03-24
-**Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
+**Project:** MedicusUnion KZ Landing -- v5.0 Full Liquid Glass Rework
+**Researched:** 2026-04-09
+**Scope:** NEW capabilities only for v5.0 milestone. Existing validated stack (HTML, Tailwind CSS v4.2.2 CLI, vanilla JS ES5/IIFE, backdrop-filter chain, SVG squircle masks, corner-shape progressive enhancement, SVG feTurbulence refraction, dark mode token cascade, Motion CDN) is NOT re-researched.
 
 ---
 
 ## What This Research Covers
 
-Four new CSS/JS capability areas needed for milestone v1.4:
+Six new capability areas needed for v5.0 Liquid Glass:
 
-1. Liquid glass / glassmorphism via `backdrop-filter`
-2. Dark mode toggle with `localStorage` and CSS custom properties
-3. CSS Scroll-Driven Animations API as progressive enhancement
-4. CSS micro-animation patterns for hover and state transitions
+1. **Adaptive tinting** -- glass surfaces that shift color based on background content
+2. **Specular highlight physics** -- light reflections that respond to device orientation / cursor position
+3. **Fluted glass variant** -- vertical ribbed/streaked glass pattern
+4. **Clear glass variant** -- higher transparency with dimming layer behind
+5. **GPU performance profiling** -- tools and techniques for will-change budget and composite layer audit
+6. **Cross-browser hardening** -- backdrop-filter quirks in Safari, Firefox, and mobile browsers
 
-**What is NOT covered:** Backend, build tools, fonts, frameworks — all unchanged from v1.3.
+**What is NOT covered:** Backend, fonts, build tools, dark mode toggle, basic glassmorphism, SVG refraction -- all validated in previous milestones.
 
 ---
 
-## 1. Glassmorphism: `backdrop-filter` + CSS
+## 1. Adaptive Tinting: mix-blend-mode Overlay Approach
+
+### The Problem
+
+Apple's Liquid Glass dynamically samples the background beneath a glass surface and shifts the glass tint to complement it. CSS has no `backdrop-sample-color()` function. We need a pure CSS approximation.
+
+### Recommended Technique
+
+Use a `::before` pseudo-element with `mix-blend-mode: color` over the glass surface. The pseudo-element carries a semi-transparent tint color, and the blend mode mixes it with whatever backdrop content bleeds through the glass.
+
+```css
+.liquid-tinted {
+  position: relative;
+  isolation: isolate;
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+.liquid-tinted::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--liquid-tint, rgba(56, 198, 244, 0.08));
+  mix-blend-mode: color;
+  pointer-events: none;
+  z-index: 1;
+}
+```
+
+### Why This Approach (Not Alternatives)
+
+| Approach | Verdict | Reason |
+|----------|---------|--------|
+| `mix-blend-mode: color` on `::before` | **USE THIS** | Blends tint with backdrop content showing through glass. Pure CSS, no JS. Works in all browsers since Jan 2020. Creates stacking context (glass already does). |
+| `background-blend-mode` on glass element | REJECT | Blends the element's own backgrounds with each other, NOT with backdrop content. Cannot tint based on what's behind the glass. |
+| `mix-blend-mode: soft-light` | CONSIDER | Softer tinting effect. Less color shift, more luminosity preservation. Good for dark mode where `color` can over-saturate. |
+| `mix-blend-mode: overlay` | CONSIDER | Stronger contrast effect. Good for hero glass surfaces. Too aggressive for cards -- use `color` for cards. |
+| JS canvas sampling | REJECT | Requires reading pixels from behind element. Performance disaster, cross-origin image issues, violates vanilla constraint. |
+
+### Token Integration
+
+New tokens to add to `:root` in theme.css:
+
+```css
+:root {
+  --liquid-tint-cool: rgba(56, 198, 244, 0.08);   /* brand blue tint */
+  --liquid-tint-warm: rgba(255, 162, 92, 0.06);    /* complementary warm */
+  --liquid-tint-mint: rgba(111, 222, 169, 0.07);   /* health/checkup tint */
+  --liquid-tint-blend: color;                       /* default blend mode */
+}
+
+.dark {
+  --liquid-tint-cool: rgba(56, 198, 244, 0.12);    /* slightly stronger on dark */
+  --liquid-tint-warm: rgba(255, 162, 92, 0.10);
+  --liquid-tint-mint: rgba(111, 222, 169, 0.10);
+  --liquid-tint-blend: soft-light;                  /* softer on dark backgrounds */
+}
+```
+
+### Section-Level Tinting via Data Attribute
+
+Pair adaptive tinting with section context using data attributes:
+
+```html
+<section data-glass-tint="cool"> ... </section>
+<section data-glass-tint="warm"> ... </section>
+<section data-glass-tint="mint"> ... </section>
+```
+
+```css
+[data-glass-tint="cool"] .liquid-tinted::before { background: var(--liquid-tint-cool); }
+[data-glass-tint="warm"] .liquid-tinted::before { background: var(--liquid-tint-warm); }
+[data-glass-tint="mint"] .liquid-tinted::before { background: var(--liquid-tint-mint); }
+```
+
+This mirrors the existing `.section-tint-cool/warm/mint` pattern from liquid-glass.css Section 12 but applies to glass surfaces rather than section backgrounds.
+
+### Browser Support
+
+| Browser | `mix-blend-mode` | Confidence |
+|---------|-----------------|------------|
+| Chrome 41+ | Full | HIGH |
+| Firefox 32+ | Full | HIGH |
+| Safari 8+ | Full | HIGH |
+| iOS Safari 8+ | Full | HIGH |
+| **Global** | ~97% | HIGH (MDN: Baseline since Jan 2020) |
+
+### Performance Note
+
+`mix-blend-mode` creates an implicit stacking context and forces compositing. Since `.liquid-tinted` already creates a stacking context via `isolation: isolate`, the additional cost of the blend mode pseudo-element is marginal -- no new layer promotion occurs.
+
+**Confidence: HIGH.** mix-blend-mode is universally supported and well-documented.
+
+---
+
+## 2. Specular Highlight Physics: Device Orientation + Mouse Position
+
+### The Problem
+
+Specular highlights (the bright spot on glass that moves with viewing angle) need to respond to:
+- **Desktop:** mouse cursor position (already partially implemented via `--mouse-x`/`--mouse-y` in `.liquid-card::after`)
+- **Mobile:** device tilt via DeviceOrientationEvent gyroscope data
+
+### Recommended Technique: Desktop (Mouse Tracking)
+
+The existing `.liquid-card::after` radial-gradient using `--mouse-x`/`--mouse-y` custom properties is the correct pattern. Extend it:
+
+```css
+.liquid-specular::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 120% 80% at var(--specular-x, 30%) var(--specular-y, 0%),
+    rgba(255, 255, 255, 0.20) 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s var(--ease-liquid);
+}
+```
+
+JS for mouse tracking (ES5 IIFE pattern, extend existing):
+
+```javascript
+// Inside existing IIFE
+var cards = document.querySelectorAll('.liquid-specular');
+var rafId = null;
+
+function updateSpecular(e) {
+  if (rafId) return; // throttle to rAF
+  rafId = requestAnimationFrame(function() {
+    for (var i = 0; i < cards.length; i++) {
+      var rect = cards[i].getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      cards[i].style.setProperty('--specular-x', x + '%');
+      cards[i].style.setProperty('--specular-y', y + '%');
+    }
+    rafId = null;
+  });
+}
+
+document.addEventListener('mousemove', updateSpecular);
+```
+
+### Recommended Technique: Mobile (Device Orientation API)
+
+```javascript
+// Gyroscope-driven specular for mobile
+function initGyroSpecular() {
+  var cards = document.querySelectorAll('.liquid-specular');
+  if (!cards.length) return;
+
+  // Check prefers-reduced-motion FIRST
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function handleOrientation(e) {
+    // gamma: left-right tilt (-90 to 90)
+    // beta: front-back tilt (-180 to 180)
+    var x = ((e.gamma + 90) / 180 * 100).toFixed(1); // normalize to 0-100
+    var y = (Math.max(0, Math.min(180, e.beta + 90)) / 180 * 100).toFixed(1);
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].style.setProperty('--specular-x', x + '%');
+      cards[i].style.setProperty('--specular-y', y + '%');
+    }
+  }
+
+  function startListening() {
+    window.addEventListener('deviceorientation', handleOrientation);
+  }
+
+  // iOS 13+ requires explicit permission (user gesture required)
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    // Attach to a user-initiated event (e.g., button or first touch)
+    document.addEventListener('touchstart', function onTouch() {
+      DeviceOrientationEvent.requestPermission()
+        .then(function(state) {
+          if (state === 'granted') startListening();
+        })
+        .catch(function() {});
+      document.removeEventListener('touchstart', onTouch);
+    }, { once: true });
+  } else {
+    // Android Chrome, Firefox -- permission not required
+    startListening();
+  }
+}
+```
+
+### DeviceOrientationEvent API Details
+
+| Property | Range | Use |
+|----------|-------|-----|
+| `alpha` | 0-360 degrees | Compass heading (z-axis rotation). NOT needed for specular. |
+| `beta` | -180 to 180 degrees | Front-to-back tilt. Maps to specular Y position. |
+| `gamma` | -90 to 90 degrees | Left-to-right tilt. Maps to specular X position. |
+
+### Security Requirements
+
+- **HTTPS required** -- DeviceOrientationEvent only works in secure contexts
+- **iOS Safari 13+** -- requires `DeviceOrientationEvent.requestPermission()` called from a user gesture
+- **Android Chrome** -- no permission required, works automatically
+- **Firefox** -- no permission required
+
+### Why NOT to Use Parallax Libraries
+
+| Library | Why Reject |
+|---------|-----------|
+| parallax.js (wagerfield) | 22KB, jQuery optional but adds overhead. Our implementation is ~30 lines of vanilla JS. |
+| parallaxify | jQuery dependency. Dead project (no updates since 2016). |
+| parallaxTilt | jQuery dependency. |
+| Any npm parallax package | Violates no-dependency constraint. |
+
+### Accessibility: prefers-reduced-motion Guard
+
+```javascript
+// Check BEFORE initializing any specular motion
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Set static specular position, no event listeners
+  cards.forEach(function(card) {
+    card.style.setProperty('--specular-x', '30%');
+    card.style.setProperty('--specular-y', '0%');
+  });
+  return;
+}
+```
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .liquid-specular::after {
+    /* Static highlight position, no transition */
+    --specular-x: 30%;
+    --specular-y: 0%;
+    transition: none;
+  }
+}
+```
+
+### Browser Support
+
+| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
+|---------|--------|---------|--------|------------|------------|
+| DeviceOrientationEvent | 7+ | 6+ | 4.2+ | 4.2+ | HIGH |
+| requestPermission() | N/A | N/A | 13+ (required) | 13+ (required) | HIGH (MDN) |
+| CSS custom properties via JS | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
+| requestAnimationFrame | 24+ | 23+ | 6.1+ | 7+ | HIGH |
+
+**Confidence: HIGH.** DeviceOrientationEvent is Baseline Widely Available since Sep 2023 (MDN). The requestPermission pattern for iOS is well-documented. Mouse tracking via custom properties is already proven in the codebase.
+
+---
+
+## 3. Fluted Glass: repeating-linear-gradient + mix-blend-mode
+
+### The Problem
+
+Fluted (ribbed/reeded) glass creates vertical streak distortions that add texture without obscuring content. Think shower doors or architectural privacy glass.
+
+### Recommended Technique
+
+Layer a `repeating-linear-gradient` over the glass surface using a pseudo-element with `mix-blend-mode: color-dodge`:
+
+```css
+.liquid-fluted {
+  position: relative;
+  isolation: isolate;
+  background: var(--liquid-bg);
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Fluted vertical streaks */
+.liquid-fluted::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(255, 255, 255, 0.08) 4px
+  );
+  background-size: var(--fluted-pitch, 8px) 100%;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 1;
+}
+```
+
+### Why These Values
+
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| Direction | `to right` | Vertical flutes = horizontal gradient direction |
+| Pitch (background-size) | `8px` | Narrow enough to read as texture, wide enough to not become noise. 4px = too fine on mobile. 16px = too coarse. |
+| White stop opacity | `0.03 - 0.08` | Subtle. Higher values create visible bands that fight readability for CA 45+. |
+| Dark stop opacity | `0.06` | Creates shadow between flutes. Higher = too dark. |
+| `mix-blend-mode: color-dodge` | Required | Makes the gradient glow rather than overlay. Without it, the streaks look painted-on rather than refractive. |
+
+### Token Integration
+
+```css
+:root {
+  --fluted-pitch: 8px;
+  --fluted-opacity: 1;
+}
+
+.dark {
+  --fluted-pitch: 10px;     /* slightly wider on dark -- narrower is lost */
+  --fluted-opacity: 0.6;    /* tone down on dark backgrounds */
+}
+```
+
+```css
+.dark .liquid-fluted::before {
+  opacity: var(--fluted-opacity);
+}
+```
+
+### Pseudo-Element Conflict Resolution
+
+`.liquid-card` already uses `::before` for the animated glint border and `::after` for the specular radial gradient. `.liquid-fluted` is a SEPARATE class -- it does NOT extend `.liquid-card`. It should be used for decorative panels (hero backdrop, divider panels) where glint animation is not needed.
+
+If fluted + specular is needed on the same element, compose via a wrapper:
+
+```html
+<div class="liquid-fluted squircle-lg">
+  <div class="liquid-specular-inner">
+    <!-- content -->
+  </div>
+</div>
+```
+
+### Browser Support
+
+All CSS features used (repeating-linear-gradient, mix-blend-mode, pseudo-elements) have 97%+ global support. No new browser requirements beyond existing stack.
+
+**Confidence: HIGH.** Technique verified via Frontend.fyi tutorial and multiple CodePen implementations.
+
+---
+
+## 4. Clear Glass Variant: Higher Transparency + Dimming Layer
+
+### The Problem
+
+Clear glass has higher transparency (content behind is more visible) but needs a dimming layer to maintain text readability. Apple uses "clear" for overlays and modal backgrounds.
+
+### Current Status in Codebase
+
+The liquid-glass.css header comment explicitly marks clear glass as:
+> "Clear glass is an anti-feature for medical CA 45+ audience -- contrast and legibility take priority over visual novelty."
+
+### Revised Recommendation: Limited Use Only
+
+Clear glass IS appropriate for exactly two use cases in this project:
+1. **Modal overlay / backdrop dimming** -- behind the mobile menu or a confirmation dialog
+2. **Hero section background panel** -- where the background image IS the content and text is minimal
+
+It is NOT appropriate for:
+- Cards with body text (fails WCAG AA at high transparency)
+- Form containers (input readability suffers)
+- Navigation elements (CA 45+ needs high contrast nav)
 
 ### Technique
 
 ```css
-.glass-card {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%); /* Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-lg); /* already 30px */
+.liquid-clear {
+  isolation: isolate;
+  position: relative;
+  background: var(--liquid-clear-bg);
+  backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Dimming layer behind the clear glass element */
+.liquid-clear-dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: var(--z-overlay, 40);
 }
 ```
 
-**Why this approach:**
-- `backdrop-filter: blur()` is the single CSS property that creates the glass blur effect — no JS, no canvas, no SVG filter workaround needed
-- `saturate(180%)` amplifies color behind glass, making the effect richer on medical imagery backgrounds
-- `-webkit-backdrop-filter` is required for Safari 9–17 (pre-2024); Safari 18+ unprefixed works but the prefix costs zero bytes and has no downside
-- `rgba()` background with low alpha (0.08–0.18) is the correct "liquid glass" palette — pure transparent has no color; pure opaque loses the glass effect
-- Explicit `border: 1px solid rgba(255,255,255,0.2)` is required to visually define the glass boundary without a shadow
-
-### Browser Support (as of mid-2025)
-
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 76+ | Full | Unprefixed |
-| Edge 79+ | Full | Unprefixed |
-| Firefox 103+ | Full | Enabled by default since FF103 (2022) |
-| Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| iOS Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| Samsung Internet 12+ | Full | |
-| **Global coverage** | ~95%+ | MEDIUM confidence — caniuse.com not accessible for verification |
-
-**Confidence:** MEDIUM. Training data places global support at ~95% for mid-2025. Firefox lagged historically but has supported it since 2022. The `-webkit-` prefix covers all Safari versions in production use.
-
-### Fallback Strategy
-
-```css
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-}
-```
-
-`@supports` is the correct gate — avoids applying transparent background when blur is unavailable (which would produce illegible text).
-
-### Integration with Existing Token System
-
-New tokens to add to `:root`:
+### Token Integration
 
 ```css
 :root {
-  /* Glass surface tokens */
-  --glass-bg-light: rgba(255, 255, 255, 0.12);
-  --glass-bg-medium: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+  --liquid-clear-bg: rgba(255, 255, 255, 0.18);  /* much lower than regular's 0.42 */
+  --liquid-clear-blur: var(--liquid-blur-sm);      /* 16px -- less blur = more see-through */
+}
 
-  /* Dark mode glass (inverted) */
-  --glass-bg-dark: rgba(24, 33, 44, 0.45);
-  --glass-border-dark: 1px solid rgba(255, 255, 255, 0.08);
+.dark {
+  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
+  --liquid-clear-blur: var(--liquid-blur-sm);
 }
 ```
 
-**Performance note:** `backdrop-filter` triggers GPU compositing. On a landing page with 3–4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
+### Key Difference from Regular Glass
 
-### Medical Context Constraint
+| Property | `.liquid-regular` | `.liquid-clear` |
+|----------|--------------------|-----------------|
+| Background alpha | `0.42` | `0.18` |
+| Blur radius | `24px` (md) | `16px` (sm) |
+| Use case | Cards, panels | Overlays, hero backdrop |
+| Text readability | WCAG AA safe | Needs large/bold text only |
 
-For the ЦА 45+ audience, glass cards must maintain WCAG AA text contrast. Rule: glass cards with `backdrop-filter` MUST have a minimum background opacity that keeps text at 4.5:1 contrast ratio. Use `rgba(255,255,255,0.85)` minimum for white cards with dark text, or a semi-opaque dark overlay for light text on glass. Pure "trendy" glass with 10% opacity fails contrast — avoid on text-heavy cards.
+**Confidence: MEDIUM.** The technique is straightforward CSS, but the "anti-feature" annotation in the codebase reflects a considered decision. Use with restraint.
 
 ---
 
-## 2. Dark Mode: `localStorage` Toggle + CSS Custom Properties
+## 5. GPU Performance Profiling Tools and Techniques
 
-### Pattern
+### Chrome DevTools: The Primary Profiling Tool
 
-**CSS side — theme via class on `<html>`:**
+No npm packages needed. Chrome DevTools is the authoritative GPU profiling tool.
 
-```css
-/* Light mode (default) — already in :root */
-:root {
-  --color-bg: #ffffff;
-  --color-surface: #F8FAFB;
-  --color-text-primary: #18212C;
-  --color-text-muted: rgba(24, 33, 44, 0.55);
-  --color-border: rgba(0, 0, 0, 0.08);
-}
+#### Performance Panel Workflow
 
-/* Dark mode — override tokens on html[data-theme="dark"] */
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-white: #161B22;       /* remaps white surfaces */
-  --color-light: #1C2128;       /* remaps light sections */
-}
-```
+1. **Open DevTools > Performance tab**
+2. **Enable Advanced Paint Instrumentation** (gear icon > checkbox). WARNING: This itself reduces performance -- use for profiling sessions only, not normal development.
+3. **Record a scroll interaction** (5-10 seconds)
+4. **Analyze the flame chart:**
+   - Look for `Paint` events longer than 4ms (60fps budget = 16.6ms per frame)
+   - `Composite Layers` events show GPU compositing cost
+   - `Update Layer Tree` events show layer promotion overhead
 
-**Why `data-theme` attribute over CSS class:**
-- `html[data-theme="dark"]` is the current standard pattern (used by MDN, GitHub, Tailwind docs)
-- A class like `.dark` works equally but attribute is semantically clearer and easier to query in JS
-- Avoids class name collision with any BEM classes
+#### Layers Panel Workflow
 
-**JS side — IIFE pattern (compatible with existing ES5 IIFE codebase):**
+1. **Open DevTools > More Tools > Layers**
+2. **Rotate the 3D view** to see layer stacking
+3. **Click each layer** to see:
+   - Memory consumption (bytes)
+   - Compositing reason (e.g., "Has a backdrop filter", "Has will-change: transform")
+   - Layer dimensions
 
-```javascript
-(function () {
-  'use strict';
+**What to look for:**
+- Total layer count: aim for < 20 layers per viewport on mobile
+- Individual layer memory: > 2MB per layer = investigate
+- Unexpected layers: elements promoted without `will-change` or backdrop-filter
 
-  var STORAGE_KEY = 'mu-theme';
-  var html = document.documentElement;
-  var btn = document.getElementById('theme-toggle');
+#### Rendering Panel Workflow
 
-  // Apply saved preference immediately (avoids flash)
-  // This <script> block runs inline in <head>, before render
-  function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-  }
+1. **Open DevTools > More Tools > Rendering**
+2. **Enable "Paint flashing"** -- green rectangles show repainted areas
+3. **Enable "Layer borders"** -- orange borders show composite layers
+4. **Scroll the page** and check:
+   - Do glass elements cause paint flashing on scroll? (bad -- should be composited)
+   - Are there unexpected orange borders? (unnecessary layer promotion)
 
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  }
-
-  // Toggle handler (attached after DOM ready)
-  function init() {
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-      btn.setAttribute('aria-label',
-        next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'
-      );
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-}());
-```
-
-**Why inline `<script>` in `<head>` for theme detection:**
-- The `localStorage` read and `applyTheme()` call MUST happen before first paint — otherwise users with a dark preference see a white flash (FOUC). Place this 8-line block as an inline `<script>` at the end of `<head>`, before the `</head>` tag.
-- This is the same pattern used by every major dark mode implementation (MDN, GitHub, Radix docs)
-
-**`prefers-color-scheme` media query fallback:**
-- If no `localStorage` value, check `window.matchMedia('(prefers-color-scheme: dark)')` to honor OS preference on first visit
-- Browser support: Chrome 76+, Firefox 67+, Safari 12.1+ — essentially universal
-
-### Integration with Existing Tokens
-
-The existing `:root` block has color tokens but they are NOT yet abstracted for dark mode (they reference hardcoded hex values like `--color-white: #FFFFFF`). The migration path:
-
-1. Add semantic tokens (`--color-bg`, `--color-surface`, `--color-border`) to `:root`
-2. Replace hardcoded hex in section backgrounds with semantic tokens
-3. Keep brand colors (`--color-primary`, `--gradient-cta`) unchanged — they work in both modes
-4. Remap `--color-white` in dark mode to a dark surface (this is the key trick that makes `background: var(--color-white)` sections flip automatically)
-
-**Transition for theme switch (no flash):**
+### will-change Budget Guidelines
 
 ```css
-/* Applied to body ONLY after initial load to prevent FOUC */
-body.theme-transitions-ready {
-  transition: background-color 300ms ease, color 300ms ease;
+/* CORRECT: will-change only on elements that animate */
+.liquid-btn-primary {
+  will-change: transform, filter;  /* transforms on :hover/:active */
+}
+
+/* CORRECT: will-change removed after animation */
+.shimmer-sweep {
+  will-change: transform;  /* for the ::before sweep */
+}
+
+/* WRONG: will-change on static glass cards */
+.liquid-card {
+  /* will-change: backdrop-filter;  <-- NEVER DO THIS */
+  /* backdrop-filter already promotes to composite layer */
+  /* Adding will-change doubles the GPU memory cost for zero benefit */
 }
 ```
 
-Add `document.body.classList.add('theme-transitions-ready')` in JS after the page loads (not inline in head).
+**Rule of thumb for this project:**
+- backdrop-filter already creates a composite layer -- no `will-change` needed on static glass
+- `will-change: transform` only on elements that animate `transform` (buttons, shimmer)
+- Remove `will-change` after animation completion via JS if the animation is one-shot
+- Maximum 5-7 elements with `will-change` per viewport
 
-### Confidence: HIGH
+### Mobile Performance Targets
 
-This is a well-established pattern with no ambiguity. `localStorage`, `matchMedia`, and CSS custom property cascading all have near-universal browser support.
+| Metric | Target | Tool |
+|--------|--------|------|
+| Frame rate during scroll | 60fps (16.6ms/frame) | Performance Panel timeline |
+| Total composite layers | < 20 per viewport | Layers Panel |
+| Total GPU memory | < 100MB | Chrome `chrome://gpu` |
+| Largest layer | < 4MB | Layers Panel detail |
+| Paint duration per frame | < 4ms | Performance Panel paint events |
+
+### Firefox-Specific Profiling
+
+Firefox Profiler (about:profiling) can identify backdrop-filter performance issues specific to Firefox:
+
+1. Open `about:profiling`
+2. Set features: Paint, GPU, CSS
+3. Record scroll interaction
+4. Look for "BackdropFilter" markers in the timeline
+
+Firefox renders `backdrop-filter` on the CPU in some configurations -- if you see long paint events without GPU markers, Firefox is software-rendering the blur.
+
+**Confidence: HIGH.** Chrome DevTools Layers panel and Performance panel are authoritative tools. No external dependencies needed.
 
 ---
 
-## 3. CSS Scroll-Driven Animations API (2025)
+## 6. Cross-Browser Hardening for backdrop-filter
 
-### What It Is
+### Current Support Matrix (verified April 2026)
 
-The CSS Scroll-Driven Animations API (2023 spec, Chrome 115+) replaces IntersectionObserver-based JS animations with pure CSS. It links `@keyframes` animations to scroll position instead of time.
+| Browser | backdrop-filter | SVG url() in backdrop-filter | Notes |
+|---------|----------------|------------------------------|-------|
+| Chrome 76+ | Full | YES (Chrome only) | Unprefixed |
+| Edge 79+ | Full | YES (Chromium) | Unprefixed |
+| Firefox 103+ | Full | NO | blur/saturate/brightness work; SVG filter url() does NOT |
+| Safari 9+ | Full (prefixed) | NO | -webkit- required for older; unprefixed from 18+ |
+| iOS Safari 9+ | Full (prefixed) | NO | Same as Safari |
+| Samsung Internet 12+ | Full | Likely YES (Chromium) | |
+| **Global** | **95.79%** | ~70% (Chromium only) | caniuse.com verified |
 
-```css
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+### Critical Quirk: SVG filter url() in backdrop-filter
 
-.animate-on-scroll {
-  animation: fade-in-up linear both;
-  animation-timeline: view();          /* ties to element's visibility */
-  animation-range: entry 0% entry 40%; /* plays during entry phase */
-}
-```
+The existing SVG refraction filter (`html[data-refract="true"]`) uses `backdrop-filter: url(#liquid-refract) blur(...) saturate(...) brightness(...)`. This is **Chrome/Edge only**.
 
-**Why this technique:**
-- Pure CSS, zero JS — no `IntersectionObserver` wiring, no class toggling
-- Runs on the compositor thread — smoother than JS-driven animations
-- `animation-timeline: view()` fires the animation as the element enters the viewport, exactly replicating current `IntersectionObserver` behavior
+Firefox and Safari silently ignore the entire `backdrop-filter` declaration when `url()` is present -- not just the SVG filter, but the blur/saturate/brightness too. The existing fallback selector structure in liquid-glass.css Section 10 handles this correctly by gating behind `html[data-refract="true"]`.
 
-### Browser Support (as of mid-2025)
+**Action:** No change needed. The existing JS probe that sets `data-refract="true"` only on Chromium browsers is the correct approach.
 
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 115+ | Full | Shipped July 2023 |
-| Edge 115+ | Full | Chromium-based |
-| Safari 18+ | Partial | `scroll-timeline` supported; `view()` / `animation-range` partial. Safari 17 = no support |
-| Firefox 110+ | Partial | `scroll-timeline` supported; `view()` behind flag until FF 128 |
-| **Global coverage** | ~70–75% | MEDIUM confidence — significant Safari/Firefox gaps remain |
+### Safari-Specific Quirks
 
-**This is a progressive enhancement, not a replacement.** The existing `IntersectionObserver` animations MUST remain as the baseline. Scroll-driven CSS animations layer on top for supporting browsers.
+1. **`-webkit-backdrop-filter` required for Safari < 18.** Already handled in codebase.
+2. **Backdrop-filter + mask-image on same element:** Works correctly in Safari 17+. Earlier versions may not render the backdrop through the mask. The squircle mask approach is safe because the mask is applied to the same element that has the backdrop-filter.
+3. **Backdrop-filter + border-radius:** Safari sometimes clips the blur at the border-radius boundary differently than Chrome. Use `overflow: hidden` on the glass element if you see blur bleeding past corners.
+4. **`corner-shape: squircle` + backdrop-filter:** Chrome 139+ only. When the squircle mask is removed (via `@supports (corner-shape: squircle)`) and replaced with `corner-shape: squircle`, the backdrop-filter renders correctly through the native squircle corner.
 
-### Progressive Enhancement Pattern
+### Firefox-Specific Quirks
 
-```css
-/* Baseline: element starts visible (works everywhere) */
-.section-card {
-  opacity: 1;
-  transform: none;
-}
+1. **Performance:** Firefox's backdrop-filter uses CPU rendering in some configurations, making it slower than Chrome/Safari. Higher blur values (>20px) are more expensive. Keep the existing blur budget (`--liquid-blur-md: 24px` is at the edge -- monitor).
+2. **`backdrop-filter: url()` NOT supported:** Confirmed by MDN browser-compat-data issue #24110 (closed as "working as intended" per spec). SVG filters in backdrop-filter are a Chrome-only feature.
+3. **`mix-blend-mode` + `backdrop-filter` stacking:** Firefox handles the interaction correctly but may produce slightly different color blending results due to gamma correction differences. Test the tint colors visually.
 
-/* Enhancement: animate in for browsers that support scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .section-card {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
+### Android-Specific Considerations (KZ Market)
 
-**Why `@supports` gate is required:**
-- Browsers without support see `opacity: 0` elements if the animation properties are applied unconditionally — content disappears permanently
-- The `@supports` block ensures elements are visible by default, enhanced only when supported
+- **Budget Android devices (common in KZ market):** Samsung Galaxy A series, Redmi phones. These have weak GPUs.
+- **Existing constraint:** Max 2 glass elements per viewport, blur <= 12px on budget devices.
+- **Detection approach:** No reliable "budget device" CSS media query exists. Use the existing `max 2 glass elements` constraint universally.
+- **Samsung Internet:** Chromium-based, supports full backdrop-filter. No special handling needed.
 
-**Conflict with existing IntersectionObserver:**
-- The current JS adds `.is-visible` classes via IntersectionObserver to trigger CSS transitions
-- With scroll-driven animations, the same element could animate twice (IO transition + CSS scroll animation)
-- Resolution: in the `@supports` block, set `transition: none` to disable IO-triggered transitions on supported browsers, letting the CSS scroll animation take over cleanly
+### Testing Matrix
 
-```css
-@supports (animation-timeline: scroll()) {
-  .scroll-animate {
-    transition: none; /* disable IO-based transitions */
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
+| Test | Tool | What to Check |
+|------|------|---------------|
+| Visual regression | Manual screenshots | Glass renders identically across browsers |
+| backdrop-filter rendering | Chrome, Safari, Firefox real devices | Blur visible, not clipped, not bleeding |
+| SVG refraction | Chrome only | `data-refract="true"` gated correctly |
+| Performance (scroll fps) | Chrome DevTools Performance tab | 60fps scroll with glass elements |
+| Performance (Firefox) | Firefox Profiler | No CPU-rendered backdrop-filter blocking main thread |
+| iOS Safari permission | Real iOS device | DeviceOrientationEvent permission flow works |
+| Reduced motion | OS setting toggle | All animations/gyro disabled, static fallback |
+| Reduced transparency | OS setting toggle | Glass becomes opaque, readable |
+| Print | `Ctrl+P` | Glass renders as opaque white with border |
 
-### Confidence: MEDIUM
-
-Chrome/Edge support confirmed since 2023. Firefox and Safari gaps are real and documented. The `@supports` progressive enhancement pattern is the official W3C-recommended approach for partial support scenarios.
+**Confidence: HIGH.** Browser support figures verified via caniuse.com (95.79% global for backdrop-filter). SVG filter limitation confirmed via MDN browser-compat-data GitHub issue.
 
 ---
 
-## 4. CSS Micro-Animation Patterns
+## New Token Additions Summary
 
-### Hover State Transitions
-
-Existing codebase already uses `transition: var(--transition-fast)` / `var(--transition-normal)`. Enhance with:
-
-**Button hover — transform + shadow lift:**
-
-```css
-.btn {
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    opacity var(--transition-fast);
-  will-change: transform; /* hint browser to promote layer */
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(26, 198, 126, 0.35);
-}
-
-.btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-  transition-duration: 80ms; /* snappy click feedback */
-}
-```
-
-**Card hover — existing `translateY(-2px)` is correct, add shadow token:**
-
-```css
-.card {
-  transition:
-    transform var(--transition-normal),
-    box-shadow var(--transition-normal);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-```
-
-**Icon color shift on parent hover:**
-
-```css
-.feature-card .icon {
-  transition: color var(--transition-normal);
-  color: var(--color-primary-dark);
-}
-
-.feature-card:hover .icon {
-  color: var(--color-primary);
-}
-```
-
-### Focus State (Accessibility — required for ЦА 45+)
-
-```css
-/* Visible focus ring for keyboard/touch navigation */
-:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Remove focus ring for mouse clicks (browsers that support :focus-visible) */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-```
-
-**Why `:focus-visible` over `:focus`:** Shows focus ring for keyboard users (ЦА 45+ often navigates with tab), hides it for mouse users who find the ring distracting. Chrome 86+, Firefox 85+, Safari 15.4+ — ~95% support.
-
-### Form Field Micro-Animations
-
-```css
-.form__input {
-  border: 2px solid rgba(24, 33, 44, 0.15);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.form__input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
-  outline: none;
-}
-```
-
-**Ring glow on focus** replaces browser default outline — more polished, still accessible.
-
-### Accordion Animation (existing)
-
-Current implementation uses `max-height` transition. The modern alternative is `grid-template-rows`:
-
-```css
-/* Modern accordion — no fixed max-height needed */
-.faq__answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transition-normal);
-  overflow: hidden;
-}
-
-.faq__answer--open {
-  grid-template-rows: 1fr;
-}
-
-.faq__answer > div { /* inner wrapper required */
-  overflow: hidden;
-}
-```
-
-**Why `grid-template-rows: 0fr → 1fr`:** Animates to/from natural content height without needing a fixed `max-height` value. Works in Chrome 57+, Firefox 55+, Safari 10.1+. The existing `max-height` approach works fine — this is an optional upgrade.
-
-### `prefers-reduced-motion` (already handled — reinforce pattern)
-
-The existing codebase already handles `prefers-reduced-motion`. Ensure all new animations follow the same pattern:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  /* Disable ALL new animations and transitions */
-  .glass-card,
-  .btn,
-  .card,
-  .section-card {
-    transition: none;
-    animation: none;
-  }
-}
-```
-
-### Confidence: HIGH
-
-These are stable, well-documented CSS properties. `transition`, `transform`, `:focus-visible`, and `@media (prefers-reduced-motion)` all have universal or near-universal support.
-
----
-
-## New Token Additions Required
-
-Add to the existing `:root` block in `css/styles.css`:
+All new tokens to add to theme.css `:root`:
 
 ```css
 :root {
-  /* === NEW in v1.4 === */
+  /* === v5.0 Adaptive Tinting === */
+  --liquid-tint-cool: rgba(56, 198, 244, 0.08);
+  --liquid-tint-warm: rgba(255, 162, 92, 0.06);
+  --liquid-tint-mint: rgba(111, 222, 169, 0.07);
+  --liquid-tint-blend: color;
 
-  /* Glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.75);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+  /* === v5.0 Clear Glass === */
+  --liquid-clear-bg: rgba(255, 255, 255, 0.18);
 
-  /* Semantic background tokens (dark mode migration) */
-  --color-bg: var(--color-white);
-  --color-surface: var(--color-light);
-  --color-border: rgba(0, 0, 0, 0.08);
-
-  /* Theme transition */
-  --transition-theme: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+  /* === v5.0 Fluted Glass === */
+  --fluted-pitch: 8px;
+  --fluted-opacity: 1;
 }
 
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-white: #161B22;
-  --color-light: #1C2128;
-  --color-border: rgba(255, 255, 255, 0.08);
+.dark {
+  /* === v5.0 Adaptive Tinting (dark) === */
+  --liquid-tint-cool: rgba(56, 198, 244, 0.12);
+  --liquid-tint-warm: rgba(255, 162, 92, 0.10);
+  --liquid-tint-mint: rgba(111, 222, 169, 0.10);
+  --liquid-tint-blend: soft-light;
 
-  /* Glass inverted */
-  --glass-bg: rgba(13, 17, 23, 0.55);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  /* === v5.0 Clear Glass (dark) === */
+  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
 
-  /* Shadows on dark — more prominent */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+  /* === v5.0 Fluted Glass (dark) === */
+  --fluted-pitch: 10px;
+  --fluted-opacity: 0.6;
 }
 ```
 
@@ -477,55 +630,46 @@ html[data-theme="dark"] {
 
 | Rejected | Why |
 |----------|-----|
-| GSAP / Anime.js | External JS library for animations — violates no-dependency constraint; CSS transitions handle all needs |
-| Framer Motion | React library — irrelevant |
-| CSS `@layer` for theme | Adds complexity without benefit for a single file. `html[data-theme]` attribute override is simpler |
-| `color-scheme` property alone | `color-scheme: dark light` changes scrollbars/inputs but does NOT change your brand colors — must use custom property override |
-| `prefers-color-scheme` media query only | Doesn't allow user toggle — must combine with JS + localStorage |
-| `animation-timeline: scroll()` (not `view()`) | `scroll()` animates relative to scroll container, not element visibility — `view()` is correct for "animate on enter viewport" |
-| Canvas/WebGL glass effects | Heavy, unnecessary — `backdrop-filter` achieves the same visual with 3 CSS properties |
-| JS-driven scroll position detection for animations | Replaced by CSS Scroll-Driven Animations for supported browsers; IntersectionObserver already handles fallback |
+| WebGL / Three.js for glass refraction | Violates vanilla constraint. Massive bundle. SVG feTurbulence (existing) is sufficient for Chromium. |
+| liquid-glass-js (GitHub library) | External dependency. 15KB+. Our implementation is ~50 lines of CSS + 30 lines of JS. |
+| Any npm glass framework | Violates no-dependency constraint. |
+| Canvas 2D for adaptive tinting | Requires reading pixels (tainted canvas for cross-origin images). Performance nightmare. |
+| CSS `element()` for backdrop sampling | Experimental, Firefox-only, no other browser support. Dead spec. |
+| CSS `backdrop-filter: color-adjust()` | Does not exist. Not a real CSS property. |
+| `will-change: backdrop-filter` on static elements | Wastes GPU memory. backdrop-filter already promotes to composite layer. |
+| Gyroscope polyfill libraries | No polyfill can create gyroscope data. Device either has one or does not. |
+| CSS Houdini paint worklets for fluted glass | Chrome-only, no Firefox/Safari support. Violates cross-browser requirement. |
 
 ---
 
-## Browser Support Summary Table
+## Browser Support Summary Table (v5.0 Features)
 
-| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
-|---------|--------|---------|--------|------------|------------|
-| `backdrop-filter` | 76+ | 103+ | 9+ (-webkit-) | 9+ (-webkit-) | MEDIUM |
-| CSS custom properties | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
-| `localStorage` | 4+ | 3.5+ | 4+ | 3.2+ | HIGH |
-| `prefers-color-scheme` | 76+ | 67+ | 12.1+ | 12.2+ | HIGH |
-| `:focus-visible` | 86+ | 85+ | 15.4+ | 15.4+ | HIGH |
-| Scroll-Driven Animations | 115+ | 128+ | 18+ (partial) | 18+ | MEDIUM |
-| `grid-template-rows` transition | 66+ | 66+ | 12.1+ | 12.2+ | HIGH |
-| `@supports` | 28+ | 22+ | 9+ | 9+ | HIGH |
-| `will-change` | 36+ | 36+ | 9.1+ | 9.3+ | HIGH |
-
-**Coverage note:** Scroll-Driven Animations are the only feature with meaningful gaps (~25% non-support). All others are effectively universal (95%+). The `@supports` progressive enhancement pattern handles the gap correctly.
-
----
-
-## Integration Checklist
-
-Before implementation, verify these touchpoints with existing code:
-
-1. **IntersectionObserver + Scroll-Driven conflict** — `.scroll-animate` JS class toggle must be disabled in `@supports (animation-timeline: scroll())` block
-2. **Glass cards require a non-white background behind them** — sections using glass must have a gradient/image background, not `background: var(--color-bg)` (blur of white = white, no visible effect)
-3. **Dark mode token migration** — global replace of `background: var(--color-white)` → `background: var(--color-bg)` in section rules, otherwise dark mode only affects text color
-4. **Inline `<script>` for FOUC prevention** — theme detection JS must be in `<head>`, before stylesheet link. Order: `<link rel="stylesheet">` then `<script>` inline theme block
-5. **`will-change: transform`** — add only to elements that actually animate; don't apply globally (wastes GPU memory)
-6. **Test on iOS Safari** — `backdrop-filter` requires `-webkit-` prefix; test on real device, not just Chrome DevTools mobile emulation
+| Feature | Chrome | Firefox | Safari | iOS Safari | Global | Confidence |
+|---------|--------|---------|--------|------------|--------|------------|
+| `mix-blend-mode` | 41+ | 32+ | 8+ | 8+ | ~97% | HIGH |
+| `backdrop-filter` | 76+ | 103+ | 9+ (prefixed) | 9+ (prefixed) | ~96% | HIGH |
+| SVG url() in `backdrop-filter` | 76+ | NO | NO | NO | ~70% | HIGH |
+| `DeviceOrientationEvent` | 7+ | 6+ | 4.2+ | 4.2+ | ~98% | HIGH |
+| `requestPermission()` (gyro) | N/A | N/A | 13+ | 13+ | iOS only | HIGH |
+| `repeating-linear-gradient` | 26+ | 16+ | 6.1+ | 7+ | ~99% | HIGH |
+| CSS custom properties via JS | 49+ | 31+ | 9.1+ | 9.3+ | ~98% | HIGH |
+| `prefers-reduced-motion` | 74+ | 63+ | 10.1+ | 10.3+ | ~96% | HIGH |
+| `prefers-reduced-transparency` | 118+ | 113+ | 17.4+ | 17.4+ | ~85% | MEDIUM |
+| `corner-shape: squircle` | 139+ | NO | NO | NO | ~35% | HIGH |
 
 ---
 
 ## Sources
 
-- MDN Web Docs: `backdrop-filter` — https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter (training data, August 2025 cutoff)
-- MDN Web Docs: CSS Scroll-Driven Animations — https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations (training data)
-- MDN Web Docs: `prefers-color-scheme` — https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme (training data)
-- MDN Web Docs: `:focus-visible` — https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible (training data)
-- W3C CSS Scroll-driven Animations spec — https://drafts.csswg.org/scroll-animations-1/ (training data)
-- Chrome Developers: Scroll-driven Animations — https://developer.chrome.com/docs/css-ui/scroll-driven-animations (training data)
-
-**Confidence note:** All browser support figures are from training data (knowledge cutoff August 2025). No live caniuse.com or MDN verification was possible (WebFetch/WebSearch tools unavailable in this session). Flag for verification against caniuse.com before implementation if exact percentages matter for go/no-go decisions.
+- [MDN: mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mix-blend-mode) -- blend mode values and browser compatibility (verified)
+- [MDN: DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent) -- API properties, requestPermission, HTTPS requirement (verified)
+- [MDN: backdrop-filter](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) -- browser support and SVG filter limitations (verified)
+- [Can I Use: CSS Backdrop Filter](https://caniuse.com/css-backdrop-filter) -- 95.79% global support (verified April 2026)
+- [MDN browser-compat-data #24110](https://github.com/mdn/browser-compat-data/issues/24110) -- SVG filters NOT supported in Firefox/Safari backdrop-filter (closed, spec-compliant behavior)
+- [CSS-Tricks: Getting Clarity on Apple's Liquid Glass](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/) -- three-layer architecture (highlight, shadow, illumination)
+- [Frontend.fyi: Frosted Glass Effect](https://www.frontend.fyi/tutorials/frosted-glass-effect) -- repeating-linear-gradient fluted glass technique with color-dodge
+- [Chrome DevTools: Performance Reference](https://developer.chrome.com/docs/devtools/performance/reference) -- Advanced paint instrumentation, layers panel
+- [Chrome DevTools: Layers Panel](https://developer.chrome.com/docs/devtools/layers) -- Composite layer inspection
+- [DEV.to: Recreating Apple's Liquid Glass with Pure CSS](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl) -- specular highlight via inset box-shadow pseudo-elements
+- [DEV.to: DeviceOrientationEvent requestPermission](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2) -- iOS 13+ permission pattern
+- [Hacker News: CSS Glass Effect Generator](https://news.ycombinator.com/item?id=44445238) -- cross-browser pseudo-element layering to avoid Chrome color bleed

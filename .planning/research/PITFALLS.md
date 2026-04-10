@@ -1,370 +1,531 @@
-# Pitfalls Research
+# Domain Pitfalls: Liquid Glass v5.0 Full Rework
 
-**Domain:** Visual redesign of medical landing page — glassmorphism, dark mode, bold typography, micro-animations (v1.4 milestone, 45+ audience, Kazakhstan)
-**Researched:** 2026-03-24
-**Confidence:** HIGH (glassmorphism/animation sourced from MDN verified specs; typography/dark-mode from established WCAG 2.1/2.2 patterns; audience-specific claims from established UX research consensus)
+**Domain:** Advanced Liquid Glass effects for static medical landing page (backdrop-filter, SVG refraction, squircle masks, specular highlights, gyroscope, adaptive tinting, cross-browser hardening)
+**Researched:** 2026-04-09
+**Confidence:** HIGH for browser-specific bugs (verified via official bug trackers, MDN compat data); MEDIUM for performance thresholds (multiple credible sources agree but exact numbers vary by device); HIGH for project-specific pitfalls (verified against current codebase)
 
 ---
 
 ## Critical Pitfalls
 
-### Pitfall 1: Glassmorphism Text Falls Below WCAG Contrast Minimum
+Mistakes that cause rewrites, production failures, or user-facing breakage.
+
+### Pitfall 1: Safari Ignores CSS Variables in -webkit-backdrop-filter
 
 **What goes wrong:**
-Semi-transparent `backdrop-filter` cards place text over a dynamically shifting background. The contrast ratio between the text and the blurred background is not a fixed value — it changes depending on what content sits behind the card at that scroll position. A contrast-checker pass on a static mockup does not guarantee real-world compliance. Text that reads cleanly against a white hero background fails when the card scrolls over a dark image or gradient section.
+Safari (tested through Safari 18.3) does not resolve CSS custom properties inside `-webkit-backdrop-filter`. The declaration is silently dropped. Since Safari still requires the `-webkit-` prefix for backdrop-filter, the unprefixed `backdrop-filter` line also fails without the prefix, leaving glass elements with zero visual effect on all Safari and iOS browsers.
 
 **Why it happens:**
-Designers measure contrast against the intended background colour. They do not account for the fact that the effective background of a glass card is the visual average of whatever pixels the blur kernel is averaging. When a colourful image or another card moves behind the glass, that average shifts unpredictably.
+WebKit's implementation of `-webkit-backdrop-filter` predates full CSS custom property resolution in filter functions. The unprefixed `backdrop-filter` is behind a developer feature flag (`CSS Unprefixed Backdrop Filter`) in Safari 18 and is disabled by default. CSS variables work in the unprefixed version when the flag is on, but the flag is off for all real users.
 
-**How to avoid:**
-- Apply a solid minimum-opacity fill underneath glass text. Use `background: rgba(255,255,255,0.75)` (light mode) or `rgba(18,18,18,0.80)` (dark mode) as a floor — not a decorative translucency of 20-30%.
-- Test contrast using the *worst-case* background, not the design-intent background. Place the card over the darkest and lightest content it will ever scroll past.
-- Guarantee WCAG AA minimum 4.5:1 for body text, 3:1 for large text (18px+ bold or 24px+ regular). For 45+ audience targeting, aim for 7:1 (AAA) for body text.
-- Add a semi-opaque border (`border: 1px solid rgba(255,255,255,0.3)`) to visually separate the card from backgrounds — this is structural, not decorative.
-- If a section has a complex image background, do not apply glassmorphism to cards within it. Use solid or near-solid cards instead.
+**Consequences:**
+Every glass element in the current codebase is broken on Safari/iOS. The current code uses `var(--liquid-blur-md)`, `var(--liquid-saturate)`, `var(--liquid-brightness)` inside `-webkit-backdrop-filter` on all 5 glass classes. This means zero glass effect for ~18% of global web users, and significantly higher in the Apple-device-owning medical professional demographic.
 
-**Warning signs:**
-- Card background opacity below 0.6 in any context
-- Contrast only checked against hero/default background, not all section contexts
-- Text contrast ratio passing in Figma but failing in browser against real content
+**THIS IS ALREADY A BUG IN THE CURRENT CODEBASE.** Lines 62, 81, 147, 176, and 301 of `liquid-glass.css` all use CSS variables inside `-webkit-backdrop-filter`.
 
-**Phase to address:**
-Phase delivering glassmorphism cards — before any section applies glass styling.
+**Prevention:**
+- Duplicate the `-webkit-backdrop-filter` declaration with hardcoded fallback values BEFORE the `var()`-based line:
+  ```css
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  ```
+  Safari uses the hardcoded line (ignoring the var line); Chromium/Firefox use the var line. Order matters: hardcoded first, var-based second.
+- Alternatively, use a mixin-like pattern that emits both lines for every glass class.
+- Dark mode values differ (28px/160%/115%), so the hardcoded fallback in `.dark` must match those values.
+- Test Safari specifically after every backdrop-filter change.
+
+**Detection:**
+- Open any page in Safari on macOS or iOS. Glass elements show as flat rectangles with no blur.
+- Automated: Playwright WebKit test comparing computed `backdrop-filter` value.
+
+**Phase:** Address IMMEDIATELY in Phase 1 (cross-browser hardening). This is a shipping bug.
+
+**Sources:**
+- [mdn/browser-compat-data #25914](https://github.com/mdn/browser-compat-data/issues/25914)
+- [Safari WebKit CSS Bugs Workarounds (2026)](https://docs.bswen.com/blog/2026-03-12-safari-css-issues-workarounds/)
+- [lightningcss #537](https://github.com/parcel-bundler/lightningcss/issues/537)
 
 ---
 
-### Pitfall 2: backdrop-filter Kills Performance on Mid-Range Android (Kazakhstan's Dominant Device)
+### Pitfall 2: SVG Filters in backdrop-filter Are Chromium-Only
 
 **What goes wrong:**
-`backdrop-filter: blur()` requires the browser to create a separate compositing layer and apply a per-frame GPU blur operation. On mid-range and budget Android phones (Samsung Galaxy A-series, Xiaomi Redmi, which dominate 45+ users in Kazakhstan), this causes visible frame drops (below 30fps) during scroll when multiple glass elements are visible simultaneously. The page feels broken, not premium.
+The refraction effect (`backdrop-filter: url(#liquid-refract) blur(...)`) works ONLY in Chromium browsers (Chrome 76+, Edge 79+, Samsung Internet). Safari and Firefox silently ignore the entire `backdrop-filter` declaration when it contains `url()` references to SVG filters, even for the blur/saturate functions that follow it in the same shorthand.
 
 **Why it happens:**
-`backdrop-filter` was Baseline-stable as of September 2024, meaning it works in all modern browsers — but "works" means renders correctly, not performs well. The blur radius and number of simultaneously composited elements is the bottleneck, not browser support. A single hero glass card with `blur(20px)` is fine. Five card grid with `blur(20px)` each causes simultaneous layer compositing that overwhelms the mobile GPU.
+The CSS Filter Effects Level 2 spec allows SVG filters in `backdrop-filter`, but only Chromium implemented it. Firefox has an open feature request (Mozilla Connect, September 2025) but no timeline. Safari/WebKit has no public intent to ship. This is not a temporary gap -- it has been this way since backdrop-filter shipped.
 
-**How to avoid:**
-- Limit `backdrop-filter` to one or two focal elements (hero card, single CTA panel). Do not apply it to a grid of 4-6 cards.
-- Use the minimum blur radius that achieves the visual effect: `blur(8px)` is usually sufficient; avoid `blur(20px)` or higher.
-- Apply `will-change: transform` only to elements that are actually animating — do NOT apply it globally or to all glass cards as a performance "fix" (this creates layers for every element, making the problem worse).
-- Provide `@supports` fallback: `@supports not (backdrop-filter: blur(1px)) { .glass-card { background: rgba(255,255,255,0.95); } }` — renders as a solid near-white card. Users on older devices get a clean, accessible fallback.
-- Test on a real mid-range Android device or Chrome DevTools with CPU throttling set to 4x slowdown, GPU rasterization enabled. Look for frame drops in DevTools Performance panel during scroll.
+**Consequences:**
+When `backdrop-filter: url(#liquid-refract) blur(24px) saturate(180%) brightness(108%)` is parsed by Safari or Firefox, the ENTIRE declaration is invalid -- not just the `url()` part. This means the fallback blur/saturate/brightness are also lost. Glass elements become fully transparent on Safari and Firefox.
 
-**Warning signs:**
-- Glass applied to entire card grids (doctors, services, pricing)
-- `blur()` radius above 12px
-- No `@supports` fallback for non-supporting browsers
-- Testing only on MacBook or modern iPhone
+**Prevention:**
+- The current codebase gates refraction behind `html[data-refract="true"]` (Section 10 of liquid-glass.css). This is correct.
+- The gated selector must override the FULL backdrop-filter chain, not just prepend `url()`. Current code does this correctly.
+- JS probe must verify SVG filter support in backdrop-filter at runtime, not just check `CSS.supports('backdrop-filter', 'blur(1px)')`. Test specifically: `CSS.supports('backdrop-filter', 'url(#test)')`.
+- NEVER put `url(#svg-filter)` in the base glass classes. Always in a separate, gated selector.
+- Future: if fluted glass or other variants use SVG filters, they MUST follow the same gating pattern.
 
-**Phase to address:**
-Phase delivering glassmorphism — define performance budget before implementation.
+**Detection:**
+- Open any page in Firefox or Safari with `data-refract="true"` forced on -- glass disappears entirely.
+- JS probe must set `data-refract="true"` ONLY after confirming support.
+
+**Phase:** Already partially handled. Verify JS probe correctness in Phase 1 (cross-browser hardening).
+
+**Sources:**
+- [mdn/browser-compat-data #24110](https://github.com/mdn/browser-compat-data/issues/24110)
+- [Mozilla Connect feature request](https://connect.mozilla.org/t5/ideas/support-svg-filters-in-backdrop-filter-for-advanced-glass/idi-p/98453)
 
 ---
 
-### Pitfall 3: Dark Mode Inverts Medical Trust Signals
+### Pitfall 3: filter: drop-shadow() on Parent Breaks backdrop-filter on Children
 
 **What goes wrong:**
-Dark backgrounds psychologically signal entertainment, gaming, or technology products. Medical and healthcare contexts rely heavily on white/light backgrounds as a signal of clinical cleanliness, trustworthiness, and sterility. Users (especially 45+, who associate white-background interfaces with official, credible services) experience a subconscious reduction in trust when visiting a medical site in dark mode for the first time. Additionally, dark mode can make the site look like it is "off" or in an error state to users unfamiliar with the convention.
+Applying `filter: drop-shadow()` on a parent element creates a new stacking context and containing block. Any child element with `backdrop-filter` stops working because the filter property on the ancestor becomes a "backdrop root" boundary -- the backdrop-filter cannot "see through" the parent's filter to the content behind it.
+
+**THIS ALREADY HAPPENED IN THIS PROJECT.** Git commit `ba29f8a` ("fix: revert drop-shadow to box-shadow -- drop-shadow breaks backdrop-filter children") documents the exact bug and revert.
 
 **Why it happens:**
-Dark mode is a highly visible 2025 trend. Developers add it because it is technically interesting and peer-reviewed as "modern." The audience-specific implication for medical services is not investigated. The site's main competitor (medicusunion.com) uses a light theme.
+Per the CSS Filter Effects Level 2 spec, an element with `filter` (including `drop-shadow()`) establishes a backdrop root. The `backdrop-filter` on a descendant only captures pixels between itself and the nearest backdrop root ancestor. If that ancestor has a filter, the captured backdrop is the filtered intermediate result, not the actual page content behind the element.
 
-**How to avoid:**
-- Make light mode the default. Always. The site loads in light mode for all new visitors regardless of OS preference. This matches what a 45+ Kazakhstan user expects from a medical service.
-- Dark mode should be an opt-in toggle, not an OS-preference-driven automatic switch. Use `data-theme="dark"` on `<html>` controlled by JS, not `@media (prefers-color-scheme: dark)` as the primary mechanism.
-- Store the user choice in `localStorage`. On page load, read localStorage first; if absent, default to light. Never default to OS dark mode.
-- In dark mode, keep medical imagery, trust badges, and doctor photos visible with appropriate contrast — do not make them appear dim or inactive.
-- If dark mode is skipped entirely for v1.4, this is a defensible decision. Dark mode adds ~40-60 new CSS token pairs and doubles QA surface. For a conversion-focused medical landing, the ROI is unclear for a 45+ audience.
+**Consequences:**
+Glass cards inside shadow-wrapped parents show no blur effect. The backdrop appears as a solid color (the parent's background) instead of the blurred page content.
 
-**Warning signs:**
-- `@media (prefers-color-scheme: dark)` used as the primary dark mode trigger without a localStorage override
-- Dark mode active by default on first visit
-- No audit of trust signals (testimonials, badges, logos) in dark mode context
-- Medical imagery looks desaturated or dim in dark theme
+**Prevention:**
+- NEVER use `filter: drop-shadow()` on any ancestor of a glass element.
+- For squircle elements needing outer shadows, use the shadow-wrap pattern: a wrapper `<div>` with `box-shadow` + `border-radius`, and the inner element with `mask-image` + `backdrop-filter`.
+- If the shadow must follow the squircle mask shape, accept the limitation: either use `box-shadow` with standard `border-radius` (close enough) or sacrifice the outer shadow entirely.
+- Document this constraint in the design system: "Shadow-wrap pattern is required for all masked glass elements."
+- In Chrome 139+ where `corner-shape: squircle` is used (no mask needed), `box-shadow` works natively and this workaround is unnecessary.
 
-**Phase to address:**
-Phase delivering dark mode — establish default-light policy in the CSS token architecture before writing a single dark token.
+**Detection:**
+- Any glass element nested inside a `filter: drop-shadow()` parent will show no blur.
+- Visual QA: look for glass elements that appear as flat semi-transparent rectangles despite having backdrop-filter.
+
+**Phase:** Already resolved. Maintain discipline in all future phases -- add ESLint/stylelint rule if possible.
+
+**Sources:**
+- Project git history (commit `ba29f8a`)
+- [MDN: filter property](https://developer.mozilla.org/en-US/docs/Web/CSS/filter)
+- [CSS Filter Effects Level 2 spec](https://drafts.fxtf.org/filter-effects-2/)
 
 ---
 
-### Pitfall 4: Dark Mode Fails WCAG Contrast — Especially for Secondary Text
+### Pitfall 4: GPU Memory Exhaustion from Composite Layer Explosion
 
 **What goes wrong:**
-Light mode WCAG contrast is checked at launch. Dark mode is added as an afterthought with approximate colour substitutions. Secondary text (descriptions, disclaimers, form labels) that was borderline-acceptable at 4.6:1 in light mode is not re-checked in dark mode, and the dark equivalents fail at 3.2:1. Disabled state colours, placeholder text, and icon fills are particularly likely to fail. For 45+ users with common age-related contrast sensitivity reduction, this means sections of the page become literally unreadable in dark mode.
+Every element with `backdrop-filter`, `will-change`, `transform: translateZ(0)`, or `filter` gets promoted to its own GPU composite layer. Each layer consumes VRAM proportional to the element's pixel area. On a 1440px-wide page with 8+ glass cards visible simultaneously, you can exhaust GPU memory on mid-range Android devices (2-4GB RAM, shared GPU memory), causing browser crashes or forced reloads.
 
 **Why it happens:**
-Dark mode colour tokens are derived by "inverting" or "darkening" the light palette without running each pair through a contrast checker. The assumption is that if light mode passes, dark mode will too. It does not — the mathematical relationship is non-linear.
+Developers add `will-change: backdrop-filter` or `transform: translateZ(0)` to every glass element "for performance." Combined with the implicit layer promotion from `backdrop-filter` itself, this doubles the layer count. The current v4.0 codebase wisely avoids `will-change` on static cards (documented anti-pattern in liquid-glass.css header comments), but v5.0 adds more glass elements (fluted glass, clear glass, adaptive tinting) that increase the total count.
 
-**How to avoid:**
-- Create a full colour token table for dark mode: for every light mode `color / background` pair, define and check the corresponding dark pair explicitly with a tool (contrast.tools, whocanuse.com, or browser DevTools accessibility panel).
-- Minimum targets: Body text 7:1 (AAA) for 45+ audience. Large text 4.5:1 (AA). Secondary/label text 4.5:1 minimum.
-- Placeholder text: WCAG requires 3:1, but 45+ users need 4.5:1 minimum. Do not use `rgba(255,255,255,0.4)` as placeholder in dark mode — it will fail.
-- Grey-on-dark patterns are the most common failure: `#888888` text on `#1a1a1a` background is only 3.6:1.
-- Lint CSS custom properties: define both `--color-text-secondary-light` and `--color-text-secondary-dark` explicitly, never `calc()` or percentage-lightness-shift a single variable.
+**Consequences:**
+- Budget Android devices (dominant in Kazakhstan market): browser tab crashes with no error message
+- Mid-range devices: scroll jank averaging 12fps drop per glass element beyond the 5th
+- Desktop: Chrome DevTools "Layers" panel shows 20+ composite layers where 5-8 would suffice
 
-**Warning signs:**
-- Dark mode colours derived by opacity or filter: invert() rather than explicit token pairs
-- Secondary/helper text not re-checked after dark mode implementation
-- Placeholder colour in dark mode below 4.5:1 contrast
-- No accessibility overlay or colour contrast audit run specifically on the dark mode state
+**Prevention:**
+- Enforce a hard budget: MAX 5 glass elements per viewport at any scroll position. Count ALL elements with `backdrop-filter`, not just `.liquid-card`.
+- NEVER add `will-change: backdrop-filter` to static (non-animating) elements. Current anti-pattern docs are correct -- maintain them.
+- Use `will-change` only on elements about to animate, and remove it via JS after animation completes.
+- Use Chrome DevTools > Layers panel to audit composite layer count.
+- For sections with many cards, consider using glass effect only on hover/focus (JS-toggled class), not permanently.
+- Test on a budget Android device (Samsung Galaxy A14 or equivalent, ~$150 device common in KZ).
 
-**Phase to address:**
-Phase delivering dark mode token system — run contrast audit before theming any component.
+**Detection:**
+- Chrome DevTools > Rendering > "Layer borders" shows green borders around every composite layer
+- Chrome DevTools > Performance tab shows "Compositor Layers" count
+- Android remote debugging: `chrome://inspect` from desktop Chrome
+
+**Phase:** Phase 2 (GPU performance audit). Audit BEFORE adding new glass variants.
+
+**Sources:**
+- [Smashing Magazine: CSS GPU Animation](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/)
+- [Chromium GPU Compositing docs](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)
 
 ---
 
-### Pitfall 5: Display Typography at 72px+ Triggers Line Length and Reflow Problems on Mobile
+### Pitfall 5: WCAG Contrast Failure Through Glass on Dynamic Backgrounds
 
 **What goes wrong:**
-Bold display typography looks powerful in desktop mockups at 72-96px. On a 390px wide mobile screen, a 72px headline is three or four words wide, forcing single-word lines, breaking Russian hyphenation rules, and creating visual clutter. Cyrillic characters at very large sizes also expose font metric differences — Inter and Manrope's Cyrillic glyphs are tighter than their Latin equivalents, causing inconsistent optical weight across headline words that mix Latin (MedicusUnion brand name) and Cyrillic.
+Text on glass elements has no fixed background color -- the effective contrast depends on whatever content is behind the glass at any given scroll position. A card that passes WCAG 4.5:1 contrast against a white section fails when scrolled over a dark image, gradient, or colored tint section. For a 45+ medical audience, this directly impacts readability and trust.
 
 **Why it happens:**
-Display typography is designed at 1440px desktop width. The typographic scale is not adjusted for mobile breakpoints. Responsive font sizing using `clamp()` is applied as a single rule without checking how each specific headline breaks at narrowest viewport.
+`backdrop-filter: blur()` averages the colors behind the element, but the result is unpredictable and varies per viewport. Static contrast checkers cannot test this. Manual testing at every scroll position is impractical.
 
-**How to avoid:**
-- Use `clamp()` with verified min/max values per heading level tested at 320px, 390px, and 768px. Example: `font-size: clamp(2rem, 8vw, 4.5rem)` — verify all three anchor points manually.
-- Check every Russian headline at narrowest viewport for orphaned single words (a word alone on the last line). Adjust max-width or use `text-wrap: balance` (Baseline 2023, supported in all modern browsers) to prevent this.
-- Keep body-level Russian text at 18-20px. Do not apply display scaling to any text that needs to be read in full — only to decorative headlines (hero tagline, section openers).
-- For 45+ users: large type helps comprehension only when it does not break lines unexpectedly. A 45+ user reading a three-word fragment is not helped by large type — they are confused by the broken sentence.
-- Use `letter-spacing: -0.02em` only on Latin headlines. Cyrillic at large sizes does not need tracking adjustment and can look awkward with tighter tracking.
+**Consequences:**
+- WCAG AA failure (4.5:1 for normal text, 3:1 for large text)
+- 45+ users with age-related vision changes cannot read card content
+- Legal risk for medical service (accessibility lawsuits increasing in EU/CIS)
 
-**Warning signs:**
-- Headlines tested only at 1440px during design
-- Single Russian words appearing on their own line at 390px width
-- Same `clamp()` values used across all heading levels without mobile review
-- `font-size` above 4rem on mobile (`min` value in clamp above 3.5rem at 320px)
+**Prevention:**
+- Current `--liquid-bg` at `rgba(255,255,255,0.42)` is too low for worst-case scenarios. Floor at `rgba(255,255,255,0.65)` for any glass element containing body text.
+- For glass elements that scroll over varied backgrounds, use `rgba(255,255,255,0.75)` minimum -- accept reduced translucency for readability.
+- Implement a contrast-safe mode: `@media (prefers-contrast: more)` and `@media (prefers-reduced-transparency: reduce)` should bump opacity to 0.90+.
+- Test every glass card against EVERY section background it will appear over, including transitions between sections.
+- Use `text-shadow: 0 1px 2px rgba(0,0,0,0.1)` on glass text for additional legibility floor (subtle, not obvious).
+- Dark mode: `rgba(30,40,60,0.45)` current value is reasonable against dark backgrounds.
 
-**Phase to address:**
-Phase delivering typography system — review every headline variant at 320px and 390px before wider integration.
+**Detection:**
+- axe-core accessibility audit at multiple scroll positions
+- Manual: scroll slowly through entire page, checking text readability on each glass card
+
+**Phase:** Phase 1 (cross-browser hardening) -- accessibility is not optional.
+
+**Sources:**
+- [WCAG 2.1 SC 1.4.3 Contrast Minimum](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ---
 
-### Pitfall 6: Bold Typography Drops Below WCAG Contrast for Thin-Weight Numerals and Light Text Variants
+## Moderate Pitfalls
+
+### Pitfall 6: Firefox backdrop-filter Breaks with border-radius + overflow + sticky
 
 **What goes wrong:**
-The design uses a bold/light typographic contrast system: a 700-weight hero headline paired with 300-weight supporting descriptor text. The 300-weight text at any colour has lower effective contrast because thin strokes are perceived with less contrast than the same colour in 400-weight. For 45+ users, this creates readability failures even when the colour technically passes WCAG contrast ratios. WCAG 2.1 defines "large text" as 18pt (24px) or 14pt (18.67px) bold — 300-weight text at any size is treated as normal text and requires 4.5:1.
+In Firefox (tested through Firefox 147), `backdrop-filter` stops working on a `position: sticky` element when an ancestor has both `border-radius` and `overflow: auto|hidden|scroll` set. The blur effect completely disappears.
 
-**Why it happens:**
-Typography systems use font-weight as a hierarchy signal. Designers do not recalculate contrast ratios when changing weight — they assume the colour passes at all weights. Thin-weight Cyrillic numerals (like the "450€" price display) are common failure points.
+**Prevention:**
+- The sticky header (`.liquid-header-backdrop`) must not have an ancestor with `border-radius` + `overflow` combo.
+- If a scrollable container needs rounded corners, apply `border-radius` via a separate wrapper that does NOT have `overflow` set, or use `clip-path` instead of `overflow: hidden` for rounding.
+- Workaround: add `filter: blur(0px)` or `z-index: 1` to the ancestor with `border-radius` + `overflow`.
 
-**How to avoid:**
-- Do not use font-weight below 400 for any text that conveys information. Use 400 as the minimum for body/descriptor text.
-- For light-mode supporting text, ensure the colour passes 4.5:1 against its background regardless of weight.
-- The pricing display (`от 450 EUR`) is the highest-stakes text on the page after the CTA button. Check its contrast at every weight used. If displayed in a glass card, check against worst-case background.
-- If font-weight 300 is used purely decoratively (e.g., a large transparent watermark numeral), it must not convey required information.
+**Phase:** Phase 1 (cross-browser hardening).
 
-**Warning signs:**
-- Font-weight 300 used for any text containing price, specialisation, or call-to-action information
-- Light descriptor text below `#767676` on white (fails 4.5:1)
-- Pricing or statistics displayed in thin weight without contrast check
-
-**Phase to address:**
-Phase delivering typography system — establish weight-to-contrast policy as part of token definition.
+**Sources:**
+- [Firefox Bug 1803813](https://bugzilla.mozilla.org/show_bug.cgi?id=1803813)
 
 ---
 
-### Pitfall 7: Micro-Animations Trigger Vestibular Disorders Without prefers-reduced-motion Guard
+### Pitfall 7: mix-blend-mode + backdrop-filter Interaction Causes Double Application
 
 **What goes wrong:**
-Scroll-driven animations (elements flying in from the sides), parallax-like effects, and continuous hover micro-animations all qualify as motion that can trigger nausea, dizziness, and vertigo in users with vestibular disorders. The WCAG 2.1 Success Criterion 2.3.3 (Animation from Interactions, Level AAA) requires providing an option to disable such motion. For a 45+ audience, the prevalence of balance disorders increases significantly with age — approximately 35% of adults over 40 experience some degree of vestibular dysfunction.
+When using `mix-blend-mode` for adaptive tinting on glass elements, the filter effects (blur, brightness, saturate) get applied TWICE to the portion of the image that has been backdrop-filtered. This creates an unnaturally saturated, overly bright appearance. The problem compounds exponentially if glass elements are nested.
 
 **Why it happens:**
-Micro-animations are added to individual components without a global motion policy. The `prefers-reduced-motion` media query is either not implemented or applied only to a subset of animations. Scroll-driven animations using IntersectionObserver or CSS `animation-timeline` often have no reduced-motion variant because the developer thinks only "bouncing" animations are the problem. Any translating, scaling, or repositioning animation counts.
+Per the CSS Filter Effects Level 2 spec, `backdrop-filter` captures the backdrop image, applies filters to it, then composites the result. If the element also has `mix-blend-mode`, the blending operation applies to the already-filtered result, and filters from ancestor stacking contexts may re-apply to the filtered region. The spec explicitly warns about this in the "Backdrop Root" definition.
 
-**How to avoid:**
-- Establish a single global CSS rule at the top of the animation stylesheet: `@media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }`. This is the nuclear option — all animation is neutralised for users who request it.
-- For scroll-reveal animations (the existing IntersectionObserver pattern): in the reduced-motion branch, set elements to visible immediately without the translate/opacity animation. The content appears, just without motion.
-- CSS scroll-driven animations (`animation-timeline: scroll()`) are not yet Baseline stable as of early 2026 — Firefox support is incomplete. Do not use them as primary animation mechanism. The existing IntersectionObserver pattern is more reliable and controllable.
-- Replace translate-based entrances with opacity-only fades for micro-animations. An opacity fade from 0 to 1 is classified as non-vestibular motion and is acceptable even without reduced-motion guard (though still guard it).
-- Button hover micro-animations: `transform: translateY(-2px)` is acceptable and the current pattern. Do not increase this or add simultaneous scale. `transform: scale(1.05)` on hover is a vestibular risk.
+**Prevention:**
+- Do NOT apply `mix-blend-mode` directly to the glass element. Instead, use a pseudo-element (`::after`) with `mix-blend-mode` positioned above the glass content but below the text.
+- Test with extreme colors behind the glass -- oversaturation is most visible with red/orange backgrounds.
+- If adaptive tinting uses `mix-blend-mode: multiply` or `mix-blend-mode: color`, limit `saturate()` in the `backdrop-filter` to 120% max (not the current 180%).
+- NEVER nest glass inside glass. Current anti-pattern docs cover this -- maintain them.
 
-**Warning signs:**
-- No `@media (prefers-reduced-motion)` block in CSS
-- IntersectionObserver animations do not check `window.matchMedia('(prefers-reduced-motion: reduce)').matches` before applying motion classes
-- Any animation using `transform: scale()`, `perspective()`, `rotate()`, or translate values above 10px
-- Continuous animations (pulsing, rotating loading indicators) without a stop condition
+**Phase:** Phase 2 or 3 (adaptive tinting implementation).
 
-**Phase to address:**
-Phase delivering micro-animations — the reduced-motion guard must be the first rule written, before any animation is added.
+**Sources:**
+- [WebKit Bug 176830](https://bugs.webkit.org/show_bug.cgi?id=176830)
+- [Firefox Bug 1083241](https://bugzilla.mozilla.org/show_bug.cgi?id=1083241)
+- [W3C FXTF Issue #53](https://github.com/w3c/fxtf-drafts/issues/53)
 
 ---
 
-### Pitfall 8: Micro-Animations Increase Cognitive Load and Reduce Trust on Medical Pages
+### Pitfall 8: Device Orientation API Requires Explicit Permission on iOS
 
 **What goes wrong:**
-Every animation on a page is a distraction event that consumes cognitive bandwidth. For 45+ users, who are already processing unfamiliar medical terminology and making high-stakes decisions about their health, unnecessary motion pulls attention away from the content they need to evaluate. On a medical landing page specifically, a playful or exuberant animation style (bouncing cards, celebratory micro-interactions, particle effects) triggers dissonance — the tone says "fun tech product" while the content says "serious medical consultation at 450 EUR." This dissonance reduces trust and increases abandonment.
+Specular highlight physics (gyroscope-based light movement on mobile) silently fails on iOS 13+ because `DeviceOrientationEvent.requestPermission()` must be called from a user gesture (tap/click). Calling it on page load throws a security error. Android does not require this permission.
 
 **Why it happens:**
-Micro-animations are added to improve "delight" and "engagement." These are valid goals for consumer apps. For medical services targeting older users making costly, high-stakes decisions, the calculus is different. No research supports the idea that scroll-in animations increase medical consultation conversion.
+Apple added mandatory permission gating in iOS 13 beta 2 (2019) for accelerometer/gyroscope data. The API exists, but it requires HTTPS + user gesture + explicit permission dialog. If the user denies permission, the gyroscope is permanently blocked until the user manually resets permissions in Safari settings.
 
-**How to avoid:**
-- Restrict animations to functional purpose only: form feedback (submission spinner, success state fade), accordion expand/collapse, dark mode theme transition.
-- Scroll-reveal animations (existing pattern) are acceptable at low intensity — opacity + 8px translateY over 400ms. They signal "this content is important and just appeared." Do not add stagger delays above 100ms between sibling elements or the page feels slow.
-- Prohibit: parallax, floating/pulsing elements, animated counters on statistics (common on medical pages, but disorienting for older users), animated SVG illustrations.
-- The theme transition animation (light→dark) must be short: 200-300ms. Do not use a "cinema" fade or sweeping wipe — it reads as the page malfunctioning.
-- Keep the total animation budget: maximum 4-5 distinct animation types on the entire page. Each type should serve a clear UX function.
+**Prevention:**
+- Gate gyroscope features behind a "Try" button or first interaction with the glass element.
+- Check for `DeviceOrientationEvent.requestPermission` existence before calling:
+  ```javascript
+  if (typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission === 'function') {
+    // iOS path: request on user gesture
+    button.addEventListener('click', async () => {
+      const permission = await DeviceOrientationEvent.requestPermission();
+      if (permission === 'granted') { startGyroscope(); }
+    });
+  } else {
+    // Android/desktop: start immediately
+    startGyroscope();
+  }
+  ```
+- Provide a CSS-only fallback (parallax on `mousemove` for desktop, subtle CSS animation for mobile without gyroscope).
+- Do NOT show a permission dialog on page load -- medical audience 45+ will likely deny unexpected permission requests.
+- Consider: is gyroscope-driven specular highlight worth the UX friction of a permission dialog for a medical landing page? Probably not. Use mouse parallax on desktop and static highlight position on mobile instead.
 
-**Warning signs:**
-- Animated counters on the "social proof" statistics section
-- Stagger delay above 100ms applied to card grids
-- Any looping or continuous animation visible in the viewport at rest
-- Theme switch animation above 400ms duration
+**Detection:**
+- Test on a physical iPhone (iOS 13+). Simulator does not trigger permission requirement.
 
-**Phase to address:**
-Phase delivering micro-animations — define the animation catalogue (what will animate and why) before writing a single `@keyframes`.
+**Phase:** Phase 3 (specular highlight physics). Strongly recommend desktop-only parallax, skip mobile gyroscope entirely.
+
+**Sources:**
+- [Device Orientation Permission in iOS 13 (Lee Martin)](https://leemartin.dev/how-to-request-device-motion-and-orientation-permission-in-ios-13-74fc9d6cd140)
+- [W3C Device Orientation spec](https://www.w3.org/TR/orientation-event/)
+- [DEV Community: requestPermission iOS 13+](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2)
 
 ---
 
-### Pitfall 9: Dark Mode Toggle is Invisible or Inaccessible to 45+ Users
+### Pitfall 9: SVG feTurbulence Performance Destroys Mobile Scroll
 
 **What goes wrong:**
-The dark mode toggle is implemented as a small sun/moon icon button in the navigation, styled to be visually subtle (to avoid "cluttering the nav"). For 45+ users with reduced visual acuity, a 24x24px icon button with no visible label is not discoverable. Users do not find it, do not know it exists, and if they accidentally trigger it, do not know how to undo it — the page appears "broken."
+SVG `feTurbulence` generates Perlin noise at render time. When used inside `backdrop-filter` (via `url(#filter)`), it recomputes on every frame during scroll. On an M4 Max MacBook Pro, community reports show visible judder; on budget Android devices, frame rates drop to single digits.
 
 **Why it happens:**
-Dark mode toggles are designed by developers who know they exist. The toggle is treated as a power-user feature and styled minimally. There is no user testing with 45+ users who have never encountered a theme toggle before.
+`feTurbulence` is CPU-rendered in all browsers (not GPU-accelerated). Each frame requires computing noise values for every pixel in the filter region. `numOctaves="2"` means 2x the computation. Combined with `feDisplacementMap` (which reads the noise output and displaces source pixels), the per-frame cost is proportional to `element_area * numOctaves`.
 
-**How to avoid:**
-- The toggle must be minimum 44x44px tap target (WCAG 2.5.5), preferably 48x48px.
-- Include a visible text label alongside the icon, at least on mobile: "Тёмная тема" or simply display the current state label: "Светлая / Тёмная". The icon alone is insufficient for this audience.
-- The toggle state must be clearly visible — the current mode is communicated by icon + colour change, not icon position alone (switches are less intuitive than labelled buttons for older users).
-- On first-time dark mode activation, show a brief toast or text feedback: "Тёмный режим включён" — confirms the action was intentional.
-- Do not animate the toggle icon itself (rotating sun, morphing moon) — this is cognitive noise. A simple colour or label change is sufficient.
-- Consider whether the 45+ Kazakhstan user actually benefits from dark mode. If not, defer the feature to v1.5 and focus the phase budget on typography and glass quality.
+**Prevention:**
+- NEVER animate `feTurbulence` parameters (`baseFrequency`, `seed`). Generate once, cache the result.
+- Reduce `numOctaves` to 1 for production. Visual difference between 1 and 2 octaves is minimal at blur distances.
+- Use `feGaussianBlur` to soften the noise BEFORE `feDisplacementMap` (current approach in the research reference uses `stdDeviation="2"` -- this is correct).
+- Limit refraction to 1-2 hero elements, not all glass cards.
+- Consider pre-rendering the displacement map as a PNG and using `feImage` instead of runtime `feTurbulence`. This trades a ~5KB asset for eliminating per-frame noise generation entirely.
+- Set `filterUnits="userSpaceOnUse"` with fixed dimensions to prevent recomputation on resize.
 
-**Warning signs:**
-- Toggle smaller than 44x44px
-- Icon-only toggle with no text label
-- No visible state indication of current theme
-- Toggle placed in a position that overlaps with nav links on mobile
+**Detection:**
+- Chrome DevTools > Performance tab > scroll recording shows long "Rasterize Paint" tasks.
+- Safari Web Inspector > Timeline shows SVG filter rendering as separate paint events.
 
-**Phase to address:**
-Phase delivering dark mode toggle UI — defined as part of the navigation component work.
+**Phase:** Phase 2 (SVG refraction tuning). Pre-render displacement map as PNG for production.
+
+**Sources:**
+- [GSAP feTurbulence Mobile Performance](https://gsap.com/community/forums/topic/33075-gsap-and-feturbulence-mobile-performance/)
+- [Apple Liquid Glass research article (project reference)](compass_artifact)
 
 ---
 
-### Pitfall 10: Full Visual Redesign Breaks Existing Working CSS Without Regression Testing
+### Pitfall 10: mask-image + box-shadow Clipping (Shadow-Wrap Pattern)
 
 **What goes wrong:**
-The v1.4 redesign adds new CSS token layers (dark mode tokens, glass tokens, animation tokens) on top of the existing v1.3 CSS architecture (~1,640 lines). CSS specificity conflicts, cascade ordering issues, and token name collisions silently break existing components — form validation states lose their colours, the sticky mobile bar overlaps incorrectly, wave dividers misalign, or FAQ accordion animation conflicts with the new animation system. These breakages often appear only on specific mobile viewpoints or in specific scroll states, making them easy to miss in a desktop review.
+Applying `box-shadow` to an element with `mask-image` causes the shadow to be clipped to the mask silhouette. Instead of a soft shadow around the element, you get two thin arcs or no visible shadow at all.
+
+**THIS IS A KNOWN PATTERN IN THE CODEBASE** -- documented in both `liquid-glass.css` and `squircles.css` header comments.
 
 **Why it happens:**
-New CSS is added incrementally. Each phase works in isolation. The cumulative effect of adding glass styles + dark mode overrides + animation classes is not tested holistically. Token names added in v1.4 can shadow v1.3 tokens if both define a `--color-primary` variant.
+CSS `mask-image` clips ALL visual output of the element, including box-shadow. This is per spec, not a bug. The shadow is rendered within the element's border box, then the mask is applied, clipping the shadow to the mask shape.
 
-**How to avoid:**
-- Before starting v1.4 implementation, establish a visual regression baseline: screenshot every section at 390px and 1440px. Compare after each phase.
-- Use a strict CSS token namespace for new v1.4 additions: `--glass-*`, `--dark-*`, `--anim-*`. Never override existing `--color-*` or `--spacing-*` tokens from v1.3.
-- The dark mode override block should be scoped exclusively to `[data-theme="dark"]` selector. It must never apply to elements outside this scope.
-- After every implementation phase, manually test: form submission flow (all states), FAQ accordion, sticky header on scroll, sticky mobile bar, wave dividers at section boundaries, CTA button states.
-- The 11-section structure is the conversion funnel. Any phase that breaks the form, the CTAs, or the trust sections has broken the product's core purpose — treat this as a blocker, not a cosmetic issue.
+**Prevention:**
+- Use the shadow-wrap pattern: outer `<div>` with `box-shadow` + `border-radius`, inner element with `mask-image`.
+- OR use `filter: drop-shadow()` on a NON-glass parent (remember Pitfall 3: this breaks child backdrop-filter).
+- OR accept `border-radius` shadow (close visual match for most cases) and skip mask entirely on elements where shadow is critical.
+- In Chrome 139+ with `corner-shape: squircle`, `mask-image` is removed (progressive enhancement in `squircles.css`). `box-shadow` works natively. This is the ideal future state.
+- Current `.liquid-card-wrap` is marked DEPRECATED (comment says "use drop-shadow instead"), but drop-shadow was reverted (Pitfall 3). Need to UN-deprecate shadow-wrap or find a third approach.
 
-**Warning signs:**
-- New CSS token names that overlap with existing `--color-primary`, `--color-cta`, `--gradient-cta`
-- No visual comparison run between v1.3 state and new state
-- CSS added with `!important` to override existing styles (means specificity war started)
-- No test of form submission after adding dark mode CSS
+**Detection:**
+- Visual: shadow appears as thin arcs instead of soft glow around squircle elements.
 
-**Phase to address:**
-Every v1.4 phase — regression testing is a success criterion for each phase, not a final QA step.
+**Phase:** Phase 1. Reconcile the DEPRECATED comment with the drop-shadow revert. Either restore shadow-wrap as the canonical pattern or document the new approach.
 
 ---
 
-## Technical Debt Patterns
+### Pitfall 11: isolation: isolate Creates Implicit Stacking Context Traps
 
-| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
-|----------|-------------------|----------------|-----------------|
-| Apply `backdrop-filter` to all card components in one global rule | Fast implementation | Performance failures on mid-range Android; impossible to tune per-section | Never — apply selectively, per context |
-| Use `@media (prefers-color-scheme: dark)` as the primary dark mode mechanism | No JS needed | Dark mode activates automatically, overriding the medical-trust default-light policy | Never for this project |
-| Copy dark mode palette from a design system example without contrast-checking each pair | Fast palette creation | Silently failing WCAG contrast for 45+ audience in dark state | Never |
-| Add `prefers-reduced-motion` only to the "obvious" animations (fly-in cards) | Appears compliant | Continuous animations, hover transforms, and theme transitions remain unguarded | Never — apply globally first, then refine |
-| Skip visual regression screenshots between phases | Saves time | CSS cascade errors accumulate silently until a hard-to-diagnose breakage | Never during a full visual redesign |
-| Use a 16px toggle icon for dark mode switch to "keep nav clean" | Cleaner nav visually | 45+ users cannot find or operate it; accessibility failure | Never — 44px minimum |
+**What goes wrong:**
+Every `.liquid-regular`, `.liquid-card`, `.liquid-btn-secondary`, and `.stats-glass` element has `isolation: isolate`. This creates a new stacking context. Any `z-index` on descendant elements is scoped to that stacking context and cannot escape it. Modals, tooltips, dropdowns, or other overlays inside glass elements cannot appear above elements outside the glass element, regardless of z-index value.
 
----
+**Why it happens:**
+`isolation: isolate` is intentionally used in the glass system to prevent `mix-blend-mode` from bleeding into parent contexts. But it has the side effect of creating a stacking context boundary that traps z-index.
 
-## Performance Traps
+**Prevention:**
+- Never place modals, tooltips, or dropdown menus as children of glass elements. Render them at the body level (or use a portal pattern).
+- The sticky header (`.liquid-header-backdrop`) must have a z-index higher than the glass cards' parent stacking contexts, not the glass cards themselves.
+- When adding new interactive elements (dropdowns in nav, tooltips on stats), verify they escape the glass element's stacking context.
+- Document: "Glass elements are stacking context roots. Overlays must be rendered outside glass elements."
 
-| Trap | Symptoms | Prevention | When It Breaks |
-|------|----------|------------|----------------|
-| Multiple simultaneous `backdrop-filter` elements in viewport | Frame drops to 20-25fps during scroll on mid-range Android | Limit glass elements to 1-2 in any single viewport; test on 4x CPU throttle | Budget Android devices (Samsung A-series) under sustained scroll |
-| CSS `animation-timeline: scroll()` without Firefox fallback | Animations absent for ~6% of desktop Firefox users; no error shown | Use IntersectionObserver as primary; scroll-driven CSS as progressive enhancement behind `@supports` | Firefox as of early 2026 |
-| Dark mode CSS loaded synchronously before render | Flash of light mode on first dark-mode-preference visit (FOUC) | Read `localStorage` in a `<script>` in `<head>` before `<body>` renders; apply `data-theme` attribute immediately | Every dark-mode user on first visit |
-| `will-change: transform` applied to all animated elements | Excessive GPU memory use; mobile browser crashes on low-RAM devices | Apply `will-change` only immediately before animation starts, remove after | Devices with 2GB RAM or less (budget Android) |
-| Theme transition `transition: all 0.5s` on `<html>` or `<body>` | Every CSS property on every element transitions during theme switch; jank | Scope transitions to specific properties: `color, background-color, border-color` only | Any device during theme switch |
+**Detection:**
+- z-index on a child element has no effect beyond the glass parent.
+- A dropdown menu appears behind content below the glass card.
+
+**Phase:** Phase 1 (design system documentation). Ongoing discipline for all phases.
 
 ---
 
-## UX Pitfalls
+### Pitfall 12: Animating backdrop-filter Values Causes Full Repaint
 
-| Pitfall | User Impact | Better Approach |
-|---------|-------------|-----------------|
-| Glass cards with colourful background images visible through blur | Text unreadable; image is distorted to "noise" with no information value | Use glass only over solid or near-solid colour backgrounds; avoid glass over photo sections |
-| Dark mode default with no visible toggle to return to light | 45+ user thinks page is broken, cannot recover, leaves | Default light, prominent toggle with text label, localStorage persistence |
-| Bold hero headline breaks into 1-word lines on mobile | Reads as broken sentence fragments; 45+ user re-reads multiple times | `text-wrap: balance` on headlines; test at 320px and 390px; adjust clamp min value |
-| Scroll-reveal animations delay content appearing (high stagger) | Users with reading disabilities or slow cognition miss content that has not animated in yet; feels slow | Stagger below 100ms; reduced-motion: content visible immediately |
-| Animated statistics counter (numbers rolling up) in social proof section | Distracting, potentially vestibular; delays trust signal perception for 45+ users who need to read static numbers | Display numbers statically; no animation on trust/social-proof data |
-| Dark mode desaturates the hero medical illustration | Illustration looks washed-out; medical credibility reduced | Either exclude the hero illustration from dark-mode colour treatment, or create a purpose-made dark-mode version |
+**What goes wrong:**
+Directly animating `backdrop-filter` properties (e.g., transitioning `blur(0px)` to `blur(24px)` on scroll) triggers a full repaint every frame. Unlike `transform` and `opacity` (which are compositor-only, GPU-cheap), `backdrop-filter` changes require re-rasterizing the entire filter area. This causes visible jank, especially on scroll-linked animations.
 
----
+**Why it happens:**
+`backdrop-filter` is not a compositor-only property. Changing its value requires the browser to re-capture the backdrop, re-apply the filter, and re-composite. This touches the CPU paint pipeline, not just the GPU compositor.
 
-## "Looks Done But Isn't" Checklist
+**Prevention:**
+- NEVER transition/animate `backdrop-filter` values directly. The header scroll enhancement (`.header--scrolled` changes `--liquid-blur-md` from 24px to 60px) should use a class toggle (instant swap), not a CSS transition.
+- To "animate" a blur-in effect, use opacity on the entire glass element instead:
+  ```css
+  .glass { opacity: 0; transition: opacity 0.3s; }
+  .glass.visible { opacity: 1; }
+  ```
+- The shimmer sweep (`.shimmer-sweep::before`) correctly animates `transform` (not filter), which is compositor-only. Maintain this pattern.
+- The glint border (`.liquid-card::before`) animates `background-position`, which triggers repaint but is limited to a 2px-wide pseudo-element, so the cost is negligible. Acceptable.
 
-- [ ] **Glass contrast:** Text contrast checked against worst-case background (darkest content behind card), not design-intent background
-- [ ] **prefers-reduced-motion:** Global CSS rule present AND IntersectionObserver JS checks the media query before adding animation classes
-- [ ] **Dark mode default:** `localStorage` read in `<head>` script; page loads in correct theme without flash (test in Chrome Incognito with OS dark preference)
-- [ ] **Dark mode WCAG:** Every colour token pair (foreground/background) in dark mode passed through contrast checker — not just primary text
-- [ ] **Glass performance:** Tested with Chrome DevTools CPU 4x throttle during scroll; frame rate stays above 50fps
-- [ ] **Mobile typography:** Every headline reviewed at 390px viewport; no single-word orphaned lines in Russian
-- [ ] **Dark mode toggle:** Toggle tap target measured at 44px minimum in DevTools
-- [ ] **Existing functionality:** Form submission flow tested end-to-end after each visual change (submit → loading → success/error state)
-- [ ] **CSS token namespace:** No v1.4 token names collide with existing v1.3 token names — grep for duplicates
-- [ ] **Theme transition:** FOUC test — hard refresh in Chrome with OS dark mode; page should load in correct theme immediately
+**Detection:**
+- Chrome DevTools > Performance > enable "Paint flashing" -- green flashes on scroll indicate repaints.
+- Smooth scroll with glass header should not show green flash on the header element during scroll.
+
+**Phase:** Phase 2 (GPU performance audit).
 
 ---
 
-## Recovery Strategies
+## Minor Pitfalls
 
-| Pitfall | Recovery Cost | Recovery Steps |
-|---------|---------------|----------------|
-| Glass contrast failure discovered post-launch | LOW | Increase `background` opacity on glass element from 0.3 to 0.75; redeploy single CSS file |
-| Vestibular complaints / reduced-motion not implemented | LOW | Add global `prefers-reduced-motion` rule to top of animations CSS; redeploy |
-| Dark mode FOUC on first visit | LOW | Add `<script>` in `<head>` that reads localStorage and sets `data-theme` before body renders |
-| Glass performance janking on mobile | MEDIUM | Remove `backdrop-filter` from grid cards; apply only to hero/CTA panel; redeploy |
-| CSS token collision breaks existing components | MEDIUM | Namespace new tokens with v1.4 prefix; audit cascade order; test all 11 sections |
-| Dark mode default activating for 45+ users expecting light | LOW-MEDIUM | Remove `prefers-color-scheme` media query trigger; add localStorage-only control; redeploy |
-| Typography breakage on mobile (word orphans, overflow) | LOW | Adjust `clamp()` min value per heading level; add `text-wrap: balance`; test at 320px |
+### Pitfall 13: prefers-reduced-transparency Has Limited Browser Support
 
----
+**What goes wrong:**
+The `@media (prefers-reduced-transparency: reduce)` query in `liquid-glass.css` (Section 14) only works in Chrome 118+ and Edge 118+. Safari and Firefox do not support it as of April 2026. Users on macOS who enable "Reduce transparency" in System Preferences will NOT get the opaque fallback in Safari.
 
-## Pitfall-to-Phase Mapping
+**Prevention:**
+- Keep the media query (it is correct for progressive enhancement).
+- For Safari/macOS users, consider adding a manual toggle in the page UI alongside the dark mode toggle.
+- Firefox support is not expected soon (no public intent).
+- The `prefers-reduced-motion` query (Section 13) has universal support and serves as a partial fallback for motion-sensitive users.
 
-| Pitfall | Prevention Phase | Verification |
-|---------|------------------|--------------|
-| Glass contrast failure | Phase: Glassmorphism implementation | Contrast checker on every glass element against darkest and lightest context background |
-| backdrop-filter performance on Android | Phase: Glassmorphism implementation | Chrome DevTools 4x CPU throttle scroll test; FPS stays above 50 |
-| Dark mode reduces medical trust | Phase: Dark mode architecture | Dark mode is opt-in; default is light; confirmed by loading page without localStorage entry |
-| Dark mode WCAG failures | Phase: Dark mode token system | Full token pair audit with contrast tool before any component receives dark tokens |
-| Mobile typography orphans | Phase: Bold typography system | Every heading reviewed at 320px, 390px viewports |
-| Light weight text contrast | Phase: Bold typography system | All text using font-weight < 400 checked against 4.5:1 minimum |
-| No prefers-reduced-motion guard | Phase: Micro-animations | Global CSS rule present; JS IntersectionObserver checks media query |
-| Animation cognitive overload | Phase: Micro-animations | Animation catalogue defined (max 4-5 types); no looping animations in viewport at rest |
-| Dark mode toggle inaccessible | Phase: Dark mode UI | Toggle measured at 44px minimum; has visible text label; tested by a non-developer |
-| CSS regression from layered changes | Every v1.4 phase | Screenshot comparison vs. v1.3 baseline; form submission flow tested after each phase |
+**Phase:** Phase 1 (cross-browser hardening). Low effort, add a comment noting limited support.
+
+**Sources:**
+- [Can I Use: prefers-reduced-transparency](https://caniuse.com/wf-prefers-reduced-transparency)
 
 ---
 
-## Sources
+### Pitfall 14: Print Stylesheet Must Neutralize ALL Glass Effects
 
-- [MDN: prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — vestibular disorders, animation categories, platform support (HIGH confidence)
-- [MDN: prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) — manual toggle pattern, localStorage approach, FOUC prevention (HIGH confidence)
-- [MDN: backdrop-filter — Baseline 2024](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) — support status, GPU compositing (HIGH confidence)
-- [MDN: CSS Scroll-Driven Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations) — draft spec, incomplete Firefox support as of early 2026 (HIGH confidence)
-- WCAG 2.1 SC 1.4.3 Contrast Minimum — 4.5:1 normal text, 3:1 large text (HIGH confidence — W3C specification)
-- WCAG 2.1 SC 2.3.3 Animation from Interactions (AAA) — vestibular motion guidelines (HIGH confidence — W3C specification)
-- WCAG 2.1 SC 2.5.5 Target Size — 44x44px minimum (HIGH confidence — W3C specification)
-- WCAG 2.2 SC 2.5.8 Target Size Minimum — 24px minimum, 44px recommended (HIGH confidence — W3C specification)
-- CSS `text-wrap: balance` — Baseline 2023, all modern browsers (HIGH confidence)
-- Manrope/Inter Cyrillic optical characteristics — based on rendered behaviour in existing v1.3 codebase (MEDIUM confidence)
-- 45+ vestibular disorder prevalence (~35% of adults over 40) — established audiological/neurological research consensus (MEDIUM confidence)
-- Medical trust and background colour — UX research consensus on professional/clinical colour associations (MEDIUM confidence; no single authoritative source)
+**What goes wrong:**
+The current print stylesheet (Section 11, liquid-glass.css) correctly disables backdrop-filter, background, box-shadow, and shimmer. However, it does NOT disable:
+- The glint border animation (`.liquid-card::before`)
+- The specular rim lights (`.liquid-regular::before`, `.liquid-btn-secondary::before`, `.stats-glass::before`)
+- The header backdrop (`.liquid-header-backdrop`)
+- Scroll-fade masks on content (content may be clipped in print)
+- Section tints (`.section-tint-*` gradients -- harmless but waste ink)
+- Future: refraction SVG filters, adaptive tinting, fluted glass patterns
+
+**Prevention:**
+- Extend the print stylesheet to cover ALL glass-related pseudo-elements and effects.
+- Add `display: none !important` for all decorative pseudo-elements in `@media print`.
+- Ensure scroll-fade masks are removed (already done for `.scroll-fade-top`/`.scroll-fade-bottom` but verify completeness).
+- As new glass effects are added in v5.0, add corresponding print overrides. Make this a checklist item for every new glass class.
+
+**Phase:** Each phase that adds a new glass effect must update the print stylesheet.
 
 ---
-*Pitfalls research for: v1.4 Visual Redesign — glassmorphism, dark mode, bold typography, micro-animations on medical landing page (45+ audience)*
-*Researched: 2026-03-24*
+
+### Pitfall 15: Samsung Internet Browser Lag on backdrop-filter
+
+**What goes wrong:**
+Samsung Internet (Chromium-based, ~5% global market share, higher in KZ due to Samsung device prevalence) renders `backdrop-filter` correctly but with worse performance than stock Chrome. Samsung's Chromium fork adds browser-level overlays and effects that compete for GPU resources with glass elements.
+
+**Prevention:**
+- Test on a real Samsung device with Samsung Internet, not just Chrome on Android.
+- Samsung Internet versions 25+ (Chromium 121+) have improved compositor performance.
+- The 5-element-per-viewport budget (Pitfall 4) is especially important for Samsung Internet.
+- If Samsung Internet performance is unacceptable, detect it via user-agent and reduce glass effects.
+
+**Phase:** Phase 2 (GPU performance audit). Include Samsung Internet in test matrix.
+
+---
+
+### Pitfall 16: Squircle Mask Distortion During CSS Transforms
+
+**What goes wrong:**
+SVG `mask-image` data-URI masks distort during CSS `transform: rotate()`. The mask is applied in element-local coordinates, but rotation changes the relationship between the mask and the element, causing visible artifacts at corners.
+
+**THIS IS ALREADY DOCUMENTED** in `squircles.css` anti-patterns: "NEVER apply squircle to rotating elements."
+
+**Prevention:**
+- Keep `border-radius` on rotating elements (icon chips, loading spinners).
+- The 15 rotating icon chips across the pages correctly use `rounded-*` instead of `squircle-*`.
+- `transform: scale()` and `transform: translateY()` are safe with squircle masks (no rotation component).
+- Chrome 139+ `corner-shape: squircle` handles rotation correctly (native rendering, not mask-based).
+
+**Phase:** Ongoing. No action needed beyond maintaining current discipline.
+
+---
+
+### Pitfall 17: Overflow: hidden on Glass Parent Kills Backdrop-Filter
+
+**What goes wrong:**
+Adding `overflow: hidden` to a glass element's parent can break `backdrop-filter` in specific browser combinations. The blur effect disappears or renders incorrectly because the overflow clipping creates an intermediate rendering surface that becomes the backdrop instead of the actual page content.
+
+**Prevention:**
+- Avoid `overflow: hidden` on direct parents of glass elements. Use `overflow: clip` instead (which does not create a new stacking context or block formatting context).
+- Current codebase uses `overflow-x: clip` on `html` element (correct, documented in theme.css comments).
+- If clipping is needed for decorative overflow (floating badges, mesh-bg blobs), apply it to a separate wrapper that is NOT an ancestor of glass elements.
+
+**Phase:** Phase 1 (cross-browser hardening).
+
+**Sources:**
+- [CSS Backdrop-Filter Overflow Hidden Fix Guide (2026)](https://copyprogramming.com/howto/transitioning-backdrop-filter-blur-on-an-element-with-overflow-hidden-parent-is-not-working)
+
+---
+
+### Pitfall 18: White-on-White Glass Invisibility
+
+**What goes wrong:**
+Glass elements on white/near-white section backgrounds are invisible because `backdrop-filter: blur()` on white blurs white into white. The frosted glass effect requires color variation in the backdrop to produce a visible result.
+
+**THIS ALREADY HAPPENED IN THIS PROJECT.** Documented in `.planning/debug/invisible-glass-on-white.md`. Fixed by raising `--liquid-bg` to `0.42` opacity and adding section tint utility classes (`.section-tint-cool`, `.section-tint-warm`, `.section-tint-mint`).
+
+**Prevention:**
+- Every section that contains glass elements MUST have a non-white background or a section tint applied.
+- When adding new pages or sections, always apply a section tint class.
+- Consider making glass cards automatically apply a subtle gradient background via their own CSS, independent of section tints.
+- Verify glass visibility on inner pages (not just index.html with its mesh-bg).
+
+**Phase:** Already resolved. Maintain discipline when adding new sections.
+
+---
+
+## Phase-Specific Warnings
+
+| Phase Topic | Likely Pitfall | Severity | Mitigation |
+|-------------|---------------|----------|------------|
+| SVG refraction tuning | feTurbulence CPU cost (P9), Chromium-only (P2) | HIGH | Pre-render displacement PNG, gate behind JS probe |
+| Adaptive tinting (mix-blend-mode) | Double filter application (P7), oversaturation | MEDIUM | Use pseudo-element for blend, cap saturate at 120% |
+| Specular highlight physics (gyroscope) | iOS permission (P8), UX friction for 45+ | MEDIUM | Desktop-only parallax; skip mobile gyroscope |
+| Fluted glass variant | SVG filter performance (P9), Chromium-only (P2) | HIGH | CSS-only vertical streak pattern, not SVG filter |
+| Clear glass variant | WCAG contrast failure (P5), reduced readability | HIGH | Minimum 0.65 opacity, dimming layer behind text |
+| GPU performance audit | Layer explosion (P4), Samsung Internet (P15) | CRITICAL | 5-element budget, test on budget Android |
+| Cross-browser hardening | Safari CSS vars (P1), Firefox sticky (P6) | CRITICAL | Hardcoded fallbacks, test matrix |
+| Design system docs | Shadow-wrap confusion (P10, P3), stacking traps (P11) | MEDIUM | Clear docs with anti-pattern examples |
+| Dead code cleanup | Deprecated .liquid-card-wrap inconsistency (P10) | LOW | UN-deprecate or replace with new pattern |
+| Dark mode glass | White-on-dark already tuned (P18 inverse) | LOW | Current values (0.45 opacity) are correct |
+
+## Integration-Specific Warnings
+
+These pitfalls are specific to adding v5.0 features to the EXISTING v4.0 codebase.
+
+### Adding refraction to existing glass classes
+The `html[data-refract="true"]` selector pattern (Section 10) is correct. When adding fluted glass or clear glass variants, follow the SAME gating pattern. Do not create new gating attributes -- reuse `data-refract` or create `data-fluted` with the same JS probe discipline.
+
+### Changing --liquid-bg opacity for clear glass
+Clear glass needs lower opacity (~0.15-0.25). If implemented by changing `--liquid-bg`, it will break the WCAG contrast floor established for regular glass. Create separate tokens: `--liquid-bg-clear`, `--liquid-bg-regular`.
+
+### Adding new pseudo-elements to glass classes
+`.liquid-card` already uses BOTH `::before` (glint border) and `::after` (specular radial gradient). If a new effect needs a pseudo-element on `.liquid-card`, it must be done via a child `<div>` or the existing pseudo-element must be composited with the new effect using `background` shorthand with multiple gradients.
+
+### Increasing glass element count per page
+v4.0 has roughly 6-8 glass elements per page. v5.0 features (fluted, clear, adaptive tinting) risk increasing this to 15+. Each new glass variant should be audited against the 5-per-viewport budget (Pitfall 4). Some effects may need to be CSS-only (no backdrop-filter) to stay within budget.
+
+## Sources Summary
+
+### Official Bug Trackers
+- [WebKit Bug 176830: mix-blend-mode + backdrop-filter](https://bugs.webkit.org/show_bug.cgi?id=176830)
+- [WebKit Bug 158807: backdrop-filter artifacts on rounded borders](https://bugs.webkit.org/show_bug.cgi?id=158807)
+- [WebKit Bug 224899: Unprefix -webkit-backdrop-filter](https://bugs.webkit.org/show_bug.cgi?id=224899)
+- [Firefox Bug 1803813: backdrop-filter + border-radius + overflow + sticky](https://bugzilla.mozilla.org/show_bug.cgi?id=1803813)
+- [Firefox Bug 1083241: mix-blend-mode + filters](https://bugzilla.mozilla.org/show_bug.cgi?id=1083241)
+- [Firefox Bug 1718471: backdrop-filter lag with many elements](https://bugzilla.mozilla.org/show_bug.cgi?id=1718471)
+
+### Compatibility Data
+- [mdn/browser-compat-data #25914: Safari CSS variables in backdrop-filter](https://github.com/mdn/browser-compat-data/issues/25914)
+- [mdn/browser-compat-data #24110: SVG filters not supported in backdrop-filter](https://github.com/mdn/browser-compat-data/issues/24110)
+- [Can I Use: backdrop-filter](https://caniuse.com/css-backdrop-filter)
+- [Can I Use: prefers-reduced-transparency](https://caniuse.com/wf-prefers-reduced-transparency)
+
+### Performance References
+- [Smashing Magazine: CSS GPU Animation: Doing It Right](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/)
+- [Chromium GPU Compositing Design](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)
+- [Chrome DevTools: Hardware-Accelerated Animation](https://developer.chrome.com/blog/hardware-accelerated-animations)
+- [shadcn-ui #327: CSS Backdrop filter performance issues](https://github.com/shadcn-ui/ui/issues/327)
+
+### Accessibility
+- [WCAG 2.1 SC 1.4.3: Contrast Minimum](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+
+### Project History
+- `.planning/debug/invisible-glass-on-white.md` -- white-on-white glass bug
+- `.planning/debug/knowledge-base.md` -- v4.0 resolved debug sessions
+- Git commit `ba29f8a` -- drop-shadow breaks backdrop-filter children
+- Git commit `a6379f7` -- mask-repeat: no-repeat for Safari
