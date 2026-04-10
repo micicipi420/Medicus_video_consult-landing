@@ -12,10 +12,11 @@
 
 ## Current State
 
-**Shipped:** v4.0 Liquid Design System (2026-04-09)
-**In progress:** v5.0 Full Liquid Glass Rework
-**Codebase:** 7 production pages + styleguide, shared chrome via partials (5 partials, POSIX-sh splicer), Liquid Glass design system (squircle masks, glass materials, 3 differentiator effects), full SEO/a11y/WCAG AA baseline, `make build` canonical entry point, byte-identity pre-commit hook
-**Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
+**Shipped:** v5.0 Full Liquid Glass Rework (2026-04-10)
+**In progress:** v6.0 Next.js Stack Migration
+**Codebase:** 7 production pages + styleguide, Liquid Glass design system (squircle masks, 4 glass materials, adaptive tinting, specular physics, 3 refraction tiers), full SEO/a11y/WCAG AA baseline
+**Stack (current):** HTML + Tailwind CSS v4 + vanilla JS, Directus 11 + PostgreSQL 16 via Docker
+**Stack (target):** Next.js 15 + React + Tailwind CSS + shadcn/ui + Framer Motion, PostgreSQL via Next.js API routes, Docker self-hosted
 
 ## Requirements
 
@@ -66,22 +67,20 @@
 
 ### Active
 
-## Current Milestone: v5.0 Full Liquid Glass Rework
+## Current Milestone: v6.0 Next.js Stack Migration
 
-**Goal:** Довести Liquid Glass до максимальной визуальной точности Apple WWDC 2025 — полный набор эффектов, performance optimization, cross-browser hardening, design system docs.
+**Goal:** Переписать проект с vanilla HTML/CSS/JS на Next.js + React + Tailwind CSS с 1:1 переносом дизайна и контента, встроенным API вместо Directus, self-hosted Docker деплой.
 
 **Target features:**
-- SVG refraction tuning (displacement scale, noise patterns, per-element calibration)
-- Adaptive tinting (CSS mix-blend-mode approach for color-shifting glass)
-- Specular highlight physics (gyroscope/device orientation on mobile, parallax on desktop)
-- Fluted glass variant (.liquid-fluted with vertical streak pattern)
-- Clear glass variant (.liquid-clear — higher transparency, dimming layer)
-- GPU performance audit and optimization (will-change budget, composite layers, paint profiling)
-- Cross-browser hardening (Safari backdrop-filter quirks, Firefox fallbacks, Android Chrome testing)
-- Design system documentation (Styleguide page update with all glass variants, usage guidelines)
-- Dead code cleanup (remove unused tokens from CSS audit, clean .liquid-card-wrap wrappers)
-
-**Reference:** Apple Liquid Glass WWDC 2025 research article
+- Next.js 15 App Router с SSR/SSG для всех страниц
+- React-компоненты из shadcn/ui + glass-варианты поверх
+- Tailwind CSS с theme.extend из текущих glass-токенов
+- @squircle-js/react для squircle-углов + corner-shape PE
+- Framer Motion для анимаций (mount, hover, scroll-reveal)
+- liquidGL для refraction на hero (fallback на CSS blur)
+- Next.js API routes + PostgreSQL вместо Directus
+- Docker Compose для self-hosted деплоя
+- 1:1 визуальное соответствие текущему сайту
 
 ### Out of Scope
 
@@ -112,8 +111,8 @@
 
 ## Constraints
 
-- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
-- **Backend**: Directus (self-hosted) — приём заявок с формы
+- **Stack**: Next.js 15 + React + Tailwind CSS + shadcn/ui (миграция с vanilla HTML/CSS/JS)
+- **Backend**: Next.js API routes + PostgreSQL (миграция с Directus)
 - **Language**: Только русский
 - **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
 - **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
@@ -166,4 +165,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after v5.0 milestone start*
+*Last updated: 2026-04-10 after v6.0 milestone start*

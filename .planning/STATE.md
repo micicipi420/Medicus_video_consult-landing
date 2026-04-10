@@ -1,32 +1,31 @@
 ---
 gsd_state_version: 1.0
-milestone: v5.0
-milestone_name: Full Liquid Glass Rework
-status: v5.0 milestone complete
-stopped_at: Completed 51-02-PLAN.md
-last_updated: "2026-04-10T15:47:55.584Z"
+milestone: v6.0
+milestone_name: Next.js Stack Migration
+status: Defining requirements
+stopped_at: Milestone v6.0 started
+last_updated: "2026-04-10T21:00:00.000Z"
 progress:
-  total_phases: 8
-  completed_phases: 8
-  total_plans: 11
-  completed_plans: 11
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-23)
+See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 58 — Design System Docs & Print
+**Current focus:** v6.0 Next.js Stack Migration — defining requirements
 
 ## Current Position
 
-Phase: 58
-Plan: Not started
-Next: Phase 52 (token-foundation-dead-code-cleanup)
+Phase: Not started (defining requirements)
+Plan: —
 
 ## Performance Metrics
 
