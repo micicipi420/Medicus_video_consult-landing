@@ -351,7 +351,7 @@ html[data-refract="true"] .stats-glass {
 }
 
 /* ================================================
-   Section 12 -- Section tint backgrounds
+   Section 12 -- Section tint backgrounds & glass tint properties
    Alternating cool/warm gradient tints give backdrop-filter
    something to blur against on light backgrounds.
    Apply to <section> elements:
@@ -360,9 +360,22 @@ html[data-refract="true"] .stats-glass {
      .section-tint-mint  -- green (checkup / health)
    Tints are very subtle (~3-5% opacity). Dark mode: hidden
    via .dark selector (dark backgrounds don't need tints).
+   Glass elements consume --liquid-tint-* to shift their surface color.
    ================================================ */
 
+/* Default tint: zero alpha = no tint for sections without a tint class */
+:root {
+  --liquid-tint-h: 0;
+  --liquid-tint-s: 0%;
+  --liquid-tint-l: 50%;
+  --liquid-tint-a: 0;
+}
+
 .section-tint-cool {
+  --liquid-tint-h: 197;
+  --liquid-tint-s: 78%;
+  --liquid-tint-l: 63%;
+  --liquid-tint-a: 0.05;
   background: linear-gradient(
     168deg,
     rgba(56, 198, 244, 0.06) 0%,
@@ -372,6 +385,10 @@ html[data-refract="true"] .stats-glass {
 }
 
 .section-tint-warm {
+  --liquid-tint-h: 28;
+  --liquid-tint-s: 72%;
+  --liquid-tint-l: 65%;
+  --liquid-tint-a: 0.04;
   background: linear-gradient(
     168deg,
     rgba(255, 162, 92, 0.05) 0%,
@@ -381,6 +398,10 @@ html[data-refract="true"] .stats-glass {
 }
 
 .section-tint-mint {
+  --liquid-tint-h: 153;
+  --liquid-tint-s: 58%;
+  --liquid-tint-l: 62%;
+  --liquid-tint-a: 0.05;
   background: linear-gradient(
     168deg,
     rgba(111, 222, 169, 0.06) 0%,
@@ -394,6 +415,27 @@ html[data-refract="true"] .stats-glass {
 .dark .section-tint-warm,
 .dark .section-tint-mint {
   background: none;
+}
+
+/* Dark mode: adapted tint values -- lighter, lower-saturation,
+   slightly more opaque to register against navy #0F1923 base */
+.dark .section-tint-cool {
+  --liquid-tint-h: 200;
+  --liquid-tint-s: 50%;
+  --liquid-tint-l: 72%;
+  --liquid-tint-a: 0.06;
+}
+.dark .section-tint-warm {
+  --liquid-tint-h: 30;
+  --liquid-tint-s: 45%;
+  --liquid-tint-l: 73%;
+  --liquid-tint-a: 0.05;
+}
+.dark .section-tint-mint {
+  --liquid-tint-h: 155;
+  --liquid-tint-s: 40%;
+  --liquid-tint-l: 70%;
+  --liquid-tint-a: 0.06;
 }
 
 .dark .liquid-regular::before,
