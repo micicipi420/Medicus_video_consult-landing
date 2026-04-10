@@ -55,7 +55,7 @@
     <div class="mesh-bg__blob mesh-bg__blob--1 absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] squircle-full bg-mu-blue/30 mix-blend-multiply blur-[120px]"></div>
     <div class="mesh-bg__blob mesh-bg__blob--2 absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] squircle-full bg-mu-green-300/20 mix-blend-multiply blur-[120px]"></div>
     <div class="mesh-bg__blob mesh-bg__blob--3 absolute bottom-[-10%] left-[20%] w-[70vw] h-[70vw] squircle-full bg-mu-accent-blue/15 mix-blend-multiply blur-[120px]"></div>
-    <div class="mesh-bg__overlay absolute inset-0 bg-white/40"></div>
+    <div class="mesh-bg__overlay absolute inset-0 bg-white/40 backdrop-blur-[40px] backdrop-saturate-[180%]"></div>
   </div>
 
   <!-- Header -->
@@ -92,7 +92,7 @@
 <!-- BUILD:mobile-menu -->
   <div class="mobile-menu-overlay fixed inset-0 z-40 lg:hidden" aria-hidden="true">
     <div class="absolute inset-0 bg-black/50"></div>
-    <div class="mobile-menu absolute top-24 left-4 right-4 liquid-regular squircle-xl overflow-hidden">
+    <div class="mobile-menu absolute top-24 left-4 right-4 liquid-regular squircle-xl backdrop-blur-[80px] overflow-hidden">
       <nav class="mobile-menu__nav flex flex-col p-6 gap-2" aria-label="Мобильная навигация">
         <a href="online-consultations.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Консультации</a>
         <a href="treatment-abroad.html" class="mobile-menu__link text-mu-text-900 hover:bg-white/40 squircle-lg px-4 py-3 transition-colors font-medium tracking-tight">Лечение за рубежом</a>
@@ -220,19 +220,19 @@
             <form class="contact-form space-y-6" novalidate>
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-name">Ваше имя</label>
-                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/80 focus:bg-white/90 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль" required autocomplete="name">
+                <input type="text" id="contact-name" name="name" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="Например, Айгуль" required autocomplete="name">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-phone">Телефон</label>
-                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/80 focus:bg-white/90 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
+                <input type="tel" id="contact-phone" name="phone" class="form__input w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" placeholder="+7 (___) ___-__-__" required inputmode="numeric" autocomplete="tel">
                 <span class="form__field-error max-w-[280px]" role="alert" aria-live="polite" hidden></span>
               </div>
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-interest">Что вас интересует</label>
-                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 squircle-md border border-white/40 bg-white/80 focus:bg-white/90 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-form-inset appearance-none" required>
+                <select id="contact-interest" name="interest" class="form__select w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all text-mu-text-900 font-medium shadow-form-inset appearance-none" required>
                   <option value="" disabled selected>Выберите направление</option>
                   <option value="consultation">Онлайн-консультация</option>
                   <option value="treatment">Лечение за рубежом</option>
@@ -244,7 +244,7 @@
 
               <div class="form__group">
                 <label class="form__label block text-sm font-bold text-mu-text-900 mb-2" for="contact-description">Кратко о&nbsp;вашем случае <span class="text-mu-text-500 font-medium">(необязательно)</span></label>
-                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 squircle-md border border-white/40 bg-white/80 focus:bg-white/90 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
+                <textarea id="contact-description" name="description" class="form__textarea w-full px-5 py-4 squircle-md border border-white/40 bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all resize-none placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-form-inset" rows="4" placeholder="Опишите вашу ситуацию или вопрос"></textarea>
               </div>
 
               <!-- Honeypot -->
