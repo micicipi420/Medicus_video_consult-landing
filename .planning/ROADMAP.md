@@ -202,7 +202,7 @@ Plans:
   4. Budget Android proxy test (4x CPU throttle in DevTools) achieves scroll FPS >= 30 on index.html with all glass effects active
 **Plans**: 2 plans
 Plans:
-- [ ] 57-01-PLAN.md — Inline backdrop-blur removal and will-change hygiene
+- [x] 57-01-PLAN.md — Inline backdrop-blur removal and will-change hygiene
 - [ ] 57-02-PLAN.md — Viewport budget enforcement via IntersectionObserver
 
 ### Phase 58: Design System Docs & Print
@@ -237,5 +237,5 @@ Strictly linear -- each phase builds on the previous.
 | 54. Adaptive Tinting | 1/1 | Complete    | 2026-04-10 |
 | 55. Glass Material Variants & Hierarchy | 1/1 | Complete   | 2026-04-10 |
 | 56. Specular Physics & Interaction States | 1/1 | Complete    | 2026-04-10 |
-| 57. GPU Performance Audit | 0/2 | Not started | - |
+| 57. GPU Performance Audit | 1/2 | In Progress|  |
 | 58. Design System Docs & Print | 0/TBD | Not started | - |
