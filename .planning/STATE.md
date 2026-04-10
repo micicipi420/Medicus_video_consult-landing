@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 51-01-PLAN.md
-last_updated: "2026-04-10T08:28:22.797Z"
+stopped_at: Completed 51-02-PLAN.md
+last_updated: "2026-04-10T08:35:01.996Z"
 progress:
   total_phases: 9
   completed_phases: 8
@@ -48,7 +48,7 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 | Phase 20 P02 | 10 | 2 tasks | 2 files |
 | Phase 21 P01 | 15 | 2 tasks | 1 files |
 | Phase 22 P01 | 2 | 3 tasks | 2 files |
-| Phase 51 P01 | 417 | 2 tasks | 2 files |
+| Phase 51 P02 | 227 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -74,7 +74,7 @@ Recent decisions affecting current work:
 - [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
 - [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
 - [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
-- [Phase 51]: Light-mode hardcoded values used as universal Safari fallback -- dark param difference is negligible
+- [Phase 51]: Shadow-wrap is CANONICAL pattern; drop-shadow prohibited on glass ancestors (commit ba29f8a)
 
 ### Roadmap Evolution
 
@@ -87,6 +87,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-10T08:28:22.793Z
-Stopped at: Completed 51-01-PLAN.md
+Last session: 2026-04-10T08:35:01.993Z
+Stopped at: Completed 51-02-PLAN.md
 Resume file: None
