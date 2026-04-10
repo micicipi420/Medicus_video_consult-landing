@@ -114,6 +114,26 @@
   --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.95);
   --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(200, 210, 225, 0.15);
 
+  /* Glass hierarchy tokens (Phase 55 / GLAS-03)
+     3 levels: nav (lightest) < regular (default) < clear (overlay)
+     Regular uses base --liquid-* tokens directly -- no separate tokens needed. */
+
+  /* Nav-weight: lightest blur, highest transparency, no outer shadow */
+  --liquid-nav-bg: rgba(255, 255, 255, 0.28);
+  --liquid-nav-blur: 16px;
+  --liquid-nav-shadow-outer: none;
+
+  /* Clear-weight: highest transparency, dimming backdrop, subtle shadow */
+  --liquid-clear-bg: rgba(255, 255, 255, 0.18);
+  --liquid-clear-blur: 20px;
+  --liquid-clear-dim: rgba(0, 0, 0, 0.12);
+  --liquid-clear-shadow-outer: 0 8px 32px rgba(20, 30, 60, 0.10);
+
+  /* Fluted-weight: regular blur + vertical streaks */
+  --liquid-fluted-stripe-color: rgba(255, 255, 255, 0.10);
+  --liquid-fluted-stripe-width: 2px;
+  --liquid-fluted-stripe-gap: 8px;
+
   /* Motion tokens */
   --ease-liquid: cubic-bezier(0.2, 0, 0, 1);
   --ease-liquid-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -157,6 +177,20 @@
   --liquid-shadow-outer: 0 16px 40px rgba(0, 0, 0, 0.45);
   --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.15);
   --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+  /* Dark glass hierarchy tokens */
+  --liquid-nav-bg: rgba(30, 40, 60, 0.30);
+  --liquid-nav-blur: 18px;
+  --liquid-nav-shadow-outer: none;
+
+  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
+  --liquid-clear-blur: 24px;
+  --liquid-clear-dim: rgba(0, 0, 0, 0.30);
+  --liquid-clear-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  --liquid-fluted-stripe-color: rgba(255, 255, 255, 0.06);
+  --liquid-fluted-stripe-width: 2px;
+  --liquid-fluted-stripe-gap: 8px;
 }
 
 @theme inline {
