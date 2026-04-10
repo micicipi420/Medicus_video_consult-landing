@@ -22,9 +22,15 @@
  *   No explicit .dark selectors exist in this file.
  *   All classes auto-inherit dark values through var() references.
  *
- * Shadow-wrap pattern (for elements needing outer shadow + squircle mask):
- *   mask-image clips box-shadow. Use a wrapper div for the shadow
- *   and the inner element for the mask + glass material.
+ * Shadow-wrap pattern (CANONICAL for squircle + shadow):
+ *   mask-image clips box-shadow to the mask silhouette. For squircle
+ *   glass elements, box-shadow on the glass class itself produces a
+ *   squircle-shaped shadow that is visually acceptable.
+ *   The .liquid-card-wrap wrapper divs are legacy structure from v4.0
+ *   and will be removed in Phase 52 (CLEN-02).
+ *
+ *   NEVER use filter: drop-shadow() on glass ancestors --
+ *   it breaks backdrop-filter on children (see commit ba29f8a).
  *
  *   Card example:
  *     <div class="liquid-card-wrap">                  <!-- outer: shadow + border-radius -->
@@ -48,6 +54,8 @@
  *     Use inset box-shadow instead (rim lighting tokens handle this).
  *   - NEVER apply box-shadow AND mask-image on the same element.
  *     Shadow gets clipped to mask silhouette. Use shadow-wrap pattern.
+ *   - NEVER use filter: drop-shadow() on ancestors of glass elements.
+ *     Creates a backdrop root that breaks child backdrop-filter (commit ba29f8a).
  */
 
 /* ================================================
@@ -108,13 +116,37 @@
   z-index: 1;
 }
 
-/* Shadow-wrap wrapper is DEPRECATED.
-   Use filter: drop-shadow() on the masked element instead —
-   drop-shadow renders along the mask boundary (superellipse),
-   not along border-radius (standard round).
-   Keeping .liquid-card-wrap as no-op for HTML backwards compat. */
+/* .liquid-card-wrap: Shadow-wrap helper for squircle glass cards.
+
+   STATUS: Active (no-op wrapper).
+
+   Background: mask-image clips box-shadow, so masked glass elements
+   cannot have visible outer shadows directly. The shadow-wrap pattern
+   places box-shadow on an outer wrapper with border-radius, while the
+   inner element carries the mask + glass material.
+
+   History:
+   - v4.0: Created as shadow-bearing wrapper for squircle glass cards.
+   - v4.0: Briefly DEPRECATED in favor of filter: drop-shadow() --
+     but drop-shadow breaks backdrop-filter on children (commit ba29f8a).
+   - v5.0 Phase 51: UN-deprecated. Shadow-wrap IS the canonical pattern.
+
+   Current reality: box-shadow has been moved to glass classes directly
+   (.liquid-regular, .liquid-card via --liquid-shadow-outer), so
+   .liquid-card-wrap no longer needs to carry shadow styles. It exists
+   as a structural wrapper in HTML (146 occurrences across 7 pages).
+
+   Phase 52 (CLEN-02) will remove all .liquid-card-wrap wrapper divs
+   from HTML and delete this class. The outer shadow is now handled by
+   box-shadow on the glass element itself (which works because
+   box-shadow is clipped by mask-image to the mask shape -- producing
+   a squircle-shaped shadow that is visually acceptable).
+
+   Chrome 139+ with corner-shape: squircle removes the need for
+   mask-image entirely, making box-shadow work natively. */
 .liquid-card-wrap {
-  /* no-op — shadow now on .liquid-card via drop-shadow */
+  /* no-op -- wrapper exists for HTML structure only, no styles needed.
+     Will be removed in Phase 52 (CLEN-02). */
 }
 
 /* ================================================

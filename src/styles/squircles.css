@@ -11,11 +11,17 @@
  *   Tier 2 (Safari 17+, Firefox 120+, Chrome <139): mask-image SVG -- production default
  *   Tier 3 (no mask-image support): border-radius rounded corner fallback
  *
- * Shadow-wrap pattern:
- *   mask-image clips box-shadow. For elements needing outer shadows,
- *   use a wrapper div for the shadow and the inner element for the mask.
+ * Shadow-wrap pattern (CANONICAL for squircle + shadow):
+ *   mask-image clips box-shadow to the mask silhouette. For squircle
+ *   glass elements, box-shadow on the glass class itself produces a
+ *   squircle-shaped shadow that is visually acceptable.
+ *   The .liquid-card-wrap wrapper divs are legacy structure from v4.0
+ *   and will be removed in Phase 52 (CLEN-02).
  *
- *   Pattern: outer wrapper carries box-shadow + matching border-radius,
+ *   NEVER use filter: drop-shadow() on glass ancestors --
+ *   it breaks backdrop-filter on children (see commit ba29f8a).
+ *
+ *   Legacy pattern: outer wrapper carries box-shadow + matching border-radius,
  *   inner element carries squircle mask.
  *
  *   Card example:
