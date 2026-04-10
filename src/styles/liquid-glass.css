@@ -550,7 +550,9 @@ html[data-refract="true"] .liquid-fluted {
   .liquid-regular::after,
   .liquid-nav::after,
   .stats-glass::after,
-  .liquid-clear::before {
+  .liquid-clear::before,
+  .liquid-card::after,
+  .liquid-card::before {
     display: none !important;
   }
 
