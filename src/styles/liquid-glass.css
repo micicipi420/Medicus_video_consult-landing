@@ -479,9 +479,12 @@ html[data-refract="true"] .stats-glass {
 }
 
 /* ================================================
-   Section 15 -- No backdrop-filter support (~3%)
+   Section 15 -- No backdrop-filter support
    Solid semi-transparent background fallback for
-   browsers without backdrop-filter support.
+   browsers without backdrop-filter support (~3% of
+   users, primarily older Firefox versions).
+   Modern Firefox 103+ supports backdrop-filter.
+   This section remains as a safety net.
    ================================================ */
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -493,10 +496,20 @@ html[data-refract="true"] .stats-glass {
     -webkit-backdrop-filter: none;
   }
 
+  .liquid-header-backdrop {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
   .dark .liquid-regular,
   .dark .liquid-card,
   .dark .liquid-btn-secondary,
   .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-header-backdrop {
     background: rgba(30, 40, 60, 0.85);
     -webkit-backdrop-filter: none;
   }
