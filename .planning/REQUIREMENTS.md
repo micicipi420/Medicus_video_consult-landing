@@ -58,20 +58,20 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| SCAF-01 | TBD | Pending |
-| SCAF-02 | TBD | Pending |
-| SCAF-03 | TBD | Pending |
-| SCAF-04 | TBD | Pending |
-| SCAF-05 | TBD | Pending |
-| PAGE-01 | TBD | Pending |
-| PAGE-02 | TBD | Pending |
-| PAGE-03 | TBD | Pending |
-| ANIM-01 | TBD | Pending |
-| ANIM-02 | TBD | Pending |
-| ANIM-03 | TBD | Pending |
-| ANIM-04 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| DOCK-01 | TBD | Pending |
-| DOCK-02 | TBD | Pending |
+| SCAF-01 | Phase 59 | Pending |
+| SCAF-02 | Phase 59 | Pending |
+| SCAF-03 | Phase 60 | Pending |
+| SCAF-04 | Phase 59 | Pending |
+| SCAF-05 | Phase 60 | Pending |
+| PAGE-01 | Phase 61 | Pending |
+| PAGE-02 | Phase 62 | Pending |
+| PAGE-03 | Phase 62 | Pending |
+| ANIM-01 | Phase 63 | Pending |
+| ANIM-02 | Phase 63 | Pending |
+| ANIM-03 | Phase 64 | Pending |
+| ANIM-04 | Phase 64 | Pending |
+| DATA-01 | Phase 65 | Pending |
+| DATA-02 | Phase 65 | Pending |
+| DATA-03 | Phase 66 | Pending |
+| DOCK-01 | Phase 67 | Pending |
+| DOCK-02 | Phase 67 | Pending |
