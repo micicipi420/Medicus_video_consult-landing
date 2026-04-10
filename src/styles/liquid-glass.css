@@ -981,3 +981,55 @@ html[data-refract="true"] .liquid-fluted {
   pointer-events: none;
   z-index: 2;
 }
+
+/* ================================================
+   Section 18 -- Viewport budget (PERF-01)
+   Glass elements outside the viewport or exceeding
+   the 6-element budget get .glass-idle added by JS.
+   This disables backdrop-filter (replacing it with
+   an opaque background approximation) to reduce
+   GPU composite layer count.
+   The class is removed when the element scrolls back
+   into the viewport and budget allows.
+   Priority: header > nav > cards/regular > buttons.
+   ================================================ */
+
+.glass-idle {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Idle elements get an opaque background approximation
+   so they don't become fully transparent. Light/dark
+   mode handled via separate selectors. */
+.glass-idle.liquid-regular,
+.glass-idle.liquid-card,
+.glass-idle.liquid-btn-secondary,
+.glass-idle.stats-glass,
+.glass-idle.liquid-fluted {
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+.glass-idle.liquid-nav {
+  background: rgba(255, 255, 255, 0.60) !important;
+}
+
+.glass-idle.liquid-clear {
+  background: rgba(255, 255, 255, 0.55) !important;
+}
+
+.dark .glass-idle.liquid-regular,
+.dark .glass-idle.liquid-card,
+.dark .glass-idle.liquid-btn-secondary,
+.dark .glass-idle.stats-glass,
+.dark .glass-idle.liquid-fluted {
+  background: rgba(30, 40, 60, 0.75) !important;
+}
+
+.dark .glass-idle.liquid-nav {
+  background: rgba(30, 40, 60, 0.55) !important;
+}
+
+.dark .glass-idle.liquid-clear {
+  background: rgba(30, 40, 60, 0.50) !important;
+}

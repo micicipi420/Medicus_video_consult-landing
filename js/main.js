@@ -84,6 +84,87 @@
   }
 
   /**
+   * Glass Budget (PERF-01)
+   * Viewport-aware backdrop-filter budget enforcement.
+   * No more than GLASS_BUDGET elements have active backdrop-filter at any
+   * scroll position. Uses IntersectionObserver to track which glass elements
+   * are visible. When the budget is exceeded, lowest-priority elements get
+   * .glass-idle (disables backdrop-filter, substitutes opaque background).
+   * Priority: header(1) > nav/stats(2) > card/regular(3) > btn/clear/fluted(4).
+   */
+  var _glassBudgetObserver = null;
+
+  function initGlassBudget() {
+    if (!('IntersectionObserver' in window)) return;
+
+    var GLASS_BUDGET = 6;
+    var GLASS_SELECTOR = '.liquid-card, .liquid-regular, .liquid-nav, .liquid-clear, .liquid-fluted, .stats-glass, .liquid-btn-secondary, .liquid-header-backdrop';
+
+    // Disconnect previous observer (SPA router re-init support)
+    if (_glassBudgetObserver) {
+      _glassBudgetObserver.disconnect();
+      _glassBudgetObserver = null;
+    }
+
+    var visibleSet = new Set();
+
+    // Priority helper: lower = higher priority = kept active
+    function getPriority(el) {
+      // Priority 1: sticky header glass -- never downgraded
+      if (el.closest('.header') && el.classList.contains('liquid-regular')) return 1;
+      if (el.classList.contains('liquid-header-backdrop')) return 1;
+      // Priority 2: nav and stats
+      if (el.classList.contains('liquid-nav')) return 2;
+      if (el.classList.contains('stats-glass')) return 2;
+      // Priority 3: cards and regular (not header)
+      if (el.classList.contains('liquid-card')) return 3;
+      if (el.classList.contains('liquid-regular')) return 3;
+      // Priority 4: buttons and decorative
+      return 4;
+    }
+
+    function enforceBudget() {
+      var visible = [];
+      visibleSet.forEach(function(el) {
+        visible.push(el);
+      });
+
+      // Sort by priority (ascending -- lower number = higher priority)
+      // Within same priority, preserve DOM order via stable sort
+      visible.sort(function(a, b) {
+        return getPriority(a) - getPriority(b);
+      });
+
+      for (var i = 0; i < visible.length; i++) {
+        if (i < GLASS_BUDGET) {
+          visible[i].classList.remove('glass-idle');
+        } else {
+          visible[i].classList.add('glass-idle');
+        }
+      }
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          visibleSet.add(entry.target);
+        } else {
+          visibleSet.delete(entry.target);
+          entry.target.classList.add('glass-idle');
+        }
+      });
+      enforceBudget();
+    }, { threshold: 0 });
+
+    var allGlass = document.querySelectorAll(GLASS_SELECTOR);
+    allGlass.forEach(function(el) {
+      observer.observe(el);
+    });
+
+    _glassBudgetObserver = observer;
+  }
+
+  /**
    * Sticky Header
    * - Adds .header--scrolled class when page is scrolled past 20px
    * - Uses passive listener for scroll performance
@@ -571,6 +652,7 @@
   function initAll() {
     initRefractionProbe();
     initMouseSpecular();
+    initGlassBudget();
     initStickyHeader();
     initMobileMenu();
     initSmoothScroll();
@@ -587,6 +669,7 @@
    * Header and mobile menu are persistent -- no re-init needed
    */
   function reinitPageContent() {
+    initGlassBudget();
     initSmoothScroll();
     initAccordion();
     initPhoneMask();
@@ -601,6 +684,7 @@
   window.MU.reinitPageContent = reinitPageContent;
   window.MU.initRefractionProbe = initRefractionProbe;
   window.MU.initMouseSpecular = initMouseSpecular;
+  window.MU.initGlassBudget = initGlassBudget;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAll);
