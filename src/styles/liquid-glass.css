@@ -828,3 +828,62 @@ html[data-refract="true"] .liquid-fluted {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* ================================================
+   Section 16 -- Interaction states (VFEX-03)
+   Unified hover/press/focus-visible for all glass
+   surface classes. Buttons excluded -- they have
+   their own states in Section 3.
+   .liquid-header-backdrop excluded -- non-interactive
+   (pointer-events: none).
+   Reduced-motion: --dur-press/--dur-hover are already
+   zeroed by theme.css, so transitions become instant.
+   The brightness/scale state changes still apply.
+   ================================================ */
+
+/* Transition base -- animate both in AND out */
+.liquid-regular,
+.liquid-card,
+.liquid-nav,
+.liquid-clear,
+.liquid-fluted,
+.stats-glass {
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+/* Hover -- subtle surface brighten */
+.liquid-regular:hover,
+.liquid-card:hover,
+.liquid-nav:hover,
+.liquid-clear:hover,
+.liquid-fluted:hover,
+.stats-glass:hover {
+  filter: brightness(1.04);
+  transition: filter var(--dur-hover) var(--ease-liquid);
+}
+
+/* Active/press -- darken + micro-scale */
+.liquid-regular:active,
+.liquid-card:active,
+.liquid-nav:active,
+.liquid-clear:active,
+.liquid-fluted:active,
+.stats-glass:active {
+  filter: brightness(0.96);
+  transform: scale(0.985);
+  transition: filter var(--dur-press) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+/* Focus-visible -- keyboard focus ring */
+.liquid-regular:focus-visible,
+.liquid-card:focus-visible,
+.liquid-nav:focus-visible,
+.liquid-clear:focus-visible,
+.liquid-fluted:focus-visible,
+.stats-glass:focus-visible {
+  outline: 2px solid var(--mu-blue-text);
+  outline-offset: 4px;
+  box-shadow: none;
+}
