@@ -1,675 +1,611 @@
-# Technology Stack
+# Technology Stack: Next.js Migration
 
-**Project:** MedicusUnion KZ Landing -- v5.0 Full Liquid Glass Rework
-**Researched:** 2026-04-09
-**Scope:** NEW capabilities only for v5.0 milestone. Existing validated stack (HTML, Tailwind CSS v4.2.2 CLI, vanilla JS ES5/IIFE, backdrop-filter chain, SVG squircle masks, corner-shape progressive enhancement, SVG feTurbulence refraction, dark mode token cascade, Motion CDN) is NOT re-researched.
-
----
-
-## What This Research Covers
-
-Six new capability areas needed for v5.0 Liquid Glass:
-
-1. **Adaptive tinting** -- glass surfaces that shift color based on background content
-2. **Specular highlight physics** -- light reflections that respond to device orientation / cursor position
-3. **Fluted glass variant** -- vertical ribbed/streaked glass pattern
-4. **Clear glass variant** -- higher transparency with dimming layer behind
-5. **GPU performance profiling** -- tools and techniques for will-change budget and composite layer audit
-6. **Cross-browser hardening** -- backdrop-filter quirks in Safari, Firefox, and mobile browsers
-
-**What is NOT covered:** Backend, fonts, build tools, dark mode toggle, basic glassmorphism, SVG refraction -- all validated in previous milestones.
+**Project:** MedicusUnion KZ Landing v6.0
+**Researched:** 2026-04-10
+**Migration from:** Vanilla HTML + Tailwind CSS v4 (standalone CLI) + Vanilla JS + Directus 11
+**Migration to:** Next.js + React + Tailwind CSS v4 + shadcn/ui + Motion + PostgreSQL direct
 
 ---
 
-## 1. Adaptive Tinting: mix-blend-mode Overlay Approach
+## Decision: Next.js 15 (not 16)
 
-### The Problem
+**Use Next.js 15.5.x (latest patch: ~15.5.15).**
 
-Apple's Liquid Glass dynamically samples the background beneath a glass surface and shifts the glass tint to complement it. CSS has no `backdrop-sample-color()` function. We need a pure CSS approximation.
+Next.js 16 (16.2.2 LTS) is available but introduces breaking changes that add migration risk with no benefit for this project:
+- Fully removes synchronous request API access (Next.js 15 has deprecation warnings but still works)
+- Removes AMP support entirely (not used, but signals aggressive API churn)
+- Changes caching to fully opt-in (different mental model, no benefit for a landing page)
+- Turbopack as default bundler -- potential edge cases with custom PostCSS (Tailwind v4)
 
-### Recommended Technique
+Next.js 15 is stable, battle-tested, has the widest ecosystem compatibility (shadcn/ui, Motion, Drizzle all verified on 15), and receives security patches. Upgrade to 16 later when the ecosystem is fully settled.
 
-Use a `::before` pseudo-element with `mix-blend-mode: color` over the glass surface. The pseudo-element carries a semi-transparent tint color, and the blend mode mixes it with whatever backdrop content bleeds through the glass.
-
-```css
-.liquid-tinted {
-  position: relative;
-  isolation: isolate;
-  background: var(--liquid-bg);
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-}
-
-.liquid-tinted::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--liquid-tint, rgba(56, 198, 244, 0.08));
-  mix-blend-mode: color;
-  pointer-events: none;
-  z-index: 1;
-}
-```
-
-### Why This Approach (Not Alternatives)
-
-| Approach | Verdict | Reason |
-|----------|---------|--------|
-| `mix-blend-mode: color` on `::before` | **USE THIS** | Blends tint with backdrop content showing through glass. Pure CSS, no JS. Works in all browsers since Jan 2020. Creates stacking context (glass already does). |
-| `background-blend-mode` on glass element | REJECT | Blends the element's own backgrounds with each other, NOT with backdrop content. Cannot tint based on what's behind the glass. |
-| `mix-blend-mode: soft-light` | CONSIDER | Softer tinting effect. Less color shift, more luminosity preservation. Good for dark mode where `color` can over-saturate. |
-| `mix-blend-mode: overlay` | CONSIDER | Stronger contrast effect. Good for hero glass surfaces. Too aggressive for cards -- use `color` for cards. |
-| JS canvas sampling | REJECT | Requires reading pixels from behind element. Performance disaster, cross-origin image issues, violates vanilla constraint. |
-
-### Token Integration
-
-New tokens to add to `:root` in theme.css:
-
-```css
-:root {
-  --liquid-tint-cool: rgba(56, 198, 244, 0.08);   /* brand blue tint */
-  --liquid-tint-warm: rgba(255, 162, 92, 0.06);    /* complementary warm */
-  --liquid-tint-mint: rgba(111, 222, 169, 0.07);   /* health/checkup tint */
-  --liquid-tint-blend: color;                       /* default blend mode */
-}
-
-.dark {
-  --liquid-tint-cool: rgba(56, 198, 244, 0.12);    /* slightly stronger on dark */
-  --liquid-tint-warm: rgba(255, 162, 92, 0.10);
-  --liquid-tint-mint: rgba(111, 222, 169, 0.10);
-  --liquid-tint-blend: soft-light;                  /* softer on dark backgrounds */
-}
-```
-
-### Section-Level Tinting via Data Attribute
-
-Pair adaptive tinting with section context using data attributes:
-
-```html
-<section data-glass-tint="cool"> ... </section>
-<section data-glass-tint="warm"> ... </section>
-<section data-glass-tint="mint"> ... </section>
-```
-
-```css
-[data-glass-tint="cool"] .liquid-tinted::before { background: var(--liquid-tint-cool); }
-[data-glass-tint="warm"] .liquid-tinted::before { background: var(--liquid-tint-warm); }
-[data-glass-tint="mint"] .liquid-tinted::before { background: var(--liquid-tint-mint); }
-```
-
-This mirrors the existing `.section-tint-cool/warm/mint` pattern from liquid-glass.css Section 12 but applies to glass surfaces rather than section backgrounds.
-
-### Browser Support
-
-| Browser | `mix-blend-mode` | Confidence |
-|---------|-----------------|------------|
-| Chrome 41+ | Full | HIGH |
-| Firefox 32+ | Full | HIGH |
-| Safari 8+ | Full | HIGH |
-| iOS Safari 8+ | Full | HIGH |
-| **Global** | ~97% | HIGH (MDN: Baseline since Jan 2020) |
-
-### Performance Note
-
-`mix-blend-mode` creates an implicit stacking context and forces compositing. Since `.liquid-tinted` already creates a stacking context via `isolation: isolate`, the additional cost of the blend mode pseudo-element is marginal -- no new layer promotion occurs.
-
-**Confidence: HIGH.** mix-blend-mode is universally supported and well-documented.
+**Confidence: HIGH** -- verified via official docs, release notes, and ecosystem compatibility reports.
 
 ---
 
-## 2. Specular Highlight Physics: Device Orientation + Mouse Position
+## Recommended Stack
 
-### The Problem
+### Core Framework
 
-Specular highlights (the bright spot on glass that moves with viewing angle) need to respond to:
-- **Desktop:** mouse cursor position (already partially implemented via `--mouse-x`/`--mouse-y` in `.liquid-card::after`)
-- **Mobile:** device tilt via DeviceOrientationEvent gyroscope data
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| Next.js | 15.5.x | Framework (App Router, SSR/SSG, API routes) | Stable, widest library compat, standalone Docker output, security patches active | HIGH |
+| React | 19.x | UI runtime | Ships with Next.js 15; required by shadcn/ui and Motion 12 | HIGH |
+| TypeScript | 5.x | Type safety | Next.js default; Drizzle ORM type inference requires it | HIGH |
 
-### Recommended Technique: Desktop (Mouse Tracking)
+### Styling
 
-The existing `.liquid-card::after` radial-gradient using `--mouse-x`/`--mouse-y` custom properties is the correct pattern. Extend it:
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| Tailwind CSS | 4.x (~4.2) | Utility-first CSS | Already used in current project (standalone CLI); v4 is the default for shadcn/ui now; CSS-first config via `@theme` directive matches existing token architecture | HIGH |
+| @tailwindcss/postcss | 4.x | PostCSS plugin for Next.js | Next.js uses PostCSS pipeline; replaces standalone CLI build | HIGH |
+| tw-animate-css | latest | Animation utilities | Replaces deprecated `tailwindcss-animate`; required by shadcn/ui components (accordion, dialog) | HIGH |
 
-```css
-.liquid-specular::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    ellipse 120% 80% at var(--specular-x, 30%) var(--specular-y, 0%),
-    rgba(255, 255, 255, 0.20) 0%,
-    rgba(255, 255, 255, 0.05) 30%,
-    transparent 60%
+### UI Components
+
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| shadcn/ui | latest (CLI) | Base component library | Not an npm package -- CLI copies components into `src/components/ui/`. Provides accessible, unstyled-by-default React components (Button, Card, Dialog, Accordion, Form, Input, Select, Textarea). Tailwind v4 + React 19 compatible | HIGH |
+| class-variance-authority | 0.7.x | Component variant API | Dependency of shadcn/ui -- typed variant props for button sizes, card styles | HIGH |
+| clsx + tailwind-merge | latest | Class merging | Dependency of shadcn/ui -- `cn()` utility for conditional + deduplicated Tailwind classes | HIGH |
+| lucide-react | latest | Icons | Default icon library for shadcn/ui; tree-shakeable; replaces inline SVG icons | HIGH |
+
+### Squircle Corners
+
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| @squircle-js/react | 1.3.0 | Squircle corner rendering (React component) | 2.1kB gzipped; uses JS calculation for iOS-style superellipse corners; provides `<Squircle>` component with `cornerRadius` + `cornerSmoothing` props; SSR fallback via `<SquircleNoScript>` | MEDIUM |
+
+**Integration strategy with existing squircle system:**
+
+The current CSS mask-image SVG approach (in `squircles.css`) is highly optimized and already has 3-tier progressive enhancement (corner-shape: squircle for Chrome 139+, mask-image SVG for Safari/Firefox, border-radius fallback). `@squircle-js/react` uses a different approach (JS-calculated clip paths) that produces similar visual results but loses the mask-image optimization.
+
+**Recommendation:** Keep the existing CSS squircle classes as Tailwind `@layer components` utilities and use them directly in React via className. Only use `@squircle-js/react` if you need squircles on dynamically-sized elements where the SVG mask approach distorts. The CSS approach is zero-JS, zero-bundle-cost, and already battle-tested.
+
+```tsx
+// PREFERRED: CSS class approach (zero JS cost)
+<article className="squircle-lg liquid-card p-6">
+  <h3>Card title</h3>
+</article>
+
+// FALLBACK: @squircle-js/react (for dynamic sizing edge cases only)
+import { Squircle } from '@squircle-js/react';
+<Squircle cornerRadius={24} cornerSmoothing={0.8} className="liquid-card p-6">
+  <h3>Card title</h3>
+</Squircle>
+```
+
+### Animation
+
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| motion | 12.38.x | Mount/hover/scroll-reveal animations | Renamed from framer-motion; import from `motion/react`; no breaking changes in v12; supports React 19; 44kB gzipped but tree-shakeable | HIGH |
+
+**Critical: SSR compatibility pattern.** Motion components require `"use client"` directive. Create a wrapper module:
+
+```tsx
+// src/components/motion/index.tsx
+"use client";
+export { motion, AnimatePresence, useInView, useScroll, useTransform } from "motion/react";
+```
+
+Then import from `@/components/motion` in Server Components without marking the whole page as client.
+
+**Motion tokens from existing CSS:** Map existing `--ease-liquid`, `--dur-hover`, etc. to Motion transition presets:
+
+```tsx
+// src/lib/motion-presets.ts
+export const liquidTransition = {
+  type: "tween" as const,
+  ease: [0.2, 0, 0, 1], // matches --ease-liquid: cubic-bezier(0.2, 0, 0, 1)
+  duration: 0.28,        // matches --dur-hover: 280ms
+};
+
+export const revealTransition = {
+  type: "tween" as const,
+  ease: [0.16, 1, 0.3, 1], // matches --ease-liquid-out
+  duration: 0.6,             // matches --dur-reveal: 600ms
+};
+
+export const pressTransition = {
+  type: "tween" as const,
+  ease: [0.2, 0, 0, 1],
+  duration: 0.12, // matches --dur-press: 120ms
+};
+```
+
+### Glass Refraction (Hero)
+
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| liquid-glass-react | latest | WebGL refraction effect for hero section | React component; 4 modes (standard, polar, prominent, shader); configurable displacement, blur, saturation, chromatic aberration; arbitrary children support | LOW |
+
+**WARNING: This is a risky dependency.**
+
+Assessment of liquid glass WebGL options:
+
+1. **liquid-glass-react** (rdev) -- React component, npm installable, configurable. But: Chrome/Edge only for full displacement effect (Safari/Firefox show no displacement). New library with unknown stability.
+
+2. **liquidGL** (naughtyduk) -- More mature, shared WebGL canvas, up to 30 elements. But: NO npm package (CDN script only), requires html2canvas, no React API, Safari unstable above 50% viewport.
+
+3. **@specy/liquid-glass-react** -- Three.js powered, React wrapper. But: heavy dependency (Three.js is ~150kB gzipped), expensive initialization, position tracking limitations.
+
+**Recommendation:** Start with pure CSS glass (current `liquid-glass.css` classes work identically in React via className). Add `liquid-glass-react` only for the hero refraction effect as progressive enhancement, with CSS `backdrop-filter` as the universal fallback. Do NOT make WebGL glass a hard dependency.
+
+```tsx
+// Hero glass: progressive enhancement
+"use client";
+import dynamic from 'next/dynamic';
+
+const LiquidGlass = dynamic(
+  () => import('liquid-glass-react').then(mod => mod.LiquidGlass),
+  { ssr: false } // WebGL cannot render server-side
+);
+
+function HeroGlass({ children }: { children: React.ReactNode }) {
+  return (
+    <LiquidGlass
+      mode="standard"
+      displacementScale={50}
+      blurAmount={0.05}
+      saturation={140}
+      cornerRadius={24}
+      className="liquid-card" // CSS fallback styles
+    >
+      {children}
+    </LiquidGlass>
   );
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.3s var(--ease-liquid);
 }
 ```
 
-JS for mouse tracking (ES5 IIFE pattern, extend existing):
+### Database
 
-```javascript
-// Inside existing IIFE
-var cards = document.querySelectorAll('.liquid-specular');
-var rafId = null;
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| Drizzle ORM | 0.45.x | Type-safe SQL query builder | Lightweight (no heavy runtime like Prisma); SQL-first; type inference from schema; works in Next.js Server Components and API routes without extra config | HIGH |
+| drizzle-kit | latest | Schema migrations, studio | CLI tool for generating/running migrations, introspecting existing DB | HIGH |
+| postgres (postgres.js) | latest | PostgreSQL driver | Faster than `pg` for prepared statements (Drizzle uses them by default); zero native dependencies; ESM-first; simpler API than `pg` | HIGH |
 
-function updateSpecular(e) {
-  if (rafId) return; // throttle to rAF
-  rafId = requestAnimationFrame(function() {
-    for (var i = 0; i < cards.length; i++) {
-      var rect = cards[i].getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-      cards[i].style.setProperty('--specular-x', x + '%');
-      cards[i].style.setProperty('--specular-y', y + '%');
-    }
-    rafId = null;
-  });
+**Database connection pattern for Next.js:**
+
+```tsx
+// src/db/index.ts
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+import * as schema from './schema';
+
+// Connection pool for server-side queries.
+// IMPORTANT: In Next.js dev mode, hot reload creates new connections.
+// Use globalThis to preserve the client across reloads.
+const globalForDb = globalThis as unknown as {
+  pgClient: ReturnType<typeof postgres> | undefined;
+};
+
+const connectionString = process.env.DATABASE_URL!;
+
+const client = globalForDb.pgClient ?? postgres(connectionString, {
+  max: 10,               // connection pool size
+  idle_timeout: 20,      // seconds
+  connect_timeout: 10,   // seconds
+});
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForDb.pgClient = client;
 }
 
-document.addEventListener('mousemove', updateSpecular);
+export const db = drizzle(client, { schema });
 ```
 
-### Recommended Technique: Mobile (Device Orientation API)
+**Schema migration from Directus `submissions` table:**
 
-```javascript
-// Gyroscope-driven specular for mobile
-function initGyroSpecular() {
-  var cards = document.querySelectorAll('.liquid-specular');
-  if (!cards.length) return;
+```tsx
+// src/db/schema.ts
+import { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core';
 
-  // Check prefers-reduced-motion FIRST
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  function handleOrientation(e) {
-    // gamma: left-right tilt (-90 to 90)
-    // beta: front-back tilt (-180 to 180)
-    var x = ((e.gamma + 90) / 180 * 100).toFixed(1); // normalize to 0-100
-    var y = (Math.max(0, Math.min(180, e.beta + 90)) / 180 * 100).toFixed(1);
-    for (var i = 0; i < cards.length; i++) {
-      cards[i].style.setProperty('--specular-x', x + '%');
-      cards[i].style.setProperty('--specular-y', y + '%');
-    }
-  }
-
-  function startListening() {
-    window.addEventListener('deviceorientation', handleOrientation);
-  }
-
-  // iOS 13+ requires explicit permission (user gesture required)
-  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    // Attach to a user-initiated event (e.g., button or first touch)
-    document.addEventListener('touchstart', function onTouch() {
-      DeviceOrientationEvent.requestPermission()
-        .then(function(state) {
-          if (state === 'granted') startListening();
-        })
-        .catch(function() {});
-      document.removeEventListener('touchstart', onTouch);
-    }, { once: true });
-  } else {
-    // Android Chrome, Firefox -- permission not required
-    startListening();
-  }
-}
+export const submissions = pgTable('submissions', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  phone: text('phone').notNull(),
+  specialization: text('specialization').notNull(),
+  description: text('description'),
+  status: text('status').default('new').notNull(),
+  dateCreated: timestamp('date_created').defaultNow().notNull(),
+});
 ```
 
-### DeviceOrientationEvent API Details
+### Infrastructure
 
-| Property | Range | Use |
-|----------|-------|-----|
-| `alpha` | 0-360 degrees | Compass heading (z-axis rotation). NOT needed for specular. |
-| `beta` | -180 to 180 degrees | Front-to-back tilt. Maps to specular Y position. |
-| `gamma` | -90 to 90 degrees | Left-to-right tilt. Maps to specular X position. |
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| Docker + Docker Compose | latest | Container orchestration | Existing infrastructure; `output: "standalone"` produces minimal Next.js server image (~130MB vs ~1GB full) | HIGH |
+| Node.js | 22.x LTS | Runtime | Next.js 15 requires Node.js 18.18+; 22.x LTS is production-stable through April 2027 | HIGH |
+| Nginx | latest | Reverse proxy, SSL | Already in use; proxies to Next.js on port 3000 instead of serving static files | HIGH |
 
-### Security Requirements
+**Docker Compose structure (Next.js + PostgreSQL):**
 
-- **HTTPS required** -- DeviceOrientationEvent only works in secure contexts
-- **iOS Safari 13+** -- requires `DeviceOrientationEvent.requestPermission()` called from a user gesture
-- **Android Chrome** -- no permission required, works automatically
-- **Firefox** -- no permission required
+```yaml
+# docker-compose.yml
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@db:5432/${PG_DATABASE}
+      - NODE_ENV=production
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      db:
+        condition: service_healthy
 
-### Why NOT to Use Parallax Libraries
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-| Library | Why Reject |
-|---------|-----------|
-| parallax.js (wagerfield) | 22KB, jQuery optional but adds overhead. Our implementation is ~30 lines of vanilla JS. |
-| parallaxify | jQuery dependency. Dead project (no updates since 2016). |
-| parallaxTilt | jQuery dependency. |
-| Any npm parallax package | Violates no-dependency constraint. |
-
-### Accessibility: prefers-reduced-motion Guard
-
-```javascript
-// Check BEFORE initializing any specular motion
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  // Set static specular position, no event listeners
-  cards.forEach(function(card) {
-    card.style.setProperty('--specular-x', '30%');
-    card.style.setProperty('--specular-y', '0%');
-  });
-  return;
-}
+volumes:
+  pgdata:
 ```
 
-```css
-@media (prefers-reduced-motion: reduce) {
-  .liquid-specular::after {
-    /* Static highlight position, no transition */
-    --specular-x: 30%;
-    --specular-y: 0%;
-    transition: none;
-  }
-}
+**Multi-stage Dockerfile:**
+
+```dockerfile
+# Stage 1: Install dependencies
+FROM node:22-alpine AS deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile
+
+# Stage 2: Build
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN corepack enable && pnpm build
+
+# Stage 3: Production runner
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
 ```
 
-### Browser Support
+### Fonts
 
-| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
-|---------|--------|---------|--------|------------|------------|
-| DeviceOrientationEvent | 7+ | 6+ | 4.2+ | 4.2+ | HIGH |
-| requestPermission() | N/A | N/A | 13+ (required) | 13+ (required) | HIGH (MDN) |
-| CSS custom properties via JS | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
-| requestAnimationFrame | 24+ | 23+ | 6.1+ | 7+ | HIGH |
+| Technology | Approach | Purpose | Why | Confidence |
+|------------|----------|---------|-----|------------|
+| next/font/local | Built-in | Self-hosted font loading | Replaces manual @font-face; automatic `font-display: swap`, preload, no FOUT/FOIT; keeps fonts self-hosted (no Google CDN dependency) | HIGH |
 
-**Confidence: HIGH.** DeviceOrientationEvent is Baseline Widely Available since Sep 2023 (MDN). The requestPermission pattern for iOS is well-documented. Mouse tracking via custom properties is already proven in the codebase.
+**Current fonts to migrate:**
+
+The current project uses SF Pro Display (body) and SF Pro Rounded (headings) via `local()` system font declarations. These are Apple system fonts -- they only work on macOS/iOS. For cross-platform rendering, the existing `fonts.css` falls through to `-apple-system, BlinkMacSystemFont, Segoe UI, Roboto` etc.
+
+The PROJECT.md references Inter and Manrope as the original brand fonts (self-hosted WOFF2). The current v5.0 switched to SF Pro, which is a system-font-only approach.
+
+**Recommendation:** Use `next/font/local` with the existing WOFF2 files if Inter/Manrope are restored, or `next/font/local` with system font stack if keeping SF Pro:
+
+```tsx
+// src/app/fonts.ts
+import localFont from 'next/font/local';
+
+// Option A: Self-hosted Inter + Manrope (if WOFF2 files exist)
+export const inter = localFont({
+  src: '../fonts/inter-variable.woff2',
+  variable: '--font-body',
+  display: 'swap',
+});
+
+export const manrope = localFont({
+  src: '../fonts/manrope-variable.woff2',
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+// Option B: System font approach (current v5.0 behavior)
+// Just set CSS variables in theme.css -- no next/font needed
+```
 
 ---
 
-## 3. Fluted Glass: repeating-linear-gradient + mix-blend-mode
+## Supporting Libraries
 
-### The Problem
+| Library | Version | Purpose | When to Use |
+|---------|---------|---------|-------------|
+| zod | 3.x | Schema validation | Form validation in API routes + client; used by shadcn/ui Form component |
+| @hookform/resolvers | latest | Connect zod to react-hook-form | Form validation bridge |
+| react-hook-form | 7.x | Form state management | Contact form; shadcn/ui Form component is built on this |
+| sharp | latest | Image optimization | Next.js `<Image>` uses it in production for on-the-fly resizing/WebP/AVIF |
 
-Fluted (ribbed/reeded) glass creates vertical streak distortions that add texture without obscuring content. Think shower doors or architectural privacy glass.
+---
 
-### Recommended Technique
+## What NOT to Install
 
-Layer a `repeating-linear-gradient` over the glass surface using a pseudo-element with `mix-blend-mode: color-dodge`:
+| Do Not Use | Why |
+|------------|-----|
+| Prisma | Heavy CLI, generates client code (~1.5MB), requires custom binary for Docker Alpine, slower cold starts. For 1 table (`submissions`), Drizzle is dramatically simpler |
+| @directus/sdk | Directus is being removed entirely; PostgreSQL direct via Drizzle replaces it |
+| tailwindcss-animate | Deprecated for Tailwind v4; replaced by tw-animate-css |
+| framer-motion (package name) | Renamed to `motion`; `framer-motion` still works but is deprecated. Import from `motion/react` |
+| Three.js / @specy/liquid-glass-react | 150kB+ for one hero effect; `liquid-glass-react` (rdev) achieves same visual at fraction of bundle cost |
+| Alpine.js | Was used to avoid React; now React IS the framework |
+| Any CSS-in-JS (styled-components, emotion) | Tailwind CSS handles all styling; CSS-in-JS adds runtime overhead and conflicts with RSC |
+| next-themes | Overkill for a single theme toggle; 10 lines of custom code with `useEffect` + `localStorage` + `classList.toggle('dark')` suffice |
+| @next/font (old package) | Renamed to `next/font` (built into Next.js); do not install separately |
+| tRPC | Over-engineering for 1 API endpoint (form submission); plain Next.js API route + Drizzle is sufficient |
+| NextAuth / Auth.js | No user authentication needed; this is a public landing page with a form |
+| @tailwindcss/cli | Was used for standalone builds; Next.js uses @tailwindcss/postcss instead |
+
+---
+
+## Installation Commands
+
+```bash
+# Create Next.js 15 project
+pnpm create next-app@15 medicusunion-kz \
+  --typescript --tailwind --eslint --app --src-dir \
+  --import-alias "@/*" --turbopack
+
+cd medicusunion-kz
+
+# Database
+pnpm add drizzle-orm postgres
+pnpm add -D drizzle-kit
+
+# Animation
+pnpm add motion
+
+# UI components (shadcn/ui init -- sets up components.json, cn() utility)
+pnpm dlx shadcn@latest init
+
+# After init, add specific components as needed:
+pnpm dlx shadcn@latest add button card accordion input select textarea form dialog
+
+# Squircle (optional -- prefer CSS class approach first)
+pnpm add @squircle-js/react
+
+# Glass refraction hero (optional -- progressive enhancement only)
+pnpm add liquid-glass-react
+
+# Form validation
+pnpm add zod react-hook-form @hookform/resolvers
+
+# Image optimization (production)
+pnpm add sharp
+```
+
+---
+
+## Tailwind v4 Configuration: Token Migration
+
+The existing `theme.css` already uses Tailwind v4's `@theme inline` directive with `--color-*`, `--spacing-*`, `--shadow-*` tokens. This is the exact format Tailwind v4 expects in Next.js.
+
+**Migration approach:** Copy `theme.css` content into the Next.js project's global CSS file (e.g., `src/app/globals.css`) after the Tailwind import. The `@theme inline` block, `:root` variables, and `.dark` overrides transfer 1:1.
 
 ```css
-.liquid-fluted {
-  position: relative;
-  isolation: isolate;
-  background: var(--liquid-bg);
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+/* src/app/globals.css */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Existing tokens -- copy from src/styles/theme.css */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* All existing --mu-*, --liquid-*, --ease-*, --dur-* tokens */
+  /* ... (copy entire :root block from theme.css) ... */
 }
 
-/* Fluted vertical streaks */
-.liquid-fluted::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-image: repeating-linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.03) 0px,
-    rgba(0, 0, 0, 0.06) 2px,
-    rgba(255, 255, 255, 0.08) 4px
+.dark {
+  /* ... (copy entire .dark block from theme.css) ... */
+}
+
+@theme inline {
+  /* ... (copy entire @theme inline block from theme.css) ... */
+}
+
+/* Existing layer definitions -- copy from theme.css */
+@layer base { /* ... */ }
+@layer components { /* ... */ }
+@layer utilities { /* ... */ }
+```
+
+**What changes in the migration:**
+- `@import 'tailwindcss' source(none)` becomes `@import "tailwindcss"` (Next.js PostCSS handles source detection automatically)
+- `@source '../../*.html'` is removed (Next.js scans `src/` automatically for class usage)
+- `@import './fonts.css'` is removed (handled by `next/font/local`)
+
+**What stays identical (zero changes):**
+- All `@theme inline` token declarations
+- All `:root` and `.dark` CSS custom properties
+- All `@layer base/components/utilities` rules
+- `squircles.css` classes (import as separate file)
+- `liquid-glass.css` classes (import as separate file)
+
+---
+
+## next.config.ts
+
+```typescript
+// next.config.ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  output: 'standalone', // Required for Docker deployment
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    // If serving images from external domains:
+    // remotePatterns: [{ protocol: 'https', hostname: 'medicusunion.kz' }],
+  },
+};
+
+export default nextConfig;
+```
+
+---
+
+## postcss.config.mjs
+
+```javascript
+// postcss.config.mjs
+export default {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+```
+
+---
+
+## Key Integration Points
+
+### 1. shadcn/ui + Liquid Glass Design System
+
+shadcn/ui components use CSS variables from `@theme inline` for colors, radius, shadows. The existing token system (`--background`, `--foreground`, `--card`, `--primary`, `--border`, `--radius`, etc.) is already shadcn/ui-compatible because it was set up following shadcn conventions.
+
+Glass variants layer on TOP of shadcn base components via additional CSS classes:
+
+```tsx
+// A glass card = shadcn Card + liquid-glass CSS class + squircle CSS class
+import { Card, CardContent } from "@/components/ui/card";
+
+export function GlassCard({ children }: { children: React.ReactNode }) {
+  return (
+    <Card className="squircle-lg liquid-card border-inset-glass">
+      <CardContent>{children}</CardContent>
+    </Card>
   );
-  background-size: var(--fluted-pitch, 8px) 100%;
-  mix-blend-mode: color-dodge;
-  pointer-events: none;
-  z-index: 1;
 }
 ```
 
-### Why These Values
+### 2. Motion + Next.js App Router
 
-| Parameter | Value | Rationale |
-|-----------|-------|-----------|
-| Direction | `to right` | Vertical flutes = horizontal gradient direction |
-| Pitch (background-size) | `8px` | Narrow enough to read as texture, wide enough to not become noise. 4px = too fine on mobile. 16px = too coarse. |
-| White stop opacity | `0.03 - 0.08` | Subtle. Higher values create visible bands that fight readability for CA 45+. |
-| Dark stop opacity | `0.06` | Creates shadow between flutes. Higher = too dark. |
-| `mix-blend-mode: color-dodge` | Required | Makes the gradient glow rather than overlay. Without it, the streaks look painted-on rather than refractive. |
+All Motion components are client-only. Strategy:
 
-### Token Integration
+- **Page-level animations (route transitions):** Wrap `<AnimatePresence>` in a client layout component
+- **Section-level animations (scroll reveal):** Use `useInView` hook in individual section client components
+- **Micro-interactions (hover, press):** Apply `whileHover`, `whileTap` on interactive elements
+- **Reduced motion:** Motion respects `prefers-reduced-motion` automatically when using `layout` prop; for custom animations, check `useReducedMotion()` hook
 
-```css
-:root {
-  --fluted-pitch: 8px;
-  --fluted-opacity: 1;
-}
+### 3. Drizzle + Next.js API Routes (replacing Directus)
 
-.dark {
-  --fluted-pitch: 10px;     /* slightly wider on dark -- narrower is lost */
-  --fluted-opacity: 0.6;    /* tone down on dark backgrounds */
+```tsx
+// src/app/api/submissions/route.ts
+import { db } from '@/db';
+import { submissions } from '@/db/schema';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const submissionSchema = z.object({
+  name: z.string().min(2),
+  phone: z.string().regex(/^\+7\d{10}$/),
+  specialization: z.enum([
+    'oncology', 'cardiology', 'neurosurgery',
+    'orthopedics', 'radiology', 'ivf'
+  ]),
+  description: z.string().optional(),
+});
+
+export async function POST(request: Request) {
+  const body = await request.json();
+  const parsed = submissionSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
+
+  const [submission] = await db
+    .insert(submissions)
+    .values(parsed.data)
+    .returning();
+
+  return NextResponse.json({ id: submission.id }, { status: 201 });
 }
 ```
 
-```css
-.dark .liquid-fluted::before {
-  opacity: var(--fluted-opacity);
-}
-```
+### 4. Docker: Next.js Standalone + PostgreSQL
 
-### Pseudo-Element Conflict Resolution
+The standalone output produces `server.js` in `.next/standalone/` that includes only the used dependencies. Combined with the multi-stage Dockerfile above, the production image is ~130MB (vs ~1GB without standalone).
 
-`.liquid-card` already uses `::before` for the animated glint border and `::after` for the specular radial gradient. `.liquid-fluted` is a SEPARATE class -- it does NOT extend `.liquid-card`. It should be used for decorative panels (hero backdrop, divider panels) where glint animation is not needed.
-
-If fluted + specular is needed on the same element, compose via a wrapper:
-
-```html
-<div class="liquid-fluted squircle-lg">
-  <div class="liquid-specular-inner">
-    <!-- content -->
-  </div>
-</div>
-```
-
-### Browser Support
-
-All CSS features used (repeating-linear-gradient, mix-blend-mode, pseudo-elements) have 97%+ global support. No new browser requirements beyond existing stack.
-
-**Confidence: HIGH.** Technique verified via Frontend.fyi tutorial and multiple CodePen implementations.
+**Critical env vars:**
+- `HOSTNAME="0.0.0.0"` -- Without this, Next.js binds to 127.0.0.1 and Docker networking fails (502 errors)
+- `DATABASE_URL` -- Connection string for postgres.js driver
+- `NODE_ENV=production` -- Enables Next.js production optimizations
 
 ---
 
-## 4. Clear Glass Variant: Higher Transparency + Dimming Layer
-
-### The Problem
-
-Clear glass has higher transparency (content behind is more visible) but needs a dimming layer to maintain text readability. Apple uses "clear" for overlays and modal backgrounds.
-
-### Current Status in Codebase
-
-The liquid-glass.css header comment explicitly marks clear glass as:
-> "Clear glass is an anti-feature for medical CA 45+ audience -- contrast and legibility take priority over visual novelty."
-
-### Revised Recommendation: Limited Use Only
-
-Clear glass IS appropriate for exactly two use cases in this project:
-1. **Modal overlay / backdrop dimming** -- behind the mobile menu or a confirmation dialog
-2. **Hero section background panel** -- where the background image IS the content and text is minimal
-
-It is NOT appropriate for:
-- Cards with body text (fails WCAG AA at high transparency)
-- Form containers (input readability suffers)
-- Navigation elements (CA 45+ needs high contrast nav)
-
-### Technique
-
-```css
-.liquid-clear {
-  isolation: isolate;
-  position: relative;
-  background: var(--liquid-clear-bg);
-  backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  -webkit-backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-}
-
-/* Dimming layer behind the clear glass element */
-.liquid-clear-dim {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  z-index: var(--z-overlay, 40);
-}
-```
-
-### Token Integration
-
-```css
-:root {
-  --liquid-clear-bg: rgba(255, 255, 255, 0.18);  /* much lower than regular's 0.42 */
-  --liquid-clear-blur: var(--liquid-blur-sm);      /* 16px -- less blur = more see-through */
-}
-
-.dark {
-  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
-  --liquid-clear-blur: var(--liquid-blur-sm);
-}
-```
-
-### Key Difference from Regular Glass
-
-| Property | `.liquid-regular` | `.liquid-clear` |
-|----------|--------------------|-----------------|
-| Background alpha | `0.42` | `0.18` |
-| Blur radius | `24px` (md) | `16px` (sm) |
-| Use case | Cards, panels | Overlays, hero backdrop |
-| Text readability | WCAG AA safe | Needs large/bold text only |
-
-**Confidence: MEDIUM.** The technique is straightforward CSS, but the "anti-feature" annotation in the codebase reflects a considered decision. Use with restraint.
-
----
-
-## 5. GPU Performance Profiling Tools and Techniques
-
-### Chrome DevTools: The Primary Profiling Tool
-
-No npm packages needed. Chrome DevTools is the authoritative GPU profiling tool.
-
-#### Performance Panel Workflow
-
-1. **Open DevTools > Performance tab**
-2. **Enable Advanced Paint Instrumentation** (gear icon > checkbox). WARNING: This itself reduces performance -- use for profiling sessions only, not normal development.
-3. **Record a scroll interaction** (5-10 seconds)
-4. **Analyze the flame chart:**
-   - Look for `Paint` events longer than 4ms (60fps budget = 16.6ms per frame)
-   - `Composite Layers` events show GPU compositing cost
-   - `Update Layer Tree` events show layer promotion overhead
-
-#### Layers Panel Workflow
-
-1. **Open DevTools > More Tools > Layers**
-2. **Rotate the 3D view** to see layer stacking
-3. **Click each layer** to see:
-   - Memory consumption (bytes)
-   - Compositing reason (e.g., "Has a backdrop filter", "Has will-change: transform")
-   - Layer dimensions
-
-**What to look for:**
-- Total layer count: aim for < 20 layers per viewport on mobile
-- Individual layer memory: > 2MB per layer = investigate
-- Unexpected layers: elements promoted without `will-change` or backdrop-filter
-
-#### Rendering Panel Workflow
-
-1. **Open DevTools > More Tools > Rendering**
-2. **Enable "Paint flashing"** -- green rectangles show repainted areas
-3. **Enable "Layer borders"** -- orange borders show composite layers
-4. **Scroll the page** and check:
-   - Do glass elements cause paint flashing on scroll? (bad -- should be composited)
-   - Are there unexpected orange borders? (unnecessary layer promotion)
-
-### will-change Budget Guidelines
-
-```css
-/* CORRECT: will-change only on elements that animate */
-.liquid-btn-primary {
-  will-change: transform, filter;  /* transforms on :hover/:active */
-}
-
-/* CORRECT: will-change removed after animation */
-.shimmer-sweep {
-  will-change: transform;  /* for the ::before sweep */
-}
-
-/* WRONG: will-change on static glass cards */
-.liquid-card {
-  /* will-change: backdrop-filter;  <-- NEVER DO THIS */
-  /* backdrop-filter already promotes to composite layer */
-  /* Adding will-change doubles the GPU memory cost for zero benefit */
-}
-```
-
-**Rule of thumb for this project:**
-- backdrop-filter already creates a composite layer -- no `will-change` needed on static glass
-- `will-change: transform` only on elements that animate `transform` (buttons, shimmer)
-- Remove `will-change` after animation completion via JS if the animation is one-shot
-- Maximum 5-7 elements with `will-change` per viewport
-
-### Mobile Performance Targets
-
-| Metric | Target | Tool |
-|--------|--------|------|
-| Frame rate during scroll | 60fps (16.6ms/frame) | Performance Panel timeline |
-| Total composite layers | < 20 per viewport | Layers Panel |
-| Total GPU memory | < 100MB | Chrome `chrome://gpu` |
-| Largest layer | < 4MB | Layers Panel detail |
-| Paint duration per frame | < 4ms | Performance Panel paint events |
-
-### Firefox-Specific Profiling
-
-Firefox Profiler (about:profiling) can identify backdrop-filter performance issues specific to Firefox:
-
-1. Open `about:profiling`
-2. Set features: Paint, GPU, CSS
-3. Record scroll interaction
-4. Look for "BackdropFilter" markers in the timeline
-
-Firefox renders `backdrop-filter` on the CPU in some configurations -- if you see long paint events without GPU markers, Firefox is software-rendering the blur.
-
-**Confidence: HIGH.** Chrome DevTools Layers panel and Performance panel are authoritative tools. No external dependencies needed.
-
----
-
-## 6. Cross-Browser Hardening for backdrop-filter
-
-### Current Support Matrix (verified April 2026)
-
-| Browser | backdrop-filter | SVG url() in backdrop-filter | Notes |
-|---------|----------------|------------------------------|-------|
-| Chrome 76+ | Full | YES (Chrome only) | Unprefixed |
-| Edge 79+ | Full | YES (Chromium) | Unprefixed |
-| Firefox 103+ | Full | NO | blur/saturate/brightness work; SVG filter url() does NOT |
-| Safari 9+ | Full (prefixed) | NO | -webkit- required for older; unprefixed from 18+ |
-| iOS Safari 9+ | Full (prefixed) | NO | Same as Safari |
-| Samsung Internet 12+ | Full | Likely YES (Chromium) | |
-| **Global** | **95.79%** | ~70% (Chromium only) | caniuse.com verified |
-
-### Critical Quirk: SVG filter url() in backdrop-filter
-
-The existing SVG refraction filter (`html[data-refract="true"]`) uses `backdrop-filter: url(#liquid-refract) blur(...) saturate(...) brightness(...)`. This is **Chrome/Edge only**.
-
-Firefox and Safari silently ignore the entire `backdrop-filter` declaration when `url()` is present -- not just the SVG filter, but the blur/saturate/brightness too. The existing fallback selector structure in liquid-glass.css Section 10 handles this correctly by gating behind `html[data-refract="true"]`.
-
-**Action:** No change needed. The existing JS probe that sets `data-refract="true"` only on Chromium browsers is the correct approach.
-
-### Safari-Specific Quirks
-
-1. **`-webkit-backdrop-filter` required for Safari < 18.** Already handled in codebase.
-2. **Backdrop-filter + mask-image on same element:** Works correctly in Safari 17+. Earlier versions may not render the backdrop through the mask. The squircle mask approach is safe because the mask is applied to the same element that has the backdrop-filter.
-3. **Backdrop-filter + border-radius:** Safari sometimes clips the blur at the border-radius boundary differently than Chrome. Use `overflow: hidden` on the glass element if you see blur bleeding past corners.
-4. **`corner-shape: squircle` + backdrop-filter:** Chrome 139+ only. When the squircle mask is removed (via `@supports (corner-shape: squircle)`) and replaced with `corner-shape: squircle`, the backdrop-filter renders correctly through the native squircle corner.
-
-### Firefox-Specific Quirks
-
-1. **Performance:** Firefox's backdrop-filter uses CPU rendering in some configurations, making it slower than Chrome/Safari. Higher blur values (>20px) are more expensive. Keep the existing blur budget (`--liquid-blur-md: 24px` is at the edge -- monitor).
-2. **`backdrop-filter: url()` NOT supported:** Confirmed by MDN browser-compat-data issue #24110 (closed as "working as intended" per spec). SVG filters in backdrop-filter are a Chrome-only feature.
-3. **`mix-blend-mode` + `backdrop-filter` stacking:** Firefox handles the interaction correctly but may produce slightly different color blending results due to gamma correction differences. Test the tint colors visually.
-
-### Android-Specific Considerations (KZ Market)
-
-- **Budget Android devices (common in KZ market):** Samsung Galaxy A series, Redmi phones. These have weak GPUs.
-- **Existing constraint:** Max 2 glass elements per viewport, blur <= 12px on budget devices.
-- **Detection approach:** No reliable "budget device" CSS media query exists. Use the existing `max 2 glass elements` constraint universally.
-- **Samsung Internet:** Chromium-based, supports full backdrop-filter. No special handling needed.
-
-### Testing Matrix
-
-| Test | Tool | What to Check |
-|------|------|---------------|
-| Visual regression | Manual screenshots | Glass renders identically across browsers |
-| backdrop-filter rendering | Chrome, Safari, Firefox real devices | Blur visible, not clipped, not bleeding |
-| SVG refraction | Chrome only | `data-refract="true"` gated correctly |
-| Performance (scroll fps) | Chrome DevTools Performance tab | 60fps scroll with glass elements |
-| Performance (Firefox) | Firefox Profiler | No CPU-rendered backdrop-filter blocking main thread |
-| iOS Safari permission | Real iOS device | DeviceOrientationEvent permission flow works |
-| Reduced motion | OS setting toggle | All animations/gyro disabled, static fallback |
-| Reduced transparency | OS setting toggle | Glass becomes opaque, readable |
-| Print | `Ctrl+P` | Glass renders as opaque white with border |
-
-**Confidence: HIGH.** Browser support figures verified via caniuse.com (95.79% global for backdrop-filter). SVG filter limitation confirmed via MDN browser-compat-data GitHub issue.
-
----
-
-## New Token Additions Summary
-
-All new tokens to add to theme.css `:root`:
-
-```css
-:root {
-  /* === v5.0 Adaptive Tinting === */
-  --liquid-tint-cool: rgba(56, 198, 244, 0.08);
-  --liquid-tint-warm: rgba(255, 162, 92, 0.06);
-  --liquid-tint-mint: rgba(111, 222, 169, 0.07);
-  --liquid-tint-blend: color;
-
-  /* === v5.0 Clear Glass === */
-  --liquid-clear-bg: rgba(255, 255, 255, 0.18);
-
-  /* === v5.0 Fluted Glass === */
-  --fluted-pitch: 8px;
-  --fluted-opacity: 1;
-}
-
-.dark {
-  /* === v5.0 Adaptive Tinting (dark) === */
-  --liquid-tint-cool: rgba(56, 198, 244, 0.12);
-  --liquid-tint-warm: rgba(255, 162, 92, 0.10);
-  --liquid-tint-mint: rgba(111, 222, 169, 0.10);
-  --liquid-tint-blend: soft-light;
-
-  /* === v5.0 Clear Glass (dark) === */
-  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
-
-  /* === v5.0 Fluted Glass (dark) === */
-  --fluted-pitch: 10px;
-  --fluted-opacity: 0.6;
-}
-```
-
----
-
-## What NOT to Add
-
-| Rejected | Why |
-|----------|-----|
-| WebGL / Three.js for glass refraction | Violates vanilla constraint. Massive bundle. SVG feTurbulence (existing) is sufficient for Chromium. |
-| liquid-glass-js (GitHub library) | External dependency. 15KB+. Our implementation is ~50 lines of CSS + 30 lines of JS. |
-| Any npm glass framework | Violates no-dependency constraint. |
-| Canvas 2D for adaptive tinting | Requires reading pixels (tainted canvas for cross-origin images). Performance nightmare. |
-| CSS `element()` for backdrop sampling | Experimental, Firefox-only, no other browser support. Dead spec. |
-| CSS `backdrop-filter: color-adjust()` | Does not exist. Not a real CSS property. |
-| `will-change: backdrop-filter` on static elements | Wastes GPU memory. backdrop-filter already promotes to composite layer. |
-| Gyroscope polyfill libraries | No polyfill can create gyroscope data. Device either has one or does not. |
-| CSS Houdini paint worklets for fluted glass | Chrome-only, no Firefox/Safari support. Violates cross-browser requirement. |
-
----
-
-## Browser Support Summary Table (v5.0 Features)
-
-| Feature | Chrome | Firefox | Safari | iOS Safari | Global | Confidence |
-|---------|--------|---------|--------|------------|--------|------------|
-| `mix-blend-mode` | 41+ | 32+ | 8+ | 8+ | ~97% | HIGH |
-| `backdrop-filter` | 76+ | 103+ | 9+ (prefixed) | 9+ (prefixed) | ~96% | HIGH |
-| SVG url() in `backdrop-filter` | 76+ | NO | NO | NO | ~70% | HIGH |
-| `DeviceOrientationEvent` | 7+ | 6+ | 4.2+ | 4.2+ | ~98% | HIGH |
-| `requestPermission()` (gyro) | N/A | N/A | 13+ | 13+ | iOS only | HIGH |
-| `repeating-linear-gradient` | 26+ | 16+ | 6.1+ | 7+ | ~99% | HIGH |
-| CSS custom properties via JS | 49+ | 31+ | 9.1+ | 9.3+ | ~98% | HIGH |
-| `prefers-reduced-motion` | 74+ | 63+ | 10.1+ | 10.3+ | ~96% | HIGH |
-| `prefers-reduced-transparency` | 118+ | 113+ | 17.4+ | 17.4+ | ~85% | MEDIUM |
-| `corner-shape: squircle` | 139+ | NO | NO | NO | ~35% | HIGH |
+## Alternatives Considered
+
+| Category | Recommended | Alternative | Why Not Alternative |
+|----------|-------------|-------------|---------------------|
+| Framework version | Next.js 15.5.x | Next.js 16.2.x | Breaking changes (sync API removal, cache model change) add migration risk for zero benefit on a landing page; 15 gets security patches |
+| ORM | Drizzle ORM | Prisma | Prisma generates a heavy client (~1.5MB), requires custom binary for Docker Alpine, slower cold starts; Drizzle is SQL-first and lighter for 1 table |
+| PG driver | postgres (postgres.js) | pg (node-postgres) | postgres.js is ESM-native, zero native deps, simpler API; pg requires @types/pg and has callback-based API under the hood |
+| Animation | motion 12.x | GSAP, anime.js | motion/react has first-class React integration (component props, layout animations, exit animations); GSAP/anime.js require manual DOM refs and cleanup |
+| Glass refraction | liquid-glass-react | @specy/liquid-glass-react | @specy pulls in Three.js (~150kB); liquid-glass-react uses WebGL directly (~15kB); for one hero effect, smaller is better |
+| Glass refraction | liquid-glass-react | liquidGL (naughtyduk) | No npm package; CDN-only script tag; no React API; requires html2canvas dependency; incompatible with React lifecycle |
+| Squircle | CSS mask-image classes | @squircle-js/react | Existing CSS approach is zero-JS, 3-tier progressive enhancement; @squircle-js adds 2.1kB JS for equivalent visual result |
+| Form handling | react-hook-form + zod | Server Actions only | react-hook-form gives client-side validation feedback (field-level errors, real-time); Server Actions alone require round-trip for validation |
+| Themes | Custom 10-line hook | next-themes | One landing page, one toggle; next-themes adds package for what `classList.toggle('dark')` + localStorage does |
+| Package manager | pnpm | npm / yarn | pnpm handles React 19 peer deps cleanly (no --legacy-peer-deps needed); strict node_modules structure prevents phantom dependencies |
 
 ---
 
 ## Sources
 
-- [MDN: mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mix-blend-mode) -- blend mode values and browser compatibility (verified)
-- [MDN: DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent) -- API properties, requestPermission, HTTPS requirement (verified)
-- [MDN: backdrop-filter](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter) -- browser support and SVG filter limitations (verified)
-- [Can I Use: CSS Backdrop Filter](https://caniuse.com/css-backdrop-filter) -- 95.79% global support (verified April 2026)
-- [MDN browser-compat-data #24110](https://github.com/mdn/browser-compat-data/issues/24110) -- SVG filters NOT supported in Firefox/Safari backdrop-filter (closed, spec-compliant behavior)
-- [CSS-Tricks: Getting Clarity on Apple's Liquid Glass](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/) -- three-layer architecture (highlight, shadow, illumination)
-- [Frontend.fyi: Frosted Glass Effect](https://www.frontend.fyi/tutorials/frosted-glass-effect) -- repeating-linear-gradient fluted glass technique with color-dodge
-- [Chrome DevTools: Performance Reference](https://developer.chrome.com/docs/devtools/performance/reference) -- Advanced paint instrumentation, layers panel
-- [Chrome DevTools: Layers Panel](https://developer.chrome.com/docs/devtools/layers) -- Composite layer inspection
-- [DEV.to: Recreating Apple's Liquid Glass with Pure CSS](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl) -- specular highlight via inset box-shadow pseudo-elements
-- [DEV.to: DeviceOrientationEvent requestPermission](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2) -- iOS 13+ permission pattern
-- [Hacker News: CSS Glass Effect Generator](https://news.ycombinator.com/item?id=44445238) -- cross-browser pseudo-element layering to avoid Chrome color bleed
+### Official Documentation (HIGH confidence)
+- [Next.js Deploying Docs](https://nextjs.org/docs/app/getting-started/deploying) -- standalone output, Docker
+- [Next.js Upgrading to v15](https://nextjs.org/docs/app/guides/upgrading/version-15) -- breaking changes, React 19
+- [Next.js Upgrading to v16](https://nextjs.org/docs/app/guides/upgrading/version-16) -- why we skip 16
+- [Next.js Docker Example](https://github.com/vercel/next.js/blob/canary/examples/with-docker/README.md) -- official Dockerfile
+- [Tailwind CSS v4 + Next.js Guide](https://tailwindcss.com/docs/guides/nextjs) -- PostCSS setup
+- [Tailwind CSS v4 Announcement](https://tailwindcss.com/blog/tailwindcss-v4) -- @theme directive, CSS-first config
+- [shadcn/ui Next.js Installation](https://ui.shadcn.com/docs/installation/next) -- init, components.json
+- [shadcn/ui Tailwind v4 Guide](https://ui.shadcn.com/docs/tailwind-v4) -- tw-animate-css, @theme inline
+- [Drizzle ORM PostgreSQL Setup](https://orm.drizzle.team/docs/get-started-postgresql) -- drivers, connection
+- [Motion Installation](https://motion.dev/docs/react-installation) -- motion/react import
+- [Motion Upgrade Guide](https://motion.dev/docs/react-upgrade-guide) -- framer-motion to motion migration
+
+### npm Packages (MEDIUM confidence -- versions verified)
+- [motion@12.38.0](https://www.npmjs.com/package/motion) -- latest as of 2026-03-16
+- [drizzle-orm@0.45.2](https://www.npmjs.com/package/drizzle-orm) -- latest as of 2026-03-29
+- [@squircle-js/react@1.3.0](https://www.npmjs.com/package/@squircle-js/react) -- latest as of 2026-02-03
+- [tw-animate-css](https://www.npmjs.com/package/tw-animate-css) -- shadcn/ui animation dependency
+
+### GitHub Repositories (MEDIUM confidence)
+- [liquid-glass-react](https://github.com/rdev/liquid-glass-react) -- React WebGL glass component
+- [liquidGL](https://github.com/naughtyduk/liquidGL) -- Script-based WebGL glass (no npm)
+- [@squircle-js/react](https://github.com/bring-shrubbery/squircle-js) -- React squircle component
+
+### Community Resources (LOW confidence -- cross-referenced)
+- [Drizzle + Next.js 15 Guide (Strapi blog)](https://strapi.io/blog/how-to-use-drizzle-orm-with-postgresql-in-a-nextjs-15-project)
+- [Next.js 15 vs 16 Comparison](https://www.descope.com/blog/post/nextjs15-vs-nextjs16)
+- [Motion Complete Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers.html)

@@ -1,502 +1,524 @@
-# Feature Landscape: v5.0 Full Liquid Glass Rework
+# Feature Landscape: Next.js Migration
 
-**Domain:** Medical consultation landing page -- Liquid Glass visual refinement to Apple WWDC 2025 fidelity
-**Researched:** 2026-04-09
-**Confidence:** HIGH for CSS techniques, MEDIUM for Apple Liquid Glass behavioral parity, LOW where flagged
-**Scope:** NEW features only. Existing implementation (liquid-regular, liquid-card, liquid-btn-primary/secondary, stats-glass, specular rim-light, animated glint, mouse-tracking specular, SVG refraction, extended header backdrop, dark mode, section tints, shimmer sweep, scroll-edge fades) is documented but not re-specified.
+**Domain:** Medical landing page migration (vanilla HTML/CSS/JS -> Next.js 15 + React)
+**Researched:** 2026-04-10
+**Mode:** Component inventory, React migration mapping, client/server boundaries
 
----
+## Current Page Inventory
 
-## Existing Implementation Inventory
-
-Before defining new features, what is already built and working in v4.0:
-
-| Feature | Class/Mechanism | Status |
-|---------|----------------|--------|
-| Base glass material | `.liquid-regular` with `backdrop-filter: blur() saturate() brightness()` | Shipped |
-| Card glass material | `.liquid-card` with same filter + mouse-tracking `::after` | Shipped |
-| Button glass (secondary) | `.liquid-btn-secondary` with glass material | Shipped |
-| Button solid (primary) | `.liquid-btn-primary` with gradient fill | Shipped |
-| Stats grouped glass | `.stats-glass` with larger blur radius | Shipped |
-| Specular rim-light | `::before` pseudo on regular/btn-secondary/stats | Shipped |
-| Animated glint border | `::before` pseudo on liquid-card with mask-composite | Shipped |
-| Mouse-tracking specular | `--mouse-x`/`--mouse-y` CSS vars via JS mousemove | Shipped |
-| SVG refraction | `feTurbulence` + `feDisplacementMap`, Chromium-only via `data-refract` | Shipped |
-| Extended header backdrop | 200% height + mask-image (Josh Comeau technique) | Shipped |
-| Dark mode token cascade | `.dark` class with `--liquid-*` overrides | Shipped |
-| Section tint backgrounds | `.section-tint-cool/warm/mint` gradient overlays | Shipped |
-| Shimmer sweep | `.shimmer-sweep` hover animation on CTA | Shipped |
-| Scroll-edge fades | `.scroll-fade-top/bottom` mask-image gradients | Shipped |
-| Squircle masks | `.squircle-md/lg/xl` with SVG mask + corner-shape progressive enhancement | Shipped |
-| Print/reduced-motion/reduced-transparency | Full media query fallbacks | Shipped |
+| Page | Route (Next.js) | Sections | Has Form | Complexity |
+|------|-----------------|----------|----------|------------|
+| index.html | `/` | 12 (hero, stats, services, problem, process, why-us, clinics, platform, reviews, faq, contact, cta) | Yes | High |
+| online-consultations.html | `/online-consultations` | 12 (hero, features, problem, benefits, process, doctors, why-medicusunion, triggers, pricing, form, faq, final-cta) | Yes | High |
+| treatment-abroad.html | `/treatment-abroad` | 11 (hero, stats, about-us, platform, clinics, included, steps, reviews, faq, form, final-cta) | Yes | High |
+| checkup.html | `/checkup` | 12 (hero, stats, why-checkup, why-abroad, why-us, korea-programs, turkey-programs, how-it-works, b2b, faq, form, final-cta) | Yes | High |
+| contacts.html | `/contacts` | 2 (hero, contact-section with info+form) | Yes | Medium |
+| 404.html | `not-found.tsx` | 1 (error card) | No | Low |
+| styleguide.html | `/styleguide` (dev only) | N/A | No | Low |
 
 ---
 
 ## Table Stakes
 
-Features that v5.0 MUST deliver. Without these, the Liquid Glass system feels incomplete -- a 70% reproduction of Apple's language rather than a convincing implementation. These are the features that separate "has glass effects" from "has a glass SYSTEM."
+Features users expect. Missing = product feels broken or incomplete.
 
-| Feature | Why Expected | Complexity | Depends On | Web Feasibility |
-|---------|--------------|------------|------------|-----------------|
-| Glass hierarchy system (3 tiers) | Apple defines glass as a material with explicit hierarchy: Regular (default), Clear (transparent), and navigation-level variants. Having only one `.liquid-regular` material means every glass element looks identical -- no visual hierarchy between nav, cards, and stats. | MEDIUM | Existing token architecture in theme.css | HIGH -- pure CSS token differentiation |
-| Interaction states on glass (hover, press, focus) | v4.0 has hover on buttons (`brightness(1.08)`, `scale(0.97)`) but glass cards and glass surfaces have NO interaction feedback beyond the mouse-tracking specular. Apple's glass "illuminates from within" on touch and has spring-based feedback. | MEDIUM | liquid-glass.css, existing `--dur-hover`/`--dur-press` tokens | HIGH -- CSS transitions + radial-gradient manipulation |
-| Adaptive tinting (background-aware glass color) | Apple's defining differentiator: glass shifts its tint based on the content behind it. Currently all glass elements use the same fixed `--liquid-bg: rgba(255,255,255,0.42)` regardless of section background. Glass over a cool-tint section looks the same as glass over a warm-tint section. | MEDIUM | Section tint system already in place | MEDIUM -- `mix-blend-mode` or per-section CSS variable override |
-| Dark mode glass refinement | Current dark mode glass uses `rgba(30,40,60,0.45)` uniformly. Apple's dark glass is more nuanced: lighter edges, deeper center, stronger specular rim. The current dark glass looks flat. | LOW | `.dark` token cascade in theme.css | HIGH -- token value tuning only |
-
-### Table Stakes: Detailed Specifications
-
-#### 1. Glass Hierarchy System (3 Tiers)
-
-Apple's Liquid Glass has three material variants. The web implementation needs three distinct visual tiers that create hierarchy through transparency, blur, and specular intensity.
-
-**Tier 1: Navigation glass (`.liquid-nav`)**
-- Purpose: Sticky header, toolbars, navigation bars
-- Character: Highest blur (already `--liquid-blur-xl: 60px` on scroll), most opaque, minimal specular
-- Reasoning: Navigation glass must be legible above all else. It is the substrate on which interactive controls sit. Apple explicitly reserves the heaviest glass treatment for navigation.
-- Implementation: Already partially exists as `.header--scrolled` overrides. Formalize into a named class with its own token set.
-
-**Tier 2: Surface glass (`.liquid-regular` -- existing, refined)**
-- Purpose: Cards, grouped content containers, stat blocks
-- Character: Medium blur (`--liquid-blur-md: 24px`), medium opacity, full specular + glint
-- Reasoning: This is the workhorse material. Most of the visual personality lives here.
-- Implementation: Already shipped. Token values may need tuning for contrast against the new Clear variant.
-
-**Tier 3: Clear glass (`.liquid-clear`)**
-- Purpose: Overlay panels, hero accent elements, decorative surfaces where background content should show through
-- Character: Lower opacity, lower blur, requires dimming layer, bold/bright content only
-- Reasoning: Apple's Clear variant deliberately sacrifices legibility for visual richness. Use ONLY where the background is media-rich and the foreground is bold (icons, large numbers).
-- Implementation: New class. Requires a `::after` dimming pseudo-element.
-
-**Confidence:** HIGH for the three-tier concept (directly from Apple's WWDC 2025 "Meet Liquid Glass" session). MEDIUM for the specific CSS values -- will need visual tuning.
-
-**Why NOT four or five tiers:** Apple has Regular, Clear, and Identity. Identity is "no glass" -- just the content. For a landing page with known, finite use cases, three tiers plus "no glass" covers every element.
-
-#### 2. Interaction States on Glass
-
-Apple's glass material provides four distinct interaction responses:
-
-**Hover (desktop):**
-- Glass surface brightens subtly (increase `--liquid-brightness` from 108% to ~115%)
-- Specular highlight intensifies (increase `::after` opacity from 0.15 to 0.25)
-- Inset shadow lightens (top highlight becomes more prominent)
-- Transition: `280ms` using `--ease-liquid` (already tokenized)
-
-**Press/Active:**
-- Glass surface dims slightly (decrease brightness to ~100%)
-- Element scales down: `transform: scale(0.98)` (already 0.97 on buttons, extend to cards)
-- Specular highlight concentrates under the press point (narrow the `::after` radial-gradient)
-- Apple describes this as "the glow spreads throughout the element starting from under your fingertips"
-- Transition: `120ms` using `--ease-liquid`
-
-**Focus (keyboard):**
-- Outer focus ring: `2px solid var(--mu-blue-text)` with `outline-offset: 3px` (already implemented globally)
-- Inner glass: increase specular rim opacity to ensure the focused element is visually distinct even when the focus ring is subtle
-- Glass cards should receive the same focus treatment as buttons
-
-**Glow spread (interaction feedback):**
-- When a glass element is interacted with, a subtle glow radiates from the interaction point
-- CSS implementation: transition the `::after` radial-gradient from tight (30% spread) to wide (80% spread) on `:active`, then ease back on release
-- This is Apple's "illuminates from within" behavior
-
-**Confidence:** MEDIUM. The behavioral descriptions come from WWDC session summaries and Apple's HIG. Exact CSS values are my recommendations based on what works visually -- they will need tuning.
-
-**What NOT to do:**
-- Do NOT add spring physics (bounce on release). This requires JS animation libraries and is excessive for a static landing page with a 45+ audience. A smooth CSS ease-out is sufficient.
-- Do NOT animate `backdrop-filter` values directly. GPU-intensive, causes frame drops on Android.
-
-#### 3. Adaptive Tinting
-
-Apple's glass dynamically shifts its tint based on what is behind it. On the web, true per-pixel tinting is not possible without WebGL. However, the project already has section-level tinting (`.section-tint-cool/warm/mint`), which provides a practical approximation.
-
-**Implementation approach: CSS custom property cascade per section.**
-
-Each section with a tint already declares a gradient background. Extend this by also declaring a `--liquid-tint` override that glass elements inside that section inherit:
-
-```css
-/* In theme.css or liquid-glass.css */
-.section-tint-cool  { --liquid-tint: rgba(56, 198, 244, 0.06); }
-.section-tint-warm  { --liquid-tint: rgba(255, 162, 92, 0.05); }
-.section-tint-mint  { --liquid-tint: rgba(111, 222, 169, 0.06); }
-
-/* In .liquid-regular, .liquid-card, etc. */
-.liquid-card {
-  background: color-mix(in srgb, var(--liquid-bg), var(--liquid-tint, transparent) 30%);
-  /* Falls back to --liquid-bg when --liquid-tint is not set */
-}
-```
-
-**Alternative approach: `mix-blend-mode`.**
-Overlay a pseudo-element with `mix-blend-mode: color` and a background matching the section tint. This creates a color-shift effect on the glass surface. However, `mix-blend-mode` interacts unpredictably with `backdrop-filter` stacking contexts. The CSS variable approach is safer and more controllable.
-
-**Confidence:** LOW for `color-mix()` approach (needs browser testing -- `color-mix()` is Baseline 2023 per MDN, should be fine). MEDIUM for the design concept (Apple's tinting is GPU-shader-level; this is a deliberate simplification).
-
-**Risk:** Over-tinting makes glass look dirty or muddy, especially on warm sections. Keep tint contribution under 30% blend ratio. Test visually per section.
-
-#### 4. Dark Mode Glass Refinement
-
-Current dark mode glass is flat: `rgba(30, 40, 60, 0.45)` with reduced specular. Apple's dark glass has more depth:
-
-- **Stronger edge highlights:** Increase `--liquid-shadow-inset-top` from `rgba(255,255,255,0.15)` to `rgba(255,255,255,0.22)`. The rim-light on dark glass is what defines the shape.
-- **Deeper center:** Reduce `--liquid-bg` from `rgba(30,40,60,0.45)` to `rgba(20,30,50,0.5)` -- darker center creates the "well" effect.
-- **Subtle gradient fill:** Replace flat `rgba()` with a top-to-bottom gradient (`rgba(40,50,70,0.35)` to `rgba(20,30,50,0.55)`) so dark glass has internal depth.
-- **Specular rim stays visible:** `::before` rim-light opacity in dark mode should be 0.4, not current 0.3.
-
-**Confidence:** HIGH -- these are token value changes in existing `.dark` cascade.
+| Feature | Why Expected | Complexity | Client/Server | Notes |
+|---------|--------------|------------|----------------|-------|
+| All 7 pages with 1:1 content parity | Users see the same site, SEO rankings preserved | Med | Server (pages) | App Router file-based routing replaces SPA router |
+| Contact form with validation | Core conversion mechanism | Med | Client (form logic) + Server (action) | Server Action replaces fetch-to-Directus |
+| Phone mask (+7 format) | KZ audience expects familiar input format | Low | Client | Custom hook or `@react-input/mask` |
+| Honeypot + timing spam protection | Prevents bot submissions without CAPTCHA | Low | Server (validation) | Move to Server Action -- more secure server-side |
+| Form success/error states | User feedback after submission | Low | Client | useActionState from React 19 |
+| Sticky header with glass-on-scroll | Navigation present on all pages, brand identity | Med | Client (scroll detection) | useEffect + scroll listener in client component |
+| Mobile menu with backdrop-blur | Mobile navigation access | Med | Client (toggle state) | useState for open/close, Framer Motion for animation |
+| Dark mode toggle with persistence | Already shipped feature, users expect it | Med | Client (toggle) + Server (cookie read) | next-themes library, cookie-based for SSR no-flash |
+| FAQ accordion | Standard UX pattern on all service pages | Low | Client (toggle state) | shadcn/ui Accordion component |
+| Smooth scroll to anchor | CTA buttons scroll to form section | Low | Client | Native CSS `scroll-behavior: smooth` + `scrollIntoView` |
+| SEO metadata per page | Each page has unique title, description, OG tags | Low | Server | Next.js `generateMetadata()` in each page.tsx |
+| JSON-LD structured data | Medical business schema already implemented | Low | Server | `<script type="application/ld+json">` in layout or page |
+| Responsive layout (mobile-first) | CA 45+ uses mobile predominantly in KZ | Low | Server (Tailwind) | Tailwind responsive classes carry over directly |
+| Animated counters (stats) | Social proof section on index, treatment, checkup | Low | Client | IntersectionObserver via `whileInView` in Framer Motion |
+| Scroll-reveal animations | Section entrance animations throughout all pages | Med | Client | Framer Motion `whileInView` replaces Motion CDN |
+| Footer with navigation links | Standard site footer | Low | Server | Server Component, static content |
+| Sticky mobile CTA bar | Mobile conversion element (click-to-call + CTA) | Low | Server + CSS | Can be Server Component with CSS `position: fixed` |
+| aria-current on active nav link | Accessibility requirement | Low | Client | `usePathname()` in client nav component |
 
 ---
 
 ## Differentiators
 
-Features that elevate the Liquid Glass implementation beyond basic glassmorphism. Not expected, but create the "wow, that looks like Apple" reaction. These are the features that justify calling it "Liquid Glass" rather than "glassmorphism."
+Features that set the product apart. The Liquid Glass design system is the primary differentiator.
 
-| Feature | Value Proposition | Complexity | Depends On | Web Feasibility |
-|---------|-------------------|------------|------------|-----------------|
-| Fluted glass variant (`.liquid-fluted`) | Vertical streak pattern that resembles privacy glass / reeded glass. Apple uses this sparingly for decorative panels. Creates visual variety within the glass system without adding a fundamentally new material. | MEDIUM | Existing glass base, `repeating-linear-gradient` | HIGH -- pure CSS |
-| Specular highlight physics (tilt response) | Mouse-tracking specular already exists but the highlight is a fixed radial gradient that follows the cursor. Physics-based specular would adjust the highlight SHAPE and INTENSITY based on the cursor angle from the element center, creating a more convincing light simulation. | HIGH | Existing `--mouse-x`/`--mouse-y` JS system | MEDIUM -- requires JS enhancement |
-| Glass-on-content dimming layer | Apple's Clear glass variant requires a dimming layer behind it when placed over content. This creates a subtle vignette/darkening effect that improves text legibility without fully obscuring the background. | LOW | `.liquid-clear` class (new) | HIGH -- `::before` pseudo with gradient overlay |
-| SVG refraction tuning (per-element calibration) | Current refraction uses one global `feTurbulence` filter with fixed parameters (`baseFrequency="0.008"`, `scale="30"`). Per-element calibration would vary the displacement scale based on element size -- large surfaces get subtler refraction, small elements get more pronounced bending. | MEDIUM | Existing SVG filter infrastructure, `data-refract` probe | MEDIUM -- multiple SVG filters or JS parameter injection |
-| Concentric corner radius | Apple's glass nests shapes concentrically: inner elements subtract padding from the parent's corner radius. Currently all squircle tiers are independent. Adding concentric radius calculation (parent radius - padding = child radius) creates the "set within" look. | LOW | Existing squircle system | HIGH -- `calc()` with CSS custom properties |
-
-### Differentiators: Detailed Specifications
-
-#### 5. Fluted Glass Variant (`.liquid-fluted`)
-
-Fluted glass (also called reeded glass or ribbed glass) features vertical parallel streaks that partially distort what is behind them while maintaining the frosted quality. In Apple's system, this is a texture variant applied to decorative surfaces.
-
-**CSS implementation:**
-
-```css
-.liquid-fluted {
-  /* Base glass material (same as .liquid-regular) */
-  isolation: isolate;
-  position: relative;
-  background: var(--liquid-bg);
-  backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate));
-  -webkit-backdrop-filter: blur(var(--liquid-blur-sm)) saturate(var(--liquid-saturate));
-}
-
-.liquid-fluted::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.04) 0px,
-    rgba(255, 255, 255, 0.04) 2px,
-    transparent 2px,
-    transparent 6px
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-```
-
-**Use cases on this landing page:**
-- Hero section decorative accent panel
-- Stat block background as an alternative to `.stats-glass`
-- Potentially the FAQ section background
-
-**When NOT to use fluted glass:**
-- NEVER on text-heavy content areas -- the vertical lines interfere with horizontal text reading for 45+ users
-- NEVER on cards with body text -- only on elements where the primary content is icons, numbers, or large headings
-- NEVER nested inside another glass element
-
-**Confidence:** MEDIUM. The CSS technique is straightforward (repeating-linear-gradient is universally supported), but the visual tuning (line width, spacing, opacity) needs real-device testing. The shadcn-glass-ui library includes a "fluted" variant confirming this is an established pattern in the Liquid Glass ecosystem.
-
-#### 6. Specular Highlight Physics (Enhanced Mouse Tracking)
-
-The current mouse-tracking specular is a radial gradient at the cursor position. To simulate light physics, the highlight should respond to the cursor's ANGLE relative to the element center, not just position.
-
-**Enhancement approach (JS modification to `initMouseSpecular()`):**
-
-1. Calculate the angle from element center to cursor position
-2. Calculate the distance from center (0-1 normalized)
-3. Map angle to an ellipse orientation (the specular "stretch")
-4. Map distance to opacity falloff (brighter at edge, dimmer at center)
-
-```javascript
-// Pseudocode for enhanced specular
-var cx = rect.width / 2;
-var cy = rect.height / 2;
-var dx = (e.clientX - rect.left) - cx;
-var dy = (e.clientY - rect.top) - cy;
-var angle = Math.atan2(dy, dx) * (180 / Math.PI);
-var dist = Math.min(1, Math.sqrt(dx*dx + dy*dy) / Math.max(cx, cy));
-
-card.style.setProperty('--spec-angle', angle + 'deg');
-card.style.setProperty('--spec-dist', dist);
-card.style.setProperty('--mouse-x', x + '%');
-card.style.setProperty('--mouse-y', y + '%');
-```
-
-```css
-.liquid-card::after {
-  background: radial-gradient(
-    ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
-    rgba(255, 255, 255, calc(0.08 + 0.12 * var(--spec-dist, 0))) 0%,
-    transparent calc(40% + 20% * var(--spec-dist, 0))
-  );
-}
-```
-
-**Mobile consideration:** On touch devices, specular could respond to `DeviceOrientationEvent` (gyroscope) to create a tilt-responsive highlight. However:
-- `DeviceOrientationEvent` requires user permission on iOS 13+ (`DeviceOrientationEvent.requestPermission()`)
-- The 45+ audience will NOT grant motion permissions for a medical landing page
-- Recommendation: Skip gyroscope. Keep CSS default fallback (`--mouse-x: 30%; --mouse-y: 0%`) on touch devices.
-
-**Confidence:** MEDIUM for the approach. LOW for gyroscope -- explicitly recommend skipping it for this audience.
-
-#### 7. Glass-on-Content Dimming Layer
-
-Apple's Clear glass variant requires a dimming layer to maintain legibility. This is a semi-transparent overlay between the background content and the glass surface.
-
-**Implementation:**
-
-```css
-.liquid-clear-dimming {
-  position: relative;
-}
-
-.liquid-clear-dimming::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: rgba(0, 0, 0, 0.08);
-  z-index: 0;
-}
-
-/* Dark mode: stronger dimming */
-.dark .liquid-clear-dimming::before {
-  background: rgba(0, 0, 0, 0.25);
-}
-```
-
-The dimming layer sits BELOW the glass element's content but ABOVE the page background. It is the "softener" that makes bold white text readable over busy backgrounds without needing opaque glass.
-
-**Confidence:** HIGH. Simple CSS technique, well-documented in Apple's guidelines.
-
-#### 8. SVG Refraction Tuning
-
-Current filter: `baseFrequency="0.008"`, `numOctaves="2"`, `scale="30"`.
-
-Recommended calibration per element size:
-
-| Element Type | Scale | baseFrequency | Rationale |
-|-------------|-------|---------------|-----------|
-| Header (wide, thin) | 15 | 0.012 | Wide surfaces need subtler, higher-freq noise |
-| Cards (medium) | 30 | 0.008 | Current values -- working well |
-| Stats block (large) | 20 | 0.006 | Large area needs lower freq to avoid "noise carpet" |
-| Buttons (small) | 40 | 0.015 | Small surfaces benefit from more visible distortion |
-
-**Implementation:** Define multiple SVG filter elements with different parameters:
-
-```xml
-<filter id="refract-sm" ...><feTurbulence baseFrequency="0.015" .../><feDisplacementMap scale="40" .../></filter>
-<filter id="refract-md" ...><feTurbulence baseFrequency="0.008" .../><feDisplacementMap scale="30" .../></filter>
-<filter id="refract-lg" ...><feTurbulence baseFrequency="0.006" .../><feDisplacementMap scale="20" .../></filter>
-```
-
-Then reference via CSS:
-```css
-html[data-refract="true"] .liquid-btn-secondary {
-  backdrop-filter: url(#refract-sm) blur(...);
-}
-html[data-refract="true"] .stats-glass {
-  backdrop-filter: url(#refract-lg) blur(...);
-}
-```
-
-**Confidence:** MEDIUM. The approach is sound (Chromium-only, already gated). The specific parameter values need visual calibration.
-
-#### 9. Concentric Corner Radius
-
-Apple's nested glass shapes use concentric radius: `child_radius = parent_radius - padding`.
-
-**Implementation with CSS custom properties:**
-
-```css
-.liquid-card {
-  --card-radius: 24px;
-  --card-padding: 24px;
-  --card-inner-radius: calc(var(--card-radius) - var(--card-padding));
-  border-radius: var(--card-radius);
-}
-
-.liquid-card > .inner-content {
-  border-radius: var(--card-inner-radius);
-}
-```
-
-This creates the "set within" look where the inner content hugs the parent's curve smoothly rather than having an independent corner radius.
-
-**Confidence:** HIGH. Pure CSS `calc()`, universally supported. The squircle mask system would also need to adapt -- the inner element may need a tighter squircle mask.
+| Feature | Value Proposition | Complexity | Client/Server | Notes |
+|---------|-------------------|------------|----------------|-------|
+| Liquid Glass materials (5 variants) | Unique visual identity, premium medical feel | High | Mixed | CSS classes carry over; specular highlight needs client |
+| Squircle corners (3 tiers) | Apple-quality border radius | Med | Server (CSS) + Client (PE) | SVG mask approach works in CSS; `corner-shape: squircle` PE via `@squircle-js/react` |
+| Specular parallax (mouse tracking) | Glass surfaces feel alive, tactile | Med | Client | `onMouseMove` handler setting CSS custom properties |
+| 3-tier SVG refraction filters | Chromium-only subtle glass distortion | Med | Server (SVG defs) + Client (probe) | SVG filters in layout, JS probe for `data-refract` attribute |
+| Adaptive tinting (section-tint-*) | Glass colors shift per section context | Low | Server (CSS) | Pure CSS cascade via Tailwind `section-tint-cool/warm/mint` |
+| Hero staggered entrance animation | Premium first impression, progressive reveal | Med | Client | Framer Motion variants with stagger delay |
+| Staggered card grid animation | Cards appear one-by-one on scroll | Low | Client | Framer Motion staggerChildren |
+| Page transition animations | SPA-like smooth navigation between pages | High | Client | Framer Motion `AnimatePresence` + Next.js layout |
+| Coordinator card with photo | Personal touch, trust building | Low | Server | Static content, next/image component |
+| Gradient CTA buttons | Brand identity (#1AC67E -> #0D9DB5) | Low | Server (CSS) | Tailwind gradient utilities |
+| `prefers-reduced-motion` guards | Accessibility for vestibular disorders | Low | Client | Framer Motion built-in `reducedMotion` prop |
 
 ---
 
 ## Anti-Features
 
-Features to explicitly NOT build. These are commonly requested or seem obvious for a "Liquid Glass" implementation but would harm the project.
+Features to explicitly NOT build during migration.
 
-| Anti-Feature | Why Tempting | Why Wrong for This Project | What to Do Instead |
-|--------------|-------------|---------------------------|-------------------|
-| Glass-on-glass nesting | "More glass = more premium" | Apple explicitly warns against stacking glass on glass. Double `backdrop-filter` compounds blur, kills readability, and doubles GPU cost. The 45+ audience cannot read text through double-blurred surfaces. | Use hierarchy tiers (nav=opaque-ish glass, card=medium glass, clear=transparent glass). Each tier differs in opacity and blur, but they never overlap. |
-| Gyroscope/DeviceOrientation specular on mobile | "Apple's glass responds to device tilt" | Requires permission prompt that 45+ medical users will not understand or trust. `DeviceOrientationEvent.requestPermission()` popup looks like a privacy invasion on a medical site. Even if granted, the effect is disorienting for vestibular-sensitive older users. | Use fixed specular position (top-left light source) on touch devices. The CSS default `--mouse-x: 30%; --mouse-y: 0%` already does this. |
-| WebGL/Three.js glass shader | "True refraction, most faithful reproduction" | @specy/liquid-glass-react uses html2canvas + WebGL. This adds ~200KB+ of JS dependencies, requires a build step (violates project constraint), and creates a canvas overlay that breaks text selection, accessibility, and print. Performance on mid-range Android is catastrophic. | SVG `feDisplacementMap` (already implemented) is the maximum fidelity appropriate for a production landing page. It is Chromium-only but degrades gracefully. |
-| Animated backdrop-filter values | "Blur intensity changes during hover for a living glass feel" | Animating `backdrop-filter: blur()` forces a full GPU recomposite on every frame. On M4 Macs this might be smooth; on a Redmi Note in Kazakhstan it will drop to 5fps and drain battery. Apple's own implementation uses GPU shaders, not CSS animation. | Animate the `::after` pseudo-element opacity and gradient instead. The glass surface stays static; only the specular overlay transitions. This is compositable and GPU-friendly. |
-| Background video behind glass | "Glass over moving content shows refraction beautifully" | Video in hero is explicitly Out of Scope in PROJECT.md. Bandwidth constraint in KZ market. autoplay video + glass = guaranteed jank on budget devices. | Static gradient mesh backgrounds. The section tint system already provides color variety for glass to blur against. |
-| Glass on text-heavy sections (FAQ, process steps) | "Consistent glass language across all sections" | Text-heavy content behind glass reduces readability. The FAQ section has paragraph-length answers. The process section has multi-line descriptions. Glass over these areas forces either illegible text or opaque-enough glass that defeats the purpose. | Apply glass to CONTAINER elements (card wrappers, stat blocks) where content is SHORT (1-2 lines, numbers, icons). Leave text-heavy sections on solid/tinted backgrounds. |
-| Spring physics / bounce animations on glass | "Apple's glass has gel-like flexibility and spring-based response" | Requires a JS animation library (GSAP, Motion, Spring.js) or the Web Animations API with spring timing. Adds weight and complexity. For a 45+ medical audience, bouncy UI elements feel frivolous, not professional. The calm/confident tone specified in PROJECT.md is incompatible with bouncing cards. | Use `--ease-liquid: cubic-bezier(0.2, 0, 0, 1)` (already tokenized). This is Apple's system ease -- fast start, gentle settle. It has the "responsive" feel without the "playful bounce." |
-| Multiple shimmer sweeps per viewport | "Glass cards should all shimmer" | Already documented as anti-pattern in liquid-glass.css. More than 1 shimmer per viewport is visual noise. Shimmer is a CTA draw, not a decoration. | Keep shimmer on hero CTA only. Other cards use the glint border (already implemented) which is subtler. |
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Custom SPA router | Next.js App Router handles navigation natively | Delete router.js entirely; use `<Link>` and file-based routing |
+| Client-side page caching | Next.js has built-in caching (RSC payload, ISR) | Rely on Next.js cache, remove pageCache object |
+| Manual DOM manipulation for animations | Anti-pattern in React; breaks reconciliation | Use Framer Motion declarative API |
+| Global window.MU namespace | React components encapsulate their own state | Use React context, hooks, and props |
+| IntersectionObserver for scroll-reveal | Redundant when Framer Motion has `whileInView` | Use `motion.div` with `whileInView` prop |
+| Manual bfcache handling | Next.js handles navigation state internally | Remove `pageshow` listener |
+| Inline SVG icons everywhere | Duplicated SVG markup across pages | Use `lucide-react` (same icons already used in current site) |
+| Multiple `<script>` tags with CDN | Added external dependency, no tree-shaking | `motion` package via npm, tree-shakeable |
+| Glass budget enforcement | Currently disabled in production; React re-renders complicate observer logic | Defer to post-migration performance audit |
+| reinitPageContent() pattern | SPA router hack for re-initializing JS after DOM swap | React component lifecycle handles this naturally |
+
+---
+
+## React Component Hierarchy
+
+### Layout Components (Server by default)
+
+```
+app/layout.tsx (RootLayout -- SERVER)
+  |-- <html lang="ru" suppressHydrationWarning>
+  |-- <ThemeProvider> (CLIENT -- next-themes wrapper)
+  |     |-- <SvgRefractionDefs /> (SERVER -- hidden SVG filter definitions)
+  |     |-- <Header /> (CLIENT -- scroll detection, mobile menu state)
+  |     |     |-- <Logo /> (SERVER)
+  |     |     |-- <DesktopNav /> (CLIENT -- usePathname for active link)
+  |     |     |-- <HeaderActions /> (SERVER -- phone link, CTA button)
+  |     |     |-- <MobileMenuButton /> (CLIENT -- toggle state)
+  |     |-- <MobileMenu /> (CLIENT -- open/close state, backdrop-blur)
+  |     |-- <main>{children}</main>
+  |     |-- <Footer /> (SERVER -- static links, contact info)
+  |     |-- <StickyMobileCTA /> (SERVER -- static HTML, CSS-only sticky)
+```
+
+### Page Components (Server by default)
+
+```
+app/page.tsx (Index -- SERVER)
+  |-- <HeroSection /> (CLIENT -- entrance animations, floating badges)
+  |     |-- <HeroBadge />
+  |     |-- <HeroTitle />
+  |     |-- <HeroButtons />
+  |     |-- <HeroTrust />
+  |     |-- <HeroPhotos />
+  |-- <StatsSection /> (CLIENT -- animated counters)
+  |     |-- <StatCard /> (CLIENT -- counter animation)
+  |-- <ServicesSection /> (SERVER -- static cards)
+  |     |-- <ServiceCard /> (SERVER -- glass card, static content)
+  |-- <ProblemSection /> (SERVER)
+  |-- <ProcessSection /> (SERVER)
+  |     |-- <StepCard /> (SERVER)
+  |-- <WhyUsSection /> (SERVER)
+  |     |-- <AdvantageCard /> (SERVER)
+  |-- <ClinicsSection /> (SERVER)
+  |     |-- <ClinicCard /> (SERVER)
+  |     |-- <CountryFlag /> (SERVER -- inline SVG)
+  |-- <PlatformSection /> (SERVER)
+  |-- <ReviewsSection /> (SERVER)
+  |     |-- <ReviewCard /> (SERVER)
+  |-- <FAQSection /> (CLIENT -- accordion state)
+  |     |-- <FAQItem /> (CLIENT -- open/close toggle)
+  |-- <ContactSection /> (contains client form)
+  |     |-- <ContactInfo /> (SERVER)
+  |     |-- <CoordinatorCard /> (SERVER)
+  |     |-- <TrustBadges /> (SERVER)
+  |     |-- <ContactForm /> (CLIENT -- validation, submission)
+  |-- <CTASection /> (SERVER)
+```
+
+### Shared/Reusable Components
+
+```
+components/
+  ui/                          (shadcn/ui base components)
+    accordion.tsx              (CLIENT -- Radix UI primitive)
+    button.tsx                 (SERVER -- unless onClick needed)
+    input.tsx                  (CLIENT -- for controlled inputs)
+    select.tsx                 (CLIENT -- Radix UI primitive)
+    textarea.tsx               (CLIENT -- for controlled inputs)
+    label.tsx                  (SERVER)
+
+  glass/                       (Liquid Glass design system)
+    liquid-regular.tsx         (SERVER -- CSS class + cn() wrapper)
+    liquid-card.tsx            (CLIENT -- mouse specular on desktop)
+    liquid-nav.tsx             (SERVER -- CSS class wrapper)
+    liquid-clear.tsx           (SERVER -- CSS class wrapper)
+    liquid-fluted.tsx          (SERVER -- CSS class wrapper)
+    liquid-btn-primary.tsx     (SERVER -- gradient button)
+    liquid-btn-secondary.tsx   (SERVER -- glass button)
+    squircle.tsx               (SERVER -- mask-image CSS + corner-shape PE)
+    glass-specular.tsx         (CLIENT -- mouse tracking wrapper for any glass element)
+
+  sections/                    (Page section components)
+    hero-section.tsx           (CLIENT -- animations)
+    stats-section.tsx          (CLIENT -- animated counters)
+    faq-section.tsx            (CLIENT -- accordion)
+    contact-section.tsx        (mixed -- server wrapper, client form)
+    cta-section.tsx            (SERVER)
+    section-wrapper.tsx        (SERVER -- padding, max-width, tint class)
+
+  layout/
+    header.tsx                 (CLIENT)
+    footer.tsx                 (SERVER)
+    mobile-menu.tsx            (CLIENT)
+    sticky-mobile-cta.tsx      (SERVER)
+    svg-refraction-defs.tsx    (SERVER -- hidden SVG filter definitions)
+
+  forms/
+    contact-form.tsx           (CLIENT)
+    phone-input.tsx            (CLIENT -- input mask)
+
+  icons/
+    index.tsx                  (Re-export from lucide-react)
+```
+
+---
+
+## Client/Server Component Boundary Analysis
+
+### Server Components (zero JS shipped to client)
+
+These components render static HTML. They comprise the majority of the site.
+
+| Component | Justification |
+|-----------|---------------|
+| All page.tsx files | Static content, SEO metadata via `generateMetadata()` |
+| SectionWrapper | Applies `section-tint-*` classes, padding, max-width -- pure CSS |
+| ServiceCard, ClinicCard, ReviewCard, StepCard | Static content with glass CSS classes |
+| Footer | Static navigation links, contact info |
+| StickyMobileCTA | CSS `position: fixed`, no JS interaction needed |
+| CoordinatorCard | Static image + contact info |
+| TrustBadges | Static badge pills |
+| LiquidRegular, LiquidClear, LiquidFluted (without specular) | CSS-only glass materials |
+| Squircle | SVG mask-image in CSS, `corner-shape` PE via `@supports` |
+| SvgRefractionDefs | Hidden SVG `<defs>` block for backdrop-filter URL references |
+| CTASection | Static content with gradient button |
+
+### Client Components (require `"use client"`)
+
+These components need browser APIs, state, or event handlers.
+
+| Component | Why Client | Est. Bundle | Optimization |
+|-----------|-----------|-------------|-------------|
+| Header | `useEffect` for scroll detection (`window.scrollY > 20`), `useState` for `header--scrolled` class | ~2KB | Passive scroll listener; debounce unnecessary at 20px threshold |
+| MobileMenu | `useState` for open/close, body scroll lock on open | ~3KB | Conditionally render content only when open |
+| ContactForm | Form state, validation, `useActionState`, phone mask | ~8KB | Single client boundary for entire form; progressive enhancement |
+| FAQSection | Accordion open/close state | ~2KB | Use shadcn/ui Accordion (Radix) -- no custom code needed |
+| StatsSection | Animated counter needs IntersectionObserver or `whileInView` | ~3KB | Framer Motion `whileInView` with `once: true` |
+| HeroSection | Staggered entrance animation on mount | ~4KB | Framer Motion variants; `initial`/`animate` pattern |
+| GlassSpecular | `onMouseMove` on document to set `--mouse-x`/`--mouse-y` | ~1KB | Desktop only via `(pointer: fine)` media query check |
+| ThemeToggle | Dark mode toggle button, `useTheme()` from next-themes | ~1KB | next-themes handles localStorage + cookie persistence |
+| RefractionProbe | `CSS.supports()` check, sets `data-refract` on `<html>` | ~0.5KB | Single `useEffect` in layout, runs once |
+| AnimateOnScroll | Thin wrapper providing Framer Motion `whileInView` to server children | ~1KB each | Minimal client surface -- receives server children as props |
+
+### Boundary Strategy: "Client Islands in a Server Sea"
+
+The governing principle: push `"use client"` as deep as possible in the component tree. Most section components are server-rendered; only interactive leaf components need client hydration.
+
+**Pattern 1: Glass cards with specular highlight**
+```
+<ServiceCard>                    // SERVER -- renders glass CSS classes
+  <GlassSpecularWrapper>         // CLIENT -- adds onMouseMove only on desktop
+    {children}                   // SERVER children passed through as props
+  </GlassSpecularWrapper>
+</ServiceCard>
+```
+
+**Pattern 2: Sections with scroll-reveal animations**
+```
+<SectionWrapper tint="cool">    // SERVER -- padding, max-width, tint class
+  <AnimateOnScroll>              // CLIENT -- Framer Motion whileInView
+    <CardGrid>                   // SERVER -- grid layout
+      <ServiceCard />            // SERVER -- static content
+      <ServiceCard />            // SERVER
+    </CardGrid>
+  </AnimateOnScroll>
+</SectionWrapper>
+```
+
+**Pattern 3: Sections that are entirely static**
+```
+<SectionWrapper tint="warm">    // SERVER
+  <ProblemGrid>                 // SERVER -- static text + icons
+    <ProblemItem />             // SERVER
+    <ProblemItem />             // SERVER
+  </ProblemGrid>
+</SectionWrapper>
+```
+
+**Why this matters:** Index page has 12 sections. If every section is a Client Component, the entire page hydrates (~50KB+ JS). With this boundary strategy, only HeroSection, StatsSection, FAQSection, and ContactForm are client -- the other 8 sections ship zero JS.
+
+---
+
+## Form Handling: Server Actions vs Current fetch()
+
+### Current Pattern (vanilla JS to Directus)
+```javascript
+fetch('https://api.medicusunion.kz/items/consultation_requests', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData)
+})
+```
+
+### Target Pattern (Next.js Server Actions to PostgreSQL)
+
+**Why Server Actions over API Routes:**
+1. No separate API endpoint file to maintain -- action lives in `app/actions/`
+2. Progressive enhancement -- form works even without JavaScript (HTML form post)
+3. Spam validation moves entirely server-side (cannot be inspected/bypassed by bots)
+4. Type safety end-to-end with TypeScript + Zod schema
+5. `useActionState` (React 19) provides built-in pending and error state management
+6. No CORS configuration needed -- same-origin by definition
+
+**Recommended implementation:**
+
+```typescript
+// app/actions/submit-consultation.ts
+'use server'
+
+import { z } from 'zod'
+
+const consultationSchema = z.object({
+  name: z.string().min(2, 'Укажите ваше имя'),
+  phone: z.string().regex(/^\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}$/, 'Укажите номер телефона'),
+  interest: z.enum(['consultation', 'treatment', 'checkup', 'not-sure'], {
+    errorMap: () => ({ message: 'Выберите вариант' }),
+  }),
+  description: z.string().optional(),
+})
+
+type FormState = {
+  success?: boolean
+  errors?: Record<string, string[]>
+  message?: string
+} | null
+
+export async function submitConsultation(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  // 1. Server-side honeypot check (invisible to client)
+  if (formData.get('website')) {
+    return { success: true } // fake success to not alert bots
+  }
+
+  // 2. Server-side timing check (cookie or hidden timestamp field)
+  // Bot submitted faster than 3 seconds = spam
+
+  // 3. Validate with Zod
+  const parsed = consultationSchema.safeParse({
+    name: formData.get('name'),
+    phone: formData.get('phone'),
+    interest: formData.get('interest'),
+    description: formData.get('description'),
+  })
+
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors }
+  }
+
+  // 4. Insert into PostgreSQL directly
+  try {
+    await db.insert(consultationRequests).values({
+      ...parsed.data,
+      phone: parsed.data.phone.replace(/\D/g, ''), // store digits only
+      status: 'new',
+    })
+    return { success: true }
+  } catch (error) {
+    return {
+      message: 'Не удалось отправить заявку. Позвоните нам: +7 701 532 24 78',
+    }
+  }
+}
+```
+
+```typescript
+// components/forms/contact-form.tsx
+'use client'
+
+import { useActionState } from 'react'
+import { submitConsultation } from '@/app/actions/submit-consultation'
+
+export function ContactForm() {
+  const [state, formAction, isPending] = useActionState(submitConsultation, null)
+
+  if (state?.success) {
+    return <SuccessOverlay />
+  }
+
+  return (
+    <form action={formAction}>
+      {/* Name input with client-side blur validation for UX */}
+      {/* Phone input with mask */}
+      {/* Interest select */}
+      {/* Description textarea */}
+      {/* Honeypot (hidden) */}
+      <button type="submit" disabled={isPending}>
+        {isPending ? 'Отправка...' : 'Отправить заявку'}
+      </button>
+      {state?.message && <ErrorMessage>{state.message}</ErrorMessage>}
+    </form>
+  )
+}
+```
+
+### Form Validation Strategy
+
+| Layer | Where | Library | Purpose |
+|-------|-------|---------|---------|
+| Field-level blur validation | Client | Custom logic or react-hook-form | Immediate UX feedback (blur-first, like current implementation) |
+| Phone format masking | Client | `@react-input/mask` or custom hook | Input mask enforcement (+7 XXX XXX-XX-XX) |
+| Schema validation | Server Action | Zod | Security, canonical validation, type safety |
+| Honeypot check | Server Action | Custom | Field named "website" must be empty |
+| Timing check | Server Action | Hidden timestamp or cookie | Submissions < 3 seconds after page load = spam |
+| Return errors to client | Server -> Client | `useActionState` return value | Field-level errors displayed below inputs |
+
+### Form Reuse Across Pages
+
+The form appears on 5 of 7 pages. Each instance has slightly different fields (online-consultations has specialization dropdown, checkup has program dropdown, index has interest dropdown). The recommended pattern:
+
+```
+<ContactForm variant="index" />       // interest: consultation/treatment/checkup/not-sure
+<ContactForm variant="consultations" /> // specialization: oncology/cardiology/...
+<ContactForm variant="checkup" />      // program: korea-basic/korea-premium/turkey-basic/...
+<ContactForm variant="treatment" />    // same as index
+<ContactForm variant="contacts" />     // interest + additional fields
+```
+
+One Server Action with a discriminated union schema. One form component with conditional field rendering based on `variant` prop.
 
 ---
 
 ## Feature Dependencies
 
 ```
-[Glass Hierarchy System]
-    |-- .liquid-nav (new)
-    |     `-- depends on: header--scrolled values (refactor into named class)
-    |-- .liquid-regular (existing, unchanged)
-    |-- .liquid-clear (new)
-    |     `-- depends on: dimming layer (anti-feature for text-heavy areas)
-    |     `-- rule: ONLY use over media-rich backgrounds with bold/bright content
-    `-- token differentiation in theme.css :root and .dark
+Header -> MobileMenu (toggle via shared state or context)
+Header -> ThemeToggle (dark mode switch in header actions)
+Layout -> RefractionProbe (sets data-refract on <html>, needed before glass renders)
+Layout -> SvgRefractionDefs (SVG filter defs must be in DOM before glass elements)
+Layout -> ThemeProvider (next-themes wrapper, must wrap all content)
 
-[Interaction States]
-    |-- hover: brightness/specular transition
-    |     `-- depends on: existing --dur-hover, --ease-liquid tokens
-    |-- press: scale + glow spread
-    |     `-- depends on: existing --dur-press token
-    |-- focus: enhanced glass rim
-    |     `-- depends on: existing focus-visible ring system
-    `-- all states must degrade under prefers-reduced-motion
+ContactForm -> PhoneInput (mask component)
+ContactForm -> Server Action (submission handler)
+ContactForm -> Zod schema (validation)
+ContactForm -> useActionState (pending/error state)
 
-[Adaptive Tinting]
-    |-- per-section --liquid-tint CSS variable
-    |     `-- depends on: .section-tint-cool/warm/mint classes (already exist)
-    `-- glass elements pick up tint via var() inheritance
-         `-- no change to HTML needed -- CSS cascade handles it
+HeroSection -> Framer Motion (staggered entrance)
+StatsSection -> Framer Motion (whileInView counter animation)
+AnimateOnScroll -> Framer Motion (whileInView wrapper for any section)
+FAQSection -> shadcn/ui Accordion (Radix primitives)
 
-[Fluted Glass]
-    |-- .liquid-fluted (new class)
-    |     `-- depends on: base glass tokens
-    |     `-- conflict: consumes ::after pseudo (cannot have mouse-tracking specular AND fluted texture on same element)
-    `-- restricted to non-text-heavy elements only
-
-[Specular Physics Enhancement]
-    |-- JS enhancement to initMouseSpecular()
-    |     `-- depends on: existing --mouse-x/--mouse-y system
-    |     `-- adds: --spec-angle, --spec-dist variables
-    `-- CSS update to ::after gradient (use new variables)
-
-[SVG Refraction Tuning]
-    |-- multiple SVG filter definitions (refract-sm/md/lg)
-    |     `-- depends on: existing <filter id="liquid-refract"> in index.html
-    |     `-- depends on: existing data-refract JS probe
-    `-- per-class CSS backdrop-filter references
-
-[Concentric Corner Radius]
-    |-- CSS calc() based on parent padding
-    |     `-- depends on: squircle mask system (may need inner squircle masks)
-    `-- mostly affects .liquid-card internal layout
+GlassSpecular -> All liquid-* CSS classes (wraps any glass element)
+All Glass Components -> Tailwind config (liquid-* CSS custom properties in @layer)
+All Glass Components -> Squircle CSS (mask-image SVG paths)
+Dark Mode -> next-themes (ThemeProvider)
+Dark Mode -> Tailwind `darkMode: 'class'` (current .dark class strategy)
+Dark Mode -> All liquid-* dark token overrides in CSS
 ```
 
-### Pseudo-element Budget
+---
 
-Critical constraint: CSS pseudo-elements (`::before`, `::after`) are limited to 2 per element. The existing implementation already uses both:
+## MVP Recommendation (Migration Priority)
 
-| Class | `::before` | `::after` |
-|-------|-----------|----------|
-| `.liquid-regular` | specular rim-light | **available** |
-| `.liquid-card` | animated glint border | mouse-tracking specular |
-| `.liquid-btn-secondary` | specular rim-light | **available** |
-| `.stats-glass` | specular rim-light | **available** |
+### Phase 1 -- Foundation (must work before anything else)
+1. Next.js project scaffolding with App Router
+2. `app/layout.tsx` with `<html>`, `<ThemeProvider>`, font loading (next/font), metadata
+3. Tailwind CSS config with all liquid-* custom properties, section-tint tokens, squircle masks
+4. All 5 liquid-* material CSS classes ported into Tailwind `@layer components`
+5. Squircle CSS classes (SVG mask + `@supports corner-shape` progressive enhancement)
+6. Dark mode via next-themes (class strategy, cookie-based, suppressHydrationWarning)
+7. SvgRefractionDefs component (hidden SVG filter definitions)
 
-**Implication:** `.liquid-card` has NO pseudo-elements available for fluted texture or dimming layer. Fluted glass must be a SEPARATE class that cannot be composed with `.liquid-card`. The Clear variant's dimming layer needs a wrapper element or a separate DOM element, not a pseudo.
+### Phase 2 -- Pages with static content
+8. All 7 pages with section content as Server Components
+9. `generateMetadata()` for each page (title, description, OG, canonical)
+10. JSON-LD structured data in layout or per-page
+11. `next/image` for all images (WebP with width/height, lazy loading)
+12. `next/font` for Inter + Manrope variable (self-hosted WOFF2)
+13. Header (CLIENT) + Footer (SERVER) + StickyMobileCTA (SERVER)
 
-This is a hard architectural constraint that shapes which features can compose with which.
+### Phase 3 -- Client interactivity
+14. ContactForm with Server Action + Zod + useActionState
+15. PhoneInput mask component
+16. FAQ accordion via shadcn/ui Accordion
+17. Header scroll detection + mobile menu toggle
+18. Theme toggle in header
+
+### Phase 4 -- Animations and polish
+19. Framer Motion scroll-reveal via AnimateOnScroll wrapper
+20. Hero staggered entrance animation
+21. Animated counter component for stats sections
+22. Specular mouse tracking (GlassSpecular) -- desktop only
+23. Refraction probe (useEffect in layout)
+24. Staggered card grid animations
+
+### Defer to post-migration
+- **Page transition animations:** Complex with App Router layout system. Requires `AnimatePresence` wrapping `template.tsx` and exit animations on route change. Multiple open Next.js GitHub issues (e.g., #49279) about shared layout animation bugs. Ship without, add later when patterns stabilize.
+- **Glass budget enforcement:** Currently disabled in production. React's reconciliation cycle makes IntersectionObserver-based budgeting less predictable. Re-evaluate after measuring real GPU performance.
+- **Prefetch on idle:** Next.js `<Link>` already prefetches on viewport intersection. Remove custom `requestIdleCallback` prefetcher.
 
 ---
 
-## MVP Recommendation for v5.0
+## Complexity Assessment for Roadmap
 
-### Phase 1: Foundation (Hierarchy + Interaction States)
-
-1. **Glass hierarchy system** -- define `.liquid-nav`, refine `.liquid-regular`, add `.liquid-clear` with tokens
-2. **Interaction states** -- hover/press/focus transitions on all glass surfaces
-3. **Dark mode glass refinement** -- tune dark token values for depth
-
-Rationale: These are pure CSS changes with no JS modifications. They establish the vocabulary before adding texture and physics.
-
-### Phase 2: Tinting + Texture
-
-4. **Adaptive tinting** -- per-section `--liquid-tint` cascade
-5. **Fluted glass variant** -- new `.liquid-fluted` class with vertical streak pattern
-
-Rationale: These add visual variety to the glass system. Tinting is low-risk (CSS variable cascade). Fluted is medium-risk (visual tuning needed, pseudo-element constraints).
-
-### Phase 3: Physics + Refinement
-
-6. **Specular highlight physics** -- JS enhancement to mouse tracking
-7. **SVG refraction tuning** -- per-element filter calibration
-8. **Concentric corner radius** -- calc()-based inner radius
-
-Rationale: These require JS changes and visual calibration. Ship after the CSS foundation is stable.
-
-### Defer
-
-- Gyroscope specular -- skip entirely (anti-feature for this audience)
-- WebGL shader -- skip entirely (violates project constraints)
-- Spring animations -- skip entirely (tone mismatch)
-
----
-
-## Complexity Assessment
-
-| Feature | Lines of CSS | Lines of JS | Risk Level | Performance Impact |
-|---------|-------------|-------------|------------|-------------------|
-| Glass hierarchy (3 tiers) | ~60 | 0 | LOW | None -- token changes only |
-| Interaction states | ~80 | 0 | LOW | Minimal -- CSS transitions on existing composited layers |
-| Adaptive tinting | ~30 | 0 | MEDIUM | None -- CSS variable cascade |
-| Dark mode glass refinement | ~20 | 0 | LOW | None -- token value changes |
-| Fluted glass variant | ~40 | 0 | MEDIUM | LOW -- repeating-linear-gradient is cheap |
-| Specular physics | ~20 | ~30 | MEDIUM | LOW -- math in existing mousemove handler |
-| SVG refraction tuning | ~30 | 0 | MEDIUM | None -- same filters, different params |
-| Concentric corners | ~15 | 0 | LOW | None -- calc() on existing properties |
-| **Total new code** | **~295** | **~30** | | |
+| Feature | Migration Complexity | Risk | Notes |
+|---------|---------------------|------|-------|
+| Liquid Glass CSS (all 5 materials) | Low | Low | CSS custom properties + classes port 1:1 into Tailwind @layer |
+| Squircle masks | Low | Low | CSS mask-image is framework-agnostic; `@squircle-js/react` for PE is optional |
+| Dark mode | Medium | Medium | Selector changes from `.dark` (already matching) + next-themes integration; must avoid FOUC with cookie strategy |
+| Form + Server Action | Medium | Low | Well-documented Next.js 15 pattern; Zod schema replaces ad-hoc validation |
+| Specular parallax | Medium | Low | Simple `onMouseMove` -> CSS custom properties; needs `(pointer: fine)` guard |
+| SVG refraction filters | Medium | Medium | SVG `<defs>` must be in DOM before any glass element renders; place in layout.tsx as early child |
+| Scroll-reveal animations | Low | Low | Framer Motion `whileInView` is simpler than current IntersectionObserver + Motion CDN |
+| SPA router removal | None | None | Delete router.js; App Router replaces it entirely |
+| Page transitions | High | High | `AnimatePresence` + Next.js App Router is notoriously tricky; defer |
+| Content parity (7 pages x 12 sections) | High (volume) | Low (per-item risk) | Tedious but straightforward; biggest time investment of the migration |
+| SEO metadata migration | Low | Low | `generateMetadata()` is cleaner than manual `<meta>` tags in each HTML file |
+| Animated counters | Low | Low | Framer Motion `animate` + `whileInView` or `useMotionValue` |
+| Phone input mask | Low | Low | `@react-input/mask` with `+7 (___) ___-__-__` pattern; one component reused across all forms |
+| lucide-react icons | Low | Low | Same icon set already used via inline SVG; tree-shakeable imports |
+| next/image optimization | Low | Low | Replace `<img>` with `<Image>` for automatic WebP/AVIF, srcset, lazy loading |
+| next/font self-hosting | Low | Low | Replace `<link rel="preload">` with next/font Inter/Manrope; automatic self-hosting, zero CLS |
 
 ---
 
 ## Sources
 
-### Confirmed (HIGH confidence)
+### Official Documentation (HIGH confidence)
+- [Next.js: Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components) -- boundary rules, when to use each
+- [Next.js: Forms Guide with Server Actions](https://nextjs.org/docs/app/guides/forms) -- form action pattern, useActionState
+- [Next.js: generateMetadata](https://nextjs.org/docs/app/api-reference/functions/generate-metadata) -- per-page SEO metadata
+- [next-themes](https://github.com/pacocoursey/next-themes) -- dark mode without flash, cookie-based persistence
 
-- Apple WWDC 2025 "Meet Liquid Glass" session (Session 219) -- glass hierarchy, clear vs regular rules, adaptive tinting concept, interaction principles
-- [CSS-Tricks: Getting Clarity on Apple's Liquid Glass](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/) -- three-layer composition (highlight, shadow, illumination), clear variant rules
-- [Kube.io: Liquid Glass in the Browser](https://kube.io/blog/liquid-glass-css-svg/) -- SVG refraction approach, specular as rim-light overlay, Chromium-only limitation confirmed
-- [Josh Comeau: Next-level frosted glass](https://www.joshwcomeau.com/css/backdrop-filter/) -- extended backdrop technique (already implemented)
-- MDN Web Docs: `backdrop-filter` Baseline 2024, `mix-blend-mode` widely available, `repeating-linear-gradient` widely available, `color-mix()` Baseline 2023
-- Existing codebase: liquid-glass.css, theme.css, squircles.css, main.js -- pseudo-element usage audit, token architecture, JS mouse-tracking system
+### Libraries (HIGH confidence)
+- [shadcn/ui](https://ui.shadcn.com/) -- Accordion, Input, Select, Button primitives
+- [motion/react](https://motion.dev) -- current Framer Motion package name, `whileInView`, scroll animations
+- [@react-input/mask](https://www.npmjs.com/package/@react-input/mask) -- React input masking
+- [@squircle-js/react](https://www.npmjs.com/package/@squircle-js/react) -- squircle component for progressive enhancement
+- [lucide-react](https://lucide.dev) -- same icon set currently used as inline SVG
 
-### Referenced (MEDIUM confidence)
+### Community / Guides (MEDIUM confidence)
+- [Framer Motion + Next.js App Router Guide](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers.html) -- client component setup, `whileInView` patterns
+- [glasscn-ui](https://github.com/itsjavi/glasscn-ui) -- glassmorphism on shadcn/ui reference (validates approach, not a dependency)
+- [CSS corner-shape (Smashing)](https://www.smashingmagazine.com/2026/03/beyond-border-radius-css-corner-shape-property-ui/) -- progressive enhancement path for squircles
+- [Next.js Server Actions Guide (MakerKit)](https://makerkit.dev/blog/tutorials/nextjs-server-actions) -- complete form handling patterns
 
-- [LogRocket: Adopting Liquid Glass best practices](https://blog.logrocket.com/ux-design/adopting-liquid-glass-examples-best-practices/) -- clear variant three-condition rule, hierarchy guidance
-- [Apple Newsroom: Liquid Glass announcement](https://www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/) -- spring animations, "illuminates from within" interaction description
-- [DesignFast: CSS Liquid Glass Effects](https://designfast.io/liquid-glass) -- three-layer structure confirmation
-- [DEV Community: Recreating Liquid Glass with CSS](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl) -- CSS-only approach patterns
-- shadcn-glass-ui library (npm) -- confirmed "fluted" variant exists as established pattern with vertical streaks
-
-### Not Found / Unable to Verify
-
-- Apple's exact spring constant values for glass interaction animations -- not publicly documented for web
-- Specific `backdrop-filter` performance benchmarks on budget Android devices common in Kazakhstan market -- relied on community reports (HN: "M4-Max MacBook Pro judders")
-- Whether `color-mix()` interacts well with `backdrop-filter` in the same element -- needs browser testing
-- Exact opacity thresholds for adaptive tinting that maintain WCAG AA contrast -- needs per-section visual audit
-
----
-
-*Feature research for: MedicusUnion KZ Landing -- v5.0 Full Liquid Glass Rework*
-*Researched: 2026-04-09*
-*Downstream consumer: v5.0 roadmap phase planning*
+### Unverified / Needs Testing
+- AnimatePresence with App Router layout -- [GitHub issue #49279](https://github.com/vercel/next.js/issues/49279) documents ongoing bugs; page transitions remain risky
+- `corner-shape: squircle` browser support -- Chrome 139+ only as of 2026-04; not production-ready for cross-browser
+- Performance of backdrop-filter on budget Android with React re-renders -- needs real-device benchmarking post-migration

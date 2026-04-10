@@ -1,531 +1,793 @@
-# Domain Pitfalls: Liquid Glass v5.0 Full Rework
+# Domain Pitfalls: Next.js 15 Migration of Liquid Glass Landing Page
 
-**Domain:** Advanced Liquid Glass effects for static medical landing page (backdrop-filter, SVG refraction, squircle masks, specular highlights, gyroscope, adaptive tinting, cross-browser hardening)
-**Researched:** 2026-04-09
-**Confidence:** HIGH for browser-specific bugs (verified via official bug trackers, MDN compat data); MEDIUM for performance thresholds (multiple credible sources agree but exact numbers vary by device); HIGH for project-specific pitfalls (verified against current codebase)
+**Domain:** Migrating a production static landing page with advanced glass effects (backdrop-filter, SVG refraction filters, squircle mask-image, adaptive tinting, dark mode) from vanilla HTML/Tailwind CSS v4 to Next.js 15 + React + App Router
+**Researched:** 2026-04-10
+**Confidence:** HIGH for Turbopack/CSS bugs (verified via official GitHub issues #78302, #79531, #79535); HIGH for Framer Motion bundle (verified via official motion.dev docs); MEDIUM for SVG filter hydration (multiple credible sources but no exact replication of this project's filter set); HIGH for Docker standalone (verified via official Next.js docs); HIGH for dark mode FOUC (verified via next-themes + Next.js discussions)
 
 ---
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, production failures, or user-facing breakage.
-
-### Pitfall 1: Safari Ignores CSS Variables in -webkit-backdrop-filter
-
-**What goes wrong:**
-Safari (tested through Safari 18.3) does not resolve CSS custom properties inside `-webkit-backdrop-filter`. The declaration is silently dropped. Since Safari still requires the `-webkit-` prefix for backdrop-filter, the unprefixed `backdrop-filter` line also fails without the prefix, leaving glass elements with zero visual effect on all Safari and iOS browsers.
-
-**Why it happens:**
-WebKit's implementation of `-webkit-backdrop-filter` predates full CSS custom property resolution in filter functions. The unprefixed `backdrop-filter` is behind a developer feature flag (`CSS Unprefixed Backdrop Filter`) in Safari 18 and is disabled by default. CSS variables work in the unprefixed version when the flag is on, but the flag is off for all real users.
-
-**Consequences:**
-Every glass element in the current codebase is broken on Safari/iOS. The current code uses `var(--liquid-blur-md)`, `var(--liquid-saturate)`, `var(--liquid-brightness)` inside `-webkit-backdrop-filter` on all 5 glass classes. This means zero glass effect for ~18% of global web users, and significantly higher in the Apple-device-owning medical professional demographic.
-
-**THIS IS ALREADY A BUG IN THE CURRENT CODEBASE.** Lines 62, 81, 147, 176, and 301 of `liquid-glass.css` all use CSS variables inside `-webkit-backdrop-filter`.
-
-**Prevention:**
-- Duplicate the `-webkit-backdrop-filter` declaration with hardcoded fallback values BEFORE the `var()`-based line:
-  ```css
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
-  ```
-  Safari uses the hardcoded line (ignoring the var line); Chromium/Firefox use the var line. Order matters: hardcoded first, var-based second.
-- Alternatively, use a mixin-like pattern that emits both lines for every glass class.
-- Dark mode values differ (28px/160%/115%), so the hardcoded fallback in `.dark` must match those values.
-- Test Safari specifically after every backdrop-filter change.
-
-**Detection:**
-- Open any page in Safari on macOS or iOS. Glass elements show as flat rectangles with no blur.
-- Automated: Playwright WebKit test comparing computed `backdrop-filter` value.
-
-**Phase:** Address IMMEDIATELY in Phase 1 (cross-browser hardening). This is a shipping bug.
-
-**Sources:**
-- [mdn/browser-compat-data #25914](https://github.com/mdn/browser-compat-data/issues/25914)
-- [Safari WebKit CSS Bugs Workarounds (2026)](https://docs.bswen.com/blog/2026-03-12-safari-css-issues-workarounds/)
-- [lightningcss #537](https://github.com/parcel-bundler/lightningcss/issues/537)
+Mistakes that cause visual breakage, production failures, or require architectural rework.
 
 ---
 
-### Pitfall 2: SVG Filters in backdrop-filter Are Chromium-Only
+### Pitfall 1: Turbopack Strips backdrop-filter When -webkit- Prefix Comes First
 
 **What goes wrong:**
-The refraction effect (`backdrop-filter: url(#liquid-refract) blur(...)`) works ONLY in Chromium browsers (Chrome 76+, Edge 79+, Samsung Internet). Safari and Firefox silently ignore the entire `backdrop-filter` declaration when it contains `url()` references to SVG filters, even for the blur/saturate functions that follow it in the same shorthand.
+In Next.js 15.3.0+ with Turbopack (`next dev --turbo`), when `-webkit-backdrop-filter` is declared before the standard `backdrop-filter` in CSS, Turbopack's CSS processing silently drops the standard `backdrop-filter` declaration. Every glass element renders with zero blur/saturate/brightness in Chrome and Firefox during development.
 
 **Why it happens:**
-The CSS Filter Effects Level 2 spec allows SVG filters in `backdrop-filter`, but only Chromium implemented it. Firefox has an open feature request (Mozilla Connect, September 2025) but no timeline. Safari/WebKit has no public intent to ship. This is not a temporary gap -- it has been this way since backdrop-filter shipped.
+Turbopack's CSS parser (LightningCSS-based) mishandles the vendor-prefixed + unprefixed property pair ordering. It treats the `-webkit-` line as the canonical declaration and removes the unprefixed line as a "duplicate." This is the opposite of how browsers interpret cascade -- browsers use the LAST matching declaration.
 
 **Consequences:**
-When `backdrop-filter: url(#liquid-refract) blur(24px) saturate(180%) brightness(108%)` is parsed by Safari or Firefox, the ENTIRE declaration is invalid -- not just the `url()` part. This means the fallback blur/saturate/brightness are also lost. Glass elements become fully transparent on Safari and Firefox.
-
-**Prevention:**
-- The current codebase gates refraction behind `html[data-refract="true"]` (Section 10 of liquid-glass.css). This is correct.
-- The gated selector must override the FULL backdrop-filter chain, not just prepend `url()`. Current code does this correctly.
-- JS probe must verify SVG filter support in backdrop-filter at runtime, not just check `CSS.supports('backdrop-filter', 'blur(1px)')`. Test specifically: `CSS.supports('backdrop-filter', 'url(#test)')`.
-- NEVER put `url(#svg-filter)` in the base glass classes. Always in a separate, gated selector.
-- Future: if fluted glass or other variants use SVG filters, they MUST follow the same gating pattern.
+All 6 glass material classes in `liquid-glass.css` use the pattern `-webkit-backdrop-filter` (hardcoded fallback) followed by `-webkit-backdrop-filter` (var-based) followed by `backdrop-filter` (var-based). Turbopack will strip the third line, breaking glass in Chrome/Firefox during dev. Production builds (Webpack) may render correctly, creating a dev/prod visual mismatch that delays bug discovery.
 
 **Detection:**
-- Open any page in Firefox or Safari with `data-refract="true"` forced on -- glass disappears entirely.
-- JS probe must set `data-refract="true"` ONLY after confirming support.
+Glass elements appear as plain semi-transparent boxes (no blur, no saturate) in Chrome during `next dev --turbo`. Safari may still work because it reads `-webkit-backdrop-filter`.
 
-**Phase:** Already partially handled. Verify JS probe correctness in Phase 1 (cross-browser hardening).
+**Prevention:**
+1. **Reverse the declaration order** in all glass classes: place `backdrop-filter` BEFORE `-webkit-backdrop-filter`:
+   ```css
+   /* Standard first -- Turbopack keeps it */
+   backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+   /* Safari fallback: hardcoded values, then var-based override */
+   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
+   -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+   ```
+2. **Pin Next.js version** to a known-good release and test with Turbopack before upgrading. This is a confirmed open bug ([GitHub #78302](https://github.com/vercel/next.js/issues/78302), status: OPEN as of 2026-04-10).
+3. **Add a visual regression test** (Playwright screenshot comparison) that runs in both Turbopack dev and Webpack prod modes to catch glass rendering differences.
+
+**Affected files:** `src/styles/liquid-glass.css` lines 88-90, 121-122, 152-154, 200-202, 246-248, 319-321, 360-362, 473-476 (every `.liquid-*` class).
+
+**Phase:** Must be addressed in Phase 1 (CSS migration) before any glass component work begins.
 
 **Sources:**
-- [mdn/browser-compat-data #24110](https://github.com/mdn/browser-compat-data/issues/24110)
-- [Mozilla Connect feature request](https://connect.mozilla.org/t5/ideas/support-svg-filters-in-backdrop-filter-for-advanced-glass/idi-p/98453)
+- [GitHub Issue #78302: CSS backdrop-filter property disappear in Next.js 15.3.0/15.3.1 dev mode with Turbopack](https://github.com/vercel/next.js/issues/78302)
 
 ---
 
-### Pitfall 3: filter: drop-shadow() on Parent Breaks backdrop-filter on Children
+### Pitfall 2: CSS Import Order Diverges Between Turbopack (dev) and Webpack (prod)
 
 **What goes wrong:**
-Applying `filter: drop-shadow()` on a parent element creates a new stacking context and containing block. Any child element with `backdrop-filter` stops working because the filter property on the ancestor becomes a "backdrop root" boundary -- the backdrop-filter cannot "see through" the parent's filter to the content behind it.
-
-**THIS ALREADY HAPPENED IN THIS PROJECT.** Git commit `ba29f8a` ("fix: revert drop-shadow to box-shadow -- drop-shadow breaks backdrop-filter children") documents the exact bug and revert.
+Turbopack follows JavaScript import order to determine CSS concatenation order. Webpack sometimes ignores import order when it infers a module is side-effect-free. The current project imports CSS in a specific cascade: `fonts.css` -> `tailwindcss` -> `theme.css` -> `squircles.css` -> `liquid-glass.css`. If Webpack reorders these, glass token overrides in `theme.css` may load AFTER `liquid-glass.css`, or `squircles.css` mask overrides from `@supports (corner-shape: squircle)` may not cascade correctly.
 
 **Why it happens:**
-Per the CSS Filter Effects Level 2 spec, an element with `filter` (including `drop-shadow()`) establishes a backdrop root. The `backdrop-filter` on a descendant only captures pixels between itself and the nearest backdrop root ancestor. If that ancestor has a filter, the captured backdrop is the filtered intermediate result, not the actual page content behind the element.
+Turbopack and Webpack use different heuristics for CSS ordering. Turbopack strictly follows JS import graph order. Webpack may reorder CSS from modules it considers side-effect-free (no explicit `sideEffects: true` in package.json or no export-only modules).
 
 **Consequences:**
-Glass cards inside shadow-wrapped parents show no blur effect. The backdrop appears as a solid color (the parent's background) instead of the blurred page content.
-
-**Prevention:**
-- NEVER use `filter: drop-shadow()` on any ancestor of a glass element.
-- For squircle elements needing outer shadows, use the shadow-wrap pattern: a wrapper `<div>` with `box-shadow` + `border-radius`, and the inner element with `mask-image` + `backdrop-filter`.
-- If the shadow must follow the squircle mask shape, accept the limitation: either use `box-shadow` with standard `border-radius` (close enough) or sacrifice the outer shadow entirely.
-- Document this constraint in the design system: "Shadow-wrap pattern is required for all masked glass elements."
-- In Chrome 139+ where `corner-shape: squircle` is used (no mask needed), `box-shadow` works natively and this workaround is unnecessary.
+Glass tokens defined in `:root` (theme.css) may not be available when `liquid-glass.css` is parsed, causing fallback to browser defaults (transparent backgrounds, zero blur). Squircle `@supports` progressive enhancement block may be overridden by base styles if load order flips.
 
 **Detection:**
-- Any glass element nested inside a `filter: drop-shadow()` parent will show no blur.
-- Visual QA: look for glass elements that appear as flat semi-transparent rectangles despite having backdrop-filter.
+- Glass cards appear transparent/broken in production but work in dev, or vice versa
+- `@supports (corner-shape: squircle)` styles don't apply even in Chrome 139+
+- Dark mode glass tokens show light-mode values
 
-**Phase:** Already resolved. Maintain discipline in all future phases -- add ESLint/stylelint rule if possible.
+**Prevention:**
+1. Mark CSS files as having side effects in `package.json`:
+   ```json
+   {
+     "sideEffects": ["*.css"]
+   }
+   ```
+2. Use a single CSS entry point (`globals.css`) with explicit `@import` ordering instead of JS-level imports. In Next.js App Router, import ONLY `globals.css` from `app/layout.tsx`:
+   ```tsx
+   // app/layout.tsx
+   import '@/styles/globals.css'; // Single entry point
+   ```
+   Where `globals.css` contains the same `@import` chain as current `tailwind.css`:
+   ```css
+   @import './fonts.css';
+   @import 'tailwindcss' source(none);
+   @source '../app/**/*.{tsx,ts}';
+   @import './theme.css';
+   @import './squircles.css';
+   @import './liquid-glass.css';
+   ```
+3. **Never import CSS from individual component files** -- all glass/squircle/theme CSS must flow through the single entry point to guarantee order.
+4. Test production build (`next build && next start`) against dev (`next dev --turbo`) visually after every CSS structure change.
+
+**Phase:** Phase 1 (CSS migration). This is the very first thing to set up.
 
 **Sources:**
-- Project git history (commit `ba29f8a`)
-- [MDN: filter property](https://developer.mozilla.org/en-US/docs/Web/CSS/filter)
-- [CSS Filter Effects Level 2 spec](https://drafts.fxtf.org/filter-effects-2/)
+- [GitHub Issue #79531: CSS import order differs between dev turbopack and prod webpack](https://github.com/vercel/next.js/issues/79531)
+- [GitHub Issue #79535: Missing CSS styles after upgrading from 15.2.x to 15.3.x](https://github.com/vercel/next.js/issues/79535)
 
 ---
 
-### Pitfall 4: GPU Memory Exhaustion from Composite Layer Explosion
+### Pitfall 3: SVG Filter IDs Break When Multiple Instances Render on Same Page
 
 **What goes wrong:**
-Every element with `backdrop-filter`, `will-change`, `transform: translateZ(0)`, or `filter` gets promoted to its own GPU composite layer. Each layer consumes VRAM proportional to the element's pixel area. On a 1440px-wide page with 8+ glass cards visible simultaneously, you can exhaust GPU memory on mid-range Android devices (2-4GB RAM, shared GPU memory), causing browser crashes or forced reloads.
+The current `partials/svg-defs.html` defines three SVG filters (`liquid-refract-sm`, `liquid-refract-md`, `liquid-refract-lg`) that are referenced by CSS via `url(#liquid-refract-md)`. In React, if this SVG defs block is rendered by a component that mounts multiple times (e.g., in a shared layout + individual page), the DOM will contain duplicate `id` attributes. The browser resolves `url(#liquid-refract-md)` to the FIRST matching ID, which may be inside an unmounted or stale component tree.
 
 **Why it happens:**
-Developers add `will-change: backdrop-filter` or `transform: translateZ(0)` to every glass element "for performance." Combined with the implicit layer promotion from `backdrop-filter` itself, this doubles the layer count. The current v4.0 codebase wisely avoids `will-change` on static cards (documented anti-pattern in liquid-glass.css header comments), but v5.0 adds more glass elements (fluted glass, clear glass, adaptive tinting) that increase the total count.
+React renders components to a virtual DOM that maps to real DOM nodes. Unlike raw HTML where you control exactly one `<svg>` defs block, a React component containing the SVG defs can be instantiated multiple times if included in a shared layout component or rendered in both server and client passes.
 
 **Consequences:**
-- Budget Android devices (dominant in Kazakhstan market): browser tab crashes with no error message
-- Mid-range devices: scroll jank averaging 12fps drop per glass element beyond the 5th
-- Desktop: Chrome DevTools "Layers" panel shows 20+ composite layers where 5-8 would suffice
-
-**Prevention:**
-- Enforce a hard budget: MAX 5 glass elements per viewport at any scroll position. Count ALL elements with `backdrop-filter`, not just `.liquid-card`.
-- NEVER add `will-change: backdrop-filter` to static (non-animating) elements. Current anti-pattern docs are correct -- maintain them.
-- Use `will-change` only on elements about to animate, and remove it via JS after animation completes.
-- Use Chrome DevTools > Layers panel to audit composite layer count.
-- For sections with many cards, consider using glass effect only on hover/focus (JS-toggled class), not permanently.
-- Test on a budget Android device (Samsung Galaxy A14 or equivalent, ~$150 device common in KZ).
+- Refraction filters reference stale or wrong SVG filter definitions
+- On route transitions (App Router soft navigation), the referenced filter ID may point to a removed DOM node, causing refraction to silently disappear
+- React strict mode (development) double-renders components, creating temporary duplicate IDs
 
 **Detection:**
-- Chrome DevTools > Rendering > "Layer borders" shows green borders around every composite layer
-- Chrome DevTools > Performance tab shows "Compositor Layers" count
-- Android remote debugging: `chrome://inspect` from desktop Chrome
+Refraction effects work on initial load but break after client-side navigation, or work on some pages but not others.
 
-**Phase:** Phase 2 (GPU performance audit). Audit BEFORE adding new glass variants.
+**Prevention:**
+1. **Render SVG defs exactly once** in the root layout (`app/layout.tsx`), outside any component that re-renders:
+   ```tsx
+   // app/layout.tsx
+   export default function RootLayout({ children }) {
+     return (
+       <html>
+         <body>
+           <SvgDefs /> {/* Render ONCE at the root */}
+           {children}
+         </body>
+       </html>
+     );
+   }
+   ```
+2. **Use a dedicated `SvgDefs` component** with the SVG filter definitions written as JSX (not `dangerouslySetInnerHTML`). React's JSX natively supports SVG filter elements:
+   ```tsx
+   // components/svg-defs.tsx
+   export function SvgDefs() {
+     return (
+       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+         <defs>
+           <filter id="liquid-refract-sm" colorInterpolationFilters="sRGB">
+             <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves={1} seed={92} result="noise" />
+             <feGaussianBlur in="noise" stdDeviation={1} result="blurred" />
+             <feDisplacementMap in="SourceGraphic" in2="blurred" scale={0} xChannelSelector="R" yChannelSelector="G" />
+           </filter>
+           {/* ... md, lg filters ... */}
+         </defs>
+       </svg>
+     );
+   }
+   ```
+3. **Note the JSX attribute differences from HTML:**
+   - `color-interpolation-filters` becomes `colorInterpolationFilters`
+   - Numeric attributes (`numOctaves`, `seed`, `scale`, `stdDeviation`) can be passed as numbers: `numOctaves={1}`
+   - `baseFrequency`, `numOctaves`, `stdDeviation`, `xChannelSelector`, `yChannelSelector` are NOT camelCased -- they already use camelCase in the SVG spec and React passes them through as-is
+   - Do NOT use `dangerouslySetInnerHTML` for this -- JSX handles SVG filter elements natively
+
+**Phase:** Phase 2 (component extraction). Critical to get right before any glass component uses refraction.
 
 **Sources:**
-- [Smashing Magazine: CSS GPU Animation](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/)
-- [Chromium GPU Compositing docs](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)
+- [React DOM Components: SVG support](https://react.dev/reference/react-dom/components)
+- Current codebase: `partials/svg-defs.html`
 
 ---
 
-### Pitfall 5: WCAG Contrast Failure Through Glass on Dynamic Backgrounds
+### Pitfall 4: Dark Mode FOUC -- localStorage Unreadable on Server, Cookies Force Dynamic Rendering
 
 **What goes wrong:**
-Text on glass elements has no fixed background color -- the effective contrast depends on whatever content is behind the glass at any given scroll position. A card that passes WCAG 4.5:1 contrast against a white section fails when scrolled over a dark image, gradient, or colored tint section. For a 45+ medical audience, this directly impacts readability and trust.
+The current codebase uses `localStorage` to persist theme preference and a `[data-theme="dark"]` attribute selector. In Next.js with SSR/SSG, `localStorage` is unavailable on the server. The server renders light mode HTML. When JS hydrates on the client, it reads `localStorage`, discovers dark mode, and switches -- causing a visible flash of light-to-dark (FOUC). The current system uses `@custom-variant dark (&:is(.dark *))` in Tailwind, meaning the `.dark` class on an ancestor drives all dark styles.
 
 **Why it happens:**
-`backdrop-filter: blur()` averages the colors behind the element, but the result is unpredictable and varies per viewport. Static contrast checkers cannot test this. Manual testing at every scroll position is impractical.
+Server Components and Static Generation both execute without `window` or `localStorage`. They can only read cookies (via `next/headers`). But using `cookies()` in a layout opts the ENTIRE route into dynamic rendering, disabling static generation and Partial Pre-Rendering for every page under that layout. For a landing page that should be statically generated for performance, this is a significant tradeoff.
 
 **Consequences:**
-- WCAG AA failure (4.5:1 for normal text, 3:1 for large text)
-- 45+ users with age-related vision changes cannot read card content
-- Legal risk for medical service (accessibility lawsuits increasing in EU/CIS)
-
-**Prevention:**
-- Current `--liquid-bg` at `rgba(255,255,255,0.42)` is too low for worst-case scenarios. Floor at `rgba(255,255,255,0.65)` for any glass element containing body text.
-- For glass elements that scroll over varied backgrounds, use `rgba(255,255,255,0.75)` minimum -- accept reduced translucency for readability.
-- Implement a contrast-safe mode: `@media (prefers-contrast: more)` and `@media (prefers-reduced-transparency: reduce)` should bump opacity to 0.90+.
-- Test every glass card against EVERY section background it will appear over, including transitions between sections.
-- Use `text-shadow: 0 1px 2px rgba(0,0,0,0.1)` on glass text for additional legibility floor (subtle, not obvious).
-- Dark mode: `rgba(30,40,60,0.45)` current value is reasonable against dark backgrounds.
+- **Option A (localStorage only):** Every page load flashes light mode for 50-200ms before JS applies dark class. For CA 45+, this is jarring and feels broken.
+- **Option B (cookies in layout):** Zero FOUC, but the entire site becomes dynamically rendered. TTFB increases. No ISR/SSG benefits. CDN caching becomes complex.
+- **Option C (next-themes):** Injects a blocking `<script>` tag that reads localStorage before paint. Works, but adds a render-blocking script that Lighthouse flags, and does not work with streaming SSR.
 
 **Detection:**
-- axe-core accessibility audit at multiple scroll positions
-- Manual: scroll slowly through entire page, checking text readability on each glass card
+Flash of white background and light-colored text on page load for users who have dark mode enabled.
 
-**Phase:** Phase 1 (cross-browser hardening) -- accessibility is not optional.
+**Prevention:**
+Use the **middleware + cookie approach** (best balance for this project):
+1. **Theme toggle sets both localStorage AND a cookie:**
+   ```tsx
+   function setTheme(theme: 'light' | 'dark') {
+     document.documentElement.classList.toggle('dark', theme === 'dark');
+     localStorage.setItem('theme', theme);
+     document.cookie = `theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
+   }
+   ```
+2. **Middleware reads the cookie and sets a request header:**
+   ```tsx
+   // middleware.ts
+   import { NextResponse } from 'next/server';
+   import type { NextRequest } from 'next/server';
+   
+   export function middleware(request: NextRequest) {
+     const theme = request.cookies.get('theme')?.value || 'light';
+     const response = NextResponse.next();
+     response.headers.set('x-theme', theme);
+     return response;
+   }
+   ```
+3. **Root layout reads the header (NOT cookies()) to stay static:**
+   ```tsx
+   // app/layout.tsx
+   import { headers } from 'next/headers';
+   
+   export default async function RootLayout({ children }) {
+     const headersList = await headers();
+     const theme = headersList.get('x-theme') || 'light';
+     return (
+       <html className={theme === 'dark' ? 'dark' : ''}>
+         <body>{children}</body>
+       </html>
+     );
+   }
+   ```
+   **IMPORTANT:** Using `headers()` still opts into dynamic rendering. For a fully static approach with zero FOUC, consider the inline script approach from next-themes as a pragmatic compromise, since this is a landing page where SEO matters more than perfect streaming SSR.
+
+4. **Default to light mode** (current behavior, validated for CA 45+ who associate light with medical authority per PROJECT.md Key Decision).
+
+**Affected config:** `@custom-variant dark (&:is(.dark *))` in `theme.css` must become `@custom-variant dark (&:is(.dark *))` (already compatible) or use Tailwind's `darkMode: 'selector'` if using Tailwind config file.
+
+**Phase:** Phase 1 (project scaffolding). Theme infrastructure must be in place before any component renders dark-mode-aware glass tokens.
 
 **Sources:**
-- [WCAG 2.1 SC 1.4.3 Contrast Minimum](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
-- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- [Next.js Discussion #53063: Implementing light/dark mode with app router + RSC](https://github.com/vercel/next.js/discussions/53063)
+- [Fixing Dark Mode Flickering (FOUC) in React and Next.js](https://notanumber.in/blog/fixing-react-dark-mode-flickering)
+- [next-themes GitHub](https://github.com/pacocoursey/next-themes)
+- Current codebase: `theme.css` line 1: `@custom-variant dark (&:is(.dark *))`
+
+---
+
+### Pitfall 5: Framer Motion Adds 34KB to Client Bundle -- Breaks Lightweight Landing Page Goal
+
+**What goes wrong:**
+The current landing page is ~64KB total (HTML + CSS + JS). Importing `motion` from `framer-motion` (now `motion` package) adds a minimum of 34KB gzipped to the client JavaScript bundle. With the "use client" directive required for every component using motion, entire component subtrees get excluded from Server Component benefits, inflating the JS sent to the client.
+
+**Why it happens:**
+Framer Motion's declarative API (`animate`, `variants`, `layout`, `drag`, `whileHover`, `whileTap`) is not tree-shakeable because the props-driven design means the bundler cannot statically analyze which features are used. The `motion.div` component includes the full animation engine regardless of which props you pass.
+
+**Consequences:**
+- Bundle size balloons from ~64KB total to 100KB+ for JS alone
+- Every component using `motion.*` must be a Client Component (`"use client"`)
+- Client Components cannot use `async/await`, `cookies()`, `headers()`, or other server-only APIs
+- The "use client" boundary propagates: a parent using `motion.div` forces all children to be client components too
+- For CA 45+ on budget Android devices common in KZ market, the extra JS parsing time is significant
+
+**Detection:**
+Run `npx @next/bundle-analyzer` and check the client bundle. Any chunk containing `framer-motion` or `motion` will be 30KB+.
+
+**Prevention:**
+1. **Use `LazyMotion` + `m` component** to reduce initial bundle to ~5KB:
+   ```tsx
+   // app/providers.tsx
+   'use client';
+   import { LazyMotion, domAnimation } from 'framer-motion';
+   
+   export function AnimationProvider({ children }: { children: React.ReactNode }) {
+     return <LazyMotion features={domAnimation}>{children}</LazyMotion>;
+   }
+   ```
+   Then use `m.div` instead of `motion.div` in all components:
+   ```tsx
+   import { m } from 'framer-motion';
+   // NOT: import { motion } from 'framer-motion';
+   ```
+2. **CRITICAL: Never render `motion.*` inside `LazyMotion`** -- this breaks tree shaking. Always use `m.*` when LazyMotion is the provider.
+3. **Prefer CSS animations for simple effects.** The current codebase already has:
+   - Shimmer sweep (`@keyframes glint` in liquid-glass.css) -- keep as CSS
+   - Scroll-reveal (`translateY(20px)/0.4s`) -- use `@starting-style` or Intersection Observer + CSS transitions instead of Framer Motion
+   - Button `:active scale(0.97)` -- pure CSS, no JS needed
+   - FAQ accordion -- CSS `max-height` transition, no Framer Motion needed
+4. **Reserve Framer Motion for interactions that CSS cannot do:**
+   - Layout animations (`layoutId` for shared element transitions between routes)
+   - Gesture-driven animations (drag, pinch)
+   - Spring physics (if CSS `linear()` easing is insufficient)
+   - Exit animations (`AnimatePresence`)
+5. **Isolate motion components** at the leaf level, not the layout level:
+   ```tsx
+   // GOOD: Small client component island
+   // components/animated-card.tsx
+   'use client';
+   import { m } from 'framer-motion';
+   export function AnimatedCard({ children }) { /* ... */ }
+   
+   // BAD: Entire section is a client component
+   // components/services-section.tsx
+   'use client'; // Forces ALL children to be client-rendered
+   import { motion } from 'framer-motion';
+   ```
+
+**Phase:** Phase 3 (animation migration). Must audit every current animation and decide CSS vs Framer Motion before writing any animation code.
+
+**Sources:**
+- [Reduce bundle size of Framer Motion](https://motion.dev/docs/react-reduce-bundle-size)
+- [Framer Motion: Complete React & Next.js Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers)
+- Current codebase: PROJECT.md states total size is ~64KB
 
 ---
 
 ## Moderate Pitfalls
 
-### Pitfall 6: Firefox backdrop-filter Breaks with border-radius + overflow + sticky
+Issues that cause significant debugging time or visual regressions but are recoverable without architectural rework.
+
+---
+
+### Pitfall 6: Squircle mask-image SVG Data URIs Cause Hydration Warnings
 
 **What goes wrong:**
-In Firefox (tested through Firefox 147), `backdrop-filter` stops working on a `position: sticky` element when an ancestor has both `border-radius` and `overflow: auto|hidden|scroll` set. The blur effect completely disappears.
+The current squircle system uses CSS custom properties containing inline SVG data URIs (e.g., `--squircle-mask-md: url("data:image/svg+xml,<svg ...>")`). These long data URIs contain characters that React's HTML serializer and the browser may encode differently during SSR vs client hydration. Specifically, the `<`, `>`, and `'` characters in the SVG data URI may be entity-encoded differently by the server (Node.js) and the browser's HTML parser, causing React to log hydration mismatch warnings.
+
+**Why it happens:**
+React 18+ performs strict hydration checking. When the server renders a `style` attribute or CSS custom property containing `url("data:image/svg+xml,<svg ...")`, Node.js's HTML serializer may encode angle brackets as `&lt;`/`&gt;`. The browser then decodes these during parsing, producing different innerHTML than what React expects during hydration comparison.
+
+**Consequences:**
+- Console floods with hydration mismatch warnings in development
+- React may discard server-rendered markup and re-render client-side (performance hit)
+- In React 19 (used by Next.js 15), hydration errors are more prominent and visible
+
+**Detection:**
+Console warnings: "Text content did not match" or "Hydration failed because the initial UI does not match what was rendered on the server."
 
 **Prevention:**
-- The sticky header (`.liquid-header-backdrop`) must not have an ancestor with `border-radius` + `overflow` combo.
-- If a scrollable container needs rounded corners, apply `border-radius` via a separate wrapper that does NOT have `overflow` set, or use `clip-path` instead of `overflow: hidden` for rounding.
-- Workaround: add `filter: blur(0px)` or `z-index: 1` to the ancestor with `border-radius` + `overflow`.
+1. **Keep squircle masks in CSS files, NOT in JSX inline styles.** The current approach of defining `--squircle-mask-*` in `theme.css` via `@theme inline` and consuming via `.squircle-*` utility classes in `squircles.css` is already correct. Do NOT move these to React inline styles.
+2. **If using `@squircle-js/react`** (as mentioned in PROJECT.md target features): this library uses JavaScript to compute mask paths at runtime. It provides a `SquircleNoScript` component for SSR fallback. Wrap squircle components with `suppressHydrationWarning` if client-computed paths differ from server fallback:
+   ```tsx
+   <div suppressHydrationWarning className="squircle-wrapper">
+     <Squircle cornerRadius={24} cornerSmoothing={0.6}>
+       {children}
+     </Squircle>
+   </div>
+   ```
+3. **Recommended approach for this project:** Keep the current CSS-only squircle system (`mask-image` + `@supports (corner-shape: squircle)` PE) rather than adding `@squircle-js/react`. The CSS approach has zero hydration risk, zero JS cost, and already works across the three-tier degradation path. The React library adds JS dependency for something CSS handles.
 
-**Phase:** Phase 1 (cross-browser hardening).
+**Phase:** Phase 2 (component extraction). Decision needed: CSS squircles (keep) vs @squircle-js/react (adds complexity).
 
 **Sources:**
-- [Firefox Bug 1803813](https://bugzilla.mozilla.org/show_bug.cgi?id=1803813)
+- [Next.js: Text content does not match server-rendered HTML](https://nextjs.org/docs/messages/react-hydration-error)
+- Current codebase: `theme.css` lines 93-96, `squircles.css` lines 56-148
 
 ---
 
-### Pitfall 7: mix-blend-mode + backdrop-filter Interaction Causes Double Application
+### Pitfall 7: Docker Standalone Output Missing Static Assets and Sharp Binary
 
 **What goes wrong:**
-When using `mix-blend-mode` for adaptive tinting on glass elements, the filter effects (blur, brightness, saturate) get applied TWICE to the portion of the image that has been backdrop-filtered. This creates an unnaturally saturated, overly bright appearance. The problem compounds exponentially if glass elements are nested.
+Two compounding issues with `output: 'standalone'` in Next.js Docker deployments:
+
+**Issue A:** The standalone output does NOT copy the `public/` folder or `.next/static/` folder. If you only copy `.next/standalone/` into your Docker image, all static assets (images, fonts, favicons) return 404 in production.
+
+**Issue B:** The `sharp` package (required for `next/image` optimization) is not included in standalone output by default. If you use `<Image>` components (which you should for WebP/AVIF conversion), the image optimization endpoint crashes with "sharp is required to be installed in standalone mode."
+
+**Issue C:** Sharp's native binaries are platform-specific. If you build on macOS (arm64) and deploy to Linux Docker (x64), the sharp binary is for the wrong platform.
 
 **Why it happens:**
-Per the CSS Filter Effects Level 2 spec, `backdrop-filter` captures the backdrop image, applies filters to it, then composites the result. If the element also has `mix-blend-mode`, the blending operation applies to the already-filtered result, and filters from ancestor stacking contexts may re-apply to the filtered region. The spec explicitly warns about this in the "Backdrop Root" definition.
+Standalone mode is designed for minimal deployment footprint. It intentionally excludes static files (expected to be served by CDN/Nginx) and optional native dependencies. This is documented but consistently missed in Docker configurations.
+
+**Consequences:**
+- All self-hosted Inter/Manrope fonts return 404 (currently in `fonts/` directory)
+- Hero illustrations and SVG icons don't load
+- `next/image` optimization fails, serving unoptimized images or crashing
+- Production deploy appears to work (server starts) but pages are visually broken
+
+**Detection:**
+- 404 errors in browser DevTools for font files, images, and static JS chunks
+- Console error: "sharp is required to be installed in standalone mode"
+- Pages load with system fonts instead of Inter/Manrope
 
 **Prevention:**
-- Do NOT apply `mix-blend-mode` directly to the glass element. Instead, use a pseudo-element (`::after`) with `mix-blend-mode` positioned above the glass content but below the text.
-- Test with extreme colors behind the glass -- oversaturation is most visible with red/orange backgrounds.
-- If adaptive tinting uses `mix-blend-mode: multiply` or `mix-blend-mode: color`, limit `saturate()` in the `backdrop-filter` to 120% max (not the current 180%).
-- NEVER nest glass inside glass. Current anti-pattern docs cover this -- maintain them.
+1. **Dockerfile must explicitly copy static assets:**
+   ```dockerfile
+   FROM node:20-slim AS runner
+   WORKDIR /app
+   
+   COPY --from=builder /app/.next/standalone ./
+   COPY --from=builder /app/.next/static ./.next/static
+   COPY --from=builder /app/public ./public
+   
+   # NOT Alpine! Sharp has issues with Alpine musl libc
+   ENV NODE_ENV=production
+   ENV PORT=3000
+   ENV HOSTNAME="0.0.0.0"
+   
+   EXPOSE 3000
+   CMD ["node", "server.js"]
+   ```
+2. **Install sharp explicitly and configure file tracing:**
+   ```bash
+   npm install sharp
+   ```
+   In `next.config.ts`:
+   ```ts
+   const nextConfig = {
+     output: 'standalone',
+     experimental: {
+       outputFileTracingIncludes: {
+         '/*': ['./node_modules/sharp/**/*', './node_modules/@img/**/*'],
+       },
+     },
+   };
+   ```
+3. **Use `node:20-slim` (Debian), NOT `node:20-alpine`** -- Sharp's native binaries have known compatibility issues with Alpine's musl libc.
+4. **Build inside Docker** (multi-stage) to ensure sharp compiles for the target architecture:
+   ```dockerfile
+   FROM node:20-slim AS builder
+   WORKDIR /app
+   COPY package*.json ./
+   RUN npm ci
+   COPY . .
+   RUN npm run build
+   ```
 
-**Phase:** Phase 2 or 3 (adaptive tinting implementation).
+**Phase:** Phase 5 (Docker/deployment). Should be set up early as a deployment skeleton.
 
 **Sources:**
-- [WebKit Bug 176830](https://bugs.webkit.org/show_bug.cgi?id=176830)
-- [Firefox Bug 1083241](https://bugzilla.mozilla.org/show_bug.cgi?id=1083241)
-- [W3C FXTF Issue #53](https://github.com/w3c/fxtf-drafts/issues/53)
+- [Next.js: output standalone docs](https://nextjs.org/docs/pages/api-reference/config/next-config-js/output)
+- [Next.js: Sharp Missing In Production](https://nextjs.org/docs/messages/sharp-missing-in-production)
+- [Next.js 15 Standalone Mode & Docker Optimization](https://javascript.plainenglish.io/next-js-15-self-hosting-with-docker-complete-guide-0826e15236da)
 
 ---
 
-### Pitfall 8: Device Orientation API Requires Explicit Permission on iOS
+### Pitfall 8: next/font/local Configuration Does Not Accept System Font local() Sources
 
 **What goes wrong:**
-Specular highlight physics (gyroscope-based light movement on mobile) silently fails on iOS 13+ because `DeviceOrientationEvent.requestPermission()` must be called from a user gesture (tap/click). Calling it on page load throws a security error. Android does not require this permission.
+The current project uses `local()` sources in `@font-face` to reference system-installed SF Pro Display and SF Pro Rounded (Apple system fonts). `next/font/local` requires actual font files (`.woff2`, `.ttf`, `.otf`) in the project -- it cannot reference system-installed fonts via `local()` source descriptors. Attempting to use `next/font/local` without providing font files will fail at build time.
 
 **Why it happens:**
-Apple added mandatory permission gating in iOS 13 beta 2 (2019) for accelerometer/gyroscope data. The API exists, but it requires HTTPS + user gesture + explicit permission dialog. If the user denies permission, the gyroscope is permanently blocked until the user manually resets permissions in Safari settings.
+`next/font/local` optimizes font delivery by hashing, subsetting, and preloading font files. It needs actual binary font files to process. The current `fonts.css` only uses `local('SF Pro Display')` which tells the browser "use the system font if installed, otherwise skip." This is a fundamentally different approach.
 
-**Prevention:**
-- Gate gyroscope features behind a "Try" button or first interaction with the glass element.
-- Check for `DeviceOrientationEvent.requestPermission` existence before calling:
-  ```javascript
-  if (typeof DeviceOrientationEvent !== 'undefined' &&
-      typeof DeviceOrientationEvent.requestPermission === 'function') {
-    // iOS path: request on user gesture
-    button.addEventListener('click', async () => {
-      const permission = await DeviceOrientationEvent.requestPermission();
-      if (permission === 'granted') { startGyroscope(); }
-    });
-  } else {
-    // Android/desktop: start immediately
-    startGyroscope();
-  }
-  ```
-- Provide a CSS-only fallback (parallax on `mousemove` for desktop, subtle CSS animation for mobile without gyroscope).
-- Do NOT show a permission dialog on page load -- medical audience 45+ will likely deny unexpected permission requests.
-- Consider: is gyroscope-driven specular highlight worth the UX friction of a permission dialog for a medical landing page? Probably not. Use mouse parallax on desktop and static highlight position on mobile instead.
+**Consequences:**
+- Build error: `next/font/local` cannot find font file
+- If bypassed by keeping raw `@font-face` in CSS, you lose `next/font`'s automatic font-display optimization, CSS variable injection, and preload hints
+- Users without Apple devices (most of the KZ market, which is Android-dominated) see fallback system fonts with no custom font at all
 
 **Detection:**
-- Test on a physical iPhone (iOS 13+). Simulator does not trigger permission requirement.
+Build-time error from `next/font/local`, or visual inspection showing system sans-serif instead of branded font on non-Apple devices.
 
-**Phase:** Phase 3 (specular highlight physics). Strongly recommend desktop-only parallax, skip mobile gyroscope entirely.
+**Prevention:**
+1. **Decision required: keep SF Pro as system-font-only, or bundle actual WOFF2 files?**
+   - SF Pro is Apple-proprietary. You CANNOT legally bundle SF Pro WOFF2 files for web distribution unless serving to Apple devices only.
+   - PROJECT.md history shows Inter + Manrope were the original brand fonts. SF Pro was introduced later.
+2. **Recommended approach: revert to Inter + Manrope with `next/font/google` or `next/font/local`:**
+   ```tsx
+   // app/layout.tsx
+   import { Inter, Manrope } from 'next/font/google';
+   
+   const inter = Inter({ subsets: ['latin', 'cyrillic'], variable: '--font-body' });
+   const manrope = Manrope({ subsets: ['latin', 'cyrillic'], variable: '--font-heading' });
+   
+   export default function RootLayout({ children }) {
+     return (
+       <html className={`${inter.variable} ${manrope.variable}`}>
+         <body>{children}</body>
+       </html>
+     );
+   }
+   ```
+   Or for self-hosted (recommended for data sovereignty compliance per PROJECT.md):
+   ```tsx
+   import localFont from 'next/font/local';
+   
+   const inter = localFont({
+     src: './fonts/Inter-Variable.woff2',
+     variable: '--font-body',
+     display: 'swap',
+   });
+   ```
+3. **Include `cyrillic` subset** -- the site is Russian-only. Missing Cyrillic subset means Cyrillic characters fall back to system font.
+4. **Update CSS tokens:** Replace `--font-family-body: 'SF Pro Display'` with `--font-family-body: var(--font-body)` to consume the CSS variable injected by `next/font`.
+
+**Phase:** Phase 1 (project scaffolding). Fonts must be configured before any component work.
 
 **Sources:**
-- [Device Orientation Permission in iOS 13 (Lee Martin)](https://leemartin.dev/how-to-request-device-motion-and-orientation-permission-in-ios-13-74fc9d6cd140)
-- [W3C Device Orientation spec](https://www.w3.org/TR/orientation-event/)
-- [DEV Community: requestPermission iOS 13+](https://dev.to/li/how-to-requestpermission-for-devicemotion-and-deviceorientation-events-in-ios-13-46g2)
+- [Next.js Font Optimization docs](https://nextjs.org/docs/app/getting-started/fonts)
+- [Fonts in Next.js (2026): next/font patterns, performance, and production pitfalls](https://thelinuxcode.com/fonts-in-nextjs-2026-nextfont-patterns-performance-and-production-pitfalls/)
+- Current codebase: `src/styles/fonts.css`
 
 ---
 
-### Pitfall 9: SVG feTurbulence Performance Destroys Mobile Scroll
+### Pitfall 9: Server Actions Form Validation Loses Progressive Enhancement Without Careful Architecture
 
 **What goes wrong:**
-SVG `feTurbulence` generates Perlin noise at render time. When used inside `backdrop-filter` (via `url(#filter)`), it recomputes on every frame during scroll. On an M4 Max MacBook Pro, community reports show visible judder; on budget Android devices, frame rates drop to single digits.
+The current form uses vanilla JS `fetch()` with client-side honeypot + timing-based spam protection. When migrating to Server Actions, developers commonly wire up the form with `useActionState` + Zod validation and assume progressive enhancement "just works." But several patterns break progressive enhancement (form works without JS):
+
+1. Using `onClick` handlers instead of `action` prop on `<form>`
+2. Using `event.preventDefault()` anywhere in the submit chain
+3. Relying on client-side state for form field values (controlled inputs)
+4. Not providing a `name` attribute on form fields (Server Actions read FormData)
 
 **Why it happens:**
-`feTurbulence` is CPU-rendered in all browsers (not GPU-accelerated). Each frame requires computing noise values for every pixel in the filter region. `numOctaves="2"` means 2x the computation. Combined with `feDisplacementMap` (which reads the noise output and displaces source pixels), the per-frame cost is proportional to `element_area * numOctaves`.
+React 19's Server Actions are progressively enhanced by default ONLY when used correctly: `<form action={serverAction}>`. Any deviation (like wrapping in `useTransition` with manual `event.preventDefault()`, or using a submit button with an `onClick`) breaks the native form POST fallback.
 
-**Prevention:**
-- NEVER animate `feTurbulence` parameters (`baseFrequency`, `seed`). Generate once, cache the result.
-- Reduce `numOctaves` to 1 for production. Visual difference between 1 and 2 octaves is minimal at blur distances.
-- Use `feGaussianBlur` to soften the noise BEFORE `feDisplacementMap` (current approach in the research reference uses `stdDeviation="2"` -- this is correct).
-- Limit refraction to 1-2 hero elements, not all glass cards.
-- Consider pre-rendering the displacement map as a PNG and using `feImage` instead of runtime `feTurbulence`. This trades a ~5KB asset for eliminating per-frame noise generation entirely.
-- Set `filterUnits="userSpaceOnUse"` with fixed dimensions to prevent recomputation on resize.
+**Consequences:**
+- Form appears to work during development (JS always loaded) but fails in production when:
+  - JS bundle hasn't loaded yet (user clicks submit during hydration)
+  - JS fails to load (network error, ad blocker)
+  - User has JS disabled
+- Honeypot spam protection (hidden field) still works with Server Actions
+- Timing-based spam protection (client-side timestamp) breaks without JS -- needs server-side alternative
 
 **Detection:**
-- Chrome DevTools > Performance tab > scroll recording shows long "Rasterize Paint" tasks.
-- Safari Web Inspector > Timeline shows SVG filter rendering as separate paint events.
+Disable JavaScript in browser DevTools and attempt to submit the form. If nothing happens, progressive enhancement is broken.
 
-**Phase:** Phase 2 (SVG refraction tuning). Pre-render displacement map as PNG for production.
+**Prevention:**
+1. **Use the `action` prop pattern, not `onSubmit`:**
+   ```tsx
+   // GOOD: Progressive enhancement works
+   <form action={submitConsultation}>
+     <input name="name" required />
+     <input name="phone" required type="tel" />
+     <select name="specialization" required>{/* options */}</select>
+     <textarea name="description" />
+     <input type="hidden" name="honeypot" value="" />
+     <button type="submit">Submit</button>
+   </form>
+   ```
+2. **Validate with Zod on the server AND use HTML validation attributes on the client:**
+   ```tsx
+   // actions/submit-consultation.ts
+   'use server';
+   import { z } from 'zod';
+   
+   const schema = z.object({
+     name: z.string().min(2),
+     phone: z.string().regex(/^\+7\d{10}$/),
+     specialization: z.enum(['oncology', 'cardiology', ...]),
+     description: z.string().optional(),
+     honeypot: z.literal(''), // Must be empty
+   });
+   ```
+3. **Replace timing-based spam protection** with a server-side approach:
+   - Include a hidden timestamp field set by JS on page load
+   - Server Action checks: if timestamp is missing (no JS), allow submission but flag for manual review
+   - If timestamp is present, check minimum elapsed time (e.g., >3 seconds)
+4. **Use `useActionState` for pending state display** (shows loading indicator WITH JS, degrades gracefully WITHOUT JS):
+   ```tsx
+   'use client';
+   import { useActionState } from 'react';
+   
+   function ConsultationForm() {
+     const [state, formAction, isPending] = useActionState(submitConsultation, initialState);
+     return (
+       <form action={formAction}>
+         {/* fields */}
+         <button type="submit" disabled={isPending}>
+           {isPending ? 'Sending...' : 'Submit'}
+         </button>
+       </form>
+     );
+   }
+   ```
+
+**Phase:** Phase 4 (form migration). High-impact for conversion -- must be tested with JS disabled.
 
 **Sources:**
-- [GSAP feTurbulence Mobile Performance](https://gsap.com/community/forums/topic/33075-gsap-and-feturbulence-mobile-performance/)
-- [Apple Liquid Glass research article (project reference)](compass_artifact)
+- [Next.js: How to create forms with Server Actions](https://nextjs.org/docs/app/guides/forms)
+- [Mastering forms in Next.js 15 and React 19](https://engineering.udacity.com/mastering-forms-in-next-js-15-and-react-19-e3d2d783946b)
+- Current codebase: PROJECT.md constraint -- form is the primary conversion mechanism
 
 ---
 
-### Pitfall 10: mask-image + box-shadow Clipping (Shadow-Wrap Pattern)
+### Pitfall 10: PostgreSQL Connection Exhaustion in Serverless-Style API Routes
 
 **What goes wrong:**
-Applying `box-shadow` to an element with `mask-image` causes the shadow to be clipped to the mask silhouette. Instead of a soft shadow around the element, you get two thin arcs or no visible shadow at all.
-
-**THIS IS A KNOWN PATTERN IN THE CODEBASE** -- documented in both `liquid-glass.css` and `squircles.css` header comments.
+Next.js API routes (and Server Actions) run in a serverless-like model even in self-hosted mode: each request may spawn a new handler. Without connection pooling, each API route invocation opens a new PostgreSQL connection. Under moderate traffic (e.g., multiple concurrent form submissions), PostgreSQL hits its `max_connections` limit (default: 100) and begins rejecting connections.
 
 **Why it happens:**
-CSS `mask-image` clips ALL visual output of the element, including box-shadow. This is per spec, not a bug. The shadow is rendered within the element's border box, then the mask is applied, clipping the shadow to the mask shape.
+The current Directus-based setup handles connection pooling internally. When replacing Directus with direct PostgreSQL access via `pg` or Prisma, connection management becomes the application's responsibility. Next.js does not provide built-in connection pooling.
 
-**Prevention:**
-- Use the shadow-wrap pattern: outer `<div>` with `box-shadow` + `border-radius`, inner element with `mask-image`.
-- OR use `filter: drop-shadow()` on a NON-glass parent (remember Pitfall 3: this breaks child backdrop-filter).
-- OR accept `border-radius` shadow (close visual match for most cases) and skip mask entirely on elements where shadow is critical.
-- In Chrome 139+ with `corner-shape: squircle`, `mask-image` is removed (progressive enhancement in `squircles.css`). `box-shadow` works natively. This is the ideal future state.
-- Current `.liquid-card-wrap` is marked DEPRECATED (comment says "use drop-shadow instead"), but drop-shadow was reverted (Pitfall 3). Need to UN-deprecate shadow-wrap or find a third approach.
+**Consequences:**
+- Form submissions fail intermittently under load: "too many connections for role"
+- Connection exhaustion cascades: one failed connection attempt holds a slot, making subsequent attempts fail faster
+- PostgreSQL performance degrades even before hitting the hard limit (each idle connection consumes ~5-10MB RAM)
 
 **Detection:**
-- Visual: shadow appears as thin arcs instead of soft glow around squircle elements.
-
-**Phase:** Phase 1. Reconcile the DEPRECATED comment with the drop-shadow revert. Either restore shadow-wrap as the canonical pattern or document the new approach.
-
----
-
-### Pitfall 11: isolation: isolate Creates Implicit Stacking Context Traps
-
-**What goes wrong:**
-Every `.liquid-regular`, `.liquid-card`, `.liquid-btn-secondary`, and `.stats-glass` element has `isolation: isolate`. This creates a new stacking context. Any `z-index` on descendant elements is scoped to that stacking context and cannot escape it. Modals, tooltips, dropdowns, or other overlays inside glass elements cannot appear above elements outside the glass element, regardless of z-index value.
-
-**Why it happens:**
-`isolation: isolate` is intentionally used in the glass system to prevent `mix-blend-mode` from bleeding into parent contexts. But it has the side effect of creating a stacking context boundary that traps z-index.
+PostgreSQL logs: `FATAL: too many connections for role "xxx"`. Intermittent 500 errors on form submission endpoint.
 
 **Prevention:**
-- Never place modals, tooltips, or dropdown menus as children of glass elements. Render them at the body level (or use a portal pattern).
-- The sticky header (`.liquid-header-backdrop`) must have a z-index higher than the glass cards' parent stacking contexts, not the glass cards themselves.
-- When adding new interactive elements (dropdowns in nav, tooltips on stats), verify they escape the glass element's stacking context.
-- Document: "Glass elements are stacking context roots. Overlays must be rendered outside glass elements."
+1. **Use a singleton connection pool pattern:**
+   ```tsx
+   // lib/db.ts
+   import { Pool } from 'pg';
+   
+   const globalForDb = globalThis as unknown as { pool: Pool };
+   
+   export const pool = globalForDb.pool ?? new Pool({
+     connectionString: process.env.DATABASE_URL,
+     max: 10, // Max pool size
+     idleTimeoutMillis: 30000,
+   });
+   
+   if (process.env.NODE_ENV !== 'production') {
+     globalForDb.pool = pool;
+   }
+   ```
+   The `globalThis` pattern prevents creating a new pool on every hot reload in development.
 
-**Detection:**
-- z-index on a child element has no effect beyond the glass parent.
-- A dropdown menu appears behind content below the glass card.
+2. **If using Prisma:**
+   ```tsx
+   // lib/prisma.ts
+   import { PrismaClient } from '@prisma/client';
+   
+   const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+   
+   export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+   
+   if (process.env.NODE_ENV !== 'production') {
+     globalForPrisma.prisma = prisma;
+   }
+   ```
 
-**Phase:** Phase 1 (design system documentation). Ongoing discipline for all phases.
+3. **Add PgBouncer in Docker Compose** for production:
+   ```yaml
+   services:
+     pgbouncer:
+       image: edoburu/pgbouncer:latest
+       environment:
+         DATABASE_URL: postgres://user:pass@postgres:5432/medicus
+         POOL_MODE: transaction
+         MAX_CLIENT_CONN: 200
+         DEFAULT_POOL_SIZE: 20
+       ports:
+         - "6432:6432"
+   ```
+   Point the Next.js app at PgBouncer (port 6432) instead of PostgreSQL directly.
 
----
+4. **Do NOT use Edge Runtime** for database-connected routes. Edge Runtime cannot use `pg` native module or Prisma's query engine. Keep API routes on Node.js runtime:
+   ```tsx
+   // app/api/submissions/route.ts
+   export const runtime = 'nodejs'; // Explicit -- do NOT use 'edge'
+   ```
 
-### Pitfall 12: Animating backdrop-filter Values Causes Full Repaint
+**Phase:** Phase 4 (API routes / database). Must be configured before any database-connected endpoint goes live.
 
-**What goes wrong:**
-Directly animating `backdrop-filter` properties (e.g., transitioning `blur(0px)` to `blur(24px)` on scroll) triggers a full repaint every frame. Unlike `transform` and `opacity` (which are compositor-only, GPU-cheap), `backdrop-filter` changes require re-rasterizing the entire filter area. This causes visible jank, especially on scroll-linked animations.
-
-**Why it happens:**
-`backdrop-filter` is not a compositor-only property. Changing its value requires the browser to re-capture the backdrop, re-apply the filter, and re-composite. This touches the CPU paint pipeline, not just the GPU compositor.
-
-**Prevention:**
-- NEVER transition/animate `backdrop-filter` values directly. The header scroll enhancement (`.header--scrolled` changes `--liquid-blur-md` from 24px to 60px) should use a class toggle (instant swap), not a CSS transition.
-- To "animate" a blur-in effect, use opacity on the entire glass element instead:
-  ```css
-  .glass { opacity: 0; transition: opacity 0.3s; }
-  .glass.visible { opacity: 1; }
-  ```
-- The shimmer sweep (`.shimmer-sweep::before`) correctly animates `transform` (not filter), which is compositor-only. Maintain this pattern.
-- The glint border (`.liquid-card::before`) animates `background-position`, which triggers repaint but is limited to a 2px-wide pseudo-element, so the cost is negligible. Acceptable.
-
-**Detection:**
-- Chrome DevTools > Performance > enable "Paint flashing" -- green flashes on scroll indicate repaints.
-- Smooth scroll with glass header should not show green flash on the header element during scroll.
-
-**Phase:** Phase 2 (GPU performance audit).
+**Sources:**
+- [PgBouncer: Database Connection Pooling](https://dev.to/whoffagents/pgbouncer-database-connection-pooling-that-actually-scales-4ek4)
+- [Scaling PostgreSQL with PgBouncer: Complete 2026 Guide](https://www.tamiltech.in/article/scaling-postgresql-connections-with-pgbouncer-the-complete-guide-for-2026)
 
 ---
 
 ## Minor Pitfalls
 
-### Pitfall 13: prefers-reduced-transparency Has Limited Browser Support
+Issues that cause confusion or wasted time but are quickly fixable.
+
+---
+
+### Pitfall 11: Metadata Streaming Places OG Tags Outside `<head>` on Client Navigation
 
 **What goes wrong:**
-The `@media (prefers-reduced-transparency: reduce)` query in `liquid-glass.css` (Section 14) only works in Chrome 118+ and Edge 118+. Safari and Firefox do not support it as of April 2026. Users on macOS who enable "Reduce transparency" in System Preferences will NOT get the opaque fallback in Safari.
+Next.js 15.1+ uses metadata streaming, which can cause `<meta>` tags (including Open Graph tags critical for social sharing) to render inside `<body>` instead of `<head>` during client-side navigation. Initial SSR renders metadata correctly in `<head>`, but after a soft navigation via `<Link>`, metadata may migrate.
+
+**Why it happens:**
+Streaming SSR sends the `<head>` content before the page component resolves. When `generateMetadata` is async (e.g., fetching data), the metadata may arrive after the `<head>` has already been flushed to the client. On client navigation, React reconciles metadata differently than on initial load.
+
+**Consequences:**
+- Social sharing previews (WhatsApp, Telegram -- primary sharing channels for KZ audience) may show incorrect or missing OG data if the share URL is a client-navigated page
+- SEO crawlers that execute JS may index metadata from the wrong location
+- Lighthouse SEO audit may flag missing meta tags
 
 **Prevention:**
-- Keep the media query (it is correct for progressive enhancement).
-- For Safari/macOS users, consider adding a manual toggle in the page UI alongside the dark mode toggle.
-- Firefox support is not expected soon (no public intent).
-- The `prefers-reduced-motion` query (Section 13) has universal support and serves as a partial fallback for motion-sensitive users.
+1. **Use static `metadata` export (not `generateMetadata`) for all pages** -- this landing site has no dynamic content that requires async metadata resolution:
+   ```tsx
+   // app/page.tsx
+   import type { Metadata } from 'next';
+   
+   export const metadata: Metadata = {
+     title: 'MedicusUnion KZ - Online Consultations with European Doctors',
+     description: 'Get a second opinion from doctors in Germany, Israel, Switzerland...',
+     openGraph: {
+       title: 'MedicusUnion KZ',
+       description: '...',
+       images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
+     },
+   };
+   ```
+2. **Do NOT use `generateMetadata` unless you genuinely need dynamic data** (e.g., CMS-driven page titles). For a static landing page, the static export is always correct.
+3. **Test social sharing** with the actual production URL using Facebook Sharing Debugger and Telegram's link preview by pasting the URL.
 
-**Phase:** Phase 1 (cross-browser hardening). Low effort, add a comment noting limited support.
+**Phase:** Phase 1 (scaffolding). Set up correct metadata pattern from the start.
 
 **Sources:**
-- [Can I Use: prefers-reduced-transparency](https://caniuse.com/wf-prefers-reduced-transparency)
+- [The metadata streaming controversy in Next.js 15.1+](https://neuralcovenant.com/2025/06/the-metadata-streaming-controversy-in-next.js-15.1-/)
+- [Next.js: generateMetadata docs](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
 
 ---
 
-### Pitfall 14: Print Stylesheet Must Neutralize ALL Glass Effects
+### Pitfall 12: Tailwind v4 @theme inline Tokens May Not Survive Next.js PostCSS Pipeline Without Explicit Configuration
 
 **What goes wrong:**
-The current print stylesheet (Section 11, liquid-glass.css) correctly disables backdrop-filter, background, box-shadow, and shimmer. However, it does NOT disable:
-- The glint border animation (`.liquid-card::before`)
-- The specular rim lights (`.liquid-regular::before`, `.liquid-btn-secondary::before`, `.stats-glass::before`)
-- The header backdrop (`.liquid-header-backdrop`)
-- Scroll-fade masks on content (content may be clipped in print)
-- Section tints (`.section-tint-*` gradients -- harmless but waste ink)
-- Future: refraction SVG filters, adaptive tinting, fluted glass patterns
+The current project uses Tailwind v4's `@theme inline` directive in `theme.css` to register 60+ custom design tokens (colors, shadows, spacing, squircle masks). When migrating to Next.js, the PostCSS pipeline may process CSS differently than the current standalone Tailwind CLI build. If Tailwind v4 is not correctly configured as the PostCSS plugin, `@theme inline`, `@custom-variant`, and `@source` directives may be passed through as raw text (unprocessed), causing all utility classes to be missing.
+
+**Why it happens:**
+Next.js has its own PostCSS pipeline. Tailwind v4 can run as either a standalone CLI or a PostCSS plugin. If `postcss.config.js` is missing or misconfigured, Next.js uses its default PostCSS setup which does not include Tailwind v4. Unlike Tailwind v3 which required explicit `tailwindcss` in PostCSS config, Tailwind v4 auto-detects but only when properly installed.
+
+**Consequences:**
+- Zero Tailwind utility classes render -- all `bg-mu-green-50`, `text-mu-text-900`, etc. produce no CSS
+- Glass shadow tokens (`--shadow-glass-*`), squircle mask tokens (`--squircle-mask-*`), and spacing tokens don't exist
+- The page appears completely unstyled or only has base HTML styling
+
+**Detection:**
+- Page renders with default browser styles (Times New Roman, no colors, no spacing)
+- Browser DevTools shows no Tailwind-generated CSS rules
+- Build warnings about unrecognized CSS at-rules (`@theme`, `@custom-variant`, `@source`)
 
 **Prevention:**
-- Extend the print stylesheet to cover ALL glass-related pseudo-elements and effects.
-- Add `display: none !important` for all decorative pseudo-elements in `@media print`.
-- Ensure scroll-fade masks are removed (already done for `.scroll-fade-top`/`.scroll-fade-bottom` but verify completeness).
-- As new glass effects are added in v5.0, add corresponding print overrides. Make this a checklist item for every new glass class.
+1. **Install Tailwind v4 as a PostCSS plugin for Next.js:**
+   ```bash
+   npm install tailwindcss@latest @tailwindcss/postcss
+   ```
+2. **Create `postcss.config.mjs`:**
+   ```js
+   export default {
+     plugins: {
+       '@tailwindcss/postcss': {},
+     },
+   };
+   ```
+3. **Update `@source` directive** in the CSS entry point to scan `.tsx` files instead of `.html`:
+   ```css
+   /* Current: */
+   @source '../../*.html';
+   /* Migration: */
+   @source '../app/**/*.{tsx,ts}';
+   @source '../components/**/*.{tsx,ts}';
+   ```
+4. **Verify by checking the rendered page** for any Tailwind utility class applying correctly (e.g., `bg-background` should produce a white background).
 
-**Phase:** Each phase that adds a new glass effect must update the print stylesheet.
-
----
-
-### Pitfall 15: Samsung Internet Browser Lag on backdrop-filter
-
-**What goes wrong:**
-Samsung Internet (Chromium-based, ~5% global market share, higher in KZ due to Samsung device prevalence) renders `backdrop-filter` correctly but with worse performance than stock Chrome. Samsung's Chromium fork adds browser-level overlays and effects that compete for GPU resources with glass elements.
-
-**Prevention:**
-- Test on a real Samsung device with Samsung Internet, not just Chrome on Android.
-- Samsung Internet versions 25+ (Chromium 121+) have improved compositor performance.
-- The 5-element-per-viewport budget (Pitfall 4) is especially important for Samsung Internet.
-- If Samsung Internet performance is unacceptable, detect it via user-agent and reduce glass effects.
-
-**Phase:** Phase 2 (GPU performance audit). Include Samsung Internet in test matrix.
-
----
-
-### Pitfall 16: Squircle Mask Distortion During CSS Transforms
-
-**What goes wrong:**
-SVG `mask-image` data-URI masks distort during CSS `transform: rotate()`. The mask is applied in element-local coordinates, but rotation changes the relationship between the mask and the element, causing visible artifacts at corners.
-
-**THIS IS ALREADY DOCUMENTED** in `squircles.css` anti-patterns: "NEVER apply squircle to rotating elements."
-
-**Prevention:**
-- Keep `border-radius` on rotating elements (icon chips, loading spinners).
-- The 15 rotating icon chips across the pages correctly use `rounded-*` instead of `squircle-*`.
-- `transform: scale()` and `transform: translateY()` are safe with squircle masks (no rotation component).
-- Chrome 139+ `corner-shape: squircle` handles rotation correctly (native rendering, not mask-based).
-
-**Phase:** Ongoing. No action needed beyond maintaining current discipline.
-
----
-
-### Pitfall 17: Overflow: hidden on Glass Parent Kills Backdrop-Filter
-
-**What goes wrong:**
-Adding `overflow: hidden` to a glass element's parent can break `backdrop-filter` in specific browser combinations. The blur effect disappears or renders incorrectly because the overflow clipping creates an intermediate rendering surface that becomes the backdrop instead of the actual page content.
-
-**Prevention:**
-- Avoid `overflow: hidden` on direct parents of glass elements. Use `overflow: clip` instead (which does not create a new stacking context or block formatting context).
-- Current codebase uses `overflow-x: clip` on `html` element (correct, documented in theme.css comments).
-- If clipping is needed for decorative overflow (floating badges, mesh-bg blobs), apply it to a separate wrapper that is NOT an ancestor of glass elements.
-
-**Phase:** Phase 1 (cross-browser hardening).
+**Phase:** Phase 1 (project scaffolding). This blocks everything -- no styling works without it.
 
 **Sources:**
-- [CSS Backdrop-Filter Overflow Hidden Fix Guide (2026)](https://copyprogramming.com/howto/transitioning-backdrop-filter-blur-on-an-element-with-overflow-hidden-parent-is-not-working)
-
----
-
-### Pitfall 18: White-on-White Glass Invisibility
-
-**What goes wrong:**
-Glass elements on white/near-white section backgrounds are invisible because `backdrop-filter: blur()` on white blurs white into white. The frosted glass effect requires color variation in the backdrop to produce a visible result.
-
-**THIS ALREADY HAPPENED IN THIS PROJECT.** Documented in `.planning/debug/invisible-glass-on-white.md`. Fixed by raising `--liquid-bg` to `0.42` opacity and adding section tint utility classes (`.section-tint-cool`, `.section-tint-warm`, `.section-tint-mint`).
-
-**Prevention:**
-- Every section that contains glass elements MUST have a non-white background or a section tint applied.
-- When adding new pages or sections, always apply a section tint class.
-- Consider making glass cards automatically apply a subtle gradient background via their own CSS, independent of section tints.
-- Verify glass visibility on inner pages (not just index.html with its mesh-bg).
-
-**Phase:** Already resolved. Maintain discipline when adding new sections.
+- [Tailwind CSS v4 docs: PostCSS plugin](https://tailwindcss.com/docs/installation/using-postcss)
+- Current codebase: `src/styles/tailwind.css`, `src/styles/theme.css`
 
 ---
 
 ## Phase-Specific Warnings
 
-| Phase Topic | Likely Pitfall | Severity | Mitigation |
-|-------------|---------------|----------|------------|
-| SVG refraction tuning | feTurbulence CPU cost (P9), Chromium-only (P2) | HIGH | Pre-render displacement PNG, gate behind JS probe |
-| Adaptive tinting (mix-blend-mode) | Double filter application (P7), oversaturation | MEDIUM | Use pseudo-element for blend, cap saturate at 120% |
-| Specular highlight physics (gyroscope) | iOS permission (P8), UX friction for 45+ | MEDIUM | Desktop-only parallax; skip mobile gyroscope |
-| Fluted glass variant | SVG filter performance (P9), Chromium-only (P2) | HIGH | CSS-only vertical streak pattern, not SVG filter |
-| Clear glass variant | WCAG contrast failure (P5), reduced readability | HIGH | Minimum 0.65 opacity, dimming layer behind text |
-| GPU performance audit | Layer explosion (P4), Samsung Internet (P15) | CRITICAL | 5-element budget, test on budget Android |
-| Cross-browser hardening | Safari CSS vars (P1), Firefox sticky (P6) | CRITICAL | Hardcoded fallbacks, test matrix |
-| Design system docs | Shadow-wrap confusion (P10, P3), stacking traps (P11) | MEDIUM | Clear docs with anti-pattern examples |
-| Dead code cleanup | Deprecated .liquid-card-wrap inconsistency (P10) | LOW | UN-deprecate or replace with new pattern |
-| Dark mode glass | White-on-dark already tuned (P18 inverse) | LOW | Current values (0.45 opacity) are correct |
+| Phase | Likely Pitfall | Mitigation | Severity |
+|-------|---------------|------------|----------|
+| Phase 1: Scaffolding | Tailwind v4 @theme not processed (Pitfall 12) | Verify PostCSS config FIRST before any other work | BLOCKER |
+| Phase 1: Scaffolding | CSS import order diverges dev/prod (Pitfall 2) | Single CSS entry point, `sideEffects: ["*.css"]` | HIGH |
+| Phase 1: Scaffolding | Dark mode FOUC (Pitfall 4) | Middleware + cookie, or next-themes with inline script | HIGH |
+| Phase 1: Scaffolding | Font configuration failure (Pitfall 8) | next/font/local with actual WOFF2 files, not local() sources | HIGH |
+| Phase 1: Scaffolding | Metadata placement (Pitfall 11) | Static metadata export, not generateMetadata | MEDIUM |
+| Phase 2: Components | backdrop-filter stripped by Turbopack (Pitfall 1) | Reverse declaration order: standard before -webkit- | HIGH |
+| Phase 2: Components | SVG filter ID conflicts (Pitfall 3) | Single SvgDefs component in root layout | HIGH |
+| Phase 2: Components | Squircle hydration warnings (Pitfall 6) | Keep CSS-only squircles, avoid @squircle-js/react | MEDIUM |
+| Phase 3: Animations | Framer Motion bundle bloat (Pitfall 5) | LazyMotion + m components, CSS for simple animations | HIGH |
+| Phase 4: Forms/API | Form progressive enhancement broken (Pitfall 9) | form action={}, not onSubmit; test with JS disabled | HIGH |
+| Phase 4: Forms/API | PostgreSQL connection exhaustion (Pitfall 10) | Singleton pool + PgBouncer in Docker Compose | HIGH |
+| Phase 5: Deployment | Docker missing static assets / sharp (Pitfall 7) | Explicit COPY for public/ and .next/static/, install sharp, use node:20-slim | HIGH |
 
-## Integration-Specific Warnings
+---
 
-These pitfalls are specific to adding v5.0 features to the EXISTING v4.0 codebase.
+## Cross-Cutting Concerns
 
-### Adding refraction to existing glass classes
-The `html[data-refract="true"]` selector pattern (Section 10) is correct. When adding fluted glass or clear glass variants, follow the SAME gating pattern. Do not create new gating attributes -- reuse `data-refract` or create `data-fluted` with the same JS probe discipline.
+### Glass Effects Are the Highest-Risk Migration Area
 
-### Changing --liquid-bg opacity for clear glass
-Clear glass needs lower opacity (~0.15-0.25). If implemented by changing `--liquid-bg`, it will break the WCAG contrast floor established for regular glass. Create separate tokens: `--liquid-bg-clear`, `--liquid-bg-regular`.
+The glass design system (`liquid-glass.css` at 568 lines, `squircles.css` at 148 lines, `theme.css` at 418 lines) represents the most fragile part of the migration. Three separate pitfalls (#1, #2, #6) directly affect glass rendering. The glass system relies on:
 
-### Adding new pseudo-elements to glass classes
-`.liquid-card` already uses BOTH `::before` (glint border) and `::after` (specular radial gradient). If a new effect needs a pseudo-element on `.liquid-card`, it must be done via a child `<div>` or the existing pseudo-element must be composited with the new effect using `background` shorthand with multiple gradients.
+1. **CSS custom property cascade** (theme.css -> liquid-glass.css) -- broken by import order divergence
+2. **Vendor prefix ordering** (-webkit-backdrop-filter before backdrop-filter) -- broken by Turbopack
+3. **SVG data URI mask-image** -- potential hydration serialization differences
+4. **SVG filter ID references** -- broken by React component instantiation model
+5. **`::before`/`::after` pseudo-elements** for specular highlights, glint borders, fluted textures -- these render correctly in React but need explicit `content: ''` (CSS handles this, not JSX)
 
-### Increasing glass element count per page
-v4.0 has roughly 6-8 glass elements per page. v5.0 features (fluted, clear, adaptive tinting) risk increasing this to 15+. Each new glass variant should be audited against the 5-per-viewport budget (Pitfall 4). Some effects may need to be CSS-only (no backdrop-filter) to stay within budget.
+**Recommendation:** Migrate glass CSS files AS-IS (no rewrite to Tailwind utilities) and wrap in a visual regression test suite before touching any glass-related code. The glass CSS is 100% framework-agnostic -- it works identically whether consumed by HTML or React.
 
-## Sources Summary
+### The "use client" Boundary Tax
 
-### Official Bug Trackers
-- [WebKit Bug 176830: mix-blend-mode + backdrop-filter](https://bugs.webkit.org/show_bug.cgi?id=176830)
-- [WebKit Bug 158807: backdrop-filter artifacts on rounded borders](https://bugs.webkit.org/show_bug.cgi?id=158807)
-- [WebKit Bug 224899: Unprefix -webkit-backdrop-filter](https://bugs.webkit.org/show_bug.cgi?id=224899)
-- [Firefox Bug 1803813: backdrop-filter + border-radius + overflow + sticky](https://bugzilla.mozilla.org/show_bug.cgi?id=1803813)
-- [Firefox Bug 1083241: mix-blend-mode + filters](https://bugzilla.mozilla.org/show_bug.cgi?id=1083241)
-- [Firefox Bug 1718471: backdrop-filter lag with many elements](https://bugzilla.mozilla.org/show_bug.cgi?id=1718471)
+Every component that uses Framer Motion, dark mode toggle, form state, or any browser API must be marked `"use client"`. This creates a "boundary tax" where Server Component benefits (zero JS shipped, direct database access, streaming) are lost for that subtree. For a landing page where the entire visible content is interactive (glass hover effects, scroll animations, accordion, form), the risk is that EVERYTHING becomes a Client Component, making the Next.js migration a net negative for performance.
 
-### Compatibility Data
-- [mdn/browser-compat-data #25914: Safari CSS variables in backdrop-filter](https://github.com/mdn/browser-compat-data/issues/25914)
-- [mdn/browser-compat-data #24110: SVG filters not supported in backdrop-filter](https://github.com/mdn/browser-compat-data/issues/24110)
-- [Can I Use: backdrop-filter](https://caniuse.com/css-backdrop-filter)
-- [Can I Use: prefers-reduced-transparency](https://caniuse.com/wf-prefers-reduced-transparency)
+**Mitigation:** Design the component tree so that content-heavy sections (text, images, static glass cards) are Server Components, and only interactive leaves (animated cards, theme toggle, form) are Client Components. This requires explicit architectural planning BEFORE component extraction.
 
-### Performance References
-- [Smashing Magazine: CSS GPU Animation: Doing It Right](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/)
-- [Chromium GPU Compositing Design](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)
-- [Chrome DevTools: Hardware-Accelerated Animation](https://developer.chrome.com/blog/hardware-accelerated-animations)
-- [shadcn-ui #327: CSS Backdrop filter performance issues](https://github.com/shadcn-ui/ui/issues/327)
+---
 
-### Accessibility
-- [WCAG 2.1 SC 1.4.3: Contrast Minimum](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
-- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+## Sources
 
-### Project History
-- `.planning/debug/invisible-glass-on-white.md` -- white-on-white glass bug
-- `.planning/debug/knowledge-base.md` -- v4.0 resolved debug sessions
-- Git commit `ba29f8a` -- drop-shadow breaks backdrop-filter children
-- Git commit `a6379f7` -- mask-repeat: no-repeat for Safari
+- [GitHub Issue #78302: CSS backdrop-filter disappears in Next.js 15.3.0/15.3.1 with Turbopack](https://github.com/vercel/next.js/issues/78302) -- OPEN, confirmed by Turbopack team
+- [GitHub Issue #79531: CSS import order differs between dev turbopack and prod webpack](https://github.com/vercel/next.js/issues/79531) -- confirmed
+- [GitHub Issue #79535: Missing CSS styles after upgrading from 15.2.x to 15.3.x](https://github.com/vercel/next.js/issues/79535)
+- [GitHub PR #13997: Always generate -webkit-backdrop-filter property](https://github.com/tailwindlabs/tailwindcss/pull/13997) -- Tailwind v4 fix
+- [Motion.dev: Reduce bundle size](https://motion.dev/docs/react-reduce-bundle-size) -- official LazyMotion docs
+- [Next.js: Font Optimization](https://nextjs.org/docs/app/getting-started/fonts) -- next/font/local and next/font/google
+- [Next.js: Output Standalone](https://nextjs.org/docs/pages/api-reference/config/next-config-js/output) -- Docker standalone docs
+- [Next.js: Sharp Missing In Production](https://nextjs.org/docs/messages/sharp-missing-in-production)
+- [Next.js: Server Actions and Forms](https://nextjs.org/docs/app/guides/forms)
+- [Next.js: generateMetadata](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
+- [Next.js: Hydration Error Messages](https://nextjs.org/docs/messages/react-hydration-error)
+- [next-themes GitHub: Perfect Next.js dark mode](https://github.com/pacocoursey/next-themes)
+- [Next.js Discussion #53063: Dark mode with App Router + RSC](https://github.com/vercel/next.js/discussions/53063)
+- [Fixing Dark Mode Flickering (FOUC) in React and Next.js](https://notanumber.in/blog/fixing-react-dark-mode-flickering)
+- [Framer Motion: Complete React & Next.js Guide 2026](https://inhaq.com/blog/framer-motion-complete-guide-react-nextjs-developers)
+- [Next.js 15 Standalone Mode & Docker Optimization](https://javascript.plainenglish.io/next-js-15-self-hosting-with-docker-complete-guide-0826e15236da)
+- [Fonts in Next.js (2026): next/font patterns and production pitfalls](https://thelinuxcode.com/fonts-in-nextjs-2026-nextfont-patterns-performance-and-production-pitfalls/)
+- [The metadata streaming controversy in Next.js 15.1+](https://neuralcovenant.com/2025/06/the-metadata-streaming-controversy-in-next.js-15.1-/)
