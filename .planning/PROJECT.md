@@ -12,8 +12,8 @@
 
 ## Current State
 
-**Shipped:** v4.0 Liquid Design System (2026-04-09) — latest
-**In progress:** None — milestone cycle complete
+**Shipped:** v4.0 Liquid Design System (2026-04-09)
+**In progress:** v5.0 Full Liquid Glass Rework
 **Codebase:** 7 production pages + styleguide, shared chrome via partials (5 partials, POSIX-sh splicer), Liquid Glass design system (squircle masks, glass materials, 3 differentiator effects), full SEO/a11y/WCAG AA baseline, `make build` canonical entry point, byte-identity pre-commit hook
 **Stack:** HTML + Tailwind CSS v4 (CLI standalone, pinned v4.2.2) + vanilla JS + Motion CDN, Directus 11 + PostgreSQL 16 via Docker, nginx deploy target
 
@@ -65,6 +65,23 @@
 - ✓ Micro-animations: scroll-reveal translateY(20px)/0.4s, button :active scale(0.97)/100ms, prefers-reduced-motion guard — v1.4
 
 ### Active
+
+## Current Milestone: v5.0 Full Liquid Glass Rework
+
+**Goal:** Довести Liquid Glass до максимальной визуальной точности Apple WWDC 2025 — полный набор эффектов, performance optimization, cross-browser hardening, design system docs.
+
+**Target features:**
+- SVG refraction tuning (displacement scale, noise patterns, per-element calibration)
+- Adaptive tinting (CSS mix-blend-mode approach for color-shifting glass)
+- Specular highlight physics (gyroscope/device orientation on mobile, parallax on desktop)
+- Fluted glass variant (.liquid-fluted with vertical streak pattern)
+- Clear glass variant (.liquid-clear — higher transparency, dimming layer)
+- GPU performance audit and optimization (will-change budget, composite layers, paint profiling)
+- Cross-browser hardening (Safari backdrop-filter quirks, Firefox fallbacks, Android Chrome testing)
+- Design system documentation (Styleguide page update with all glass variants, usage guidelines)
+- Dead code cleanup (remove unused tokens from CSS audit, clean .liquid-card-wrap wrappers)
+
+**Reference:** Apple Liquid Glass WWDC 2025 research article
 
 ### Out of Scope
 
@@ -149,4 +166,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone completion*
+*Last updated: 2026-04-10 after v5.0 milestone start*
