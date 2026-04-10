@@ -130,8 +130,8 @@ Plans:
   4. make build exits 0, byte-identity check passes, and all 7 pages render identically to pre-cleanup state (visual regression check)
 **Plans**: 2 plans
 Plans:
-- [ ] 52-01-PLAN.md — Remove legacy tokens and dead CSS file
-- [ ] 52-02-PLAN.md — Remove liquid-card-wrap wrappers from HTML and CSS
+- [x] 52-01-PLAN.md — Remove legacy tokens and dead CSS file
+- [x] 52-02-PLAN.md — Remove liquid-card-wrap wrappers from HTML and CSS
 
 ### Phase 53: SVG Refraction Tuning
 **Goal**: The SVG refraction filter is calibrated per-element for optimal visual fidelity without excessive GPU cost -- displacement scale and noise frequency are tuned to each glass surface's size and context
@@ -219,7 +219,7 @@ Strictly linear -- each phase builds on the previous.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 51. Cross-Browser Hardening | 2/2 | Complete | 2026-04-10 |
-| 52. Token Foundation & Dead Code Cleanup | 0/TBD | Not started | - |
+| 52. Token Foundation & Dead Code Cleanup | 2/2 | Complete    | 2026-04-10 |
 | 53. SVG Refraction Tuning | 0/TBD | Not started | - |
 | 54. Adaptive Tinting | 0/TBD | Not started | - |
 | 55. Glass Material Variants & Hierarchy | 0/TBD | Not started | - |
