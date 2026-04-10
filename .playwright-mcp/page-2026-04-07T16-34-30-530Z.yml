@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "MedicusUnion" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+      - button "Открыть меню" [ref=e5]:
+        - img [ref=e6]
+  - main [ref=e7]:
+    - generic [ref=e8]:
+      - generic [ref=e9]: "404"
+      - heading "Страница не найдена" [level=1] [ref=e10]
+      - paragraph [ref=e11]: Эту страницу либо перенесли, либо она ещё не появилась. Откройте главную или напишите координатору.
+      - link "На главную" [ref=e12] [cursor=pointer]:
+        - /url: index.html
+        - img [ref=e13]
+        - text: На главную
+  - contentinfo [ref=e15]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - heading "MedicusUnion" [level=3] [ref=e20]
+          - paragraph [ref=e21]: Международная медицинская платформа
+          - paragraph [ref=e22]: MedicusUnion GmbH · Billrothstrasse 78, 1190 Vienna, Austria
+          - paragraph [ref=e23]: ТОО «MedicusUnion KZ» · Казахстан, Алматы · Резидент Astana Hub
+        - generic [ref=e24]:
+          - heading "Услуги" [level=4] [ref=e25]
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "Онлайн-консультации" [ref=e28] [cursor=pointer]:
+                - /url: online-consultations.html
+            - listitem [ref=e29]:
+              - link "Лечение за рубежом" [ref=e30] [cursor=pointer]:
+                - /url: treatment-abroad.html
+            - listitem [ref=e31]:
+              - link "Чек-апы" [ref=e32] [cursor=pointer]:
+                - /url: checkup.html
+        - generic [ref=e33]:
+          - heading "Навигация" [level=4] [ref=e34]
+          - list [ref=e35]:
+            - listitem [ref=e36]:
+              - link "Главная" [ref=e37] [cursor=pointer]:
+                - /url: index.html
+            - listitem [ref=e38]:
+              - link "Клиники и врачи" [ref=e39] [cursor=pointer]:
+                - /url: index.html#clinics
+            - listitem [ref=e40]:
+              - link "О компании" [ref=e41] [cursor=pointer]:
+                - /url: index.html#why-us
+            - listitem [ref=e42]:
+              - link "Контакты" [ref=e43] [cursor=pointer]:
+                - /url: contacts.html
+            - listitem [ref=e44]:
+              - link "Политика конфиденциальности" [ref=e45] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e46]:
+          - heading "Контакты" [level=4] [ref=e47]
+          - list [ref=e48]:
+            - listitem [ref=e49]:
+              - link "+7 701 532 24 78" [ref=e50] [cursor=pointer]:
+                - /url: tel:+77015322478
+                - img [ref=e52]
+                - text: +7 701 532 24 78
+            - listitem [ref=e54]:
+              - link "kz@medicusunion.com" [ref=e55] [cursor=pointer]:
+                - /url: mailto:kz@medicusunion.com
+                - img [ref=e57]
+                - text: kz@medicusunion.com
+          - generic [ref=e60]:
+            - link "App Store" [ref=e61] [cursor=pointer]:
+              - /url: "#"
+            - link "Google Play" [ref=e62] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e64]:
+        - paragraph [ref=e65]: © 2026 MedicusUnion. Все права защищены.
+        - paragraph [ref=e66]:
+          - generic [ref=e67]:
+            - img [ref=e68]
+            - text: ISO 27001 · GDPR · Защита персональных данных
+          - generic [ref=e71]: Astana Hub Resident
+  - complementary "Быстрые действия" [ref=e72]:
+    - generic [ref=e73]:
+      - link "Позвонить +7 701 532 24 78" [ref=e74] [cursor=pointer]:
+        - /url: tel:+77015322478
+        - text: +7 701 532 24 78
+      - link "Оставить заявку" [ref=e75] [cursor=pointer]:
+        - /url: contacts.html

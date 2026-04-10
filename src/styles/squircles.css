@@ -11,32 +11,22 @@
  *   Tier 2 (Safari 17+, Firefox 120+, Chrome <139): mask-image SVG -- production default
  *   Tier 3 (no mask-image support): border-radius rounded corner fallback
  *
- * Shadow-wrap pattern (CANONICAL for squircle + shadow):
- *   mask-image clips box-shadow to the mask silhouette. For squircle
- *   glass elements, box-shadow on the glass class itself produces a
- *   squircle-shaped shadow that is visually acceptable.
- *   The .liquid-card-wrap wrapper divs are legacy structure from v4.0
- *   and will be removed in Phase 52 (CLEN-02).
+ * Shadow pattern: box-shadow on the glass class itself produces a
+ *   squircle-shaped shadow clipped by mask-image -- visually acceptable.
+ *   Chrome 139+ with corner-shape: squircle removes mask-image need entirely.
  *
  *   NEVER use filter: drop-shadow() on glass ancestors --
  *   it breaks backdrop-filter on children (see commit ba29f8a).
  *
- *   Legacy pattern: outer wrapper carries box-shadow + matching border-radius,
- *   inner element carries squircle mask.
- *
  *   Card example:
- *     <div class="liquid-card-wrap">           <!-- outer: shadow + border-radius -->
- *       <article class="squircle-lg liquid-card">  <!-- inner: mask, no outer shadow -->
- *         <!-- card content -->
- *       </article>
- *     </div>
+ *     <article class="squircle-lg liquid-card">
+ *       <!-- card content -->
+ *     </article>
  *
  *   Button example:
- *     <div class="btn-shadow-wrap">            <!-- outer: glow shadow + border-radius -->
- *       <button class="squircle-md px-6 py-3 text-white">
- *         Submit
- *       </button>
- *     </div>
+ *     <button class="squircle-md px-6 py-3 text-white">
+ *       Submit
+ *     </button>
  *
  *   Inset shadows are safe inside mask (no wrap needed):
  *     <form class="squircle-xl">

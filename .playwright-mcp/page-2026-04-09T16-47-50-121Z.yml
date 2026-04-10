@@ -1,0 +1,449 @@
+- generic [active] [ref=e1]:
+  - link "Перейти к содержимому" [ref=e2] [cursor=pointer]:
+    - /url: "#page-content"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "MedicusUnion":
+        - /url: index.html
+      - button "Открыть меню" [ref=e5]:
+        - img [ref=e6]
+  - main [ref=e7]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - generic [ref=e15]: Австрийская медицинская компания с офисом в Казахстане
+        - heading "Европейские врачи, мировые клиники — доступны из Казахстана" [level=1] [ref=e16]
+        - paragraph [ref=e17]: MedicusUnion — международная медицинская платформа. Онлайн-консультация с зарубежным врачом, чек-ап в ведущей клинике или полная организация лечения за границей — мы берём на себя всё, от разбора вашего случая до наблюдения после возвращения.
+        - generic [ref=e18]:
+          - link "Обсудить мой случай бесплатно" [ref=e19] [cursor=pointer]:
+            - /url: "#contact"
+            - text: Обсудить мой случай бесплатно
+            - img [ref=e20]
+          - link "Оставить заявку" [ref=e22] [cursor=pointer]:
+            - /url: "#contact"
+        - paragraph [ref=e23]: MedicusUnion GmbH, Австрия · ТОО в Казахстане · ISO 27001 · 43 клиники · 11 стран · 15+ лет опыта
+      - generic:
+        - generic:
+          - img "Врач на платформе MedicusUnion"
+        - generic:
+          - img "Консультация с пациентом"
+        - generic [ref=e24]:
+          - img [ref=e26]
+          - generic [ref=e29]:
+            - generic [ref=e30]: "43"
+            - generic [ref=e31]: Клиники в 11 странах
+        - generic [ref=e32]:
+          - img [ref=e34]
+          - generic [ref=e36]:
+            - generic [ref=e37]: 15+ лет
+            - generic [ref=e38]: Опыта работы
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: "43"
+        - generic [ref=e45]: клиники
+      - generic [ref=e46]:
+        - generic [ref=e47]: "11"
+        - generic [ref=e48]: стран
+      - generic [ref=e49]:
+        - generic [ref=e50]: 500+
+        - generic [ref=e51]: врачей
+      - generic [ref=e52]:
+        - generic [ref=e53]: 15+
+        - generic [ref=e54]: лет опыта
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e59]: Наши Услуги
+        - heading "Выберите, что вам нужно" [level=2] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e64]:
+          - generic [ref=e66]:
+            - img "Онлайн-консультация с врачом" [ref=e67]
+            - img [ref=e70]
+          - generic [ref=e73]:
+            - generic [ref=e75]: от 450 €
+            - heading "Мнение зарубежного врача —без перелёта" [level=3] [ref=e76]
+            - paragraph [ref=e77]: Загрузите медицинские документы —мы переведём их и организуем видеоконсультацию с профильным специалистом из Германии, Израиля, Швейцарии или другой страны. Врач изучит ваш случай до встречи. После —письменное заключение в личном кабинете.
+            - list [ref=e78]:
+              - listitem [ref=e79]:
+                - img [ref=e81]
+                - generic [ref=e83]: Перевод документов и консультации
+              - listitem [ref=e84]:
+                - img [ref=e86]
+                - generic [ref=e88]: Результат за 5 дней
+              - listitem [ref=e89]:
+                - img [ref=e91]
+                - generic [ref=e93]: Письменное заключение
+            - link "Записаться на консультацию" [ref=e94] [cursor=pointer]:
+              - /url: online-consultations.html
+              - text: Записаться на консультацию
+              - img [ref=e95]
+        - generic [ref=e99]:
+          - generic [ref=e101]:
+            - img "Современная клиника" [ref=e102]
+            - img [ref=e105]
+          - generic [ref=e108]:
+            - generic [ref=e110]: план лечения бесплатно
+            - heading "Организуем лечение за границей —под ключ" [level=3] [ref=e111]
+            - paragraph [ref=e112]: Подберём клинику и врача под ваш диагноз из сети в 11 странах. Организуем онлайн-консультацию до вылета, возьмём на себя визу, логистику, переводчика и сопровождение. После возвращения —наблюдение и связь с врачом.
+            - list [ref=e113]:
+              - listitem [ref=e114]:
+                - img [ref=e116]
+                - generic [ref=e118]: 11 стран, 43 клиники-партнёра
+              - listitem [ref=e119]:
+                - img [ref=e121]
+                - generic [ref=e123]: Полная организация
+              - listitem [ref=e124]:
+                - img [ref=e126]
+                - generic [ref=e128]: Координация до выздоровления
+            - link "Получить план лечения" [ref=e129] [cursor=pointer]:
+              - /url: treatment-abroad.html
+              - text: Получить план лечения
+              - img [ref=e130]
+        - generic [ref=e134]:
+          - generic [ref=e136]:
+            - img "Чек-ап обследование" [ref=e137]
+            - img [ref=e140]
+          - generic [ref=e144]:
+            - generic [ref=e146]: от $350
+            - heading "Проверьте здоровье в клинике мирового уровня" [level=3] [ref=e147]
+            - paragraph [ref=e148]: "Комплексное обследование за 1–2 дня в Samsung Medical Center, Severance Hospital или клиниках Стамбула. Полная организация: виза, трансфер, переводчик, сопровождающий. Результаты —в приложении с переводом на русский."
+            - list [ref=e149]:
+              - listitem [ref=e150]:
+                - img [ref=e152]
+                - generic [ref=e154]: Южная Корея и Турция
+              - listitem [ref=e155]:
+                - img [ref=e157]
+                - generic [ref=e159]: Программы от базовой до премиум
+              - listitem [ref=e160]:
+                - img [ref=e162]
+                - generic [ref=e164]: Корпоративные чек-апы
+            - link "Подобрать программу" [ref=e165] [cursor=pointer]:
+              - /url: checkup.html
+              - text: Подобрать программу
+              - img [ref=e166]
+    - generic [ref=e169]:
+      - heading "Узнаёте свою ситуацию?" [level=2] [ref=e171]
+      - generic [ref=e172]:
+        - generic [ref=e176] [cursor=pointer]:
+          - img [ref=e178]
+          - heading "Получили диагноз —и не уверены, что он верный" [level=3] [ref=e181]
+          - paragraph [ref=e182]: Разные врачи говорят разное, а решение нужно принимать сейчас. Хотите услышать мнение специалиста, которому можно доверять.
+        - generic [ref=e186] [cursor=pointer]:
+          - img [ref=e188]
+          - heading "Нужно лечение, которого в Казахстане нет" [level=3] [ref=e191]
+          - paragraph [ref=e192]: Вам сказали «нужно ехать за границу», но куда именно, к кому и как это организовать —непонятно. Проверенной информации мало.
+        - generic [ref=e196] [cursor=pointer]:
+          - img [ref=e198]
+          - heading "Чувствуете себя нормально —но давно не проверялись" [level=3] [ref=e200]
+          - paragraph [ref=e201]: Серьёзные заболевания на ранних стадиях не болят. Хотите знать точно, что всё в порядке, а не надеяться на «авось».
+        - generic [ref=e205] [cursor=pointer]:
+          - img [ref=e207]
+          - heading "Организуете лечение или обследование для близкого" [level=3] [ref=e212]
+          - paragraph [ref=e213]: На вас ответственность за выбор врача и клиники. Вы не медик, но решение должно быть правильным. И времени на ошибки нет.
+    - generic [ref=e215]:
+      - generic [ref=e216]:
+        - heading "От обращения до результата — 4 шага" [level=2] [ref=e217]
+        - paragraph [ref=e218]: Вы занимаетесь здоровьем —мы берём на себя всё остальное.
+      - generic [ref=e219]:
+        - generic [ref=e222]:
+          - generic [ref=e223]: "01"
+          - heading "Разбор вашего случая" [level=3] [ref=e224]
+          - paragraph [ref=e225]: "Вы присылаете документы —мы анализируем историю болезни и подбираем оптимальный путь: онлайн-консультацию, чек-ап или лечение в профильной клинике. Не «по договорённости», а под ваш конкретный диагноз."
+        - generic [ref=e228]:
+          - generic [ref=e229]: "02"
+          - heading "Подготовка" [level=3] [ref=e230]
+          - paragraph [ref=e231]: Переводим документы, записываем к врачу, при необходимости организуем визу, билеты, проживание и трансферы. Вы получаете полный план до оплаты.
+        - generic [ref=e234]:
+          - generic [ref=e235]: "03"
+          - heading "Консультация или лечение" [level=3] [ref=e236]
+          - paragraph [ref=e237]: Онлайн-встреча с переводчиком —или приём в клинике с личным сопровождающим. На каждом этапе —координатор MedicusUnion. Все документы и снимки —в защищённом личном кабинете.
+        - generic [ref=e240]:
+          - generic [ref=e241]: "04"
+          - heading "После консультации / лечения" [level=3] [ref=e242]
+          - paragraph [ref=e243]: Письменное заключение врача с переводом. Координация наблюдения с врачами в Казахстане. При необходимости —контрольные онлайн-консультации с лечащим врачом за рубежом.
+    - generic [ref=e247]:
+      - generic [ref=e248]:
+        - generic [ref=e250]: О компании
+        - heading "Чем мы отличаемся" [level=2] [ref=e251]
+        - paragraph [ref=e252]: Мы —не просто медицинский агрегатор. Мы берем на себя ответственность за ваше здоровье на каждом этапе лечения.
+      - generic [ref=e253]:
+        - generic [ref=e254]:
+          - img [ref=e257]
+          - generic [ref=e259]:
+            - heading "Не агентство —медицинская платформа" [level=3] [ref=e260]
+            - paragraph [ref=e261]: Личный кабинет с результатами, снимками (DICOM-вьювер), заключениями врачей и историей обследований. Не чат в мессенджере, а защищённая система, доступная с любого устройства.
+        - generic [ref=e262]:
+          - img [ref=e265]
+          - generic [ref=e268]:
+            - heading "43 клиники в 11 странах" [level=3] [ref=e269]
+            - paragraph [ref=e270]: Германия, Австрия, Швейцария, Израиль, Южная Корея, Турция, ОАЭ, Индия и другие. Подбираем клинику и врача под ваш случай —объективно, а не «по договорённости».
+        - generic [ref=e271]:
+          - img [ref=e274]
+          - generic [ref=e277]:
+            - heading "15+ лет, 10 000+ пациентов" [level=3] [ref=e278]
+            - paragraph [ref=e279]: MedicusUnion GmbH —зарегистрирована в Австрии. ТОО «MedicusUnion KZ» —офис в Казахстане, резидент Astana Hub. Договор, чеки, прозрачные условия. Не перевод на карту физлицу.
+        - generic [ref=e280]:
+          - img [ref=e283]
+          - generic [ref=e285]:
+            - heading "Абсолютная надёжность" [level=3] [ref=e286]
+            - paragraph [ref=e287]: "Сертификация ISO 27001, соответствие GDPR. Медицинские данные зашифрованы и хранятся на серверах в Европе. Непрерывность: чек-ап выявил проблему —организуем лечение. Всё в рамках одной платформы."
+    - generic [ref=e289]:
+      - generic [ref=e290]:
+        - heading "Клиники, с которыми мы работаем" [level=2] [ref=e291]
+        - paragraph [ref=e292]: Прямые контракты с медицинскими центрами. Приоритетная запись, согласованные условия, координация без цепочки посредников.
+      - generic [ref=e293]:
+        - generic [ref=e296]:
+          - heading "Германия" [level=3] [ref=e297]
+          - paragraph [ref=e298]: University Clinic of Munich · University Clinic of Freiburg · ATOS Orthopedic Center · Internistisches Klinikum München Süd · M1 Pediatric Center
+          - paragraph [ref=e299]: Ортопедия, кардиология, педиатрия
+        - generic [ref=e302]:
+          - heading "Австрия" [level=3] [ref=e303]
+          - paragraph [ref=e304]: AKH (Университетская клиника Вены) · Rudolfinerhaus · Döbling Private Clinic · Wiener Privatklinik · Confraternität
+          - paragraph [ref=e305]: Хирургия, онкология, мультипрофиль
+        - generic [ref=e308]:
+          - heading "Швейцария" [level=3] [ref=e309]
+          - paragraph [ref=e310]: Hirslanden Group · Swiss Medical Network
+          - paragraph [ref=e311]: Кардиология, онкология
+        - generic [ref=e314]:
+          - heading "Израиль" [level=3] [ref=e315]
+          - paragraph [ref=e316]: Ichilov Medical Center · Assuta Hospital · Beilinson Clinic
+          - paragraph [ref=e317]: Онкология, трансплантология, кардиохирургия
+        - generic [ref=e320]:
+          - heading "Южная Корея" [level=3] [ref=e321]
+          - paragraph [ref=e322]: Samsung Medical Center · Severance Hospital · Seoul National University Hospital · Chaum Life Center · Aju University Hospital
+          - paragraph [ref=e323]: Онкология, чек-апы, высокотехнологичная диагностика
+        - generic [ref=e326]:
+          - heading "Турция" [level=3] [ref=e327]
+          - paragraph [ref=e328]: Liv Hospital · Medicana Hospital · Istanbul Florence Nightingale Hospital
+          - paragraph [ref=e329]: Широкий профиль, JCI-аккредитация
+        - generic [ref=e332]:
+          - heading "ОАЭ" [level=3] [ref=e333]
+          - paragraph [ref=e334]: Dubai London Hospital · Samaa Assisted Fertilization Center · Kandinsky Clinic Dubai
+          - paragraph [ref=e335]: Кардиология, ЭКО
+        - generic [ref=e338]:
+          - heading "Индия" [level=3] [ref=e339]
+          - paragraph [ref=e340]: Shalby Hospitals · CIMS Marengo Hospitals · HCG Hospitals
+          - paragraph [ref=e341]: Ортопедия, онкология, кардиохирургия
+      - paragraph [ref=e342]: Это часть нашей партнёрской сети. Если для вашего случая нужна другая клиника или специалист —мы найдём.
+    - generic [ref=e344]:
+      - heading "Ваши документы, снимки и связь с врачом —в одном месте" [level=2] [ref=e346]
+      - generic [ref=e348]:
+        - paragraph [ref=e349]: "У MedicusUnion есть то, чего нет ни у одного медицинского агентства —собственная цифровая платформа. Это защищённый личный кабинет, где вы видите:"
+        - list [ref=e350]:
+          - listitem [ref=e351]:
+            - img [ref=e352]
+            - text: Результаты анализов и заключения врачей —с переводом на русский язык
+          - listitem [ref=e355]:
+            - img [ref=e356]
+            - text: Медицинские снимки через встроенный DICOM-вьювер
+          - listitem [ref=e359]:
+            - img [ref=e360]
+            - text: Историю переписки с координатором и врачом
+          - listitem [ref=e363]:
+            - img [ref=e364]
+            - text: План лечения и все документы
+          - listitem [ref=e367]:
+            - img [ref=e368]
+            - text: ИИ-анализ лабораторных исследований
+        - paragraph [ref=e371]: Доступно через браузер и мобильное приложение (iOS и Android).
+        - paragraph [ref=e372]: Данные защищены по стандартам ISO 27001 и GDPR.
+    - generic [ref=e374]:
+      - heading "Пациенты, которые прошли этот путь" [level=2] [ref=e376]
+      - generic [ref=e377]:
+        - generic [ref=e380]:
+          - generic [ref=e381]:
+            - generic [ref=e382]: Р
+            - generic [ref=e383]:
+              - heading "Ренат, Казахстан" [level=4] [ref=e384]
+              - paragraph [ref=e385]: Лечение в Австрии, Rudolfinerhaus
+          - paragraph [ref=e386]: «Уже 10 лет приезжаю в Рудольфинерхаус на лечение, пользуясь услугами MedicusUnion. Каждый раз —чёткая организация, никаких накладок.»
+        - generic [ref=e389]:
+          - generic [ref=e390]:
+            - generic [ref=e391]: Ж
+            - generic [ref=e392]:
+              - heading "Жанна, Россия" [level=4] [ref=e393]
+              - paragraph [ref=e394]: Лечение за рубежом
+          - paragraph [ref=e395]: «Всё было сделано настолько оперативно и без проволочек, что заслуживает отдельного внимания.»
+        - generic [ref=e398]:
+          - generic [ref=e399]:
+            - generic [ref=e400]: А
+            - generic [ref=e401]:
+              - heading "Андрей, Украина" [level=4] [ref=e402]
+              - paragraph [ref=e403]: Регулярное обращение
+          - paragraph [ref=e404]: «Уже несколько лет обращаемся к компании MedicusUnion. Медицинское обслуживание на превосходном уровне в минимальные сроки.»
+        - generic [ref=e407]:
+          - generic [ref=e408]:
+            - generic [ref=e409]: А
+            - generic [ref=e410]:
+              - heading "Арина, Россия" [level=4] [ref=e411]
+              - paragraph [ref=e412]: Обследование в Вене
+          - paragraph [ref=e413]: «Познакомилась с компанией MedicusUnion в 2008 году. На протяжении этих лет приезжаю в Вену на обследование.»
+    - generic [ref=e415]:
+      - heading "Частые вопросы" [level=2] [ref=e416]
+      - generic [ref=e417]:
+        - generic [ref=e418]:
+          - button "Что именно делает MedicusUnion?" [ref=e419]:
+            - text: Что именно делает MedicusUnion?
+            - img [ref=e420]
+          - generic [ref=e423]: "Мы —международная медицинская платформа. Организуем онлайн-консультации с зарубежными врачами, комплексные чек-апы и полное сопровождение лечения за рубежом. Всё —через одну платформу: от разбора вашего случая до наблюдения после возвращения."
+        - generic [ref=e424]:
+          - button "С какими заболеваниями можно обратиться?" [ref=e425]:
+            - text: С какими заболеваниями можно обратиться?
+            - img [ref=e426]
+          - generic [ref=e429]: Онкология, кардиология, ортопедия, неврология, трансплантология, педиатрия, офтальмология и другие направления. Опишите свой случай —мы скажем, можем ли помочь и куда лучше обратиться.
+        - generic [ref=e430]:
+          - button "Сколько это стоит?" [ref=e431]:
+            - text: Сколько это стоит?
+            - img [ref=e432]
+          - generic [ref=e435]: Онлайн-консультация —от 450 €. Чек-ап —от $350 (Турция) или от $760 (Корея). Лечение за рубежом —зависит от диагноза, страны и объёма; первая консультация и план лечения —бесплатно. Вы всегда знаете стоимость до оплаты.
+        - generic [ref=e436]:
+          - button "А если я не говорю на иностранном языке?" [ref=e437]:
+            - text: А если я не говорю на иностранном языке?
+            - img [ref=e438]
+          - generic [ref=e441]: Не нужно. Мы переводим все документы и обеспечиваем профессиональный перевод на консультациях и во время лечения —включая медицинскую терминологию.
+        - generic [ref=e442]:
+          - button "Чем вы отличаетесь от агентств из Instagram?" [ref=e443]:
+            - text: Чем вы отличаетесь от агентств из Instagram?
+            - img [ref=e444]
+          - generic [ref=e447]: Юридическое лицо в Австрии и Казахстане, договор. Собственная цифровая платформа с личным кабинетом, а не переписка в WhatsApp. Сеть из 43 клиник, а не 2–3. Сопровождение после лечения, а не до аэропорта. Защита данных по ISO 27001.
+        - generic [ref=e448]:
+          - button "Могу ли я обратиться в клинику напрямую?" [ref=e449]:
+            - text: Могу ли я обратиться в клинику напрямую?
+            - img [ref=e450]
+          - generic [ref=e453]: "Можете. Но с нами вы получаете: приоритетную запись через прямой контракт, координатора, переводчика, полную логистику и наблюдение после возвращения. Вы экономите недели и снижаете риск выбрать не ту клинику."
+        - generic [ref=e454]:
+          - button "Что будет, если чек-ап или консультация выявят проблему?" [ref=e455]:
+            - text: Что будет, если чек-ап или консультация выявят проблему?
+            - img [ref=e456]
+          - generic [ref=e459]: "Мы организуем лечение: в той же клинике или в любой другой из нашей сети в 11 странах. Вам не нужно начинать поиск с нуля —вся информация уже в вашем личном кабинете."
+    - generic [ref=e462]:
+      - generic [ref=e463]:
+        - heading "Обсудите ваш случай — бесплатно и без обязательств" [level=2] [ref=e464]
+        - paragraph [ref=e465]: "Оставьте заявку — мы свяжемся в течение 24 часов, разберём вашу ситуацию и подскажем оптимальный путь: онлайн-консультация, чек-ап или лечение за рубежом."
+        - generic [ref=e467]:
+          - img "Медицинский координатор" [ref=e469]
+          - generic [ref=e470]:
+            - heading "Айгерим" [level=4] [ref=e471]
+            - paragraph [ref=e472]: Старший медицинский координатор
+            - generic [ref=e473]:
+              - link "+7 701 532 24 78" [ref=e474] [cursor=pointer]:
+                - /url: tel:+77015322478
+                - img [ref=e476]
+                - text: +7 701 532 24 78
+              - link "kz@medicusunion.com" [ref=e478] [cursor=pointer]:
+                - /url: mailto:kz@medicusunion.com
+                - img [ref=e480]
+                - text: kz@medicusunion.com
+        - generic [ref=e483]:
+          - generic [ref=e484]:
+            - img [ref=e485]
+            - text: На связи 24/7
+          - generic [ref=e488]:
+            - img [ref=e489]
+            - text: ISO 27001
+      - generic [ref=e495]:
+        - generic [ref=e496]:
+          - generic [ref=e497]: Ваше имя
+          - textbox "Ваше имя" [ref=e498]:
+            - /placeholder: Например, Айгуль
+        - generic [ref=e499]:
+          - generic [ref=e500]: Телефон
+          - textbox "Телефон" [ref=e501]:
+            - /placeholder: +7 (___) ___-__-__
+            - text: "+7"
+        - generic [ref=e502]:
+          - generic [ref=e503]: Что вас интересует
+          - combobox "Что вас интересует" [ref=e504]:
+            - option "Выберите направление" [disabled] [selected]
+            - option "Онлайн-консультация"
+            - option "Лечение за рубежом"
+            - option "Чек-ап"
+            - option "Не знаю -- помогите разобраться"
+        - generic [ref=e505]:
+          - generic [ref=e506]: Кратко о вашем случае (необязательно)
+          - textbox "Кратко о вашем случае (необязательно)" [ref=e507]:
+            - /placeholder: Опишите вашу ситуацию или вопрос
+        - generic [ref=e508]:
+          - text: Website
+          - textbox [ref=e509]
+        - button "Отправить заявку" [ref=e510]:
+          - text: Отправить заявку
+          - img [ref=e511]
+        - paragraph [ref=e514]: Мы перезвоним в течение 24 часов. Ваши данные защищены.
+    - generic [ref=e520]:
+      - heading "Не откладывайте решение о здоровье" [level=2] [ref=e522]
+      - paragraph [ref=e523]: Мнение зарубежного врача, комплексное обследование или лечение в мировой клинике —начните с бесплатной консультации.
+      - generic [ref=e524]:
+        - link "Обсудить мой случай" [ref=e525] [cursor=pointer]:
+          - /url: "#contact"
+          - text: Обсудить мой случай
+          - img [ref=e526]
+        - link "Позвонить" [ref=e528] [cursor=pointer]:
+          - /url: tel:+77015322478
+          - img [ref=e529]
+          - text: Позвонить
+      - paragraph [ref=e531]:
+        - text: "Или напишите нам:"
+        - link "kz@medicusunion.com" [ref=e532] [cursor=pointer]:
+          - /url: mailto:kz@medicusunion.com
+        - text: ·
+        - link "WhatsApp" [ref=e533] [cursor=pointer]:
+          - /url: https://wa.me/77015322478
+        - text: ·
+        - link "Telegram" [ref=e534] [cursor=pointer]:
+          - /url: https://t.me/medicusunion
+  - contentinfo [ref=e535]:
+    - generic [ref=e537]:
+      - generic [ref=e538]:
+        - generic [ref=e539]:
+          - heading "MedicusUnion" [level=3] [ref=e540]
+          - paragraph [ref=e541]: Международный медицинский сервис. Австрия · Казахстан
+        - generic [ref=e542]:
+          - heading "Услуги" [level=4] [ref=e543]
+          - list [ref=e544]:
+            - listitem [ref=e545]:
+              - link "Онлайн-консультации" [ref=e546] [cursor=pointer]:
+                - /url: online-consultations.html
+            - listitem [ref=e547]:
+              - link "Лечение за рубежом" [ref=e548] [cursor=pointer]:
+                - /url: treatment-abroad.html
+            - listitem [ref=e549]:
+              - link "Чек-ап" [ref=e550] [cursor=pointer]:
+                - /url: checkup.html
+        - generic [ref=e551]:
+          - heading "Навигация" [level=4] [ref=e552]
+          - list [ref=e553]:
+            - listitem [ref=e554]:
+              - link "Главная" [ref=e555] [cursor=pointer]:
+                - /url: index.html
+            - listitem [ref=e556]:
+              - link "Контакты" [ref=e557] [cursor=pointer]:
+                - /url: contacts.html
+        - generic [ref=e558]:
+          - heading "Контакты" [level=4] [ref=e559]
+          - list [ref=e560]:
+            - listitem [ref=e561]:
+              - link "+7 701 532 24 78" [ref=e562] [cursor=pointer]:
+                - /url: tel:+77015322478
+                - img [ref=e564]
+                - text: +7 701 532 24 78
+            - listitem [ref=e566]:
+              - link "kz@medicusunion.com" [ref=e567] [cursor=pointer]:
+                - /url: mailto:kz@medicusunion.com
+                - img [ref=e569]
+                - text: kz@medicusunion.com
+      - generic [ref=e573]:
+        - paragraph [ref=e574]: © 2026 MedicusUnion. Все права защищены.
+        - paragraph [ref=e575]:
+          - generic [ref=e576]:
+            - img [ref=e577]
+            - text: ISO 27001 Certified
+          - generic [ref=e580]: Astana Hub Resident
+  - complementary "Быстрые действия" [ref=e581]:
+    - generic [ref=e582]:
+      - link "Позвонить +7 701 532 24 78" [ref=e583] [cursor=pointer]:
+        - /url: tel:+77015322478
+        - text: +7 701 532 24 78
+      - link "Оставить заявку" [ref=e584] [cursor=pointer]:
+        - /url: "#contact"

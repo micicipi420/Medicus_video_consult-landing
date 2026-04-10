@@ -1,0 +1,95 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "MedicusUnion" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+      - navigation "Основная навигация" [ref=e5]:
+        - link "Консультации" [ref=e6] [cursor=pointer]:
+          - /url: online-consultations.html
+        - link "Лечение за рубежом" [ref=e7] [cursor=pointer]:
+          - /url: treatment-abroad.html
+        - link "Чек-ап" [ref=e8] [cursor=pointer]:
+          - /url: checkup.html
+        - link "О нас" [ref=e9] [cursor=pointer]:
+          - /url: index.html#why-us
+        - link "Контакты" [ref=e10] [cursor=pointer]:
+          - /url: contacts.html
+      - generic [ref=e11]:
+        - link "+7 701 532 24 78" [ref=e12] [cursor=pointer]:
+          - /url: tel:+77015322478
+          - img [ref=e13]
+          - text: +7 701 532 24 78
+        - link "Оставить заявку" [ref=e15] [cursor=pointer]:
+          - /url: contacts.html
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]: "404"
+      - heading "Страница не найдена" [level=1] [ref=e19]
+      - paragraph [ref=e20]: Эту страницу либо перенесли, либо она ещё не появилась. Откройте главную или напишите координатору.
+      - link "На главную" [ref=e21] [cursor=pointer]:
+        - /url: index.html
+        - img [ref=e22]
+        - text: На главную
+  - contentinfo [ref=e24]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - heading "MedicusUnion" [level=3] [ref=e29]
+          - paragraph [ref=e30]: Международная медицинская платформа
+          - paragraph [ref=e31]: MedicusUnion GmbH · Billrothstrasse 78, 1190 Vienna, Austria
+          - paragraph [ref=e32]: ТОО «MedicusUnion KZ» · Казахстан, Алматы · Резидент Astana Hub
+        - generic [ref=e33]:
+          - heading "Услуги" [level=4] [ref=e34]
+          - list [ref=e35]:
+            - listitem [ref=e36]:
+              - link "Онлайн-консультации" [ref=e37] [cursor=pointer]:
+                - /url: online-consultations.html
+            - listitem [ref=e38]:
+              - link "Лечение за рубежом" [ref=e39] [cursor=pointer]:
+                - /url: treatment-abroad.html
+            - listitem [ref=e40]:
+              - link "Чек-апы" [ref=e41] [cursor=pointer]:
+                - /url: checkup.html
+        - generic [ref=e42]:
+          - heading "Навигация" [level=4] [ref=e43]
+          - list [ref=e44]:
+            - listitem [ref=e45]:
+              - link "Главная" [ref=e46] [cursor=pointer]:
+                - /url: index.html
+            - listitem [ref=e47]:
+              - link "Клиники и врачи" [ref=e48] [cursor=pointer]:
+                - /url: index.html#clinics
+            - listitem [ref=e49]:
+              - link "О компании" [ref=e50] [cursor=pointer]:
+                - /url: index.html#why-us
+            - listitem [ref=e51]:
+              - link "Контакты" [ref=e52] [cursor=pointer]:
+                - /url: contacts.html
+            - listitem [ref=e53]:
+              - link "Политика конфиденциальности" [ref=e54] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e55]:
+          - heading "Контакты" [level=4] [ref=e56]
+          - list [ref=e57]:
+            - listitem [ref=e58]:
+              - link "+7 701 532 24 78" [ref=e59] [cursor=pointer]:
+                - /url: tel:+77015322478
+                - img [ref=e61]
+                - text: +7 701 532 24 78
+            - listitem [ref=e63]:
+              - link "kz@medicusunion.com" [ref=e64] [cursor=pointer]:
+                - /url: mailto:kz@medicusunion.com
+                - img [ref=e66]
+                - text: kz@medicusunion.com
+          - generic [ref=e69]:
+            - link "App Store" [ref=e70] [cursor=pointer]:
+              - /url: "#"
+            - link "Google Play" [ref=e71] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e73]:
+        - paragraph [ref=e74]: © 2026 MedicusUnion. Все права защищены.
+        - paragraph [ref=e75]:
+          - generic [ref=e76]:
+            - img [ref=e77]
+            - text: ISO 27001 · GDPR · Защита персональных данных
+          - generic [ref=e80]: Astana Hub Resident

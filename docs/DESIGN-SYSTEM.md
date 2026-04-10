@@ -111,8 +111,7 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 | Класс | Назначение | Комбинировать с |
 |-------|------------|-----------------|
 | `.liquid-regular` | Базовый стеклянный материал | `.squircle-lg` или `.squircle-xl` |
-| `.liquid-card` | Стекло + padding для карточных поверхностей | `.squircle-lg` + `.liquid-card-wrap` (для тени) |
-| `.liquid-card-wrap` | Shadow-обёртка для `.liquid-card` (shadow-wrap паттерн) | Оборачивает `.squircle-lg.liquid-card` |
+| `.liquid-card` | Стекло + padding для карточных поверхностей | `.squircle-lg` или `.squircle-xl` |
 | `.liquid-btn-primary` | Градиентная CTA-кнопка (НЕ стекло -- непрозрачная для ЦА 45+) | `.squircle-md` + `.shimmer-sweep` (для hero) |
 | `.liquid-btn-secondary` | Стеклянная кнопка для вторичных действий | `.squircle-md` |
 | `.stats-glass` | Стеклянный фон для группы статистик (blur-lg: 40px) | `.squircle-xl` |
@@ -128,18 +127,16 @@ Liquid Design System v4.0 -- визуальный язык лендинга Medi
 
 ---
 
-## 4. Shadow-Wrap Idiom
+## 4. Card Pattern
 
-`mask-image` обрезает `box-shadow` -- тень рисуется за пределами элемента, но маска скрывает всё, что выходит за контур. Поэтому для элементов с&nbsp;внешней тенью используется паттерн "shadow-wrap": внешний wrapper несёт `box-shadow` + совпадающий `border-radius`, внутренний элемент -- squircle-маску и&nbsp;стеклянный материал.
+`box-shadow` на glass-элементе обрезается `mask-image` по контуру squircle -- визуально приемлемо. Chrome 139+ с `corner-shape: squircle` убирает необходимость в mask-image полностью.
 
 ### Карточка
 
 ```html
-<div class="liquid-card-wrap">
-  <article class="squircle-lg liquid-card">
-    <!-- card content -->
-  </article>
-</div>
+<article class="squircle-lg liquid-card">
+  <!-- card content -->
+</article>
 ```
 
 ### Кнопка
