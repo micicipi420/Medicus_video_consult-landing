@@ -539,24 +539,28 @@
 
   /**
    * Mouse-tracking Specular Highlight
-   * Sets --mouse-x/--mouse-y CSS custom properties on .liquid-card elements
-   * so the ::after radial-gradient follows the cursor position.
+   * Sets --mouse-x/--mouse-y CSS custom properties on all glass surface
+   * elements so the ::after radial-gradient follows the cursor position.
    * Desktop-only: uses mousemove. Touch devices use CSS default (30%, 0%).
+   * VFEX-02: percentage values extend outside 0-100% when cursor is
+   * outside the element, creating a soft glow at the nearest edge.
    */
   function initMouseSpecular() {
-    // Skip on touch-primary devices — no mousemove events worth tracking
+    // Skip on touch-primary devices -- no mousemove events worth tracking
     if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
     // Respect reduced motion
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    var SELECTOR = '.liquid-card, .liquid-regular, .liquid-nav, .liquid-clear, .liquid-fluted, .stats-glass';
+
     document.addEventListener('mousemove', function(e) {
-      var cards = document.querySelectorAll('.liquid-card');
-      for (var i = 0; i < cards.length; i++) {
-        var rect = cards[i].getBoundingClientRect();
+      var els = document.querySelectorAll(SELECTOR);
+      for (var i = 0; i < els.length; i++) {
+        var rect = els[i].getBoundingClientRect();
         var x = ((e.clientX - rect.left) / rect.width * 100);
         var y = ((e.clientY - rect.top) / rect.height * 100);
-        cards[i].style.setProperty('--mouse-x', x + '%');
-        cards[i].style.setProperty('--mouse-y', y + '%');
+        els[i].style.setProperty('--mouse-x', x + '%');
+        els[i].style.setProperty('--mouse-y', y + '%');
       }
     });
   }
