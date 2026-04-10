@@ -292,6 +292,7 @@
 
 .liquid-btn-primary:hover {
   filter: brightness(1.08);
+  will-change: filter, transform;
 }
 
 .liquid-btn-primary:active {
@@ -328,6 +329,7 @@
 
 .liquid-btn-secondary:hover {
   filter: brightness(1.1) saturate(1.2);
+  will-change: filter, transform;
 }
 
 .liquid-btn-secondary:active {
@@ -387,6 +389,7 @@
 
 .shimmer-sweep:hover::before {
   transform: translateX(100%);
+  will-change: transform;
 }
 
 /* ================================================
@@ -444,6 +447,7 @@
   background: linear-gradient(45deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
   background-size: 200% 100%;
   animation: glint 6s linear infinite;
+  will-change: background-position;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -896,6 +900,8 @@ html[data-refract="true"] .liquid-fluted {
               transform var(--dur-press) var(--ease-liquid);
 }
 
+/* will-change applied on :hover/:active only -- never on base selectors (PERF-02) */
+
 /* Hover -- subtle surface brighten */
 .liquid-regular:hover,
 .liquid-card:hover,
@@ -905,6 +911,7 @@ html[data-refract="true"] .liquid-fluted {
 .stats-glass:hover {
   filter: brightness(1.04);
   transition: filter var(--dur-hover) var(--ease-liquid);
+  will-change: filter, transform;
 }
 
 /* Active/press -- darken + micro-scale */
@@ -918,6 +925,7 @@ html[data-refract="true"] .liquid-fluted {
   transform: scale(0.985);
   transition: filter var(--dur-press) var(--ease-liquid),
               transform var(--dur-press) var(--ease-liquid);
+  will-change: filter, transform;
 }
 
 /* Focus-visible -- keyboard focus ring */
