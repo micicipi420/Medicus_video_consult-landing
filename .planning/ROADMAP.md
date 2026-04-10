@@ -188,7 +188,7 @@ Plans:
   5. prefers-reduced-motion disables the specular parallax effect while keeping static interaction states (hover brightness, press darken, focus ring)
 **Plans**: 1 plan
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [x] 56-01-PLAN.md — Specular physics and interaction states
 **UI hint**: yes
 
 ### Phase 57: GPU Performance Audit
@@ -216,7 +216,7 @@ Plans:
   4. make build exits 0; styleguide.html builds correctly via splicer pipeline
 **Plans**: 1 plan
 Plans:
-- [ ] 53-01-PLAN.md &mdash; Per-element SVG refraction filters and CSS wiring
+- [ ] 58-01-PLAN.md — Styleguide v5.0 update, DESIGN-SYSTEM.md update, print verification
 **UI hint**: yes
 
 ## Progress
@@ -238,4 +238,4 @@ Strictly linear -- each phase builds on the previous.
 | 55. Glass Material Variants & Hierarchy | 1/1 | Complete   | 2026-04-10 |
 | 56. Specular Physics & Interaction States | 1/1 | Complete    | 2026-04-10 |
 | 57. GPU Performance Audit | 2/2 | Complete    | 2026-04-10 |
-| 58. Design System Docs & Print | 0/TBD | Not started | - |
+| 58. Design System Docs & Print | 0/1 | Not started | - |
