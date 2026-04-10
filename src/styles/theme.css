@@ -12,13 +12,10 @@
   /* Green ramp */
   --mu-green-50: #E4FAEF;
   --mu-green-100: #D3F8E4;
-  --mu-green-200: #B8F2D6;
   --mu-green-300: #A6EECB;
-  --mu-green-400: #79E9B3;
   --mu-green-500: #6FDEA9;
   --mu-green-600: #35B678;
   --mu-green-700: #2D9E68;
-  --mu-green-900: #1A6B42;
 
   /* Text / neutral ramp */
   --mu-text-50: #FBFBFB;
@@ -168,13 +165,10 @@
   --color-mu-white: var(--mu-white);
   --color-mu-green-50: var(--mu-green-50);
   --color-mu-green-100: var(--mu-green-100);
-  --color-mu-green-200: var(--mu-green-200);
   --color-mu-green-300: var(--mu-green-300);
-  --color-mu-green-400: var(--mu-green-400);
   --color-mu-green-500: var(--mu-green-500);
   --color-mu-green-600: var(--mu-green-600);
   --color-mu-green-700: var(--mu-green-700);
-  --color-mu-green-900: var(--mu-green-900);
   --color-mu-text-900: var(--mu-text-900);
   --color-mu-text-700: var(--mu-text-700);
   --color-mu-text-500: var(--mu-text-500);
