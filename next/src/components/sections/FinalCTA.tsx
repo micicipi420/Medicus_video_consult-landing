@@ -14,13 +14,13 @@ export function FinalCTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="#contact"
-            className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity"
+            className="liquid-btn-primary squircle-md inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold"
           >
             Оставить заявку
           </a>
           <a
             href={`tel:${PHONE_NUMBER}`}
-            className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl text-base font-semibold text-white border-2 border-white/30 hover:border-white/60 transition-colors"
+            className="liquid-btn-secondary squircle-md inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold"
           >
             Позвонить
           </a>

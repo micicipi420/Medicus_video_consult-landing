@@ -25,13 +25,13 @@ export function HeroHub() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="#services"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity"
+              className="liquid-btn-primary squircle-md inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold"
             >
               Выбрать услугу
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl text-base font-semibold text-mu-text-700 border-2 border-mu-text-200 hover:border-mu-text-300 transition-colors"
+              className="liquid-btn-secondary squircle-md inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold"
             >
               Оставить заявку
             </a>

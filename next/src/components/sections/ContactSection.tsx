@@ -2,7 +2,7 @@ import { ContactForm } from './ContactForm';
 
 export function ContactSection() {
   return (
-    <section className="py-12 md:py-24 bg-[#F5F7F9] relative" id="contact">
+    <section className="py-12 md:py-24 section-tint-cool relative" id="contact">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-12 items-start">
           {/* Left column -- info + trust items (Server rendered) */}
@@ -37,7 +37,7 @@ export function ContactSection() {
           </div>
 
           {/* Right column -- form card (Client Component) */}
-          <div className="bg-white border border-black/8 rounded-2xl shadow-md p-8 md:p-10">
+          <div className="liquid-card squircle-xl p-8 md:p-10">
             <ContactForm />
           </div>
         </div>

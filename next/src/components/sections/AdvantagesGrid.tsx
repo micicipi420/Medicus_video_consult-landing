@@ -74,7 +74,7 @@ const ADVANTAGES: AdvantageCard[] = [
 
 export function AdvantagesGrid() {
   return (
-    <section className="py-12 md:py-24 bg-[#F0F7FF]" id="why-mu">
+    <section className="py-12 md:py-24 section-tint-mint" id="why-mu">
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Почему MedicusUnion
@@ -83,7 +83,7 @@ export function AdvantagesGrid() {
           {ADVANTAGES.map((card, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl shadow-sm p-6 flex flex-col"
+              className="liquid-regular squircle-lg p-6 flex flex-col"
             >
               {card.icon}
               <h3 className="font-heading text-lg font-bold text-mu-text-900 mb-2">

@@ -106,7 +106,7 @@ const SERVICES: ServiceCard[] = [
 
 export function ServicesGrid() {
   return (
-    <section className="py-12 md:py-24" id="services">
+    <section className="py-12 md:py-24 section-tint-cool" id="services">
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Выберите, что{'\u00A0'}вам нужно
@@ -115,10 +115,10 @@ export function ServicesGrid() {
           {SERVICES.map((service) => (
             <div
               key={service.ctaHref}
-              className="bg-white rounded-2xl shadow-md p-6 md:p-8 flex flex-col"
+              className="liquid-card squircle-lg p-6 md:p-8 flex flex-col"
             >
               <div className="mb-2">{service.icon}</div>
-              <span className="inline-block bg-[#d0fae4] text-[#007955] text-sm font-semibold px-3 py-1 rounded-full mt-4 mb-3 w-fit">
+              <span className="inline-block bg-[#d0fae4] text-[#007955] text-sm font-semibold px-3 py-1 squircle-md mt-4 mb-3 w-fit">
                 {service.badge}
               </span>
               <h3 className="font-heading text-xl font-bold text-mu-text-900 mb-3">
@@ -134,7 +134,7 @@ export function ServicesGrid() {
               </ul>
               <Link
                 href={service.ctaHref}
-                className="inline-flex items-center justify-center w-full px-6 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity mt-auto"
+                className="liquid-btn-primary squircle-md inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold mt-auto"
               >
                 {service.ctaText}
               </Link>

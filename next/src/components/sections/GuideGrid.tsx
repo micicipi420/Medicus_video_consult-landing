@@ -61,7 +61,7 @@ const GUIDE_ITEMS: GuideItem[] = [
 
 export function GuideGrid() {
   return (
-    <section className="py-12 md:py-24 bg-[#F0F7FF]" id="guide">
+    <section className="py-12 md:py-24 section-tint-warm" id="guide">
       <div className="container mx-auto px-4 md:px-8">
         <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Не{'\u00A0'}знаете, с{'\u00A0'}чего начать?
@@ -70,7 +70,7 @@ export function GuideGrid() {
           {GUIDE_ITEMS.map((item) => (
             <div
               key={item.linkHref}
-              className="bg-white rounded-2xl shadow-sm p-6 md:p-8 flex flex-col"
+              className="liquid-regular squircle-lg p-6 md:p-8 flex flex-col"
             >
               {item.icon}
               <h3 className="font-heading text-lg font-bold text-mu-text-900 mb-2">
