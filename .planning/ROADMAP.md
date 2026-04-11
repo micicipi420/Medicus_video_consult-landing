@@ -21,7 +21,7 @@
 
 - [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
 - [x] **Phase 60: Component Library & Layout Shell** (2/2 plans) -- completed 2026-04-11
-- [ ] **Phase 61: Index Page Migration** - All 13 index sections as React Server Components with 1:1 visual parity
+- [ ] **Phase 61: Index Page Migration** (0/2 plans) - All 7 index sections as React Server Components with 1:1 visual parity
 - [ ] **Phase 62: Contacts Page & SEO** - Contacts page with glass form + SEO metadata for both pages via Next.js Metadata API
 - [ ] **Phase 63: Scroll & Entrance Animations** - Framer Motion scroll-reveal on all sections + staggered hero entrance animation
 - [ ] **Phase 64: Interactive Glass Animations** - Hover/press interaction states + specular mouse-tracking highlight on glass cards
@@ -152,16 +152,19 @@ Plans:
 **UI hint**: yes
 
 ### Phase 61: Index Page Migration
-**Goal**: The index page is fully ported as a Next.js SSG page with all 13 sections rendering as React Server Components, achieving 1:1 visual parity with the current production site
+**Goal**: The index page is fully ported as a Next.js SSG page with all 7 sections rendering as React Server Components, achieving 1:1 visual parity with the current production site (research confirmed 7 actual sections in index.html, not 13 as originally estimated)
 **Depends on**: Phase 60 (layout shell with header/footer must exist as composition target for page content)
 **Requirements**: PAGE-01
 **Success Criteria** (what must be TRUE):
-  1. All 13 index sections (Hero, Stats, Services, Problems, Process, Countries, Advantages, Triggers, Pricing, ContactForm, FAQ, FinalCTA, Footer content) render as individual React components composed in app/page.tsx
-  2. Side-by-side comparison of Next.js index vs current production index at 1440px, 768px, and 375px viewports shows no visible layout differences -- same spacing, typography, colors, glass effects, wave dividers
-  3. Glass cards (.liquid-regular), squircle masks, adaptive tinting, and gradient CTA buttons render correctly on the index page -- verified in Chrome DevTools by inspecting computed backdrop-filter and mask-image values
-  4. The page is statically generated (SSG) -- `npm run build` output shows `/` as a static page, not a dynamic one
-  5. 8+ of the 13 section components are Server Components (no "use client" directive) -- only interactive sections (form, FAQ, animated counters) carry client boundaries
-**Plans**: TBD
+  1. All 7 index sections (Hero, Stats, Services, Guide, Advantages, ContactForm, FinalCTA) render as individual React components composed in app/page.tsx
+  2. Side-by-side comparison of Next.js index vs current production index at 1440px, 768px, and 375px viewports shows no visible layout differences -- same spacing, typography, colors, gradient CTA buttons
+  3. The page is statically generated (SSG) -- `npm run build` output shows `/` as a static page, not a dynamic one
+  4. 6 of 7 section components are Server Components (no "use client" directive) -- only ContactForm carries a client boundary
+  5. ContactForm validates inputs, masks phone as +7 (XXX) XXX-XX-XX, and shows success state (no API submission -- deferred to Phase 65)
+**Plans**: 2 plans
+Plans:
+- [ ] 61-01-PLAN.md -- 6 Server Component sections (HeroHub, StatsBar, ServicesGrid, GuideGrid, AdvantagesGrid, FinalCTA)
+- [ ] 61-02-PLAN.md -- ContactSection + ContactForm (client) + app/page.tsx composition + visual verification
 **UI hint**: yes
 
 ### Phase 62: Contacts Page & SEO
@@ -245,7 +248,7 @@ Strictly linear -- each phase builds on the previous.
 |-------|----------------|--------|-----------|
 | 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
 | 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
-| 61. Index Page Migration | 0/TBD | Not started | - |
+| 61. Index Page Migration | 0/2 | Not started | - |
 | 62. Contacts Page & SEO | 0/TBD | Not started | - |
 | 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
 | 64. Interactive Glass Animations | 0/TBD | Not started | - |
