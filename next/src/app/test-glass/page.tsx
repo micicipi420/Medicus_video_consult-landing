@@ -1,3 +1,5 @@
+import { GlassInteraction } from '@/components/motion/GlassInteraction';
+
 export default function TestGlassPage() {
   return (
     <div className="min-h-screen bg-mu-text-50 p-8 space-y-12">
@@ -19,20 +21,23 @@ export default function TestGlassPage() {
           {/* Section 1: Base materials */}
           <h2 className="text-white text-xl font-heading">Glass Materials</h2>
 
-          <div className="squircle-lg liquid-regular p-6">
+          {/* Specular tracking enabled */}
+          <GlassInteraction className="squircle-lg liquid-regular p-6">
             <p className="font-medium">.liquid-regular</p>
             <p className="text-sm text-mu-text-500">Base material — medium blur (24px), standard opacity</p>
-          </div>
+          </GlassInteraction>
 
-          <div className="squircle-lg liquid-card p-6">
+          {/* Specular tracking enabled */}
+          <GlassInteraction className="squircle-lg liquid-card p-6">
             <p className="font-medium">.liquid-card</p>
             <p className="text-sm text-mu-text-500">Card material — base + specular glint border + mouse highlight</p>
-          </div>
+          </GlassInteraction>
 
-          <div className="squircle-lg liquid-clear p-6">
+          {/* Specular tracking enabled */}
+          <GlassInteraction className="squircle-lg liquid-clear p-6">
             <p className="font-medium">.liquid-clear</p>
             <p className="text-sm text-mu-text-500">Clear material — highest transparency, dimming layer</p>
-          </div>
+          </GlassInteraction>
 
           <div className="squircle-lg liquid-fluted p-6">
             <p className="font-medium">.liquid-fluted</p>

@@ -1,11 +1,12 @@
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { PHONE_NUMBER, PHONE_DISPLAY, EMAIL } from '@/lib/navigation';
+import { GlassInteraction } from '@/components/motion/GlassInteraction';
 
 export function ContactMethodGrid() {
   return (
     <div className="grid grid-cols-2 gap-3 mb-6">
       {/* Phone */}
-      <div className="liquid-card rounded-2xl p-5">
+      <GlassInteraction className="liquid-card rounded-2xl p-5">
         <Phone className="w-5 h-5 text-mu-blue mb-3" />
         <p className="text-xs text-mu-text-500 font-semibold mb-1">Телефон</p>
         <a
@@ -14,10 +15,10 @@ export function ContactMethodGrid() {
         >
           {PHONE_DISPLAY}
         </a>
-      </div>
+      </GlassInteraction>
 
       {/* Email */}
-      <div className="liquid-card rounded-2xl p-5">
+      <GlassInteraction className="liquid-card rounded-2xl p-5">
         <Mail className="w-5 h-5 text-mu-blue mb-3" />
         <p className="text-xs text-mu-text-500 font-semibold mb-1">Email</p>
         <a
@@ -26,21 +27,21 @@ export function ContactMethodGrid() {
         >
           {EMAIL}
         </a>
-      </div>
+      </GlassInteraction>
 
       {/* Office */}
-      <div className="liquid-card rounded-2xl p-5">
+      <GlassInteraction className="liquid-card rounded-2xl p-5">
         <MapPin className="w-5 h-5 text-mu-blue mb-3" />
         <p className="text-xs text-mu-text-500 font-semibold mb-1">Офис</p>
         <p className="text-sm text-mu-text-900 font-bold">Астана, Казахстан</p>
-      </div>
+      </GlassInteraction>
 
       {/* Schedule */}
-      <div className="liquid-card rounded-2xl p-5">
+      <GlassInteraction className="liquid-card rounded-2xl p-5">
         <Clock className="w-5 h-5 text-mu-blue mb-3" />
         <p className="text-xs text-mu-text-500 font-semibold mb-1">График</p>
         <p className="text-sm text-mu-text-900 font-bold">Пн{'\u2013'}Пт 9:00{'\u2013'}18:00</p>
-      </div>
+      </GlassInteraction>
     </div>
   );
 }
