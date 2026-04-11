@@ -219,7 +219,9 @@ Plans:
   3. Zod validation rejects: empty name, invalid phone format (not +7...), missing specialization -- form shows inline error messages for each invalid field
   4. Honeypot field (hidden input) and timing check (submission faster than 2 seconds) reject bot submissions silently -- bots get a 200 response but no database write
   5. Form shows success state after valid submission and error state if the database write fails -- user sees clear feedback in both cases
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 65-01-PLAN.md -- Drizzle schema + Server Action + ContactForm wiring
 
 ### Phase 66: Admin Panel
 **Goal**: Non-technical staff can view and filter form submissions in a basic admin interface -- replacing the Directus admin panel for day-to-day operations
@@ -258,6 +260,6 @@ Strictly linear -- each phase builds on the previous.
 | 62. Contacts Page & SEO | 1/1 | Complete    | 2026-04-11 |
 | 63. Scroll & Entrance Animations | 1/1 | Complete    | 2026-04-11 |
 | 64. Interactive Glass Animations | 1/1 | Complete    | 2026-04-11 |
-| 65. Database & Form Submission | 0/TBD | Not started | - |
+| 65. Database & Form Submission | 0/1 | Not started | - |
 | 66. Admin Panel | 0/TBD | Not started | - |
 | 67. Docker Deployment | 0/TBD | Not started | - |
