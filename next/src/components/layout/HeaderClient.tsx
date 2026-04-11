@@ -9,8 +9,8 @@ export function HeaderClient({ children }: { children: React.ReactNode }) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex items-center transition-all duration-300 h-16 md:h-[76px]',
-        isScrolled ? 'liquid-nav header--scrolled' : 'bg-white',
+        'sticky top-0 z-50 flex items-center transition-all duration-300 h-16 md:h-[76px] bg-white',
+        isScrolled && 'shadow-[0_2px_8px_rgba(0,0,0,0.08)]',
       )}
     >
       {children}
