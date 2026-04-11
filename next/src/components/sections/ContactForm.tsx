@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, type FormEvent, type ChangeEvent } from 'react';
+import { submitContactForm } from '@/lib/db/actions';
 
 function formatPhone(value: string): string {
   // Extract digits only
@@ -26,6 +27,7 @@ function formatPhone(value: string): string {
 export function ContactForm() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formError, setFormError] = useState('');
   const loadTimeRef = useRef(Date.now());
 
   const [name, setName] = useState('');
@@ -53,29 +55,55 @@ export function ContactForm() {
     return errs;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setFormError('');
 
-    // Honeypot check: if filled, silently show success
+    // Client-side honeypot check (fast rejection, no network)
     if (website) {
       setFormState('success');
       return;
     }
 
-    // Timing check: if submitted within 3 seconds, silently show success
+    // Client-side timing check (fast rejection, no network)
     if (Date.now() - loadTimeRef.current < 3000) {
       setFormState('success');
       return;
     }
 
+    // Client-side validation (immediate feedback)
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    // Phase 65 will add actual API submission here
-    setFormState('success');
+    setFormState('submitting');
+
+    const result = await submitContactForm({
+      name,
+      phone,
+      specialization: interest,
+      description,
+      honeypot: website,
+      loadTime: loadTimeRef.current,
+    });
+
+    if (result.success) {
+      setFormState('success');
+    } else if (result.errors) {
+      if (result.errors._form) {
+        setFormError(result.errors._form);
+      }
+      // Merge server-side field errors (name, phone, specialization)
+      const fieldErrors = Object.fromEntries(
+        Object.entries(result.errors).filter(([key]) => key !== '_form')
+      );
+      if (Object.keys(fieldErrors).length > 0) {
+        setErrors(fieldErrors);
+      }
+      setFormState('idle');
+    }
   }
 
   if (formState === 'success') {
@@ -202,12 +230,20 @@ export function ContactForm() {
           />
         </div>
 
+        {/* Form-level error */}
+        {formError && (
+          <div className="text-sm text-red-500 text-center p-3 bg-red-50 rounded-lg" role="alert">
+            {formError}
+          </div>
+        )}
+
         {/* Submit */}
         <button
           type="submit"
-          className="w-full py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity"
+          disabled={formState === 'submitting'}
+          className="w-full py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Отправить заявку
+          {formState === 'submitting' ? 'Отправка...' : 'Отправить заявку'}
         </button>
       </form>
 
