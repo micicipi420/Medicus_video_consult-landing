@@ -24,7 +24,7 @@
 - [x] **Phase 61: Index Page Migration** (2/2 plans) -- completed 2026-04-11
 - [x] **Phase 62: Contacts Page & SEO** (1/1 plan) -- completed 2026-04-11
 - [x] **Phase 63: Scroll & Entrance Animations** (1/1 plan) -- completed 2026-04-11
-- [ ] **Phase 64: Interactive Glass Animations** - Hover/press interaction states + specular mouse-tracking highlight on glass cards
+- [ ] **Phase 64: Interactive Glass Animations** (1/1 plan) - Hover/press interaction states + specular mouse-tracking highlight on glass cards
 - [ ] **Phase 65: Database & Form Submission** - Drizzle ORM schema + Server Action with Zod validation and honeypot spam protection
 - [ ] **Phase 66: Admin Panel** - Basic /admin page for viewing submissions with status/date filtering
 - [ ] **Phase 67: Docker Deployment** - Docker Compose (Next.js standalone + PostgreSQL) with multi-stage Dockerfile
@@ -177,7 +177,7 @@ Plans:
   3. Both pages are statically generated -- `npm run build` output shows both `/` and `/contacts` as static pages
 **Plans**: 1 plan
 Plans:
-- [x] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
+- [x] 62-01-PLAN.md -- Contacts page + SEO metadata for both pages
 **UI hint**: yes
 
 ### Phase 63: Scroll & Entrance Animations
@@ -206,7 +206,7 @@ Plans:
   4. All interaction states work on `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, and `.liquid-nav` glass variants
 **Plans**: 1 plan
 Plans:
-- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
+- [ ] 64-01-PLAN.md -- useSpecularHighlight hook + GlassInteraction wrapper + glass consumer wiring
 **UI hint**: yes
 
 ### Phase 65: Database & Form Submission
@@ -219,9 +219,7 @@ Plans:
   3. Zod validation rejects: empty name, invalid phone format (not +7...), missing specialization -- form shows inline error messages for each invalid field
   4. Honeypot field (hidden input) and timing check (submission faster than 2 seconds) reject bot submissions silently -- bots get a 200 response but no database write
   5. Form shows success state after valid submission and error state if the database write fails -- user sees clear feedback in both cases
-**Plans**: 1 plan
-Plans:
-- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
+**Plans**: TBD
 
 ### Phase 66: Admin Panel
 **Goal**: Non-technical staff can view and filter form submissions in a basic admin interface -- replacing the Directus admin panel for day-to-day operations
@@ -231,9 +229,7 @@ Plans:
   1. `/admin` page renders a table of all submissions with columns: date, name, phone, specialization, status -- sorted by most recent first
   2. Submissions can be filtered by status (new/contacted/completed) and by date range -- filters update the table without full page reload
   3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
-**Plans**: 1 plan
-Plans:
-- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
+**Plans**: TBD
 
 ### Phase 67: Docker Deployment
 **Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
@@ -244,9 +240,7 @@ Plans:
   2. Multi-stage Dockerfile uses node:20-slim base, produces an image under 200MB, and explicitly copies public/ and .next/static/ directories into the standalone output
   3. PostgreSQL data persists across `docker compose down && docker compose up` via a named volume -- existing submissions survive container restart
   4. Health check endpoint responds with 200 -- Docker reports the Next.js container as healthy
-**Plans**: 1 plan
-Plans:
-- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
+**Plans**: TBD
 
 ## Progress
 
@@ -261,9 +255,9 @@ Strictly linear -- each phase builds on the previous.
 | 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
 | 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
 | 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
-| 62. Contacts Page & SEO | 0/TBD | Not started | - |
+| 62. Contacts Page & SEO | 1/1 | Complete    | 2026-04-11 |
 | 63. Scroll & Entrance Animations | 1/1 | Complete    | 2026-04-11 |
-| 64. Interactive Glass Animations | 0/TBD | Not started | - |
+| 64. Interactive Glass Animations | 0/1 | Planned     | - |
 | 65. Database & Form Submission | 0/TBD | Not started | - |
 | 66. Admin Panel | 0/TBD | Not started | - |
 | 67. Docker Deployment | 0/TBD | Not started | - |
