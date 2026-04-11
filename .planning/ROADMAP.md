@@ -1,4 +1,4 @@
-# Roadmap: MedicusUnion KZ Landing
+# Roadmap: MedicusUnion KZ
 
 ## Milestones
 
@@ -6,157 +6,252 @@
 - v1.1 Visual Polish & Conversion Boost -- Phases 11-14 (shipped 2026-03-23)
 - v1.2 Brand Visual Alignment -- Phases 15-16 (shipped 2026-03-23)
 - v1.3 KZ Design Alignment -- Phases 17-19 (shipped 2026-03-23)
-- ✅ v1.4 2025 Visual Redesign -- Phases 20-23 (shipped 2026-03-24)
+- v1.4 2025 Visual Redesign -- Phases 20-23 (shipped 2026-03-24)
+- v2.0 Service Pages Copywriting Rewrite -- Phases 26-28 (shipped 2026-04-05)
+- v3.0 SEO, Performance & Polish -- Phases 29-32 (shipped 2026-04-06)
+- v3.1 Site Foundation & Audit Fixes -- Phases 33-38 + 38.1 (shipped 2026-04-08)
+- v3.2 Build Pipeline & Chrome Partials -- Phases 39-40 (shipped 2026-04-08)
+- v4.0 Liquid Design System -- Phases 41-49 (shipped 2026-04-09)
+- v5.0 Full Liquid Glass Rework -- Phases 51-58 (shipped 2026-04-10)
+- **v6.0 Next.js Stack Migration -- Phases 59-67 (active)**
 
 ## Phases
 
-<details>
-<summary>v1.0 MedicusUnion KZ Landing (Phases 1-10) -- SHIPPED 2026-03-23</summary>
+### v6.0 Next.js Stack Migration (active)
 
-- [x] Phase 1: Foundation & Design System (2/2 plans) -- completed 2026-03-23
-- [x] Phase 2: Hero & Problem Sections (2/2 plans) -- completed 2026-03-23
-- [x] Phase 3: Value & Process Sections (2/2 plans) -- completed 2026-03-23
-- [x] Phase 4: Trust & Authority Sections (2/2 plans) -- completed 2026-03-23
-- [x] Phase 5: Pricing, FAQ, Final CTA & Footer (3/3 plans) -- completed 2026-03-23
-- [x] Phase 6: Navigation & Mobile Interaction (3/3 plans) -- completed 2026-03-23
-- [x] Phase 7: Lead Capture Form (3/3 plans) -- completed 2026-03-23
-- [x] Phase 8: Directus Backend & Integration (2/2 plans) -- completed 2026-03-23
-- [x] Phase 9: Performance & SEO (2/2 plans) -- completed 2026-03-23
-- [x] Phase 10: Visual Design Enhancement (4/4 plans) -- completed 2026-03-23
+- [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
+- [x] **Phase 60: Component Library & Layout Shell** (2/2 plans) -- completed 2026-04-11
+- [x] **Phase 61: Index Page Migration** (2/2 plans) -- completed 2026-04-11
+- [x] **Phase 62: Contacts Page & SEO** (1/1 plan) -- completed 2026-04-11
+- [ ] **Phase 63: Scroll & Entrance Animations** - Framer Motion scroll-reveal on all sections + staggered hero entrance animation
+- [ ] **Phase 64: Interactive Glass Animations** - Hover/press interaction states + specular mouse-tracking highlight on glass cards
+- [ ] **Phase 65: Database & Form Submission** - Drizzle ORM schema + Server Action with Zod validation and honeypot spam protection
+- [ ] **Phase 66: Admin Panel** - Basic /admin page for viewing submissions with status/date filtering
+- [ ] **Phase 67: Docker Deployment** - Docker Compose (Next.js standalone + PostgreSQL) with multi-stage Dockerfile
+
+<details>
+<summary>v5.0 Full Liquid Glass Rework (Phases 51-58) -- SHIPPED 2026-04-10</summary>
+
+- [x] Phase 51: Cross-Browser Hardening (2/2 plans) -- completed 2026-04-10
+- [x] Phase 52: Token Foundation & Dead Code Cleanup (2/2 plans) -- completed 2026-04-10
+- [x] Phase 53: SVG Refraction Tuning (1/1 plan) -- completed 2026-04-10
+- [x] Phase 54: Adaptive Tinting (1/1 plan) -- completed 2026-04-10
+- [x] Phase 55: Glass Material Variants & Hierarchy (1/1 plan) -- completed 2026-04-10
+- [x] Phase 56: Specular Physics & Interaction States (1/1 plan) -- completed 2026-04-10
+- [x] Phase 57: GPU Performance Audit (2/2 plans) -- completed 2026-04-10
+- [x] Phase 58: Design System Docs & Print (1/1 plan) -- completed 2026-04-10
+
+Full details: `.planning/milestones/v5.0-ROADMAP.md`
 
 </details>
 
-Full details: `.planning/milestones/v1.0-ROADMAP.md`
-Requirements: `.planning/milestones/v1.0-REQUIREMENTS.md`
-Audit: `.planning/milestones/v1.0-MILESTONE-AUDIT.md`
-
 <details>
-<summary>v1.1 Visual Polish & Conversion Boost (Phases 11-14) -- SHIPPED 2026-03-23</summary>
+<summary>v4.0 Liquid Design System (Phases 41-49) -- SHIPPED 2026-04-09</summary>
 
-- [x] Phase 11: Hero & First Impression (1/1 plan) -- completed 2026-03-23
-- [x] Phase 12: Sticky Navigation (1/1 plan) -- completed 2026-03-23
-- [x] Phase 13: Section Layout & Contrast (2/2 plans) -- completed 2026-03-23
-- [x] Phase 14: Visual Consistency (1/1 plan) -- completed 2026-03-23
+- [x] Phase 41: Foundation Tokens (2/2 plans) -- completed 2026-04-09
+- [x] Phase 42: Squircle Primitives (1/1 plan) -- completed 2026-04-09
+- [x] Phase 43: Liquid Glass Primitives (2/2 plans) -- completed 2026-04-09
+- [x] Phase 44: Chrome Partials Upgrade (2/2 plans) -- completed 2026-04-09
+- [x] Phase 45: Simple Pages (2/2 plans) -- completed 2026-04-09
+- [x] Phase 46: Service Pages (0/TBD) -- completed 2026-04-09
+- [x] Phase 47: Index Page (2/2 plans) -- completed 2026-04-09
+- [x] Phase 48: Verification (2/2 plans) -- completed 2026-04-09
+- [x] Phase 49: Documentation (2/2 plans) -- completed 2026-04-09
+
+Full details: `.planning/milestones/v4.0-ROADMAP.md`
 
 </details>
 
-Full details: `.planning/milestones/v1.1-ROADMAP.md`
-Requirements: `.planning/milestones/v1.1-REQUIREMENTS.md`
-Audit: `.planning/milestones/v1.1-MILESTONE-AUDIT.md`
-
 <details>
-<summary>v1.2 Brand Visual Alignment (Phases 15-16) -- SHIPPED 2026-03-23</summary>
+<summary>v3.2 Build Pipeline & Chrome Partials (Phases 39-40) -- SHIPPED 2026-04-08</summary>
 
-- [x] Phase 15: Design Tokens, Buttons & Hero (1/1 plan) -- completed 2026-03-23
-- [x] Phase 16: Cards & Spacing (1/1 plan) -- completed 2026-03-23
+- [x] Phase 39: Partials Extraction & Build Pipeline (3/3 plans) -- completed 2026-04-08
+- [x] Phase 40: UX Cosmetic Cleanup (3/3 plans) -- completed 2026-04-08
+
+Full details: `.planning/milestones/v3.2-ROADMAP.md`
+Requirements: `.planning/milestones/v3.2-REQUIREMENTS.md`
 
 </details>
 
-Full details: `.planning/milestones/v1.2-ROADMAP.md`
-Requirements: `.planning/milestones/v1.2-REQUIREMENTS.md`
-Audit: `.planning/milestones/v1.2-MILESTONE-AUDIT.md`
-
 <details>
-<summary>v1.3 KZ Design Alignment (Phases 17-19) -- SHIPPED 2026-03-23</summary>
+<summary>v3.1 Site Foundation & Audit Fixes (Phases 33-38 + 38.1) -- SHIPPED 2026-04-08</summary>
 
-- [x] Phase 17: Design Tokens, Gradient Buttons & Layout (1/1 plan) -- completed 2026-03-23
-- [x] Phase 18: Cards, Badges & Navigation (1/1 plan) -- completed 2026-03-23
-- [x] Phase 19: v1.3 Cleanup (1/1 plan) -- completed 2026-03-23
+- [x] Phase 33: Audit Quick Wins (1/1 plan) -- completed 2026-04-07
+- [x] Phase 34: Treatment Abroad Overhaul (1/1 plan) -- completed 2026-04-07
+- [x] Phase 35: Checkup Fix + Form UX Polish -- completed 2026-04-07
+- [x] Phase 36a: Shared Layout Primitives -- completed 2026-04-07
+- [x] Phase 37: Site Metadata & Hygiene -- completed 2026-04-07
+- [x] Phase 38: Vertical Rhythm & Section Sizing -- completed 2026-04-07
+- [x] Phase 38.1: Mobile viewport overflow + checkup H1 fix (corrective) -- completed 2026-04-08
+
+Full details: `.planning/milestones/v3.1-ROADMAP.md`
+Requirements: `.planning/milestones/v3.1-REQUIREMENTS.md`
+Audit: `.planning/milestones/v3.1-MILESTONE-AUDIT.md`
 
 </details>
 
-Full details: `.planning/milestones/v1.3-ROADMAP.md`
-Requirements: `.planning/milestones/v1.3-REQUIREMENTS.md`
-Audit: `.planning/milestones/v1.3-MILESTONE-AUDIT.md`
+<details>
+<summary>v3.0 SEO, Performance & Polish (Phases 29-32) -- SHIPPED 2026-04-06</summary>
+
+- [x] Phase 29: 404 Page & UI Polish (2/2 plans) -- completed 2026-04-05
+- [x] Phase 30: SEO Optimization (1/1 plan) -- completed 2026-04-05
+- [x] Phase 31: Performance Optimization (2/2 plans) -- completed 2026-04-05
+- [x] Phase 32: Design System Compliance (2/2 plans) -- completed 2026-04-06
+
+Full details: `.planning/milestones/v3.0-ROADMAP.md`
+Requirements: `.planning/milestones/v3.0-REQUIREMENTS.md`
+Audit: `.planning/milestones/v3.0-MILESTONE-AUDIT.md`
+
+</details>
 
 <details>
-<summary>✅ v1.4 2025 Visual Redesign (Phases 20-23) -- SHIPPED 2026-03-24</summary>
+<summary>Earlier milestones (v1.0-v2.0) -- SHIPPED</summary>
 
-- [x] **Phase 20: Dark Mode Token Infrastructure** -- DM-01, DM-02, DM-03, DM-04 (completed 2026-03-24)
-- [x] **Phase 21: Bold Typography Scale** -- TYPO-01, TYPO-02 (completed 2026-03-24)
-- [x] **Phase 22: Glassmorphism** -- GLASS-01, GLASS-02, GLASS-03, GLASS-04 (completed 2026-03-24)
-- [x] **Phase 23: Micro-Animations Enhancement** -- ANIM-01, ANIM-02, ANIM-03 (completed 2026-03-24)
+- v1.0 MedicusUnion KZ Landing -- 10 phases, 24 plans (shipped 2026-03-23)
+- v1.1 Visual Polish & Conversion Boost -- 4 phases, 5 plans (shipped 2026-03-23)
+- v1.2 Brand Visual Alignment -- 2 phases, 2 plans (shipped 2026-03-23)
+- v1.3 KZ Design Alignment -- 3 phases, 3 plans (shipped 2026-03-23)
+- v1.4 2025 Visual Redesign -- 4 phases, 6 plans (shipped 2026-03-24)
+- v2.0 Service Pages Copywriting Rewrite -- 4 phases, 8 plans (shipped 2026-04-05)
 
-### Phase 20: Dark Mode Token Infrastructure
-**Goal:** Lay the complete CSS and JS foundation for dark mode. All existing components auto-update via the token cascade. No visual change in light mode. All dark token pairs pass contrast audit before any component styling proceeds.
-**Depends on:** Phase 19
-**Requirements:** DM-01, DM-02, DM-03, DM-04
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. User can toggle dark mode from the sticky navigation — button is visible at all scroll positions, has text label, meets 44px touch target
-  2. Dark mode persists across page reload — closing and reopening the page restores the previously chosen theme
-  3. Hard-refresh with OS dark preference and no localStorage entry shows light mode (default-light policy holds)
-  4. Hard-refresh with saved dark preference shows dark mode immediately with no white flash (FOUC eliminated)
-  5. Every color token pair in `[data-theme="dark"]` has been checked against WCAG AA contrast (≥4.5:1); body text pairs target AAA (≥7:1)
-**Plans:** 2/2 plans complete
+See `.planning/milestones/` for full details per milestone.
+
+</details>
+
+## Phase Details
+
+### Phase 59: Next.js Scaffold & CSS Foundation
+**Goal**: A working Next.js 15 project where all Liquid Glass CSS tokens and materials render identically to the current production site -- proving the CSS pipeline before any page content is ported
+**Depends on**: Nothing (first v6.0 phase; builds on v5.0 shipped glass design system)
+**Requirements**: SCAF-01, SCAF-02, SCAF-04
+**Success Criteria** (what must be TRUE):
+  1. `npm run dev` starts a Next.js 15 App Router project with TypeScript, ESLint, and Tailwind CSS v4 via @tailwindcss/postcss -- a blank page renders without errors
+  2. All glass CSS tokens (liquid-bg, liquid-blur-*, liquid-saturate, liquid-brightness, shadow-*, tint-*) are available as Tailwind theme values and as CSS custom properties -- verified by inspecting a test element in DevTools
+  3. A test page with `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, `.liquid-nav` classes and squircle masks renders glass surfaces identically to the current production site -- side-by-side screenshot comparison shows no visible difference
+  4. CSS import order is deterministic: globals.css imports liquid-glass.css and squircles.css via explicit @import chain, and `"sideEffects": ["*.css"]` is set in package.json -- no CSS ordering bugs between dev (Turbopack) and build (Webpack)
+  5. backdrop-filter declarations use standard-first, -webkit- second order to avoid Turbopack stripping bug (#78302)
+**Plans**: 2 plans
 Plans:
-- [x] 20-01-PLAN.md — CSS token infrastructure: [data-theme="dark"] block, glass tokens, FOUC script, toggle button HTML
-- [x] 20-02-PLAN.md — JS initDarkMode() wiring, localStorage persistence, contrast audit checkpoint
-**Context:** `.planning/phases/20-dark-mode-token-infrastructure/20-CONTEXT.md`
+- [x] 59-01-PLAN.md -- Next.js 15 scaffold + Tailwind v4 + fonts + theme tokens
+- [x] 59-02-PLAN.md -- Liquid Glass CSS + squircles port + visual verification
+**UI hint**: yes
 
-### Phase 21: Bold Typography Scale
-**Goal:** Increase heading visual weight to display-scale 2025 standards. Every headline readable and correctly broken at 320px and 390px before this phase closes.
-**Depends on:** Phase 20
-**Requirements:** TYPO-01, TYPO-02
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. The hero heading is visibly larger and bolder than in v1.3 — no single-word orphan lines at 390px
-  2. All h1 and h2 headings scale fluidly between desktop and mobile without overflow or layout shift
-  3. Bold headings are legible in both light and dark mode — no contrast regressions
-**Plans:** 1/1 plans complete
+### Phase 60: Component Library & Layout Shell
+**Goal**: The application shell is complete -- shared chrome (header, footer, mobile menu, sticky bar, SVG defs) renders as React components in a root layout that persists across route changes
+**Depends on**: Phase 59 (glass CSS tokens must be available for glass header/sticky-bar components)
+**Requirements**: SCAF-03, SCAF-05
+**Success Criteria** (what must be TRUE):
+  1. shadcn/ui is initialized and Button, Card, Input, Select, Textarea, Dialog components are available for import -- `npx shadcn@latest add` has been run and components exist in the project
+  2. Root layout (app/layout.tsx) renders Header, Footer, MobileMenu, StickyBar, and SvgRefractionDefs as React components -- navigating between `/` and `/contacts` preserves the layout shell without re-mount
+  3. Header component applies glass material on scroll (`.liquid-nav` class) and shows desktop navigation links -- scrolling down on any page triggers the glass effect
+  4. MobileMenu opens/closes with correct backdrop-blur overlay and StickyBar shows on mobile with click-to-call -- tested at 375px viewport width
+**Plans**: 2 plans
 Plans:
-- [x] 21-01-PLAN.md — Heading token update (TYPO-01 + TYPO-02) + visual verification checkpoint
-**Context:** `.planning/phases/21-bold-typography-scale/21-CONTEXT.md`
+- [x] 60-01-PLAN.md -- Initialize shadcn/ui + shared navigation config + SvgRefractionDefs
+- [x] 60-02-PLAN.md -- Header/Footer/MobileMenu/StickyBar components + root layout wiring
+**UI hint**: yes
 
-### Phase 22: Glassmorphism
-**Goal:** Apply selective glass effects to the sticky header and pricing card. Hero section gains gradient mesh background as the visual layer required for glass to function. Maximum 2 glass elements visible in any viewport.
-**Depends on:** Phase 20, Phase 21
-**Requirements:** GLASS-01, GLASS-02, GLASS-03, GLASS-04
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. Scrolling past the hero reveals a frosted glass header — page content is visible through a translucent header
-  2. The pricing card has a glass surface — sits visibly over the gradient pricing section background
-  3. On a browser with `backdrop-filter` disabled, the header and pricing card show solid opaque fallback colors
-  4. Scrolling through the page with Chrome DevTools 4x CPU throttle shows no frame drops below 50fps
-**Plans:** 2/2 plans complete
+### Phase 61: Index Page Migration
+**Goal**: The index page is fully ported as a Next.js SSG page with all 7 sections rendering as React Server Components, achieving 1:1 visual parity with the current production site (research confirmed 7 actual sections in index.html, not 13 as originally estimated)
+**Depends on**: Phase 60 (layout shell with header/footer must exist as composition target for page content)
+**Requirements**: PAGE-01
+**Success Criteria** (what must be TRUE):
+  1. All 7 index sections (Hero, Stats, Services, Guide, Advantages, ContactForm, FinalCTA) render as individual React components composed in app/page.tsx
+  2. Side-by-side comparison of Next.js index vs current production index at 1440px, 768px, and 375px viewports shows no visible layout differences -- same spacing, typography, colors, gradient CTA buttons
+  3. The page is statically generated (SSG) -- `npm run build` output shows `/` as a static page, not a dynamic one
+  4. 6 of 7 section components are Server Components (no "use client" directive) -- only ContactForm carries a client boundary
+  5. ContactForm validates inputs, masks phone as +7 (XXX) XXX-XX-XX, and shows success state (no API submission -- deferred to Phase 65)
+**Plans**: 2 plans
 Plans:
-- [x] 22-01-PLAN.md — CSS glassmorphism: hero gradient mesh, header glass, pricing gradient, .card--glass modifier, @supports fallbacks, dark mode overrides; HTML card--glass wiring
-- [x] 22-02-PLAN.md — Visual + performance verification checkpoint: 7-check sign-off including mandatory 4x CPU throttle FPS gate
-**Context:** `.planning/phases/22-glassmorphism/22-CONTEXT.md`
+- [x] 61-01-PLAN.md -- 6 Server Component sections (HeroHub, StatsBar, ServicesGrid, GuideGrid, AdvantagesGrid, FinalCTA)
+- [x] 61-02-PLAN.md -- ContactSection + ContactForm (client) + app/page.tsx composition + visual verification
+**UI hint**: yes
 
-### Phase 23: Micro-Animations Enhancement
-**Goal:** Extend scroll reveal with a vertical slide component, add tactile button active feedback, and confirm the global prefers-reduced-motion guard covers all new transforms. Total animation types on page stays at ≤5.
-**Depends on:** Phase 20, Phase 21, Phase 22
-**Requirements:** ANIM-01, ANIM-02, ANIM-03
-**Success Criteria** (what must be TRUE when this phase completes):
-  1. Scroll-reveal elements slide up from 20px while fading in — visibly more dynamic than the v1.3 opacity-only fade
-  2. Pressing and holding a CTA button shows a subtle scale-down (scale 0.97) — confirms the click registered
-  3. With OS prefers-reduced-motion enabled, no animations are visible — elements appear at their final position immediately
-  4. After waiting 10 seconds on the loaded page without interaction, nothing on the page is moving
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 23-01-PLAN.md — CSS animation updates: scroll-reveal translateY(20px), button active scale(0.97), reduced-motion guard, stagger fix + visual verification checkpoint
-**Context:** `.planning/phases/23-micro-animations-enhancement/23-CONTEXT.md`
+### Phase 62: Contacts Page & SEO
+**Goal**: The contacts page is ported with glass form styling, and both pages have complete SEO metadata via Next.js Metadata API -- matching current production meta tags
+**Depends on**: Phase 61 (index page validates all component patterns; contacts reuses shared sections like ContactForm and FinalCTA)
+**Requirements**: PAGE-02, PAGE-03
+**Success Criteria** (what must be TRUE):
+  1. `/contacts` page renders with glass-styled contact form and coordinator info cards -- visual parity with current contacts.html at 1440px and 375px viewports
+  2. Both `/` and `/contacts` pages export static metadata objects with correct title, description, Open Graph (og:title, og:description, og:image), and canonical URL -- verified by viewing page source or `curl -s | grep '<meta'`
+  3. Both pages are statically generated -- `npm run build` output shows both `/` and `/contacts` as static pages
+**Plans**: TBD
+**UI hint**: yes
 
-## Progress Table
+### Phase 63: Scroll & Entrance Animations
+**Goal**: Pages feel alive with scroll-triggered reveal animations on all sections and a staggered hero entrance sequence -- matching the current site's motion design
+**Depends on**: Phase 61 (section components must exist as animation targets before wrapping them with motion)
+**Requirements**: ANIM-01, ANIM-02
+**Success Criteria** (what must be TRUE):
+  1. Framer Motion is installed with LazyMotion + domAnimation features -- bundle impact is under 8KB gzipped (verified via `npm run build` output or bundle analyzer)
+  2. Every section on the index page fades in with translateY(20px) + opacity transition when scrolled into view -- scrolling through the page shows each section animating in sequence
+  3. Hero section plays a staggered entrance: heading first, then subtitle, then CTA buttons, then stat cards -- each element appears 100-150ms after the previous one on initial page load
+  4. `prefers-reduced-motion: reduce` disables all scroll-reveal and entrance animations -- verified by toggling the media query in DevTools and confirming no movement occurs
+  5. Animation wrapper components (ScrollReveal, MotionDiv) use "use client" but the section content they wrap remains a Server Component -- no unnecessary client-side JS for static content
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 64: Interactive Glass Animations
+**Goal**: Glass cards respond to user interaction with hover/press brightness shifts and a desktop specular highlight that follows the cursor -- completing the Liquid Glass interactive experience
+**Depends on**: Phase 63 (Framer Motion must be set up; animation wrapper pattern must be established)
+**Requirements**: ANIM-03, ANIM-04
+**Success Criteria** (what must be TRUE):
+  1. Hovering over any glass card on the index or contacts page brightens the surface; pressing/clicking darkens it -- transitions are smooth (200-300ms) and visually match the current production site
+  2. On desktop (pointer: fine), moving the cursor near a glass card produces a specular highlight shift -- the light position tracks the cursor direction via CSS custom properties updated by JS
+  3. `prefers-reduced-motion: reduce` disables specular parallax tracking while keeping static hover/press brightness changes
+  4. All interaction states work on `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, and `.liquid-nav` glass variants
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 65: Database & Form Submission
+**Goal**: The contact form submits to PostgreSQL via a Next.js Server Action, replacing Directus entirely -- with the same validation and spam protection as the current site
+**Depends on**: Phase 62 (contact form UI must exist on both pages before wiring up submission)
+**Requirements**: DATA-01, DATA-02
+**Success Criteria** (what must be TRUE):
+  1. Drizzle ORM schema defines a `submissions` table with fields matching the current Directus collection (id UUID, name, phone, specialization, description, status, date_created) -- `npx drizzle-kit push` creates the table in PostgreSQL
+  2. Submitting the contact form on `/` or `/contacts` writes a row to the `submissions` table via Server Action -- verified by checking the database after submission
+  3. Zod validation rejects: empty name, invalid phone format (not +7...), missing specialization -- form shows inline error messages for each invalid field
+  4. Honeypot field (hidden input) and timing check (submission faster than 2 seconds) reject bot submissions silently -- bots get a 200 response but no database write
+  5. Form shows success state after valid submission and error state if the database write fails -- user sees clear feedback in both cases
+**Plans**: TBD
+
+### Phase 66: Admin Panel
+**Goal**: Non-technical staff can view and filter form submissions in a basic admin interface -- replacing the Directus admin panel for day-to-day operations
+**Depends on**: Phase 65 (submissions table and data must exist before building a viewer)
+**Requirements**: DATA-03
+**Success Criteria** (what must be TRUE):
+  1. `/admin` page renders a table of all submissions with columns: date, name, phone, specialization, status -- sorted by most recent first
+  2. Submissions can be filtered by status (new/contacted/completed) and by date range -- filters update the table without full page reload
+  3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
+**Plans**: TBD
+
+### Phase 67: Docker Deployment
+**Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
+**Depends on**: Phase 66 (all application features must be complete before containerizing)
+**Requirements**: DOCK-01, DOCK-02
+**Success Criteria** (what must be TRUE):
+  1. `docker compose up` starts Next.js standalone server + PostgreSQL 16 -- the site is accessible at localhost:3000 with all pages, glass effects, animations, and form submission working
+  2. Multi-stage Dockerfile uses node:20-slim base, produces an image under 200MB, and explicitly copies public/ and .next/static/ directories into the standalone output
+  3. PostgreSQL data persists across `docker compose down && docker compose up` via a named volume -- existing submissions survive container restart
+  4. Health check endpoint responds with 200 -- Docker reports the Next.js container as healthy
+**Plans**: TBD
+
+## Progress
+
+### v6.0 Next.js Stack Migration
+
+**Execution Order:**
+Phases execute in numeric order: 59 -> 60 -> 61 -> 62 -> 63 -> 64 -> 65 -> 66 -> 67.
+Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 20. Dark Mode Token Infrastructure | 2/2 | Complete    | 2026-03-24 |
-| 21. Bold Typography Scale | 1/1 | Complete    | 2026-03-24 |
-| 22. Glassmorphism | 2/2 | Complete    | 2026-03-24 |
-| 23. Micro-Animations Enhancement | 1/1 | Complete    | 2026-03-24 |
-
-</details>
-
-Full details: `.planning/milestones/v1.4-ROADMAP.md`
-Requirements: `.planning/milestones/v1.4-REQUIREMENTS.md`
-Audit: `.planning/milestones/v1.4-MILESTONE-AUDIT.md`
-
-### ✅ Phase 24: Liquid Glass Enhancement — SHIPPED 2026-03-25
-
-**Goal:** Expand glassmorphism from Phase 22 (2 elements) to full iOS 26 liquid glass treatment across the page. Three new glass surfaces (sticky bar, form wrapper, social proof stats), glass intensity upgraded site-wide (blur 20px, 60% opacity, green tint, specular highlight), dark mode glass enabled everywhere, gradient mesh backgrounds added to benefits and lead-form sections.
-**Requirements**: D-01 through D-17 (17/17 verified)
-**Depends on:** Phase 23
-**Plans:** 2 plans
-
-Plans:
-- [x] 24-01-PLAN.md — Glass token upgrade (blur/opacity/tint), specular highlights, dark mode glass reversal, gradient mesh backgrounds
-- [x] 24-02-PLAN.md — New glass elements (sticky bar, form wrapper, social proof), HTML class wiring, glass enter animation
+| 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
+| 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
+| 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
+| 62. Contacts Page & SEO | 0/TBD | Not started | - |
+| 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
+| 64. Interactive Glass Animations | 0/TBD | Not started | - |
+| 65. Database & Form Submission | 0/TBD | Not started | - |
+| 66. Admin Panel | 0/TBD | Not started | - |
+| 67. Docker Deployment | 0/TBD | Not started | - |
