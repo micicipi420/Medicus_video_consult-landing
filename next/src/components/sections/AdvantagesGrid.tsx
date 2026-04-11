@@ -74,22 +74,22 @@ const ADVANTAGES: AdvantageCard[] = [
 
 export function AdvantagesGrid() {
   return (
-    <section className="py-12 md:py-24 section-tint-mint" id="why-mu">
+    <section className="py-12 lg:py-[6.25rem] bg-[#F0F7FF]" id="why-mu">
       <div className="container mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
+        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.2] tracking-[-0.02em] text-balance font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Почему MedicusUnion
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {ADVANTAGES.map((card, i) => (
             <div
               key={i}
-              className="liquid-regular squircle-lg p-6 flex flex-col"
+              className="card-prod squircle-lg p-8 flex flex-col hover:-translate-y-1 transition-transform"
             >
               {card.icon}
-              <h3 className="font-heading text-lg font-bold text-mu-text-900 mb-2">
+              <h3 className="font-heading text-[clamp(1.375rem,2.5vw,2rem)] leading-[1.2] font-bold text-mu-text-900 mb-2">
                 {card.title}
               </h3>
-              <p className="font-body text-sm text-mu-text-500 leading-relaxed">
+              <p className="font-body text-[1.125rem] text-mu-text-500 leading-relaxed">
                 {card.description}
               </p>
             </div>
