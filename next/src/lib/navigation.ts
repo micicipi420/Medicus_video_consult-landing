@@ -2,7 +2,7 @@ export const NAV_LINKS = [
   { href: '/consultations', label: 'Консультации' },
   { href: '/treatment-abroad', label: 'Лечение' },
   { href: '/checkup', label: 'Чек-ап' },
-  { href: '#contact', label: 'Контакты' },
+  { href: '/contacts', label: 'Контакты' },
 ] as const;
 
 export const FOOTER_NAV_LINKS = [
