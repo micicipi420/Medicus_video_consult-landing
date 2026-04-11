@@ -20,7 +20,7 @@
 ### v6.0 Next.js Stack Migration (active)
 
 - [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
-- [ ] **Phase 60: Component Library & Layout Shell** (0/2 plans) - shadcn/ui base components and root layout with shared chrome (header, footer, mobile-menu, sticky-bar, svg-defs)
+- [x] **Phase 60: Component Library & Layout Shell** (2/2 plans) -- completed 2026-04-11
 - [ ] **Phase 61: Index Page Migration** - All 13 index sections as React Server Components with 1:1 visual parity
 - [ ] **Phase 62: Contacts Page & SEO** - Contacts page with glass form + SEO metadata for both pages via Next.js Metadata API
 - [ ] **Phase 63: Scroll & Entrance Animations** - Framer Motion scroll-reveal on all sections + staggered hero entrance animation
@@ -147,8 +147,8 @@ Plans:
   4. MobileMenu opens/closes with correct backdrop-blur overlay and StickyBar shows on mobile with click-to-call -- tested at 375px viewport width
 **Plans**: 2 plans
 Plans:
-- [ ] 60-01-PLAN.md -- Initialize shadcn/ui + shared navigation config + SvgRefractionDefs
-- [ ] 60-02-PLAN.md -- Header/Footer/MobileMenu/StickyBar components + root layout wiring
+- [x] 60-01-PLAN.md -- Initialize shadcn/ui + shared navigation config + SvgRefractionDefs
+- [x] 60-02-PLAN.md -- Header/Footer/MobileMenu/StickyBar components + root layout wiring
 **UI hint**: yes
 
 ### Phase 61: Index Page Migration
@@ -244,7 +244,7 @@ Strictly linear -- each phase builds on the previous.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
-| 60. Component Library & Layout Shell | 0/2 | Not started | - |
+| 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
 | 61. Index Page Migration | 0/TBD | Not started | - |
 | 62. Contacts Page & SEO | 0/TBD | Not started | - |
 | 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
