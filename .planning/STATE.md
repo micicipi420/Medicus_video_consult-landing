@@ -1,36 +1,42 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: unknown
-stopped_at: Completed 22-01-PLAN.md
-last_updated: "2026-03-24T14:25:11.004Z"
+milestone: v6.0
+milestone_name: Next.js Stack Migration
+status: executing
+stopped_at: v6.0 roadmap created with 9 phases (59-67)
+last_updated: "2026-04-10T20:02:12.782Z"
+last_activity: 2026-04-10 -- Phase 59 execution started
 progress:
-  total_phases: 1
-  completed_phases: 0
+  total_phases: 9
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 0
+  completed_plans: 2
+  percent: 100
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-23)
+See: .planning/PROJECT.md (updated 2026-04-10)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 24 — liquid-glass-enhancement
+**Current focus:** Phase 59 — Next.js Scaffold & CSS Foundation
 
 ## Current Position
 
-Phase: 24 (liquid-glass-enhancement) — COMPLETE ✅
-Plan: 2 of 2 (all done, 17/17 decisions verified)
+Phase: 59 (Next.js Scaffold & CSS Foundation) — EXECUTING
+Plan: 1 of 2
+Status: Executing Phase 59
+Last activity: 2026-04-10 -- Phase 59 execution started
+
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
+- Total plans completed: 0 (v6.0)
 - Average duration: --
 - Total execution time: 0 hours
 
@@ -38,15 +44,14 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 17 | 0/TBD | - | - |
-| 18 | 0/TBD | - | - |
-| Phase 17 P01 | 2min | 2 tasks | 1 files |
-| Phase 18 P01 | 8 | 3 tasks | 1 files |
-| Phase 19-v1-3-cleanup P01 | 2 | 3 tasks | 2 files |
-| Phase 20 P01 | 2 | 2 tasks | 2 files |
-| Phase 20 P02 | 10 | 2 tasks | 2 files |
-| Phase 21 P01 | 15 | 2 tasks | 1 files |
-| Phase 22 P01 | 2 | 3 tasks | 2 files |
+| - | - | - | - |
+
+**Recent Trend:**
+
+- Last 5 plans: --
+- Trend: --
+
+*Updated after each plan completion*
 
 ## Accumulated Context
 
@@ -55,35 +60,27 @@ Plan: 2 of 2 (all done, 17/17 decisions verified)
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [v1.2]: Separate --color-cta from --color-primary (green CTA, cyan accents)
-- [v1.3]: Gradient CTA replaces solid green -- align with medicusunion.kz
-- [Phase 17]: Opacity hover (0.85) for gradient CTA compatibility
-- [Phase 18]: Flat card design (no shadows) matches medicusunion.kz reference — removed all card box-shadows
-- [Phase 18]: Mint badge palette (#d0fae4 bg / #007955 text) as CSS custom properties for pricing badge
-- [Phase 19-v1-3-cleanup]: Removed --color-cta-hover-kz token declared in Phase 17 but never used — hover relies on opacity: 0.85
-- [Phase 19-v1-3-cleanup]: Removed box-shadow from .pricing__card to complete flat design intent missed in Phase 18
-- [Phase 20]: navy #0F1923 as dark mode base — avoids pure black halation for astigmatic 45+ users
-- [Phase 20]: [data-theme='dark'] redefines exact same --color-* token names — never parallel names like --color-white-dark; all component CSS auto-updates via cascade
-- [Phase 20]: Default-light policy (DM-04): @media prefers-color-scheme scoped to :root:not([data-theme='light']) — OS dark is hint-only, explicit toggle always wins
-- [Phase 20]: initDarkMode() placed last in initAll() so all other UI is initialised before theme state reconciliation
-- [Phase 20]: applyTheme() as single side-effect function ensures aria-pressed, icon, and localStorage always stay in sync
-- [Phase 20]: .hero hardcoded background: #ffffff replaced with var(--color-white) — token cascade must be uninterrupted for dark mode
-- [Phase 21]: h1/h2 weight 800 (Manrope Variable), h3 stays 700; --line-height-display: 1.1 added for display-scale headings; text-wrap: balance on all h1/h2/h3 prevents Cyrillic orphan lines
-- [Phase 22]: @supports not pattern chosen over JS feature detection — pure CSS, no runtime overhead
-- [Phase 22]: Dark mode disables backdrop-filter on all glass elements — avoids murky smear on navy #0F1923 base
-- [Phase 22]: --glass-bg raised from 0.65 to 0.75 to meet REQUIREMENTS.md 75% opacity floor for header legibility
+- [v6.0 research]: Drizzle ORM over Prisma (7KB vs 2MB) for single-table use case
+- [v6.0 research]: Turbopack has open backdrop-filter bug (#78302) -- use Webpack for production
+- [v6.0 research]: Glass CSS stays global (not component-scoped) -- single globals.css @import chain
+- [v6.0 research]: Skip @squircle-js/react -- CSS squircles sufficient
+- [v6.0 research]: Next.js 15.5.x (NOT 16) -- breaking changes, zero benefit
+- [v6.0 research]: LazyMotion + m components to keep Framer Motion under 8KB gzipped
+- [v6.0 research]: backdrop-filter standard-first, -webkit- second (Turbopack fix)
 
-### Roadmap Evolution
+### Pending Todos
 
-- Phase 24 added: Liquid Glass Enhancement
+None yet.
 
 ### Blockers/Concerns
 
-- Real content needed from client: doctor credentials, hospital logos, statistics, legal entity details
+- Turbopack backdrop-filter bug (#78302) -- OPEN, must use Webpack for prod
+- CSS import order divergence dev/prod (#79531, #79535) -- mitigated by single entry point
+- Dark mode FOUC -- deferred to v6.1 (middleware approach)
 - Kazakhstan Personal Data Law (No. 94-V) may affect form field -- legal review before go-live
 
 ## Session Continuity
 
-Last session: 2026-03-25T03:14:10Z
-Stopped at: Phase 24 complete — ad-hoc glass on problem/benefits cards added post-verification
-Resume file: .planning/HANDOFF.json
+Last session: 2026-04-10
+Stopped at: v6.0 roadmap created with 9 phases (59-67)
+Resume file: None

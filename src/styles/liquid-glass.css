@@ -1,0 +1,1037 @@
+/*
+ * src/styles/liquid-glass.css
+ *
+ * Liquid Glass material primitives for MedicusUnion KZ v4.0 Liquid Design System.
+ *
+ * Provides reusable CSS classes that encode the complete glass visual language:
+ *   - Base material (.liquid-regular)
+ *   - Nav material (.liquid-nav)
+ *   - Clear material (.liquid-clear)
+ *   - Fluted material (.liquid-fluted)
+ *   - Card material (.liquid-card)
+ *   - Button variants (.liquid-btn-primary, .liquid-btn-secondary)
+ *   - Grouped stats backdrop (.stats-glass)
+ *   - Shimmer sweep (.shimmer-sweep)
+ *   - Scroll-edge fade (.scroll-fade-top, .scroll-fade-bottom)
+ *
+ * Glass hierarchy (GLAS-03):
+ *   Level 1 - Nav:     .liquid-nav     -- lightest blur (16px), highest transparency, no outer shadow
+ *   Level 2 - Regular: .liquid-regular  -- medium blur (24px), standard opacity, full shadow
+ *   Level 3 - Clear:   .liquid-clear    -- highest transparency, dimming layer, subtle shadow
+ *   Texture:  Fluted:  .liquid-fluted   -- regular-weight + vertical ribbed streaks
+ *
+ * Variants: Regular (default), Nav (lightest), Clear (overlay), Fluted (ribbed texture).
+ *
+ * Tokens declared in: theme.css :root (--liquid-*) and .dark cascade.
+ * Companion file: squircles.css (shape primitives).
+ *
+ * Dark mode: automatic via --liquid-* token cascade in theme.css .dark {}.
+ *   No explicit .dark selectors exist in this file.
+ *   All classes auto-inherit dark values through var() references.
+ *
+ * Shadow pattern: box-shadow on the glass class itself produces a
+ *   squircle-shaped shadow clipped by mask-image -- visually acceptable.
+ *   Chrome 139+ with corner-shape: squircle removes mask-image need entirely.
+ *
+ *   NEVER use filter: drop-shadow() on glass ancestors --
+ *   it breaks backdrop-filter on children (see commit ba29f8a).
+ *
+ *   Card example:
+ *     <article class="squircle-lg liquid-card">
+ *       <!-- card content -->
+ *     </article>
+ *
+ * Note: backdrop-filter creates implicit stacking contexts.
+ *   Any element with .liquid-regular (or derivatives) becomes a
+ *   stacking context root. Plan z-index accordingly.
+ *
+ * Anti-patterns:
+ *   - NEVER use will-change: backdrop-filter on static cards.
+ *     Wastes GPU memory with no measurable benefit for non-animated elements.
+ *   - NEVER nest glass inside glass.
+ *     Double backdrop-filter compounds blur and kills readability.
+ *   - NEVER use shimmer on non-hero elements.
+ *     Max 1 shimmer per viewport -- more is visual noise for CA 45+.
+ *   - NEVER use border on masked glass (squircle clips borders).
+ *     Use inset box-shadow instead (rim lighting tokens handle this).
+ *   - NEVER apply box-shadow AND mask-image on the same element.
+ *     Shadow gets clipped to mask silhouette. Use shadow-wrap pattern.
+ *   - NEVER use filter: drop-shadow() on ancestors of glass elements.
+ *     Creates a backdrop root that breaks child backdrop-filter (commit ba29f8a).
+ */
+
+/* ================================================
+   Section 1 -- Base material
+   ================================================ */
+
+/* Safari backdrop-filter fallback strategy (Phase 51 / XBRO-01):
+   Safari ignores CSS custom properties inside -webkit-backdrop-filter.
+   Each glass class has a hardcoded -webkit-backdrop-filter line BEFORE the
+   var()-based line. Safari uses the hardcoded values; Chromium/Firefox use
+   the var() line. Light-mode values are used as the universal fallback --
+   the visual difference vs dark params (28px/160%/115%) is negligible. */
+
+.liquid-regular {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback -- vars fail in -webkit-backdrop-filter */
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  /* No border -- use .border-inset-glass for squircle-safe borders (see squircles.css). */
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-shadow-outer);
+}
+
+/* ================================================
+   Section 1.1 -- Nav-weight material (GLAS-03 Level 1)
+   Lightest glass: minimal blur, highest transparency,
+   no outer shadow. For navigation bars, toolbars.
+   Formalizes the "navigation weight" from the glass
+   hierarchy: nav < regular < clear.
+   ================================================ */
+
+.liquid-nav {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-nav-bg),
+      var(--liquid-nav-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  /* No outer shadow -- nav floats light */
+}
+
+/* ================================================
+   Section 1.2 -- Clear-weight material (GLAS-01 / GLAS-03 Level 3)
+   Highest transparency + dimming backdrop layer.
+   For overlay contexts: modals, lightboxes, drawers.
+   The ::after pseudo creates a dark scrim behind the
+   glass surface (dimming layer).
+   Hierarchy: nav < regular < clear.
+   ================================================ */
+
+.liquid-clear {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-clear-bg),
+      var(--liquid-clear-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-clear-shadow-outer);
+}
+
+/* Dimming layer -- sits behind glass content, darkens the backdrop area */
+.liquid-clear::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--liquid-clear-dim);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ================================================
+   Section 1.3 -- Fluted material (GLAS-02)
+   Regular-weight glass with vertical ribbed streaks
+   overlaid via repeating-linear-gradient. Produces
+   the "fluted glass" texture (iOS-inspired ribbing).
+   Uses ::after for the streak layer so it composites
+   above the backdrop-filter blur.
+   ================================================ */
+
+.liquid-fluted {
+  isolation: isolate;
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
+      rgba(255, 255, 255, 0.10) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%);
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-shadow-outer);
+}
+
+/* Vertical ribbed streaks -- composites above the blurred backdrop */
+.liquid-fluted::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--liquid-fluted-stripe-color) 0px,
+    var(--liquid-fluted-stripe-color) var(--liquid-fluted-stripe-width),
+    transparent var(--liquid-fluted-stripe-width),
+    transparent calc(var(--liquid-fluted-stripe-width) + var(--liquid-fluted-stripe-gap))
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ================================================
+   Section 2 -- Card
+   .liquid-card = .liquid-regular + padding.
+   Compose with squircle: class="squircle-lg liquid-card"
+   ================================================ */
+
+.liquid-card {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-shadow-outer);
+}
+
+.liquid-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Shadow-wrap pattern (.liquid-card-wrap) -- REMOVED in Phase 52 (CLEN-02).
+   box-shadow now lives directly on .liquid-card / .liquid-regular.
+   See docs/DESIGN-SYSTEM.md for current card pattern. */
+
+/* ================================================
+   Section 3 -- Buttons
+   ================================================ */
+
+/* Primary CTA -- gradient fill, NOT glass.
+   Conversion affordance for CA 45+: solid opaque button
+   with specular edge treatment (thin inset highlight). */
+
+.liquid-btn-primary {
+  background: linear-gradient(135deg, var(--mu-cta-from), var(--mu-cta-to));
+  color: white;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(14, 143, 181, 0.25);
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+.liquid-btn-primary:hover {
+  filter: brightness(1.08);
+  will-change: filter, transform;
+}
+
+.liquid-btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* Secondary button -- glass material.
+   Used for secondary actions (e.g., "Learn more"). */
+
+.liquid-btn-secondary {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
+  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom);
+  font-weight: 600;
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+.liquid-btn-secondary:hover {
+  filter: brightness(1.1) saturate(1.2);
+  will-change: filter, transform;
+}
+
+.liquid-btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* ================================================
+   Section 4 -- Grouped stats backdrop
+   Uses --liquid-blur-lg (40px light / 44px dark)
+   instead of --liquid-blur-md -- larger surface
+   grouping multiple stat elements.
+   ================================================ */
+
+.stats-glass {
+  isolation: isolate;
+  position: relative;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--liquid-bg),
+      var(--liquid-bg)
+    ),
+    linear-gradient(
+      to bottom,
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
+      hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
+    );
+  backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(108%); /* Safari fallback -- uses blur-lg */
+  -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  box-shadow:
+    var(--liquid-shadow-inset-top),
+    var(--liquid-shadow-inset-bottom),
+    var(--liquid-shadow-outer);
+}
+
+/* ================================================
+   Section 5 -- Shimmer sweep
+   Hero CTA only. Max 1 per viewport.
+   CSS-only hover animation via ::before pseudo-element.
+   ================================================ */
+
+.shimmer-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.25) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+  pointer-events: none;
+}
+
+.shimmer-sweep:hover::before {
+  transform: translateX(100%);
+  will-change: transform;
+}
+
+/* ================================================
+   Section 6 -- Scroll-edge fade
+   CSS mask-image gradient fade at content/chrome
+   overlap boundaries.
+   ================================================ */
+
+.scroll-fade-top {
+  --scroll-fade-size: 80px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black var(--scroll-fade-size));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black var(--scroll-fade-size));
+}
+
+.scroll-fade-bottom {
+  --scroll-fade-size: 80px;
+  mask-image: linear-gradient(to top, transparent 0%, black var(--scroll-fade-size));
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black var(--scroll-fade-size));
+}
+
+/* ================================================
+   Section 7 -- Specular rim-lights
+   Top-edge highlight on glass surfaces for depth cue.
+   .liquid-card excluded — gets glint border instead.
+   ================================================ */
+
+.liquid-regular::before,
+.liquid-nav::before,
+.liquid-fluted::before,
+.liquid-btn-secondary::before,
+.stats-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ================================================
+   Section 8 -- Animated glint border (liquid-card only)
+   Sweeping specular border highlight. Replaces rim-light
+   on cards with a continuous animated edge treatment.
+   ================================================ */
+
+.liquid-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
+  background-size: 200% 100%;
+  animation: glint 6s linear infinite;
+  will-change: background-position;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes glint {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ================================================
+   Section 9 -- Header backdrop (Josh Comeau extended technique)
+   Double-height element with mask fade for seamless
+   header blur that extends beyond the element boundary.
+   ================================================ */
+
+.liquid-header-backdrop {
+  position: absolute;
+  inset: 0;
+  height: 200%;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ================================================
+   Section 10 -- Refraction progressive enhancement
+   Chrome 139+ only. Gated by html[data-refract="true"]
+   attribute set by JS probe (initRefractionProbe).
+   Three size-calibrated filters (Phase 53 / PERF-03):
+     sm = zero displacement (badges/chips -- reserved for future variants)
+     md = card-scale displacement (cards, header, nav chrome)
+     lg = subtle wide-area displacement (stats-glass, full-width sections)
+   ================================================ */
+
+/* Medium refraction: cards and navigation chrome */
+html[data-refract="true"] .liquid-regular,
+html[data-refract="true"] .liquid-card {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Large refraction: full-width stat containers */
+html[data-refract="true"] .stats-glass {
+  backdrop-filter: url(#liquid-refract-lg) blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-lg) blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Nav refraction: use small displacement (lightest) */
+html[data-refract="true"] .liquid-nav {
+  backdrop-filter: url(#liquid-refract-sm) blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-sm) blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Clear refraction: use medium displacement */
+html[data-refract="true"] .liquid-clear {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-clear-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* Fluted refraction: use medium displacement (same weight as regular) */
+html[data-refract="true"] .liquid-fluted {
+  backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: url(#liquid-refract-md) blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+}
+
+/* ================================================
+   Section 11 -- Print stylesheet
+   All glass surfaces render as opaque white
+   with 1px border. No backdrop-filter in print.
+   ================================================ */
+
+@media print {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-btn-primary,
+  .liquid-btn-secondary,
+  .stats-glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+
+  .liquid-clear::after,
+  .liquid-fluted::after {
+    display: none !important;
+  }
+
+  /* Hide specular highlights in print (VFEX-02) */
+  .liquid-regular::after,
+  .liquid-nav::after,
+  .stats-glass::after,
+  .liquid-clear::before,
+  .liquid-card::after,
+  .liquid-card::before {
+    display: none !important;
+  }
+
+  .shimmer-sweep::before {
+    display: none !important;
+  }
+
+  .scroll-fade-top,
+  .scroll-fade-bottom {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+}
+
+/* ================================================
+   Section 12.5 -- Glass tint consumption
+   Glass elements inherit --liquid-tint-* from their
+   parent section's .section-tint-* class. The tint is
+   composited as a second background layer beneath
+   --liquid-bg. When --liquid-tint-a is 0 (default),
+   the tint layer is fully transparent -- zero visual
+   impact on untinted sections.
+   Per VFEX-01: background-gradient composite, not
+   mix-blend-mode.
+   ================================================ */
+
+/* ================================================
+   Section 12 -- Section tint backgrounds & glass tint properties
+   Alternating cool/warm gradient tints give backdrop-filter
+   something to blur against on light backgrounds.
+   Apply to <section> elements:
+     .section-tint-cool  -- blue-green (brand palette)
+     .section-tint-warm  -- peach-amber (complementary)
+     .section-tint-mint  -- green (checkup / health)
+   Tints are very subtle (~3-5% opacity). Dark mode: hidden
+   via .dark selector (dark backgrounds don't need tints).
+   Glass elements consume --liquid-tint-* to shift their surface color.
+   ================================================ */
+
+/* Default tint: zero alpha = no tint for sections without a tint class */
+:root {
+  --liquid-tint-h: 0;
+  --liquid-tint-s: 0%;
+  --liquid-tint-l: 50%;
+  --liquid-tint-a: 0;
+}
+
+.section-tint-cool {
+  --liquid-tint-h: 197;
+  --liquid-tint-s: 78%;
+  --liquid-tint-l: 63%;
+  --liquid-tint-a: 0.05;
+  background: linear-gradient(
+    168deg,
+    rgba(56, 198, 244, 0.06) 0%,
+    rgba(79, 132, 232, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.section-tint-warm {
+  --liquid-tint-h: 28;
+  --liquid-tint-s: 72%;
+  --liquid-tint-l: 65%;
+  --liquid-tint-a: 0.04;
+  background: linear-gradient(
+    168deg,
+    rgba(255, 162, 92, 0.05) 0%,
+    rgba(245, 0, 87, 0.03) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.section-tint-mint {
+  --liquid-tint-h: 153;
+  --liquid-tint-s: 58%;
+  --liquid-tint-l: 62%;
+  --liquid-tint-a: 0.05;
+  background: linear-gradient(
+    168deg,
+    rgba(111, 222, 169, 0.06) 0%,
+    rgba(120, 195, 191, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Dark mode: suppress section tints -- dark bg is sufficient */
+.dark .section-tint-cool,
+.dark .section-tint-warm,
+.dark .section-tint-mint {
+  background: none;
+}
+
+/* Dark mode: adapted tint values -- lighter, lower-saturation,
+   slightly more opaque to register against navy #0F1923 base */
+.dark .section-tint-cool {
+  --liquid-tint-h: 200;
+  --liquid-tint-s: 50%;
+  --liquid-tint-l: 72%;
+  --liquid-tint-a: 0.06;
+}
+.dark .section-tint-warm {
+  --liquid-tint-h: 30;
+  --liquid-tint-s: 45%;
+  --liquid-tint-l: 73%;
+  --liquid-tint-a: 0.05;
+}
+.dark .section-tint-mint {
+  --liquid-tint-h: 155;
+  --liquid-tint-s: 40%;
+  --liquid-tint-l: 70%;
+  --liquid-tint-a: 0.06;
+}
+
+.dark .liquid-regular::before,
+.dark .liquid-btn-secondary::before,
+.dark .stats-glass::before {
+  opacity: 0.3;
+}
+
+.dark .liquid-card::before {
+  opacity: 0.5;
+}
+
+.dark .liquid-card::after {
+  opacity: 0.4;
+}
+
+.dark .liquid-nav::before,
+.dark .liquid-fluted::before {
+  opacity: 0.3;
+}
+
+.dark .liquid-fluted::after {
+  opacity: 0.5;
+}
+
+.dark .liquid-clear::after {
+  opacity: 0.7;
+}
+
+/* Dark mode: dim specular highlights on non-card glass (VFEX-02) */
+.dark .liquid-regular::after,
+.dark .liquid-nav::after,
+.dark .stats-glass::after {
+  opacity: 0.4;
+}
+
+.dark .liquid-clear::before {
+  opacity: 0.3;
+}
+
+/* ================================================
+   Section 13 -- Reduced motion
+   Extends existing theme.css reduced-motion guard
+   (which already zeroes animation-duration/transition-duration
+   and sets --dur-press/hover/sheet/reveal to 0ms).
+   This block adds glass-specific downgrades:
+   blur reduced to 8px, shimmer and glint hidden.
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-btn-secondary,
+  .stats-glass,
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .liquid-nav,
+  html[data-refract="true"] .liquid-clear,
+  html[data-refract="true"] .liquid-fluted,
+  html[data-refract="true"] .stats-glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .shimmer-sweep::before {
+    display: none;
+  }
+
+  .liquid-card::before {
+    display: none;
+  }
+
+  /* Specular highlight: freeze at default position (no mouse tracking) */
+  .liquid-regular::after,
+  .liquid-nav::after,
+  .stats-glass::after,
+  .liquid-clear::before {
+    background: radial-gradient(
+      ellipse at 30% 0%,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 60%
+    );
+  }
+}
+
+/* ================================================
+   Section 14 -- Reduced transparency
+   For users who prefer less transparency (e.g., macOS
+   "Reduce transparency" setting). Increases background
+   opacity, disables backdrop-filter, and hides all
+   pseudo-element decorations.
+   ================================================ */
+
+/* Note: prefers-reduced-transparency is Chrome/Edge 118+ only.
+   Safari and Firefox do not support it (as of April 2026).
+   This is progressive enhancement -- no action needed. */
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-btn-secondary,
+  .stats-glass,
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .liquid-nav,
+  html[data-refract="true"] .liquid-clear,
+  html[data-refract="true"] .liquid-fluted,
+  html[data-refract="true"] .stats-glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-regular,
+  .dark .liquid-card,
+  .dark .liquid-btn-secondary,
+  .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-nav,
+  .dark .liquid-clear,
+  .dark .liquid-fluted {
+    background: rgba(30, 40, 60, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .liquid-card::after {
+    display: none;
+  }
+
+  .liquid-clear::after,
+  .liquid-fluted::after {
+    display: none;
+  }
+
+  .liquid-regular::before,
+  .liquid-nav::before,
+  .liquid-fluted::before,
+  .liquid-btn-secondary::before,
+  .stats-glass::before,
+  .liquid-card::before {
+    display: none;
+  }
+
+  /* Hide specular highlights (VFEX-02) */
+  .liquid-regular::after,
+  .liquid-nav::after,
+  .stats-glass::after,
+  .liquid-clear::before {
+    display: none;
+  }
+}
+
+/* ================================================
+   Section 15 -- No backdrop-filter support
+   Solid semi-transparent background fallback for
+   browsers without backdrop-filter support (~3% of
+   users, primarily older Firefox versions).
+   Modern Firefox 103+ supports backdrop-filter.
+   This section remains as a safety net.
+   ================================================ */
+
+@supports not (backdrop-filter: blur(1px)) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-btn-secondary,
+  .stats-glass {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .liquid-header-backdrop {
+    background: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-regular,
+  .dark .liquid-card,
+  .dark .liquid-btn-secondary,
+  .dark .stats-glass {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-nav,
+  .dark .liquid-clear,
+  .dark .liquid-fluted {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+
+  .dark .liquid-header-backdrop {
+    background: rgba(30, 40, 60, 0.85);
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ================================================
+   Section 16 -- Interaction states (VFEX-03)
+   Unified hover/press/focus-visible for all glass
+   surface classes. Buttons excluded -- they have
+   their own states in Section 3.
+   .liquid-header-backdrop excluded -- non-interactive
+   (pointer-events: none).
+   Reduced-motion: --dur-press/--dur-hover are already
+   zeroed by theme.css, so transitions become instant.
+   The brightness/scale state changes still apply.
+   ================================================ */
+
+/* Transition base -- animate both in AND out */
+.liquid-regular,
+.liquid-card,
+.liquid-nav,
+.liquid-clear,
+.liquid-fluted,
+.stats-glass {
+  transition: filter var(--dur-hover) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+}
+
+/* will-change applied on :hover/:active only -- never on base selectors (PERF-02) */
+
+/* Hover -- subtle surface brighten */
+.liquid-regular:hover,
+.liquid-card:hover,
+.liquid-nav:hover,
+.liquid-clear:hover,
+.liquid-fluted:hover,
+.stats-glass:hover {
+  filter: brightness(1.04);
+  transition: filter var(--dur-hover) var(--ease-liquid);
+  will-change: filter, transform;
+}
+
+/* Active/press -- darken + micro-scale */
+.liquid-regular:active,
+.liquid-card:active,
+.liquid-nav:active,
+.liquid-clear:active,
+.liquid-fluted:active,
+.stats-glass:active {
+  filter: brightness(0.96);
+  transform: scale(0.985);
+  transition: filter var(--dur-press) var(--ease-liquid),
+              transform var(--dur-press) var(--ease-liquid);
+  will-change: filter, transform;
+}
+
+/* Focus-visible -- keyboard focus ring */
+.liquid-regular:focus-visible,
+.liquid-card:focus-visible,
+.liquid-nav:focus-visible,
+.liquid-clear:focus-visible,
+.liquid-fluted:focus-visible,
+.stats-glass:focus-visible {
+  outline: 2px solid var(--mu-blue-text);
+  outline-offset: 4px;
+  box-shadow: none;
+}
+
+/* ================================================
+   Section 17 -- Specular highlight for glass surfaces (VFEX-02)
+   Mouse-tracking radial-gradient on ::after (same pattern as
+   .liquid-card::after). JS sets --mouse-x/--mouse-y on each
+   element via initMouseSpecular(). Desktop-only: touch devices
+   fall back to static default position (30%, 0%).
+   Classes with ::after occupied (fluted, clear) use ::before
+   or background-layer composite instead of ::after pseudo.
+   ================================================ */
+
+/* Free ::after classes: regular, nav, stats-glass */
+.liquid-regular::after,
+.liquid-nav::after,
+.stats-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* .liquid-clear: ::after is dimming layer, use ::before for specular */
+.liquid-clear::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at var(--mouse-x, 30%) var(--mouse-y, 0%),
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ================================================
+   Section 18 -- Viewport budget (PERF-01)
+   Glass elements outside the viewport or exceeding
+   the 6-element budget get .glass-idle added by JS.
+   This disables backdrop-filter (replacing it with
+   an opaque background approximation) to reduce
+   GPU composite layer count.
+   The class is removed when the element scrolls back
+   into the viewport and budget allows.
+   Priority: header > nav > cards/regular > buttons.
+   ================================================ */
+
+.glass-idle {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Idle elements get an opaque background approximation
+   so they don't become fully transparent. Light/dark
+   mode handled via separate selectors. */
+.glass-idle.liquid-regular,
+.glass-idle.liquid-card,
+.glass-idle.liquid-btn-secondary,
+.glass-idle.stats-glass,
+.glass-idle.liquid-fluted {
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+.glass-idle.liquid-nav {
+  background: rgba(255, 255, 255, 0.60) !important;
+}
+
+.glass-idle.liquid-clear {
+  background: rgba(255, 255, 255, 0.55) !important;
+}
+
+.dark .glass-idle.liquid-regular,
+.dark .glass-idle.liquid-card,
+.dark .glass-idle.liquid-btn-secondary,
+.dark .glass-idle.stats-glass,
+.dark .glass-idle.liquid-fluted {
+  background: rgba(30, 40, 60, 0.75) !important;
+}
+
+.dark .glass-idle.liquid-nav {
+  background: rgba(30, 40, 60, 0.55) !important;
+}
+
+.dark .glass-idle.liquid-clear {
+  background: rgba(30, 40, 60, 0.50) !important;
+}
