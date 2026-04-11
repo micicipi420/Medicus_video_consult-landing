@@ -1,9 +1,5 @@
 import type { Metadata } from 'next';
-import { ContactsHero } from '@/components/sections/contacts/ContactsHero';
-import { CoordinatorCard } from '@/components/sections/contacts/CoordinatorCard';
-import { ContactMethodGrid } from '@/components/sections/contacts/ContactMethodGrid';
-import { TrustBadges } from '@/components/sections/contacts/TrustBadges';
-import { ContactForm } from '@/components/sections/ContactForm';
+import { LeadFormSection } from '@/components/sections/service/LeadFormSection';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
 
 export const metadata: Metadata = {
@@ -24,27 +20,27 @@ export const metadata: Metadata = {
 export default function ContactsPage() {
   return (
     <>
-      <ContactsHero />
+      <section className="pt-20 pb-12 lg:pt-[5rem] lg:pb-12 bg-gradient-to-b from-[#F0F7FF] to-white">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 text-center">
+          <h1 className="font-heading text-[clamp(2.5rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[#18212C] mb-6 text-balance">
+            Свяжитесь с{'\u00A0'}нами
+          </h1>
+          <p className="text-[1.25rem] text-[rgba(24,33,44,0.55)] leading-relaxed max-w-[720px] mx-auto">
+            Не{'\u00A0'}знаете, какой сервис подходит? Оставьте заявку{'\u00A0'}{'\u2014'} мы{'\u00A0'}перезвоним и{'\u00A0'}подскажем.
+          </p>
+        </div>
+      </section>
       <ScrollReveal>
-        <section className="pb-12 md:pb-24" id="contact-section">
-          <div className="container mx-auto px-4 md:px-8">
-            <div className="grid md:grid-cols-2 gap-10 md:gap-12 items-start">
-              {/* Left column: coordinator + contact methods + trust badges */}
-              <div>
-                <CoordinatorCard />
-                <ContactMethodGrid />
-                <TrustBadges />
-              </div>
-              {/* Right column: form card */}
-              <div className="bg-white border border-black/8 rounded-2xl shadow-md p-8 md:p-10">
-                <h2 className="font-heading text-2xl font-bold text-mu-text-900 mb-6">
-                  Оставить заявку
-                </h2>
-                <ContactForm />
-              </div>
-            </div>
-          </div>
-        </section>
+        <LeadFormSection
+          heading="Оставить заявку"
+          subtext={<>Заполните форму{'\u00A0'}{'\u2014'} мы{'\u00A0'}перезвоним в{'\u00A0'}течение 24{'\u00A0'}часов.</>}
+          trustItems={[
+            { text: 'Перезвоним в\u00A0течение 24\u00A0часов' },
+            { text: 'Бесплатная консультация' },
+            { text: 'Ваши данные защищены (ISO\u00A027001)' },
+          ]}
+          id="contact-section"
+        />
       </ScrollReveal>
     </>
   );
