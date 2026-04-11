@@ -6,6 +6,7 @@ import { GuideGrid } from '@/components/sections/GuideGrid';
 import { AdvantagesGrid } from '@/components/sections/AdvantagesGrid';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FinalCTA } from '@/components/sections/FinalCTA';
+import { ScrollReveal } from '@/components/motion/ScrollReveal';
 
 export const metadata: Metadata = {
   title: {
@@ -28,12 +29,24 @@ export default function Home() {
   return (
     <>
       <HeroHub />
-      <StatsBar />
-      <ServicesGrid />
-      <GuideGrid />
-      <AdvantagesGrid />
-      <ContactSection />
-      <FinalCTA />
+      <ScrollReveal>
+        <StatsBar />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <ServicesGrid />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <GuideGrid />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <AdvantagesGrid />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <ContactSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <FinalCTA />
+      </ScrollReveal>
     </>
   );
 }
