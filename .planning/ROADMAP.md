@@ -21,7 +21,7 @@
 
 - [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
 - [x] **Phase 60: Component Library & Layout Shell** (2/2 plans) -- completed 2026-04-11
-- [ ] **Phase 61: Index Page Migration** (0/2 plans) - All 7 index sections as React Server Components with 1:1 visual parity
+- [x] **Phase 61: Index Page Migration** (2/2 plans) -- completed 2026-04-11
 - [ ] **Phase 62: Contacts Page & SEO** - Contacts page with glass form + SEO metadata for both pages via Next.js Metadata API
 - [ ] **Phase 63: Scroll & Entrance Animations** - Framer Motion scroll-reveal on all sections + staggered hero entrance animation
 - [ ] **Phase 64: Interactive Glass Animations** - Hover/press interaction states + specular mouse-tracking highlight on glass cards
@@ -163,8 +163,8 @@ Plans:
   5. ContactForm validates inputs, masks phone as +7 (XXX) XXX-XX-XX, and shows success state (no API submission -- deferred to Phase 65)
 **Plans**: 2 plans
 Plans:
-- [ ] 61-01-PLAN.md -- 6 Server Component sections (HeroHub, StatsBar, ServicesGrid, GuideGrid, AdvantagesGrid, FinalCTA)
-- [ ] 61-02-PLAN.md -- ContactSection + ContactForm (client) + app/page.tsx composition + visual verification
+- [x] 61-01-PLAN.md -- 6 Server Component sections (HeroHub, StatsBar, ServicesGrid, GuideGrid, AdvantagesGrid, FinalCTA)
+- [x] 61-02-PLAN.md -- ContactSection + ContactForm (client) + app/page.tsx composition + visual verification
 **UI hint**: yes
 
 ### Phase 62: Contacts Page & SEO
@@ -248,7 +248,7 @@ Strictly linear -- each phase builds on the previous.
 |-------|----------------|--------|-----------|
 | 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
 | 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
-| 61. Index Page Migration | 0/2 | Not started | - |
+| 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
 | 62. Contacts Page & SEO | 0/TBD | Not started | - |
 | 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
 | 64. Interactive Glass Animations | 0/TBD | Not started | - |
