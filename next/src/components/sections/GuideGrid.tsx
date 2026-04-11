@@ -61,27 +61,27 @@ const GUIDE_ITEMS: GuideItem[] = [
 
 export function GuideGrid() {
   return (
-    <section className="py-12 md:py-24 section-tint-warm" id="guide">
+    <section className="py-12 lg:py-[6.25rem] bg-[#FFF8F0]" id="guide">
       <div className="container mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
+        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.2] tracking-[-0.02em] text-balance font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Не{'\u00A0'}знаете, с{'\u00A0'}чего начать?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {GUIDE_ITEMS.map((item) => (
             <div
               key={item.linkHref}
-              className="liquid-regular squircle-lg p-6 md:p-8 flex flex-col"
+              className="p-6 md:p-8 flex flex-col"
             >
               {item.icon}
-              <h3 className="font-heading text-lg font-bold text-mu-text-900 mb-2">
+              <h3 className="font-heading text-[clamp(1.375rem,2.5vw,2rem)] leading-[1.2] font-bold text-mu-text-900 mb-2">
                 {item.title}
               </h3>
-              <p className="font-body text-mu-text-500 leading-relaxed mb-4 flex-grow">
+              <p className="font-body text-[1.125rem] text-mu-text-500 leading-relaxed mb-4 flex-grow">
                 {item.description}
               </p>
               <Link
                 href={item.linkHref}
-                className="font-semibold text-[#0B7A9A] hover:text-[#065c75] transition-colors mt-auto"
+                className="font-semibold text-[#1A4D80] hover:text-[#18212C] transition-colors mt-auto"
               >
                 {item.linkText}
               </Link>

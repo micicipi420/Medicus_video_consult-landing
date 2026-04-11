@@ -12,7 +12,7 @@ interface ServiceCard {
 }
 
 const ConsultationIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-16 h-16" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
     <rect x="12" y="8" width="40" height="32" rx="4" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.08)" />
     <line x1="12" y1="40" x2="52" y2="40" stroke="#38C6F4" strokeWidth="2.5" />
     <rect x="24" y="40" width="16" height="6" rx="2" stroke="#38C6F4" strokeWidth="2" fill="rgba(56,198,244,0.08)" />
@@ -22,7 +22,7 @@ const ConsultationIcon = () => (
 );
 
 const GlobeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-16 h-16" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
     <circle cx="32" cy="32" r="22" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.06)" />
     <ellipse cx="32" cy="32" rx="10" ry="22" stroke="#38C6F4" strokeWidth="1.5" fill="none" />
     <line x1="10" y1="26" x2="54" y2="26" stroke="#38C6F4" strokeWidth="1.5" strokeLinecap="round" />
@@ -35,7 +35,7 @@ const GlobeIcon = () => (
 );
 
 const CheckupIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-16 h-16" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
     <rect x="16" y="6" width="32" height="44" rx="4" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.06)" />
     <rect x="24" y="2" width="16" height="8" rx="3" stroke="#38C6F4" strokeWidth="2" fill="rgba(56,198,244,0.08)" />
     <polyline points="22,24 26,28 34,20" stroke="#35B678" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -106,35 +106,38 @@ const SERVICES: ServiceCard[] = [
 
 export function ServicesGrid() {
   return (
-    <section className="py-12 md:py-24 section-tint-cool" id="services">
+    <section className="py-12 lg:py-[6.25rem] bg-white" id="services">
       <div className="container mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-2xl md:text-3xl font-bold text-center text-mu-text-900 mb-10 md:mb-14">
+        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.2] tracking-[-0.02em] text-balance font-bold text-center text-mu-text-900 mb-10 md:mb-14">
           Выберите, что{'\u00A0'}вам нужно
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {SERVICES.map((service) => (
             <div
               key={service.ctaHref}
-              className="liquid-card squircle-lg p-6 md:p-8 flex flex-col"
+              className="card-prod squircle-lg p-8 md:p-10 text-center flex flex-col hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-all"
             >
-              <div className="mb-2">{service.icon}</div>
-              <span className="inline-block bg-[#d0fae4] text-[#007955] text-sm font-semibold px-3 py-1 squircle-md mt-4 mb-3 w-fit">
+              <div className="mb-2 flex justify-center">{service.icon}</div>
+              <span className="inline-block bg-[#d0fae4] text-[#007955] text-[1rem] font-heading font-semibold px-3 py-1 rounded-full mt-4 mb-3 w-fit mx-auto">
                 {service.badge}
               </span>
-              <h3 className="font-heading text-xl font-bold text-mu-text-900 mb-3">
+              <h3 className="font-heading text-[clamp(1.375rem,2.5vw,2rem)] leading-[1.2] font-bold text-mu-text-900 mb-3">
                 {service.title}
               </h3>
-              <p className="font-body text-mu-text-500 leading-relaxed mb-4 flex-grow">
+              <p className="font-body text-[1.125rem] text-mu-text-500 leading-relaxed mb-4 flex-grow max-w-[360px] mx-auto">
                 {service.description}
               </p>
-              <ul className="space-y-2 mb-6 text-mu-text-700 text-sm">
+              <ul className="space-y-2 mb-6 text-mu-text-700 text-[1rem] text-left max-w-[360px] mx-auto w-full">
                 {service.features.map((feature) => (
-                  <li key={feature}>{feature}</li>
+                  <li key={feature} className="flex items-start gap-2">
+                    <span className="inline-block w-2 h-2 rounded-full bg-[#35B678] mt-[0.5em] shrink-0" aria-hidden="true" />
+                    <span>{feature}</span>
+                  </li>
                 ))}
               </ul>
               <Link
                 href={service.ctaHref}
-                className="liquid-btn-primary squircle-md inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold mt-auto"
+                className="btn-primary w-full md:w-auto mt-auto"
               >
                 {service.ctaText}
               </Link>
