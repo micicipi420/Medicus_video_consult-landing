@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -26,8 +26,20 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'MedicusUnion — онлайн-консультации с европейскими врачами',
-  description: 'Второе мнение от врачей Германии, Израиля, Швейцарии. Онлайн-консультация не выходя из дома.',
+  metadataBase: new URL('https://medicusunion.kz'),
+  title: {
+    default: 'MedicusUnion KZ \u2014 Медицина мирового уровня для Казахстана',
+    template: '%s \u2014 MedicusUnion KZ',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ru_RU',
+    siteName: 'MedicusUnion',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#38C6F4',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
