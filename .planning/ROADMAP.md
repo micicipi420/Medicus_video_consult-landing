@@ -175,7 +175,9 @@ Plans:
   1. `/contacts` page renders with glass-styled contact form and coordinator info cards -- visual parity with current contacts.html at 1440px and 375px viewports
   2. Both `/` and `/contacts` pages export static metadata objects with correct title, description, Open Graph (og:title, og:description, og:image), and canonical URL -- verified by viewing page source or `curl -s | grep '<meta'`
   3. Both pages are statically generated -- `npm run build` output shows both `/` and `/contacts` as static pages
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 62-01-PLAN.md -- Contacts page components + SEO metadata for both pages + visual verification
 **UI hint**: yes
 
 ### Phase 63: Scroll & Entrance Animations
@@ -249,7 +251,7 @@ Strictly linear -- each phase builds on the previous.
 | 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
 | 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
 | 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
-| 62. Contacts Page & SEO | 0/TBD | Not started | - |
+| 62. Contacts Page & SEO | 0/1 | Not started | - |
 | 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
 | 64. Interactive Glass Animations | 0/TBD | Not started | - |
 | 65. Database & Form Submission | 0/TBD | Not started | - |
