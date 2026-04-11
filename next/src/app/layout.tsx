@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { StickyBar } from '@/components/layout/StickyBar';
 import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
+import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider';
 
 const inter = localFont({
   src: [
@@ -48,7 +49,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="relative bg-mu-text-50 text-mu-text-900 overflow-x-clip">
         <SvgRefractionDefs />
         <Header />
-        <main>{children}</main>
+        <LazyMotionProvider>
+          <main>{children}</main>
+        </LazyMotionProvider>
         <Footer />
         <StickyBar />
       </body>
