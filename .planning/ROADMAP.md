@@ -252,15 +252,15 @@ Plans:
 **Goal:** Achieve 1:1 visual parity between the Next.js migration and the production vanilla HTML/CSS site. Fix typography, buttons, backgrounds, cards, footer color, header behavior across all existing pages. Create 3 missing service pages (consultations, treatment-abroad, checkup). Simplify contacts page to match production lead-form pattern.
 **Requirements**: VP-01, VP-02, VP-03, VP-04, VP-05, VP-06, VP-07, VP-08, VP-09
 **Depends on:** Phase 67
-**Plans:** 6 plans
+**Plans:** 6/6 plans complete
 
 Plans:
-- [ ] 67.1-01-PLAN.md -- Production design tokens + layout chrome fixes (Header, Footer, StickyBar)
-- [ ] 67.1-02-PLAN.md -- Index page visual parity (all 7 section components)
-- [ ] 67.1-03-PLAN.md -- Shared service page components + Contacts page simplification
-- [ ] 67.1-04-PLAN.md -- Consultations service page (port from production)
-- [ ] 67.1-05-PLAN.md -- Treatment Abroad service page (port from production)
-- [ ] 67.1-06-PLAN.md -- Checkup service page (port from production)
+- [x] 67.1-01-PLAN.md -- Production design tokens + layout chrome fixes (Header, Footer, StickyBar)
+- [x] 67.1-02-PLAN.md -- Index page visual parity (all 7 section components)
+- [x] 67.1-03-PLAN.md -- Shared service page components + Contacts page simplification
+- [x] 67.1-04-PLAN.md -- Consultations service page (port from production)
+- [x] 67.1-05-PLAN.md -- Treatment Abroad service page (port from production)
+- [x] 67.1-06-PLAN.md -- Checkup service page (port from production)
 **UI hint**: yes
 
 ## Progress
@@ -282,4 +282,4 @@ Strictly linear -- each phase builds on the previous.
 | 65. Database & Form Submission | 1/1 | Complete    | 2026-04-11 |
 | 66. Admin Panel | 1/1 | Complete    | 2026-04-11 |
 | 67. Docker Deployment | 1/1 | Complete    | 2026-04-11 |
-| 67.1. Visual Parity Rework | 0/6 | Planned     | -- |
+| 67.1. Visual Parity Rework | 6/6 | Complete    | 2026-04-11 |
