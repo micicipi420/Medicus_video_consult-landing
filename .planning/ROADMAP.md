@@ -248,12 +248,27 @@ Plans:
 Plans:
 - [x] 67-01-PLAN.md -- Dockerfile (multi-stage) + docker-compose.yml (Next.js + PostgreSQL) + health check endpoint
 
+### Phase 67.1: Visual Parity Rework -- Re-port ALL sections from production with 1:1 visual fidelity
+**Goal:** Achieve 1:1 visual parity between the Next.js migration and the production vanilla HTML/CSS site. Fix typography, buttons, backgrounds, cards, footer color, header behavior across all existing pages. Create 3 missing service pages (consultations, treatment-abroad, checkup). Simplify contacts page to match production lead-form pattern.
+**Requirements**: VP-01, VP-02, VP-03, VP-04, VP-05, VP-06, VP-07, VP-08, VP-09
+**Depends on:** Phase 67
+**Plans:** 6 plans
+
+Plans:
+- [ ] 67.1-01-PLAN.md -- Production design tokens + layout chrome fixes (Header, Footer, StickyBar)
+- [ ] 67.1-02-PLAN.md -- Index page visual parity (all 7 section components)
+- [ ] 67.1-03-PLAN.md -- Shared service page components + Contacts page simplification
+- [ ] 67.1-04-PLAN.md -- Consultations service page (port from production)
+- [ ] 67.1-05-PLAN.md -- Treatment Abroad service page (port from production)
+- [ ] 67.1-06-PLAN.md -- Checkup service page (port from production)
+**UI hint**: yes
+
 ## Progress
 
 ### v6.0 Next.js Stack Migration
 
 **Execution Order:**
-Phases execute in numeric order: 59 -> 60 -> 61 -> 62 -> 63 -> 64 -> 65 -> 66 -> 67.
+Phases execute in numeric order: 59 -> 60 -> 61 -> 62 -> 63 -> 64 -> 65 -> 66 -> 67 -> 67.1.
 Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
@@ -267,3 +282,4 @@ Strictly linear -- each phase builds on the previous.
 | 65. Database & Form Submission | 1/1 | Complete    | 2026-04-11 |
 | 66. Admin Panel | 1/1 | Complete    | 2026-04-11 |
 | 67. Docker Deployment | 1/1 | Complete    | 2026-04-11 |
+| 67.1. Visual Parity Rework | 0/6 | Planned     | -- |
