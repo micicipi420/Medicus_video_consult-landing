@@ -233,7 +233,7 @@ Plans:
   3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
 **Plans**: 1 plan
 Plans:
-- [ ] 66-01-PLAN.md -- Admin page with submissions table, status/date filters
+- [x] 66-01-PLAN.md -- Admin page with submissions table, status/date filters
 
 ### Phase 67: Docker Deployment
 **Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
@@ -244,7 +244,9 @@ Plans:
   2. Multi-stage Dockerfile uses node:20-slim base, produces an image under 200MB, and explicitly copies public/ and .next/static/ directories into the standalone output
   3. PostgreSQL data persists across `docker compose down && docker compose up` via a named volume -- existing submissions survive container restart
   4. Health check endpoint responds with 200 -- Docker reports the Next.js container as healthy
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 67-01-PLAN.md -- Dockerfile (multi-stage) + docker-compose.yml (Next.js + PostgreSQL) + health check endpoint
 
 ## Progress
 
@@ -263,5 +265,5 @@ Strictly linear -- each phase builds on the previous.
 | 63. Scroll & Entrance Animations | 1/1 | Complete    | 2026-04-11 |
 | 64. Interactive Glass Animations | 1/1 | Complete    | 2026-04-11 |
 | 65. Database & Form Submission | 1/1 | Complete    | 2026-04-11 |
-| 66. Admin Panel | 0/1 | Complete    | 2026-04-11 |
-| 67. Docker Deployment | 0/TBD | Not started | - |
+| 66. Admin Panel | 1/1 | Complete    | 2026-04-11 |
+| 67. Docker Deployment | 0/1 | Not started | - |
