@@ -175,7 +175,9 @@ Plans:
   1. `/contacts` page renders with glass-styled contact form and coordinator info cards -- visual parity with current contacts.html at 1440px and 375px viewports
   2. Both `/` and `/contacts` pages export static metadata objects with correct title, description, Open Graph (og:title, og:description, og:image), and canonical URL -- verified by viewing page source or `curl -s | grep '<meta'`
   3. Both pages are statically generated -- `npm run build` output shows both `/` and `/contacts` as static pages
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 **UI hint**: yes
 
 ### Phase 63: Scroll & Entrance Animations
@@ -188,7 +190,9 @@ Plans:
   3. Hero section plays a staggered entrance: heading first, then subtitle, then CTA buttons, then stat cards -- each element appears 100-150ms after the previous one on initial page load
   4. `prefers-reduced-motion: reduce` disables all scroll-reveal and entrance animations -- verified by toggling the media query in DevTools and confirming no movement occurs
   5. Animation wrapper components (ScrollReveal, MotionDiv) use "use client" but the section content they wrap remains a Server Component -- no unnecessary client-side JS for static content
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 **UI hint**: yes
 
 ### Phase 64: Interactive Glass Animations
@@ -200,7 +204,9 @@ Plans:
   2. On desktop (pointer: fine), moving the cursor near a glass card produces a specular highlight shift -- the light position tracks the cursor direction via CSS custom properties updated by JS
   3. `prefers-reduced-motion: reduce` disables specular parallax tracking while keeping static hover/press brightness changes
   4. All interaction states work on `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, and `.liquid-nav` glass variants
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 **UI hint**: yes
 
 ### Phase 65: Database & Form Submission
@@ -213,7 +219,9 @@ Plans:
   3. Zod validation rejects: empty name, invalid phone format (not +7...), missing specialization -- form shows inline error messages for each invalid field
   4. Honeypot field (hidden input) and timing check (submission faster than 2 seconds) reject bot submissions silently -- bots get a 200 response but no database write
   5. Form shows success state after valid submission and error state if the database write fails -- user sees clear feedback in both cases
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 
 ### Phase 66: Admin Panel
 **Goal**: Non-technical staff can view and filter form submissions in a basic admin interface -- replacing the Directus admin panel for day-to-day operations
@@ -223,7 +231,9 @@ Plans:
   1. `/admin` page renders a table of all submissions with columns: date, name, phone, specialization, status -- sorted by most recent first
   2. Submissions can be filtered by status (new/contacted/completed) and by date range -- filters update the table without full page reload
   3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 
 ### Phase 67: Docker Deployment
 **Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
@@ -234,7 +244,9 @@ Plans:
   2. Multi-stage Dockerfile uses node:20-slim base, produces an image under 200MB, and explicitly copies public/ and .next/static/ directories into the standalone output
   3. PostgreSQL data persists across `docker compose down && docker compose up` via a named volume -- existing submissions survive container restart
   4. Health check endpoint responds with 200 -- Docker reports the Next.js container as healthy
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
 
 ## Progress
 
@@ -250,7 +262,7 @@ Strictly linear -- each phase builds on the previous.
 | 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
 | 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
 | 62. Contacts Page & SEO | 0/TBD | Not started | - |
-| 63. Scroll & Entrance Animations | 0/TBD | Not started | - |
+| 63. Scroll & Entrance Animations | 0/1 | Not started | - |
 | 64. Interactive Glass Animations | 0/TBD | Not started | - |
 | 65. Database & Form Submission | 0/TBD | Not started | - |
 | 66. Admin Panel | 0/TBD | Not started | - |
