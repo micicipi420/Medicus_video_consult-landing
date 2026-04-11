@@ -26,7 +26,7 @@
 - [x] **Phase 63: Scroll & Entrance Animations** (1/1 plan) -- completed 2026-04-11
 - [x] **Phase 64: Interactive Glass Animations** (1/1 plan) -- completed 2026-04-11
 - [x] **Phase 65: Database & Form Submission** (1/1 plan) -- completed 2026-04-11
-- [ ] **Phase 66: Admin Panel** - Basic /admin page for viewing submissions with status/date filtering
+- [ ] **Phase 66: Admin Panel** (0/1 plan) - Basic /admin page for viewing submissions with status/date filtering
 - [ ] **Phase 67: Docker Deployment** - Docker Compose (Next.js standalone + PostgreSQL) with multi-stage Dockerfile
 
 <details>
@@ -231,7 +231,9 @@ Plans:
   1. `/admin` page renders a table of all submissions with columns: date, name, phone, specialization, status -- sorted by most recent first
   2. Submissions can be filtered by status (new/contacted/completed) and by date range -- filters update the table without full page reload
   3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 66-01-PLAN.md -- Admin page with submissions table, status/date filters
 
 ### Phase 67: Docker Deployment
 **Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
@@ -261,5 +263,5 @@ Strictly linear -- each phase builds on the previous.
 | 63. Scroll & Entrance Animations | 1/1 | Complete    | 2026-04-11 |
 | 64. Interactive Glass Animations | 1/1 | Complete    | 2026-04-11 |
 | 65. Database & Form Submission | 1/1 | Complete    | 2026-04-11 |
-| 66. Admin Panel | 0/TBD | Not started | - |
+| 66. Admin Panel | 0/1 | Not started | - |
 | 67. Docker Deployment | 0/TBD | Not started | - |
