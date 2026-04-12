@@ -28,27 +28,29 @@ export function CheckupWhyUs() {
   ];
 
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-[#F5F7F9]" id="why-us">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-center text-[#18212C] mb-4 leading-[1.2] tracking-[-0.02em] text-balance">
-          Не{'\u00A0'}просто посредник{'\u00A0'}{'\u2014'} медицинская платформа
+    <section className="py-16 relative z-10" id="why-us">
+      <div className="container mx-auto px-4 lg:px-6">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center">
+          <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
+            Не{'\u00A0'}просто посредник{'\u00A0'}{'\u2014'} медицинская платформа
+          </span>
         </h2>
-        <p className="text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed text-center max-w-[800px] mx-auto mb-10">
+        <p className="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
           Можно обратиться в{'\u00A0'}клинику напрямую. Но{'\u00A0'}тогда вы{'\u00A0'}сами организуете визу, перелёт, трансфер, проживание, переписку с{'\u00A0'}клиникой на{'\u00A0'}английском, перевод результатов. И{'\u00A0'}если обследование выявит проблему{'\u00A0'}{'\u2014'} вы{'\u00A0'}с{'\u00A0'}ней один на{'\u00A0'}один. MedicusUnion{'\u00A0'}{'\u2014'} это другой подход.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
-            <div key={item.number} className="card-prod p-6 md:p-8">
+            <div key={item.number} className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
               <div
-                className="font-heading text-[2rem] font-bold text-[#38C6F4]/30 mb-3"
+                className="text-4xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent mb-4"
                 aria-hidden="true"
               >
                 {item.number}
               </div>
-              <h3 className="font-heading text-[1.25rem] font-bold text-[#18212C] mb-2">
+              <h3 className="text-xl font-extrabold text-mu-text-900 mb-2">
                 {item.title}
               </h3>
-              <p className="text-[1rem] text-[rgba(24,33,44,0.55)] leading-relaxed">
+              <p className="text-mu-text-700 font-medium">
                 {item.text}
               </p>
             </div>

@@ -2,30 +2,28 @@ import type { ReactNode } from 'react';
 
 interface TurkeyProgramCard {
   name: string;
-  accent?: boolean;
+  featured?: boolean;
   price: ReactNode;
   description: ReactNode;
 }
 
-function CheckIcon() {
+function CheckCircleIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="none"
       width="20"
       height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--mu-green-600)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="flex-shrink-0 mt-0.5"
       aria-hidden="true"
-      className="w-5 h-5 shrink-0"
     >
-      <path
-        d="M4 10l4 4 8-8"
-        stroke="#047857"
-        strokeWidth="2.5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
     </svg>
   );
 }
@@ -39,74 +37,88 @@ export function CheckupProgramsTurkey() {
     },
     {
       name: 'Silver',
-      price: <>от{'\u00A0'}~$1{'\u00A0'}100 <span className="text-[0.875rem] font-normal text-[rgba(24,33,44,0.55)]">(муж.) / ~$1{'\u00A0'}200 (жен.)</span></>,
+      price: <>от{'\u00A0'}~$1{'\u00A0'}100 <span className="text-base font-bold text-mu-text-700">(муж.) / ~$1{'\u00A0'}200 (жен.)</span></>,
       description: <>Анализы + УЗИ + базовые обследования.</>,
     },
     {
       name: 'Gold',
-      price: <>от{'\u00A0'}~$2{'\u00A0'}100 <span className="text-[0.875rem] font-normal text-[rgba(24,33,44,0.55)]">(муж.) / ~$2{'\u00A0'}200 (жен.)</span></>,
+      price: <>от{'\u00A0'}~$2{'\u00A0'}100 <span className="text-base font-bold text-mu-text-700">(муж.) / ~$2{'\u00A0'}200 (жен.)</span></>,
       description: <>Silver + расширенная диагностика.</>,
     },
     {
       name: 'Platinum',
-      accent: true,
-      price: <>от{'\u00A0'}~$3{'\u00A0'}100 <span className="text-[0.875rem] font-normal text-[rgba(24,33,44,0.55)]">(муж.) / ~$3{'\u00A0'}200 (жен.)</span></>,
+      featured: true,
+      price: <>от{'\u00A0'}~$3{'\u00A0'}100 <span className="text-base font-bold text-mu-text-700">(муж.) / ~$3{'\u00A0'}200 (жен.)</span></>,
       description: <>Полный комплекс обследований.</>,
     },
   ];
 
   const includedItems = [
     <>Обследование у{'\u00A0'}профессоров и{'\u00A0'}ведущих врачей</>,
+    <>Расширенная программа анализов</>,
     <>Всё за{'\u00A0'}1{'\u2013'}2{'\u00A0'}дня, без очередей</>,
     <>Трансфер из{'\u00A0'}аэропорта и{'\u00A0'}между отелем и{'\u00A0'}клиникой</>,
-    <>Личный сопровождающий и{'\u00A0'}переводчик 24/7</>,
+    <>Личный сопровождающий на{'\u00A0'}всех этапах</>,
+    <>24/7 поддержка и{'\u00A0'}переводчик</>,
+    <>Забор анализов прямо в{'\u00A0'}отеле</>,
   ];
 
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-[#F5F7F9]" id="programs-turkey">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-center text-[#18212C] mb-4 leading-[1.2] tracking-[-0.02em] text-balance">
-          Чек-ап в{'\u00A0'}Турции
+    <section className="py-16 relative z-10" id="programs-turkey">
+      <div className="container mx-auto px-4 lg:px-6">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 text-center">
+          <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
+            Чек-ап в{'\u00A0'}Турции
+          </span>
         </h2>
-        <p className="font-heading text-[1.125rem] font-semibold text-center text-[#18212C]/80 mb-4">
+        <p className="text-mu-blue font-bold text-lg text-center mb-4">
           Liv Hospital {'\u00B7'} Medicana{'\u00A0'}{'\u2014'} ведущие клиники Стамбула с{'\u00A0'}аккредитацией JCI
         </p>
-        <p className="text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed text-center max-w-[800px] mx-auto mb-10">
+        <p className="text-mu-text-700 text-lg text-center mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
           Турция{'\u00A0'}{'\u2014'} одно из{'\u00A0'}самых популярных направлений медицинского туризма в{'\u00A0'}мире. Ближе чем Корея, доступнее по{'\u00A0'}цене, при этом уровень оборудования и{'\u00A0'}врачей в{'\u00A0'}аккредитованных клиниках соответствует европейским стандартам.
         </p>
 
-        {/* Included in all programs */}
-        <div className="mb-10">
-          <h3 className="font-heading text-[1.5rem] font-bold text-[#18212C] mb-4">
+        {/* What's included - glass card */}
+        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass mb-8">
+          <h3 className="text-xl font-extrabold text-mu-text-900 mb-4">
             Что включено во{'\u00A0'}все программы
           </h3>
-          <ul className="space-y-3">
+          <ul className="grid sm:grid-cols-2 gap-3" role="list">
             {includedItems.map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-[1.125rem] text-[#4A4E5C]">
-                <CheckIcon />
-                <span>{item}</span>
+              <li key={i} className="flex items-start gap-3">
+                <CheckCircleIcon />
+                <span className="text-mu-text-900 font-medium">{item}</span>
               </li>
             ))}
           </ul>
         </div>
 
         {/* Program cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {programs.map((program) => (
-            <div key={program.name} className="card-prod p-6 md:p-8 flex flex-col">
+            <div
+              key={program.name}
+              className={
+                program.featured
+                  ? 'bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] flex flex-col'
+                  : 'bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass flex flex-col'
+              }
+            >
               <span
-                className={`inline-block self-start px-3 py-1 rounded-full text-[0.8125rem] font-bold mb-3 ${
-                  program.accent
-                    ? 'bg-[#FFF8F0] text-[#B5621D]'
-                    : 'bg-[#d0fae4] text-[#007955]'
-                }`}
+                className={
+                  program.featured
+                    ? 'inline-flex items-center gap-2 bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-4 py-1.5 rounded-full shadow-sm w-fit mb-4'
+                    : 'inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4'
+                }
               >
-                {program.name}
+                <span className={program.featured ? 'text-sm font-bold' : 'text-sm font-bold text-mu-accent-blue'}>
+                  {program.name}
+                </span>
               </span>
-              <div className="font-heading text-[1.25rem] font-bold text-[#18212C] mb-3">
+              <div className="text-2xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent mb-3">
                 {program.price}
               </div>
-              <p className="text-[1rem] text-[rgba(24,33,44,0.55)] leading-relaxed">
+              <p className="text-mu-text-700 font-medium flex-grow">
                 {program.description}
               </p>
             </div>
@@ -115,8 +127,12 @@ export function CheckupProgramsTurkey() {
 
         {/* CTA */}
         <div className="text-center">
-          <a href="#form-checkup" className="btn-primary">
+          <a
+            href="#form-checkup"
+            className="btn-primary bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2"
+          >
             Подобрать программу
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
       </div>

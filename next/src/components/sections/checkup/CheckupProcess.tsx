@@ -30,30 +30,32 @@ export function CheckupProcess() {
     },
     {
       number: '05',
-      title: <>Результаты</>,
+      title: <>Результаты и{'\u00A0'}дальнейшие шаги</>,
       text: <>Все заключения, снимки и{'\u00A0'}анализы{'\u00A0'}{'\u2014'} в{'\u00A0'}личном кабинете и{'\u00A0'}приложении MedicusUnion, с{'\u00A0'}переводом на{'\u00A0'}русский. Если нужно лечение{'\u00A0'}{'\u2014'} организуем.</>,
     },
   ];
 
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-white" id="how-it-works">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-center text-[#18212C] mb-10 leading-[1.2] tracking-[-0.02em] text-balance">
-          От{'\u00A0'}заявки до{'\u00A0'}результатов{'\u00A0'}{'\u2014'} 5{'\u00A0'}шагов
+    <section className="py-16 relative z-10" id="how-it-works">
+      <div className="container mx-auto px-4 lg:px-6">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-12 text-center">
+          <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
+            От{'\u00A0'}заявки до{'\u00A0'}результатов{'\u00A0'}{'\u2014'} 5{'\u00A0'}шагов
+          </span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
           {steps.map((step) => (
-            <div key={step.number} className="relative">
+            <div key={step.number} className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass text-center">
               <div
-                className="font-heading text-[3rem] font-bold text-[#38C6F4]/15 mb-2 leading-none"
+                className="text-4xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent mb-4"
                 aria-hidden="true"
               >
                 {step.number}
               </div>
-              <h3 className="font-heading text-[1.25rem] font-bold text-[#18212C] mb-2">
+              <h3 className="text-lg font-extrabold text-mu-text-900 mb-2">
                 {step.title}
               </h3>
-              <p className="text-[1rem] text-[rgba(24,33,44,0.55)] leading-relaxed">
+              <p className="text-mu-text-700 font-medium text-sm">
                 {step.text}
               </p>
             </div>
