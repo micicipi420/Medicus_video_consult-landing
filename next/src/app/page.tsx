@@ -29,12 +29,8 @@ export default function Home() {
   return (
     <>
       <HeroHub />
-      <ScrollReveal>
-        <StatsBar />
-      </ScrollReveal>
-      <ScrollReveal delay={0.05}>
-        <ServicesGrid />
-      </ScrollReveal>
+      <StatsBar />
+      <ServicesGrid />
       <ScrollReveal delay={0.05}>
         <GuideGrid />
       </ScrollReveal>
