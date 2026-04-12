@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import { HeroHub } from '@/components/sections/HeroHub';
 import { StatsBar } from '@/components/sections/StatsBar';
 import { ServicesGrid } from '@/components/sections/ServicesGrid';
-import { GuideGrid } from '@/components/sections/GuideGrid';
-import { AdvantagesGrid } from '@/components/sections/AdvantagesGrid';
+import { ProblemSection } from '@/components/sections/ProblemSection';
+import { ProcessSection } from '@/components/sections/ProcessSection';
+import { WhyUsSection } from '@/components/sections/WhyUsSection';
+import { ClinicsSection } from '@/components/sections/ClinicsSection';
+import { PlatformSection } from '@/components/sections/PlatformSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
@@ -32,10 +35,19 @@ export default function Home() {
       <StatsBar />
       <ServicesGrid />
       <ScrollReveal delay={0.05}>
-        <GuideGrid />
+        <ProblemSection />
       </ScrollReveal>
       <ScrollReveal delay={0.05}>
-        <AdvantagesGrid />
+        <ProcessSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <WhyUsSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <ClinicsSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <PlatformSection />
       </ScrollReveal>
       <ScrollReveal delay={0.05}>
         <ContactSection />
