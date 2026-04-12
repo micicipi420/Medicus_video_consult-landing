@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-12)
 Phase: 72
 Plan: Not started
 Status: Executing Phase 72
-Last activity: 2026-04-12
+Last activity: 2026-04-13 - Completed quick task 260413-0ie: Remove landing references
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -77,6 +77,12 @@ None yet.
 
 - Turbopack backdrop-filter bug (#78302) -- OPEN, must use Webpack for prod
 - CSS import order divergence dev/prod (#79531, #79535) -- mitigated by single entry point
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260413-0ie | Remove landing/лендинг references — project is a multi-page site | 2026-04-13 | 92c3388 | [260413-0ie-remove-landing-references](./quick/260413-0ie-remove-landing-references-project-is-a-m/) |
 
 ## Session Continuity
 
