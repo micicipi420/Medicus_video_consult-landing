@@ -179,9 +179,9 @@ Plans:
   5. PlatformSection renders "Ваши документы, снимки и связь с врачом -- в одном месте" with the new design's platform feature presentation
 **Plans**: 3 plans
 Plans:
-- [ ] 70-01-PLAN.md -- ProblemSection (4 glass cards) + ProcessSection (4 numbered steps)
-- [ ] 70-02-PLAN.md -- WhyUsSection (advantages + image collage) + ClinicsSection (8 countries)
-- [ ] 70-03-PLAN.md -- PlatformSection (feature list) + page.tsx wiring
+- [x] 70-01-PLAN.md -- ProblemSection (4 glass cards) + ProcessSection (4 numbered steps)
+- [x] 70-02-PLAN.md -- WhyUsSection (advantages + image collage) + ClinicsSection (8 countries)
+- [x] 70-03-PLAN.md -- PlatformSection (feature list) + page.tsx wiring
 **UI hint**: yes
 
 ### Phase 71: Index Interactive Sections
@@ -220,6 +220,6 @@ Strictly linear -- each phase builds on the previous.
 |-------|----------------|--------|-----------|
 | 68. Design Tokens & Layout Chrome | 3/3 | Complete    | 2026-04-12 |
 | 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
-| 70. Index Content Sections | 0/3 | Planned | - |
+| 70. Index Content Sections | 3/3 | Complete    | 2026-04-12 |
 | 71. Index Interactive Sections | 0/TBD | Not started | - |
 | 72. Service Pages | 0/TBD | Not started | - |
