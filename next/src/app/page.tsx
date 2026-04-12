@@ -7,6 +7,8 @@ import { ProcessSection } from '@/components/sections/ProcessSection';
 import { WhyUsSection } from '@/components/sections/WhyUsSection';
 import { ClinicsSection } from '@/components/sections/ClinicsSection';
 import { PlatformSection } from '@/components/sections/PlatformSection';
+import { ReviewsSection } from '@/components/sections/ReviewsSection';
+import { FAQSection } from '@/components/sections/FAQSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
@@ -48,6 +50,12 @@ export default function Home() {
       </ScrollReveal>
       <ScrollReveal delay={0.05}>
         <PlatformSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <ReviewsSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <FAQSection />
       </ScrollReveal>
       <ScrollReveal delay={0.05}>
         <ContactSection />
