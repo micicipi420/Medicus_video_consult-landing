@@ -8,17 +8,22 @@ interface SocialProofProps {
 }
 
 export function SocialProof({ items }: SocialProofProps) {
+  const gridCols = items.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3';
+
   return (
-    <section className="bg-[#1A365D] py-8" aria-label="Ключевые цифры">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-16 text-center">
+    <section className="container mx-auto px-4 lg:px-6 mb-16" aria-label="Ключевые цифры">
+      <div className={`grid grid-cols-2 ${gridCols} gap-6`}>
         {items.map((item) => (
-          <div key={item.label}>
-            <span className="font-heading text-[2.5rem] font-bold leading-none text-white tabular-nums">
+          <div
+            key={item.label}
+            className="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 shadow-glass hover:shadow-glass-lg hover:bg-white/70 transition-all duration-500 overflow-hidden"
+          >
+            <div className="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue relative z-10">
               {item.number}
-            </span>
-            <span className="text-[1.125rem] text-white/85 block mt-1">
+            </div>
+            <div className="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">
               {item.label}
-            </span>
+            </div>
           </div>
         ))}
       </div>
