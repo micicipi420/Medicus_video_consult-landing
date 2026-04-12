@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { StickyBar } from '@/components/layout/StickyBar';
 import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
+import { MeshBackground } from '@/components/layout/MeshBackground';
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider';
 
 const inter = localFont({
@@ -46,11 +47,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${inter.variable} ${manrope.variable}`}>
-      <body className="relative bg-mu-text-50 text-mu-text-900 overflow-x-clip">
+      <body className="bg-mu-text-50 text-mu-text-900 overflow-x-clip">
         <SvgRefractionDefs />
+        <MeshBackground />
         <Header />
         <LazyMotionProvider>
-          <main>{children}</main>
+          <main className="relative z-10 pt-24 flex flex-col gap-8 md:gap-16 pb-8">{children}</main>
         </LazyMotionProvider>
         <Footer />
         <StickyBar />
