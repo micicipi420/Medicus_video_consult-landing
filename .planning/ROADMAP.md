@@ -208,7 +208,12 @@ Plans:
   2. /treatment-abroad page renders with the new design's layout -- content describes the medical tourism service with country-specific information
   3. /checkup page renders with the new design's layout -- content describes the health checkup service
   4. All three service pages share consistent layout chrome (header, footer, sticky bar) and reuse shared components (ContactSection, FinalCTA) from the index page redesign
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 72-01-PLAN.md -- Shared service components (ServiceHero, SocialProof, FAQ, LeadFormSection) glass restyle
+- [ ] 72-02-PLAN.md -- Consultations page (7 section components + page.tsx) glass restyle
+- [ ] 72-03-PLAN.md -- Treatment-abroad page (4 section components + page.tsx) glass restyle
+- [ ] 72-04-PLAN.md -- Checkup page (7 section components + page.tsx) glass restyle
 **UI hint**: yes
 
 ## Progress
@@ -225,4 +230,4 @@ Strictly linear -- each phase builds on the previous.
 | 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
 | 70. Index Content Sections | 3/3 | Complete    | 2026-04-12 |
 | 71. Index Interactive Sections | 2/2 | Complete    | 2026-04-12 |
-| 72. Service Pages | 0/TBD | Not started | - |
+| 72. Service Pages | 0/4 | Planning complete | - |
