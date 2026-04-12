@@ -1,8 +1,8 @@
-# MedicusUnion KZ Landing
+# MedicusUnion KZ
 
 ## What This Is
 
-Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
+Сайт medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Многостраничный сайт с формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -20,7 +20,7 @@
 
 ### Validated
 
-- ✓ Лендинг из 11 секций по ТЗ — v1.0
+- ✓ Сайт из 11 секций по ТЗ — v1.0
 - ✓ Mobile-first дизайн (ЦА 45+) — v1.0
 - ✓ Форма заявки с валидацией и спам-защитой — v1.0
 - ✓ Directus как бэкенд: приём и хранение заявок — v1.0
@@ -63,33 +63,15 @@
 - ✓ Glassmorphism: hero gradient mesh, frosted header on scroll, .card--glass на pricing; @supports fallback; ≤2 glass elements — v1.4
 - ✓ Micro-animations: scroll-reveal translateY(20px)/0.4s, button :active scale(0.97)/100ms, prefers-reduced-motion guard — v1.4
 
-- ✓ Next.js компоненты соответствуют новому дизайну (feat/new-design) — v6.1
-- ✓ Все 12 секций нового index.html портированы в React — v6.1
-- ✓ Сервисные страницы обновлены под новый дизайн — v6.1
-
 ### Active
-
-- motion.js анимации из нового дизайна — deferred from v6.1
-
-## Current State
-
-**Shipped:** v6.1 New Design Port (2026-04-12)
-**Codebase:** Next.js 15 + Tailwind v4, glass morphism design language
-**Stack:** Next.js, Drizzle ORM, PostgreSQL, Directus 11
-
-v6.1 ported the complete new design from feat/new-design HTML to the Next.js app:
-- Glass morphism design language (header, footer, sticky bar, all cards)
-- 12 index page sections (hero, stats, services, problem, process, why-us, clinics, platform, reviews, FAQ, contact, final CTA)
-- 3 service pages restyled (consultations, treatment-abroad, checkup)
-- 22 requirements fulfilled across 5 phases, 14 plans
 
 ### Out of Scope
 
 - Казахский язык — только русский в v1
 - Интеграция с AmoCRM — заменяем на Directus
-- Медтуризм-лендинг — отдельный проект
+- Медтуризм — отдельный проект
 - Оплата онлайн — заявка только на консультацию
-- Профили врачей на лендинге — ссылка на medicusunion.com/doctors
+- Профили врачей на сайте — ссылка на medicusunion.com/doctors
 - Параллакс / тяжёлые анимации — ЦА 45+, предпочитаем простоту
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
@@ -97,7 +79,7 @@ v6.1 ported the complete new design from feat/new-design HTML to the Next.js app
 
 ## Context
 
-- Shipped v6.1 with Next.js 15 + Tailwind v4 glass design
+- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
 - Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
 - Self-hosted Inter + Manrope variable fonts (WOFF2)
 - No build tools, no frameworks, no external dependencies
@@ -166,4 +148,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-13 after v6.1 milestone completion*
+*Last updated: 2026-03-24 after v1.4 milestone completion*

@@ -1,9 +1,9 @@
 <!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
-**MedicusUnion KZ Landing**
+**MedicusUnion KZ**
 
-Лендинг для medicusunion.kz — сервиса онлайн-консультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+, которые хотят получить второе мнение от врача из Германии, Израиля, Швейцарии и других стран. Конверсия: заявка на консультацию через форму.
+Сайт medicusunion.kz — сервиса онлайн-консультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+, которые хотят получить второе мнение от врача из Германии, Израиля, Швейцарии и других стран. Конверсия: заявка на консультацию через форму.
 
 Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
 
@@ -22,11 +22,11 @@
 ## Technology Stack
 
 ## Recommended Stack
-### Frontend (Static Landing Page)
+### Frontend (Static Multi-Page Site)
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
 | HTML5 | Current | Page structure | Semantic HTML for accessibility and SEO; no build step needed | HIGH |
-| Vanilla CSS | Current | Styling | Project constraint: no frameworks. Modern CSS (custom properties, grid, flexbox) covers all needs for a single landing page | HIGH |
+| Vanilla CSS | Current | Styling | Project constraint: no frameworks. Modern CSS (custom properties, grid, flexbox) covers all needs for a multi-page site | HIGH |
 | Vanilla JS (ES6+) | Current | Form handling, UI interactions | No framework overhead for a single page with one form and a few interactions (accordion, smooth scroll) | HIGH |
 ### Backend / CMS
 | Technology | Version | Purpose | Why | Confidence |
@@ -37,7 +37,7 @@
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
 | Docker + Docker Compose | Latest | Directus + PostgreSQL orchestration | Single `docker compose up` deploys the entire backend. Reproducible, portable | HIGH |
-| Nginx | Latest | Reverse proxy, static file serving | Serves the landing page HTML/CSS/JS and proxies `/api` to Directus. SSL termination | HIGH |
+| Nginx | Latest | Reverse proxy, static file serving | Serves the site HTML/CSS/JS and proxies `/api` to Directus. SSL termination | HIGH |
 ### Supporting Tools (Development)
 | Tool | Purpose | When to Use |
 |------|---------|-------------|
@@ -55,7 +55,7 @@
 | Bootstrap | Heavy bundle; opinionated component styles fight custom brand design |
 | CSS-in-JS | No JS framework to host it; irrelevant for static HTML |
 | Sass/SCSS | CSS custom properties replace variables; nesting now native in CSS; adds build step for marginal benefit |
-| Container queries | Incomplete Firefox support; media queries are simpler and sufficient for a landing page with known breakpoints |
+| Container queries | Incomplete Firefox support; media queries are simpler and sufficient for a site with known breakpoints |
 ## JavaScript Approach: Vanilla ES6+ with Fetch API
 ### What JS Needs to Do
 ### Form Submission Pattern
@@ -66,7 +66,7 @@
 | jQuery | Dead weight; `fetch()` and `querySelector()` replace it entirely |
 | Axios | `fetch()` is native and sufficient for one POST endpoint |
 | Alpine.js | Tempting for accordion/reactivity, but adds a dependency for 20 lines of vanilla JS |
-| Any SPA framework (React, Vue, Svelte) | This is a static marketing page, not an application |
+| Any SPA framework (React, Vue, Svelte) | This is a static marketing site, not an application |
 | `@directus/sdk` | Pulls in a full SDK for one `fetch` call. Unnecessary |
 ## Directus Setup for Form Submissions
 ### Collection Schema: `submissions`
