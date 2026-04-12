@@ -1,18 +1,3 @@
-function CheckIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 32 32"
-      fill="none"
-      className="w-8 h-8 shrink-0"
-      aria-hidden="true"
-    >
-      <circle cx="16" cy="16" r="12" stroke="#38C6F4" strokeWidth="2" fill="rgba(56,198,244,0.1)" />
-      <path d="M10 16l4 4 8-8" stroke="#35B678" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 const scenarios = [
   'Вам поставили серьёзный диагноз и\u00A0вы\u00A0хотите убедиться, что он\u00A0верный',
   'Разные врачи дают противоречивые рекомендации',
@@ -23,16 +8,20 @@ const scenarios = [
 
 export function ConsultationScenarios() {
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-[#FFF8F0]" id="scenarios">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-[#18212C] leading-[1.2] tracking-[-0.02em] text-balance text-center mb-10">
+    <section className="container mx-auto px-4 lg:px-6 mb-16" id="scenarios">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8">
+        <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
           Когда имеет смысл получить второе мнение
-        </h2>
-        <ul className="max-w-[800px] mx-auto space-y-5" role="list">
+        </span>
+      </h2>
+      <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto">
+        <ul className="space-y-5" role="list">
           {scenarios.map((text) => (
             <li key={text} className="flex items-start gap-4">
-              <CheckIcon />
-              <span className="text-[1.125rem] text-[#18212C] leading-relaxed pt-1">
+              <span className="flex-shrink-0 w-7 h-7 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center shadow-glass-inner-strong mt-0.5">
+                <svg className="w-4 h-4 text-mu-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>
+              </span>
+              <span className="text-mu-text-900 font-medium text-lg">
                 {text}
               </span>
             </li>
