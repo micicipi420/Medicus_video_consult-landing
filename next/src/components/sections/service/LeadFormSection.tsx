@@ -14,26 +14,24 @@ interface LeadFormSectionProps {
   id?: string;
 }
 
-function GreenCheckmark() {
+function GlassCheckmark() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="none"
-      width="20"
-      height="20"
-      aria-hidden="true"
-      className="w-5 h-5 shrink-0"
-    >
-      <path
-        d="M4 10l4 4 8-8"
-        stroke="#047857"
-        strokeWidth="2.5"
+    <span className="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 shadow-glass-inner-strong">
+      <svg
+        className="w-3.5 h-3.5 text-mu-green-600"
         fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    </span>
   );
 }
 
@@ -45,24 +43,24 @@ export function LeadFormSection({
   id = 'form',
 }: LeadFormSectionProps) {
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-[#F5F7F9]" id={id}>
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+    <section className="container mx-auto px-4 lg:px-6 mb-16" id={id}>
+      <div className="bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-8 md:p-12 border border-white/60 shadow-glass-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
           {/* Left column: info + trust items */}
           <div>
-            <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-[#18212C] mb-4 leading-[1.2] tracking-[-0.02em] text-balance">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 leading-[1.2] text-balance">
               {heading}
             </h2>
-            <div className="text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed mb-8">
+            <div className="text-lg text-mu-text-700 font-medium leading-relaxed mb-8">
               {subtext}
             </div>
             <ul className="space-y-3">
               {trustItems.map((item) => (
                 <li
                   key={item.text}
-                  className="flex items-center gap-3 text-[1.125rem] text-[#4A4E5C]"
+                  className="flex items-center gap-3 text-mu-text-900 font-medium"
                 >
-                  {item.icon || <GreenCheckmark />}
+                  {item.icon || <GlassCheckmark />}
                   <span>{item.text}</span>
                 </li>
               ))}
@@ -71,11 +69,11 @@ export function LeadFormSection({
 
           {/* Right column: form wrapper */}
           <div>
-            <div className="bg-white border border-black/[0.08] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] p-8 md:p-10 max-w-[540px] md:max-w-none">
+            <div className="bg-white/40 backdrop-blur-2xl border border-white/60 rounded-[2.5rem] shadow-glass p-8 md:p-10">
               <ContactForm />
             </div>
             {privacyText && (
-              <p className="text-[0.8125rem] text-[rgba(24,33,44,0.55)] mt-4">
+              <p className="text-sm text-mu-text-700 font-medium mt-4">
                 {privacyText}
               </p>
             )}

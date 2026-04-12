@@ -29,56 +29,56 @@ export function FAQ({ heading = 'Частые вопросы', items, id }: FAQP
   }
 
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-white" id={id}>
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-center text-[#18212C] mb-10 leading-[1.2] tracking-[-0.02em] text-balance">
+    <section className="container mx-auto px-4 lg:px-6 mb-16" id={id}>
+      <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">
+        <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
           {heading}
-        </h2>
-        <div className="max-w-[800px] mx-auto space-y-4">
-          {items.map((item, index) => {
-            const isOpen = openIndices.has(index);
-            return (
-              <div
-                key={index}
-                className="border border-black/[0.06] rounded-2xl overflow-hidden"
+        </span>
+      </h2>
+      <div className="max-w-3xl mx-auto space-y-4">
+        {items.map((item, index) => {
+          const isOpen = openIndices.has(index);
+          return (
+            <div
+              key={index}
+              className="bg-white/60 backdrop-blur-2xl rounded-[2rem] border border-white/60 shadow-glass overflow-hidden"
+            >
+              <button
+                type="button"
+                className="w-full flex items-center justify-between p-6 text-left text-lg font-extrabold text-mu-text-900 cursor-pointer hover:bg-white/80 transition-colors"
+                aria-expanded={isOpen}
+                onClick={() => toggle(index)}
               >
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-between p-6 text-left font-heading text-[1.125rem] font-bold text-[#18212C] cursor-pointer hover:bg-black/[0.02] transition-colors"
-                  aria-expanded={isOpen}
-                  onClick={() => toggle(index)}
+                <span>{item.question}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  className={`shrink-0 ml-4 motion-safe:transition-transform motion-safe:duration-200 ${
+                    isOpen ? 'rotate-180' : ''
+                  }`}
                 >
-                  <span>{item.question}</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="2"
                     fill="none"
-                    width="24"
-                    height="24"
-                    aria-hidden="true"
-                    className={`shrink-0 ml-4 motion-safe:transition-transform motion-safe:duration-200 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  >
-                    <path
-                      d="M6 9l6 6 6-6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-                {isOpen && (
-                  <div className="px-6 pb-6 text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed">
-                    {item.answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              {isOpen && (
+                <div className="px-6 pb-6 text-mu-text-700 font-medium leading-relaxed">
+                  {item.answer}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
