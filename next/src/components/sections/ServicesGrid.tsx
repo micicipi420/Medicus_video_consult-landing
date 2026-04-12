@@ -1,146 +1,174 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import { Video, Globe, ClipboardCheck, ArrowRight } from 'lucide-react';
 
-interface ServiceCard {
-  icon: ReactNode;
+interface ServiceCardData {
+  image: string;
+  imageAlt: string;
+  icon: React.ReactNode;
+  iconBg: string;
+  iconColor: string;
   badge: string;
+  badgeColor: string;
   title: string;
-  description: ReactNode;
+  description: string;
   features: string[];
   ctaText: string;
-  ctaHref: string;
+  href: string;
 }
 
-const ConsultationIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
-    <rect x="12" y="8" width="40" height="32" rx="4" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.08)" />
-    <line x1="12" y1="40" x2="52" y2="40" stroke="#38C6F4" strokeWidth="2.5" />
-    <rect x="24" y="40" width="16" height="6" rx="2" stroke="#38C6F4" strokeWidth="2" fill="rgba(56,198,244,0.08)" />
-    <circle cx="32" cy="24" r="6" stroke="#35B678" strokeWidth="2" fill="rgba(53,182,120,0.12)" />
-    <path d="M24 34c0-4 3.5-7 8-7s8 3 8 7" stroke="#35B678" strokeWidth="2" fill="none" strokeLinecap="round" />
-  </svg>
-);
-
-const GlobeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
-    <circle cx="32" cy="32" r="22" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.06)" />
-    <ellipse cx="32" cy="32" rx="10" ry="22" stroke="#38C6F4" strokeWidth="1.5" fill="none" />
-    <line x1="10" y1="26" x2="54" y2="26" stroke="#38C6F4" strokeWidth="1.5" strokeLinecap="round" />
-    <line x1="10" y1="38" x2="54" y2="38" stroke="#38C6F4" strokeWidth="1.5" strokeLinecap="round" />
-    <g transform="translate(42, 12)">
-      <path d="M0 -8 C-4 -8, -6 -4, -6 0 C-6 5, 0 10, 0 10 C0 10, 6 5, 6 0 C6 -4, 4 -8, 0 -8Z" fill="rgba(53,182,120,0.3)" stroke="#35B678" strokeWidth="1.5" />
-      <circle cx="0" cy="-1" r="2" fill="#35B678" />
-    </g>
-  </svg>
-);
-
-const CheckupIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" className="w-[72px] h-[72px]" aria-hidden="true">
-    <rect x="16" y="6" width="32" height="44" rx="4" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.06)" />
-    <rect x="24" y="2" width="16" height="8" rx="3" stroke="#38C6F4" strokeWidth="2" fill="rgba(56,198,244,0.08)" />
-    <polyline points="22,24 26,28 34,20" stroke="#35B678" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="22" y1="36" x2="42" y2="36" stroke="#38C6F4" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
-    <line x1="22" y1="42" x2="36" y2="42" stroke="#38C6F4" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
-    <polyline points="36,54 42,60 54,48" stroke="#35B678" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const SERVICES: ServiceCard[] = [
+const SERVICES: ServiceCardData[] = [
   {
-    icon: <ConsultationIcon />,
-    badge: 'от\u00A0450\u00A0\u20AC',
-    title: 'Онлайн-консультации',
-    description: (
-      <>
-        Видеоконсультация с{'\u00A0'}европейским специалистом на{'\u00A0'}вашем языке.
-        Второе мнение по{'\u00A0'}диагнозу, план лечения, письменное заключение.{' '}
-        <span>За{'\u00A0'}5{'\u00A0'}дней</span>, без{'\u00A0'}перелёта.
-      </>
-    ),
+    image: '/service-consultation.webp',
+    imageAlt: 'Онлайн-консультация с врачом',
+    icon: <Video className="w-6 h-6" />,
+    iconBg: 'bg-mu-blue/10',
+    iconColor: 'text-mu-accent-blue',
+    badge: 'от 450\u00A0\u20AC',
+    badgeColor: 'text-mu-accent-blue',
+    title: 'Мнение зарубежного врача\u00A0\u2014 без\u00A0перелёта',
+    description:
+      'Загрузите медицинские документы\u00A0\u2014 мы\u00A0переведём их и\u00A0организуем видеоконсультацию с\u00A0профильным специалистом из\u00A0Германии, Израиля, Швейцарии или другой страны. Врач изучит ваш случай до\u00A0встречи. После\u00A0\u2014 письменное заключение в\u00A0личном кабинете.',
     features: [
-      'Перевод документов и\u00A0консультации',
-      'Врачи из\u00A07 стран',
+      'Перевод документов и консультации',
+      'Результат за 5 дней',
       'Письменное заключение',
     ],
-    ctaText: 'Получить консультацию',
-    ctaHref: '/consultations',
+    ctaText: 'Записаться на\u00A0консультацию',
+    href: '/consultations',
   },
   {
-    icon: <GlobeIcon />,
-    badge: '100+ клиник',
-    title: 'Лечение за\u00A0рубежом',
-    description: (
-      <>
-        Организуем лечение под ключ: от{'\u00A0'}подбора клиники до{'\u00A0'}реабилитации.
-        Визовая поддержка, перелёт, проживание, переводчик, сопровождение на{'\u00A0'}каждом этапе.
-      </>
-    ),
+    image: '/service-treatment.webp',
+    imageAlt: 'Современная клиника',
+    icon: <Globe className="w-6 h-6" />,
+    iconBg: 'bg-mu-accent-teal-bg',
+    iconColor: 'text-mu-accent-teal',
+    badge: 'план лечения бесплатно',
+    badgeColor: 'text-mu-accent-teal',
+    title: 'Организуем лечение за\u00A0границей\u00A0\u2014 под\u00A0ключ',
+    description:
+      'Подберём клинику и\u00A0врача под ваш диагноз из\u00A0сети в\u00A011\u00A0странах. Организуем онлайн-консультацию до\u00A0вылета, возьмём на\u00A0себя визу, логистику, переводчика и\u00A0сопровождение. После возвращения\u00A0\u2014 наблюдение и\u00A0связь с\u00A0врачом.',
     features: [
-      '6 стран, 14 клиник-партнёров',
+      '11 стран, 43 клиники-партнёра',
       'Полная организация',
-      'Координация до\u00A0выздоровления',
+      'Координация до выздоровления',
     ],
-    ctaText: 'Узнать подробнее',
-    ctaHref: '/treatment-abroad',
+    ctaText: 'Получить план лечения',
+    href: '/treatment-abroad',
   },
   {
-    icon: <CheckupIcon />,
-    badge: 'от\u00A0$350',
-    title: 'Чек-ап за\u00A0рубежом',
-    description: (
-      <>
-        Комплексное обследование в{'\u00A0'}Samsung Medical Center, Severance Hospital
-        и{'\u00A0'}клиниках Стамбула за{'\u00A0'}1{'\u2013'}2{'\u00A0'}дня. Виза, трансфер, переводчик,
-        результаты в{'\u00A0'}приложении.
-      </>
-    ),
+    image: '/service-checkup.webp',
+    imageAlt: 'Чек-ап обследование',
+    icon: <ClipboardCheck className="w-6 h-6" />,
+    iconBg: 'bg-mu-green-50',
+    iconColor: 'text-mu-green-600',
+    badge: 'от $350',
+    badgeColor: 'text-mu-green-700',
+    title: 'Проверьте здоровье в\u00A0клинике мирового уровня',
+    description:
+      'Комплексное обследование за\u00A01\u20132\u00A0дня в\u00A0Samsung Medical Center, Severance Hospital или клиниках Стамбула. Полная организация: виза, трансфер, переводчик, сопровождающий. Результаты\u00A0\u2014 в\u00A0приложении с\u00A0переводом на\u00A0русский.',
     features: [
-      'Южная Корея и\u00A0Турция',
-      'Программы от\u00A0базовой до\u00A0премиум',
+      'Южная Корея и Турция',
+      'Программы от базовой до премиум',
       'Корпоративные чек-апы',
     ],
     ctaText: 'Подобрать программу',
-    ctaHref: '/checkup',
+    href: '/checkup',
   },
 ];
 
 export function ServicesGrid() {
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-white" id="services">
-      <div className="container mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.2] tracking-[-0.02em] text-balance font-bold text-center text-mu-text-900 mb-10 md:mb-14">
-          Выберите, что{'\u00A0'}вам нужно
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {SERVICES.map((service) => (
-            <div
-              key={service.ctaHref}
-              className="card-prod squircle-lg p-8 md:p-10 text-center flex flex-col hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-all"
-            >
-              <div className="mb-2 flex justify-center">{service.icon}</div>
-              <span className="inline-block bg-[#d0fae4] text-[#007955] text-[1rem] font-heading font-semibold px-3 py-1 rounded-full mt-4 mb-3 w-fit mx-auto">
-                {service.badge}
-              </span>
-              <h3 className="font-heading text-[clamp(1.375rem,2.5vw,2rem)] leading-[1.2] font-bold text-mu-text-900 mb-3">
-                {service.title}
-              </h3>
-              <p className="font-body text-[1.125rem] text-mu-text-500 leading-relaxed mb-4 flex-grow max-w-[360px] mx-auto">
-                {service.description}
-              </p>
-              <ul className="space-y-2 mb-6 text-mu-text-700 text-[1rem] text-left max-w-[360px] mx-auto w-full">
-                {service.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-[#35B678] mt-[0.5em] shrink-0" aria-hidden="true" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={service.ctaHref}
-                className="btn-primary w-full md:w-auto mt-auto"
-              >
-                {service.ctaText}
-              </Link>
+    <section className="py-16 relative z-10" id="services">
+      <div className="container mx-auto px-4 lg:px-6">
+        {/* Section Title */}
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-glass-border px-5 py-2.5 rounded-full shadow-sm shadow-glass-inner mb-6">
+            <span className="text-sm font-bold text-mu-accent-blue uppercase tracking-wider">
+              Наши Услуги
+            </span>
+          </div>
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-6">
+            <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
+              Выберите, что вам нужно
+            </span>
+          </h2>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SERVICES.map((card) => (
+            <div key={card.href} className="relative group h-full flex flex-col">
+              <div className="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 hover:-translate-y-2 h-full flex flex-col overflow-hidden">
+                {/* Image */}
+                <div className="relative h-56 w-full overflow-hidden p-3">
+                  <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 shadow-inner">
+                    <Image
+                      src={card.image}
+                      alt={card.imageAlt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    {/* Floating icon */}
+                    <div
+                      className={`absolute top-4 right-4 w-12 h-12 ${card.iconBg} backdrop-blur-xl rounded-2xl flex items-center justify-center ${card.iconColor} shadow-glass-sm border border-glass-border transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
+                    >
+                      {card.icon}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 pt-4 flex-grow flex flex-col">
+                  {/* Price badge */}
+                  <div className="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-5">
+                    <span className={`text-sm font-bold ${card.badgeColor}`}>
+                      {card.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-mu-text-900 mb-4">
+                    {card.title}
+                  </h3>
+                  <p className="text-mu-text-700 font-medium leading-relaxed mb-6">
+                    {card.description}
+                  </p>
+                  {/* Feature list */}
+                  <ul className="space-y-4 mb-8 flex-grow">
+                    {card.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-white/60 backdrop-blur-md border border-glass-border rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-glass-inner-strong">
+                          <svg
+                            className="w-3.5 h-3.5 text-mu-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-mu-text-900 font-medium">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* CTA button */}
+                  <Link
+                    href={card.href}
+                    className="w-full bg-white/50 backdrop-blur-xl border border-glass-border text-mu-text-900 py-4 rounded-2xl font-bold shadow-glass-sm hover:bg-white/70 hover:shadow-glass transition-all flex items-center justify-center gap-2 group/btn mt-auto"
+                  >
+                    {card.ctaText}
+                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
             </div>
           ))}
         </div>
