@@ -1,34 +1,34 @@
 ---
 gsd_state_version: 1.0
-milestone: v6.0
-milestone_name: Next.js Stack Migration
-status: executing
-stopped_at: v6.0 roadmap created with 9 phases (59-67)
-last_updated: "2026-04-11T21:21:52.340Z"
-last_activity: 2026-04-11
+milestone: v6.1
+milestone_name: New Design Port
+status: defining_requirements
+stopped_at: Milestone v6.1 started
+last_updated: "2026-04-12T00:00:00.000Z"
+last_activity: 2026-04-12
 progress:
-  total_phases: 10
-  completed_phases: 2
-  total_plans: 7
-  completed_plans: 8
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-10)
+See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 59 — Next.js Scaffold & CSS Foundation
+**Current focus:** Defining requirements for v6.1 New Design Port
 
 ## Current Position
 
-Phase: 67.1
-Plan: Not started
-Status: Executing Phase 59
-Last activity: 2026-04-11
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-12 — Milestone v6.1 started
 
 Progress: [░░░░░░░░░░] 0%
 

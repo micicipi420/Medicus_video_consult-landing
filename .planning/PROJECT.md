@@ -65,6 +65,27 @@
 
 ### Active
 
+- Next.js компоненты соответствуют новому дизайну (feat/new-design) — v6.1
+- Все 12 секций нового index.html портированы в React — v6.1
+- Сервисные страницы обновлены под новый дизайн — v6.1
+- motion.js анимации из нового дизайна — v6.1
+
+## Current Milestone: v6.1 New Design Port
+
+**Goal:** Перенести новый дизайн с GitHub Pages (feat/new-design) в существующее Next.js приложение — полная замена всех компонентов и страниц
+
+**Target features:**
+- Новый Hero с фото врача, floating badges, gradient text
+- 12 новых секций (problem, process, why-us, clinics, platform, reviews, faq, CTA)
+- Новые карточки услуг с фото и описаниями
+- Секция клиник по странам (8 стран)
+- Отзывы пациентов
+- FAQ аккордеон (обновлённый)
+- Новая форма обратной связи
+- Обновлённый footer и навигация
+- motion.js анимации
+- Обновлённые сервисные страницы
+
 ### Out of Scope
 
 - Казахский язык — только русский в v1
@@ -148,4 +169,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone completion*
+*Last updated: 2026-04-12 after v6.1 milestone start*
