@@ -170,7 +170,7 @@ export default function ConsultationsPage() {
         }}
         secondaryCta={{
           text: 'Узнать, подходит\u00A0ли мой случай',
-          href: '#form',
+          href: '#scenarios',
         }}
         illustration={<DoctorAtLaptopIllustration />}
       />
