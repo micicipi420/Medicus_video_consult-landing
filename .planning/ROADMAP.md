@@ -193,7 +193,10 @@ Plans:
   2. FAQSection renders an accordion with frequently asked questions -- clicking a question expands/collapses the answer with smooth animation, matching the new design
   3. ContactSection renders the contact form integrated with the existing submitContactForm server action -- form validates inputs, submits to the database, and shows success/error states identically to the current working form
   4. FinalCTA "Не откладывайте решение о здоровье" renders with two CTA buttons matching the new design -- buttons scroll to form or trigger appropriate actions
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 71-01-PLAN.md -- ReviewsSection (4 glass review cards) + FAQSection (7-item accordion)
+- [ ] 71-02-PLAN.md -- ContactSection/ContactForm glass rewrite + FinalCTA glass card + page.tsx wiring
 **UI hint**: yes
 
 ### Phase 72: Service Pages
@@ -221,5 +224,5 @@ Strictly linear -- each phase builds on the previous.
 | 68. Design Tokens & Layout Chrome | 3/3 | Complete    | 2026-04-12 |
 | 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
 | 70. Index Content Sections | 3/3 | Complete    | 2026-04-12 |
-| 71. Index Interactive Sections | 0/TBD | Not started | - |
+| 71. Index Interactive Sections | 0/2 | Not started | - |
 | 72. Service Pages | 0/TBD | Not started | - |
