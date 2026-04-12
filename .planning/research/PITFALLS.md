@@ -1,6 +1,6 @@
 # Pitfalls Research
 
-**Domain:** Visual redesign of medical landing page — glassmorphism, dark mode, bold typography, micro-animations (v1.4 milestone, 45+ audience, Kazakhstan)
+**Domain:** Visual redesign of medical website — glassmorphism, dark mode, bold typography, micro-animations (v1.4 milestone, 45+ audience, Kazakhstan)
 **Researched:** 2026-03-24
 **Confidence:** HIGH (glassmorphism/animation sourced from MDN verified specs; typography/dark-mode from established WCAG 2.1/2.2 patterns; audience-specific claims from established UX research consensus)
 
@@ -72,7 +72,7 @@ Dark mode is a highly visible 2025 trend. Developers add it because it is techni
 - Dark mode should be an opt-in toggle, not an OS-preference-driven automatic switch. Use `data-theme="dark"` on `<html>` controlled by JS, not `@media (prefers-color-scheme: dark)` as the primary mechanism.
 - Store the user choice in `localStorage`. On page load, read localStorage first; if absent, default to light. Never default to OS dark mode.
 - In dark mode, keep medical imagery, trust badges, and doctor photos visible with appropriate contrast — do not make them appear dim or inactive.
-- If dark mode is skipped entirely for v1.4, this is a defensible decision. Dark mode adds ~40-60 new CSS token pairs and doubles QA surface. For a conversion-focused medical landing, the ROI is unclear for a 45+ audience.
+- If dark mode is skipped entirely for v1.4, this is a defensible decision. Dark mode adds ~40-60 new CSS token pairs and doubles QA surface. For a conversion-focused medical site, the ROI is unclear for a 45+ audience.
 
 **Warning signs:**
 - `@media (prefers-color-scheme: dark)` used as the primary dark mode trigger without a localStorage override
@@ -190,7 +190,7 @@ Phase delivering micro-animations — the reduced-motion guard must be the first
 ### Pitfall 8: Micro-Animations Increase Cognitive Load and Reduce Trust on Medical Pages
 
 **What goes wrong:**
-Every animation on a page is a distraction event that consumes cognitive bandwidth. For 45+ users, who are already processing unfamiliar medical terminology and making high-stakes decisions about their health, unnecessary motion pulls attention away from the content they need to evaluate. On a medical landing page specifically, a playful or exuberant animation style (bouncing cards, celebratory micro-interactions, particle effects) triggers dissonance — the tone says "fun tech product" while the content says "serious medical consultation at 450 EUR." This dissonance reduces trust and increases abandonment.
+Every animation on a page is a distraction event that consumes cognitive bandwidth. For 45+ users, who are already processing unfamiliar medical terminology and making high-stakes decisions about their health, unnecessary motion pulls attention away from the content they need to evaluate. On a medical website specifically, a playful or exuberant animation style (bouncing cards, celebratory micro-interactions, particle effects) triggers dissonance — the tone says "fun tech product" while the content says "serious medical consultation at 450 EUR." This dissonance reduces trust and increases abandonment.
 
 **Why it happens:**
 Micro-animations are added to improve "delight" and "engagement." These are valid goals for consumer apps. For medical services targeting older users making costly, high-stakes decisions, the calculus is different. No research supports the idea that scroll-in animations increase medical consultation conversion.
@@ -366,5 +366,5 @@ Every v1.4 phase — regression testing is a success criterion for each phase, n
 - Medical trust and background colour — UX research consensus on professional/clinical colour associations (MEDIUM confidence; no single authoritative source)
 
 ---
-*Pitfalls research for: v1.4 Visual Redesign — glassmorphism, dark mode, bold typography, micro-animations on medical landing page (45+ audience)*
+*Pitfalls research for: v1.4 Visual Redesign — glassmorphism, dark mode, bold typography, micro-animations on medical website (45+ audience)*
 *Researched: 2026-03-24*

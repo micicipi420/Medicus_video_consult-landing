@@ -2,7 +2,7 @@
 phase: 02-hero-problem-sections
 plan: 02
 subsystem: ui
-tags: [html, css, bem, russian-typography, landing-page]
+tags: [html, css, bem, russian-typography, multi-page-site]
 
 # Dependency graph
 requires:

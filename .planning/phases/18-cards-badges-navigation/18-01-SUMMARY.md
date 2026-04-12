@@ -32,7 +32,7 @@ requirements_completed: [CARD-04, CARD-05, CARD-06, NAV-01]
 
 ## What Was Built
 
-Applied four targeted CSS design alignment changes to `css/styles.css` to bring the landing page in line with the medicusunion.kz reference visual style. All changes are CSS token and property updates — no HTML or JS changes were needed.
+Applied four targeted CSS design alignment changes to `css/styles.css` to bring the site in line with the medicusunion.kz reference visual style. All changes are CSS token and property updates — no HTML or JS changes were needed.
 
 ## Tasks Completed
 

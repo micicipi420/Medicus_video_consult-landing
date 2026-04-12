@@ -1,7 +1,7 @@
 # Project Research Summary
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
-**Domain:** Medical landing page visual enhancement (glassmorphism, dark mode, bold typography, micro-animations)
+**Project:** MedicusUnion KZ — v1.4 2025 Visual Redesign
+**Domain:** Medical website visual enhancement (glassmorphism, dark mode, bold typography, micro-animations)
 **Researched:** 2026-03-24
 **Confidence:** HIGH (CSS/browser specs), MEDIUM (UX patterns for 45+ audience)
 
@@ -245,7 +245,7 @@ The dependency chain is strictly linear:
 - W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
 - Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading contexts
 - Chrome Developers: Scroll-driven Animations documentation — `animation-timeline: view()` usage patterns
-- Design community consensus on 2025 display typography (Vercel, Stripe, Linear landing pages) — heading scale 56-72px / 800 weight convention
+- Design community consensus on 2025 display typography (Vercel, Stripe, Linear) — heading scale 56-72px / 800 weight convention
 
 ### Tertiary (LOW confidence — needs validation)
 - Ophthalmology UX literature on halation (pure black backgrounds causing halos for astigmatic users) — referenced in NNGroup and design literature; primary clinical sources not located

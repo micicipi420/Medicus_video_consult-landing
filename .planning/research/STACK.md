@@ -1,6 +1,6 @@
 # Technology Stack
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
+**Project:** MedicusUnion KZ — v1.4 2025 Visual Redesign
 **Researched:** 2026-03-24
 **Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
 
@@ -86,7 +86,7 @@ New tokens to add to `:root`:
 }
 ```
 
-**Performance note:** `backdrop-filter` triggers GPU compositing. On a landing page with 3–4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
+**Performance note:** `backdrop-filter` triggers GPU compositing. On a site with 3-4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
 
 ### Medical Context Constraint
 

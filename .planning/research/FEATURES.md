@@ -1,15 +1,15 @@
 # Feature Research: v1.4 Visual Redesign
 
-**Domain:** Medical consultation landing page — 2025 visual redesign (glassmorphism, dark mode, bold typography, micro-animations)
+**Domain:** Medical consultation website — 2025 visual redesign (glassmorphism, dark mode, bold typography, micro-animations)
 **Researched:** 2026-03-24
 **Confidence:** HIGH (CSS/browser specs from MDN), MEDIUM (UX patterns for 45+ audience from research literature), LOW where flagged
-**Scope:** This document covers ONLY new visual features for v1.4. For core landing page features (11 sections, form, Directus), see the original feature research (committed with v1.0).
+**Scope:** This document covers ONLY new visual features for v1.4. For core site features (11 sections, form, Directus), see the original feature research (committed with v1.0).
 
 ---
 
 ## Research Context
 
-The landing page has 11 sections, ~1,640 lines of CSS with a full CSS custom property token system, vanilla JS ES5, IntersectionObserver scroll animations, and self-hosted Inter/Manrope variable fonts. The v1.4 milestone adds a visual layer on top of a working, validated structure. The audience constraint — Kazakhstan residents 45+, medical service, 450 EUR price point — is the most important filter for every visual decision in this document.
+The site has 11 sections, ~1,640 lines of CSS with a full CSS custom property token system, vanilla JS ES5, IntersectionObserver scroll animations, and self-hosted Inter/Manrope variable fonts. The v1.4 milestone adds a visual layer on top of a working, validated structure. The audience constraint — Kazakhstan residents 45+, medical service, 450 EUR price point — is the most important filter for every visual decision in this document.
 
 ---
 
@@ -17,7 +17,7 @@ The landing page has 11 sections, ~1,640 lines of CSS with a full CSS custom pro
 
 ### Table Stakes (Users Expect These)
 
-These are visual features that, in 2025, users expect from any premium landing page. Missing them does not break functionality but signals "old-looking website" to users evaluating a 450 EUR medical service on trust.
+These are visual features that, in 2025, users expect from any premium website. Missing them does not break functionality but signals "old-looking website" to users evaluating a 450 EUR medical service on trust.
 
 | Feature | Why Expected | Complexity | Dependency on Existing System | Notes |
 |---------|--------------|------------|-------------------------------|-------|
@@ -28,7 +28,7 @@ These are visual features that, in 2025, users expect from any premium landing p
 
 ### Differentiators (Competitive Advantage)
 
-Visual features that elevate MedicusUnion KZ above typical medical landing pages while staying within the calm, trustworthy brand tone and the 45+ audience's cognitive tolerance.
+Visual features that elevate MedicusUnion KZ above typical medical websites while staying within the calm, trustworthy brand tone and the 45+ audience's cognitive tolerance.
 
 | Feature | Value Proposition | Complexity | Dependency on Existing System | Notes |
 |---------|-------------------|------------|-------------------------------|-------|
@@ -201,11 +201,11 @@ Dark mode reduces blue light emission, which benefits evening/night reading. For
 
 **Confidence:** MEDIUM. Derived from WCAG 2.1 spec, NNGroup's dark mode research, and ophthalmology UX literature. No Kazakhstan-specific study found.
 
-### 3. Bold/Display Typography on Health Landing Pages
+### 3. Bold/Display Typography on Health Websites
 
 **Current state:** h1: 2.25rem (36px), h2: 2rem (32px), font-weight: 700. Manrope Variable loaded with weights 200-800.
 
-**Research finding:** The "bold editorial" trend in 2025 (Vercel, Linear, Stripe landing pages) uses 700-800 weight at 56-72px for h1. For a medical landing page targeting 45+, 56px/800w h1 is the appropriate ceiling — bolder than current, but not the extreme 80px+ editorial style that would feel out of place on a medical site.
+**Research finding:** The "bold editorial" trend in 2025 (Vercel, Linear, Stripe) uses 700-800 weight at 56-72px for h1. For a medical website targeting 45+, 56px/800w h1 is the appropriate ceiling — bolder than current, but not the extreme 80px+ editorial style that would feel out of place on a medical site.
 
 **Recommended scale:**
 - h1: `clamp(40px, 5vw, 56px)`, font-weight: 800
@@ -340,7 +340,7 @@ This must run synchronously (not `type="module"`, not `defer`, not `async`).
 - WCAG 2.1 SC 1.4.3 (Contrast Minimum), 1.4.11 (Non-text Contrast) — accessibility standards
 - Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading research
 - Web.dev + Chrome for Developers: CSS glassmorphism and backdrop-filter usage patterns
-- Design community consensus on 2025 display typography scales (Vercel, Stripe, Linear landing pages) — LOW individual source confidence, MEDIUM as converging consensus
+- Design community consensus on 2025 display typography scales (Vercel, Stripe, Linear) — LOW individual source confidence, MEDIUM as converging consensus
 
 ### Not Found / Unable to Verify
 
@@ -349,6 +349,6 @@ This must run synchronously (not `type="module"`, not `defer`, not `async`).
 
 ---
 
-*Feature research for: MedicusUnion KZ Landing — v1.4 Visual Redesign*
+*Feature research for: MedicusUnion KZ — v1.4 Visual Redesign*
 *Researched: 2026-03-24*
 *Downstream consumer: v1.4 roadmap phase planning*

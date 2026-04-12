@@ -66,7 +66,7 @@ None. The three sections contain no TODO/FIXME/placeholder comments, no empty re
 #### 2. External link behaviour
 
 **Test:** Click the "Все врачи" button.
-**Expected:** Opens https://medicusunion.com/doctors in a new browser tab without navigating away from the landing page.
+**Expected:** Opens https://medicusunion.com/doctors in a new browser tab without navigating away from the site.
 **Why human:** `target="_blank"` and `rel="noopener noreferrer"` are present in code, but actual new-tab behaviour requires a browser.
 
 #### 3. Trust perception by target audience (45+)
