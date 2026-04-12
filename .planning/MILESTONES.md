@@ -1,5 +1,27 @@
 # Milestones
 
+## v6.1 New Design Port (Shipped: 2026-04-12)
+
+**Phases completed:** 5 phases, 14 plans, 24 tasks
+
+**Key accomplishments:**
+
+- CSS design tokens updated (dark mode removed, green ramp added), navigation restructured with 5 links + footer arrays, MeshBackground gradient component layered behind z-10 content
+- Floating glass pill header with gradient logo, 5 desktop nav links at lg breakpoint, phone icon, gradient CTA, and glass overlay mobile menu
+- Glass card footer with 4-column layout (Company/Services/Navigation/Contacts), legal entities, trust badges, and floating glass StickyBar with smart anchor routing via usePathname
+- Commit:
+- Commit:
+- Two React Server Components with glass morphism cards: 4 problem recognition cards with lucide-react icons and 4 numbered process step cards with gradient badges
+- WhyUsSection with 4 advantage items, 3-photo collage, and ClinicsSection with 8 country clinic cards in glass grid
+- PlatformSection with ISO/GDPR glass card and full 10-section index page wiring replacing GuideGrid/AdvantagesGrid
+- ReviewsSection with 4 glass testimonial cards and FAQSection with 7-item accordion using max-height CSS transition
+- Contact section with glass coordinator card and preserved Directus form submission, FinalCTA with 2-column glass card and doctor image, page.tsx wired with all 12 sections
+- Commit:
+- TreatmentAboutUs.tsx
+- 1. [Rule 2 - Content] Turkey included items expanded
+
+---
+
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks
