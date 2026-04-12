@@ -108,31 +108,33 @@ export function ContactForm() {
 
   if (formState === 'success') {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" width="64" height="64" aria-hidden="true">
-          <circle cx="32" cy="32" r="26" stroke="#35B678" strokeWidth="3" fill="rgba(53,182,120,0.1)"/>
-          <path d="M20 32l8 8 16-16" stroke="#35B678" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-        <h3 className="font-heading text-2xl font-bold text-mu-text-900 mt-6">
+      <div className="absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8">
+        <div className="w-24 h-24 bg-white/80 border border-white/60 rounded-full flex items-center justify-center mb-6 shadow-glass-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 className="text-3xl font-extrabold text-mu-text-900 mb-3">
           Спасибо!
         </h3>
-        <p className="font-body text-mu-text-500 mt-2">
+        <p className="text-mu-text-700 font-medium text-center">
           Мы{'\u00A0'}свяжемся с{'\u00A0'}вами в{'\u00A0'}течение 24{'\u00A0'}часов.
         </p>
       </div>
     );
   }
 
-  const inputBase = 'w-full px-4 py-3 rounded-xl border bg-white text-mu-text-900 font-body text-base focus:outline-none focus:ring-2 focus:ring-mu-blue/30 focus:border-mu-blue transition-colors';
-  const inputNormal = `${inputBase} border-mu-text-200`;
+  const inputBase = 'w-full px-5 py-4 rounded-2xl border bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner';
+  const inputNormal = `${inputBase} border-white/40`;
   const inputError = `${inputBase} border-red-400`;
 
   return (
     <>
-      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+      <form onSubmit={handleSubmit} noValidate className="space-y-6">
         {/* Name */}
         <div>
-          <label htmlFor="contact-name" className="block text-sm font-semibold text-mu-text-700 mb-1.5">
+          <label htmlFor="contact-name" className="block text-sm font-bold text-mu-text-900 mb-2">
             Ваше имя
           </label>
           <input
@@ -154,7 +156,7 @@ export function ContactForm() {
 
         {/* Phone */}
         <div>
-          <label htmlFor="contact-phone" className="block text-sm font-semibold text-mu-text-700 mb-1.5">
+          <label htmlFor="contact-phone" className="block text-sm font-bold text-mu-text-900 mb-2">
             Телефон
           </label>
           <input
@@ -177,7 +179,7 @@ export function ContactForm() {
 
         {/* Interest */}
         <div>
-          <label htmlFor="contact-interest" className="block text-sm font-semibold text-mu-text-700 mb-1.5">
+          <label htmlFor="contact-interest" className="block text-sm font-bold text-mu-text-900 mb-2">
             Что вас интересует
           </label>
           <select
@@ -202,13 +204,13 @@ export function ContactForm() {
 
         {/* Description */}
         <div>
-          <label htmlFor="contact-description" className="block text-sm font-semibold text-mu-text-700 mb-1.5">
-            Кратко о{'\u00A0'}вашем случае <span className="text-mu-text-300 font-normal">(необязательно)</span>
+          <label htmlFor="contact-description" className="block text-sm font-bold text-mu-text-900 mb-2">
+            Кратко о{'\u00A0'}вашем случае <span className="text-mu-text-500 font-medium">(необязательно)</span>
           </label>
           <textarea
             id="contact-description"
             name="description"
-            rows={3}
+            rows={4}
             placeholder="Опишите вашу ситуацию или вопрос"
             value={description}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
@@ -241,13 +243,17 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={formState === 'submitting'}
-          className="w-full py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-mu-cta-from to-mu-cta-to hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white py-4 rounded-2xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] shadow-glass-inner hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8"
         >
           {formState === 'submitting' ? 'Отправка...' : 'Отправить заявку'}
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="m22 2-7 20-4-9-9-4Z"/>
+            <path d="M22 2 11 13"/>
+          </svg>
         </button>
       </form>
 
-      <p className="text-sm text-mu-text-300 mt-2 text-center">
+      <p className="text-sm text-mu-text-700 font-medium text-center mt-4">
         Мы{'\u00A0'}перезвоним в{'\u00A0'}течение 24{'\u00A0'}часов. Ваши данные защищены.
       </p>
     </>
