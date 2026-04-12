@@ -4,13 +4,13 @@ milestone: v6.1
 milestone_name: New Design Port
 status: executing
 stopped_at: Phase 68 UI-SPEC approved
-last_updated: "2026-04-12T18:21:37.060Z"
+last_updated: "2026-04-12T18:44:12.053Z"
 last_activity: 2026-04-12
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  completed_phases: 5
+  total_plans: 14
+  completed_plans: 14
   percent: 100
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-12)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 71 — Index Interactive Sections
+**Current focus:** Phase 72 — Service Pages
 
 ## Current Position
 
 Phase: 72
 Plan: Not started
-Status: Executing Phase 71
+Status: Executing Phase 72
 Last activity: 2026-04-12
 
 Progress: [░░░░░░░░░░] 0%
@@ -36,7 +36,7 @@ Progress: [░░░░░░░░░░] 0%
 
 **Velocity:**
 
-- Total plans completed: 13 (v6.1)
+- Total plans completed: 17 (v6.1)
 - Average duration: --
 - Total execution time: 0 hours
 
@@ -48,7 +48,7 @@ Progress: [░░░░░░░░░░] 0%
 | 69 | 2 | - | - |
 | 70 | 3 | - | - |
 | 71 | 2 | - | - |
-| 72 | 0 | - | - |
+| 72 | 4 | - | - |
 
 **Recent Trend:**
 

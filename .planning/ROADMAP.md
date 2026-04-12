@@ -210,10 +210,10 @@ Plans:
   4. All three service pages share consistent layout chrome (header, footer, sticky bar) and reuse shared components (ContactSection, FinalCTA) from the index page redesign
 **Plans**: 4 plans
 Plans:
-- [ ] 72-01-PLAN.md -- Shared service components (ServiceHero, SocialProof, FAQ, LeadFormSection) glass restyle
-- [ ] 72-02-PLAN.md -- Consultations page (7 section components + page.tsx) glass restyle
-- [ ] 72-03-PLAN.md -- Treatment-abroad page (4 section components + page.tsx) glass restyle
-- [ ] 72-04-PLAN.md -- Checkup page (7 section components + page.tsx) glass restyle
+- [x] 72-01-PLAN.md -- Shared service components (ServiceHero, SocialProof, FAQ, LeadFormSection) glass restyle
+- [x] 72-02-PLAN.md -- Consultations page (7 section components + page.tsx) glass restyle
+- [x] 72-03-PLAN.md -- Treatment-abroad page (4 section components + page.tsx) glass restyle
+- [x] 72-04-PLAN.md -- Checkup page (7 section components + page.tsx) glass restyle
 **UI hint**: yes
 
 ## Progress
@@ -230,4 +230,4 @@ Strictly linear -- each phase builds on the previous.
 | 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
 | 70. Index Content Sections | 3/3 | Complete    | 2026-04-12 |
 | 71. Index Interactive Sections | 2/2 | Complete    | 2026-04-12 |
-| 72. Service Pages | 0/4 | Planning complete | - |
+| 72. Service Pages | 4/4 | Complete    | 2026-04-12 |
