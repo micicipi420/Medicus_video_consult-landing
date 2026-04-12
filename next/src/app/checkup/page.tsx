@@ -223,7 +223,9 @@ export default function CheckupPage() {
         />
       </ScrollReveal>
 
-      <FinalCTA />
+      <ScrollReveal>
+        <FinalCTA />
+      </ScrollReveal>
     </>
   );
 }
