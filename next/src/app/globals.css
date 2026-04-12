@@ -9,10 +9,7 @@
 @import "../styles/squircles.css";
 @import "shadcn/tailwind.css";
 
-/* 3. Dark mode variant */
-@custom-variant dark (&:is(.dark *));
-
-/* 4. Root tokens (ported verbatim from src/styles/theme.css :root) */
+/* 3. Root tokens (ported verbatim from src/styles/theme.css :root) */
 :root {
   --font-size: 16px;
   --font-family-body: var(--font-family-body-next, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
@@ -30,6 +27,9 @@
   --mu-green-500: #6FDEA9;
   --mu-green-600: #35B678;
   --mu-green-700: #2D9E68;
+  --mu-green-200: #A6EECB;
+  --mu-green-400: #79E9B3;
+  --mu-green-900: #35B678;
 
   /* Text / neutral ramp */
   --mu-text-50: #FBFBFB;
@@ -150,6 +150,7 @@
   --dur-sheet: 400ms;
   --dur-reveal: 600ms;
 
+  /* DEPRECATED: Production tokens -- remove when phases 69-72 migrate sections */
   /* Production typography tokens (67.1 visual parity) */
   --font-size-xs: 0.8125rem;   /* 13px */
   --font-size-sm: 1rem;         /* 16px */
@@ -203,69 +204,7 @@
   --section-padding-desktop: 6.25rem; /* 100px */
 }
 
-/* 5. Dark mode overrides (ported from theme.css .dark) */
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-
-  --liquid-bg: rgba(30, 40, 60, 0.45);
-  --liquid-blur-sm: 18px;
-  --liquid-blur-md: 28px;
-  --liquid-blur-lg: 44px;
-  --liquid-blur-xl: 64px;
-  --liquid-saturate: 160%;
-  --liquid-brightness: 115%;
-  --liquid-border-top: rgba(255, 255, 255, 0.25);
-  --liquid-border-bottom: rgba(0, 0, 0, 0.4);
-  --liquid-shadow-outer: 0 16px 40px rgba(0, 0, 0, 0.45);
-  --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-
-  --liquid-nav-bg: rgba(30, 40, 60, 0.30);
-  --liquid-nav-blur: 18px;
-  --liquid-nav-shadow-outer: none;
-  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
-  --liquid-clear-blur: 24px;
-  --liquid-clear-dim: rgba(0, 0, 0, 0.30);
-  --liquid-clear-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.25);
-  --liquid-fluted-stripe-color: rgba(255, 255, 255, 0.06);
-  --liquid-fluted-stripe-width: 2px;
-  --liquid-fluted-stripe-gap: 8px;
-}
-
-/* 6. Tailwind theme extensions (ported from theme.css @theme inline) */
+/* 5. Tailwind theme extensions (ported from theme.css @theme inline) */
 @theme inline {
   --color-mu-blue: var(--mu-blue);
   --color-mu-black: var(--mu-black);
@@ -276,6 +215,9 @@
   --color-mu-green-500: var(--mu-green-500);
   --color-mu-green-600: var(--mu-green-600);
   --color-mu-green-700: var(--mu-green-700);
+  --color-mu-green-200: var(--mu-green-200);
+  --color-mu-green-400: var(--mu-green-400);
+  --color-mu-green-900: var(--mu-green-900);
   --color-mu-text-900: var(--mu-text-900);
   --color-mu-text-700: var(--mu-text-700);
   --color-mu-text-500: var(--mu-text-500);
@@ -381,6 +323,10 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-family-body);
+  }
+  body ::selection {
+    background: rgb(56 198 244 / 0.3);
+    color: var(--mu-text-900);
   }
 
   a:focus-visible,
@@ -491,11 +437,6 @@
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
   }
-  .dark .header--scrolled {
-    --liquid-bg: rgba(30, 40, 60, 0.6);
-    --liquid-blur-md: 60px;
-    --liquid-saturate: 200%;
-  }
 
   .mobile-menu-overlay { display: none; }
   .mobile-menu-overlay.is-open { display: block; }
@@ -518,7 +459,9 @@
 }
 
 /* ============================================
-   Production utility classes (67.1 visual parity)
+   DEPRECATED: Production utility classes (67.1 visual parity)
+   Remove when phases 69-72 migrate all section components.
+   ~55 references across section components depend on these.
    ============================================ */
 
 @layer components {
