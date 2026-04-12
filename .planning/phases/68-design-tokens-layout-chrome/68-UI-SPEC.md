@@ -49,24 +49,27 @@ Exceptions:
 
 ## Typography
 
-### New Design Typography Scale (replaces production tokens)
+### Canonical 4-Size Scale
 
-| Role | Size (mobile) | Size (desktop) | Weight | Line Height | Font Family | Tailwind Class |
-|------|---------------|----------------|--------|-------------|-------------|----------------|
-| Small / Label | 14px (text-sm) | 14px | 600 (semibold) | 1.5 | Inter | text-sm font-semibold |
-| Body | 16px (text-base) | 16px | 500 (medium) | 1.625 (relaxed) | Inter | text-base font-medium leading-relaxed |
-| Body Large | 18px (text-lg) | 20px (text-xl) | 500 (medium) | 1.625 (relaxed) | Inter | text-lg md:text-xl font-medium leading-relaxed |
-| Card Heading | 18px (text-lg) | 18px | 800 (extrabold) | 1.5 | Manrope | text-lg font-extrabold |
-| Section Heading | 48px (text-5xl) | 60px (text-6xl) | 800 (extrabold) | 1.1 | Manrope | text-5xl md:text-6xl font-extrabold leading-[1.1] |
-| Hero Display | 48px (text-5xl) | 96px (text-8xl) | 800 (extrabold) | 1.1 | Manrope | text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[1.1] |
+The new design source (feat/new-design d450232) uses 6 raw pixel values across breakpoints. This contract rationalizes them into 4 canonical sizes. Intermediate values (18px on mobile, 48px on mobile, 96px at xl) are responsive mappings of these 4 sizes, not independent tokens.
 
-### Font Weights Used (exactly 2 primary + 1 accent)
+| Role | Canonical Size | Responsive Mapping | Weight | Line Height | Font Family | Tailwind Class |
+|------|---------------|-------------------|--------|-------------|-------------|----------------|
+| Small / Label | 14px | 14px at all breakpoints | 500 (medium) | 1.5 | Inter | text-sm font-medium |
+| Body | 16px | 16px at all breakpoints; body-large variant scales to 20px at md | 500 (medium) | 1.625 (relaxed) | Inter | text-base font-medium leading-relaxed |
+| Large | 20px | 18px (text-lg) below md, 20px (text-xl) at md+; card headings stay 18px at all sizes as a responsive variant | 500 body / 800 headings | 1.625 body / 1.5 headings | Inter body / Manrope headings | text-lg md:text-xl font-medium leading-relaxed |
+| Display | 60px | 48px (text-5xl) below md, 60px (text-6xl) at md; hero variant scales further: lg:text-7xl xl:text-8xl (96px) | 800 (extrabold) | 1.1 | Manrope | text-5xl md:text-6xl font-extrabold leading-[1.1] |
+
+Responsive variant notes:
+- Card Heading uses 18px (text-lg) at all breakpoints -- a responsive variant of the Large tier, not a 5th size.
+- Hero Display scales 48px -> 60px -> 72px -> 96px across breakpoints -- responsive variants of the Display tier, not independent sizes.
+
+### Font Weights (exactly 2)
 
 | Weight | Value | Usage |
 |--------|-------|-------|
-| medium | 500 | Body text, nav links, footer body |
-| semibold | 600 | Labels, badges, trust indicators, contact info |
-| extrabold | 800 | All headings, stat numbers, CTA buttons, logo, footer column headings |
+| medium | 500 | Body text, nav links, footer body, labels, badges, trust indicators, contact info, phone numbers |
+| extrabold | 800 | All headings (section, card, hero), stat numbers, CTA buttons, logo text, footer column headings |
 
 ### Letter Spacing
 
@@ -118,6 +121,12 @@ Exceptions:
 | Success | --mu-green-600: #35B678 | Form valid indicator (border-left) |
 
 Accent gradient reserved for: Header CTA button, StickyBar CTA button, MobileMenu CTA button, Logo text.
+
+---
+
+## Visuals
+
+**Primary visual anchor (index page):** The animated mesh gradient background (3 color blobs behind a frosted overlay) combined with the floating glass-pill header creates the first-impression visual identity. The mesh background occupies the full viewport and every glass surface reads against it.
 
 ---
 
@@ -190,11 +199,11 @@ None in Phase 68 scope.
 - **Glass:** bg-white/30 backdrop-blur-[40px] backdrop-saturate-[150%] border-[0.5px] border-white/50 shadow-glass-header
 - **Padding:** px-4 md:px-8 py-5
 - **Scroll state:** header--scrolled class -- bg-white/50 backdrop-blur-[60px] backdrop-saturate-[180%], py reduced to 0.75rem
-- **Logo:** text-2xl font-bold tracking-tight bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent
+- **Logo:** text-2xl font-extrabold tracking-tight bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent
 - **Desktop nav breakpoint:** lg (1024px) -- hidden lg:flex items-center gap-8
 - **Nav links:** text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight
 - **Phone:** flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight (with 16x16 Phone icon)
-- **CTA button:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow tracking-tight
+- **CTA button:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-extrabold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow tracking-tight
 - **Mobile burger:** lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50
 
 ### 3. MobileMenu (update existing)
@@ -206,7 +215,7 @@ None in Phase 68 scope.
 - **Nav links:** text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight
 - **Divider:** h-[0.5px] bg-white/40 my-2
 - **Phone link:** flex items-center gap-3, text-mu-blue icon (20x20), text-mu-text-900 font-medium tracking-tight
-- **CTA:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-semibold tracking-tight shadow-lg mt-4 w-full text-center block
+- **CTA:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-extrabold tracking-tight shadow-lg mt-4 w-full text-center block
 
 ### 4. Footer (rewrite existing)
 
@@ -225,7 +234,7 @@ None in Phase 68 scope.
   - Links: same style as col 2
 - **Column 4 -- Contacts:**
   - Same heading style as col 2
-  - Phone/email: flex items-center gap-3, icon in glass pill (bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong), text-mu-text-900 font-semibold
+  - Phone/email: flex items-center gap-3, icon in glass pill (bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong), text-mu-text-900 font-medium
   - Skip App Store / Google Play badges (CONTEXT decision)
 - **Bottom bar:** border-t border-mu-text-300/30 pt-8 mt-8
   - Copyright: text-mu-text-700 font-medium text-sm
@@ -237,8 +246,8 @@ None in Phase 68 scope.
 - **Visibility:** lg:hidden (mobile only), hides when #contact or footer visible
 - **Glass:** bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/60 shadow-glass-lg p-3
 - **Layout:** flex items-center justify-between gap-3
-- **Phone:** text-mu-text-900 font-semibold text-sm
-- **CTA:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-mu-blue/30 text-sm
+- **Phone:** text-mu-text-900 font-medium text-sm
+- **CTA:** bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-extrabold shadow-lg shadow-mu-blue/30 text-sm
 - **Anchor:** href="#contact" on index page, href="/contacts" on service pages
 
 ---
