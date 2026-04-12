@@ -145,7 +145,10 @@ See `.planning/milestones/` for full details per milestone.
   3. MobileMenu opens with the new design's navigation style and transitions -- tested at 375px viewport width
   4. Footer renders with the new design's layout, links, and styling -- visually matches the feat/new-design HTML footer at 1440px and 375px
   5. StickyBar on mobile displays correctly with the new design's style and correct anchor links on all pages
-**Plans**: TBD
+**Plans**: 3 plans
+- [ ] 68-01-PLAN.md -- Design tokens (globals.css), navigation data, MeshBackground, layout updates, dev script fix
+- [ ] 68-02-PLAN.md -- Header glass pill, HeaderClient fixed positioning, MobileMenu glass panel
+- [ ] 68-03-PLAN.md -- Footer glass card (4-column), StickyBar glass with smart routing
 **UI hint**: yes
 
 ### Phase 69: Hero & Above-the-Fold Sections
@@ -208,7 +211,7 @@ Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 68. Design Tokens & Layout Chrome | 0/TBD | Not started | - |
+| 68. Design Tokens & Layout Chrome | 0/3 | Not started | - |
 | 69. Hero & Above-the-Fold Sections | 0/TBD | Not started | - |
 | 70. Index Content Sections | 0/TBD | Not started | - |
 | 71. Index Interactive Sections | 0/TBD | Not started | - |
