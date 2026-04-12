@@ -163,8 +163,8 @@ See `.planning/milestones/` for full details per milestone.
   5. ServicesSection displays 3 service cards with photos and descriptions matching the new design's layout
 **Plans**: 2 plans
 Plans:
-- [ ] 69-01-PLAN.md -- Hero section: download images, rewrite HeroHub.tsx with photo composition, gradient headline, CTAs, floating badges
-- [ ] 69-02-PLAN.md -- Stats & Services: rewrite StatsBar.tsx glass cards, ServicesGrid.tsx glass cards with photos, update page.tsx
+- [x] 69-01-PLAN.md -- Hero section: download images, rewrite HeroHub.tsx with photo composition, gradient headline, CTAs, floating badges
+- [x] 69-02-PLAN.md -- Stats & Services: rewrite StatsBar.tsx glass cards, ServicesGrid.tsx glass cards with photos, update page.tsx
 **UI hint**: yes
 
 ### Phase 70: Index Content Sections
@@ -215,7 +215,7 @@ Strictly linear -- each phase builds on the previous.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 68. Design Tokens & Layout Chrome | 3/3 | Complete    | 2026-04-12 |
-| 69. Hero & Above-the-Fold Sections | 0/2 | Not started | - |
+| 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
 | 70. Index Content Sections | 0/TBD | Not started | - |
 | 71. Index Interactive Sections | 0/TBD | Not started | - |
 | 72. Service Pages | 0/TBD | Not started | - |
