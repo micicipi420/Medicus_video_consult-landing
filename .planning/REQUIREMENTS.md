@@ -50,25 +50,25 @@
 
 | REQ-ID | Phase | Plan | Status |
 |--------|-------|------|--------|
-| NAV-01 | TBD | TBD | pending |
-| NAV-02 | TBD | TBD | pending |
-| HERO-01 | TBD | TBD | pending |
-| HERO-02 | TBD | TBD | pending |
-| HERO-03 | TBD | TBD | pending |
-| SEC-01 | TBD | TBD | pending |
-| SEC-02 | TBD | TBD | pending |
-| SEC-03 | TBD | TBD | pending |
-| SEC-04 | TBD | TBD | pending |
-| SEC-05 | TBD | TBD | pending |
-| SEC-06 | TBD | TBD | pending |
-| SEC-07 | TBD | TBD | pending |
-| SEC-08 | TBD | TBD | pending |
-| SEC-09 | TBD | TBD | pending |
-| SEC-10 | TBD | TBD | pending |
-| SEC-11 | TBD | TBD | pending |
-| SRV-01 | TBD | TBD | pending |
-| SRV-02 | TBD | TBD | pending |
-| SRV-03 | TBD | TBD | pending |
-| LAY-01 | TBD | TBD | pending |
-| LAY-02 | TBD | TBD | pending |
-| LAY-03 | TBD | TBD | pending |
+| LAY-03 | Phase 68 | TBD | pending |
+| NAV-01 | Phase 68 | TBD | pending |
+| NAV-02 | Phase 68 | TBD | pending |
+| LAY-01 | Phase 68 | TBD | pending |
+| LAY-02 | Phase 68 | TBD | pending |
+| HERO-01 | Phase 69 | TBD | pending |
+| HERO-02 | Phase 69 | TBD | pending |
+| HERO-03 | Phase 69 | TBD | pending |
+| SEC-01 | Phase 69 | TBD | pending |
+| SEC-02 | Phase 69 | TBD | pending |
+| SEC-03 | Phase 70 | TBD | pending |
+| SEC-04 | Phase 70 | TBD | pending |
+| SEC-05 | Phase 70 | TBD | pending |
+| SEC-06 | Phase 70 | TBD | pending |
+| SEC-07 | Phase 70 | TBD | pending |
+| SEC-08 | Phase 71 | TBD | pending |
+| SEC-09 | Phase 71 | TBD | pending |
+| SEC-10 | Phase 71 | TBD | pending |
+| SEC-11 | Phase 71 | TBD | pending |
+| SRV-01 | Phase 72 | TBD | pending |
+| SRV-02 | Phase 72 | TBD | pending |
+| SRV-03 | Phase 72 | TBD | pending |

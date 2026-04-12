@@ -13,21 +13,36 @@
 - v3.2 Build Pipeline & Chrome Partials -- Phases 39-40 (shipped 2026-04-08)
 - v4.0 Liquid Design System -- Phases 41-49 (shipped 2026-04-09)
 - v5.0 Full Liquid Glass Rework -- Phases 51-58 (shipped 2026-04-10)
-- **v6.0 Next.js Stack Migration -- Phases 59-67 (active)**
+- v6.0 Next.js Stack Migration -- Phases 59-67.1 (shipped 2026-04-11)
+- **v6.1 New Design Port -- Phases 68-72 (active)**
 
 ## Phases
 
-### v6.0 Next.js Stack Migration (active)
+### v6.1 New Design Port (active)
 
-- [x] **Phase 59: Next.js Scaffold & CSS Foundation** (2/2 plans) -- completed 2026-04-11
-- [x] **Phase 60: Component Library & Layout Shell** (2/2 plans) -- completed 2026-04-11
-- [x] **Phase 61: Index Page Migration** (2/2 plans) -- completed 2026-04-11
-- [x] **Phase 62: Contacts Page & SEO** (1/1 plan) -- completed 2026-04-11
-- [x] **Phase 63: Scroll & Entrance Animations** (1/1 plan) -- completed 2026-04-11
-- [x] **Phase 64: Interactive Glass Animations** (1/1 plan) -- completed 2026-04-11
-- [x] **Phase 65: Database & Form Submission** (1/1 plan) -- completed 2026-04-11
-- [x] **Phase 66: Admin Panel** (1/1 plan) -- completed 2026-04-11
-- [x] **Phase 67: Docker Deployment** (1/1 plan) -- completed 2026-04-11
+- [ ] **Phase 68: Design Tokens & Layout Chrome** - Update CSS palette/typography tokens and port Header, Footer, StickyBar, MobileMenu to new design
+- [ ] **Phase 69: Hero & Above-the-Fold Sections** - Port new Hero with doctor photo, floating badges, gradient text + Stats and Services sections
+- [ ] **Phase 70: Index Content Sections** - Port Problem, Process, WhyUs, Clinics, and Platform sections
+- [ ] **Phase 71: Index Interactive Sections** - Port Reviews, FAQ, Contact form, and FinalCTA sections
+- [ ] **Phase 72: Service Pages** - Update Consultations, Treatment Abroad, and Checkup pages to new design
+
+<details>
+<summary>v6.0 Next.js Stack Migration (Phases 59-67.1) -- SHIPPED 2026-04-11</summary>
+
+- [x] Phase 59: Next.js Scaffold & CSS Foundation (2/2 plans) -- completed 2026-04-10
+- [x] Phase 60: Component Library & Layout Shell (2/2 plans) -- completed 2026-04-11
+- [x] Phase 61: Index Page Migration (2/2 plans) -- completed 2026-04-11
+- [x] Phase 62: Contacts Page & SEO (1/1 plan) -- completed 2026-04-11
+- [x] Phase 63: Scroll & Entrance Animations (1/1 plan) -- completed 2026-04-11
+- [x] Phase 64: Interactive Glass Animations (1/1 plan) -- completed 2026-04-11
+- [x] Phase 65: Database & Form Submission (1/1 plan) -- completed 2026-04-11
+- [x] Phase 66: Admin Panel (1/1 plan) -- completed 2026-04-11
+- [x] Phase 67: Docker Deployment (1/1 plan) -- completed 2026-04-11
+- [x] Phase 67.1: Visual Parity Rework (6/6 plans) -- completed 2026-04-11
+
+Full details: `.planning/milestones/v6.0-ROADMAP.md`
+
+</details>
 
 <details>
 <summary>v5.0 Full Liquid Glass Rework (Phases 51-58) -- SHIPPED 2026-04-10</summary>
@@ -120,166 +135,81 @@ See `.planning/milestones/` for full details per milestone.
 
 ## Phase Details
 
-### Phase 59: Next.js Scaffold & CSS Foundation
-**Goal**: A working Next.js 15 project where all Liquid Glass CSS tokens and materials render identically to the current production site -- proving the CSS pipeline before any page content is ported
-**Depends on**: Nothing (first v6.0 phase; builds on v5.0 shipped glass design system)
-**Requirements**: SCAF-01, SCAF-02, SCAF-04
+### Phase 68: Design Tokens & Layout Chrome
+**Goal**: The application's visual foundation matches the new design -- updated color palette, typography scale, and all persistent layout elements (header, footer, sticky bar, mobile menu) reflect the new design language
+**Depends on**: Nothing (first v6.1 phase; builds on v6.0 shipped Next.js app)
+**Requirements**: LAY-03, NAV-01, NAV-02, LAY-01, LAY-02
 **Success Criteria** (what must be TRUE):
-  1. `npm run dev` starts a Next.js 15 App Router project with TypeScript, ESLint, and Tailwind CSS v4 via @tailwindcss/postcss -- a blank page renders without errors
-  2. All glass CSS tokens (liquid-bg, liquid-blur-*, liquid-saturate, liquid-brightness, shadow-*, tint-*) are available as Tailwind theme values and as CSS custom properties -- verified by inspecting a test element in DevTools
-  3. A test page with `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, `.liquid-nav` classes and squircle masks renders glass surfaces identically to the current production site -- side-by-side screenshot comparison shows no visible difference
-  4. CSS import order is deterministic: globals.css imports liquid-glass.css and squircles.css via explicit @import chain, and `"sideEffects": ["*.css"]` is set in package.json -- no CSS ordering bugs between dev (Turbopack) and build (Webpack)
-  5. backdrop-filter declarations use standard-first, -webkit- second order to avoid Turbopack stripping bug (#78302)
-**Plans**: 2 plans
-Plans:
-- [x] 59-01-PLAN.md -- Next.js 15 scaffold + Tailwind v4 + fonts + theme tokens
-- [x] 59-02-PLAN.md -- Liquid Glass CSS + squircles port + visual verification
+  1. CSS custom properties in globals.css reflect the new design's color palette, typography scale, and spacing tokens -- inspecting any page in DevTools shows the updated values
+  2. Header displays 5 flat navigation links (Konsultatsii, Lechenie, Chek-ap, O nas, Kontakty) matching the new design's nav style -- no leftover old navigation items or styling
+  3. MobileMenu opens with the new design's navigation style and transitions -- tested at 375px viewport width
+  4. Footer renders with the new design's layout, links, and styling -- visually matches the feat/new-design HTML footer at 1440px and 375px
+  5. StickyBar on mobile displays correctly with the new design's style and correct anchor links on all pages
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 60: Component Library & Layout Shell
-**Goal**: The application shell is complete -- shared chrome (header, footer, mobile menu, sticky bar, SVG defs) renders as React components in a root layout that persists across route changes
-**Depends on**: Phase 59 (glass CSS tokens must be available for glass header/sticky-bar components)
-**Requirements**: SCAF-03, SCAF-05
+### Phase 69: Hero & Above-the-Fold Sections
+**Goal**: A visitor landing on the index page sees the complete new above-the-fold experience -- doctor photo with floating badges, gradient headline, two CTA buttons, key stats, and service cards
+**Depends on**: Phase 68 (design tokens and layout chrome must be in place for consistent styling)
+**Requirements**: HERO-01, HERO-02, HERO-03, SEC-01, SEC-02
 **Success Criteria** (what must be TRUE):
-  1. shadcn/ui is initialized and Button, Card, Input, Select, Textarea, Dialog components are available for import -- `npx shadcn@latest add` has been run and components exist in the project
-  2. Root layout (app/layout.tsx) renders Header, Footer, MobileMenu, StickyBar, and SvgRefractionDefs as React components -- navigating between `/` and `/contacts` preserves the layout shell without re-mount
-  3. Header component applies glass material on scroll (`.liquid-nav` class) and shows desktop navigation links -- scrolling down on any page triggers the glass effect
-  4. MobileMenu opens/closes with correct backdrop-blur overlay and StickyBar shows on mobile with click-to-call -- tested at 375px viewport width
-**Plans**: 2 plans
-Plans:
-- [x] 60-01-PLAN.md -- Initialize shadcn/ui + shared navigation config + SvgRefractionDefs
-- [x] 60-02-PLAN.md -- Header/Footer/MobileMenu/StickyBar components + root layout wiring
+  1. Hero section displays a doctor photo on the right side with floating badge elements positioned as in the new design -- verified at 1440px and 375px viewports
+  2. Hero headline uses gradient text rendering "Европейские врачи, мировые клиники -- доступны из Казахстана" -- gradient is visible and matches the new design's color stops
+  3. Two CTA buttons render below the headline: primary "Обсудить мой случай" and secondary "Узнать больше" -- primary scrolls to contact form, secondary scrolls to services section
+  4. StatsSection displays 4 metric cards (43 клиники, 11 стран, 500+ врачей, 15+ лет) with the new design's card styling
+  5. ServicesSection displays 3 service cards with photos and descriptions matching the new design's layout
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 61: Index Page Migration
-**Goal**: The index page is fully ported as a Next.js SSG page with all 7 sections rendering as React Server Components, achieving 1:1 visual parity with the current production site (research confirmed 7 actual sections in index.html, not 13 as originally estimated)
-**Depends on**: Phase 60 (layout shell with header/footer must exist as composition target for page content)
-**Requirements**: PAGE-01
+### Phase 70: Index Content Sections
+**Goal**: The middle of the index page presents the new informational content -- problem recognition, step-by-step process, differentiators, international clinic network, and platform features
+**Depends on**: Phase 69 (above-the-fold sections establish the visual pattern that content sections follow)
+**Requirements**: SEC-03, SEC-04, SEC-05, SEC-06, SEC-07
 **Success Criteria** (what must be TRUE):
-  1. All 7 index sections (Hero, Stats, Services, Guide, Advantages, ContactForm, FinalCTA) render as individual React components composed in app/page.tsx
-  2. Side-by-side comparison of Next.js index vs current production index at 1440px, 768px, and 375px viewports shows no visible layout differences -- same spacing, typography, colors, gradient CTA buttons
-  3. The page is statically generated (SSG) -- `npm run build` output shows `/` as a static page, not a dynamic one
-  4. 6 of 7 section components are Server Components (no "use client" directive) -- only ContactForm carries a client boundary
-  5. ContactForm validates inputs, masks phone as +7 (XXX) XXX-XX-XX, and shows success state (no API submission -- deferred to Phase 65)
-**Plans**: 2 plans
-Plans:
-- [x] 61-01-PLAN.md -- 6 Server Component sections (HeroHub, StatsBar, ServicesGrid, GuideGrid, AdvantagesGrid, FinalCTA)
-- [x] 61-02-PLAN.md -- ContactSection + ContactForm (client) + app/page.tsx composition + visual verification
+  1. ProblemSection "Узнаёте свою ситуацию?" renders 4 problem cards that resonate with the target audience -- layout matches the new design at desktop and mobile viewports
+  2. ProcessSection "От обращения до результата -- 4 шага" displays a step-by-step visual flow -- steps are numbered and connected visually as in the new design
+  3. WhyUsSection "Чем мы отличаемся" shows 4 advantage cards with icons/illustrations matching the new design
+  4. ClinicsSection displays clinics organized by 8 countries (Germany, Austria, Switzerland, Israel, South Korea, Turkey, UAE, India) -- country groupings and clinic card styling match the new design
+  5. PlatformSection renders "Ваши документы, снимки и связь с врачом -- в одном месте" with the new design's platform feature presentation
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 62: Contacts Page & SEO
-**Goal**: The contacts page is ported with glass form styling, and both pages have complete SEO metadata via Next.js Metadata API -- matching current production meta tags
-**Depends on**: Phase 61 (index page validates all component patterns; contacts reuses shared sections like ContactForm and FinalCTA)
-**Requirements**: PAGE-02, PAGE-03
+### Phase 71: Index Interactive Sections
+**Goal**: The bottom of the index page completes the conversion funnel -- social proof from reviews, FAQ answering objections, a working contact form, and a final call-to-action
+**Depends on**: Phase 70 (content sections above must exist so the page scrolls naturally into the conversion sections)
+**Requirements**: SEC-08, SEC-09, SEC-10, SEC-11
 **Success Criteria** (what must be TRUE):
-  1. `/contacts` page renders with glass-styled contact form and coordinator info cards -- visual parity with current contacts.html at 1440px and 375px viewports
-  2. Both `/` and `/contacts` pages export static metadata objects with correct title, description, Open Graph (og:title, og:description, og:image), and canonical URL -- verified by viewing page source or `curl -s | grep '<meta'`
-  3. Both pages are statically generated -- `npm run build` output shows both `/` and `/contacts` as static pages
-**Plans**: 1 plan
-Plans:
-- [x] 62-01-PLAN.md -- Contacts page + SEO metadata for both pages
+  1. ReviewsSection displays patient testimonials with the new design's review card styling -- cards show patient name, condition context, and review text
+  2. FAQSection renders an accordion with frequently asked questions -- clicking a question expands/collapses the answer with smooth animation, matching the new design
+  3. ContactSection renders the contact form integrated with the existing submitContactForm server action -- form validates inputs, submits to the database, and shows success/error states identically to the current working form
+  4. FinalCTA "Не откладывайте решение о здоровье" renders with two CTA buttons matching the new design -- buttons scroll to form or trigger appropriate actions
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 63: Scroll & Entrance Animations
-**Goal**: Pages feel alive with scroll-triggered reveal animations on all sections and a staggered hero entrance sequence -- matching the current site's motion design
-**Depends on**: Phase 61 (section components must exist as animation targets before wrapping them with motion)
-**Requirements**: ANIM-01, ANIM-02
+### Phase 72: Service Pages
+**Goal**: All three service pages reflect the new design language -- visitors navigating to consultations, treatment abroad, or checkup see content and styling consistent with the redesigned index page
+**Depends on**: Phase 71 (index page must be complete so service pages can reuse shared section components like ContactSection and FinalCTA)
+**Requirements**: SRV-01, SRV-02, SRV-03
 **Success Criteria** (what must be TRUE):
-  1. Framer Motion is installed with LazyMotion + domAnimation features -- bundle impact is under 8KB gzipped (verified via `npm run build` output or bundle analyzer)
-  2. Every section on the index page fades in with translateY(20px) + opacity transition when scrolled into view -- scrolling through the page shows each section animating in sequence
-  3. Hero section plays a staggered entrance: heading first, then subtitle, then CTA buttons, then stat cards -- each element appears 100-150ms after the previous one on initial page load
-  4. `prefers-reduced-motion: reduce` disables all scroll-reveal and entrance animations -- verified by toggling the media query in DevTools and confirming no movement occurs
-  5. Animation wrapper components (ScrollReveal, MotionDiv) use "use client" but the section content they wrap remains a Server Component -- no unnecessary client-side JS for static content
-**Plans**: 1 plan
-Plans:
-- [x] 63-01-PLAN.md -- Install Framer Motion + ScrollReveal/HeroEntrance components + wire pages
-**UI hint**: yes
-
-### Phase 64: Interactive Glass Animations
-**Goal**: Glass cards respond to user interaction with hover/press brightness shifts and a desktop specular highlight that follows the cursor -- completing the Liquid Glass interactive experience
-**Depends on**: Phase 63 (Framer Motion must be set up; animation wrapper pattern must be established)
-**Requirements**: ANIM-03, ANIM-04
-**Success Criteria** (what must be TRUE):
-  1. Hovering over any glass card on the index or contacts page brightens the surface; pressing/clicking darkens it -- transitions are smooth (200-300ms) and visually match the current production site
-  2. On desktop (pointer: fine), moving the cursor near a glass card produces a specular highlight shift -- the light position tracks the cursor direction via CSS custom properties updated by JS
-  3. `prefers-reduced-motion: reduce` disables specular parallax tracking while keeping static hover/press brightness changes
-  4. All interaction states work on `.liquid-regular`, `.liquid-clear`, `.liquid-fluted`, and `.liquid-nav` glass variants
-**Plans**: 1 plan
-Plans:
-- [x] 64-01-PLAN.md -- useSpecularHighlight hook + GlassInteraction wrapper + glass consumer wiring
-**UI hint**: yes
-
-### Phase 65: Database & Form Submission
-**Goal**: The contact form submits to PostgreSQL via a Next.js Server Action, replacing Directus entirely -- with the same validation and spam protection as the current site
-**Depends on**: Phase 62 (contact form UI must exist on both pages before wiring up submission)
-**Requirements**: DATA-01, DATA-02
-**Success Criteria** (what must be TRUE):
-  1. Drizzle ORM schema defines a `submissions` table with fields matching the current Directus collection (id UUID, name, phone, specialization, description, status, date_created) -- `npx drizzle-kit push` creates the table in PostgreSQL
-  2. Submitting the contact form on `/` or `/contacts` writes a row to the `submissions` table via Server Action -- verified by checking the database after submission
-  3. Zod validation rejects: empty name, invalid phone format (not +7...), missing specialization -- form shows inline error messages for each invalid field
-  4. Honeypot field (hidden input) and timing check (submission faster than 2 seconds) reject bot submissions silently -- bots get a 200 response but no database write
-  5. Form shows success state after valid submission and error state if the database write fails -- user sees clear feedback in both cases
-**Plans**: 1 plan
-Plans:
-- [x] 65-01-PLAN.md -- Drizzle schema + Server Action + ContactForm wiring
-
-### Phase 66: Admin Panel
-**Goal**: Non-technical staff can view and filter form submissions in a basic admin interface -- replacing the Directus admin panel for day-to-day operations
-**Depends on**: Phase 65 (submissions table and data must exist before building a viewer)
-**Requirements**: DATA-03
-**Success Criteria** (what must be TRUE):
-  1. `/admin` page renders a table of all submissions with columns: date, name, phone, specialization, status -- sorted by most recent first
-  2. Submissions can be filtered by status (new/contacted/completed) and by date range -- filters update the table without full page reload
-  3. The admin page is functional without authentication for v6.0 (auth deferred to v6.1) -- accessing `/admin` directly shows the submissions table
-**Plans**: 1 plan
-Plans:
-- [x] 66-01-PLAN.md -- Admin page with submissions table, status/date filters
-
-### Phase 67: Docker Deployment
-**Goal**: The complete Next.js application deploys via `docker compose up` with PostgreSQL, producing a production-ready self-hosted setup
-**Depends on**: Phase 66 (all application features must be complete before containerizing)
-**Requirements**: DOCK-01, DOCK-02
-**Success Criteria** (what must be TRUE):
-  1. `docker compose up` starts Next.js standalone server + PostgreSQL 16 -- the site is accessible at localhost:3000 with all pages, glass effects, animations, and form submission working
-  2. Multi-stage Dockerfile uses node:20-slim base, produces an image under 200MB, and explicitly copies public/ and .next/static/ directories into the standalone output
-  3. PostgreSQL data persists across `docker compose down && docker compose up` via a named volume -- existing submissions survive container restart
-  4. Health check endpoint responds with 200 -- Docker reports the Next.js container as healthy
-**Plans**: 1 plan
-Plans:
-- [x] 67-01-PLAN.md -- Dockerfile (multi-stage) + docker-compose.yml (Next.js + PostgreSQL) + health check endpoint
-
-### Phase 67.1: Visual Parity Rework -- Re-port ALL sections from production with 1:1 visual fidelity
-**Goal:** Achieve 1:1 visual parity between the Next.js migration and the production vanilla HTML/CSS site. Fix typography, buttons, backgrounds, cards, footer color, header behavior across all existing pages. Create 3 missing service pages (consultations, treatment-abroad, checkup). Simplify contacts page to match production lead-form pattern.
-**Requirements**: VP-01, VP-02, VP-03, VP-04, VP-05, VP-06, VP-07, VP-08, VP-09
-**Depends on:** Phase 67
-**Plans:** 6/6 plans complete
-
-Plans:
-- [x] 67.1-01-PLAN.md -- Production design tokens + layout chrome fixes (Header, Footer, StickyBar)
-- [x] 67.1-02-PLAN.md -- Index page visual parity (all 7 section components)
-- [x] 67.1-03-PLAN.md -- Shared service page components + Contacts page simplification
-- [x] 67.1-04-PLAN.md -- Consultations service page (port from production)
-- [x] 67.1-05-PLAN.md -- Treatment Abroad service page (port from production)
-- [x] 67.1-06-PLAN.md -- Checkup service page (port from production)
+  1. /consultations page renders with the new design's layout, typography, and color palette -- content describes the online consultation service with visual parity to the feat/new-design source
+  2. /treatment-abroad page renders with the new design's layout -- content describes the medical tourism service with country-specific information
+  3. /checkup page renders with the new design's layout -- content describes the health checkup service
+  4. All three service pages share consistent layout chrome (header, footer, sticky bar) and reuse shared components (ContactSection, FinalCTA) from the index page redesign
+**Plans**: TBD
 **UI hint**: yes
 
 ## Progress
 
-### v6.0 Next.js Stack Migration
+### v6.1 New Design Port
 
 **Execution Order:**
-Phases execute in numeric order: 59 -> 60 -> 61 -> 62 -> 63 -> 64 -> 65 -> 66 -> 67 -> 67.1.
+Phases execute in numeric order: 68 -> 69 -> 70 -> 71 -> 72.
 Strictly linear -- each phase builds on the previous.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 59. Next.js Scaffold & CSS Foundation | 2/2 | Complete    | 2026-04-10 |
-| 60. Component Library & Layout Shell | 2/2 | Complete    | 2026-04-11 |
-| 61. Index Page Migration | 2/2 | Complete    | 2026-04-11 |
-| 62. Contacts Page & SEO | 1/1 | Complete    | 2026-04-11 |
-| 63. Scroll & Entrance Animations | 1/1 | Complete    | 2026-04-11 |
-| 64. Interactive Glass Animations | 1/1 | Complete    | 2026-04-11 |
-| 65. Database & Form Submission | 1/1 | Complete    | 2026-04-11 |
-| 66. Admin Panel | 1/1 | Complete    | 2026-04-11 |
-| 67. Docker Deployment | 1/1 | Complete    | 2026-04-11 |
-| 67.1. Visual Parity Rework | 6/6 | Complete    | 2026-04-11 |
+| 68. Design Tokens & Layout Chrome | 0/TBD | Not started | - |
+| 69. Hero & Above-the-Fold Sections | 0/TBD | Not started | - |
+| 70. Index Content Sections | 0/TBD | Not started | - |
+| 71. Index Interactive Sections | 0/TBD | Not started | - |
+| 72. Service Pages | 0/TBD | Not started | - |
