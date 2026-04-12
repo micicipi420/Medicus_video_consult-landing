@@ -2,66 +2,62 @@ const REVIEWS = [
   {
     initial: '\u0420',
     name: 'Ренат',
-    text: <>Уже на{'\u00A0'}протяжении 10{'\u00A0'}лет я{'\u00A0'}приезжаю в{'\u00A0'}Рудольфинерхаус на{'\u00A0'}лечение, пользуясь услугами MedicusUnion. Это команда профессионалов, которые решают любой вопрос на{'\u00A0'}месте, для них нет ничего невозможного.</>,
+    subtitle: 'Казахстан \u00B7 Лечение в\u00A0Австрии, Rudolfinerhaus',
+    gradient: 'from-mu-blue to-mu-accent-blue',
+    text: '\u00AB\u0423\u0436\u0435 10\u00A0\u043B\u0435\u0442 \u043F\u0440\u0438\u0435\u0437\u0436\u0430\u044E \u0432\u00A0\u0420\u0443\u0434\u043E\u043B\u044C\u0444\u0438\u043D\u0435\u0440\u0445\u0430\u0443\u0441 \u043D\u0430\u00A0\u043B\u0435\u0447\u0435\u043D\u0438\u0435, \u043F\u043E\u043B\u044C\u0437\u0443\u044F\u0441\u044C \u0443\u0441\u043B\u0443\u0433\u0430\u043C\u0438 MedicusUnion. \u041A\u0430\u0436\u0434\u044B\u0439 \u0440\u0430\u0437\u00A0\u2014 \u0447\u0451\u0442\u043A\u0430\u044F \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044F, \u043D\u0438\u043A\u0430\u043A\u0438\u0445 \u043D\u0430\u043A\u043B\u0430\u0434\u043E\u043A.\u00BB',
   },
   {
     initial: '\u0416',
     name: 'Жанна',
-    text: <>Хочу выразить благодарность за{'\u00A0'}организацию моего лечения, всё было сделано настолько оперативно и{'\u00A0'}без проволочек, что заслуживает отдельного внимания! Вы{'\u00A0'}не{'\u00A0'}просто лечите людей, вы{'\u00A0'}спасаете жизни.</>,
+    subtitle: 'Россия \u00B7 Лечение за\u00A0рубежом',
+    gradient: 'from-mu-green-500 to-mu-green-600',
+    text: '\u00AB\u0412\u0441\u0451 \u0431\u044B\u043B\u043E \u0441\u0434\u0435\u043B\u0430\u043D\u043E \u043D\u0430\u0441\u0442\u043E\u043B\u044C\u043A\u043E \u043E\u043F\u0435\u0440\u0430\u0442\u0438\u0432\u043D\u043E \u0438\u00A0\u0431\u0435\u0437 \u043F\u0440\u043E\u0432\u043E\u043B\u043E\u0447\u0435\u043A, \u0447\u0442\u043E \u0437\u0430\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u0435\u0442 \u043E\u0442\u0434\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0432\u043D\u0438\u043C\u0430\u043D\u0438\u044F. \u0411\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u044E \u0437\u0430\u00A0\u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044E.\u00BB',
   },
   {
     initial: '\u0410',
     name: 'Андрей',
-    text: <>Уже несколько лет обращаемся к{'\u00A0'}компании MedicusUnion, потому что услуги медицинского обслуживания оказываются на{'\u00A0'}превосходном уровне в{'\u00A0'}минимальные сроки. Индивидуальный подход к{'\u00A0'}каждому пациенту.</>,
+    subtitle: 'Украина \u00B7 Регулярное обращение',
+    gradient: 'from-mu-accent-teal to-mu-green-600',
+    text: '\u00AB\u0423\u0436\u0435 \u043D\u0435\u0441\u043A\u043E\u043B\u044C\u043A\u043E \u043B\u0435\u0442 \u043E\u0431\u0440\u0430\u0449\u0430\u0435\u043C\u0441\u044F \u043A\u00A0\u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438 MedicusUnion. \u041C\u0435\u0434\u0438\u0446\u0438\u043D\u0441\u043A\u043E\u0435 \u043E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u043D\u0430\u00A0\u043F\u0440\u0435\u0432\u043E\u0441\u0445\u043E\u0434\u043D\u043E\u043C \u0443\u0440\u043E\u0432\u043D\u0435 \u0432\u00A0\u043C\u0438\u043D\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0435 \u0441\u0440\u043E\u043A\u0438.\u00BB',
   },
   {
     initial: '\u0410',
     name: 'Арина',
-    text: <>Я{'\u00A0'}познакомилась с{'\u00A0'}компанией MedicusUnion в{'\u00A0'}2008 году. Для команды MedicusUnion не{'\u00A0'}существует неразрешимой задачи, они всегда решат любой вопрос немедленно.</>,
-  },
-  {
-    initial: 'P',
-    name: 'Paul Fischer',
-    text: <>Возможность передать снимки МРТ в{'\u00A0'}режиме онлайн и{'\u00A0'}впоследствии получить чёткую и{'\u00A0'}понятную оценку врача-радиолога придало мне уверенности.</>,
-  },
-  {
-    initial: 'N',
-    name: 'Nargiza Tursunova',
-    text: <>Онлайн-консультация через платформу помогла мне быстрее получить медицинскую помощь. Врач оказался очень компетентным и{'\u00A0'}отзывчивым. Спасибо за{'\u00A0'}такую ценную поддержку!</>,
+    subtitle: 'Россия \u00B7 Обследование в\u00A0Вене',
+    gradient: 'from-mu-accent-orange to-mu-accent-red',
+    text: '\u00AB\u041F\u043E\u0437\u043D\u0430\u043A\u043E\u043C\u0438\u043B\u0430\u0441\u044C \u0441\u00A0\u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0435\u0439 MedicusUnion \u0432\u00A02008 \u0433\u043E\u0434\u0443. \u041D\u0430\u00A0\u043F\u0440\u043E\u0442\u044F\u0436\u0435\u043D\u0438\u0438 \u044D\u0442\u0438\u0445 \u043B\u0435\u0442 \u043F\u0440\u0438\u0435\u0437\u0436\u0430\u044E \u0432\u00A0\u0412\u0435\u043D\u0443 \u043D\u0430\u00A0\u043E\u0431\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435 \u0438\u00A0\u043E\u0431\u0440\u0430\u0449\u0430\u044E\u0441\u044C \u043A\u00A0\u043D\u0438\u043C.\u00BB',
   },
 ] as const;
 
 export function TreatmentReviews() {
   return (
-    <section className="py-12 lg:py-[6.25rem] bg-[#F5F7F9]" id="reviews">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <h2 className="font-heading text-[clamp(1.75rem,3.5vw,2.75rem)] font-bold text-[#18212C] leading-[1.2] tracking-[-0.02em] text-balance text-center mb-4">
-          Что говорят наши пациенты
-        </h2>
-        <p className="text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed text-center max-w-[720px] mx-auto mb-10">
-          Более 10{'\u00A0'}000 пациентов доверили нам своё здоровье. Их{'\u00A0'}истории{'\u00A0'}{'\u2014'} лучшее подтверждение качества нашего сервиса.
-        </p>
+    <section className="container mx-auto px-4 lg:px-6 mb-16" id="reviews">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">
+        <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
+          Пациенты, которые прошли этот путь
+        </span>
+      </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {REVIEWS.map((review) => (
-            <div key={review.name} className="card-prod p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <span
-                  className="w-10 h-10 rounded-full bg-[#F0F7FF] text-[#1A4D80] font-heading font-bold text-[1.125rem] flex items-center justify-center shrink-0"
-                  aria-hidden="true"
-                >
-                  {review.initial}
-                </span>
-                <span className="font-heading font-bold text-[#18212C] text-[1.125rem]">
-                  {review.name}
-                </span>
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {REVIEWS.map((review) => (
+          <div key={review.name} className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+            <div className="flex items-center gap-4 mb-5">
+              <span
+                className={`w-12 h-12 bg-gradient-to-br ${review.gradient} rounded-full flex items-center justify-center text-white font-bold text-lg`}
+                aria-hidden="true"
+              >
+                {review.initial}
+              </span>
+              <div>
+                <span className="block text-mu-text-900 font-bold">{review.name}</span>
+                <span className="text-mu-text-700 text-sm font-medium">{review.subtitle}</span>
               </div>
-              <p className="text-[1.125rem] text-[rgba(24,33,44,0.55)] leading-relaxed">
-                {review.text}
-              </p>
             </div>
-          ))}
-        </div>
+            <p className="text-mu-text-700 font-medium leading-relaxed">
+              {review.text}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );
