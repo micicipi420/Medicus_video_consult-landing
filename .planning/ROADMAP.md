@@ -195,8 +195,8 @@ Plans:
   4. FinalCTA "Не откладывайте решение о здоровье" renders with two CTA buttons matching the new design -- buttons scroll to form or trigger appropriate actions
 **Plans**: 2 plans
 Plans:
-- [ ] 71-01-PLAN.md -- ReviewsSection (4 glass review cards) + FAQSection (7-item accordion)
-- [ ] 71-02-PLAN.md -- ContactSection/ContactForm glass rewrite + FinalCTA glass card + page.tsx wiring
+- [x] 71-01-PLAN.md -- ReviewsSection (4 glass review cards) + FAQSection (7-item accordion)
+- [x] 71-02-PLAN.md -- ContactSection/ContactForm glass rewrite + FinalCTA glass card + page.tsx wiring
 **UI hint**: yes
 
 ### Phase 72: Service Pages
@@ -224,5 +224,5 @@ Strictly linear -- each phase builds on the previous.
 | 68. Design Tokens & Layout Chrome | 3/3 | Complete    | 2026-04-12 |
 | 69. Hero & Above-the-Fold Sections | 2/2 | Complete    | 2026-04-12 |
 | 70. Index Content Sections | 3/3 | Complete    | 2026-04-12 |
-| 71. Index Interactive Sections | 0/2 | Not started | - |
+| 71. Index Interactive Sections | 2/2 | Complete    | 2026-04-12 |
 | 72. Service Pages | 0/TBD | Not started | - |
