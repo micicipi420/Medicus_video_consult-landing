@@ -173,7 +173,10 @@ Plans:
   3. Every text element on a glass surface passes WCAG 2.2 AA contrast (4.5:1 for body text, 3:1 for large text) when tested against the worst-case background that can scroll behind it
   4. Pressing Tab through the page shows a visible `:focus-visible` ring on every interactive element -- ring has sufficient contrast against its background
   5. On a 375px mobile viewport, all buttons and tappable elements measure at least 44x44px in the touch target area
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 74-01-PLAN.md -- Glass surface accessibility (prefers-contrast:more, reduced-transparency, opacity floor)
+- [ ] 74-02-PLAN.md -- Focus-visible rings and touch target enforcement
 **UI hint**: yes
 
 ### Phase 75: Mobile Performance Budget
@@ -234,7 +237,7 @@ Recommended order: 73 -> 74 -> 75 -> 76 -> 77 -> 78
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 73. Token Foundation | 0/2 | Not started | - |
-| 74. Accessibility Hardening | 0/TBD | Not started | - |
+| 74. Accessibility Hardening | 0/2 | Not started | - |
 | 75. Mobile Performance Budget | 0/TBD | Not started | - |
 | 76. Interaction Polish | 0/TBD | Not started | - |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
