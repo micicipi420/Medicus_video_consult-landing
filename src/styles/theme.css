@@ -128,8 +128,8 @@
      Tuned for visibility on white / near-white section backgrounds.
      color-mix(in oklch) derivations from base palette (Phase 73 TOK-01). */
   --liquid-bg: light-dark(
-    color-mix(in oklch, var(--glass-base-light) 42%, transparent),
-    color-mix(in oklch, var(--glass-base-dark) 45%, transparent)
+    color-mix(in oklch, var(--glass-base-light) 55%, transparent),
+    color-mix(in oklch, var(--glass-base-dark) 55%, transparent)
   );
   --liquid-blur-sm: 16px;
   --liquid-blur-md: 24px;
@@ -469,7 +469,7 @@
   /* Header scroll state */
   .header--scrolled {
     --liquid-bg: light-dark(
-      color-mix(in oklch, var(--glass-base-light) 45%, transparent),
+      color-mix(in oklch, var(--glass-base-light) 58%, transparent),
       color-mix(in oklch, var(--glass-base-dark) 60%, transparent)
     );
     --liquid-blur-md: 60px;

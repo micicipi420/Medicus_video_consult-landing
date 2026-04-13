@@ -2668,3 +2668,24 @@ a:hover {
   .advantages__card:hover .advantages__icon svg { transform: none; }
 }
 
+/* -- Accessibility: High contrast mode (ACC-01) -- */
+
+@media (prefers-contrast: more) {
+  .card,
+  .pricing__card,
+  .lead-form__wrapper {
+    border: 2px solid var(--color-text-primary);
+    box-shadow: none;
+  }
+
+  .button,
+  .button--primary,
+  .button--outline {
+    border: 2px solid currentColor;
+  }
+
+  .advantages__icon {
+    border: 2px solid var(--color-text-primary);
+  }
+}
+
