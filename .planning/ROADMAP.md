@@ -155,10 +155,13 @@ See `.planning/milestones/` for full details per milestone.
 **Depends on**: Nothing (first v7.0 phase; builds on v6.1 shipped design system)
 **Requirements**: TOK-01, TOK-02
 **Success Criteria** (what must be TRUE):
-  1. All glass surface tokens in globals.css use `color-mix(in oklch, ...)` derivations instead of hardcoded rgba values -- DevTools computed styles show identical visual output
+  1. All glass surface tokens in theme.css use `color-mix(in oklch, ...)` derivations instead of hardcoded rgba values -- DevTools computed styles show identical visual output
   2. Dark mode tokens use `light-dark()` function where browser support exists, with a fallback for unsupported browsers -- both themes render correctly
   3. A before/after screenshot at 1440px and 375px shows zero visible difference between the old hardcoded tokens and the new color-mix tokens
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 73-01-PLAN.md -- Migrate all liquid-* rgba tokens to color-mix(in oklch) derivations
+- [ ] 73-02-PLAN.md -- Consolidate light/dark pairs with light-dark() function
 
 ### Phase 74: Accessibility Hardening
 **Goal**: Users with high-contrast or reduced-transparency preferences see an adapted interface, and all glass surfaces pass WCAG AA contrast in worst-case composite scenarios
@@ -230,7 +233,7 @@ Recommended order: 73 -> 74 -> 75 -> 76 -> 77 -> 78
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 73. Token Foundation | 0/TBD | Not started | - |
+| 73. Token Foundation | 0/2 | Not started | - |
 | 74. Accessibility Hardening | 0/TBD | Not started | - |
 | 75. Mobile Performance Budget | 0/TBD | Not started | - |
 | 76. Interaction Polish | 0/TBD | Not started | - |
