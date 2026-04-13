@@ -99,9 +99,21 @@
   /* full: use border-radius: 50% -- no mask needed (no token needed) */
 
   /* ================================================
-     v7.0 Glass Base Palette -- Phase 73 (TOK-01)
-     All glass tokens derive from these oklch bases.
-     Changing a base propagates through all glass surfaces.
+     v7.0 Glass Base Palette -- Phase 73 (TOK-01, TOK-02)
+     All glass tokens derive from these oklch bases via
+     color-mix(in oklch) and light-dark() functions.
+
+     Changing a base color propagates through all glass
+     surfaces in both light and dark modes.
+
+     Browser support:
+     - color-mix(): Chrome 111+, Safari 16.2+, Firefox 113+ (Baseline)
+     - light-dark(): Chrome 123+, Safari 17.5+, Firefox 120+ (Baseline Newly Available)
+
+     Fallback: browsers without light-dark() support will
+     see light-mode values (the first argument). The .dark
+     class still overrides shadow tokens that cannot use
+     light-dark() (compound shorthand values).
      ================================================ */
 
   /* Light-mode glass bases */
