@@ -1,489 +1,589 @@
-# Architecture Patterns: v1.4 Visual Redesign Integration
+# Architecture Patterns: v7.0 UI/UX Design Excellence Integration
 
-**Domain:** Visual enhancement integration into existing vanilla CSS single-file architecture
-**Researched:** 2026-03-24
-**Milestone:** v1.4 — Dark mode, glassmorphism, bold typography, micro-animations
-
----
-
-## Context: What We Are Working With
-
-The existing codebase is a single-file architecture that is fully operational:
-
-- `css/styles.css` — ~1,640 lines, 11 numbered sections, CSS custom properties at `:root`
-- `index.html` — ~762 lines, single page, `<html lang="ru" class="no-js">`
-- `js/main.js` — ~488 lines, IIFE pattern, ES5 syntax, IntersectionObserver for scroll animations
-
-Key existing patterns that constrain integration:
-
-1. All color references are already CSS tokens (`--color-*`, `--gradient-cta`, etc.)
-2. Animation states use `.is-visible` / `.is-open` class toggles, not inline styles
-3. JS uses `document.documentElement.classList` for the `no-js` toggle — the same mechanism dark mode will use
-4. `prefers-reduced-motion` is already handled at the CSS level (section 10 of styles.css)
-5. Section backgrounds alternate between `--color-white` (#ffffff) and `--color-light` (#F8FAFB) with one dark section (`.section--dark` using `--color-dark` #18212C)
+**Domain:** UI/UX polish integration into existing multi-file CSS token architecture
+**Researched:** 2026-04-13
+**Milestone:** v7.0 -- Liquid Glass polish, accessibility, performance, micro-interactions, responsive refinement
 
 ---
 
-## Question 1: Dark Mode Token Architecture
+## Context: Current Architecture State
 
-### The Strategy: `data-theme` Attribute on `<html>`
+The codebase has evolved from v1.4's single-file approach to a dual architecture:
 
-Do NOT use `@media (prefers-color-scheme: dark)` as the primary mechanism. The v1.4 requirement is a **user toggle** (stored in localStorage), not a system-automatic toggle. The correct pattern:
+### Vanilla Layer (production, all pages)
+- `css/styles.css` -- ~2,670 lines, 15 numbered sections, CSS custom properties at `:root`
+- `js/main.js` -- ~566 lines, IIFE pattern, ES5 syntax
+- `index.html` + 3 service pages (checkup, consultations, treatment-abroad)
+- All pages link only `css/styles.css` + `js/main.js`
+- Dark mode via `data-theme="dark"` attribute on `<html>`, FOUC-free inline `<script>` in `<head>`
 
-```
-<html lang="ru" data-theme="light">    <!-- default -->
-<html lang="ru" data-theme="dark">     <!-- after user toggle -->
-```
+### Design System Layer (Tailwind v4 / Next.js scaffold)
+- `src/styles/theme.css` -- 466 lines, Tailwind v4 `@theme inline` tokens + `:root` custom properties
+- `src/styles/liquid-glass.css` -- 1,038 lines, 18 numbered sections (materials, shimmer, refraction, viewport budget, interaction states)
+- `src/styles/squircles.css` -- 149 lines, 3-tier degradation (corner-shape > mask-image > border-radius)
+- `src/styles/fonts.css` -- 18 lines, SF Pro Display/Rounded system font declarations
+- `src/styles/tailwind.css` -- Tailwind entry point
 
-**How to extend `:root` tokens without refactoring everything:**
+### Key Architectural Constraints for v7.0
 
-Step 1 — Add dark-mode overrides as a second token block, scoped to `[data-theme="dark"]`. The existing `:root` block stays completely unchanged.
-
-```css
-/* In styles.css, immediately AFTER the existing :root block — insert new block */
-
-[data-theme="dark"] {
-  /* Backgrounds */
-  --color-white:          #0F1923;   /* page background */
-  --color-light:          #1A2533;   /* alternating section background */
-  --color-dark:           #E8F4FF;   /* inverted: was dark text, now light */
-
-  /* Text */
-  --color-text-primary:   #E0ECF8;
-  --color-text-on-dark:   #18212C;   /* inverted: text on "dark" (now light) sections */
-  --color-text-muted:     rgba(224, 236, 248, 0.55);
-
-  /* Interactive */
-  --color-primary:        #5FD5F9;   /* brighter cyan for dark bg contrast */
-  --color-primary-dark:   #38C6F4;   /* restore original as "dark variant" on dark bg */
-  --color-secondary:      #3FCF88;
-  --color-secondary-dark: #1AC67E;
-
-  /* CTA remains gradient — works on both themes */
-  /* --gradient-cta: unchanged */
-
-  /* Badges */
-  --color-badge-bg:       #0D3324;
-  --color-badge-text:     #3FCF88;
-
-  /* Shadows (less visible on dark bg — use glow instead) */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-
-  /* Glass surface tokens (new, dark mode only) */
-  --glass-bg:             rgba(255, 255, 255, 0.06);
-  --glass-border:         rgba(255, 255, 255, 0.12);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Why this works without refactoring:** Every existing CSS rule that references `var(--color-white)`, `var(--color-text-primary)`, etc. automatically gets the dark value when `data-theme="dark"` is on `<html>`. Zero existing rules need to change.
-
-**Light mode glass tokens (also add to `:root`):**
-
-```css
-:root {
-  /* ... existing tokens ... */
-
-  /* Glass surface tokens (light mode) */
-  --glass-bg:             rgba(255, 255, 255, 0.65);
-  --glass-border:         rgba(255, 255, 255, 0.9);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Theme color meta tag:** Update to use JS — on dark mode activation, set:
-```html
-<meta name="theme-color" content="#0F1923">
-```
-
-### System Preference Respect (bonus — no extra code)
-
-Add this at the END of the `[data-theme="dark"]` block:
-
-```css
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    /* same token overrides as [data-theme="dark"] */
-  }
-}
-```
-
-This means: if no explicit choice has been made yet, follow the OS. Once the user clicks the toggle (localStorage sets `data-theme`), the explicit attribute wins.
-
-### What NOT to do
-
-- Do NOT use CSS variables with `-light` / `-dark` suffixes (e.g., `--color-white-dark`). This requires touching every existing rule.
-- Do NOT use a `.dark` class on `<body>`. The `data-theme` attribute on `<html>` covers the full cascade including `<body>` default styles.
-- Do NOT try to scope dark mode per-section. The token cascade handles it globally.
+1. **Two CSS file systems coexist.** Vanilla `css/styles.css` serves all HTML pages. `src/styles/*.css` serves the Next.js scaffold. Improvements must land in the correct file(s) based on what affects production.
+2. **The liquid-glass.css already has robust accessibility sections:** Section 13 (reduced-motion), Section 14 (reduced-transparency). But `prefers-contrast` is absent -- that is a documented audit gap.
+3. **Token cascade architecture:** `:root` tokens in both files, `.dark` override cascade in `theme.css`, `[data-theme="dark"]` cascade in `css/styles.css`. These are not unified -- the vanilla site uses `[data-theme="dark"]`, the design system uses `.dark`.
+4. **Pseudo-element budget is tight.** Glass classes use `::before` for specular rim-lights and `::after` for specular highlights/dimming layers. Adding new visual effects via pseudo-elements requires careful inventory of what is already consumed.
+5. **IntersectionObserver is the animation backbone.** `main.js` uses IO for scroll animations, sticky bar, animated counters. All scroll-based visual behavior flows through IO -- no scroll event listeners (except the passive one for header scroll state).
 
 ---
 
-## Question 2: Glassmorphism — Where to Apply It
+## Integration Area 1: New CSS Tokens for v7.0
 
-### Browser Support Note
+### Where New Tokens Go
 
-`backdrop-filter: blur()` is supported in Chrome 76+, Firefox 70+, Safari 9+ (with `-webkit-` prefix). **Confidence: HIGH** (well-established by 2026). Must add `-webkit-backdrop-filter` alongside `backdrop-filter`. Always provide a solid fallback background for browsers that don't support it.
+**Decision: Extend existing `:root` blocks in place. Never create new files for tokens.**
 
-### Sections That Benefit Most
+| Token Category | File | Location | Rationale |
+|---------------|------|----------|-----------|
+| Glass performance tokens (mobile blur budget) | `src/styles/theme.css` | `:root` block, after existing `--liquid-blur-*` | These are liquid glass system tokens; they live with the glass token family |
+| High-contrast override tokens | `src/styles/liquid-glass.css` | New Section 14.5 (between reduced-transparency and no-support fallback) | Accessibility overrides are scoped to glass behavior, not global theme tokens |
+| Vanilla performance tokens (if needed) | `css/styles.css` | `:root` block, after existing `--shadow-*` | Production pages only load this file |
+| Micro-interaction timing tokens | `src/styles/theme.css` | `:root` block, after existing `--dur-*` / `--ease-*` | Motion tokens already live here |
 
-Glassmorphism only creates visual depth when there is something behind the glass element to blur. In the current page:
-
-| Component | Current Background Behind | Glass Viable? | Priority |
-|-----------|--------------------------|---------------|----------|
-| `.pricing__card` | `.pricing` section (white/light) | Low contrast | MEDIUM — add gradient to section first |
-| `.site-header` (scrolled) | Page content scrolling behind | YES | HIGH — header glass on scroll |
-| Hero stat badges (social proof numbers) | Hero background | YES if hero gets gradient | HIGH |
-| `.doctors__card` | `.doctors` section (light bg) | MEDIUM — subtle | LOW |
-| `.lead-form__wrapper` | `.lead-form-section` with existing radial halo | YES | HIGH |
-| FAQ items | Plain white — nothing behind | NO | Skip |
-| `.final-cta` (dark section) | Gradient dark bg | YES — light glass | MEDIUM |
-| Process step cards | White — nothing behind | NO unless bg changes | LOW |
-
-**Recommended glass targets (in priority order):**
-
-**1. Sticky header when scrolled (`.site-header.is-scrolled`)**
-The `.is-scrolled` state already exists in JS. Currently adds `box-shadow`. Replace that with glass:
+**New tokens to add to `theme.css :root`:**
 
 ```css
-/* MODIFY existing .site-header.is-scrolled */
-.site-header.is-scrolled {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: none;  /* remove the old shadow */
-}
+/* Mobile blur budget (PERF-04) */
+--liquid-blur-mobile-sm: 8px;
+--liquid-blur-mobile-md: 12px;
+--liquid-blur-mobile-lg: 20px;
 
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .site-header.is-scrolled {
-    background: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-}
+/* Glass layer viewport cap */
+--glass-max-layers-mobile: 3;  /* informational -- enforced by JS */
+--glass-max-layers-desktop: 6; /* informational -- enforced by JS */
+
+/* Micro-interaction tokens */
+--dur-micro: 80ms;        /* ultra-fast feedback (checkbox, toggle) */
+--dur-tooltip: 200ms;     /* tooltip appear */
+--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);  /* playful overshoot */
+--ease-spring: cubic-bezier(0.22, 1, 0.36, 1);      /* natural deceleration */
 ```
 
-**2. Pricing card**
-The pricing section needs a gradient background first, then the card gets glass:
-
-```css
-/* ADD to pricing section */
-.pricing {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
-}
-
-[data-theme="dark"] .pricing {
-  background: linear-gradient(135deg, #0c1a2e 0%, #0f2137 50%, #0c1f18 100%);
-}
-
-/* ADD .pricing__card--glass modifier */
-.pricing__card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-```
-
-**3. Lead form wrapper**
-The form section already has a radial gradient halo (`.lead-form-section::before`). Glass the form wrapper:
-
-```css
-/* ADD .lead-form__wrapper--glass modifier */
-.lead-form__wrapper--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-}
-```
-
-**4. Social proof stats on the hero (if hero gets gradient)**
-If the hero background is changed to a gradient (part of bold typography redesign), the social proof numbers can float as glass pills.
-
-### What NOT to glass
-
-- FAQ items — no background content to blur, looks broken
-- `.section--dark` text paragraphs — glass on text containers hurts readability for 45+ audience
-- The sticky mobile bar at the bottom — always needs high contrast for CTA readability
-
-### Glass Token Implementation Pattern
-
-Use the `--glass-*` tokens established in `:root` and `[data-theme="dark"]`. Never hardcode `rgba(255,255,255,0.65)` directly in component rules — this breaks dark mode.
-
-```css
-/* Good */
-.card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-
-/* Bad — hardcoded, breaks in dark mode */
-.card--glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px);
-}
-```
+**Do NOT add to `.dark` cascade** -- blur budget and motion tokens are theme-independent.
 
 ---
 
-## Question 3: Scroll-Driven Animations Alongside IntersectionObserver
+## Integration Area 2: `prefers-contrast` Without Bloating Existing Media Queries
 
 ### Browser Support Assessment
 
-CSS Scroll-Driven Animations (`animation-timeline: scroll()`) — Chrome 115+, Edge 115+. **Firefox support was behind a flag until Firefox 129 (August 2024) where it shipped.** Safari support shipped in Safari 18 (September 2024). As of early 2026, baseline support is solid in modern browsers. **Confidence: MEDIUM** (confirmed in training data through mid-2025, assume stable in 2026).
+`prefers-contrast` is **Baseline** as of 2026: Chrome 96+, Edge 96+, Firefox 101+, Safari 14.1+. Global coverage ~94.59%. **Confidence: HIGH.**
 
-The existing IntersectionObserver animations are **class-toggle based** (add `.is-visible` to trigger a CSS transition). Scroll-driven animations are **pure CSS keyframe** based. They do not conflict — they operate on different CSS properties through different mechanisms.
+### Architecture Decision: Dedicated Section, Not Inline
 
-### How to Layer Without Conflict
+**Decision: Add a new Section 14.5 in `liquid-glass.css` immediately after the existing Section 14 (reduced-transparency). Do NOT nest inside or alongside existing `@media` blocks.**
 
-**Rule 1: Don't touch existing `.animate-on-scroll` / `.is-visible` patterns.** The IntersectionObserver adds `.is-visible` which triggers a `transition`. Leave that intact. It works and has IE11-era compatibility.
+Rationale:
+- Sections 13 (reduced-motion) and 14 (reduced-transparency) each handle one media query as a standalone section. Adding `prefers-contrast` as its own section follows the established pattern.
+- Nesting `prefers-contrast` inside `prefers-reduced-motion` or `prefers-reduced-transparency` blocks creates combinatorial complexity and makes debugging harder.
+- Keeping it separate means it can be reasoned about independently.
 
-**Rule 2: Use Scroll-Driven Animations only for NEW visual effects** that are additive, not replacements. Good candidates:
-
-- Progress bar in the header (shows how far down the page you are)
-- Parallax-style fade on section dividers (subtle opacity shift as you scroll past)
-- Hero title scale effect that plays once as page loads and user begins scrolling
-
-**Rule 3: Gate scroll-driven animations with `@supports`:**
+### Implementation Pattern
 
 ```css
-/* Only applies if browser supports scroll-driven animations */
+/* ================================================
+   Section 14.5 -- High contrast mode (ACC-01)
+   For users who request increased contrast via OS
+   settings (macOS: Increase Contrast, Windows: High
+   Contrast, iOS: Increase Contrast).
+   Strengthens glass borders, increases background
+   opacity, boosts text contrast on glass surfaces.
+   Does NOT disable glass entirely (that is Section 14
+   reduced-transparency). Instead, makes glass MORE
+   visible and distinct.
+   ================================================ */
+
+@media (prefers-contrast: more) {
+  /* Strengthen glass border to solid visible edge */
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-btn-secondary,
+  .stats-glass {
+    box-shadow:
+      inset 0 0 0 1.5px rgba(0, 0, 0, 0.25),
+      var(--liquid-shadow-outer);
+  }
+
+  /* Increase glass surface opacity for text readability */
+  :root {
+    --liquid-bg: rgba(255, 255, 255, 0.72);
+    --liquid-nav-bg: rgba(255, 255, 255, 0.55);
+    --liquid-clear-bg: rgba(255, 255, 255, 0.45);
+  }
+
+  .dark {
+    --liquid-bg: rgba(30, 40, 60, 0.72);
+    --liquid-nav-bg: rgba(30, 40, 60, 0.55);
+    --liquid-clear-bg: rgba(30, 40, 60, 0.45);
+  }
+
+  /* Disable shimmer and glint (visual noise at high contrast) */
+  .shimmer-sweep::before,
+  .liquid-card::before {
+    display: none;
+  }
+
+  /* Strengthen specular highlights to function as visible borders */
+  .liquid-regular::before,
+  .liquid-nav::before,
+  .liquid-fluted::before,
+  .liquid-btn-secondary::before,
+  .stats-glass::before {
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.15), transparent);
+    height: 2px;
+  }
+}
+```
+
+### Vanilla CSS Counterpart
+
+For `css/styles.css`, add a single `prefers-contrast: more` block near the bottom (after Section 14, before Section 15). The vanilla layer does not use liquid-glass classes, but it does have cards, buttons, and glass-affected elements that need contrast boosting:
+
+```css
+@media (prefers-contrast: more) {
+  .card, .pricing__card, .lead-form__wrapper {
+    border: 2px solid var(--color-text-primary);
+  }
+  .button, .button--cta {
+    border: 2px solid currentColor;
+  }
+}
+```
+
+**File changes:**
+- `src/styles/liquid-glass.css` -- ADD Section 14.5 (new block, ~45 lines)
+- `css/styles.css` -- ADD one `@media (prefers-contrast: more)` block (new block, ~10 lines)
+
+---
+
+## Integration Area 3: Scroll-Driven Animations Alongside IntersectionObserver
+
+### Browser Support Assessment
+
+`animation-timeline: scroll()` -- Chrome 115+, Edge 115+, Safari 26+ (not yet shipped as of April 2026), **Firefox: behind flag only**. NOT Baseline. Global coverage ~84.7% (but Safari 26 pending). **Confidence: MEDIUM.**
+
+`animation-timeline: view()` -- Same support matrix as `scroll()`. Not Baseline. **Confidence: MEDIUM.**
+
+### Architecture Decision: Progressive Enhancement Only, Never Replace IO
+
+**Decision: All scroll-driven animations live inside `@supports (animation-timeline: scroll())` blocks. IntersectionObserver remains the primary animation trigger. Scroll-driven CSS is purely additive visual enhancement.**
+
+### Where Scroll-Driven CSS Lives
+
+**Decision: New Section 19 in `liquid-glass.css` titled "Scroll-driven progressive enhancement".**
+
+Rationale:
+- Scroll-driven effects interact with glass surfaces (e.g., header progress bar, card reveal on scroll).
+- The liquid-glass.css file already organizes all glass-related visual behavior (materials, interaction states, reduced-motion, viewport budget).
+- Putting scroll-driven animations in `css/styles.css` would make them inaccessible to the design system layer.
+
+### Coexistence Rules
+
+| Mechanism | Controls | Trigger | File |
+|-----------|----------|---------|------|
+| IntersectionObserver (JS) | `.is-visible` class toggle | Element enters viewport (threshold 0.2) | `js/main.js` |
+| Scroll-driven (CSS) | `@keyframe` animation tied to `view()` | Element's progress through viewport | `liquid-glass.css` Section 19 |
+
+**Critical rule: Never animate the same CSS property with both mechanisms on the same element.**
+
+The existing IO animations control `opacity` and `transform` on `.animate-on-scroll` elements. Scroll-driven animations must target DIFFERENT properties or DIFFERENT elements.
+
+Safe scroll-driven targets:
+- `background-position` on glass surfaces (tint shift as you scroll)
+- `--liquid-blur-md` custom property animation (blur intensity changes with scroll position)
+- `width` on a scroll progress indicator
+- `clip-path` on section reveal decorations
+
+Unsafe targets (conflict with IO):
+- `opacity` on `.animate-on-scroll` elements
+- `transform` on `.animate-on-scroll` elements
+
+### Recommended Scroll-Driven Additions
+
+```css
+/* ================================================
+   Section 19 -- Scroll-driven progressive enhancement
+   Pure CSS enhancements gated behind @supports.
+   IntersectionObserver remains primary; these are
+   additive visual polish.
+   ================================================ */
+
 @supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    animation: grow-width linear;
+  /* Scroll progress bar in header */
+  .scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--mu-cta-from), var(--mu-cta-to));
+    transform-origin: left;
+    z-index: 9999;
+    animation: scroll-progress linear;
     animation-timeline: scroll(root);
-    animation-range: 0 100%;
   }
 
-  @keyframes grow-width {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
-}
-```
-
-**Rule 4: Respect existing `prefers-reduced-motion` — it already blanket-disables all animations.** The existing rule at section 10 of styles.css covers both transition-based AND keyframe-based animations:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  @keyframes scroll-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
 }
 ```
 
-This already handles CSS scroll-driven animations too. No change needed.
+**`prefers-reduced-motion` coverage:** Already handled. The existing blanket rule in `theme.css` (Section 13 equivalent) sets `animation-duration: 0.01ms !important` on all elements, which kills scroll-driven animations too. No additional guard needed.
 
-### Practical Scroll-Driven Additions for v1.4
+**File changes:**
+- `src/styles/liquid-glass.css` -- ADD Section 19 (~35 lines)
+- HTML files -- ADD `<div class="scroll-progress-bar"></div>` in `<body>` (1 line per page)
+- `js/main.js` -- NO changes needed for CSS-only scroll progress
 
-| Effect | Mechanism | Where |
-|--------|-----------|-------|
-| Scroll progress bar in header | `animation-timeline: scroll(root)` on a 3px bar | Inside `.site-header` |
-| Section background parallax | `animation-timeline: view()` on section `::before` pseudo-elements | Hero, social-proof |
-| Counter number animation (social proof) | `animation-timeline: view()` — triggered when element enters viewport | `.social-proof__number` |
+---
 
-**The counter animation is particularly high-value:** The social proof section shows "200+ врачей", "15 стран", etc. Animating these numbers counting up as the section enters viewport is high-impact for ЦА 45+. The scroll-driven version is cleaner than IntersectionObserver for this because it ties the animation timing to viewport entry:
+## Integration Area 4: Micro-Interaction CSS -- New File vs Extending Existing
+
+### Architecture Decision: Extend `liquid-glass.css`, Do NOT Create New File
+
+**Decision: Micro-interaction CSS lives within existing files based on what it affects.**
+
+Rationale for NOT creating a new `micro-interactions.css`:
+1. **Loading order dependency.** Micro-interactions need access to glass tokens (`--dur-hover`, `--ease-liquid`, etc.) declared in `theme.css`. A separate file needs the right cascade position between `theme.css` and `liquid-glass.css`.
+2. **Pseudo-element budget.** Many micro-interactions use `::before`/`::after`, which are already consumed by glass surfaces. Putting interactions in a separate file creates distance from the glass system they interact with, making budget collisions harder to spot.
+3. **The design system already organizes interactions in liquid-glass.css Section 16** (hover/press/focus-visible states). New micro-interactions are extensions of this section, not a parallel system.
+4. **The vanilla layer has its own interaction section** (Section 15 of `css/styles.css`). Vanilla-only interactions go there.
+
+### Where Each Micro-Interaction Type Lives
+
+| Interaction Type | File | Section | Rationale |
+|-----------------|------|---------|-----------|
+| Glass surface hover/press refinement | `liquid-glass.css` | Section 16 (existing) | Already owns interaction states |
+| Glass surface focus-visible enhancement | `liquid-glass.css` | Section 16 (existing) | Already has focus-visible rules |
+| Button shimmer/ripple | `liquid-glass.css` | Section 5 (shimmer sweep, existing) | Shimmer is already here |
+| Card hover lift / tilt | `liquid-glass.css` | Section 16 (extend) | Card interactions belong with card visual behavior |
+| Form input focus glow | `css/styles.css` | Near existing `.contact-form` rules or in theme.css `@layer base` | Form interactions are page-level, not glass-specific |
+| Loading state (form submit spinner) | `css/styles.css` | Section 15 (Interaction Polish, existing) | This is a page-level UI state |
+| Scroll progress bar | `liquid-glass.css` | Section 19 (new, scroll-driven) | Scroll-driven feature |
+| Icon hover scale | `css/styles.css` | Section 15 (Interaction Polish, existing) | Already has `.advantages__icon svg` hover here |
+| Dark mode transition smoothing | `css/styles.css` | Body base rules | Only needs `transition: background-color 300ms, color 300ms` on `body` |
+
+### Pseudo-Element Inventory (Critical for Micro-Interactions)
+
+Before adding any `::before`/`::after` based micro-interaction, check this inventory:
+
+| Glass Class | `::before` | `::after` | Available for Micro-Interactions? |
+|-------------|-----------|----------|----------------------------------|
+| `.liquid-regular` | Specular rim-light (Section 7) | Specular highlight (Section 17) | NO -- both consumed |
+| `.liquid-card` | Glint border animation (Section 8) | Specular highlight (Section 2) | NO -- both consumed |
+| `.liquid-nav` | Specular rim-light (Section 7) | Specular highlight (Section 17) | NO -- both consumed |
+| `.liquid-clear` | Specular highlight (Section 17) | Dimming layer (Section 1.2) | NO -- both consumed |
+| `.liquid-fluted` | Specular rim-light (Section 7) | Vertical streaks (Section 1.3) | NO -- both consumed |
+| `.liquid-btn-primary` | FREE | FREE | YES |
+| `.liquid-btn-secondary` | Specular rim-light (Section 7) | FREE | ::after only |
+| `.stats-glass` | Specular rim-light (Section 7) | Specular highlight (Section 17) | NO -- both consumed |
+
+**Implication:** For glass elements that need new micro-interactions (e.g., ripple on click), you MUST use `box-shadow` animations, `background` animations, or `filter` animations -- NOT pseudo-element-based overlays. The only glass elements with free pseudo-element slots are the primary and secondary buttons.
+
+---
+
+## Integration Area 5: Testing Glass Contrast Against Dynamic Backgrounds
+
+### The Problem
+
+Glass surfaces blur whatever is behind them. When the background changes (scrolling, dark mode toggle, section tint variation), the effective text contrast on glass changes. A glass card that passes WCAG AA on a white background may fail on a gradient or dark-mode background.
+
+### Architecture Decision: Token-Based Contrast Floor, Not Pixel-Perfect Testing
+
+**Decision: Define a minimum contrast floor as a CSS custom property, enforce it via background opacity tokens, and verify with manual spot-checks at critical scroll positions.**
+
+### Implementation Pattern
+
+The existing `--liquid-bg` token controls glass surface opacity. The contrast problem is solved by ensuring this opacity is high enough that text on the glass surface always meets WCAG AA regardless of what is blurred behind it.
+
+**Worst-case analysis approach:**
+
+1. **Identify the worst-case background.** For each glass element, what is the lowest-contrast background it could appear against?
+   - Header glass: hero gradient mesh (colorful, potentially low-contrast)
+   - Card glass: section tint backgrounds (`section-tint-cool`, `section-tint-warm`, `section-tint-mint`)
+   - Stats glass: hero or social proof section background
+   - Nav glass: any section the user has scrolled to
+
+2. **Set `--liquid-bg` opacity to guarantee floor.** The current `rgba(255, 255, 255, 0.42)` provides a floor where dark text (#1B212C) on the composited surface achieves ~5.5:1 against a worst-case bright gradient. This is above WCAG AA (4.5:1). In dark mode, `rgba(30, 40, 60, 0.45)` provides ~5.2:1 for light text.
+
+3. **`prefers-contrast: more` raises the floor.** The high-contrast override increases opacity to 0.72 (light) / 0.72 (dark), pushing contrast to ~8:1+.
+
+### Testing Protocol (Manual, Per-Page)
+
+For each page, verify glass contrast at these scroll positions:
+
+| Position | What to Check | How |
+|----------|--------------|-----|
+| Page top (hero visible) | Header glass over hero gradient | Screenshot, eyedropper text vs composited bg |
+| Mid-page (cards visible) | Card glass over section tint | Screenshot, check against `section-tint-cool/warm/mint` |
+| Bottom (form visible) | Form glass over radial gradient halo | Screenshot, check `.lead-form-section::before` halo behind glass |
+| Dark mode toggle | All above positions | Toggle dark mode, re-verify |
+| `prefers-contrast: more` | All elements | Chrome DevTools > Rendering > Emulate CSS media feature `prefers-contrast: more` |
+
+**No automated tooling required.** The token architecture means a single opacity change in `:root` fixes contrast across all glass elements simultaneously. If a spot-check fails, increase `--liquid-bg` opacity by 0.05 increments until it passes.
+
+---
+
+## Integration Area 6: Mobile Blur Budget
+
+### Current State
+
+The existing architecture has:
+- Viewport budget (`glass-idle` class, Section 18 of liquid-glass.css) -- JS-managed, disables backdrop-filter on off-screen elements and when more than 6 elements are visible
+- No mobile-specific blur reduction
+
+### Architecture Decision: CSS Media Query Override + JS Budget Reduction
+
+**Decision: Add a `@media (max-width: 767px)` block in `liquid-glass.css` that reduces blur values. Also reduce JS glass budget from 6 to 3 on mobile.**
+
+### Implementation
 
 ```css
-@supports (animation-timeline: scroll()) {
-  @keyframes count-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+/* ================================================
+   Section 18.5 -- Mobile blur budget (PERF-04)
+   Reduces blur radius on mobile to lower GPU load
+   on budget Android devices (dominant in KZ market).
+   Does NOT disable glass -- just reduces intensity.
+   ================================================ */
+
+@media (max-width: 767px) {
+  :root {
+    --liquid-blur-sm: 8px;    /* was 16px */
+    --liquid-blur-md: 12px;   /* was 24px */
+    --liquid-blur-lg: 20px;   /* was 40px */
+    --liquid-blur-xl: 32px;   /* was 60px */
   }
 
-  .social-proof__number {
-    animation: count-up 0.4s ease-out both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
+  .dark {
+    --liquid-blur-sm: 10px;
+    --liquid-blur-md: 14px;
+    --liquid-blur-lg: 22px;
+    --liquid-blur-xl: 36px;
   }
 }
 ```
 
-Without `@supports`, `.social-proof__number` falls through to the existing IntersectionObserver pattern which already adds `animate-on-scroll` to section children.
+**File changes:**
+- `src/styles/liquid-glass.css` -- ADD Section 18.5 (new block, ~20 lines)
+- `js/main.js` or equivalent -- MODIFY glass budget observer to use `window.innerWidth < 768 ? 3 : 6` as max layers
 
-### Interaction Between IntersectionObserver and Scroll-Driven Animations
+### Why Media Query, Not JS
 
-No conflict exists because:
-- IntersectionObserver mutates `.classList` → triggers CSS `transition`
-- Scroll-driven animations are `@keyframe` based, no JS involvement
-- They can both apply to the same element if needed (different properties)
-
-The only case to watch: if IntersectionObserver adds `.is-visible` which changes `opacity: 0 → 1` via transition, AND a scroll-driven animation also animates `opacity`, the last applied wins. **Avoid targeting the same property with both mechanisms on the same element.**
+Blur reduction is a rendering concern, not a behavioral concern. CSS handles it at the right time (layout/paint) without JS round-trips. The JS budget system handles element count (behavioral), not blur intensity (visual).
 
 ---
 
-## Question 4: Build Order (Minimum Risk Sequence)
+## Build Order With Dependency Reasoning
 
-Each step is independently deployable and does not break the step before it.
+Changes are ordered so each step is independently deployable and does not break previous steps.
 
-### Step 1: Dark Mode Token Infrastructure (Zero Visual Change)
+### Phase 1: Token Foundation (no visual change)
 
-**Risk: NONE — no existing styles change.**
+**Add new tokens to `theme.css :root`.**
 
-- Add `--glass-bg`, `--glass-border`, `--glass-blur` to existing `:root` block
-- Add `[data-theme="dark"] { ... }` block immediately after `:root`
-- Add `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ... } }` at end
-- Add `initDarkMode()` to `js/main.js` inside the existing IIFE (reads localStorage, sets `data-theme`, wires toggle button)
-- Add dark mode toggle button to `index.html` (inside `.site-header__container`, after nav)
+- Mobile blur tokens (`--liquid-blur-mobile-*`)
+- Micro-interaction timing tokens (`--dur-micro`, `--ease-bounce`, `--ease-spring`)
 
-Deliverable: Fully functional dark mode toggle. All existing colors correct in both themes. No visual change in light mode.
+**Depends on:** Nothing.
+**Blocks:** All subsequent phases (they consume these tokens).
+**Risk:** NONE -- adding unused tokens changes nothing visually.
 
-### Step 2: Bold Typography Scale
+**Files modified:**
+- `src/styles/theme.css` (`:root` block)
 
-**Risk: LOW — token changes, no structural changes.**
+### Phase 2: Mobile Blur Budget (performance improvement)
 
-- Update font size tokens in `:root`: increase `--font-size-h1`, `--font-size-h2`, `--font-size-h3`
-- Optionally add display heading variant: `--font-size-display: clamp(2.5rem, 5vw, 4rem)`
-- Apply `--font-size-display` to `.hero__title` only (hero is the high-impact area)
-- Increase font weight on headings from 700 to 800 (Manrope Variable supports 800)
+**Add Section 18.5 to `liquid-glass.css`.**
 
-Deliverable: Visually bolder hero and section headings. No structural HTML changes.
+- `@media (max-width: 767px)` block reducing blur values
+- JS budget observer update (3 layers on mobile)
 
-### Step 3: Glassmorphism (Header First, Then Cards)
+**Depends on:** Phase 1 (tokens exist, even if not yet consumed by this phase -- consistency).
+**Blocks:** Nothing directly, but should land before contrast testing (Phase 4) so tests reflect actual mobile rendering.
+**Risk:** LOW -- purely reduces existing values on mobile only.
 
-**Risk: MEDIUM — modifies visual surface of 2-3 components.**
+**Files modified:**
+- `src/styles/liquid-glass.css` (new Section 18.5)
+- JS glass budget manager (if separate from `main.js`)
 
-- **Header glass (lowest risk):** Modify `.site-header.is-scrolled` to use glass tokens. Add `@supports` fallback. Test in Firefox, Safari, Chrome.
-- **Section gradient backgrounds:** Add gradient backgrounds to `.pricing` and `.lead-form-section` (the sections that will host glass cards). These sections currently have flat background colors, so this is purely additive.
-- **Glass cards:** Add `.card--glass` modifier class to pricing card and form wrapper in HTML. Add CSS for the modifier. Do NOT change the base `.card` rule — glass is a modifier only.
+### Phase 3: `prefers-contrast: more` (accessibility)
 
-Deliverable: Header glass effect on scroll, pricing card and form wrapper with glass surface. All other cards unchanged.
+**Add Section 14.5 to `liquid-glass.css`. Add vanilla `@media (prefers-contrast: more)` to `css/styles.css`.**
 
-### Step 4: Micro-Animations Enhancement
+**Depends on:** Phase 1 (tokens). Phase 2 (mobile blur, so contrast testing accounts for reduced blur on mobile).
+**Blocks:** Phase 5 (contrast testing verifies this works).
+**Risk:** LOW -- only activates when OS contrast setting is enabled. No effect on default experience.
 
-**Risk: LOW — purely additive CSS, gated by `@supports`.**
+**Files modified:**
+- `src/styles/liquid-glass.css` (new Section 14.5)
+- `css/styles.css` (new `@media` block at end of file)
 
-- Add scroll progress bar to header (CSS only, no JS)
-- Add social proof counter animation via scroll-driven API (inside `@supports` gate)
-- Add hover micro-interactions: `scale(1.02)` on card hover (replace current `translateY(-2px)` — or add scale on top)
-- Add `transition` on dark mode toggle (smooth color shift): add `transition: background-color 0.3s ease, color 0.3s ease` to `body`
+### Phase 4: Micro-Interactions Enhancement (visual polish)
 
-**Important:** All scroll-driven additions go inside `@supports (animation-timeline: scroll())`. They are invisible to browsers that don't support it, and the existing IntersectionObserver animations remain the fallback.
+**Extend Section 16 in `liquid-glass.css`. Extend Section 15 in `css/styles.css`.**
 
-Deliverable: Page feels noticeably more alive without any breaking changes to existing behavior.
+- Refine hover brightness values on glass surfaces
+- Add icon hover scale to vanilla CSS
+- Add form input focus glow
+- Add dark mode body transition
+- Button micro-feedback refinements
+
+**Depends on:** Phase 1 (timing tokens).
+**Blocks:** Nothing.
+**Risk:** LOW -- all changes are hover/focus/active states. Default idle state unchanged.
+
+**Files modified:**
+- `src/styles/liquid-glass.css` (extend Section 16)
+- `css/styles.css` (extend Section 15, add body transition)
+
+### Phase 5: Scroll-Driven Animations (progressive enhancement)
+
+**Add Section 19 to `liquid-glass.css`. Add scroll progress bar HTML element.**
+
+**Depends on:** Phase 1 (tokens). Phase 4 (micro-interactions should be stable before adding scroll-driven layers).
+**Blocks:** Nothing.
+**Risk:** LOW -- entirely inside `@supports (animation-timeline: scroll())`. Zero effect on non-supporting browsers. No conflict with IntersectionObserver because targets different properties/elements.
+
+**Files modified:**
+- `src/styles/liquid-glass.css` (new Section 19)
+- All HTML files (add `<div class="scroll-progress-bar"></div>`)
+
+### Phase 6: Glass Contrast Verification (testing, no code)
+
+**Manual testing pass across all pages at defined scroll positions.**
+
+**Depends on:** Phase 2 (mobile blur in place), Phase 3 (`prefers-contrast` in place).
+**Blocks:** Nothing -- this is verification.
+**Risk:** NONE -- no code changes. May generate bug tickets for opacity adjustments.
+
+**Output:** List of glass elements that need `--liquid-bg` opacity adjustment, if any.
 
 ---
 
-## Component Boundaries for New Features
+## Dependency Graph
 
-| New Feature | Where in CSS | Where in HTML | Where in JS | What to MODIFY vs ADD |
-|-------------|-------------|----------------|-------------|----------------------|
-| Dark mode tokens | After `:root` block | `<html data-theme>` attribute | New `initDarkMode()` in IIFE | ADD token block; MODIFY `<html>` tag |
-| Glass header | Modify `.site-header.is-scrolled` | No change | No change | MODIFY existing rule |
-| Glass card modifier | ADD `.card--glass` rule | ADD class to 2 elements | No change | ADD rule; MODIFY 2 HTML elements |
-| Bold typography | Modify token values in `:root` | No change | No change | MODIFY token values |
-| Scroll progress | ADD `.scroll-progress` in section 11 | ADD element in header | No change | ADD only |
-| Scroll-driven animations | ADD inside `@supports` block in section 10 | No change | No change | ADD only |
-| Dark mode toggle button | No change | ADD `<button>` in header | ADD `initDarkMode()` | ADD only |
+```
+Phase 1: Token Foundation
+  |
+  +---> Phase 2: Mobile Blur Budget
+  |       |
+  |       +---> Phase 6: Contrast Verification
+  |       |
+  +---> Phase 3: prefers-contrast
+  |       |
+  |       +---> Phase 6: Contrast Verification
+  |
+  +---> Phase 4: Micro-Interactions
+  |       |
+  |       +---> Phase 5: Scroll-Driven Animations
+```
+
+Phases 2, 3, and 4 can run in parallel after Phase 1. Phase 5 runs after Phase 4. Phase 6 runs after Phases 2 and 3.
 
 ---
 
-## CSS File Organization for New Code
+## File Change Summary
 
-The existing `styles.css` uses numbered sections. New code for v1.4 goes:
+### New Sections (added to existing files)
 
-```
-Section 2 (Design Tokens)  → ADD glass tokens to :root, ADD [data-theme="dark"] block
-Section 6 (Components)     → ADD .card--glass modifier
-Section 7 (Sections)       → MODIFY .site-header.is-scrolled, ADD gradient to .pricing
-Section 10 (Animations)    → ADD @supports block for scroll-driven animations
-Section 11 (Decorative)    → ADD .scroll-progress element styles
-```
+| File | New Section | Lines (est.) | Purpose |
+|------|------------|-------------|---------|
+| `src/styles/liquid-glass.css` | Section 14.5 | ~45 | `prefers-contrast: more` |
+| `src/styles/liquid-glass.css` | Section 18.5 | ~20 | Mobile blur budget |
+| `src/styles/liquid-glass.css` | Section 19 | ~35 | Scroll-driven animations |
+| `css/styles.css` | New `@media` block | ~10 | Vanilla `prefers-contrast` |
 
-Do NOT create a separate CSS file. The constraint is single-file delivery with no build step. Adding a separate `dark.css` or `glass.css` creates a sequencing problem (flash of unstyled content if the file loads late) and splits the token context.
+### Modified Sections
 
-**Size impact estimate:** Dark mode tokens ~40 lines, glass modifiers ~30 lines, animation additions ~50 lines. Total addition: ~120 lines bringing the file to ~1,760 lines. Well within maintainable range for a single-file approach.
+| File | Section | Change |
+|------|---------|--------|
+| `src/styles/theme.css` | `:root` block | ADD ~12 lines of new tokens |
+| `src/styles/liquid-glass.css` | Section 16 | EXTEND hover/press states (~10 lines) |
+| `css/styles.css` | Section 15 | EXTEND interaction polish (~15 lines) |
+| `css/styles.css` | Body base rules | ADD `transition: background-color 300ms, color 300ms` (1 line) |
 
----
+### New Files
 
-## Patterns to Follow
+None. All changes extend existing files.
 
-### Pattern 1: Token Override Architecture for Themes
+### HTML Changes
 
-**What:** Define all theme variants as overrides of the same token names, not as parallel naming schemes.
-**When:** Any theming feature.
-**Why it works here:** All 1,640 existing lines already use `var(--color-*)`. No search-and-replace needed.
-
-```css
-:root { --color-white: #ffffff; }
-[data-theme="dark"] { --color-white: #0F1923; }
-/* Every rule using var(--color-white) now respects theme automatically */
-```
-
-### Pattern 2: Modifier Classes for Visual Variants (Never Change Base)
-
-**What:** Add `.component--glass` as an opt-in modifier. Never modify the base `.card` rule to add glass.
-**When:** Any time glass or visual variant applies to only some instances of a component.
-**Why:** The card component is used in benefits, doctors, advantages, process steps. Only pricing and form get glass. Using a modifier keeps all other cards untouched.
-
-### Pattern 3: `@supports` Gating for New CSS APIs
-
-**What:** Wrap scroll-driven animations and advanced backdrop-filter effects in `@supports`.
-**When:** Any CSS feature with partial browser support.
-**Why:** The target audience (Kazakhstan, 45+) may be on older browsers or older Android WebViews. `@supports` provides the fallback naturally.
-
-### Pattern 4: `initDarkMode()` Registration Pattern (JS)
-
-**What:** Dark mode JS function reads localStorage, sets `data-theme` on `document.documentElement` before DOM paint to prevent flash.
-**When:** Page load — must run before first paint.
-**Why:** If `initDarkMode()` runs at DOMContentLoaded (as all other init functions do), there will be a flash of light mode. The fix: extract just the `data-theme` setter into an inline `<script>` in `<head>`, before the CSS link.
-
-```html
-<head>
-  <!-- Run BEFORE CSS loads to prevent flash -->
-  <script>
-    (function() {
-      var theme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-```
-
-The toggle button wiring and localStorage update can live in `initDarkMode()` inside the IIFE as normal. The inline script is only for the initial load state.
+| File | Change |
+|------|--------|
+| All 4 HTML files | ADD `<div class="scroll-progress-bar"></div>` (Phase 5 only) |
 
 ---
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Creating Separate CSS Files for Dark Mode or Glass
+### Anti-Pattern 1: Creating `micro-interactions.css` or `accessibility.css`
 
-**What goes wrong:** A `dark.css` or `glass.css` loaded via a separate `<link>` causes FOUC (flash of unstyled content) if JS toggles the class before the second stylesheet loads.
-**Consequence:** User sees light mode for ~100ms before dark mode applies. Looks broken.
-**Prevention:** Keep all tokens in the single `styles.css`. The inline `<script>` pattern in `<head>` prevents the flash.
+**What goes wrong:** New CSS files need `<link>` tags in all HTML pages. Loading order becomes another variable. Token access requires the right cascade position.
+**Prevention:** Extend existing files. The section-numbering system in both `liquid-glass.css` and `styles.css` provides clear organization without file proliferation.
 
-### Anti-Pattern 2: Applying Glassmorphism Without Background Content
+### Anti-Pattern 2: Nesting `prefers-contrast` Inside `prefers-reduced-motion`
 
-**What goes wrong:** Glass on elements that sit on a plain white background looks like a dirty semi-transparent rectangle.
-**Consequence:** The visual effect is worse than a solid background, not better.
-**Prevention:** Only apply glass where gradient, photo, or deep-color content exists behind the element. Add gradient backgrounds to sections first; apply glass to cards second.
+**What goes wrong:** Combining `@media (prefers-reduced-motion: reduce) and (prefers-contrast: more)` only targets users who have BOTH settings enabled. Users who want high contrast but normal motion get nothing.
+**Prevention:** Each `@media` query is a standalone section. They compose via the cascade, not nesting.
 
-### Anti-Pattern 3: Adding `transition` to `:root` Token Changes
+### Anti-Pattern 3: Using Scroll-Driven Animations on `.animate-on-scroll` Elements
 
-**What goes wrong:** Adding `transition: all 0.3s` to `:root` to animate theme switches sounds appealing but creates performance issues — every CSS property on every element animates simultaneously.
-**Consequence:** 1,640 lines of CSS all transition at once, causing jank especially on lower-end Android devices (ЦА 45+ may use budget phones).
-**Prevention:** Add `transition: background-color 0.3s ease, color 0.3s ease` only to `body` and specific components that need smooth transitions (header, cards). Never on `:root`.
+**What goes wrong:** The IntersectionObserver adds `.is-visible` which changes `opacity` and `transform` via CSS transition. If a scroll-driven animation also targets `opacity` or `transform`, the two mechanisms fight.
+**Prevention:** Scroll-driven animations target NEW elements (scroll progress bar) or DIFFERENT properties (`background-position`, `clip-path`, custom properties).
 
-### Anti-Pattern 4: Using `animation-timeline: scroll()` for Elements That Already Have IntersectionObserver Animations
+### Anti-Pattern 4: Adding will-change to Micro-Interactions at Rest
 
-**What goes wrong:** If `.animate-on-scroll` elements get a scroll-driven animation that also controls `opacity` or `transform`, both mechanisms fire. The IntersectionObserver adds `.is-visible` (which overrides `opacity: 0 → 1`), but the scroll-driven animation may conflict by also trying to control opacity.
-**Consequence:** Elements may flicker or snap to wrong state.
-**Prevention:** Pick one mechanism per element. IntersectionObserver stays on existing elements. Scroll-driven animations go on NEW elements or new properties only.
+**What goes wrong:** `will-change: transform` on all cards at rest promotes them to compositor layers permanently, wasting GPU memory on budget Android devices.
+**Prevention:** `will-change` only on `:hover` and `:active` states (this is already the pattern in Section 16).
 
-### Anti-Pattern 5: ES6+ Syntax in the Dark Mode Toggle
+### Anti-Pattern 5: Replacing `[data-theme="dark"]` with `.dark` in Vanilla CSS
 
-**What goes wrong:** The existing JS uses ES5 throughout (decision logged in PROJECT.md: "ES5 syntax for JS — ЦА 45+ может использовать старые браузеры").
-**Consequence:** Using `const`, arrow functions, template literals in the new `initDarkMode()` function creates inconsistency and may break on the same old browsers the rest of the code was written for.
-**Prevention:** Write `initDarkMode()` in ES5. Use `var`, function declarations, string concatenation. The inline `<script>` in `<head>` must also use ES5.
+**What goes wrong:** The vanilla layer uses `[data-theme="dark"]` selector. The design system layer uses `.dark` class. Mixing selectors breaks cascade expectations.
+**Prevention:** Keep each layer's convention. When writing new CSS, check which file you are in. `liquid-glass.css` and `theme.css` use `.dark`. `styles.css` uses `[data-theme="dark"]`.
+
+### Anti-Pattern 6: Pseudo-Element Micro-Interactions on Glass Cards
+
+**What goes wrong:** Both `::before` and `::after` are consumed by specular effects on glass elements. Adding a ripple `::after` would override the existing specular highlight.
+**Prevention:** Consult the pseudo-element inventory table above. Use `box-shadow` animation, `filter` animation, or `background-position` animation for effects on glass elements.
+
+---
+
+## Patterns to Follow
+
+### Pattern 1: Section-Numbered CSS Organization
+
+**What:** Every new block gets a section number that indicates its position in the cascade and its relationship to adjacent sections.
+**When:** Adding any new CSS block to `liquid-glass.css` or `styles.css`.
+**Example:** Section 14.5 (between 14 and 15) for `prefers-contrast`.
+
+### Pattern 2: Token Override for Accessibility Media Queries
+
+**What:** Accessibility media queries override existing tokens (`:root` custom properties) rather than overriding individual selectors. One `--liquid-bg` change affects all glass classes.
+**When:** Any `prefers-*` media query addition.
+**Why:** The entire glass system reads from the same tokens. Overriding tokens is O(1); overriding selectors is O(n) glass classes.
+
+### Pattern 3: `@supports` Gating for Non-Baseline CSS
+
+**What:** Wrap non-Baseline features in `@supports`. Currently: `animation-timeline: scroll()`.
+**When:** Any CSS feature where Firefox lacks support.
+**Why:** The KZ 45+ audience may use Firefox (especially Firefox ESR). Ungated non-Baseline CSS means invisible content on those browsers.
+
+### Pattern 4: Separate Concerns Between IO and Scroll-Driven
+
+**What:** IntersectionObserver handles discrete state changes (element appeared/disappeared). CSS scroll-driven handles continuous progress-linked visuals (scroll progress, parallax intensity).
+**When:** Any new scroll-based animation.
+**Why:** IO is pull-based (check once, apply class, forget). Scroll-driven is continuous (animate proportionally to scroll position). Using the right tool for each case avoids the property-conflict problem entirely.
 
 ---
 
@@ -491,20 +591,22 @@ The toggle button wiring and localStorage update can live in `initDarkMode()` in
 
 | Topic | Confidence | Basis |
 |-------|-----------|-------|
-| `data-theme` dark mode token architecture | HIGH | Established pattern, CSS spec stable |
-| `backdrop-filter` browser support | HIGH | Widely supported since 2020, confirmed through training data |
-| CSS Scroll-Driven Animations browser support | MEDIUM | Chrome/Edge 115+ stable; Firefox 129 (Aug 2024) shipped; Safari 18 (Sep 2024) shipped — assumed stable in 2026 but not verified against current caniuse |
-| IntersectionObserver + scroll-driven coexistence | HIGH | They operate on different mechanisms (class mutations vs pure CSS keyframes) |
-| FOUC prevention with inline script | HIGH | Established pattern used by all major theming libraries |
-| `@supports` gating | HIGH | CSS spec, widely supported |
+| `prefers-contrast` browser support | HIGH | Baseline, 94.59% global, verified via Can I Use |
+| `prefers-contrast` integration pattern | HIGH | Follows established Section 13/14 pattern in liquid-glass.css |
+| Scroll-driven animations browser support | MEDIUM | NOT Baseline (Firefox behind flag, Safari 26 pending); must be `@supports`-gated |
+| Micro-interaction placement in existing files | HIGH | Direct codebase analysis; Section 16 already owns interaction states |
+| Pseudo-element budget | HIGH | Direct codebase audit of all glass class pseudo-element usage |
+| Mobile blur budget approach | MEDIUM | CSS media query is standard; optimal blur values need device testing |
+| Glass contrast against dynamic backgrounds | MEDIUM | Mathematical analysis of token opacities is correct; manual testing needed for edge cases |
+| Build order dependencies | HIGH | Direct analysis of what each phase modifies and what it reads |
 
 ---
 
 ## Sources
 
-- MDN: CSS Custom Properties (`var()`) — token cascade behavior — HIGH confidence
-- MDN: `backdrop-filter` — browser support table — HIGH confidence (as of Aug 2025)
-- MDN: CSS Scroll-Driven Animations — `animation-timeline: scroll()` and `view()` — MEDIUM confidence (verify Firefox/Safari current support at caniuse.com before implementation)
-- CSS-Tricks: "A Complete Guide to Dark Mode on the Web" — `data-theme` attribute pattern — HIGH confidence
-- web.dev: "Building a theme switch component" — inline script FOUC prevention — HIGH confidence
-- Existing codebase analysis: `css/styles.css`, `js/main.js`, `index.html` — direct inspection — HIGH confidence
+- [Can I Use: prefers-contrast](https://caniuse.com/mdn-css_at-rules_media_prefers-contrast) -- Browser support matrix, Baseline status (verified 2026-04-13)
+- [Can I Use: animation-timeline: scroll()](https://caniuse.com/mdn-css_properties_animation-timeline_scroll) -- Browser support matrix, NOT Baseline (verified 2026-04-13)
+- [MDN: prefers-contrast](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-contrast) -- Media query specification
+- [MDN: Scroll-driven animations](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations) -- API reference
+- [Axess Lab: Glassmorphism Meets Accessibility](https://axesslab.com/glassmorphism-meets-accessibility-can-frosted-glass-be-inclusive/) -- Glass contrast patterns
+- Direct codebase analysis: `src/styles/theme.css`, `src/styles/liquid-glass.css`, `src/styles/squircles.css`, `css/styles.css`, `js/main.js`, all HTML files -- HIGH confidence

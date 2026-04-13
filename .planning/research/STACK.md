@@ -1,531 +1,343 @@
-# Technology Stack
+# Technology Stack: UI/UX Design Excellence Additions
 
-**Project:** MedicusUnion KZ — v1.4 2025 Visual Redesign
-**Researched:** 2026-03-24
-**Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
-
----
-
-## What This Research Covers
-
-Four new CSS/JS capability areas needed for milestone v1.4:
-
-1. Liquid glass / glassmorphism via `backdrop-filter`
-2. Dark mode toggle with `localStorage` and CSS custom properties
-3. CSS Scroll-Driven Animations API as progressive enhancement
-4. CSS micro-animation patterns for hover and state transitions
-
-**What is NOT covered:** Backend, build tools, fonts, frameworks — all unchanged from v1.3.
+**Project:** MedicusUnion KZ Landing -- v7.0 UI/UX Design Excellence
+**Researched:** 2026-04-13
+**Mode:** Ecosystem (additions to existing vanilla CSS/JS stack)
+**Overall Confidence:** HIGH
 
 ---
 
-## 1. Glassmorphism: `backdrop-filter` + CSS
+## Target Browser Profile (Kazakhstan)
 
-### Technique
+Before any feature recommendations, the target audience constrains everything.
 
-```css
-.glass-card {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%); /* Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-lg); /* already 30px */
-}
+| Browser | KZ Mobile Share | Engine | Key Constraint |
+|---------|----------------|--------|----------------|
+| Chrome Mobile | ~50% | Blink (Chromium 130+) | Primary target. Latest CSS features available |
+| Safari Mobile | ~39% | WebKit | iOS users. Safari 17.5+ baseline realistic |
+| Yandex Browser | ~5% | Blink (Chromium-based) | Follows Chrome support closely |
+| Samsung Internet | ~3% | Blink (Chromium 130) | v29 stable, tracks Chrome ~2 versions behind |
+| Opera/UC/Other | ~3% | Mixed | Negligible; progressive enhancement OK |
+
+**Practical baseline:** Chrome 117+ / Safari 17.5+ / Firefox 121+ covers ~97% of KZ users.
+**Source:** [StatCounter Kazakhstan Mobile Browser Share (March 2026)](https://gs.statcounter.com/browser-market-share/mobile/kazakhstan)
+**Confidence:** HIGH
+
+---
+
+## Part 1: CSS Features to Adopt
+
+### Tier 1 -- Use Now (Baseline, safe for KZ audience)
+
+| Feature | Browser Support | Purpose for This Project | Integration Point | Confidence |
+|---------|----------------|--------------------------|-------------------|------------|
+| `color-mix(in oklch, ...)` | Chrome 111+ / Safari 16.2+ / Firefox 113+ / Edge 111+ -- Baseline Widely Available | Generate glass opacity variants, hover states, dark-mode tints from single brand token without hardcoding rgba values. Replace dozens of manual rgba() calculations in liquid-glass tokens | `theme.css` `:root` and `.dark` token blocks | HIGH |
+| `light-dark()` | Chrome 123+ / Safari 17.5+ / Firefox 120+ -- Baseline Newly Available (Widely Available Nov 2026) | Simplify dark mode token declarations. Currently ~60 lines of `.dark {}` override block can become single-line `light-dark(lightVal, darkVal)` per token | `theme.css` -- could halve the dark mode override block | HIGH |
+| `:has()` selector | Chrome 105+ / Safari 15.4+ / Firefox 121+ -- Baseline (Widely Available Jun 2026) | Parent-aware styling: style form containers based on validation state of children, style FAQ items based on open state, style cards based on content presence. Eliminates JS class-toggling for pure-CSS state reactions | `styles.css` component layer, liquid-glass.css card variants | HIGH |
+| `text-wrap: balance` | Chrome 114+ / Safari 17.5+ / Firefox 121+ | Already partially used. Ensure all `h1`-`h3` elements use it for balanced line breaks. Critical for Russian text which has longer words | Already in codebase (v1.4). Verify comprehensive coverage on all heading elements | HIGH |
+| `@starting-style` | Chrome 117+ / Safari 17.5+ / Firefox 129+ -- Baseline Newly Available | Animate glass elements from `display: none` to visible without JS timing hacks. Direct replacement for the FAQ accordion max-height hack and mobile menu overlay show/hide. Also enables smooth entry animations for form success/error messages | FAQ accordion `.faq__answer`, mobile menu `.mobile-menu-overlay`, form success/error messages | HIGH |
+| `prefers-contrast: more` | Chrome 96+ / Safari 14.1+ / Firefox 101+ / Samsung 17+ -- ~95% global coverage | Critical for glass accessibility. When user requests increased contrast, increase `--liquid-bg` opacity, add solid borders, boost text shadows, reduce blur. Directly addresses Liquid Glass audit gap (currently 85% compliance) | New `@media (prefers-contrast: more)` block in theme.css | HIGH |
+| `content-visibility: auto` | Chrome 85+ / Safari 18+ / Firefox 125+ -- Baseline 2025 | Skip rendering off-screen sections on initial load. With 11 sections + service pages, this is free performance. Must pair with `contain-intrinsic-size` to prevent scroll jump | Each `<section>` in page HTML, plus off-screen service page content | HIGH |
+| Popover API (`popover` attribute) | Chrome 114+ / Firefox 125+ / Safari 17+ -- Baseline Widely Available | Replace custom tooltip/overlay JS with native popover for doctor specialty tooltips, info popovers. Built-in light dismiss, focus management, top-layer stacking | Future tooltip/info components. Not critical for existing features but valuable for new interactions | MEDIUM |
+
+### Tier 2 -- Use with Progressive Enhancement (@supports gate required)
+
+| Feature | Browser Support | Purpose for This Project | Risk | Confidence |
+|---------|----------------|--------------------------|------|------------|
+| CSS Scroll-Driven Animations (`animation-timeline: view()`) | Chrome 115+ / Safari 26+ (beta) / Firefox: flag only | Replace IntersectionObserver-based scroll-reveal with pure CSS. Lighter, declarative, GPU-composited. Current IO-based approach becomes the fallback for unsupported browsers | Firefox still requires flag as of Apr 2026. ~55% KZ coverage without fallback. Safari 26 not yet stable. **Use as enhancement only, keep IO as base** | MEDIUM |
+| View Transitions API (same-document) | Chrome 111+ / Safari 18+ / Firefox 133+ -- Baseline Newly Available (Oct 2025) | Smooth page transitions when navigating between service pages (multi-page site). Cross-document: add `@view-transition { navigation: auto; }` CSS + `view-transition-name` on shared elements (header, hero) | Cross-document transitions need Chrome 126+. Safari 18 support confirmed. **Use for page navigation feel, with graceful degradation (hard reload in old browsers)** | MEDIUM |
+| `interpolate-size: allow-keywords` | Chrome 129+ / Edge 129+ only (Chromium-only as of Apr 2026) | Animate `height: auto` natively for FAQ accordion instead of max-height hack. Would make `@starting-style`-based accordion trivial | **Chromium-only.** No Safari, no Firefox. ~55% KZ coverage. Not safe as primary approach. Keep as enhancement layer on top of `@starting-style` + max-height fallback | LOW |
+| `text-wrap: pretty` | Chrome 117+ / Safari 26+ / No Firefox | Prevent orphans on last line of paragraphs. Russian medical text benefits. Graceful degradation: normal wrapping in Firefox | Firefox shows normal wrapping -- no visual breakage, just less optimal. Safe to ship | MEDIUM |
+| CSS Anchor Positioning | Chrome 125+ / Safari 26+ / Firefox 147+ -- ~85% global | Declarative tooltip/popover positioning without JS offset calculations | Still in Working Draft. Safari 26 / Firefox 147 very recent. **Defer to Tier 1 Popover API for now** | LOW |
+
+### Tier 3 -- Do NOT Use Yet
+
+| Feature | Why Not |
+|---------|---------|
+| Container Queries (`@container`) | Already excluded in CLAUDE.md. Media queries sufficient for known breakpoints. Adds complexity without benefit for landing page fixed layouts |
+| `@scope` | Chrome 118+ / Safari 17.4+ / Firefox: No. BEM naming already provides scope isolation in this codebase |
+| `corner-shape: squircle` | Chrome 139+ only (Canary). Project already has SVG mask-based squircles working cross-browser. Not worth switching until Baseline |
+| CSS Custom Highlight API | No clear use case for a medical landing page |
+| `field-sizing: content` | Chromium-only. No Safari, no Firefox. Too limited for production |
+| CSS Nesting (in styles.css) | NOT for css/styles.css (vanilla CSS, no build step). Already works in src/styles/ via Tailwind v4 processing. No migration needed |
+
+---
+
+## Part 2: Color and Contrast Tools for Glass Surfaces
+
+Glass surfaces create the hardest contrast testing scenario: the background is semi-transparent and varies based on what is behind it. Standard WCAG 2.x ratio tools test static color pairs, not dynamic composited surfaces.
+
+### Recommended Contrast Testing Strategy
+
+| Tool/Method | Purpose | When to Use | Confidence |
+|-------------|---------|-------------|------------|
+| **APCA (apca-w3 npm)** | Perceptual contrast algorithm (WCAG 3.0 candidate). Better at evaluating readable vs. unreadable on semi-transparent surfaces because it accounts for font weight, size, and polarity (light-on-dark vs dark-on-light) | During development: test glass text contrast with worst-case background composites. Check both light and dark mode | HIGH |
+| **Manual worst-case testing** | Screenshot glass card over lightest possible background AND darkest possible background, measure contrast of the resulting composite color | Every glass element must pass with the worst-case background behind it, not just the typical background | HIGH |
+| **WebAIM Contrast Checker** | Quick WCAG 2.x AA verification for non-glass static elements (form fields, footer text, badges) | Standard text elements that are not on glass surfaces | HIGH |
+| **Chrome DevTools contrast overlay** | Built into Elements inspector. Shows contrast ratio with AA/AAA pass/fail in real-time. Works with computed background (including backdrop-filter composites) | Live testing during development. The inspector shows the actual composited color behind glass, not just the declared background | HIGH |
+| **`prefers-contrast: more` CSS** | CSS-only safety net: when user requests high contrast, increase glass opacity to 0.85+, add solid 1px borders, add text-shadow for readability | Ship as part of v7.0. This is the primary mitigation for glass accessibility | HIGH |
+
+### APCA npm Package
+
+```bash
+npm install -D apca-w3
 ```
 
-**Why this approach:**
-- `backdrop-filter: blur()` is the single CSS property that creates the glass blur effect — no JS, no canvas, no SVG filter workaround needed
-- `saturate(180%)` amplifies color behind glass, making the effect richer on medical imagery backgrounds
-- `-webkit-backdrop-filter` is required for Safari 9–17 (pre-2024); Safari 18+ unprefixed works but the prefix costs zero bytes and has no downside
-- `rgba()` background with low alpha (0.08–0.18) is the correct "liquid glass" palette — pure transparent has no color; pure opaque loses the glass effect
-- Explicit `border: 1px solid rgba(255,255,255,0.2)` is required to visually define the glass boundary without a shadow
+- **Package:** `apca-w3` v0.1.9 ([npm](https://www.npmjs.com/package/apca-w3))
+- **API:** `apcaContrast(textColor, bgColor)` returns Lc value (0-106 scale)
+- **Thresholds:** Lc 75+ for body text, Lc 60+ for large text, Lc 45+ for non-text UI
+- **Note:** APCA is the proposed WCAG 3.0 method but WCAG 2.1 AA (4.5:1 / 3:1) remains the legal standard as of Apr 2026. Use APCA as a supplementary check, not a replacement for WCAG 2.x compliance
+- **Confidence:** HIGH (tool works; MEDIUM on whether APCA will be ratified in WCAG 3.0)
 
-### Browser Support (as of mid-2025)
+### Glass-Specific Contrast Testing Protocol
 
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 76+ | Full | Unprefixed |
-| Edge 79+ | Full | Unprefixed |
-| Firefox 103+ | Full | Enabled by default since FF103 (2022) |
-| Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| iOS Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| Samsung Internet 12+ | Full | |
-| **Global coverage** | ~95%+ | MEDIUM confidence — caniuse.com not accessible for verification |
+1. **Compute worst-case composite:** For each glass element, identify the lightest and darkest possible background content that could appear behind it
+2. **Calculate effective background:** `glass_opacity * glass_bg_color + (1 - glass_opacity) * worst_case_background`
+3. **Test text contrast** against this effective background color using both WCAG 2.x ratio AND APCA Lc
+4. **Test with `prefers-contrast: more`** active to verify the enhanced mode is sufficient
+5. **Test with blur disabled** (slow devices skip backdrop-filter) -- text must be readable on the flat `--liquid-bg` color alone
 
-**Confidence:** MEDIUM. Training data places global support at ~95% for mid-2025. Firefox lagged historically but has supported it since 2022. The `-webkit-` prefix covers all Safari versions in production use.
+---
 
-### Fallback Strategy
+## Part 3: Accessibility Testing Tools
 
-```css
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-}
+### Recommended Dev Dependencies
+
+| Tool | npm Package | Version | Purpose | Confidence |
+|------|-------------|---------|---------|------------|
+| **Lighthouse CLI** | `lighthouse` | 13.1.0 | Performance + accessibility audit from command line. Powered by axe-core. Run as CI check or manual audit. Requires Node 22 LTS+ | HIGH |
+| **Pa11y** | `pa11y` | 8.x | CLI accessibility scanner with WCAG 2.2 AA/AAA standard selection. Different rule engine than Lighthouse (htmlcs by default, also supports axe runner) catches different issues. Use both for maximum coverage | HIGH |
+| **axe-core** | `axe-core` | 4.11.2 | Programmatic accessibility engine. Can be injected into a page via a test script. 57% of WCAG issues caught automatically. Industry standard, zero false positives | HIGH |
+| **@axe-core/cli** | `@axe-core/cli` | latest | Quick command-line wrapper for axe-core. `npx axe http://localhost:3000/` for instant results | HIGH |
+
+### Installation
+
+```bash
+# Accessibility testing (dev only)
+npm install -D lighthouse pa11y axe-core @axe-core/cli
+
+# Contrast checking (dev only)
+npm install -D apca-w3
 ```
 
-`@supports` is the correct gate — avoids applying transparent background when blur is unavailable (which would produce illegible text).
+### Usage Patterns
 
-### Integration with Existing Token System
+```bash
+# Lighthouse: full audit (outputs HTML report)
+npx lighthouse http://localhost:3000 --output=html --output-path=./audit.html
 
-New tokens to add to `:root`:
+# Lighthouse: accessibility only, desktop preset
+npx lighthouse http://localhost:3000 --only-categories=accessibility --preset=desktop
+
+# Pa11y: WCAG 2.2 AA standard
+npx pa11y http://localhost:3000 -s WCAG2AA
+
+# Pa11y: all pages via config
+npx pa11y-ci --config .pa11yci.json
+
+# axe-core CLI: quick scan with specific rules
+npx axe http://localhost:3000 --rules color-contrast,image-alt,label
+```
+
+### What Automated Tools Cannot Test (Manual Required)
+
+Automated tools catch approximately 30-40% of WCAG issues. The following require manual testing:
+
+- Focus order and keyboard navigation flow through all interactive elements
+- Screen reader announcement correctness (VoiceOver on iOS for Safari audience)
+- Glass surface text readability under varying dynamic backgrounds
+- Touch target sizes on actual devices (45+ audience: 48px minimum recommended)
+- Color-only information indicators (status badges, form validation)
+- Meaningful link text (not "read more")
+- Form error recovery flow end-to-end
+- `prefers-contrast: more` visual rendering on real OS with the preference set
+
+---
+
+## Part 4: Performance Profiling Tools
+
+| Tool | How to Access | Purpose | Confidence |
+|------|---------------|---------|------------|
+| **Lighthouse CLI** (same as above) | `npx lighthouse --only-categories=performance` | Lab performance metrics: LCP, CLS, TBT, INP. Throttled to simulate mid-tier mobile on 4G | HIGH |
+| **Chrome DevTools Performance panel** | F12 > Performance | Record page load, identify long tasks, paint timing, GPU compositing layers. Essential for glass blur budget profiling | HIGH |
+| **Chrome DevTools Layers panel** | F12 > More tools > Layers | Visualize compositing layers created by `backdrop-filter`. Each glass element creates a separate compositing layer. Use to verify glass-per-viewport budget (max 2) | HIGH |
+| **Chrome DevTools Rendering tab** | F12 > More tools > Rendering | "Paint flashing" shows real-time repaint areas. "Layer borders" shows compositing boundaries. "Core Web Vitals" overlay shows LCP/CLS in-page | HIGH |
+| **WebPageTest** | webpagetest.org | Real device testing with filmstrip comparison. Can test from locations closer to Kazakhstan (India/Singapore nodes) | HIGH |
+| **CrUX API** | `https://chromeux.googleapis.com/v1/records:queryRecord` | Real user data from Chrome users visiting the site. Field metrics, not lab. Requires sufficient production traffic | MEDIUM (requires production traffic volume) |
+
+### Glass-Specific Performance Checks
+
+| Check | Tool | What to Look For |
+|-------|------|-----------------|
+| Compositing layer count | DevTools > Layers | Each `backdrop-filter` element = 1 GPU layer. Budget: max 2 visible glass layers per viewport |
+| Blur budget on mobile | DevTools > Performance (CPU 4x slowdown) | `backdrop-filter: blur(24px)` is expensive. On budget Android, reduce to `blur(12px)` via media query |
+| Paint area on scroll | DevTools > Rendering > Paint flashing | Glass elements behind sticky header cause continuous repaint of header area. `will-change: transform` on header only (not static cards) |
+| Total GPU memory | DevTools > Performance > GPU | Monitor GPU memory during scroll. If it exceeds ~100MB on mobile, reduce glass layer count |
+| CLS from content-visibility | DevTools > Performance > Layout Shift | If using `content-visibility: auto`, verify `contain-intrinsic-size` prevents layout shifts |
+
+---
+
+## Part 5: Animation Approach Decision
+
+### Do NOT Add an Animation Library
+
+The project constraint is vanilla CSS + JS with no frameworks. Animation libraries violate this constraint.
+
+| Library | Why NOT |
+|---------|---------|
+| GSAP | 27KB+ min. Overkill for scroll-reveal and hover effects. Creates JS dependency for visual effects that CSS can handle natively |
+| Motion One | 4KB. Lighter but still adds a dependency. CSS scroll-driven animations will replace its core use case |
+| Lottie | Heavy runtime (50KB+). No complex animations needed. Target audience (45+) prefers subtle motion |
+| Anime.js | 17KB. Same reasoning as GSAP -- the animations needed here are simple enough for CSS |
+
+### Recommended Animation Stack (Pure CSS + Minimal JS)
+
+| Animation Type | Current Approach | v7.0 Improvement |
+|----------------|-----------------|-------------------|
+| Scroll reveal (fade-in + translateY) | IntersectionObserver + class toggle | Keep IO as base. Add CSS `animation-timeline: view()` as progressive enhancement via `@supports` |
+| FAQ accordion expand/collapse | `max-height` hack (0 to 500px) | `@starting-style` + `display: none` transition. `interpolate-size` as Chromium-only enhancement |
+| Button press | `:active { scale(0.97) }` | Keep. Ensure using `transition: scale var(--dur-press) var(--ease-liquid)` token |
+| Hover lift | `translateY(-2px)` | Keep. Ensure all interactive cards use consistent `--dur-hover` timing token |
+| Page navigation | None (hard reload between pages) | Add `@view-transition { navigation: auto; }` for cross-page fade. Header gets `view-transition-name: header` for persistence across navigation |
+| Mobile menu show/hide | `display: none` / `.is-open` class toggle | `@starting-style` entry animation + `transition-behavior: allow-discrete` for smooth open/close |
+| Form success/error | `display: none` / `.is-visible` class toggle | Same `@starting-style` pattern for smooth appearance |
+| Glass shimmer | `@keyframes shimmer-sweep` (existing) | Keep. Limit to 1 per viewport. Verify `prefers-reduced-motion` guard is in place |
+
+---
+
+## Part 6: Recommended color-mix() Migration Path
+
+The most impactful CSS improvement for this project. Currently, `theme.css` has ~30 hardcoded rgba values for glass tokens. With `color-mix()`, these can derive from a few base colors.
+
+### Before (current theme.css pattern)
 
 ```css
 :root {
-  /* Glass surface tokens */
-  --glass-bg-light: rgba(255, 255, 255, 0.12);
-  --glass-bg-medium: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
-
-  /* Dark mode glass (inverted) */
-  --glass-bg-dark: rgba(24, 33, 44, 0.45);
-  --glass-border-dark: 1px solid rgba(255, 255, 255, 0.08);
+  --liquid-bg: rgba(255, 255, 255, 0.42);
+  --liquid-border-top: rgba(220, 225, 235, 0.7);
+  --liquid-shadow-outer: 0 16px 40px rgba(20, 30, 60, 0.16);
+}
+.dark {
+  --liquid-bg: rgba(30, 40, 60, 0.45);
+  --liquid-border-top: rgba(255, 255, 255, 0.25);
+  --liquid-shadow-outer: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 ```
 
-**Performance note:** `backdrop-filter` triggers GPU compositing. On a site with 3-4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
-
-### Medical Context Constraint
-
-For the ЦА 45+ audience, glass cards must maintain WCAG AA text contrast. Rule: glass cards with `backdrop-filter` MUST have a minimum background opacity that keeps text at 4.5:1 contrast ratio. Use `rgba(255,255,255,0.85)` minimum for white cards with dark text, or a semi-opaque dark overlay for light text on glass. Pure "trendy" glass with 10% opacity fails contrast — avoid on text-heavy cards.
-
----
-
-## 2. Dark Mode: `localStorage` Toggle + CSS Custom Properties
-
-### Pattern
-
-**CSS side — theme via class on `<html>`:**
-
-```css
-/* Light mode (default) — already in :root */
-:root {
-  --color-bg: #ffffff;
-  --color-surface: #F8FAFB;
-  --color-text-primary: #18212C;
-  --color-text-muted: rgba(24, 33, 44, 0.55);
-  --color-border: rgba(0, 0, 0, 0.08);
-}
-
-/* Dark mode — override tokens on html[data-theme="dark"] */
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-white: #161B22;       /* remaps white surfaces */
-  --color-light: #1C2128;       /* remaps light sections */
-}
-```
-
-**Why `data-theme` attribute over CSS class:**
-- `html[data-theme="dark"]` is the current standard pattern (used by MDN, GitHub, Tailwind docs)
-- A class like `.dark` works equally but attribute is semantically clearer and easier to query in JS
-- Avoids class name collision with any BEM classes
-
-**JS side — IIFE pattern (compatible with existing ES5 IIFE codebase):**
-
-```javascript
-(function () {
-  'use strict';
-
-  var STORAGE_KEY = 'mu-theme';
-  var html = document.documentElement;
-  var btn = document.getElementById('theme-toggle');
-
-  // Apply saved preference immediately (avoids flash)
-  // This <script> block runs inline in <head>, before render
-  function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-  }
-
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  }
-
-  // Toggle handler (attached after DOM ready)
-  function init() {
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-      btn.setAttribute('aria-label',
-        next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'
-      );
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-}());
-```
-
-**Why inline `<script>` in `<head>` for theme detection:**
-- The `localStorage` read and `applyTheme()` call MUST happen before first paint — otherwise users with a dark preference see a white flash (FOUC). Place this 8-line block as an inline `<script>` at the end of `<head>`, before the `</head>` tag.
-- This is the same pattern used by every major dark mode implementation (MDN, GitHub, Radix docs)
-
-**`prefers-color-scheme` media query fallback:**
-- If no `localStorage` value, check `window.matchMedia('(prefers-color-scheme: dark)')` to honor OS preference on first visit
-- Browser support: Chrome 76+, Firefox 67+, Safari 12.1+ — essentially universal
-
-### Integration with Existing Tokens
-
-The existing `:root` block has color tokens but they are NOT yet abstracted for dark mode (they reference hardcoded hex values like `--color-white: #FFFFFF`). The migration path:
-
-1. Add semantic tokens (`--color-bg`, `--color-surface`, `--color-border`) to `:root`
-2. Replace hardcoded hex in section backgrounds with semantic tokens
-3. Keep brand colors (`--color-primary`, `--gradient-cta`) unchanged — they work in both modes
-4. Remap `--color-white` in dark mode to a dark surface (this is the key trick that makes `background: var(--color-white)` sections flip automatically)
-
-**Transition for theme switch (no flash):**
-
-```css
-/* Applied to body ONLY after initial load to prevent FOUC */
-body.theme-transitions-ready {
-  transition: background-color 300ms ease, color 300ms ease;
-}
-```
-
-Add `document.body.classList.add('theme-transitions-ready')` in JS after the page loads (not inline in head).
-
-### Confidence: HIGH
-
-This is a well-established pattern with no ambiguity. `localStorage`, `matchMedia`, and CSS custom property cascading all have near-universal browser support.
-
----
-
-## 3. CSS Scroll-Driven Animations API (2025)
-
-### What It Is
-
-The CSS Scroll-Driven Animations API (2023 spec, Chrome 115+) replaces IntersectionObserver-based JS animations with pure CSS. It links `@keyframes` animations to scroll position instead of time.
-
-```css
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-on-scroll {
-  animation: fade-in-up linear both;
-  animation-timeline: view();          /* ties to element's visibility */
-  animation-range: entry 0% entry 40%; /* plays during entry phase */
-}
-```
-
-**Why this technique:**
-- Pure CSS, zero JS — no `IntersectionObserver` wiring, no class toggling
-- Runs on the compositor thread — smoother than JS-driven animations
-- `animation-timeline: view()` fires the animation as the element enters the viewport, exactly replicating current `IntersectionObserver` behavior
-
-### Browser Support (as of mid-2025)
-
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 115+ | Full | Shipped July 2023 |
-| Edge 115+ | Full | Chromium-based |
-| Safari 18+ | Partial | `scroll-timeline` supported; `view()` / `animation-range` partial. Safari 17 = no support |
-| Firefox 110+ | Partial | `scroll-timeline` supported; `view()` behind flag until FF 128 |
-| **Global coverage** | ~70–75% | MEDIUM confidence — significant Safari/Firefox gaps remain |
-
-**This is a progressive enhancement, not a replacement.** The existing `IntersectionObserver` animations MUST remain as the baseline. Scroll-driven CSS animations layer on top for supporting browsers.
-
-### Progressive Enhancement Pattern
-
-```css
-/* Baseline: element starts visible (works everywhere) */
-.section-card {
-  opacity: 1;
-  transform: none;
-}
-
-/* Enhancement: animate in for browsers that support scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .section-card {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
-
-**Why `@supports` gate is required:**
-- Browsers without support see `opacity: 0` elements if the animation properties are applied unconditionally — content disappears permanently
-- The `@supports` block ensures elements are visible by default, enhanced only when supported
-
-**Conflict with existing IntersectionObserver:**
-- The current JS adds `.is-visible` classes via IntersectionObserver to trigger CSS transitions
-- With scroll-driven animations, the same element could animate twice (IO transition + CSS scroll animation)
-- Resolution: in the `@supports` block, set `transition: none` to disable IO-triggered transitions on supported browsers, letting the CSS scroll animation take over cleanly
-
-```css
-@supports (animation-timeline: scroll()) {
-  .scroll-animate {
-    transition: none; /* disable IO-based transitions */
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
-
-### Confidence: MEDIUM
-
-Chrome/Edge support confirmed since 2023. Firefox and Safari gaps are real and documented. The `@supports` progressive enhancement pattern is the official W3C-recommended approach for partial support scenarios.
-
----
-
-## 4. CSS Micro-Animation Patterns
-
-### Hover State Transitions
-
-Existing codebase already uses `transition: var(--transition-fast)` / `var(--transition-normal)`. Enhance with:
-
-**Button hover — transform + shadow lift:**
-
-```css
-.btn {
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    opacity var(--transition-fast);
-  will-change: transform; /* hint browser to promote layer */
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(26, 198, 126, 0.35);
-}
-
-.btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-  transition-duration: 80ms; /* snappy click feedback */
-}
-```
-
-**Card hover — existing `translateY(-2px)` is correct, add shadow token:**
-
-```css
-.card {
-  transition:
-    transform var(--transition-normal),
-    box-shadow var(--transition-normal);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-```
-
-**Icon color shift on parent hover:**
-
-```css
-.feature-card .icon {
-  transition: color var(--transition-normal);
-  color: var(--color-primary-dark);
-}
-
-.feature-card:hover .icon {
-  color: var(--color-primary);
-}
-```
-
-### Focus State (Accessibility — required for ЦА 45+)
-
-```css
-/* Visible focus ring for keyboard/touch navigation */
-:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Remove focus ring for mouse clicks (browsers that support :focus-visible) */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-```
-
-**Why `:focus-visible` over `:focus`:** Shows focus ring for keyboard users (ЦА 45+ often navigates with tab), hides it for mouse users who find the ring distracting. Chrome 86+, Firefox 85+, Safari 15.4+ — ~95% support.
-
-### Form Field Micro-Animations
-
-```css
-.form__input {
-  border: 2px solid rgba(24, 33, 44, 0.15);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.form__input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
-  outline: none;
-}
-```
-
-**Ring glow on focus** replaces browser default outline — more polished, still accessible.
-
-### Accordion Animation (existing)
-
-Current implementation uses `max-height` transition. The modern alternative is `grid-template-rows`:
-
-```css
-/* Modern accordion — no fixed max-height needed */
-.faq__answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transition-normal);
-  overflow: hidden;
-}
-
-.faq__answer--open {
-  grid-template-rows: 1fr;
-}
-
-.faq__answer > div { /* inner wrapper required */
-  overflow: hidden;
-}
-```
-
-**Why `grid-template-rows: 0fr → 1fr`:** Animates to/from natural content height without needing a fixed `max-height` value. Works in Chrome 57+, Firefox 55+, Safari 10.1+. The existing `max-height` approach works fine — this is an optional upgrade.
-
-### `prefers-reduced-motion` (already handled — reinforce pattern)
-
-The existing codebase already handles `prefers-reduced-motion`. Ensure all new animations follow the same pattern:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  /* Disable ALL new animations and transitions */
-  .glass-card,
-  .btn,
-  .card,
-  .section-card {
-    transition: none;
-    animation: none;
-  }
-}
-```
-
-### Confidence: HIGH
-
-These are stable, well-documented CSS properties. `transition`, `transform`, `:focus-visible`, and `@media (prefers-reduced-motion)` all have universal or near-universal support.
-
----
-
-## New Token Additions Required
-
-Add to the existing `:root` block in `css/styles.css`:
+### After (v7.0 with color-mix + light-dark)
 
 ```css
 :root {
-  /* === NEW in v1.4 === */
+  --glass-base-light: oklch(100% 0 0);        /* white */
+  --glass-base-dark: oklch(22% 0.02 260);      /* navy-grey */
+  --glass-base: light-dark(var(--glass-base-light), var(--glass-base-dark));
 
-  /* Glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.75);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
-
-  /* Semantic background tokens (dark mode migration) */
-  --color-bg: var(--color-white);
-  --color-surface: var(--color-light);
-  --color-border: rgba(0, 0, 0, 0.08);
-
-  /* Theme transition */
-  --transition-theme: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
-}
-
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-white: #161B22;
-  --color-light: #1C2128;
-  --color-border: rgba(255, 255, 255, 0.08);
-
-  /* Glass inverted */
-  --glass-bg: rgba(13, 17, 23, 0.55);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-
-  /* Shadows on dark — more prominent */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --liquid-bg: color-mix(in oklch, var(--glass-base) 42%, transparent);
+  --liquid-border-top: light-dark(
+    color-mix(in oklch, oklch(85% 0.01 260) 70%, transparent),
+    color-mix(in oklch, white 25%, transparent)
+  );
 }
 ```
 
+**Benefits:**
+- Single source of truth for glass tinting
+- Dark mode values derive automatically via `light-dark()`
+- Changing brand color propagates through all glass surfaces
+- Easier to create `prefers-contrast: more` variants (just increase mix percentages)
+
+**Risk:** MEDIUM. This is a significant refactor of theme.css. Should be done as a dedicated phase with visual regression testing (screenshot comparison before/after).
+
 ---
+
+## Part 7: Modern CSS Features Already In Use (Verify and Expand)
+
+These features are already in the codebase. The v7.0 milestone should verify they are applied comprehensively.
+
+| Feature | Current Status | v7.0 Action |
+|---------|---------------|-------------|
+| `text-wrap: balance` | Used on some headings (v1.4) | Audit ALL h1-h3 elements across all pages. Add to base heading styles in styles.css |
+| `prefers-reduced-motion: reduce` | Global `*` override in theme.css | Already comprehensive. Verify `--dur-*` tokens are used everywhere (check for any hardcoded durations) |
+| `clamp()` for fluid type | Used for h1, h2, h3 font sizes | Verify clamp ranges. Consider adding for body text on very large screens (cap at 20px) |
+| `:user-valid` | Used for form validation green border | Expand: add `:user-invalid` styling for red error border without JS `.is-invalid` class toggling |
+| `scroll-margin-top` | On sections/headings (RHYTHM-06) | Verify value (6rem) accounts for glass header height in both mobile and desktop after scrolled state |
+| `overflow-x: clip` | On `html` element | Keep. Better than `overflow: hidden` for sticky positioning |
+| CSS custom properties (50+ tokens) | Extensive token system in both css/styles.css and src/styles/theme.css | Good foundation. Expand with `color-mix()` derived tokens to reduce hardcoded rgba values |
+| `:focus-visible` | Used for keyboard navigation ring | Already implemented. Verify all interactive elements covered (including glass buttons) |
+
+---
+
+## Summary: What to Install (Dev Dependencies)
+
+```bash
+npm install -D lighthouse pa11y axe-core @axe-core/cli apca-w3
+```
+
+Total added: 5 dev-only packages. Zero production dependencies. Zero runtime weight.
+
+## Summary: CSS Features to Add (Zero Dependencies)
+
+Priority order for implementation phases:
+
+1. **`@media (prefers-contrast: more)`** -- Glass accessibility safety net. Do first.
+2. **`content-visibility: auto`** -- Free performance for off-screen sections. Quick win.
+3. **`@starting-style`** -- Entry animations for FAQ, menu, form messages. Replace JS timing hacks.
+4. **`color-mix(in oklch, ...)`** -- Derive glass tokens from base colors. Biggest refactor, highest payoff.
+5. **`light-dark()`** -- Simplify dark mode declarations. Pairs with color-mix refactor.
+6. **`:has()` selector** -- Parent-aware styling for forms and cards. Replaces JS class toggles.
+7. **`text-wrap: pretty`** -- Orphan prevention for body text. Progressive, no risk.
+8. **`animation-timeline: view()`** -- CSS scroll-driven animations. Enhancement only, keep IO fallback.
+9. **`@view-transition { navigation: auto }`** -- Cross-page transitions. Enhancement, graceful degradation.
 
 ## What NOT to Add
 
-| Rejected | Why |
-|----------|-----|
-| GSAP / Anime.js | External JS library for animations — violates no-dependency constraint; CSS transitions handle all needs |
-| Framer Motion | React library — irrelevant |
-| CSS `@layer` for theme | Adds complexity without benefit for a single file. `html[data-theme]` attribute override is simpler |
-| `color-scheme` property alone | `color-scheme: dark light` changes scrollbars/inputs but does NOT change your brand colors — must use custom property override |
-| `prefers-color-scheme` media query only | Doesn't allow user toggle — must combine with JS + localStorage |
-| `animation-timeline: scroll()` (not `view()`) | `scroll()` animates relative to scroll container, not element visibility — `view()` is correct for "animate on enter viewport" |
-| Canvas/WebGL glass effects | Heavy, unnecessary — `backdrop-filter` achieves the same visual with 3 CSS properties |
-| JS-driven scroll position detection for animations | Replaced by CSS Scroll-Driven Animations for supported browsers; IntersectionObserver already handles fallback |
-
----
-
-## Browser Support Summary Table
-
-| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
-|---------|--------|---------|--------|------------|------------|
-| `backdrop-filter` | 76+ | 103+ | 9+ (-webkit-) | 9+ (-webkit-) | MEDIUM |
-| CSS custom properties | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
-| `localStorage` | 4+ | 3.5+ | 4+ | 3.2+ | HIGH |
-| `prefers-color-scheme` | 76+ | 67+ | 12.1+ | 12.2+ | HIGH |
-| `:focus-visible` | 86+ | 85+ | 15.4+ | 15.4+ | HIGH |
-| Scroll-Driven Animations | 115+ | 128+ | 18+ (partial) | 18+ | MEDIUM |
-| `grid-template-rows` transition | 66+ | 66+ | 12.1+ | 12.2+ | HIGH |
-| `@supports` | 28+ | 22+ | 9+ | 9+ | HIGH |
-| `will-change` | 36+ | 36+ | 9.1+ | 9.3+ | HIGH |
-
-**Coverage note:** Scroll-Driven Animations are the only feature with meaningful gaps (~25% non-support). All others are effectively universal (95%+). The `@supports` progressive enhancement pattern handles the gap correctly.
-
----
-
-## Integration Checklist
-
-Before implementation, verify these touchpoints with existing code:
-
-1. **IntersectionObserver + Scroll-Driven conflict** — `.scroll-animate` JS class toggle must be disabled in `@supports (animation-timeline: scroll())` block
-2. **Glass cards require a non-white background behind them** — sections using glass must have a gradient/image background, not `background: var(--color-bg)` (blur of white = white, no visible effect)
-3. **Dark mode token migration** — global replace of `background: var(--color-white)` → `background: var(--color-bg)` in section rules, otherwise dark mode only affects text color
-4. **Inline `<script>` for FOUC prevention** — theme detection JS must be in `<head>`, before stylesheet link. Order: `<link rel="stylesheet">` then `<script>` inline theme block
-5. **`will-change: transform`** — add only to elements that actually animate; don't apply globally (wastes GPU memory)
-6. **Test on iOS Safari** — `backdrop-filter` requires `-webkit-` prefix; test on real device, not just Chrome DevTools mobile emulation
+- No animation libraries (GSAP, Motion One, Lottie, Anime.js) -- violates vanilla constraint
+- No CSS preprocessors (Sass, Less) -- native CSS covers all needs
+- No CSS-in-JS -- no JS framework to host it
+- No Container Queries -- media queries sufficient for known breakpoints
+- No `@scope` -- BEM naming already provides scope isolation
+- No `corner-shape: squircle` -- keep SVG mask approach until cross-browser Baseline
+- No `interpolate-size` as primary approach -- Chromium-only, use as enhancement behind @supports
+- No `field-sizing: content` -- Chromium-only, use JS resize fallback
 
 ---
 
 ## Sources
 
-- MDN Web Docs: `backdrop-filter` — https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter (training data, August 2025 cutoff)
-- MDN Web Docs: CSS Scroll-Driven Animations — https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations (training data)
-- MDN Web Docs: `prefers-color-scheme` — https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme (training data)
-- MDN Web Docs: `:focus-visible` — https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible (training data)
-- W3C CSS Scroll-driven Animations spec — https://drafts.csswg.org/scroll-animations-1/ (training data)
-- Chrome Developers: Scroll-driven Animations — https://developer.chrome.com/docs/css-ui/scroll-driven-animations (training data)
+### Browser Support Data (Verified Apr 2026)
+- [Can I Use: View Transitions (single-document)](https://caniuse.com/view-transitions)
+- [Can I Use: CSS Anchor Positioning](https://caniuse.com/css-anchor-positioning)
+- [Can I Use: prefers-contrast](https://caniuse.com/mdn-css_at-rules_media_prefers-contrast) -- Chrome 96+, Safari 14.1+, Firefox 101+, ~95% global
+- [Can I Use: CSS Nesting](https://caniuse.com/css-nesting)
+- [Can I Use: content-visibility](https://caniuse.com/css-content-visibility)
+- [Can I Use: text-wrap: balance](https://caniuse.com/css-text-wrap-balance)
+- [StatCounter: Mobile Browser Market Share Kazakhstan](https://gs.statcounter.com/browser-market-share/mobile/kazakhstan) -- Chrome 50%, Safari 39%, Yandex 5%, Samsung 3%
 
-**Confidence note:** All browser support figures are from training data (knowledge cutoff August 2025). No live caniuse.com or MDN verification was possible (WebFetch/WebSearch tools unavailable in this session). Flag for verification against caniuse.com before implementation if exact percentages matter for go/no-go decisions.
+### Feature Documentation
+- [MDN: CSS Scroll-Driven Animations](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations)
+- [MDN: @starting-style](https://caniuse.com/mdn-css_at-rules_starting-style) -- Chrome 117+, Safari 17.5+, Firefox 129+
+- [MDN: light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
+- [MDN: color-mix()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/color-mix)
+- [MDN: content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/content-visibility)
+- [MDN: prefers-contrast](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast)
+- [Chrome: Animate to height: auto](https://developer.chrome.com/docs/css-ui/animate-to-height-auto)
+- [Chrome: Scroll-driven animations](https://developer.chrome.com/docs/css-ui/scroll-driven-animations)
+- [Chrome: View Transitions](https://developer.chrome.com/docs/web-platform/view-transitions)
+- [WebKit: Scroll-driven animations guide](https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css/)
+
+### Tools (Versions Verified Apr 2026)
+- [Lighthouse npm v13.1.0](https://www.npmjs.com/package/lighthouse)
+- [Pa11y npm](https://www.npmjs.com/package/pa11y)
+- [axe-core npm v4.11.2](https://www.npmjs.com/package/axe-core)
+- [apca-w3 npm v0.1.9](https://www.npmjs.com/package/apca-w3)
+
+### Glass Accessibility
+- [Axess Lab: Glassmorphism Meets Accessibility](https://axesslab.com/glassmorphism-meets-accessibility-can-frosted-glass-be-inclusive/)
+- [APCA Documentation](https://git.apcacontrast.com/documentation/APCAeasyIntro.html)
+- [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
+- [WCAG 3.0 Status and APCA 2026](https://web-accessibility-checker.com/en/blog/wcag-3-0-guide-2026-changes-prepare)
+
+### CSS Ecosystem 2026
+- [Modern CSS: What's New in CSS 2026](https://modern-css.com/whats-new-in-css-2026/)
+- [LogRocket: CSS in 2026](https://blog.logrocket.com/css-in-2026/)
+- [Nick Paolini: Modern CSS Toolkit 2026](https://www.nickpaolini.com/blog/modern-css-toolkit-2026)
