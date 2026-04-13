@@ -829,6 +829,129 @@ html[data-refract="true"] .liquid-fluted {
 }
 
 /* ================================================
+   Section 14.5 -- High contrast mode (ACC-01)
+   For users who request increased contrast via OS
+   settings (macOS: Increase Contrast, Windows: High
+   Contrast, iOS: Increase Contrast).
+   Uses tiered solid fills to preserve visual hierarchy:
+   - Nav: white (lightest)
+   - Cards/regular: light gray (#F5F7F9)
+   - Stats: darker gray (#EDF0F4)
+   Disables all glass blur and pseudo-element decorations.
+   Overrides BOTH :root and .dark to prevent cascade
+   regression (see Pitfall 7 in PITFALLS.md).
+   ================================================ */
+
+@media (prefers-contrast: more) {
+  /* --- Light mode: tiered solid fills --- */
+
+  /* Nav tier: white -- lightest, floating affordance via border */
+  .liquid-nav {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
+
+  /* Card/regular tier: light gray -- medium visual weight */
+  .liquid-regular,
+  .liquid-card,
+  .liquid-fluted,
+  .liquid-btn-secondary {
+    background: #F5F7F9;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+  }
+
+  /* Stats tier: darker gray -- heaviest visual weight */
+  .stats-glass {
+    background: #EDF0F4;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: none;
+  }
+
+  /* Clear tier: fully opaque white (overlay surfaces) */
+  .liquid-clear {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: none;
+  }
+
+  /* --- Dark mode: tiered solid fills --- */
+  .dark .liquid-nav {
+    background: #1a1a2e;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+  }
+
+  .dark .liquid-regular,
+  .dark .liquid-card,
+  .dark .liquid-fluted,
+  .dark .liquid-btn-secondary {
+    background: #1e2845;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+  }
+
+  .dark .stats-glass {
+    background: #232b42;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+  }
+
+  .dark .liquid-clear {
+    background: #141a2e;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+  }
+
+  /* --- Disable ALL pseudo-element decorations --- */
+  /* Glint, shimmer, specular rim, specular highlight = visual noise at high contrast */
+  .liquid-card::before,
+  .liquid-card::after,
+  .liquid-regular::before,
+  .liquid-regular::after,
+  .liquid-nav::before,
+  .liquid-nav::after,
+  .liquid-clear::before,
+  .liquid-clear::after,
+  .liquid-fluted::before,
+  .liquid-fluted::after,
+  .liquid-btn-secondary::before,
+  .stats-glass::before,
+  .stats-glass::after,
+  .shimmer-sweep::before {
+    display: none;
+  }
+
+  /* --- Override refraction variants too --- */
+  html[data-refract="true"] .liquid-regular,
+  html[data-refract="true"] .liquid-card,
+  html[data-refract="true"] .liquid-nav,
+  html[data-refract="true"] .liquid-clear,
+  html[data-refract="true"] .liquid-fluted,
+  html[data-refract="true"] .stats-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ================================================
    Section 15 -- No backdrop-filter support
    Solid semi-transparent background fallback for
    browsers without backdrop-filter support (~3% of
