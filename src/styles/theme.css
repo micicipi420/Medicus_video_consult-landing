@@ -175,31 +175,31 @@
   --font-weight-medium: 500;
   --font-weight-normal: 400;
 
-  /* v4.0: Liquid Glass -- dark recipe */
-  --liquid-bg: rgba(30, 40, 60, 0.45);
+  /* v7.0: Liquid Glass -- dark recipe (color-mix derivations from oklch bases) */
+  --liquid-bg: color-mix(in oklch, var(--glass-base-dark) 45%, transparent);
   --liquid-blur-sm: 18px;
   --liquid-blur-md: 28px;
   --liquid-blur-lg: 44px;
   --liquid-blur-xl: 64px;
   --liquid-saturate: 160%;
   --liquid-brightness: 115%;
-  --liquid-border-top: rgba(255, 255, 255, 0.25);
-  --liquid-border-bottom: rgba(0, 0, 0, 0.4);
-  --liquid-shadow-outer: 0 16px 40px rgba(0, 0, 0, 0.45);
-  --liquid-shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --liquid-shadow-inset-bottom: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  --liquid-border-top: color-mix(in oklch, var(--glass-base-light) 25%, transparent);
+  --liquid-border-bottom: color-mix(in oklch, var(--glass-dim-base) 40%, transparent);
+  --liquid-shadow-outer: 0 16px 40px color-mix(in oklch, var(--glass-dim-base) 45%, transparent);
+  --liquid-shadow-inset-top: inset 0 1px 0 color-mix(in oklch, var(--glass-base-light) 15%, transparent);
+  --liquid-shadow-inset-bottom: inset 0 -1px 0 color-mix(in oklch, var(--glass-dim-base) 30%, transparent);
 
   /* Dark glass hierarchy tokens */
-  --liquid-nav-bg: rgba(30, 40, 60, 0.30);
+  --liquid-nav-bg: color-mix(in oklch, var(--glass-base-dark) 30%, transparent);
   --liquid-nav-blur: 18px;
   --liquid-nav-shadow-outer: none;
 
-  --liquid-clear-bg: rgba(30, 40, 60, 0.22);
+  --liquid-clear-bg: color-mix(in oklch, var(--glass-base-dark) 22%, transparent);
   --liquid-clear-blur: 24px;
-  --liquid-clear-dim: rgba(0, 0, 0, 0.30);
-  --liquid-clear-shadow-outer: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --liquid-clear-dim: color-mix(in oklch, var(--glass-dim-base) 30%, transparent);
+  --liquid-clear-shadow-outer: 0 8px 32px color-mix(in oklch, var(--glass-dim-base) 25%, transparent);
 
-  --liquid-fluted-stripe-color: rgba(255, 255, 255, 0.06);
+  --liquid-fluted-stripe-color: color-mix(in oklch, var(--glass-base-light) 6%, transparent);
   --liquid-fluted-stripe-width: 2px;
   --liquid-fluted-stripe-gap: 8px;
 }
@@ -436,14 +436,14 @@
 @layer components {
   /* Header scroll state */
   .header--scrolled {
-    --liquid-bg: rgba(255, 255, 255, 0.45);
+    --liquid-bg: color-mix(in oklch, var(--glass-base-light) 45%, transparent);
     --liquid-blur-md: 60px;
     --liquid-saturate: 200%;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
   }
   .dark .header--scrolled {
-    --liquid-bg: rgba(30, 40, 60, 0.6);
+    --liquid-bg: color-mix(in oklch, var(--glass-base-dark) 60%, transparent);
     --liquid-blur-md: 60px;
     --liquid-saturate: 200%;
   }
