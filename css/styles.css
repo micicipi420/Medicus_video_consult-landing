@@ -1594,6 +1594,22 @@ textarea:focus-visible,
   border-radius: var(--radius-sm);
 }
 
+/* -- Accessibility: Touch target enforcement (ACC-05) -- */
+/* All interactive elements must be at least 44x44px per WCAG 2.2 SC 2.5.8.
+   Applied on ALL viewports per CONTEXT.md decision (not mobile-only).
+   Elements already meeting 44px (e.g., .button at 48px) are unaffected. */
+
+.site-header__link,
+.footer__link,
+.footer__app-link,
+.site-header__brand-link,
+.hub-guide__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 0.5rem;
+}
+
 /* -- FAQ smooth height transition (per D-15) -- */
 
 .faq__answer {
