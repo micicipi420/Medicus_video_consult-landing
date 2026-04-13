@@ -1563,6 +1563,37 @@ a:hover {
   transition: transform 100ms ease;
 }
 
+/* -- Accessibility: Focus-visible system (ACC-04) -- */
+/* 3px solid cyan ring, 2px offset -- visible on light AND dark backgrounds.
+   Uses :focus-visible (not :focus) to avoid ring on mouse clicks. */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Override the existing .lead-form__input:focus to use :focus-visible instead */
+.lead-form__input:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  border-color: #38C6F4;
+  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.2);
+}
+
+/* Keep the existing .faq__question:focus-visible but update color to cyan */
+.faq__question:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 /* -- FAQ smooth height transition (per D-15) -- */
 
 .faq__answer {

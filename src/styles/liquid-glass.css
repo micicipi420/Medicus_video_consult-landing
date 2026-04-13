@@ -1053,15 +1053,15 @@ html[data-refract="true"] .liquid-fluted {
   will-change: filter, transform;
 }
 
-/* Focus-visible -- keyboard focus ring */
+/* Focus-visible -- keyboard focus ring (ACC-04: 3px cyan, consistent with vanilla layer) */
 .liquid-regular:focus-visible,
 .liquid-card:focus-visible,
 .liquid-nav:focus-visible,
 .liquid-clear:focus-visible,
 .liquid-fluted:focus-visible,
 .stats-glass:focus-visible {
-  outline: 2px solid var(--mu-blue-text);
-  outline-offset: 4px;
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
   box-shadow: none;
 }
 
