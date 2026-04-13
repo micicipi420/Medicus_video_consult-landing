@@ -63,30 +63,30 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ACC-01 | TBD | Pending |
-| ACC-02 | TBD | Pending |
-| ACC-03 | TBD | Pending |
-| ACC-04 | TBD | Pending |
-| ACC-05 | TBD | Pending |
-| INT-01 | TBD | Pending |
-| INT-02 | TBD | Pending |
-| INT-03 | TBD | Pending |
-| INT-04 | TBD | Pending |
-| INT-05 | TBD | Pending |
-| PERF-01 | TBD | Pending |
-| PERF-02 | TBD | Pending |
-| PERF-03 | TBD | Pending |
-| PERF-04 | TBD | Pending |
-| PERF-05 | TBD | Pending |
-| TOK-01 | TBD | Pending |
-| TOK-02 | TBD | Pending |
-| TOK-03 | TBD | Pending |
+| TOK-01 | Phase 73 | Pending |
+| TOK-02 | Phase 73 | Pending |
+| ACC-01 | Phase 74 | Pending |
+| ACC-02 | Phase 74 | Pending |
+| ACC-03 | Phase 74 | Pending |
+| ACC-04 | Phase 74 | Pending |
+| ACC-05 | Phase 74 | Pending |
+| PERF-01 | Phase 75 | Pending |
+| PERF-02 | Phase 75 | Pending |
+| PERF-03 | Phase 75 | Pending |
+| INT-01 | Phase 76 | Pending |
+| INT-02 | Phase 76 | Pending |
+| INT-03 | Phase 76 | Pending |
+| INT-04 | Phase 76 | Pending |
+| INT-05 | Phase 76 | Pending |
+| PERF-04 | Phase 77 | Pending |
+| PERF-05 | Phase 77 | Pending |
+| TOK-03 | Phase 78 | Pending |
 
 **Coverage:**
 - v7.0 requirements: 18 total
-- Mapped to phases: 0
-- Unmapped: 18
+- Mapped to phases: 18
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-13*
-*Last updated: 2026-04-13 after initial definition*
+*Last updated: 2026-04-13 after roadmap creation*
