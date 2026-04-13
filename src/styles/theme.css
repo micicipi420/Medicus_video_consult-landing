@@ -1,6 +1,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Enable light-dark() function (Phase 73 / TOK-02) */
+  color-scheme: light dark;
+
   --font-size: 16px;
   --font-family-body: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-family-heading: 'SF Pro Rounded', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -112,15 +115,24 @@
   /* Liquid Glass -- Regular material (light mode)
      Tuned for visibility on white / near-white section backgrounds.
      color-mix(in oklch) derivations from base palette (Phase 73 TOK-01). */
-  --liquid-bg: color-mix(in oklch, var(--glass-base-light) 42%, transparent);
+  --liquid-bg: light-dark(
+    color-mix(in oklch, var(--glass-base-light) 42%, transparent),
+    color-mix(in oklch, var(--glass-base-dark) 45%, transparent)
+  );
   --liquid-blur-sm: 16px;
   --liquid-blur-md: 24px;
   --liquid-blur-lg: 40px;
   --liquid-blur-xl: 60px;
   --liquid-saturate: 180%;
   --liquid-brightness: 108%;
-  --liquid-border-top: color-mix(in oklch, var(--glass-border-tint) 70%, transparent);
-  --liquid-border-bottom: color-mix(in oklch, var(--glass-border-sub) 25%, transparent);
+  --liquid-border-top: light-dark(
+    color-mix(in oklch, var(--glass-border-tint) 70%, transparent),
+    color-mix(in oklch, var(--glass-base-light) 25%, transparent)
+  );
+  --liquid-border-bottom: light-dark(
+    color-mix(in oklch, var(--glass-border-sub) 25%, transparent),
+    color-mix(in oklch, var(--glass-dim-base) 40%, transparent)
+  );
   --liquid-shadow-outer: 0 16px 40px color-mix(in oklch, var(--glass-shadow-base) 16%, transparent);
   --liquid-shadow-inset-top: inset 0 1px 0 color-mix(in oklch, var(--glass-base-light) 95%, transparent);
   --liquid-shadow-inset-bottom: inset 0 -1px 0 color-mix(in oklch, var(--glass-border-sub) 15%, transparent);
@@ -130,18 +142,30 @@
      Regular uses base --liquid-* tokens directly -- no separate tokens needed. */
 
   /* Nav-weight: lightest blur, highest transparency, no outer shadow */
-  --liquid-nav-bg: color-mix(in oklch, var(--glass-base-light) 28%, transparent);
+  --liquid-nav-bg: light-dark(
+    color-mix(in oklch, var(--glass-base-light) 28%, transparent),
+    color-mix(in oklch, var(--glass-base-dark) 30%, transparent)
+  );
   --liquid-nav-blur: 16px;
   --liquid-nav-shadow-outer: none;
 
   /* Clear-weight: highest transparency, dimming backdrop, subtle shadow */
-  --liquid-clear-bg: color-mix(in oklch, var(--glass-base-light) 18%, transparent);
+  --liquid-clear-bg: light-dark(
+    color-mix(in oklch, var(--glass-base-light) 18%, transparent),
+    color-mix(in oklch, var(--glass-base-dark) 22%, transparent)
+  );
   --liquid-clear-blur: 20px;
-  --liquid-clear-dim: color-mix(in oklch, var(--glass-dim-base) 12%, transparent);
+  --liquid-clear-dim: light-dark(
+    color-mix(in oklch, var(--glass-dim-base) 12%, transparent),
+    color-mix(in oklch, var(--glass-dim-base) 30%, transparent)
+  );
   --liquid-clear-shadow-outer: 0 8px 32px color-mix(in oklch, var(--glass-shadow-base) 10%, transparent);
 
   /* Fluted-weight: regular blur + vertical streaks */
-  --liquid-fluted-stripe-color: color-mix(in oklch, var(--glass-base-light) 10%, transparent);
+  --liquid-fluted-stripe-color: light-dark(
+    color-mix(in oklch, var(--glass-base-light) 10%, transparent),
+    color-mix(in oklch, var(--glass-base-light) 6%, transparent)
+  );
   --liquid-fluted-stripe-width: 2px;
   --liquid-fluted-stripe-gap: 8px;
 
@@ -155,6 +179,8 @@
 }
 
 .dark {
+  color-scheme: dark;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -175,31 +201,25 @@
   --font-weight-medium: 500;
   --font-weight-normal: 400;
 
-  /* v7.0: Liquid Glass -- dark recipe (color-mix derivations from oklch bases) */
-  --liquid-bg: color-mix(in oklch, var(--glass-base-dark) 45%, transparent);
+  /* v7.0: Liquid Glass -- dark overrides (only non-color-eligible tokens)
+     Simple color tokens now use light-dark() in :root (TOK-02). */
   --liquid-blur-sm: 18px;
   --liquid-blur-md: 28px;
   --liquid-blur-lg: 44px;
   --liquid-blur-xl: 64px;
   --liquid-saturate: 160%;
   --liquid-brightness: 115%;
-  --liquid-border-top: color-mix(in oklch, var(--glass-base-light) 25%, transparent);
-  --liquid-border-bottom: color-mix(in oklch, var(--glass-dim-base) 40%, transparent);
   --liquid-shadow-outer: 0 16px 40px color-mix(in oklch, var(--glass-dim-base) 45%, transparent);
   --liquid-shadow-inset-top: inset 0 1px 0 color-mix(in oklch, var(--glass-base-light) 15%, transparent);
   --liquid-shadow-inset-bottom: inset 0 -1px 0 color-mix(in oklch, var(--glass-dim-base) 30%, transparent);
 
-  /* Dark glass hierarchy tokens */
-  --liquid-nav-bg: color-mix(in oklch, var(--glass-base-dark) 30%, transparent);
+  /* Dark glass hierarchy tokens (shadows + blur only -- colors handled by light-dark) */
   --liquid-nav-blur: 18px;
   --liquid-nav-shadow-outer: none;
 
-  --liquid-clear-bg: color-mix(in oklch, var(--glass-base-dark) 22%, transparent);
   --liquid-clear-blur: 24px;
-  --liquid-clear-dim: color-mix(in oklch, var(--glass-dim-base) 30%, transparent);
   --liquid-clear-shadow-outer: 0 8px 32px color-mix(in oklch, var(--glass-dim-base) 25%, transparent);
 
-  --liquid-fluted-stripe-color: color-mix(in oklch, var(--glass-base-light) 6%, transparent);
   --liquid-fluted-stripe-width: 2px;
   --liquid-fluted-stripe-gap: 8px;
 }
@@ -436,16 +456,14 @@
 @layer components {
   /* Header scroll state */
   .header--scrolled {
-    --liquid-bg: color-mix(in oklch, var(--glass-base-light) 45%, transparent);
+    --liquid-bg: light-dark(
+      color-mix(in oklch, var(--glass-base-light) 45%, transparent),
+      color-mix(in oklch, var(--glass-base-dark) 60%, transparent)
+    );
     --liquid-blur-md: 60px;
     --liquid-saturate: 200%;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
-  }
-  .dark .header--scrolled {
-    --liquid-bg: color-mix(in oklch, var(--glass-base-dark) 60%, transparent);
-    --liquid-blur-md: 60px;
-    --liquid-saturate: 200%;
   }
 
   /* Mobile menu toggle */
