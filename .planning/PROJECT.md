@@ -65,6 +65,18 @@
 
 ### Active
 
+## Current Milestone: v7.0 UI/UX Design Excellence
+
+**Goal:** Аудит и улучшение дизайна до SOTA-уровня — Liquid Glass polish, accessibility, performance, micro-interactions, responsive refinement.
+
+**Target features:**
+- Liquid Glass performance budget: снижение blur на mobile, лимит glass layers per viewport
+- Accessibility: prefers-contrast:more, worst-case contrast testing, shimmer limiting
+- Micro-interactions: hover states, scroll transitions, loading states polish
+- Typography: fine-tuning fluid scales, glass-on-text readability
+- Responsive: edge-case viewport fixes, orientation handling
+- Visual polish: specular highlight refinement, shadow consistency, dark mode glass tuning
+
 ### Out of Scope
 
 - Казахский язык — только русский в v1
@@ -88,6 +100,8 @@
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
+- v6.1: 5 phases, 14 plans — New Design Port (Liquid Glass design system, squircles, service pages)
+- Liquid Glass audit score: ~85% compliance with Apple guidelines. Main gaps: mobile blur budget, glass layer count, prefers-contrast, shimmer limits
 - Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
 - Стоимость консультации: от 450€
@@ -148,4 +162,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone completion*
+*Last updated: 2026-04-13 after v7.0 milestone start*
