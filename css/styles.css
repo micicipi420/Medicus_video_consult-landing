@@ -2752,3 +2752,88 @@ textarea:focus-visible,
   }
 }
 
+/* ================================================
+   Phase 75 (PERF-03): content-visibility: auto for below-fold sections
+   Applied to all section classes that are guaranteed to start below the fold.
+   Skipped: .hero, .social-proof (always above fold — must render immediately).
+
+   contain-intrinsic-size format: `auto Xpx` where:
+   - `auto` = remember real size after first paint (Chrome 105+)
+   - `Xpx` = fallback estimate for initial layout (used for scrollbar sizing)
+   ================================================ */
+
+.hub-services {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
+}
+
+.hub-guide {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.advantages {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.lead-form-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.final-cta {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
+.problem {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.why-us {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+.programs {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.process {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.b2b {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+.faq {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.benefits {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+.doctors {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+.about-us {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
