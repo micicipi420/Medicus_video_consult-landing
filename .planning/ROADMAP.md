@@ -143,7 +143,7 @@ See `.planning/milestones/` for full details per milestone.
 
 - [x] **Phase 73: Token Foundation** - Migrate glass tokens to color-mix(in oklch) and light-dark() for systematic color derivation -- completed 2026-04-13
 - [x] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets -- code complete 2026-04-13
-- [ ] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks
+- [x] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks (completed 2026-04-14)
 - [ ] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices
 - [ ] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages
 - [ ] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers
@@ -191,10 +191,10 @@ Plans:
   3. `prefers-reduced-transparency: reduce` block added to css/styles.css for production-layer coverage (ACC-02)
   4. Phase 74 formally verified with 74-VERIFICATION.md confirming ACC-01..ACC-05
   5. `header--scrolled` vs `.is-scrolled` class divergence documented as architectural decision (design system vs production layer)
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
-- [ ] 74.1-01-PLAN.md -- CSS fixes: dead rule removal, theme.css alignment, reduced-transparency block
-- [ ] 74.1-02-PLAN.md -- Phase 74 formal verification + architecture decision documentation
+- [x] 74.1-01-PLAN.md -- CSS fixes: dead rule removal, theme.css alignment, reduced-transparency block
+- [x] 74.1-02-PLAN.md -- Phase 74 formal verification + architecture decision documentation
 
 ### Phase 75: Mobile Performance Budget
 **Goal**: Glass effects stay visually smooth on mid-range Android devices by enforcing blur budgets, layer limits, and rendering optimizations
@@ -255,7 +255,7 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 |-------|----------------|--------|-----------|
 | 73. Token Foundation | 2/2 | Complete (human_needed) | 2026-04-13 |
 | 74. Accessibility Hardening | 2/2 | Code complete | 2026-04-13 |
-| 74.1. Integration Cleanup & Verification | 0/TBD | Not started | - |
+| 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
 | 75. Mobile Performance Budget | 0/TBD | Not started | - |
 | 76. Interaction Polish | 0/TBD | Not started | - |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
