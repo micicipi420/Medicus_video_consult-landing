@@ -221,7 +221,10 @@ Plans:
   3. Hovering over non-card glass surfaces (header, sticky bar, section backgrounds) produces a subtle brightness or tint shift
   4. With `prefers-reduced-motion: reduce` enabled in OS settings, zero motion occurs on any page -- no scroll-reveal, no glint, no shimmer, no animated transitions; all content renders in its final position immediately
   5. Text on all glass surfaces has enhanced readability via text-shadow or increased background opacity floor -- readable against any scroll-position background
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 76-01-PLAN.md -- Card hover states (INT-01) + form loading spinner (INT-02)
+- [ ] 76-02-PLAN.md -- Surface hover brightness (INT-03), prefers-reduced-motion coverage (INT-04), text readability (INT-05)
 **UI hint**: yes
 
 ### Phase 77: Progressive Enhancement
