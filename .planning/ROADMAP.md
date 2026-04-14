@@ -248,7 +248,9 @@ Plans:
   1. Side-by-side screenshot comparison of every page at 1440px and 375px before v7.0 vs after -- no unintended color shifts, layout breaks, or visual regressions
   2. All glass surface contrast improvements from Phase 74 are preserved in the final build -- spot-checking 5 glass elements confirms AA or better contrast ratios
   3. Form submission flow works end-to-end on every page that has a form -- no functional regression from CSS changes
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 78-01-PLAN.md -- Automated grep verification + human visual checkpoint
 
 ## Progress
 
@@ -267,4 +269,4 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 75. Mobile Performance Budget | 2/2 | Complete    | 2026-04-14 |
 | 76. Interaction Polish | 2/2 | Complete    | 2026-04-14 |
 | 77. Progressive Enhancement | 1/1 | Complete    | 2026-04-14 |
-| 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
+| 78. Token Verification & Visual Regression | 0/1 | Planned | - |
