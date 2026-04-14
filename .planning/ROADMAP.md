@@ -191,7 +191,10 @@ Plans:
   3. `prefers-reduced-transparency: reduce` block added to css/styles.css for production-layer coverage (ACC-02)
   4. Phase 74 formally verified with 74-VERIFICATION.md confirming ACC-01..ACC-05
   5. `header--scrolled` vs `.is-scrolled` class divergence documented as architectural decision (design system vs production layer)
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 74.1-01-PLAN.md -- CSS fixes: dead rule removal, theme.css alignment, reduced-transparency block
+- [ ] 74.1-02-PLAN.md -- Phase 74 formal verification + architecture decision documentation
 
 ### Phase 75: Mobile Performance Budget
 **Goal**: Glass effects stay visually smooth on mid-range Android devices by enforcing blur budgets, layer limits, and rendering optimizations
