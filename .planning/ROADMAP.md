@@ -235,7 +235,9 @@ Plans:
   1. On browsers supporting `animation-timeline: scroll()`, sections animate into view via CSS scroll-driven animations -- the existing IntersectionObserver fallback continues to work on non-supporting browsers
   2. A CSS scroll progress bar renders in the header area showing page scroll position -- only visible on browsers supporting `animation-timeline: scroll()`, completely absent on others
   3. Disabling JavaScript does not break the scroll-driven CSS animations on supporting browsers -- they are pure CSS, not JS-dependent
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 77-01-PLAN.md -- Scroll-driven section animations (PERF-04) + scroll progress bar (PERF-05)
 **UI hint**: yes
 
 ### Phase 78: Token Verification & Visual Regression
@@ -264,5 +266,5 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
 | 75. Mobile Performance Budget | 2/2 | Complete    | 2026-04-14 |
 | 76. Interaction Polish | 2/2 | Complete    | 2026-04-14 |
-| 77. Progressive Enhancement | 0/TBD | Not started | - |
+| 77. Progressive Enhancement | 0/1 | Planned | - |
 | 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
