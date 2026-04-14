@@ -1,5 +1,15 @@
 # Milestones
 
+## v7.0 UI/UX Design Excellence (Shipped: 2026-04-14)
+
+**Phases completed:** 7 phases, 12 plans, 21 tasks
+
+**Key accomplishments:**
+
+- 1. [Rule 2 - Missing critical functionality] Added hub-guide__link to touch target selectors
+
+---
+
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks
