@@ -144,7 +144,7 @@ See `.planning/milestones/` for full details per milestone.
 - [x] **Phase 73: Token Foundation** - Migrate glass tokens to color-mix(in oklch) and light-dark() for systematic color derivation -- completed 2026-04-13
 - [x] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets -- code complete 2026-04-13
 - [x] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks (completed 2026-04-14)
-- [ ] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices
+- [x] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices (completed 2026-04-14)
 - [ ] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages
 - [ ] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers
 - [ ] **Phase 78: Token Verification & Visual Regression** - Confirm color-mix migration produces identical visuals and all contrast improvements hold
@@ -205,10 +205,10 @@ Plans:
   2. At no scroll position on any page are more than 4 glass compositing layers simultaneously visible in the viewport -- verified by scrolling each page end-to-end and counting visible glass elements
   3. Below-fold sections use `content-visibility: auto` with appropriate `contain-intrinsic-size` values -- DevTools Performance panel shows reduced initial rendering work
   4. Chrome DevTools 4x CPU throttle scroll test on any page stays above 50fps with glass effects active
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
-- [ ] 75-01-PLAN.md -- Mobile blur budget tokens (PERF-01) and compositing layer suppression (PERF-02)
-- [ ] 75-02-PLAN.md -- content-visibility: auto for below-fold sections (PERF-03)
+- [x] 75-01-PLAN.md -- Mobile blur budget tokens (PERF-01) and compositing layer suppression (PERF-02)
+- [x] 75-02-PLAN.md -- content-visibility: auto for below-fold sections (PERF-03)
 **UI hint**: yes
 
 ### Phase 76: Interaction Polish
@@ -259,7 +259,7 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 73. Token Foundation | 2/2 | Complete (human_needed) | 2026-04-13 |
 | 74. Accessibility Hardening | 2/2 | Code complete | 2026-04-13 |
 | 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
-| 75. Mobile Performance Budget | 0/2 | Not started | - |
+| 75. Mobile Performance Budget | 2/2 | Complete    | 2026-04-14 |
 | 76. Interaction Polish | 0/TBD | Not started | - |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
 | 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
