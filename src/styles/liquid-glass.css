@@ -1158,3 +1158,32 @@ html[data-refract="true"] .liquid-fluted {
 .dark .glass-idle.liquid-clear {
   background: rgba(30, 40, 60, 0.50) !important;
 }
+
+/* ================================================
+   Phase 75 (PERF-02): Mobile compositing layer budget
+   Suppress will-change on static glass elements at mobile
+   breakpoint (< 768px). On mid-range Android, each
+   will-change: backdrop-filter or will-change: transform
+   forces a GPU compositing layer. More than 4 simultaneous
+   compositing layers degrade scroll performance.
+
+   Rationale for each suppression:
+   - .liquid-card::before — glint animation uses
+     will-change: background-position unconditionally.
+     On mobile the 6s glint cycle is barely noticeable
+     but the promoted layer wastes GPU memory.
+   - Button/shimmer will-change is already lazy (applied
+     on :hover only) — hover doesn't fire on touch so
+     those do NOT need suppression here.
+   ================================================ */
+@media (max-width: 767px) {
+  /* Suppress glint animation compositing layer on mobile */
+  .liquid-card::before {
+    will-change: auto;
+  }
+
+  /* Reduce animation duration on glint to cut GPU work on mobile */
+  .liquid-card::before {
+    animation-duration: 12s;
+  }
+}

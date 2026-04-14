@@ -504,3 +504,34 @@
   /* Active nav link */
   a[aria-current="page"] { color: var(--mu-blue); pointer-events: none; }
 }
+
+/* ================================================
+   Phase 75 (PERF-01): Mobile blur budget
+   Cap all backdrop-filter blur values to 14-20px on
+   viewports below 768px. Mid-range Android CPUs cannot
+   sustain 60fps with blur > 20px during scroll.
+
+   Tokens in scope:
+   - --liquid-blur-md: 24px desktop → 16px mobile
+   - --liquid-blur-lg: 40px desktop → 18px mobile
+   - --liquid-blur-xl: 60px desktop → 20px mobile
+   - --liquid-clear-blur: 20px desktop → 16px mobile (dark: 24→16)
+   Tokens already safe (≤ 20px), no change needed:
+   - --liquid-blur-sm (16/18px)
+   - --liquid-nav-blur (16/18px)
+   ================================================ */
+@media (max-width: 767px) {
+  :root {
+    --liquid-blur-md: 16px;
+    --liquid-blur-lg: 18px;
+    --liquid-blur-xl: 20px;
+    --liquid-clear-blur: 16px;
+  }
+
+  .dark {
+    --liquid-blur-md: 16px;
+    --liquid-blur-lg: 18px;
+    --liquid-blur-xl: 20px;
+    --liquid-clear-blur: 16px;
+  }
+}
