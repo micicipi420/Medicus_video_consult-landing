@@ -333,11 +333,12 @@ a:hover {
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-normal);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
 }
 
 .card__title {
@@ -2835,5 +2836,43 @@ textarea:focus-visible,
 .about-us {
   content-visibility: auto;
   contain-intrinsic-size: auto 600px;
+}
+
+/* ==========================================================================
+   16. PHASE 76 — INTERACTION POLISH
+   ========================================================================== */
+
+/* -- INT-02: Form submit button loading spinner -- */
+
+@keyframes mu-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.lead-form__submit.is-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.lead-form__submit.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: mu-spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-form__submit.is-loading::after {
+    animation: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    border-top-color: #ffffff;
+  }
 }
 
