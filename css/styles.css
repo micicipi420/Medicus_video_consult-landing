@@ -2876,3 +2876,70 @@ textarea:focus-visible,
   }
 }
 
+/* -- INT-03: Non-card surface hover brightness shift -- */
+
+/* Nav brightness — desktop only (nav is display:none on mobile) */
+@media (min-width: 768px) {
+  .site-header__link:hover {
+    color: var(--color-primary);
+    filter: brightness(1.06);
+  }
+}
+
+/* Site header brand link: subtle brightness on hover */
+.site-header__brand-link:hover {
+  filter: brightness(0.85);
+}
+
+/* Sticky bar phone: subtle brightness shift matching non-card surfaces */
+.sticky-bar__phone:hover {
+  color: var(--color-dark);
+  filter: brightness(0.9);
+}
+
+/* -- INT-05: Text readability on dark/gradient surfaces -- */
+
+/* Social proof numbers on dark navy background */
+.social-proof__number {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.social-proof__label {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Final CTA on dark navy */
+.final-cta__heading {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.final-cta__text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Pricing card — light gradient background */
+.pricing__amount {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* -- INT-04: prefers-reduced-motion — phase 76 complete coverage -- */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+
+  .hub-service:hover {
+    transform: none;
+  }
+
+  .lead-form__submit.is-loading::after {
+    animation: none;
+  }
+
+  .site-header__link:hover,
+  .site-header__brand-link:hover,
+  .sticky-bar__phone:hover {
+    filter: none;
+  }
+}
+
