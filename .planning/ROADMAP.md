@@ -205,7 +205,10 @@ Plans:
   2. At no scroll position on any page are more than 4 glass compositing layers simultaneously visible in the viewport -- verified by scrolling each page end-to-end and counting visible glass elements
   3. Below-fold sections use `content-visibility: auto` with appropriate `contain-intrinsic-size` values -- DevTools Performance panel shows reduced initial rendering work
   4. Chrome DevTools 4x CPU throttle scroll test on any page stays above 50fps with glass effects active
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 75-01-PLAN.md -- Mobile blur budget tokens (PERF-01) and compositing layer suppression (PERF-02)
+- [ ] 75-02-PLAN.md -- content-visibility: auto for below-fold sections (PERF-03)
 **UI hint**: yes
 
 ### Phase 76: Interaction Polish
@@ -256,7 +259,7 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 73. Token Foundation | 2/2 | Complete (human_needed) | 2026-04-13 |
 | 74. Accessibility Hardening | 2/2 | Code complete | 2026-04-13 |
 | 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
-| 75. Mobile Performance Budget | 0/TBD | Not started | - |
+| 75. Mobile Performance Budget | 0/2 | Not started | - |
 | 76. Interaction Polish | 0/TBD | Not started | - |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
 | 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
