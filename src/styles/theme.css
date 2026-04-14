@@ -354,8 +354,8 @@
   textarea:focus-visible,
   [role="button"]:focus-visible,
   [tabindex]:focus-visible {
-    outline: 2px solid var(--mu-blue-text);
-    outline-offset: 3px;
+    outline: 3px solid #38C6F4;
+    outline-offset: 2px;
     box-shadow: none;
   }
 

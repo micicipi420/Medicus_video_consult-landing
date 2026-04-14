@@ -1250,12 +1250,6 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
-.faq__question:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
 .faq__icon {
   flex-shrink: 0;
   width: 24px;
@@ -2733,6 +2727,28 @@ textarea:focus-visible,
 
   .advantages__icon {
     border: 2px solid var(--color-text-primary);
+  }
+}
+
+/* -- Accessibility: Reduced transparency mode (ACC-02) -- */
+/* Chrome/Edge 118+ only (progressive enhancement -- other browsers unaffected).
+   Strips radial-gradient rgba overlays from section backgrounds and hides
+   the decorative lead-form-section halo pseudo-element.
+   Solid background-color (var(--color-light)) is preserved on all sections. */
+
+@media (prefers-reduced-transparency: reduce) {
+  .problem,
+  [data-theme="dark"] .problem {
+    background: var(--color-light);
+  }
+
+  .benefits,
+  [data-theme="dark"] .benefits {
+    background: var(--color-light);
+  }
+
+  .lead-form-section::before {
+    display: none;
   }
 }
 
