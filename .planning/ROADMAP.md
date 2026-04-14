@@ -145,7 +145,7 @@ See `.planning/milestones/` for full details per milestone.
 - [x] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets -- code complete 2026-04-13
 - [x] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks (completed 2026-04-14)
 - [x] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices (completed 2026-04-14)
-- [ ] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages
+- [x] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages (completed 2026-04-14)
 - [ ] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers
 - [ ] **Phase 78: Token Verification & Visual Regression** - Confirm color-mix migration produces identical visuals and all contrast improvements hold
 
@@ -223,8 +223,8 @@ Plans:
   5. Text on all glass surfaces has enhanced readability via text-shadow or increased background opacity floor -- readable against any scroll-position background
 **Plans**: 2 plans
 Plans:
-- [ ] 76-01-PLAN.md -- Card hover states (INT-01) + form loading spinner (INT-02)
-- [ ] 76-02-PLAN.md -- Surface hover brightness (INT-03), prefers-reduced-motion coverage (INT-04), text readability (INT-05)
+- [x] 76-01-PLAN.md -- Card hover states (INT-01) + form loading spinner (INT-02)
+- [x] 76-02-PLAN.md -- Surface hover brightness (INT-03), prefers-reduced-motion coverage (INT-04), text readability (INT-05)
 **UI hint**: yes
 
 ### Phase 77: Progressive Enhancement
@@ -263,6 +263,6 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 74. Accessibility Hardening | 2/2 | Code complete | 2026-04-13 |
 | 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
 | 75. Mobile Performance Budget | 2/2 | Complete    | 2026-04-14 |
-| 76. Interaction Polish | 0/TBD | Not started | - |
+| 76. Interaction Polish | 2/2 | Complete    | 2026-04-14 |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
 | 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
