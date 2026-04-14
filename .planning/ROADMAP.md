@@ -146,7 +146,7 @@ See `.planning/milestones/` for full details per milestone.
 - [x] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks (completed 2026-04-14)
 - [x] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices (completed 2026-04-14)
 - [x] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages (completed 2026-04-14)
-- [ ] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers
+- [x] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers (completed 2026-04-14)
 - [ ] **Phase 78: Token Verification & Visual Regression** - Confirm color-mix migration produces identical visuals and all contrast improvements hold
 
 ## Phase Details
@@ -237,7 +237,7 @@ Plans:
   3. Disabling JavaScript does not break the scroll-driven CSS animations on supporting browsers -- they are pure CSS, not JS-dependent
 **Plans**: 1 plan
 Plans:
-- [ ] 77-01-PLAN.md -- Scroll-driven section animations (PERF-04) + scroll progress bar (PERF-05)
+- [x] 77-01-PLAN.md -- Scroll-driven section animations (PERF-04) + scroll progress bar (PERF-05)
 **UI hint**: yes
 
 ### Phase 78: Token Verification & Visual Regression
@@ -266,5 +266,5 @@ Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 | 74.1. Integration Cleanup & Verification | 2/2 | Complete    | 2026-04-14 |
 | 75. Mobile Performance Budget | 2/2 | Complete    | 2026-04-14 |
 | 76. Interaction Polish | 2/2 | Complete    | 2026-04-14 |
-| 77. Progressive Enhancement | 0/1 | Planned | - |
+| 77. Progressive Enhancement | 1/1 | Complete    | 2026-04-14 |
 | 78. Token Verification & Visual Regression | 0/TBD | Not started | - |
