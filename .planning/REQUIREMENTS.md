@@ -63,13 +63,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOK-01 | Phase 73 | Pending |
-| TOK-02 | Phase 73 | Pending |
-| ACC-01 | Phase 74 | Pending |
-| ACC-02 | Phase 74 | Pending |
-| ACC-03 | Phase 74 | Pending |
-| ACC-04 | Phase 74 | Pending |
-| ACC-05 | Phase 74 | Pending |
+| TOK-01 | Phase 73 | Satisfied |
+| TOK-02 | Phase 73 | Satisfied |
+| ACC-01 | Phase 74 + 74.1 (verify) | Partial — code done, needs verification |
+| ACC-02 | Phase 74 + 74.1 (verify + production block) | Partial — needs css/styles.css block |
+| ACC-03 | Phase 74 + 74.1 (verify) | Partial — code done, needs verification |
+| ACC-04 | Phase 74 + 74.1 (verify + fix dead code) | Partial — code done, needs cleanup |
+| ACC-05 | Phase 74 + 74.1 (verify) | Partial — code done, needs verification |
 | PERF-01 | Phase 75 | Pending |
 | PERF-02 | Phase 75 | Pending |
 | PERF-03 | Phase 75 | Pending |
@@ -84,6 +84,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **Coverage:**
 - v7.0 requirements: 18 total
+- Satisfied: 2 (TOK-01, TOK-02)
+- Partial: 5 (ACC-01..ACC-05 — code done, verification in Phase 74.1)
+- Pending: 11 (Phases 75-78)
 - Mapped to phases: 18
 - Unmapped: 0
 

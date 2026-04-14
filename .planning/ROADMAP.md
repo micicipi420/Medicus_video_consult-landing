@@ -141,8 +141,9 @@ See `.planning/milestones/` for full details per milestone.
 
 **Milestone Goal:** Audit and improve the design to SOTA level -- Liquid Glass token refactor, accessibility hardening, mobile performance budget, interaction polish, progressive CSS enhancements.
 
-- [ ] **Phase 73: Token Foundation** - Migrate glass tokens to color-mix(in oklch) and light-dark() for systematic color derivation
-- [ ] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets
+- [x] **Phase 73: Token Foundation** - Migrate glass tokens to color-mix(in oklch) and light-dark() for systematic color derivation -- completed 2026-04-13
+- [x] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets -- code complete 2026-04-13
+- [ ] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks
 - [ ] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices
 - [ ] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages
 - [ ] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers
@@ -178,6 +179,19 @@ Plans:
 - [ ] 74-01-PLAN.md -- Glass surface accessibility (prefers-contrast:more, reduced-transparency, opacity floor)
 - [ ] 74-02-PLAN.md -- Focus-visible rings and touch target enforcement
 **UI hint**: yes
+
+### Phase 74.1: Integration Cleanup & Verification (Gap Closure)
+**Goal**: Fix cross-phase integration issues found by milestone audit, formally verify Phase 74 accessibility work, and add missing production-layer accessibility blocks
+**Depends on**: Phase 74 (fixes issues in Phase 74 output)
+**Requirements**: ACC-01, ACC-02, ACC-03, ACC-04, ACC-05 (verification catch-up)
+**Gap Closure**: Audit findings from v7.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. Dead `.faq__question:focus-visible` rule at css/styles.css:1253 removed -- only the Phase 74 rule at line 1591 remains
+  2. Focus-visible spec in src/styles/theme.css updated from 2px blue to 3px cyan (#38C6F4) matching css/styles.css
+  3. `prefers-reduced-transparency: reduce` block added to css/styles.css for production-layer coverage (ACC-02)
+  4. Phase 74 formally verified with 74-VERIFICATION.md confirming ACC-01..ACC-05
+  5. `header--scrolled` vs `.is-scrolled` class divergence documented as architectural decision (design system vs production layer)
+**Plans**: TBD
 
 ### Phase 75: Mobile Performance Budget
 **Goal**: Glass effects stay visually smooth on mid-range Android devices by enforcing blur budgets, layer limits, and rendering optimizations
@@ -230,14 +244,15 @@ Plans:
 ### v7.0 UI/UX Design Excellence
 
 **Execution Order:**
-Phases 74, 75, 76 can proceed in parallel after Phase 73.
-Phase 77 depends on Phase 76. Phase 78 depends on Phases 74 + 75.
-Recommended order: 73 -> 74 -> 75 -> 76 -> 77 -> 78
+73 -> 74 -> 74.1 -> 75 -> 76 -> 77 -> 78
+Phase 74.1 must complete before 75 (integration fixes affect downstream).
+Phase 77 depends on Phase 76. Phase 78 depends on Phases 74.1 + 75.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 73. Token Foundation | 0/2 | Not started | - |
-| 74. Accessibility Hardening | 0/2 | Not started | - |
+| 73. Token Foundation | 2/2 | Complete (human_needed) | 2026-04-13 |
+| 74. Accessibility Hardening | 2/2 | Code complete | 2026-04-13 |
+| 74.1. Integration Cleanup & Verification | 0/TBD | Not started | - |
 | 75. Mobile Performance Budget | 0/TBD | Not started | - |
 | 76. Interaction Polish | 0/TBD | Not started | - |
 | 77. Progressive Enhancement | 0/TBD | Not started | - |
