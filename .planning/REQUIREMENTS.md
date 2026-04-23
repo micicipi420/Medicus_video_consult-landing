@@ -3,7 +3,55 @@
 **Defined:** 2026-04-13
 **Core Value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
 
-## v7.0 Requirements
+## v8.0 Requirements
+
+Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
+
+### Hero (Video Call Frame)
+
+- [ ] **HERO-01**: Hero shows doctor photo framed as a video-call window (not a flat portrait)
+- [ ] **HERO-02**: Video-call frame displays mic, camera, and hangup control buttons (visual only, non-functional)
+- [ ] **HERO-03**: HD badge is visible on the video-call frame
+- [ ] **HERO-04**: Hero displays two CTAs (primary: заявка на консультацию; secondary: learn more / scroll)
+- [ ] **HERO-05**: Hero layout is mobile-first, readable for ЦА 45+, and preserves 3-second value comprehension
+
+### Stats Bar
+
+- [ ] **STATS-01**: Stats section presents 4 metrics, each with an icon, in glass-style cards
+- [ ] **STATS-02**: Stats bar sits directly below hero as an at-a-glance credibility strip
+
+### Services ("Мы помогаем на каждом этапе")
+
+- [ ] **SVC-01**: Services section shows 4 service cards with icons in glass style
+- [ ] **SVC-02**: Each card has an icon, title, and short scannable description
+- [ ] **SVC-03**: Cards link to their respective service pages without regression
+
+### Process ("Как это работает")
+
+- [ ] **PROC-01**: Process section shows 4 numbered steps, each with an icon
+- [ ] **PROC-02**: Steps are visually connected by dotted connector lines on desktop
+- [ ] **PROC-03**: On mobile the dotted connectors collapse to a vertical variant or are hidden without breaking layout
+
+### CTA Form
+
+- [ ] **FORM-01**: Final CTA section uses a blue gradient background behind the form
+- [ ] **FORM-02**: Form includes trust signals (privacy, response time, europe-based doctors)
+- [ ] **FORM-03**: Form submits to existing Directus endpoint without regression
+
+### Header
+
+- [ ] **HDR-01**: Header uses updated glass style aligned with new design direction
+- [ ] **HDR-02**: Navigation links to all existing sections/pages without regression
+- [ ] **HDR-03**: Mobile header behavior (menu toggle, sticky positioning) preserved
+
+### Visual System
+
+- [ ] **VIS-01**: Glassmorphism strengthened across index page per mockup
+- [ ] **VIS-02**: Typography updated to modern scale used in new design direction
+- [ ] **VIS-03**: Mobile budget respected (≤2 glass elements/viewport, blur ≤12px, ЦА 45+ simplicity)
+- [ ] **VIS-04**: Existing accessibility guarantees preserved (prefers-contrast, prefers-reduced-transparency, prefers-reduced-motion, focus-visible, 44×44 touch targets)
+
+## v7.0 Requirements (Shipped 2026-04-14)
 
 Requirements for UI/UX Design Excellence milestone. Each maps to roadmap phases.
 
