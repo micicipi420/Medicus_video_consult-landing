@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v7.0
-milestone_name: UI/UX Design Excellence
-status: executing
-stopped_at: Roadmap created for v7.0 -- ready to plan Phase 73
-last_updated: "2026-04-14T15:41:13.790Z"
-last_activity: 2026-04-14
+milestone: v8.0
+milestone_name: Index Page Redesign
+status: defining_requirements
+stopped_at: Milestone v8.0 started -- defining requirements
+last_updated: "2026-04-23T00:00:00.000Z"
+last_activity: 2026-04-23
 progress:
-  total_phases: 7
-  completed_phases: 5
-  total_plans: 12
-  completed_plans: 10
-  percent: 83
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-13)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 76 — Interaction Polish
+**Current focus:** v8.0 Index Page Redesign
 
 ## Current Position
 
-Phase: 78
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-04-14
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-23 — Milestone v8.0 started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -86,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13
-Stopped at: Roadmap created for v7.0 -- ready to plan Phase 73
+Last session: 2026-04-23
+Stopped at: Milestone v8.0 started -- defining requirements
 Resume file: None

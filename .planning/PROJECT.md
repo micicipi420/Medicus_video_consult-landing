@@ -65,17 +65,17 @@
 
 ### Active
 
-## Current Milestone: v7.0 UI/UX Design Excellence
+## Current Milestone: v8.0 Index Page Redesign
 
-**Goal:** Аудит и улучшение дизайна до SOTA-уровня — Liquid Glass polish, accessibility, performance, micro-interactions, responsive refinement.
+**Goal:** Редизайн главной страницы по визуальному направлению из макета — новая структура секций, усиленный glassmorphism, современная типографика.
 
 **Target features:**
-- Liquid Glass performance budget: снижение blur на mobile, лимит glass layers per viewport
-- Accessibility: prefers-contrast:more, worst-case contrast testing, shimmer limiting
-- Micro-interactions: hover states, scroll transitions, loading states polish
-- Typography: fine-tuning fluid scales, glass-on-text readability
-- Responsive: edge-case viewport fixes, orientation handling
-- Visual polish: specular highlight refinement, shadow consistency, dark mode glass tuning
+- Hero с фото врача в рамке видеозвонка (mic/camera/hangup controls, HD badge) + два CTA
+- Stats bar: 4 метрики с иконками в glass-карточках
+- «Мы помогаем на каждом этапе»: 4 карточки-услуги с иконками в glass-стиле
+- «Как это работает»: 4 нумерованных шага с иконками и пунктирными соединительными линиями
+- CTA-форма на синем градиенте с trust-сигналами
+- Обновлённый glass-header с навигацией
 
 ### Out of Scope
 
@@ -162,4 +162,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-13 after v7.0 milestone start*
+*Last updated: 2026-04-23 after v8.0 milestone start*
