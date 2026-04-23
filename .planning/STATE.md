@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v8.0
 milestone_name: Index Page Redesign
-status: defining_requirements
-stopped_at: Milestone v8.0 started -- defining requirements
+status: roadmap_complete
+stopped_at: v8.0 roadmap created -- ready to plan Phase 79
 last_updated: "2026-04-23T00:00:00.000Z"
 last_activity: 2026-04-23
 progress:
-  total_phases: 0
+  total_phases: 7
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,19 +18,19 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-13)
+See: .planning/PROJECT.md (updated 2026-04-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** v8.0 Index Page Redesign
+**Current focus:** v8.0 Index Page Redesign (Phases 79-85)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 79 -- Visual Foundation (Typography & Mobile Budget)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-23 — Milestone v8.0 started
+Status: Roadmap complete, ready to plan Phase 79
+Last activity: 2026-04-23 — v8.0 roadmap created (7 phases, 22 requirements mapped)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [░░░░░░░░░░] 0% (0/7 phases)
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Recent decisions affecting current work:
 - [v6.0]: Glass CSS stays global (not component-scoped) -- single globals.css @import chain
 - [v6.1]: New design source of truth is vanilla HTML at commit d450232 on feat/new-design branch
 - [v7.0]: 6 phases derived from 18 requirements; Phases 74/75/76 parallelizable after 73
+- [v8.0]: 7 phases derived from 22 requirements; Phase 79 (foundation) unblocks all others; Phase 85 (verification) must ship last
 
 ### Pending Todos
 
@@ -76,7 +77,7 @@ None yet.
 
 - Turbopack backdrop-filter bug (#78302) -- OPEN, must use Webpack for prod
 - CSS import order divergence dev/prod (#79531, #79535) -- mitigated by single entry point
-- `animation-timeline` browser support needs caniuse verification before Phase 77 (training data cutoff)
+- Strengthened glassmorphism in v8.0 must stay within v7.0 mobile budget (≤2 glass layers / ≤12px blur on <768px)
 
 ### Quick Tasks Completed
 
@@ -87,5 +88,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-23
-Stopped at: Milestone v8.0 started -- defining requirements
+Stopped at: v8.0 roadmap created -- ready to plan Phase 79
 Resume file: None

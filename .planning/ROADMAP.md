@@ -16,8 +16,32 @@
 - v6.0 Next.js Stack Migration -- Phases 59-67.1 (shipped 2026-04-11)
 - v6.1 New Design Port -- Phases 68-72 (shipped 2026-04-12)
 - v7.0 UI/UX Design Excellence -- Phases 73-78 (shipped 2026-04-14)
+- v8.0 Index Page Redesign -- Phases 79-85
 
 ## Phases
+
+### v8.0 Index Page Redesign (In Progress)
+
+- [ ] **Phase 79: Visual Foundation (Typography & Mobile Budget)** - Establish modern type scale and responsive glass/motion budget tokens that every subsequent phase consumes
+- [ ] **Phase 80: Glass Header Chrome** - Ship the new glass-style header with navigation parity and preserved mobile behavior
+- [ ] **Phase 81: Hero Video-Call Frame** - Replace hero with doctor photo framed as a video-call window (mic/camera/hangup controls, HD badge, dual CTAs)
+- [ ] **Phase 82: Stats Bar** - At-a-glance credibility strip below hero: 4 icon metrics in glass cards
+- [ ] **Phase 83: Services & Process Sections** - "Мы помогаем" 4 glass service cards plus "Как это работает" 4 numbered steps with dotted connectors
+- [ ] **Phase 84: CTA Form on Blue Gradient** - Final CTA section with blue gradient background, trust signals, and preserved Directus submission
+- [ ] **Phase 85: Glass Hardening & Accessibility Verification** - Strengthen glassmorphism across index per mockup and verify accessibility/mobile budget guarantees still hold
+
+<details>
+<summary>v7.0 UI/UX Design Excellence (Phases 73-78) -- SHIPPED 2026-04-14</summary>
+
+- [x] Phase 73: Token Foundation (2/2 plans) -- completed 2026-04-13
+- [x] Phase 74: Accessibility Hardening (2/2 plans) -- completed 2026-04-13
+- [x] Phase 74.1: Integration Cleanup & Verification (2/2 plans) -- completed 2026-04-14
+- [x] Phase 75: Mobile Performance Budget (2/2 plans) -- completed 2026-04-14
+- [x] Phase 76: Interaction Polish (2/2 plans) -- completed 2026-04-14
+- [x] Phase 77: Progressive Enhancement (1/1 plan) -- completed 2026-04-14
+- [x] Phase 78: Token Verification & Visual Regression (1/1 plan) -- completed 2026-04-14
+
+</details>
 
 <details>
 <summary>v6.1 New Design Port (Phases 68-72) -- SHIPPED 2026-04-12</summary>
@@ -137,122 +161,111 @@ See `.planning/milestones/` for full details per milestone.
 
 </details>
 
-### v7.0 UI/UX Design Excellence (In Progress)
-
-**Milestone Goal:** Audit and improve the design to SOTA level -- Liquid Glass token refactor, accessibility hardening, mobile performance budget, interaction polish, progressive CSS enhancements.
-
-- [x] **Phase 73: Token Foundation** - Migrate glass tokens to color-mix(in oklch) and light-dark() for systematic color derivation -- completed 2026-04-13
-- [x] **Phase 74: Accessibility Hardening** - Ensure all glass surfaces meet WCAG AA contrast, respond to user preferences, and provide adequate touch/focus targets -- code complete 2026-04-13
-- [x] **Phase 74.1: Integration Cleanup & Verification** (gap closure) - Fix integration issues from audit, verify Phase 74, add missing production-layer accessibility blocks (completed 2026-04-14)
-- [x] **Phase 75: Mobile Performance Budget** - Enforce blur budgets, glass layer limits, and rendering optimizations for mid-range Android devices (completed 2026-04-14)
-- [x] **Phase 76: Interaction Polish** - Deliver consistent hover/focus/active states, loading feedback, and motion preference guards across all pages (completed 2026-04-14)
-- [x] **Phase 77: Progressive Enhancement** - Layer scroll-driven CSS animations and scroll progress bar as additive enhancements for supporting browsers (completed 2026-04-14)
-- [x] **Phase 78: Token Verification & Visual Regression** - Confirm color-mix migration produces identical visuals and all contrast improvements hold (completed 2026-04-14)
-
 ## Phase Details
 
-### Phase 73: Token Foundation
-**Goal**: Glass tokens derive from a systematic color-mix pipeline instead of hardcoded rgba -- enabling all downstream phases to manipulate glass colors programmatically
-**Depends on**: Nothing (first v7.0 phase; builds on v6.1 shipped design system)
-**Requirements**: TOK-01, TOK-02
+### Phase 79: Visual Foundation (Typography & Mobile Budget)
+**Goal**: Establish the modern type scale and responsive glass/motion budget tokens that every subsequent v8.0 phase will consume -- nothing downstream ships without this foundation
+**Depends on**: Nothing (first v8.0 phase; builds on shipped v7.0 token system)
+**Requirements**: VIS-02, VIS-03
 **Success Criteria** (what must be TRUE):
-  1. All glass surface tokens in theme.css use `color-mix(in oklch, ...)` derivations instead of hardcoded rgba values -- DevTools computed styles show identical visual output
-  2. Dark mode tokens use `light-dark()` function where browser support exists, with a fallback for unsupported browsers -- both themes render correctly
-  3. A before/after screenshot at 1440px and 375px shows zero visible difference between the old hardcoded tokens and the new color-mix tokens
-**Plans:** 2 plans
-Plans:
-- [ ] 73-01-PLAN.md -- Migrate all liquid-* rgba tokens to color-mix(in oklch) derivations
-- [ ] 73-02-PLAN.md -- Consolidate light/dark pairs with light-dark() function
-
-### Phase 74: Accessibility Hardening
-**Goal**: Users with high-contrast or reduced-transparency preferences see an adapted interface, and all glass surfaces pass WCAG AA contrast in worst-case composite scenarios
-**Depends on**: Phase 73 (color-mix tokens enable systematic contrast adjustments)
-**Requirements**: ACC-01, ACC-02, ACC-03, ACC-04, ACC-05
-**Success Criteria** (what must be TRUE):
-  1. With `prefers-contrast: more` enabled in browser/OS settings, all glass surfaces switch to solid backgrounds with no blur -- text contrast on those surfaces exceeds 7:1 (AAA level)
-  2. With `prefers-reduced-transparency: reduce` enabled, all glass/translucent elements render as fully opaque -- no transparency visible anywhere on the page
-  3. Every text element on a glass surface passes WCAG 2.2 AA contrast (4.5:1 for body text, 3:1 for large text) when tested against the worst-case background that can scroll behind it
-  4. Pressing Tab through the page shows a visible `:focus-visible` ring on every interactive element -- ring has sufficient contrast against its background
-  5. On a 375px mobile viewport, all buttons and tappable elements measure at least 44x44px in the touch target area
-**Plans:** 2 plans
-Plans:
-- [ ] 74-01-PLAN.md -- Glass surface accessibility (prefers-contrast:more, reduced-transparency, opacity floor)
-- [ ] 74-02-PLAN.md -- Focus-visible rings and touch target enforcement
+  1. Headings across the index page render with the updated modern type scale from the mockup -- display sizes, weights, and letter-spacing match at 375px and 1440px
+  2. Glass tokens expose a mobile variant so no viewport below 768px composites more than 2 glass elements at once and blur values stay ≤12px
+  3. A reader aged 45+ on mobile can still read body copy without zoom -- minimum body size ≥17px and line-height ≥1.5
+  4. Existing v7.0 accessibility guarantees (prefers-reduced-motion, prefers-contrast, light-dark()) still pass on a token-only regression check
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 74.1: Integration Cleanup & Verification (Gap Closure)
-**Goal**: Fix cross-phase integration issues found by milestone audit, formally verify Phase 74 accessibility work, and add missing production-layer accessibility blocks
-**Depends on**: Phase 74 (fixes issues in Phase 74 output)
-**Requirements**: ACC-01, ACC-02, ACC-03, ACC-04, ACC-05 (verification catch-up)
-**Gap Closure**: Audit findings from v7.0-MILESTONE-AUDIT.md
+### Phase 80: Glass Header Chrome
+**Goal**: Ship the updated glass-style header so every page (starting with index) wears the new design language and users still reach every existing section/page
+**Depends on**: Phase 79 (consumes new typography + glass tokens)
+**Requirements**: HDR-01, HDR-02, HDR-03
 **Success Criteria** (what must be TRUE):
-  1. Dead `.faq__question:focus-visible` rule at css/styles.css:1253 removed -- only the Phase 74 rule at line 1591 remains
-  2. Focus-visible spec in src/styles/theme.css updated from 2px blue to 3px cyan (#38C6F4) matching css/styles.css
-  3. `prefers-reduced-transparency: reduce` block added to css/styles.css for production-layer coverage (ACC-02)
-  4. Phase 74 formally verified with 74-VERIFICATION.md confirming ACC-01..ACC-05
-  5. `header--scrolled` vs `.is-scrolled` class divergence documented as architectural decision (design system vs production layer)
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 74.1-01-PLAN.md -- CSS fixes: dead rule removal, theme.css alignment, reduced-transparency block
-- [x] 74.1-02-PLAN.md -- Phase 74 formal verification + architecture decision documentation
-
-### Phase 75: Mobile Performance Budget
-**Goal**: Glass effects stay visually smooth on mid-range Android devices by enforcing blur budgets, layer limits, and rendering optimizations
-**Depends on**: Phase 73 (color-mix tokens enable responsive blur value derivation)
-**Requirements**: PERF-01, PERF-02, PERF-03
-**Success Criteria** (what must be TRUE):
-  1. On viewports below 768px, glass blur values are 14-20px (reduced from desktop values) -- verified via DevTools computed style on mobile simulation
-  2. At no scroll position on any page are more than 4 glass compositing layers simultaneously visible in the viewport -- verified by scrolling each page end-to-end and counting visible glass elements
-  3. Below-fold sections use `content-visibility: auto` with appropriate `contain-intrinsic-size` values -- DevTools Performance panel shows reduced initial rendering work
-  4. Chrome DevTools 4x CPU throttle scroll test on any page stays above 50fps with glass effects active
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 75-01-PLAN.md -- Mobile blur budget tokens (PERF-01) and compositing layer suppression (PERF-02)
-- [x] 75-02-PLAN.md -- content-visibility: auto for below-fold sections (PERF-03)
+  1. Header renders with the new glass treatment aligned to the mockup -- visually distinct from the pre-v8.0 header on both light and dark themes
+  2. Every navigation link that existed before v8.0 still navigates to the same section or page -- zero broken links, zero missing entries
+  3. On a 375px viewport the mobile menu toggle opens/closes the nav, the header stays sticky on scroll, and no layout shift occurs when the glass effect activates
+  4. Header respects `prefers-reduced-transparency` and `prefers-contrast: more` -- opaque fallback renders cleanly
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 76: Interaction Polish
-**Goal**: Every interactive element across all pages has consistent, purposeful hover/focus/active states, proper loading feedback, and animations respect user motion preferences
-**Depends on**: Phase 73 (color-mix tokens enable systematic hover state derivations)
-**Requirements**: INT-01, INT-02, INT-03, INT-04, INT-05
+### Phase 81: Hero Video-Call Frame
+**Goal**: Replace the hero with a doctor photo framed as a video-call window so the 3-second value comprehension becomes "this is a real video consultation with a European doctor"
+**Depends on**: Phase 79 (typography), Phase 80 (header chrome sits above hero)
+**Requirements**: HERO-01, HERO-02, HERO-03, HERO-04, HERO-05
 **Success Criteria** (what must be TRUE):
-  1. Hovering over any card on any page triggers a consistent visual response (lift, shadow, or tint shift) -- no cards have missing or inconsistent hover states
-  2. Submitting the contact form shows a loading spinner on the button with the button disabled -- re-clicking during submission is impossible
-  3. Hovering over non-card glass surfaces (header, sticky bar, section backgrounds) produces a subtle brightness or tint shift
-  4. With `prefers-reduced-motion: reduce` enabled in OS settings, zero motion occurs on any page -- no scroll-reveal, no glint, no shimmer, no animated transitions; all content renders in its final position immediately
-  5. Text on all glass surfaces has enhanced readability via text-shadow or increased background opacity floor -- readable against any scroll-position background
-**Plans**: 2 plans
-Plans:
-- [x] 76-01-PLAN.md -- Card hover states (INT-01) + form loading spinner (INT-02)
-- [x] 76-02-PLAN.md -- Surface hover brightness (INT-03), prefers-reduced-motion coverage (INT-04), text readability (INT-05)
+  1. Hero shows a doctor photo clearly framed as a video-call window (rounded frame, call UI chrome) -- a first-time visitor recognizes it as a call, not a flat portrait
+  2. Mic, camera, and hangup control buttons are visible on the video-call frame (visual only; they do not need to function)
+  3. An HD badge is visible on the video-call frame
+  4. Two CTAs are present in the hero -- a primary that scrolls to or opens the consultation request form, and a secondary that scrolls to more info
+  5. On a 375px viewport the hero remains readable for ЦА 45+ -- headline ≥32px, CTAs ≥44px touch target, no horizontal scroll
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 77: Progressive Enhancement
-**Goal**: Users on modern browsers see scroll-driven animations and a scroll progress indicator as additive polish -- users on older browsers see the same content without those extras
-**Depends on**: Phase 76 (interaction states must be stable before layering scroll-driven animations on top)
-**Requirements**: PERF-04, PERF-05
+### Phase 82: Stats Bar
+**Goal**: Give the visitor an at-a-glance credibility strip immediately below the hero so trust is established before they scroll into content
+**Depends on**: Phase 79 (tokens), Phase 81 (hero placement)
+**Requirements**: STATS-01, STATS-02
 **Success Criteria** (what must be TRUE):
-  1. On browsers supporting `animation-timeline: scroll()`, sections animate into view via CSS scroll-driven animations -- the existing IntersectionObserver fallback continues to work on non-supporting browsers
-  2. A CSS scroll progress bar renders in the header area showing page scroll position -- only visible on browsers supporting `animation-timeline: scroll()`, completely absent on others
-  3. Disabling JavaScript does not break the scroll-driven CSS animations on supporting browsers -- they are pure CSS, not JS-dependent
-**Plans**: 1 plan
-Plans:
-- [x] 77-01-PLAN.md -- Scroll-driven section animations (PERF-04) + scroll progress bar (PERF-05)
+  1. A stats section renders directly below the hero containing exactly 4 metrics, each with its own icon, in glass-style cards
+  2. The stats bar reads as an "at-a-glance" strip -- all 4 cards visible together at 1440px, stacked or 2x2 at 375px without wrapping into an awkward layout
+  3. Stats bar stays within the mobile glass budget established in Phase 79 (counting the header, no more than 2 glass layers simultaneously visible on mobile)
+**Plans**: TBD
 **UI hint**: yes
 
-### Phase 78: Token Verification & Visual Regression
-**Goal**: The entire color-mix token migration and contrast improvements are verified to produce identical or improved visuals with no regressions
-**Depends on**: Phase 74, Phase 75 (all visual changes from accessibility and performance phases must land before verification)
-**Requirements**: TOK-03
+### Phase 83: Services & Process Sections
+**Goal**: Replace the mid-page content sections ("Мы помогаем на каждом этапе" and "Как это работает") with the new glass service cards and dotted-connector numbered steps from the mockup
+**Depends on**: Phase 79 (tokens + typography)
+**Requirements**: SVC-01, SVC-02, SVC-03, PROC-01, PROC-02, PROC-03
 **Success Criteria** (what must be TRUE):
-  1. Side-by-side screenshot comparison of every page at 1440px and 375px before v7.0 vs after -- no unintended color shifts, layout breaks, or visual regressions
-  2. All glass surface contrast improvements from Phase 74 are preserved in the final build -- spot-checking 5 glass elements confirms AA or better contrast ratios
-  3. Form submission flow works end-to-end on every page that has a form -- no functional regression from CSS changes
-**Plans:** 1/1 plans complete
-Plans:
-- [x] 78-01-PLAN.md -- Automated grep verification + human visual checkpoint
+  1. "Мы помогаем на каждом этапе" renders exactly 4 glass-style service cards, each with an icon, title, and a short scannable description
+  2. Every service card links to its existing service page -- clicking any card lands on the same destination as before v8.0 (no 404, no redirect loop)
+  3. "Как это работает" renders exactly 4 numbered steps, each with an icon, visually connected by dotted connector lines on desktop (≥768px)
+  4. On mobile (<768px) the dotted connectors either collapse to a vertical connector or disappear entirely -- the step layout never breaks, overlaps, or overflows the viewport
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 84: CTA Form on Blue Gradient
+**Goal**: Wrap the existing consultation request form in the new blue-gradient CTA section with trust signals so the final conversion moment matches the mockup without breaking any existing submission behaviour
+**Depends on**: Phase 79 (tokens), Phase 80 (header parity for form page)
+**Requirements**: FORM-01, FORM-02, FORM-03
+**Success Criteria** (what must be TRUE):
+  1. The final CTA section on the index page renders the form over a blue gradient background matching the mockup
+  2. Visible trust signals accompany the form covering privacy, response time, and Europe-based doctors -- user can see all three without interacting
+  3. Submitting the form still creates a record in Directus exactly as before v8.0 -- same endpoint, same fields, same success/error UX, no regression detected in dev tools network tab
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 85: Glass Hardening & Accessibility Verification
+**Goal**: Confirm that the full new index page meets the mockup's glassmorphism intensity while keeping every v7.0 accessibility guarantee intact -- the milestone cannot ship without this check
+**Depends on**: Phase 80, 81, 82, 83, 84 (every visual change must land first)
+**Requirements**: VIS-01, VIS-04
+**Success Criteria** (what must be TRUE):
+  1. Glassmorphism across the index page is visibly strengthened vs pre-v8.0 in a side-by-side screenshot at 1440px and 375px -- matches the mockup's intensity on hero frame, stats, services, and form container
+  2. With `prefers-contrast: more` enabled the index page switches to solid surfaces and all text passes WCAG 2.2 AA (4.5:1 body, 3:1 large) against its worst-case composite background
+  3. With `prefers-reduced-transparency: reduce` enabled every glass surface on the index becomes fully opaque -- zero transparency visible
+  4. With `prefers-reduced-motion: reduce` enabled no motion occurs on the index page -- hero, stats, services, process, and form all render in their final position immediately
+  5. Tab order through the new index page shows a visible `:focus-visible` ring on every interactive element, and all buttons/tappable elements measure ≥44×44px on a 375px viewport
+**Plans**: TBD
+**UI hint**: yes
 
 ## Progress
+
+### v8.0 Index Page Redesign
+
+**Execution Order:**
+79 -> 80 -> 81 -> 82 -> 83 -> 84 -> 85
+Phase 79 is the foundation -- all other phases consume its tokens.
+Phase 80 ships next because the header is visible on every page and unblocks per-page visual parity.
+Phase 85 is a verification phase and must be last.
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 79. Visual Foundation (Typography & Mobile Budget) | 0/TBD | Not started | - |
+| 80. Glass Header Chrome | 0/TBD | Not started | - |
+| 81. Hero Video-Call Frame | 0/TBD | Not started | - |
+| 82. Stats Bar | 0/TBD | Not started | - |
+| 83. Services & Process Sections | 0/TBD | Not started | - |
+| 84. CTA Form on Blue Gradient | 0/TBD | Not started | - |
+| 85. Glass Hardening & Accessibility Verification | 0/TBD | Not started | - |
 
 ### v7.0 UI/UX Design Excellence
 

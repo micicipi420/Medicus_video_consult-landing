@@ -109,6 +109,42 @@ Deferred beyond v7.0.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
+### v8.0 Index Page Redesign (Phases 79-85)
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| VIS-02 | Phase 79 | Pending |
+| VIS-03 | Phase 79 | Pending |
+| HDR-01 | Phase 80 | Pending |
+| HDR-02 | Phase 80 | Pending |
+| HDR-03 | Phase 80 | Pending |
+| HERO-01 | Phase 81 | Pending |
+| HERO-02 | Phase 81 | Pending |
+| HERO-03 | Phase 81 | Pending |
+| HERO-04 | Phase 81 | Pending |
+| HERO-05 | Phase 81 | Pending |
+| STATS-01 | Phase 82 | Pending |
+| STATS-02 | Phase 82 | Pending |
+| SVC-01 | Phase 83 | Pending |
+| SVC-02 | Phase 83 | Pending |
+| SVC-03 | Phase 83 | Pending |
+| PROC-01 | Phase 83 | Pending |
+| PROC-02 | Phase 83 | Pending |
+| PROC-03 | Phase 83 | Pending |
+| FORM-01 | Phase 84 | Pending |
+| FORM-02 | Phase 84 | Pending |
+| FORM-03 | Phase 84 | Pending |
+| VIS-01 | Phase 85 | Pending |
+| VIS-04 | Phase 85 | Pending |
+
+**v8.0 Coverage:**
+- v8.0 requirements: 22 total
+- Pending: 22
+- Mapped to phases: 22
+- Unmapped: 0
+
+### v7.0 UI/UX Design Excellence (Phases 73-78) -- Shipped 2026-04-14
+
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | TOK-01 | Phase 73 | Satisfied |
@@ -130,7 +166,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERF-05 | Phase 77 | Pending |
 | TOK-03 | Phase 78 | Pending |
 
-**Coverage:**
+**v7.0 Coverage:**
 - v7.0 requirements: 18 total
 - Satisfied: 2 (TOK-01, TOK-02)
 - Partial: 5 (ACC-01..ACC-05 — code done, verification in Phase 74.1)
@@ -140,4 +176,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-13*
-*Last updated: 2026-04-13 after roadmap creation*
+*Last updated: 2026-04-23 after v8.0 roadmap creation*
