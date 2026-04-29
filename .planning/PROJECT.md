@@ -2,13 +2,19 @@
 
 ## What This Is
 
-Сайт medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Многостраничный сайт с формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
+Сайт **medicusunion.kz** — многостраничный hub для жителей Казахстана, обеспечивающий доступ к европейской и азиатской медицине через **три сервиса**:
 
-Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
+1. **Treatment abroad** (`/treatment-abroad`) — **главный оффер**. Лечение за рубежом под ключ: подбор клиники, документы, перевод, логистика, сопровождение. Спектр: онкология, кардиология, неврология, ортопедия, офтальмология, пластическая хирургия, стоматология, ЭКО, детская медицина. **43 клиники, 11 стран.**
+2. **Checkup abroad** (`/checkup`) — комплексное обследование за 1–2 дня в Samsung Medical Center и Severance Hospital (Корея), клиниках Стамбула (Турция). Под ключ: виза, трансфер, переводчик, сопровождение. От **$350**. Включает **B2B-направление** (корпоративные чек-апы).
+3. **Online consultations** (`/consultations`) — видеоконсультация с европейским врачом, второе мнение по диагнозу, перевод документов, письменное заключение. От **450€**, за 5 дней.
+
+Index-страница (`/`) — hub, представляющий все три сервиса. Treatment abroad и checkup физически возят пациента за границу; consultations — entry point с низким коммитментом, ведущий к двум более дорогим сервисам.
+
+Бэкенд на Directus — приём и хранение заявок со всех форм, с перспективой замены AmoCRM на собственную CRM.
 
 ## Core Value
 
-Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома — и оставляет заявку.
+Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ, — и оставляет заявку.
 
 ## Current State
 
@@ -81,8 +87,7 @@
 
 - Казахский язык — только русский в v1
 - Интеграция с AmoCRM — заменяем на Directus
-- Медтуризм — отдельный проект
-- Оплата онлайн — заявка только на консультацию
+- Оплата онлайн — заявка только, оплата через офис
 - Профили врачей на сайте — ссылка на medicusunion.com/doctors
 - Параллакс / тяжёлые анимации — ЦА 45+, предпочитаем простоту
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
@@ -91,10 +96,24 @@
 
 ## Context
 
-- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
-- Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
-- Self-hosted Inter + Manrope variable fonts (WOFF2)
-- No build tools, no frameworks, no external dependencies
+### Audience
+
+- **Primary:** жители Казахстана 45+, ищущие доступ к европейской/азиатской медицине (для себя или близких).
+- **Secondary B2B:** компании КЗ, заказывающие корпоративные чек-апы для сотрудников (направление checkup).
+
+### Service offerings
+
+- **Treatment abroad** — primary offer. Сеть: **43 клиники, 11 стран**. 15+ лет практики, 10 000+ пациентов, 500+ врачей-экспертов.
+- **Checkup abroad** — Samsung Medical Center, Severance Hospital, клиники Стамбула. От $350. Включает B2B.
+- **Online consultations** — 7 стран, 50+ врачей, 15+ специализаций. От 450€, за 5 дней.
+
+### Stack history
+
+- **v1.0–v5.0** (2026-03-23 → 2026-04-10): vanilla HTML + CSS + JS — простота деплоя.
+- **v6.0+** (2026-04-11 → текущий): миграция на **Next.js + React + TypeScript + Tailwind**. Directus 11 + PostgreSQL 16 в Docker. Self-hosted Inter + Manrope (WOFF2).
+
+### Milestone progression
+
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
@@ -102,17 +121,21 @@
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
 - v6.1: 5 phases, 14 plans — New Design Port (Liquid Glass design system, squircles, service pages)
 - Liquid Glass audit score: ~85% compliance with Apple guidelines. Main gaps: mobile blur budget, glass layer count, prefers-contrast, shimmer limits
-- Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
+- Бренд MedicusUnion: международный медицинский сервис, HQ в Vienna (Австрия), офис в Казахстане. Корневой проект: medicusunion.com.
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
-- Стоимость консультации: от 450€
+- Цены: видеоконсультация от **450€**, чек-ап от **$350**, лечение под ключ — индивидуальная смета.
+
+### Known TODOs
+
+- На страницах `/treatment-abroad` и `/consultations` цифры сети расходятся с canonical (43 клиник / 11 стран). На treatment-abroad сейчас стоит «100+ клиник / 6 стран», на consultations — «7 стран». Адресовать в отдельном copy-полировочном таске.
 
 ## Constraints
 
-- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
-- **Backend**: Directus (self-hosted) — приём заявок с формы
-- **Language**: Только русский
-- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
-- **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
+- **Stack**: Next.js + React + TypeScript + Tailwind (с v6.0). Vanilla HTML/CSS/JS — историческая база v1.0–v5.0.
+- **Backend**: Directus 11 + PostgreSQL 16 (self-hosted в Docker) — приём заявок со всех форм.
+- **Language**: Только русский.
+- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст. Mobile blur ≤12px, ≤2 glass elements per viewport.
+- **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии.
 
 ## Key Decisions
 
