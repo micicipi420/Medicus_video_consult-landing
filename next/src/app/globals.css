@@ -167,6 +167,23 @@
   --letter-spacing-wide: 0.04em;
   --letter-spacing-wider: 0.08em;
 
+  /* v8.0 type scale tokens (Phase 79) */
+  --fs-display: clamp(2.5rem, 6vw, 4.5rem);   /* 40-72px, hero/section openers */
+  --fs-h1:      clamp(2.5rem, 5vw, 3.5rem);   /* 40-56px (>=40px floor matches DESIGN.md typography contract and existing legacy --font-size-h1) */
+  --fs-h2:      clamp(1.75rem, 3.5vw, 2.75rem); /* 28-44px (matches legacy --font-size-h2 floor) */
+  --fs-h3:      clamp(1.25rem, 2.5vw, 1.75rem); /* 20-28px */
+  --fs-h4:      clamp(1.125rem, 2vw, 1.375rem); /* 18-22px */
+  --fs-body:    clamp(1.0625rem, 1.2vw, 1.125rem); /* 17-18px, >=17px floor for CA 45+ */
+  --fs-small:   1rem;                          /* 16px, never below */
+
+  --ls-display: -0.02em;
+  --ls-heading: -0.01em;
+  --ls-body: 0;
+
+  --font-weight-display: 800;
+  --font-weight-bold: 700;
+  /* --font-weight-medium: 500 / --font-weight-normal: 400 already declared above */
+
   /* Production color tokens */
   --color-cta: #35B678;
   --color-cta-hover: #25A467;
@@ -323,6 +340,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-family-body);
+    font-size: var(--fs-body);
+    line-height: 1.5;
   }
   body ::selection {
     background: rgb(56 198 244 / 0.3);
@@ -348,30 +367,34 @@
 
   h1 {
     font-family: var(--font-family-heading);
-    font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-size: var(--fs-h1);
+    font-weight: var(--font-weight-display);
+    letter-spacing: var(--ls-display);
+    line-height: 1.2;
   }
 
   h2 {
     font-family: var(--font-family-heading);
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-size: var(--fs-h2);
+    font-weight: var(--font-weight-display);
+    letter-spacing: var(--ls-heading);
+    line-height: 1.2;
   }
 
   h3 {
     font-family: var(--font-family-heading);
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-size: var(--fs-h3);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--ls-heading);
+    line-height: 1.3;
   }
 
   h4 {
     font-family: var(--font-family-heading);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
+    font-size: var(--fs-h4);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--ls-heading);
+    line-height: 1.3;
   }
 
   label {
