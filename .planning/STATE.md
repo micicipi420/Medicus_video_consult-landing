@@ -4,7 +4,7 @@ milestone: v8.0
 milestone_name: Index Page Redesign
 status: roadmap_complete
 stopped_at: v8.0 roadmap created -- ready to plan Phase 79
-last_updated: "2026-04-29T14:37:06.623Z"
+last_updated: "2026-04-29T15:12:57.516Z"
 last_activity: 2026-04-29
 progress:
   total_phases: 7
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-23)
 Phase: 79 -- Visual Foundation (Typography & Mobile Budget)
 Plan: —
 Status: Roadmap complete, ready to plan Phase 79
-Last activity: 2026-04-29 — Completed quick task 260429-u0x: Markdown housekeeping
+Last activity: 2026-04-29 — Completed quick task 260429-uus: Design system docs alignment
 
 Progress: [░░░░░░░░░░] 0% (0/7 phases)
 
@@ -86,6 +86,7 @@ None yet.
 | 260413-0ie | Remove landing references -- project is a multi-page site | 2026-04-13 | 92c3388 | [260413-0ie-remove-landing-references](./quick/260413-0ie-remove-landing-references-project-is-a-m/) |
 | 260429-tuu | Repo cleanup: consolidate в feat/v3.1 | 2026-04-29 | de9084e | [260429-tuu-repo-cleanup-consolidate-feat-v3-1](./quick/260429-tuu-repo-cleanup-consolidate-feat-v3-1/) |
 | 260429-u0x | Markdown housekeeping: dedupe AGENTS, archive milestones, relocate v6.0 audit, handle technical_integration_request | 2026-04-29 | c3346b1 | [260429-u0x-markdown-housekeeping-dedupe-agents-arch](./quick/260429-u0x-markdown-housekeeping-dedupe-agents-arch/) |
+| 260429-uus | Design system docs alignment: PROJECT.md services + DESIGN.md per Google spec + CLAUDE.md sync | 2026-04-29 | 2fa86b5 | [260429-uus-design-system-docs-alignment-project-md-](./quick/260429-uus-design-system-docs-alignment-project-md-/) |
 
 ## Session Continuity
 
