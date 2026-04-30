@@ -33,3 +33,16 @@ vendor/
 coverage/
 .cache/
 tmp/
+
+# Audit / scratch artifacts at repo root
+audit-*.png
+current-site-*.png
+github-pages-target.png
+screenshots/
+.playwright-mcp/
+
+# Editor backup files
+*.bak
+
+# Tools accidentally placed at repo root
+/tailwindcss
