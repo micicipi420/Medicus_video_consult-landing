@@ -185,6 +185,7 @@ Index page redesign per the new mockup. 7 phases shipped:
 | Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
 | translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
 | prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
+| KD-v9-001: --blob-hot #4FE098 | TZ §5 — heat-state highlight; brand parity check pending against medicusunion.com / medicusunion.kz | pending — user must view /test-glass and approve (or propose alternate hex) before /gsd-discuss-phase 91 |
 
 ## Evolution
 
