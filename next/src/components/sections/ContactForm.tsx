@@ -108,7 +108,7 @@ export function ContactForm() {
 
   if (formState === 'success') {
     return (
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-[inherit] bg-white/82 p-8 text-center shadow-glass-lg backdrop-blur-3xl">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-[inherit] bg-[var(--glass-form-fill)] p-8 text-center shadow-glass-lg backdrop-blur-[var(--glass-form-blur)]">
         <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-white/70 bg-white/80 shadow-glass-sm">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/>
