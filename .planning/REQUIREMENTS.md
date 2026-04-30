@@ -127,7 +127,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [x] **ROUTE-01**: `/checkup` section components (8 files in `next/src/components/sections/checkup/`) — per-tier sweep
 - [ ] **ROUTE-02**: `/consultations` section components (8 files in `next/src/components/sections/consultations/`) — per-tier sweep
 - [x] **ROUTE-03**: `/treatment-abroad` section components (4 files in `next/src/components/sections/treatment/`) — per-tier sweep
-- [ ] **ROUTE-04**: `/contacts` section components (2 files in `next/src/components/sections/contacts/`) — per-tier sweep
+- [x] **ROUTE-04**: `/contacts` section components (2 files in `next/src/components/sections/contacts/`) — per-tier sweep
 - [x] **ROUTE-05**: Service-page primitives (`ServiceHero`, `FAQ`, `SocialProof`, `LeadFormSection` in `next/src/components/sections/service/`) — `LeadFormSection` receives same form-safety treatment as `ContactForm` (≥0.16 alpha, opaque inputs)
 - [ ] **ROUTE-06**: shadcn primitives (`card`, `dialog`, `input`, `select`, `textarea` in `next/src/components/ui/`) updated last (highest blast-radius)
 - [x] **ROUTE-07**: Per-route Playwright screenshot diff vs pre-v9.0 baseline before each route is signed off; form/CTA regions must be visually stable (blob area masked)
@@ -302,7 +302,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ROUTE-01 | Phase 93 | Complete |
 | ROUTE-02 | Phase 93 | Pending |
 | ROUTE-03 | Phase 93 | Complete |
-| ROUTE-04 | Phase 93 | Pending |
+| ROUTE-04 | Phase 93 | Complete |
 | ROUTE-05 | Phase 93 | Complete |
 | ROUTE-06 | Phase 93 | Pending |
 | ROUTE-07 | Phase 93 | Complete |
