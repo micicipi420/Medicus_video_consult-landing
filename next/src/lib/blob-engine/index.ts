@@ -1,6 +1,6 @@
 // next/src/lib/blob-engine/index.ts
-// v9.0 Phase 91 Plan 02 — Module singleton + rAF loop + pointer listener + Page Visibility.
-// Physics stubs (heat=0, velocity=0) replaced by Plan 03; mode resolver hardcoded to 'cursor' (Plan 04 generalises).
+// v9.0 Phase 91 Plan 04 — Module singleton + rAF loop + pointer + Page Visibility + 5 mode branches.
+// Plan 03 ships physics; Plan 04 ships modes (cursor / ambient / static / hidden / dark).
 
 import {
   resizeCanvas,
@@ -14,9 +14,25 @@ import {
   updateLayers,
   updateVelocity,
   updateHeat,
+  applyTapPulse,
+  TAP_PULSE_RATE_LIMIT_MS,
   type DwellSample,
   type PointerRef,
 } from './physics';
+import {
+  resolveMode,
+  setHtmlBlobMode,
+  attachModeListeners,
+  isPointerOutsideWindow,
+  isInteractiveTarget,
+  type BlobMode,
+  type ModeListenerHandles,
+} from './modes';
+import {
+  lissajousTarget,
+  leaveWindowDecayTarget,
+  LEAVE_DECAY_MS,
+} from './lissajous';
 
 interface EngineState {
   refcount: number;
@@ -31,14 +47,21 @@ interface EngineState {
   core: LayerPos;
   body: LayerPos;
   halo: LayerPos;
-  heat: number;                 // Plan 03 makes real (was 0 in Plan 02)
-  velocity: number;             // Plan 03 makes real (was 0 in Plan 02)
-  mode: 'cursor';               // Plan 04 widens to BlobMode union
+  heat: number;
+  velocity: number;
+  mode: BlobMode;
   startedAt: number;
   frameCount: number;
-  dwellSamples: DwellSample[];  // Decision E — pruned to DWELL_WINDOW (250ms)
-  lastFrameAt: number;          // for deltaTime in updateHeat
-  lastTapAt: number;            // Plan 04 mobile tap-pulse rate-limit (Plan 03 inits to 0)
+  dwellSamples: DwellSample[];
+  lastFrameAt: number;
+  lastTapAt: number;
+  pointerInWindow: boolean;
+  pointerLeftAt: number | null;
+  lastPointerInWindow: { x: number; y: number };
+  scrollPaused: boolean;
+  lastScrollAt: number;
+  lissajousFrozenTime: number | null;
+  modeHandles: ModeListenerHandles | null;
 }
 
 let state: EngineState | null = null;
@@ -94,12 +117,77 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
     dwellSamples: [],
     lastFrameAt: performance.now(),
     lastTapAt: 0,
+    pointerInWindow: true,
+    pointerLeftAt: null,
+    lastPointerInWindow: { ...initial },
+    scrollPaused: false,
+    lastScrollAt: 0,
+    lissajousFrozenTime: null,
+    modeHandles: null,
   };
 
   attachListeners(state);
+
+  // Mode resolution + listeners.
+  const recomputeMode = () => {
+    if (!state) return;
+    const newMode = resolveMode({
+      prefersReducedTransparency: state.modeHandles?.mqlTransparency.matches ?? false,
+      prefersReducedMotion: state.modeHandles?.mqlMotion.matches ?? false,
+      isDarkTheme: document.documentElement.dataset.theme === 'dark',
+      isCoarseNoHover: state.modeHandles?.mqlPointer.matches ?? false,
+      pointerInWindow: state.pointerInWindow,
+      pointerLeftAt: state.pointerLeftAt,
+      now: performance.now(),
+    });
+    if (newMode !== state.mode) {
+      const prev = state.mode;
+      state.mode = newMode;
+      setHtmlBlobMode(newMode);
+      // rAF gate for static/hidden modes (BLOB-07/08).
+      const wasAnimating = prev === 'cursor' || prev === 'ambient' || prev === 'dark';
+      const isAnimating = newMode === 'cursor' || newMode === 'ambient' || newMode === 'dark';
+      if (wasAnimating && !isAnimating) {
+        if (state.rafId !== null) cancelAnimationFrame(state.rafId);
+        state.rafId = null;
+      } else if (!wasAnimating && isAnimating) {
+        if (state.rafId === null) state.rafId = requestAnimationFrame(loop);
+      }
+    }
+  };
+
+  const onPointerOut = (e: PointerEvent) => {
+    if (!state) return;
+    if (!isPointerOutsideWindow(e)) return;
+    state.pointerInWindow = false;
+    state.pointerLeftAt = performance.now();
+    state.lastPointerInWindow = { x: state.pointer.x, y: state.pointer.y };
+    recomputeMode();
+  };
+
+  const onPointerOver = (e: PointerEvent) => {
+    if (!state) return;
+    if (e.pointerType === 'touch') return;
+    state.pointerInWindow = true;
+    state.pointerLeftAt = null;
+    recomputeMode();
+  };
+
+  state.modeHandles = attachModeListeners(state.abort, recomputeMode, onPointerOut, onPointerOver);
+
+  // Initial mode read.
+  recomputeMode();
+
   opts.parent.dataset.engineActive = 'true';
-  document.documentElement.setAttribute('data-blob-mode', state.mode);
-  state.rafId = requestAnimationFrame(loop);
+  setHtmlBlobMode(state.mode);
+
+  // Mobile-only listeners (always attached — selector check filters interactive targets).
+  attachMobileListeners(state);
+
+  // BLOB-07/08: skip rAF schedule when initial mode is static/hidden.
+  if (state.mode !== 'static' && state.mode !== 'hidden') {
+    state.rafId = requestAnimationFrame(loop);
+  }
 
   return makeStopFn();
 }
@@ -111,6 +199,10 @@ function makeStopFn(): () => void {
     if (state.refcount > 0) return;
     if (state.rafId !== null) cancelAnimationFrame(state.rafId);
     state.abort.abort();
+    if (state.modeHandles?.themeObserver) {
+      state.modeHandles.themeObserver.disconnect();
+    }
+    state.modeHandles = null;
     state.parent.dataset.engineActive = 'false';
     document.documentElement.removeAttribute('data-blob-mode');
     state = null;
@@ -137,7 +229,7 @@ function attachListeners(s: EngineState): void {
       if (state.rafId !== null) cancelAnimationFrame(state.rafId);
       state.rafId = null;
       // Last frame stays painted; no clear, no flash on resume.
-    } else if (state.rafId === null) {
+    } else if (state.rafId === null && state.mode !== 'static' && state.mode !== 'hidden') {
       state.rafId = requestAnimationFrame(loop);
     }
   }, { signal });
@@ -154,6 +246,45 @@ function attachListeners(s: EngineState): void {
   }, { passive: true, signal });
 }
 
+function attachMobileListeners(s: EngineState): void {
+  const signal = s.abort.signal;
+
+  // Decision K: scroll-pause for mobile Lissajous.
+  let scrollResumeTimer = 0;
+  window.addEventListener('scroll', () => {
+    if (!state) return;
+    const now = performance.now();
+    if (!state.scrollPaused) {
+      // Freeze Lissajous time at scroll start; resume from this point per Decision K.
+      state.lissajousFrozenTime = now;
+    }
+    state.scrollPaused = true;
+    state.lastScrollAt = now;
+    if (scrollResumeTimer) window.clearTimeout(scrollResumeTimer);
+    scrollResumeTimer = window.setTimeout(() => {
+      if (!state) return;
+      state.scrollPaused = false;
+      state.lissajousFrozenTime = null;
+    }, 250);
+  }, { passive: true, signal });
+
+  // Decision F: tap-pulse on touch background only.
+  window.addEventListener('pointerdown', (e: PointerEvent) => {
+    if (!state) return;
+    if (e.pointerType !== 'touch') return;
+    if (state.mode === 'static' || state.mode === 'hidden') return;
+    // Reject if interactive target.
+    if (isInteractiveTarget(e.target)) return;
+    // Reject if scroll within last 200ms.
+    const now = performance.now();
+    if (now - state.lastScrollAt < 200) return;
+    // Rate limit: 1 per 600ms.
+    if (now - state.lastTapAt < TAP_PULSE_RATE_LIMIT_MS) return;
+    state.lastTapAt = now;
+    state.heat = applyTapPulse(); // 0.7 — decays organically via updateHeat next frame.
+  }, { passive: true, signal });
+}
+
 function loop(): void {
   if (!state) return;
 
@@ -161,17 +292,27 @@ function loop(): void {
   const deltaTime = now - state.lastFrameAt;
   state.lastFrameAt = now;
 
-  // Lerp targets — Plan 03 hardcodes pointer; Plan 04 introduces mode-dependent target selection.
-  const target = { x: state.pointer.x, y: state.pointer.y };
+  // Mode-dependent target.
+  let target: { x: number; y: number };
+  if (state.mode === 'cursor') {
+    target = { x: state.pointer.x, y: state.pointer.y };
+  } else if (state.mode === 'ambient' && state.pointerLeftAt !== null && (now - state.pointerLeftAt) <= LEAVE_DECAY_MS) {
+    // Pointer-leave-window decay (Decision J).
+    target = leaveWindowDecayTarget(now, state.pointerLeftAt, state.lastPointerInWindow, state.viewport.width, state.viewport.height);
+  } else if (state.mode === 'ambient' || state.mode === 'dark') {
+    target = lissajousTarget(now, state.viewport.width, state.viewport.height, state.scrollPaused, state.lissajousFrozenTime);
+  } else {
+    // 'static' / 'hidden' — should not be in loop (rAF not scheduled), but guard anyway.
+    return;
+  }
 
   updateLayers(state.core, state.body, state.halo, target);
 
   // Velocity (Decision D — low-pass α=0.15).
   state.velocity = updateVelocity(state.pointer, state.velocity, now);
 
-  // Heat (Decision E). motionEnabled=true in Plan 03 (cursor mode only);
-  // Plan 04 will gate this on mode === 'cursor' (NOT 'static'/'hidden'/'dark').
-  const motionEnabled = true;
+  // Heat (Decision E). Decision H: dark mode keeps heat permanently 0 (calm state).
+  const motionEnabled = state.mode === 'cursor' || state.mode === 'ambient';
   state.heat = updateHeat(
     state.heat,
     state.pointer,

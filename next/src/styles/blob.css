@@ -93,3 +93,12 @@
 .living-blob-field[data-engine-active="true"] .blob-canvas {
   display: block;
 }
+
+/* Phase 91 Plan 04 — dark theme dimming (Decision H).
+   opacity 0.30, saturate 0.65; engine forces ambient mode in dark theme so
+   follow is disabled (Lissajous orbit only). Mobile blur cap NOT exceeded
+   — saturate filter does not introduce blur. */
+[data-theme="dark"] .living-blob-field[data-engine-active="true"] .blob-canvas {
+  opacity: 0.30;
+  filter: saturate(0.65);
+}
