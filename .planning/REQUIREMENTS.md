@@ -88,7 +88,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 
 - [x] **FND-01**: New blob palette tokens registered in `DESIGN.md` YAML and `next/src/app/globals.css` — `--blob-core: #35B678`, `--blob-hot: #4FE098`, `--blob-halo: rgba(98,221,177,0.5)`, `--blob-edge: rgba(125,205,255,0.18)`, `--blob-glint: rgba(255,255,255,0.65)`
 - [x] **FND-02**: Glass tier tokens defined for 4 surface depths — `--glass-{section,card,form,button}-{fill,blur}` with desktop and mobile values; mobile blur values ≤12px (Phase 79 cap honored)
-- [ ] **FND-03**: A11y `@layer` block in `liquid-glass.css` enumerates every glass class name (current + new) under `prefers-reduced-motion`, `prefers-reduced-transparency`, and `prefers-contrast: more` — single source of truth
+- [x] **FND-03**: A11y `@layer` block in `liquid-glass.css` enumerates every glass class name (current + new) under `prefers-reduced-motion`, `prefers-reduced-transparency`, and `prefers-contrast: more` — single source of truth
 - [x] **FND-04**: z-index contract documented in `DESIGN.md` — blob-field `z-0`, main content `z-1..10`, sticky/header `z-50+`, modals `z-100+`
 - [x] **FND-05**: CTA opaque-forever rule + v9.0 anti-pattern appendix added to `DESIGN.md` (no trails, no particles, no `mix-blend-mode` on glass, no animated `backdrop-filter`, no green tint on cards, no parallax)
 - [ ] **FND-06**: `<div class="living-blob-field" aria-hidden="true">` skeleton mounted in `next/src/app/layout.tsx` with seeded `:root` CSS vars; `MeshBackground.tsx` removed
@@ -272,7 +272,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | FND-01 | Phase 90 | Complete |
 | FND-02 | Phase 90 | Complete |
-| FND-03 | Phase 90 | Pending |
+| FND-03 | Phase 90 | Complete |
 | FND-04 | Phase 90 | Complete |
 | FND-05 | Phase 90 | Complete |
 | FND-06 | Phase 90 | Pending |

@@ -204,7 +204,7 @@ See `.planning/milestones/` for full details per milestone.
 
 Plans:
 - [x] 90-01-PLAN.md — Token registration: --blob-* palette + 4-tier --glass-* tokens in DESIGN.md YAML and globals.css :root
-- [ ] 90-02-PLAN.md — A11y @a11y-layer-coverage block in liquid-glass.css; new blob.css with sublayer base styles
+- [x] 90-02-PLAN.md — A11y @a11y-layer-coverage block in liquid-glass.css; new blob.css with sublayer base styles
 - [x] 90-03-PLAN.md — DESIGN.md doc edits: antiPatterns: YAML (15) + ## v9.0 Custom Rules (z-index + CTA opaque-forever) + ## v9.0 Anti-Patterns body
 - [ ] 90-04-PLAN.md — layout.tsx skeleton: inline <style> seed + .living-blob-field; hard-delete MeshBackground.tsx; 5-route smoke
 - [x] 90-05-PLAN.md — KD-v9-001 row in PROJECT.md + /test-glass comparison swatch (--mu-primary / --blob-hot / medicusunion.kz ref)
@@ -366,7 +366,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 3/5 | In Progress|  |
+| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 4/5 | In Progress|  |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
 | 92. Glass Rework — Chrome + Index Sections | 0/0 | Not started | — |
 | 93. Per-Page Propagation — Sub-Routes | 0/0 | Not started | — |
