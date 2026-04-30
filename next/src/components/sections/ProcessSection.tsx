@@ -104,7 +104,7 @@ export function ProcessSection() {
               return (
                 <div
                   key={step.number}
-                  className="group relative flex h-full flex-col rounded-[2rem] border border-glass-border bg-white/65 p-6 shadow-glass backdrop-blur-2xl transition-[background-color,border-color,box-shadow] duration-300 hover:border-glass-border-strong hover:shadow-glass-lg sm:p-7"
+                  className="group relative flex h-full flex-col rounded-[2rem] border border-glass-border bg-[var(--glass-card-fill)] p-6 shadow-glass backdrop-blur-[var(--glass-card-blur)] transition-[background-color,border-color,box-shadow] duration-300 hover:border-glass-border-strong hover:bg-[var(--glass-form-fill)] hover:shadow-glass-lg sm:p-7"
                 >
                   {/* Number + icon row */}
                   <div className="mb-5 flex items-center gap-3">
@@ -114,7 +114,7 @@ export function ProcessSection() {
                       {step.number}
                     </div>
                     <div
-                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-border bg-white/55 text-mu-text-700 backdrop-blur-md"
+                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-border bg-[var(--glass-button-fill)] text-mu-text-700 backdrop-blur-[var(--glass-button-blur)]"
                       aria-hidden="true"
                     >
                       <Icon className="h-5 w-5" />
