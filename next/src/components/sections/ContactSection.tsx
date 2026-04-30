@@ -117,7 +117,7 @@ export function ContactSection() {
 
           {/* Right column — form in a white glass card */}
           <div>
-            <div className="rounded-[2rem] border border-white/40 bg-white p-6 shadow-glass-lg sm:rounded-[2.5rem] sm:p-8">
+            <div className="rounded-[2rem] border border-white/40 bg-[var(--glass-form-fill)] backdrop-blur-[var(--glass-form-blur)] p-6 shadow-glass-lg sm:rounded-[2.5rem] sm:p-8">
               <ContactForm />
             </div>
           </div>
