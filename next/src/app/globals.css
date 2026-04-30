@@ -481,6 +481,24 @@
   }
 }
 
+/* v8.0 mobile glass budget enforcement (hotfix discovered in Phase 89 UAT)
+   Phase 79 promised "mobile (<768px) blur ≤12px" but only enforced it on
+   --liquid-blur-* tokens consumed by named classes. v8.0 components use
+   Tailwind backdrop-blur utilities (-md/-lg/-xl/-2xl/-3xl + arbitrary
+   [Npx] values) which bypass those tokens. This block caps every
+   backdrop-blur utility at 12px below 768px so the budget actually holds. */
+@media (max-width: 767.98px) {
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl,
+  [class*="backdrop-blur-["] {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+}
+
 /* v8.0 a11y hardening (Phase 85)
    Covers Tailwind utility-class glass surfaces shipped in Phases 80-84.
    Existing v7.0 named classes (.liquid-card, .liquid-regular, etc.) are
