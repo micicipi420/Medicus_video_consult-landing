@@ -41,11 +41,11 @@ export function FAQ({ heading = 'Частые вопросы', items, id }: FAQP
           return (
             <div
               key={index}
-              className="bg-white/60 backdrop-blur-2xl rounded-[2rem] border border-white/60 shadow-glass overflow-hidden"
+              className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] border border-white/60 shadow-glass overflow-hidden"
             >
               <button
                 type="button"
-                className="w-full flex items-center justify-between p-6 text-left text-lg font-extrabold text-mu-text-900 cursor-pointer hover:bg-white/80 transition-colors"
+                className="w-full flex items-center justify-between p-6 text-left text-lg font-extrabold text-mu-text-900 cursor-pointer hover:bg-[var(--glass-form-fill)] transition-colors"
                 aria-expanded={isOpen}
                 onClick={() => toggle(index)}
               >
