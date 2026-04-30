@@ -1,427 +1,506 @@
-# Feature Landscape: v7.0 UI/UX Design Excellence
+# Feature Landscape — v9.0 Living Blob Liquid Glass Scene
 
-**Domain:** Medical consultation website -- SOTA UI/UX polish on existing Liquid Glass design system
-**Researched:** 2026-04-13
-**Confidence:** HIGH (CSS specs from MDN/caniuse), MEDIUM (Apple HIG/WCAG guidance), LOW where flagged
-**Scope:** Improvements BEYOND the current implementation. Does NOT re-document existing features.
-
----
-
-## Research Context
-
-The site ships a 4-tier Liquid Glass material hierarchy (nav, regular, clear, fluted) with squircle shapes, animated glint borders, specular highlights, dark mode, prefers-reduced-motion support, scroll-reveal animations via IntersectionObserver, section tints, and a print stylesheet. The vanilla HTML+CSS+JS static site targets Kazakhstan residents 45+ seeking medical consultation (from 450 EUR). The CSS spans ~2,670 lines (styles.css) plus liquid-glass.css, squircles.css, and theme.css in src/styles/. All pages share a single stylesheet.
-
-**Existing implementation audit (from PROJECT.md):** ~85% Liquid Glass compliance. Known gaps: mobile blur budget, glass layer count per viewport, prefers-contrast, shimmer limits.
+**Domain:** Marketing site cursor-light / liquid-glass scene (medical, ЦА 45+)
+**Researched:** 2026-04-30
+**Source ТЗ:** `design/LIQUID_GLASS_BLOB_TZ.md` (20 sections, 12 acceptance criteria)
+**Overall confidence:** HIGH (TZ is unusually prescriptive; this doc taxonomizes its requirements + flags industry-baseline vs reach-mode features and anti-features)
 
 ---
 
-## Table Stakes
+## Reading Guide
 
-Features that SOTA glass-design websites in 2025-2026 implement as standard. Missing any of these creates a visible gap for visitors comparing the site to Apple ecosystem apps, modern medical platforms, or premium landing pages.
+This is a SUBSEQUENT-milestone research file. Most "feature" decisions are pre-specified in the TZ. The job here is to:
 
-### ACC-01: `prefers-contrast: more` Fallback
+1. **Decompose the TZ into discrete features** so the requirements definer can scope each independently.
+2. **Mark each feature** as TABLE STAKES (industry baseline / TZ-mandated), DIFFERENTIATOR (notable above baseline), or ANTI-FEATURE (rejected — explain why).
+3. **Flag complexity** (S/M/L) and **dependencies** so the roadmapper can phase the work.
+4. **Cite production references** so visual decisions can be calibrated against known-good implementations.
 
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | Apple's Liquid Glass accessibility report card (March 2026, AppleVis) showed failing marks precisely because glass effects persisted when contrast settings were enabled. WCAG 2.2 SC 1.4.3 requires 4.5:1 for body text; on translucent surfaces the effective contrast is variable. Sites shipping glass WITHOUT a high-contrast fallback are now flagged in accessibility audits. |
-| **Complexity** | LOW |
-| **Current State** | NOT implemented. `prefers-contrast: more` is absent from styles.css and theme.css. |
-| **Browser Support** | Chrome 96+, Firefox 101+, Safari 14.1+ -- 94.6% global coverage (HIGH confidence, caniuse). |
-| **What to Build** | `@media (prefers-contrast: more)` block that: (1) replaces all `--liquid-bg` values with opaque equivalents (e.g. `rgba(255,255,255,0.95)`), (2) sets `backdrop-filter: none`, (3) adds `border: 2px solid var(--color-text-primary)` on glass surfaces, (4) increases `--liquid-shadow-outer` to a high-contrast equivalent, (5) forces `--liquid-border-top` and `--liquid-border-bottom` to fully opaque values. |
-| **Dependency** | Overrides existing `--liquid-*` tokens in :root. No structural HTML changes. |
-| **Measurable Criteria** | Before: no response to OS-level "Increase Contrast." After: all glass surfaces become opaque with visible borders, all text passes WCAG AAA (7:1) when high-contrast is enabled. |
-| **Sources** | [prefers-contrast -- MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-contrast), [AppleVis Liquid Glass Report](https://9to5mac.com/2026/03/18/liquid-glass-and-long-standing-bugs-push-apples-grades-down-in-visual-accessibility-report-card/) |
-
-### ACC-02: `prefers-reduced-transparency` Fallback
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | Direct CSS-level signal from OS "Reduce Transparency" setting. Apple's HIG requires Liquid Glass to respond to this. Users who enable it (common at 45+ with visual impairments) expect translucent surfaces to become frostier/opaque. |
-| **Complexity** | LOW |
-| **Current State** | `prefers-reduced-transparency` is absent from all CSS files. The existing `prefers-reduced-motion` is handled, but transparency is not. |
-| **Browser Support** | Chrome 118+, Edge 118+. Safari: NOT supported. Firefox: behind flag only. ~73% global coverage (MEDIUM confidence). Progressive enhancement -- does nothing in unsupported browsers. |
-| **What to Build** | `@media (prefers-reduced-transparency: reduce)` block that: (1) increases `--liquid-bg` opacity from 0.42 to 0.85+, (2) reduces blur from 24px to 8px (less GPU load, frostier appearance), (3) does NOT disable blur entirely (Apple guidance: "frostier, not flat"). |
-| **Dependency** | Token overrides only. No HTML changes. |
-| **Measurable Criteria** | Before: no response to OS "Reduce Transparency." After: glass surfaces become significantly more opaque while retaining subtle depth cue. |
-| **Sources** | [prefers-reduced-transparency -- MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-transparency), [caniuse](https://caniuse.com/mdn-css_at-rules_media_prefers-reduced-transparency) |
-
-### ACC-03: Worst-Case Contrast Testing on Glass Surfaces
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | WCAG 2.2 requires contrast against the WORST-CASE background behind translucent surfaces, not just the intended background. When a glass card scrolls over different section backgrounds (white, cream, blue-tint), the effective contrast changes. If any combination drops below 4.5:1 for body text, it fails. |
-| **Complexity** | MEDIUM (audit + potential token adjustments) |
-| **Current State** | Glass cards have semi-transparent backgrounds. Text contrast was tested against intended placement but NOT against all possible scroll positions. |
-| **What to Build** | (1) Systematic audit: screenshot every glass card at every possible scroll position, measure contrast with a tool. (2) If any position fails: increase `--liquid-bg` opacity floor to guarantee minimum contrast, OR add a text-shadow safety net (`text-shadow: 0 0 8px rgba(255,255,255,0.8)`), OR both. (3) Document minimum safe opacity per tier. |
-| **Dependency** | May require raising `--liquid-bg` from 0.42 to 0.50+ if audit reveals failures. |
-| **Measurable Criteria** | Before: contrast untested at scroll midpoints. After: every text-on-glass combination passes WCAG AA (4.5:1) at all scroll positions. |
-
-### INT-01: Complete Focus-Visible System for Glass Surfaces
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | Keyboard navigation is critical for 45+ users with motor disabilities. The existing theme.css has `:focus-visible` with `outline: 2px solid var(--mu-blue-text); outline-offset: 3px` -- but this is only in the Tailwind/Next.js layer (`src/styles/theme.css`). The main `css/styles.css` serving the static pages has no custom `:focus-visible` at all beyond form inputs. |
-| **Complexity** | LOW-MEDIUM |
-| **Current State** | `styles.css` has `:focus` on `.lead-form__input` and `:focus-visible` on `.faq__question`. Buttons, cards, nav links, and the theme toggle have NO custom focus styles in the static site CSS. |
-| **What to Build** | Global `:focus-visible` rule for all interactive elements: buttons, links, cards (if clickable), theme toggle. Style: `outline: 3px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm)`. On glass surfaces: add `box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.4)` as secondary ring for visibility against translucent backgrounds. In dark mode: switch outline color to `#38C6F4` for visibility. |
-| **Dependency** | CSS-only. Uses existing tokens. |
-| **Measurable Criteria** | Before: keyboard tab through page shows browser-default or missing focus rings on most elements. After: every interactive element shows a visible, consistent focus ring in both light and dark mode, on and off glass surfaces. |
-| **Sources** | [W3C Technique C45](https://www.w3.org/WAI/WCAG21/Techniques/css/C45), [focus-visible -- MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:focus-visible) |
-
-### INT-02: Hover/Focus/Active State Completeness for Cards
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | Cards are the primary content containers. Interactive cards (linking to service pages) need three distinct states: hover, focus, active. Currently `.card:hover` gets `box-shadow: var(--shadow-md)` and `.hub-service:hover` gets `translateY(-4px)`. But there is no `:focus-visible` on cards and no `:active` feedback on clickable cards. |
-| **Complexity** | LOW |
-| **Current State** | Hover exists (translateY + shadow). Focus and active states are missing on card-level elements. |
-| **What to Build** | (1) `:focus-visible` on clickable cards matching INT-01 system. (2) `:active` state: `transform: scale(0.98)` for 100ms to provide tactile click confirmation (already used on buttons). (3) On glass cards (`liquid-card`): hover state should increase `filter: brightness(1.06)` rather than translateY -- glass surfaces should "brighten" on hover, matching Apple's Liquid Glass interaction model. |
-| **Dependency** | Extends existing hover CSS. No HTML changes needed if cards are already links/buttons. |
-| **Measurable Criteria** | Before: only hover state on cards. After: three distinct visual states (hover, focus, active) on all interactive cards. |
-
-### INT-03: Form Submit Loading State
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | The consultation form submits to Directus API. During submission, the button shows no loading state -- user cannot tell if their click registered. For a medical service at 450 EUR, trust requires clear "submitting" feedback. Double-submission risk is real for 45+ users. |
-| **Complexity** | LOW |
-| **Current State** | Form JS sends fetch POST and shows success/error messages, but the button remains in its default state during the request. No disabled state, no spinner, no label change. |
-| **What to Build** | (1) On submit: button gets `aria-disabled="true"`, label changes to "Отправка..." (2) CSS spinner via `border` animation on a `::after` pseudo-element. (3) Button returns to normal on success/error. (4) Spinner contrast must pass WCAG AA against button background (white spinner on gradient CTA). |
-| **Dependency** | JS change in form submission handler + CSS for spinner. |
-| **Measurable Criteria** | Before: button stays static during API call. After: button shows loading state within 100ms of click, prevents double-submit, restores on completion. |
-
-### TYPO-01: Glass-on-Text Readability Enhancement
-
-| Attribute | Detail |
-|-----------|--------|
-| **Why Expected** | Text on semi-transparent glass surfaces is the #1 Liquid Glass readability complaint (AppleVis, Six Colors, Infinum analysis). Current `--liquid-bg: rgba(255,255,255,0.42)` allows significant bleed-through that can reduce readability for 45+ users with presbyopia. |
-| **Complexity** | LOW |
-| **Current State** | Glass cards use 0.42 opacity background. No text-shadow safety net. No `paint-order` optimization. |
-| **What to Build** | (1) Add subtle text-shadow on glass surfaces: `.liquid-card p, .liquid-card li { text-shadow: 0 0 12px rgba(255,255,255,0.6); }` for light mode, dark-mode equivalent with near-black shadow. (2) Consider raising `--liquid-bg` minimum from 0.42 to 0.48 for body text cards (not nav, which can stay lighter). (3) Evaluate `font-weight` bump from 400 to 450 for body text on glass (variable font supports fractional weights). |
-| **Dependency** | Token adjustment + CSS text-shadow. |
-| **Measurable Criteria** | Before: text on glass has variable readability depending on background. After: all body text on glass passes WCAG AA at all scroll positions with measurable contrast improvement. |
+The 10 categories below match the user's question prompt 1:1.
 
 ---
 
-## Differentiators
+## Production References (Calibration Targets)
 
-Features that elevate the site beyond competitors and create a SOTA impression. Not expected, but valued by users and demonstrate design maturity.
+| Site | Effect | What we borrow | What we reject |
+|------|--------|----------------|----------------|
+| `stripe.com` (hero) | Animated mesh gradient (FBM noise + sine UV warp via WebGL) | Living, non-repeating ambient motion; multiple color stops blended via screen/overlay | Their effect is **not cursor-driven** — it is autonomous. We only borrow the *autonomous-motion fallback* shape for our mobile ambient mode. |
+| `apple.com/vision-pro` | Liquid-glass chrome, soft halos under glass plates | Halo behaviour under blurred plate; saturation lift for under-glass content | Apple's blob is video-baked, not interactive — not applicable to cursor follow. |
+| `linear.app` (hero) | Subtle radial-gradient that follows scroll/cursor at very low intensity | Restraint: a single soft light source, never a "trail" effect | Linear is dark-mode; our default is light. Calibrate luminance, not shadow direction. |
+| `arc.net` (legacy hero) | Multi-blob mesh with viscous follow + autonomous breathing | Layered inertia: smaller blob lags less than larger blob | Their palette is loud rainbow — for a medical brand we restrict to single-hue green family. |
+| `paper.design`, `vercel.com/design` | Glass plates over a colored field; refraction-style edges | Inset highlights on borders, multi-tier blur per surface depth | Both are tech-tone; we soften saturation for medical context. |
+| `awwwards.com` SOTD winners 2024–2025 (e.g. `lusion.co` work) | Pointer-leave-window decay; section-velocity coupling | Decay-to-last-position pattern; soft pulse on tap | Many winners use heavy WebGL — we stay on CSS+Canvas2D budget. |
 
-### DIFF-01: Scroll-Driven Animations (Progressive Enhancement)
+Confidence: MEDIUM — pattern names verified against published implementations; exact tuning is brand-specific.
 
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | CSS `animation-timeline: scroll()` and `view()` run animations on the compositor thread -- zero JS, zero main-thread cost, 60fps guaranteed. Replacing current IntersectionObserver scroll-reveal with CSS scroll-driven animations makes reveals smoother and eliminates JS bundle weight for animation logic. |
-| **Complexity** | MEDIUM |
-| **Current State** | All scroll animations use IntersectionObserver in main.js (~70 lines). Works universally but runs on main thread. |
-| **Browser Support** | Chrome 115+, Safari 26+, Edge 115+. Firefox: behind flag only. ~84.7% global coverage (HIGH confidence, caniuse). Safari 26 support is NEW (2025). |
-| **What to Build** | `@supports (animation-timeline: view())` block with CSS-only scroll-reveal replacing the JS IntersectionObserver for supported browsers. The IntersectionObserver remains as fallback for Firefox/older browsers. Specific animations: (1) cards fade+slide on `view()` timeline, (2) section headings fade-in, (3) glass card scale entrance. Gate behind `prefers-reduced-motion: no-preference`. |
-| **Dependency** | CSS addition. JS remains as fallback (no removal). Progressive enhancement -- no risk to existing functionality. |
-| **Measurable Criteria** | Before: scroll animations run on main thread via JS. After: 85% of users get compositor-thread animations with zero JS cost. Firefox users see no change (existing behavior). |
-| **NOTE:** This was an anti-feature in the v1.4 research (March 2026) due to limited support. Safari 26 support changes the calculus -- now viable as progressive enhancement. |
-| **Sources** | [CSS Scroll-driven Animations -- MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations), [caniuse: animation-timeline](https://caniuse.com/mdn-css_properties_animation-timeline_scroll) |
-
-### DIFF-02: Scroll Progress Indicator Enhancement
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | The consultations.html already has a `.scroll-progress` element in the DOM. Enhancing it to use CSS `animation-timeline: scroll()` eliminates the JS scroll listener entirely for supported browsers. For long service pages, a progress indicator helps 45+ users maintain reading context. |
-| **Complexity** | LOW |
-| **Current State** | `.scroll-progress` div exists in HTML. Implementation unknown (may be JS-driven). |
-| **What to Build** | CSS-only scroll progress bar using `animation-timeline: scroll()` with `@supports` gate. Solid-color fill matching `--color-primary`. Height: 3px. Position: fixed top. Fallback: existing JS implementation. |
-| **Dependency** | Extends existing HTML element. CSS addition only. |
-| **Measurable Criteria** | Before: JS-driven progress bar. After: CSS-only for 85% of users, JS fallback for rest. |
-
-### DIFF-03: Glass Surface Hover Brightness (Apple Liquid Glass Model)
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | Apple's Liquid Glass interaction model brightens glass surfaces on hover rather than moving them (translateY). This feels more physically accurate -- glass catches more light when you approach it, not when you lift it. Differentiates from the generic card-hover-lift pattern used by every other site. |
-| **Complexity** | LOW |
-| **Current State** | Cards use `translateY(-4px)` on hover. Glass cards (liquid-card) use the same pattern. |
-| **What to Build** | On `.liquid-card:hover` and `.liquid-regular:hover`: `filter: brightness(1.06) saturate(1.1)` instead of translateY. Keep translateY for non-glass `.card` elements. The glass-specific hover creates a "light gathering" effect. Transition: `var(--dur-hover) var(--ease-liquid)`. |
-| **Dependency** | CSS change on existing selectors. |
-| **Measurable Criteria** | Before: glass cards lift on hover (same as flat cards). After: glass cards brighten on hover (distinct interaction language). |
-
-### DIFF-04: Reduced-Motion Deep Compliance
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | Current `prefers-reduced-motion` handling blankets `animation-duration: 0.01ms !important` and `transition-duration: 0.01ms !important` globally. This is the "nuclear" approach -- it kills ALL transitions including color changes, opacity fades, and theme transitions. WCAG guidance distinguishes between MOTION (spatial displacement) and NON-MOTION transitions (color, opacity). The site should disable MOTION while preserving non-motion transitions for users who prefer reduced motion. |
-| **Complexity** | MEDIUM |
-| **Current State** | Global `prefers-reduced-motion: reduce` kills everything. The glint animation runs continuously (`animation: glint 6s linear infinite`) and has no reduced-motion gate. |
-| **What to Build** | (1) Replace global `*` duration override with targeted selectors: disable `transform`, `translate`, `scale` transitions, and `@keyframes` that involve spatial movement. (2) PRESERVE `opacity`, `color`, `background-color`, `border-color`, `box-shadow` transitions (these are non-vestibular-triggering). (3) Stop the glint animation: `animation: none` for `.liquid-card::before` under reduced-motion. (4) Stop the shimmer sweep animation under reduced-motion. (5) Preserve theme toggle color transition (300ms background/color fade is not motion). |
-| **Dependency** | Refactors existing `@media (prefers-reduced-motion: reduce)` blocks. |
-| **Measurable Criteria** | Before: reduced-motion users see zero transitions (harsh snaps). After: reduced-motion users see smooth color/opacity changes but no spatial movement -- closer to WCAG intent. |
-
-### DIFF-05: Skeleton Loading States for Form Section
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | If the form section is below the fold and loads via scroll-reveal, users on slow connections see a blank area before content appears. A CSS skeleton provides immediate visual structure. For 45+ users, this signals "content is coming" rather than "the page is broken." |
-| **Complexity** | LOW-MEDIUM |
-| **Current State** | No skeleton states anywhere. Content is static HTML -- loads immediately. Skeleton is most relevant if the form ever becomes dynamically loaded or if CLS optimization is needed. |
-| **What to Build** | CSS-only skeleton placeholders using `linear-gradient` shimmer animation on placeholder divs. Apply to: form fields placeholder state (before user interacts), card grids during initial page paint if using lazy-loaded content. Skeleton colors: `--color-bg-gray` base, `--color-light` shimmer sweep. Respect `prefers-reduced-motion` (static gray blocks instead of animated shimmer). |
-| **Dependency** | Requires HTML placeholder structure + CSS. |
-| **Measurable Criteria** | Before: form area is blank during scroll-reveal fade-in. After: skeleton structure visible immediately, content fades in on top. |
-| **NOTE:** LOW priority -- the site is static HTML, content loads fast. Skeleton is a polish item, not a UX necessity. |
-
-### DIFF-06: Glass Layer Budget Enforcement (Mobile Performance)
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | `backdrop-filter` creates GPU composite layers. On budget Android devices (common in Kazakhstan), more than 2-3 glass elements visible simultaneously causes scroll jank. The current system has no enforcement mechanism -- a page with multiple glass cards can have 5+ glass layers in viewport on mobile. |
-| **Complexity** | MEDIUM |
-| **Current State** | PROJECT.md states "Max 2 glass elements per viewport" as a design rule, but no CSS or JS enforces it. On narrow mobile viewports, card grids may stack 3-4 glass cards in view. |
-| **What to Build** | (1) Mobile-specific `@media (max-width: 767px)` override: reduce `--liquid-blur-md` from 24px to 12px. (2) On mobile, glass cards in grids (`.programs__grid .liquid-card`, `.hub-services__grid .liquid-card`) get `backdrop-filter: none; background: rgba(255,255,255,0.92);` -- opaque frosted appearance without GPU cost. Only hero glass and header glass retain actual backdrop-filter on mobile. (3) Optional: IntersectionObserver that adds/removes `backdrop-filter` class based on viewport visibility (only active glass layers are the ones in view). |
-| **Dependency** | CSS media queries + possible JS optimization. |
-| **Measurable Criteria** | Before: unlimited glass layers on mobile. After: max 2 active backdrop-filter layers in any viewport on mobile; Lighthouse performance score does not regress. |
-
-### DIFF-07: Cross-Document View Transitions
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | The site has 4 pages (index, consultations, treatment-abroad, checkup). CSS Cross-Document View Transitions (CDVT) enable smooth page-to-page morphing with ZERO JavaScript. The header and nav persist visually while content cross-fades. Creates an app-like navigation feel that matches the Liquid Glass premium positioning. |
-| **Complexity** | MEDIUM |
-| **Browser Support** | Chrome 126+, Edge 126+. Safari/Firefox: NO support yet. Part of Interop 2026. Progressive enhancement only. |
-| **Current State** | Page navigation is standard HTTP (full reload). |
-| **What to Build** | (1) `@view-transition { navigation: auto; }` in CSS. (2) `view-transition-name` on shared elements: header, footer, and page title area. (3) `@supports (view-transition-name: *) { ... }` guard. (4) Custom `::view-transition-*` pseudo-element styling for cross-fade duration and easing matching `--ease-liquid`. (5) Respect `prefers-reduced-motion`: instant swap under reduced motion. |
-| **Dependency** | CSS-only. No HTML changes beyond meta tag `<meta name="view-transition" content="same-origin">`. |
-| **Measurable Criteria** | Before: hard page reload between pages. After: smooth cross-fade transition for Chrome/Edge users (~70% of traffic); no change for others. |
-| **Sources** | [View Transition API -- MDN](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) |
-
-### DIFF-08: Touch Target Audit and Expansion
-
-| Attribute | Detail |
-|-----------|--------|
-| **Value Proposition** | WCAG 2.2 SC 2.5.8 (Level AA) requires 24x24px minimum targets. Best practice for 45+ audience: 48x48px. The site has `min-height: 48px; min-width: 48px` on `.button`, but nav links, footer links, FAQ toggles, phone link, and theme toggle may not meet 48px in all viewport sizes. |
-| **Complexity** | LOW |
-| **Current State** | Buttons: 48px minimum. Nav links: no explicit min-height. FAQ question buttons: no explicit min-height. Theme toggle: present but size unverified. |
-| **What to Build** | (1) Audit all interactive elements for minimum 48x48px touch target. (2) Add `min-height: 48px; min-width: 48px; display: inline-flex; align-items: center;` to: `.site-header__link`, `.faq__question`, `.theme-toggle`, `.footer__nav a`. (3) Use padding (not just min-height) to expand targets without affecting visual layout. |
-| **Dependency** | CSS-only adjustments. |
-| **Measurable Criteria** | Before: some interactive elements below 48px touch target. After: 100% of interactive elements meet 48x48px minimum. |
-| **Sources** | [WCAG 2.5.8 Target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html), [All Accessible Touch Target Sizes](https://blog.logrocket.com/ux-design/all-accessible-touch-target-sizes/) |
+Sources:
+- [Bram.us — How To create the Stripe Website Gradient Effect](https://www.bram.us/2021/10/13/how-to-create-the-stripe-website-gradient-effect/)
+- [Kevin Hufnagl — Stripe Website Gradient Effect](https://kevinhufnagl.com/how-to-stripe-website-gradient-effect/)
+- [Apple HIG — Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
+- [Apple HIG — Motion](https://developer.apple.com/design/human-interface-guidelines/motion)
 
 ---
 
-## Anti-Features
+## Category 1 — Blob Renderer Behaviour
 
-Features to explicitly NOT build. Commonly suggested but harmful for this project.
+The single dense, alive object under the entire UI.
 
-### ANTI-01: Parallax Scroll Effects on Glass Layers
+### Table Stakes (must-have)
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Parallax displacement on glass cards during scroll | Explicitly out of scope (PROJECT.md). `transform: translateZ()` on glass elements forces re-composition of backdrop-filter every frame. Causes scroll jank on budget Android. Vestibular trigger for 45+ users with motion sensitivity. | Use opacity-based scroll-reveal (existing) or CSS scroll-driven view() timeline (DIFF-01) for entrance animations only. No continuous scroll-linked displacement. |
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Fixed full-viewport layer** | `position: fixed; inset: 0; z-index: 0; pointer-events: none` (TZ §17) | S | Single DOM root for the whole field. |
+| **4 sublayers: core / body / halo / glint** | Each its own paint primitive (radial-gradient or canvas circle), absolutely positioned, z-stacked (TZ §5) | M | Required for optical depth. Cannot be flattened into one element. |
+| **Brand-locked palette** | `--blob-core: #35B678` / `--blob-hot: #4FE098` / `--blob-halo: rgba(98,221,177,0.5)` / `--blob-edge: rgba(125,205,255,0.18)` / `--blob-glint: rgba(255,255,255,0.65)` (TZ §5) | S | Tokenize in `globals.css` as `--blob-*`; no inline literals. |
+| **Soft radial falloff per sublayer** | Each sublayer is a feathered radial gradient (no hard edges anywhere) | S | Use radial-gradient or canvas blur. |
+| **Sublayer size hierarchy** | core ≪ body < halo (relative ratios approx 1 : 4 : 10); glint ≈ core | S | Will be visually tuned, but the scale is fixed. |
+| **Open-space visibility tier** | Visible directly on page background — but mild, never an "agro пятно" (TZ §8) | S | Halo opacity ≤ ~0.5; core visible only when not occluded. |
+| **Renders behind ALL chrome** | Header, main, footer all `z-index: 1` (TZ §17) | S | Cannot be partially behind one section and in front of another. |
 
-### ANTI-02: Animated Gradient Mesh Backgrounds
+### Differentiators (above-baseline reach)
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| `@keyframes` on `background-position` for moving gradient mesh behind glass | Runs continuously. Cannot be fully disabled by `prefers-reduced-motion` without JS. Continuous animation under glass surfaces creates visual "swimming" that disorients older readers. GPU cost of animated large-area gradients on mobile is significant. | Static gradient mesh (existing). If more visual interest is needed, use scroll-driven opacity change on the mesh (appears/intensifies as user scrolls into hero). |
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Velocity-driven shape stretch** | At high pointer speed, body and halo elongate along motion vector (TZ §6) | M | Animate `scaleX/scaleY` + rotate via transform; do NOT touch width/height (perf). |
+| **Per-section visibility weighting** | Halo opacity reduced when blob is under header chrome ("сдержанная реакция, без визуального шума" — TZ §8) | M | Either via section-level CSS variable cascade or a region-aware opacity hook. |
 
-### ANTI-03: Auto-Playing Shimmer on Multiple Cards
+### Anti-Features (REJECT)
 
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Extending the existing `shimmer-sweep` animation to all glass cards | Current liquid-glass.css correctly limits shimmer to "hero CTA only, max 1 per viewport." Extending to all cards violates the principle. Multiple shimmers create a "disco" effect that is disorienting for 45+ users and cheapens the premium feel. AppleVis report specifically criticizes persistent animations on glass surfaces. | Keep shimmer on hero CTA only. For card interaction feedback, use the brightness hover effect (DIFF-03) instead. |
-
-### ANTI-04: Heavy Box Shadows on Glass
-
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Adding `box-shadow: 0 20px 60px rgba(0,0,0,0.3)` to glass cards for "depth" | The glass system already provides depth via `backdrop-filter` blur + inset rim lights + subtle outer shadow. Adding heavy outer shadows over translucent backgrounds creates visual mud. The v1.3 design decision explicitly removed heavy shadows. Double depth signaling (blur + shadow) confuses the visual hierarchy. | Rely on existing `--liquid-shadow-outer` (16px 40px at 0.16 opacity). Adjust only if audit reveals insufficient depth cue on specific backgrounds. |
-
-### ANTI-05: CSS Scroll-Snap for Section Navigation
-
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| `scroll-snap-type: y mandatory` on the page for section-by-section scrolling | Medical content needs continuous, unconstrained scrolling. 45+ users with motor control variations fight against scroll-snap. Mandatory snap interferes with reading flow and makes it impossible to position content at a comfortable reading point. | Free scrolling (existing). Sticky nav with section links for direct navigation. Scroll progress indicator (DIFF-02) for orientation. |
-
-### ANTI-06: CSS Houdini / Paint Worklets for Glass Effects
-
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Using `CSS.paintWorklet` for custom glass/frost effects | Safari and Firefox do NOT support CSS Paint API. The entire project constraint is vanilla CSS without build tools. Paint worklets require registration JS. The existing `backdrop-filter` approach works across all browsers and is the standard solution. | Continue using `backdrop-filter` with `-webkit-` fallback (already implemented). |
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **More than 4 sublayers** | TZ explicitly enumerates 4. More layers ≠ better; each adds GPU cost and visual noise. |
+| **Multiple blobs on screen simultaneously** | TZ §1 — "единственный плотный объект". Two blobs = two protagonists = no protagonist. |
+| **Hard-edged or pixelated rendering** | Breaks the "subsurface light under glass" metaphor. |
+| **WebGL/three.js shader implementation** | Bundle weight + WebGL fallback complexity. CSS radial gradients + `filter: blur()` get us the entire visual budget at a fraction of the cost. Reject WebGL unless a Phase 1 prototype proves CSS cannot meet the visual bar. |
+| **Toxic/neon green** | TZ §5 — "медицинским, чистым и технологичным; нельзя в кислотный neon, gaming-эстетику или токсичный зеленый". |
 
 ---
 
-## Feature Dependencies
+## Category 2 — Cursor-Follow Physics
+
+How the four sublayers chase the pointer.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Single `pointermove` listener + single `requestAnimationFrame` loop** | Per TZ §16. No per-element listeners, no React state updates per move. | M | Single source of truth for pointer; one rAF dispatches positions to all sublayers via CSS variables. |
+| **Critically-damped (or exponential-smoothed) viscous follow** | core → fast, body → medium, halo → slow, glint → reactive to dwell (TZ §6) | M | Easing model: `pos += (target - pos) * k` per frame, with `k_core > k_body > k_halo`. Suggested starting points: `k_core ≈ 0.18`, `k_body ≈ 0.08`, `k_halo ≈ 0.035`. Tune visually. |
+| **Max-speed clamp on each sublayer** | Prevents teleport across screen on fast flicks; preserves the "viscous" feel | S | Cap pixel-delta per frame per sublayer. |
+| **Position publication via CSS variables on the field root** | `--blob-x`, `--blob-y`, `--core-x`, `--body-x`, etc. Sublayers read via `translate3d(var(--core-x), var(--core-y), 0)` | S | Avoids touching React state; rAF writes directly. |
+| **Transform-only animation (no `top/left`)** | TZ §16 mandate | S | `translate3d` on a `will-change: transform` layer. |
+| **Shape relaxation back to round on stop** | After motion ceases, sublayer offset gradients converge → shape returns to circle (TZ §6) | S | Falls out automatically from the exponential smoothing — no extra code if model is right. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Speed-coupled stretch matrix** | Stretch sublayers along velocity vector by a function of recent speed; `scale(1 + v*ε, 1 - v*ε*0.3)` | M | Rotate via `atan2(vy, vx)`. Looks "alive" rather than "lagging". |
+| **Different inertia ratios for X and Y axes** | Optional polish — gives a subtle organic feel | M | Marginal; only if frame budget allows. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Spring physics with overshoot/oscillation** | Reads as "playful/gaming", not medical. TZ tone is спокойный, медицинский. |
+| **Trail of N copies of the cursor** | TZ §14 explicitly forbids on mobile and the spirit applies on desktop too — "trail-эффект за пальцем" is rejected. |
+| **Per-frame React state** (`useState(pos)` on `pointermove`) | TZ §16 explicit prohibition. Causes re-render storms. Use refs + rAF. |
+| **Spring libraries (`react-spring`, `framer-motion` for the blob loop)** | Adds runtime overhead for an effect that fits in <50 lines of vanilla rAF. Framer Motion is fine elsewhere; not for the inner loop. |
+| **Animating `box-shadow` per frame** | TZ §16 — "анимировать тяжелые box-shadow на десятках элементов" forbidden. |
+
+Complexity overall: **MEDIUM**. The physics is a 30-line rAF loop; visual tuning is the long pole.
+
+---
+
+## Category 3 — Heat Accumulation (Dwell Response)
+
+When the cursor lingers, the blob "fills up" — core brightens, body thickens, halo expands, glint appears.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Dwell detector** | Track recent pointer speed (e.g. moving average over last 200ms). When speed below threshold for 1.5–3s, increment a `heat` scalar [0..1]. (TZ §7) | M | One scalar per field, exposed as `--blob-heat`. |
+| **Heat-driven sublayer modulation** | `core` opacity / brightness lerp from 1.0 → 1.15; `body` alpha lerp; `halo` `scale()` lerp 1.0 → 1.2; `glint` opacity 0 → ~0.6 (TZ §7) | M | Drive everything from a single `--blob-heat` custom property. |
+| **Smooth ramp curve** | Ease-in-out (`smoothstep`-like), ~1.5s to reach max; not linear | S | Use `easeInOutCubic`-style on the heat integration. |
+| **Decay on movement** | When pointer moves, heat decays back to 0 over ~600–900ms; smooth, no jump (TZ §7) | S | Exponential decay (`heat *= 0.96` per frame while moving). |
+| **Max heat cap = 1.0** | Prevents over-saturation if user goes AFK | S | Clamp before publish. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Heat-affects-glass-saturation coupling** | When heat is high, glass elements above the blob region become slightly more saturated ("glass-слои над blob-ом становятся визуально сочнее" — TZ §7) | M | Optional polish. Implementable via `backdrop-filter: saturate(calc(140% + var(--blob-heat) * 30%))`. Test perf cost. |
+| **Glint micro-shimmer at peak heat** | Glint sublayer gets a 2–3s `opacity` cycle when heat ≈ 1 | S | Must respect `prefers-reduced-motion`. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Heat triggers a "burst" / scale punch** | TZ §7 — "должен оставаться спокойным и медицинским". Bursts are gaming UX. |
+| **Heat-driven color shift toward red/orange** | Brand parity violation. Green family only. |
+| **Heat sound effect** | Out of TZ scope; would violate the "спокойный, медицинский" tone. |
+| **Heat persists across page navigations** | Wasted complexity; reset on each route. |
+
+Dependencies: **Cursor-Follow Physics (Cat 2)** — heat reads from the same speed signal.
+
+---
+
+## Category 4 — Glass UI Redesign (Opacity & Tier System)
+
+The TZ's biggest content edit: existing glass surfaces must drop from ~0.6 fill toward 0.04–0.16, with explicit tiers per surface depth.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Four-tier opacity scale** | `0.04` (large sections / hero) / `0.08` (cards) / `0.12` (forms) / `0.16` (small controls / pills) (TZ §9) | S | Tokenize as `--glass-fill-section / -card / -form / -control`. |
+| **Multi-layer composition per surface** | Every glass surface = transparent fill + backdrop-filter + thin light border + inset highlight + soft outer shadow + faint tint (TZ §9, §17) | M | Already partially in place via existing tokens; needs alpha rebalancing. |
+| **Border via `box-shadow: inset`, not `border`** | DESIGN.md squircle anti-pattern (mask clips border) | S | Already enforced repo-wide. |
+| **Inset highlight** | `inset 0 1px 0 rgba(255,255,255,0.65)` — top edge light catch (TZ §17 sample) | S | Already in shadow-glass token family. |
+| **Composite outer shadow** | `0 24px 80px rgba(31,75,120,0.12)` — soft cool-tinted drop (TZ §17 sample) | S | Aligns with existing `shadow-glass` token. |
+| **Existing v8 surfaces re-styled** | Header, hero card, stats bar, service cards, process steps, CTA section, form — every glass element re-tuned to the new opacity tiers | L | This is the brunt of the work. ~10 component files in `next/src/components/`. |
+| **Section bg paint removal** | Sections must NOT have opaque/cream/white backgrounds. They become transparent glass plates over the blob. | M | DESIGN.md currently allows `bg-white/bg-cream/bg-blue/bg-gray` rotation — TZ supersedes this for v9. Log Key Decision in PROJECT.md. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Refraction-style edge overlay** | A subtle gradient overlay on glass borders that simulates light bending around the edge | M | Implementable as a `::before` pseudo with conic gradient. Bonus polish; not critical to the core effect. |
+| **Per-component depth ID** | Each glass component declares its tier via a data attribute (`data-glass-tier="card"`) and CSS reads `--glass-fill-{tier}` | S | Cleaner than per-component literals. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Solid white card backgrounds** | TZ §9 explicit: "плотные белые карточки" forbidden. |
+| **Milky/opaque fills above 0.16** | TZ §9: "значения выше должны использоваться осторожно... если glass-слой становится молочно-белым и перестает пропускать blob, это нарушение концепции". |
+| **Green tint on cards** | TZ §9: "зеленая заливка поверх карточек" forbidden. The blob is the only green source. |
+| **Flat (non-glass) sections** | TZ §9: "плоские секции без оптической глубины" forbidden. |
+| **Background-image / pattern fills on glass surfaces** | Defeats the refraction metaphor and obscures the blob. |
+| **Adding a 3rd persistent glass layer per viewport** | Already constrained to ≤2 by DESIGN.md mobile budget. v9 must NOT relax this. |
+
+Complexity overall: **LARGE**. This category drives the bulk of the milestone's diff.
+
+Dependencies: **DESIGN.md token update** must land before component edits begin.
+
+---
+
+## Category 5 — Optical Depth Hierarchy
+
+Different glass elements must read as being at different distances from the user.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Per-tier blur scale** | sections (largest blur, e.g. `--liquid-blur-lg` 40px desktop / 12px mobile) → cards (~24px / 12px) → forms (~16px / 12px) → controls (~12px / off) (TZ §11) | S | Reuse existing `--liquid-blur-{sm,md,lg,xl}` tokens; map tier → token. |
+| **Per-tier shadow scale** | Larger surfaces = wider, softer drop; smaller controls = tighter, sharper highlight (TZ §11) | S | Token-driven via `--shadow-glass-{section,card,form,control}`. |
+| **Per-tier border sharpness** | Sections = subtle border; cards = visible border; controls = sharpest highlight (TZ §11) | S | Border alpha varies per tier (e.g. `0.35` → `0.5` → `0.65`). |
+| **Air between tiers** | Section padding preserves vertical breathing room — must not collapse glass plates onto each other (TZ §11) | S | Existing spacing tokens; just verify no regressions. |
+| **Mobile tier collapse rule** | On mobile, all tiers cap at 12px blur (DESIGN.md hard constraint) and reduce to ≤2 stacked layers | S | Already enforced; v9 tiers must not violate. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Differential blob appearance per tier** | The same blob looks different under each tier (TZ §10): open background = soft mass; large section = blurry / volumetric; card = "сочнее" from layer accumulation; form = depth without losing readability; controls = light optical response only | M | Falls out automatically from the blur/shadow tier system if tuned right. Verification matters more than novel code. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Uniform blur across all surfaces** | Kills depth perception. Everything reads at the same distance = "плоская молочная поверхность" (TZ §11). |
+| **Animated blur values** | Animating `backdrop-filter` blur radius is GPU-poison on mobile and most desktop GPUs. |
+| **Dynamic depth shifting on hover** | Looks gimmicky for a medical brand. Hover lift via `translateY(-2px)` (existing pattern) is sufficient. |
+
+Complexity: **SMALL** if Cat 4 is done right (this category is mostly token-mapping); **MEDIUM** if hand-tuning per component.
+
+Dependencies: **Glass UI Redesign (Cat 4)** must define tiers first.
+
+---
+
+## Category 6 — Mobile Ambient Mode
+
+On touch devices, no cursor exists. Blob must be alive but autonomous.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Touch-detection branch** | Detect `(pointer: coarse)` or `matchMedia('(hover: none)')` → switch to ambient mode | S | One-time check at mount; no re-evaluation needed. |
+| **Autonomous slow drift** | Blob center follows a slow Lissajous (or low-frequency Perlin / sine-cos pair) path (TZ §14) | M | Pure JS; period ~20–40s per axis; amplitude ~30–40% of viewport. |
+| **No glint on mobile** | TZ §14 — "без резких glint" | S | Conditional: ambient mode skips glint sublayer. |
+| **No high-frequency motion** | TZ §14 — "низкая частота движения" | S | Drift speed bounded; no rAF >30fps required. |
+| **Tap pulse** | On `touchstart` / `pointerdown`, brief soft halo pulse (e.g. 600ms ease-out scale 1 → 1.15 → 1) at touch point (TZ §14) | M | One-shot animation; cannot accumulate trail. |
+| **Scroll-priority budget** | Ambient must NEVER drop scroll fps. Pause ambient updates while user is actively scrolling. (TZ §14) | M | Listen to `scroll` with passive flag; throttle blob updates during scroll. |
+| **Reduce sublayer count on mobile** | Optional: drop `glint` and reduce halo opacity. TZ implies this via "без агрессивного свечения". | S | Trivial conditional. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Tilt-driven drift (DeviceMotionEvent)** | iOS gyro could nudge ambient drift direction | M | Reject for v9 — adds permission prompts, weird UX on Android, not in TZ. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Trail effect following finger** | TZ §14 explicit ban: "нельзя превращать интерфейс в trail-эффект за пальцем". |
+| **Per-frame backdrop-filter changes** | Kills mobile GPU. |
+| **Tilt/gyroscope movement** | Permission prompts; cross-platform inconsistent; not in TZ; medical tone violation. |
+| **Blur > 12px anywhere on mobile** | Project hard constraint, repo-wide. |
+
+Complexity: **MEDIUM**. Ambient drift is a 20-line function; the harder part is correctly pausing on scroll.
+
+Dependencies: **Blob Renderer (Cat 1)** for the underlying sublayers.
+
+---
+
+## Category 7 — A11y Modes (Reduced Motion, Reduced Transparency, Contrast)
+
+The TZ is explicit about behaviour under each preference.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **`prefers-reduced-motion: reduce` → static ambient light** | Cursor-follow OFF, breathing OFF, glint OFF; blob becomes a **static centered ambient light** (TZ §15) | S | Branch in JS init: don't attach pointermove or rAF; render single static halo via CSS only. |
+| **`prefers-reduced-transparency` → drop glass entirely** | Replace glass surfaces with opaque surfaces matching surrounding bg, AND drop the blob field (or hold it at very low opacity ≤0.15) | M | DESIGN.md baseline already does this for `backdrop-filter`. v9 extends: blob also dims/disables. The TZ implies blob remains as ambient light but glass is opaque — research-level call: **dim blob to ambient halo (~0.2 opacity), keep static**. |
+| **`prefers-contrast: more` → dim halo, boost text** | Reduce blob halo opacity, increase glass border alpha to AAA-friendly, raise text contrast (TZ §15) | S | DESIGN.md already specifies behaviours; v9 adds halo damping. |
+| **No CSS-only motion regressions** | All blob motion must be JS-gated by the media query (CSS `@media (prefers-reduced-motion: reduce)` is for layout/decorative only) | S | The JS initialiser checks the MQ. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Live MQ change handling** | If user toggles reduced-motion mid-session, blob loop should reconfigure without reload | M | Optional polish; uncommon UX but technically correct. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **`prefers-reduced-motion: reduce` → just `animation-duration: 0`** | DESIGN.md anti-pattern: snap-from-offset. Must explicitly reset transforms. |
+| **Opt-out flags / cookie banners for motion** | OS-level preference is the contract. No app-level toggles for v9. |
+| **Forcing the effect on regardless of preference** | Discrimination against vestibular/photosensitive users. Not negotiable. |
+
+Complexity: **SMALL** if conditional branches are designed up front; **LARGE** if retrofitted late.
+
+Dependencies: All renderer + physics code must read from a single "active mode" flag.
+
+---
+
+## Category 8 — Pointer-Leave-Window Behaviour
+
+What happens when the user mouses out of the viewport entirely.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Detect leave** | `pointerleave` on document / window or `mouseleave` on `document.documentElement` | S | Both events; fallback chain. |
+| **Decay to last position with relaxation** | Blob does not snap to center. It drifts toward last known position with reduced opacity over ~1–2s, then settles into a slow ambient drift | M | Effectively engages the mobile-ambient loop centered on last position. |
+| **Halo dim** | Halo opacity dampens to ~50% of normal during "absent" mode | S | Adds subtle "sleep" cue. |
+| **Re-enter resumes follow** | On `pointermove` after re-enter, smooth re-acquisition of cursor (no teleport) | S | Existing exponential smoothing handles this for free. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Slow drift after extended absence** | After ~5s of absence, blob enters mobile-ambient mode shape | S | Reuse mobile-ambient drift code path. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Blob snap-disappears on leave** | Reads as "broken" — TZ §6 spirit: motion should always be smooth. |
+| **Blob teleports to viewport edge nearest cursor** | Gimmicky. |
+
+Complexity: **SMALL**. Reuses cursor-follow + ambient code paths.
+
+Dependencies: **Cursor-Follow Physics (Cat 2)** + **Mobile Ambient (Cat 6)**.
+
+---
+
+## Category 9 — Section / Scroll Transitions
+
+How the blob participates in scroll.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Blob is fixed-positioned; scrolling does not move it relative to viewport** | TZ §17 — `position: fixed; inset: 0` | S | Falls out of position model. |
+| **Glass surfaces re-reveal blob differently as they pass over it** | This is the central "blob looks different under different layers" effect (TZ §10) — produced automatically by scroll because different glass tiers pass over the fixed blob | S | No code; emerges from layout. |
+| **Scroll does not pause cursor-follow on desktop** | Scrolling continues physics loop; rAF drives both | S | No-op: rAF doesn't care about scroll. |
+| **Scroll DOES pause ambient updates on mobile** | Cat 6 already covers this | S | See Cat 6. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Scroll-velocity coupling (very subtle)** | Brief halo expansion proportional to scroll velocity; gives subliminal "the page is moving" cue | M | Optional polish. Very easy to over-do — would violate медицинский tone. **Recommend: SKIP for v9 baseline; revisit if shipping feels flat.** |
+| **Cross-section ambient pulses** | Slow scheduled glint pulses when crossing section boundaries | M | Not in TZ. Reject — adds complexity for marginal payoff. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Parallax on the blob** | TZ §17 says fixed; PROJECT.md "Out of Scope" lists "Параллакс / тяжёлые анимации" for ЦА 45+. Hard reject. |
+| **Section-scoped blob colors (e.g. teal in checkup section)** | Brand parity violation. The blob is the brand light source and must not change identity. |
+| **Snap-scroll / scroll-jacking** | Anti-A11y; violates 45+ audience expectation of normal scroll. |
+
+Complexity: **SMALL**. Mostly emergent from layout.
+
+Dependencies: **Blob Renderer (Cat 1)**, **Mobile Ambient (Cat 6)**.
+
+---
+
+## Category 10 — Performance Characteristics
+
+What "good" looks like at runtime.
+
+### Table Stakes
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Desktop budget** | Stable 60fps on hero + scroll on a mid-tier 2020 laptop (TZ §16) | M | Verified via Chrome perf trace. |
+| **Mobile budget** | No measurable scroll fps drop on a budget Android (Snapdragon 6xx-class). DESIGN.md: ≤12px blur, ≤2 stacked glass layers. | M | Verified on a real device, not emulator. |
+| **Single rAF for blob + heat + ambient** | One loop dispatching all updates per frame (TZ §16) | S | Architectural up-front decision. |
+| **Single `pointermove` listener** | TZ §16 | S | Architectural. |
+| **Transform/opacity-only animation** | Per TZ §16 | S | No layout properties touched in any animation. |
+| **`will-change: transform` on sublayers** | Hints the compositor | S | Set once at mount; do NOT toggle dynamically. |
+| **`pointer-events: none` on the field** | TZ §17 | S | Otherwise blocks UI clicks. |
+| **`prefers-reduced-motion` → minimal CPU** | Static render; no rAF (TZ §16) | S | See Cat 7. |
+
+### Differentiators
+
+| Feature | Spec | Complexity | Notes |
+|---------|------|------------|-------|
+| **Page-visibility-API pause** | When tab is hidden, pause rAF | S | One-line addition; nice-to-have for laptop battery. |
+| **In-viewport observer for sublayer pausing** | Effectively unused since blob is fixed full-viewport — skip. | — | N/A here. |
+
+### Anti-Features
+
+| Anti-Feature | Why reject |
+|--------------|------------|
+| **Animated `box-shadow` on multiple elements** | TZ §16 explicit ban. |
+| **Animated `backdrop-filter blur(N)` values** | GPU-poison on mobile. |
+| **Per-frame React state** | TZ §16 ban — re-render storms. |
+| **Animating layout properties** | `width/height/top/left/margin` per frame — forbidden. |
+| **Many DOM nodes** | TZ §16 — "создавать много DOM-элементов" forbidden. The blob is ≤4 DOM nodes; do not balloon. |
+
+Complexity: **MEDIUM**. Easy to write correctly; tedious to verify on real devices.
+
+Dependencies: **All renderer/physics categories** must commit to the constraints.
+
+---
+
+## Cross-Category Dependency Graph
 
 ```
-[ACC-01: prefers-contrast] ──independent──> Token overrides only
-[ACC-02: prefers-reduced-transparency] ──independent──> Token overrides only
-[ACC-03: Worst-case contrast audit] ──may-require──> Raising --liquid-bg opacity
-    ──feeds──> [TYPO-01: text readability] (audit informs needed opacity)
+[Cat 1: Blob Renderer]
+    │
+    ├── used by ─→ [Cat 2: Cursor Physics]
+    │                  │
+    │                  ├── feeds ─→ [Cat 3: Heat Accumulation]
+    │                  │
+    │                  └── feeds ─→ [Cat 8: Pointer-Leave]
+    │
+    └── used by ─→ [Cat 6: Mobile Ambient]
+                       │
+                       └── used by ─→ [Cat 8] and [Cat 9]
 
-[INT-01: focus-visible system] ──independent──> CSS addition
-[INT-02: card hover/focus/active] ──depends-on──> [INT-01] for consistent focus ring
-[INT-03: form loading state] ──independent──> JS + CSS change
+[Cat 4: Glass UI Redesign] (independent — touches DESIGN.md + components)
+    │
+    └── enables ─→ [Cat 5: Optical Depth Hierarchy]
 
-[DIFF-01: scroll-driven animations] ──independent──> @supports progressive enhancement
-[DIFF-02: scroll progress CSS] ──depends-on──> [DIFF-01] uses same API
-[DIFF-03: glass hover brightness] ──independent──> CSS change on existing selectors
-[DIFF-04: reduced-motion refinement] ──conflicts-with──> Existing global * override
-    ──must-be-done-carefully──> Refactors prefers-reduced-motion blocks in BOTH
-    styles.css AND liquid-glass.css
+[Cat 7: A11y Modes] — gates [Cat 2], [Cat 3], [Cat 6] at runtime
 
-[DIFF-06: mobile glass budget] ──depends-on──> [ACC-03] contrast audit
-    (lowering blur changes effective contrast)
-
-[DIFF-07: view transitions] ──independent──> CSS addition + meta tag
+[Cat 10: Performance] — cross-cutting; constrains [Cat 1, 2, 3, 6, 9]
 ```
 
-### Critical Ordering
+**Critical path:** Cat 1 (renderer) → Cat 2 (physics) → Cat 3 (heat) blocks all behavioural polish. Cat 4 (glass redesign) is independent and can run in parallel — it is the **largest** content edit.
 
-1. **ACC-03 (contrast audit) must precede DIFF-06 (mobile blur budget)** -- reducing blur on mobile changes effective contrast of glass surfaces. Audit first, then set mobile blur floor.
-2. **INT-01 (focus-visible) must precede INT-02 (card states)** -- card focus ring inherits from global system.
-3. **DIFF-04 (reduced-motion refinement) requires careful refactoring** -- the global `*` override in both stylesheets must be replaced simultaneously to avoid inconsistency.
+**A11y must be designed-in, not bolted-on:** Cat 7 must be settled before any cursor code lands.
 
 ---
 
 ## MVP Recommendation
 
-### Phase 1: Accessibility Foundation (Highest Priority)
+If forced to ship a subset of v9, ship in this order:
 
-Ship these first -- they address real accessibility gaps and Apple Liquid Glass compliance failures.
+1. **Cat 4 (Glass UI Redesign)** — biggest visual improvement and an independent foundation. The page can ship with this even before any blob exists, and would already feel different.
+2. **Cat 1 (Blob Renderer) + Cat 5 (Optical Depth)** — gets the page to "blob exists, glass tiers correct", a publishable state.
+3. **Cat 2 (Cursor Physics) + Cat 7 (A11y gating)** — adds interactivity, but A11y gates land simultaneously, not later.
+4. **Cat 6 (Mobile Ambient)** — required for mobile parity before public launch.
+5. **Cat 3 (Heat Accumulation)** — polish layer.
+6. **Cat 8 (Pointer-Leave) + Cat 9 (Scroll polish)** — final polish.
+7. **Cat 10 (Performance)** — verification gate before any release; not a discrete phase but a checklist applied across all phases.
 
-1. **ACC-01** `prefers-contrast: more` -- LOW complexity, major accessibility gap
-2. **ACC-02** `prefers-reduced-transparency` -- LOW complexity, direct Apple HIG compliance
-3. **ACC-03** Worst-case contrast audit -- MEDIUM complexity, informs all subsequent work
-4. **INT-01** Focus-visible system -- LOW-MEDIUM complexity, keyboard accessibility gap
-5. **DIFF-08** Touch target audit -- LOW complexity, WCAG 2.2 compliance
-
-### Phase 2: Interaction Polish
-
-6. **INT-02** Card hover/focus/active completeness
-7. **INT-03** Form submit loading state
-8. **DIFF-03** Glass hover brightness (Apple model)
-9. **DIFF-04** Reduced-motion deep compliance
-
-### Phase 3: Performance + Visual
-
-10. **TYPO-01** Glass-on-text readability (informed by ACC-03 audit)
-11. **DIFF-06** Mobile glass layer budget
-12. **DIFF-01** Scroll-driven animations (progressive enhancement)
-13. **DIFF-02** Scroll progress CSS enhancement
-
-### Defer to v7.x or Later
-
-14. **DIFF-05** Skeleton loading states -- site is static, fast; low urgency
-15. **DIFF-07** Cross-document view transitions -- Chrome/Edge only; impressive but not critical
+**Defer / probable cut:** scroll-velocity coupling (Cat 9 differentiator) — high risk of looking gimmicky for the medical tone.
 
 ---
 
-## Feature Prioritization Matrix
+## Anti-Features Master List (consolidated)
 
-| ID | Feature | User Value | Impl Cost | Priority | Risk for 45+ |
-|----|---------|------------|-----------|----------|---------------|
-| ACC-01 | prefers-contrast fallback | HIGH | LOW | P0 | LOW (improves access) |
-| ACC-02 | prefers-reduced-transparency | HIGH | LOW | P0 | LOW (improves access) |
-| ACC-03 | Worst-case contrast audit | HIGH | MEDIUM | P0 | LOW (audit, not change) |
-| INT-01 | Focus-visible system | HIGH | LOW | P0 | LOW (improves access) |
-| DIFF-08 | Touch target audit | HIGH | LOW | P0 | LOW (improves access) |
-| INT-02 | Card state completeness | MEDIUM | LOW | P1 | LOW |
-| INT-03 | Form loading state | MEDIUM | LOW | P1 | LOW (prevents confusion) |
-| DIFF-03 | Glass hover brightness | MEDIUM | LOW | P1 | LOW |
-| DIFF-04 | Reduced-motion refinement | MEDIUM | MEDIUM | P1 | LOW (improves access) |
-| TYPO-01 | Glass text readability | MEDIUM | LOW | P1 | LOW (improves readability) |
-| DIFF-06 | Mobile glass budget | MEDIUM | MEDIUM | P2 | LOW (improves perf) |
-| DIFF-01 | Scroll-driven animations | LOW | MEDIUM | P2 | LOW (progressive enh.) |
-| DIFF-02 | Scroll progress CSS | LOW | LOW | P2 | LOW |
-| DIFF-05 | Skeleton states | LOW | LOW-MED | P3 | LOW |
-| DIFF-07 | View transitions | LOW | MEDIUM | P3 | LOW (progressive enh.) |
+Quick-reference rejection list for the requirements definer:
 
-**Priority key:**
-- P0: Must-have for v7.0 (accessibility compliance, Apple HIG gaps)
-- P1: Should-have (interaction polish, readability improvement)
-- P2: Nice-to-have (performance, progressive enhancement)
-- P3: Defer (low urgency, limited browser support)
+| # | Anti-feature | Reason |
+|---|--------------|--------|
+| 1 | Multiple blobs | Single protagonist |
+| 2 | Toxic/neon green | Brand parity |
+| 3 | WebGL implementation | Bundle weight; CSS sufficient |
+| 4 | Spring oscillation / bounce | Tone violation |
+| 5 | Cursor trail (N copies) | TZ §14 explicit |
+| 6 | Per-frame React state | Perf violation |
+| 7 | Animating `box-shadow` | Perf violation |
+| 8 | Animating `backdrop-filter` blur | Perf violation |
+| 9 | Solid-white card backgrounds | TZ §9 |
+| 10 | Milky / opaque glass fills > 0.16 | TZ §9 |
+| 11 | Green tint on cards | TZ §9 |
+| 12 | Section-scoped blob color shift | Brand parity |
+| 13 | Parallax / scroll-jacking | PROJECT.md out-of-scope |
+| 14 | Snap-disappear on pointer leave | Tone violation |
+| 15 | Tilt / gyroscope drift | Permission prompts; not in TZ |
+| 16 | App-level motion toggle | OS prefs are the contract |
+| 17 | Heat-driven color shift toward red/orange | Brand parity |
+| 18 | Heat triggers a visual "burst" | Tone violation |
+| 19 | More than 4 sublayers | Scope creep, perf cost |
+| 20 | Heat sound effect | Tone violation, scope creep |
+| 21 | Blur > 12px on mobile | DESIGN.md hard constraint |
+| 22 | Stacking 3+ glass layers per viewport | DESIGN.md hard constraint |
 
 ---
 
-## Domain-Specific Research Findings
+## Phase-Specific Warnings (forwarded to PITFALLS.md)
 
-### 1. Apple Liquid Glass Accessibility Failures (Lessons for This Project)
+- Glass UI Redesign (Cat 4) is a giant edit across ~10 component files — high merge-conflict risk. Recommend a single dedicated phase.
+- Cat 7 (A11y) **must** be designed before Cat 2 (physics) lands — retrofit is harder than gate.
+- Mobile real-device testing (Cat 6, Cat 10) cannot be skipped. Snapdragon 6xx-class is the calibration target.
+- The 4-sublayer DOM is brittle — an extra sublayer "for richness" is the most likely scope-creep vector. Hard-cap at 4.
 
-**Confidence: HIGH (multiple verified sources)**
+---
 
-Apple's March 2026 AppleVis accessibility report card gave Liquid Glass failing marks in visual accessibility. Key criticisms directly applicable to this project:
+## Confidence Assessment
 
-- **Translucent surfaces persist even when "Increase Contrast" is enabled.** The site must respond to `prefers-contrast: more` by making glass surfaces opaque.
-- **Thin interface elements on glass are hard to see.** The specular rim lights (1px `::before` pseudo-elements) may be invisible to low-vision users. Under high-contrast mode, these should thicken to 2px or be replaced with solid borders.
-- **Animations continue under reduced motion.** The glint animation (`animation: glint 6s linear infinite`) is a continuous loop -- it must be stopped under `prefers-reduced-motion`, not just shortened.
-- **Dark mode glass is especially problematic.** Apple's dark Liquid Glass received the harshest criticism. The project already disables glass in dark mode (replaced with opaque dark surfaces) -- this decision is validated by the Apple report.
-
-### 2. WCAG 2.2 on Dynamic Backgrounds
-
-**Confidence: HIGH (W3C specification)**
-
-WCAG 2.2 SC 1.4.3 states contrast must be measured against the actual rendered appearance. For translucent surfaces, this means:
-- Measure contrast when the glass surface is at its LIGHTEST (scrolled over a white section).
-- Measure contrast when the glass surface is at its DARKEST (scrolled over a tinted section).
-- The WORST measurement is what counts for compliance.
-- If a glass card can appear over multiple backgrounds during scrolling, ALL positions must pass.
-
-### 3. Scroll-Driven Animations Status (April 2026)
-
-**Confidence: HIGH (MDN, caniuse verified)**
-
-The landscape has changed significantly since the v1.4 research (March 2026):
-- Safari 26 added support -- this was the missing piece.
-- Chrome/Edge: full support since v115 (2023).
-- Firefox: still behind flag (`layout.css.scroll-driven-animations.enabled`).
-- Scroll-driven animations are part of Interop 2026 (Webkit confirmed).
-- **Recommendation change:** Previously listed as anti-feature. Now viable as progressive enhancement with `@supports (animation-timeline: view())` gate. ~85% coverage.
-
-### 4. Touch Target Research for 45+ Audience
-
-**Confidence: MEDIUM (UX research, not clinical)**
-
-University of Maryland research (2023): targets smaller than 44x44px have 3x higher error rates. Sites with proper target sizes see 28% reduction in touch errors. For 45+ users with reduced fine motor control, 48px minimum (Google Material Design recommendation) is appropriate. Apple HIG requires 44x44 points.
-
-### 5. Typography on Glass for Older Adults
-
-**Confidence: MEDIUM (ophthalmology UX literature)**
-
-- Body text on semi-transparent backgrounds loses effective contrast. The background "noise" from blurred content behind glass reduces perceived readability even when measured contrast passes WCAG thresholds.
-- **Recommended mitigation:** Subtle text-shadow creates a "halo" that stabilizes letter edges against variable backgrounds. Shadow color should match the glass surface (white halo for light mode, dark halo for dark mode).
-- Font weight bump from 400 to 450 (or 500) on glass surfaces compensates for the reduced perceived contrast without making text look bold.
-- Inter Variable supports fractional weights -- using `font-weight: 450` is possible.
+| Area | Confidence | Reason |
+|------|------------|--------|
+| Feature decomposition | HIGH | TZ is unusually prescriptive; categories map 1:1 |
+| Table-stakes selection | HIGH | TZ enumerates them explicitly |
+| Differentiator selection | MEDIUM | Judgement calls on which polish features pay off vs distract |
+| Anti-feature selection | HIGH | TZ enumerates most of these, plus DESIGN.md and PROJECT.md hard constraints |
+| Production-reference calibration | MEDIUM | Patterns named are real but specific tuning values are repo-internal |
+| Mobile / a11y constraints | HIGH | Already encoded in DESIGN.md and PROJECT.md |
 
 ---
 
 ## Sources
 
-### Confirmed (HIGH confidence)
-- [prefers-contrast -- MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-contrast) -- 94.6% browser support
-- [prefers-reduced-transparency -- MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-transparency) -- ~73% support
-- [animation-timeline: scroll() -- caniuse](https://caniuse.com/mdn-css_properties_animation-timeline_scroll) -- 84.7% support
-- [WCAG 2.2 SC 1.4.3 Contrast Minimum](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
-- [WCAG 2.2 SC 2.5.8 Target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)
-- [W3C Technique C45: focus-visible](https://www.w3.org/WAI/WCAG21/Techniques/css/C45)
-- [CSS Scroll-driven Animations -- MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations)
-- [View Transition API -- MDN](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API)
-- [Interop 2026 -- WebKit](https://webkit.org/blog/17818/announcing-interop-2026/)
-
-### Referenced (MEDIUM confidence)
-- [Liquid Glass accessibility criticism -- 9to5Mac/AppleVis](https://9to5mac.com/2026/03/18/liquid-glass-and-long-standing-bugs-push-apples-grades-down-in-visual-accessibility-report-card/)
-- [Liquid Glass accessibility -- Infinum](https://infinum.com/blog/apples-ios-26-liquid-glass-sleek-shiny-and-questionably-accessible/)
-- [Liquid Glass less transparency, more contrast -- Six Colors](https://sixcolors.com/post/2025/11/soaping-up-liquid-glass-less-transparency-more-contrast/)
-- [Liquid Glass practical guidance -- Designed for Humans](https://designedforhumans.tech/blog/liquid-glass-smart-or-bad-for-accessibility)
-- [Glassmorphism meets accessibility -- Axess Lab](https://axesslab.com/glassmorphism-meets-accessibility-can-frosted-glass-be-inclusive/)
-- [Healthcare web design 2026 -- Adchitects](https://adchitects.co/blog/web-design-for-healthcare-best-practices-and-guidelines)
-- [Typography for older adults -- PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC9376262/)
-- [Health Literacy Online -- ODPHP](https://odphp.health.gov/healthliteracyonline/design-easy-scanning/use-readable-font-thats-least-16-pixels)
-- [Button states -- NN/g](https://www.nngroup.com/articles/button-states-communicate-interaction/)
-
-### Not Found / Unable to Verify
-- Kazakhstan-specific device fragmentation data (budget Android prevalence) -- relied on PROJECT.md assertion
-- Clinical study on text readability degradation through translucent surfaces -- design literature only, no ophthalmology primary source
-- Firefox scroll-driven animations timeline for unflagging -- no confirmed date
-
----
-
-*Feature research for: MedicusUnion KZ -- v7.0 UI/UX Design Excellence*
-*Researched: 2026-04-13*
-*Downstream consumer: v7.0 roadmap phase planning*
+- `/Users/mikhail/Projects/Medicus_video_consult-landing/design/LIQUID_GLASS_BLOB_TZ.md` — primary spec (20 sections, 12 acceptance criteria)
+- `/Users/mikhail/Projects/Medicus_video_consult-landing/DESIGN.md` — Liquid Glass token + HIG compliance contract
+- `/Users/mikhail/Projects/Medicus_video_consult-landing/.planning/PROJECT.md` — project state, constraints, out-of-scope list
+- [Apple HIG — Materials](https://developer.apple.com/design/human-interface-guidelines/materials)
+- [Apple HIG — Motion](https://developer.apple.com/design/human-interface-guidelines/motion)
+- [Bram.us — How To create the Stripe Website Gradient Effect](https://www.bram.us/2021/10/13/how-to-create-the-stripe-website-gradient-effect/)
+- [Kevin Hufnagl — How To: Create the Stripe Website Gradient Effect](https://kevinhufnagl.com/how-to-stripe-website-gradient-effect/)
