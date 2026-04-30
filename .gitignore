@@ -41,6 +41,10 @@ github-pages-target.png
 screenshots/
 .playwright-mcp/
 
+# Playwright (Phase 93 Wave 0) — local test outputs, never committed
+next/test-results/
+next/playwright-report/
+
 # Editor backup files
 *.bak
 
