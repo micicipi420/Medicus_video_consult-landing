@@ -10,9 +10,6 @@ export function FinalCTA() {
 
             {/* Left Content */}
             <div className="p-12 lg:p-20 flex flex-col justify-center relative z-10">
-              {/* Decorative blur blob */}
-              <div className="absolute top-0 left-0 w-96 h-96 bg-mu-blue/30 rounded-full blur-[100px] -z-10 mix-blend-multiply" aria-hidden="true" />
-
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-mu-text-900 mb-6 leading-tight drop-shadow-sm">
                 Не{'\u00A0'}откладывайте решение о{'\u00A0'}здоровье
               </h2>
