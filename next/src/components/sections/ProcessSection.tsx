@@ -1,107 +1,135 @@
-interface ProcessStep {
-  gradient: string;
-  shadow: string;
+import {
+  FileSearch,
+  Plane,
+  HeartPulse,
+  ClipboardList,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+type ProcessStep = {
   number: string;
   title: string;
   description: React.ReactNode;
-}
+  Icon: LucideIcon;
+  gradient: string;
+  shadow: string;
+};
 
-const STEPS: ProcessStep[] = [
+const STEPS: readonly ProcessStep[] = [
   {
-    gradient: 'bg-gradient-to-br from-mu-blue to-mu-accent-blue',
-    shadow: 'shadow-mu-blue/25',
     number: '01',
     title: 'Разбор вашего случая',
     description: (
       <>
-        Вы{'\u00A0'}присылаете документы{'\u00A0'}{'\u2014'} мы{'\u00A0'}
-        анализируем историю болезни и{'\u00A0'}подбираем оптимальный путь:
-        онлайн-консультацию, чек-ап или лечение в{'\u00A0'}профильной клинике.
-        Не{'\u00A0'}{'\u00AB'}по{'\u00A0'}договорённости{'\u00BB'}, а{'\u00A0'}
-        под ваш конкретный диагноз.
+        Вы&nbsp;присылаете документы&nbsp;— мы&nbsp;анализируем историю болезни
+        и&nbsp;подбираем оптимальный путь: онлайн-консультацию, чек-ап
+        или лечение в&nbsp;профильной клинике.
       </>
     ),
+    Icon: FileSearch,
+    gradient: 'bg-gradient-to-br from-mu-blue to-mu-accent-blue',
+    shadow: 'shadow-mu-blue/25',
   },
   {
-    gradient: 'bg-gradient-to-br from-mu-accent-teal to-mu-green-600',
-    shadow: 'shadow-mu-green-600/25',
     number: '02',
     title: 'Подготовка',
     description: (
       <>
-        Переводим документы, записываем к{'\u00A0'}врачу, при необходимости
-        организуем визу, билеты, проживание и{'\u00A0'}трансферы. Вы{'\u00A0'}
-        получаете полный план до{'\u00A0'}оплаты.
+        Переводим документы, записываем к&nbsp;врачу, при необходимости
+        организуем визу, билеты, проживание и&nbsp;трансферы. Полный план
+        до&nbsp;оплаты.
       </>
     ),
+    Icon: Plane,
+    gradient: 'bg-gradient-to-br from-mu-accent-teal to-mu-green-600',
+    shadow: 'shadow-mu-green-600/25',
   },
   {
-    gradient: 'bg-gradient-to-br from-mu-accent-orange to-mu-accent-red',
-    shadow: 'shadow-mu-accent-orange/25',
     number: '03',
     title: 'Консультация или лечение',
     description: (
       <>
-        Онлайн-встреча с{'\u00A0'}переводчиком{'\u00A0'}{'\u2014'} или приём
-        в{'\u00A0'}клинике с{'\u00A0'}личным сопровождающим. На{'\u00A0'}каждом
-        этапе{'\u00A0'}{'\u2014'} координатор MedicusUnion. Все документы
-        и{'\u00A0'}снимки{'\u00A0'}{'\u2014'} в{'\u00A0'}защищённом личном
-        кабинете.
+        Онлайн-встреча с&nbsp;переводчиком&nbsp;— или приём в&nbsp;клинике
+        с&nbsp;личным сопровождающим. На&nbsp;каждом этапе&nbsp;— координатор
+        MedicusUnion.
       </>
     ),
+    Icon: HeartPulse,
+    gradient: 'bg-gradient-to-br from-mu-accent-orange to-mu-accent-red',
+    shadow: 'shadow-mu-accent-orange/25',
   },
   {
-    gradient: 'bg-gradient-to-br from-mu-green-500 to-mu-green-600',
-    shadow: 'shadow-mu-green-600/25',
     number: '04',
-    title: 'После консультации / лечения',
+    title: 'После лечения',
     description: (
       <>
-        Письменное заключение врача с{'\u00A0'}переводом. Координация
-        наблюдения с{'\u00A0'}врачами в{'\u00A0'}Казахстане. При
-        необходимости{'\u00A0'}{'\u2014'} контрольные онлайн-консультации
-        с{'\u00A0'}лечащим врачом за{'\u00A0'}рубежом.
+        Письменное заключение врача с&nbsp;переводом. Координация наблюдения
+        с&nbsp;врачами в&nbsp;Казахстане. Контрольные онлайн-консультации
+        при&nbsp;необходимости.
       </>
     ),
+    Icon: ClipboardList,
+    gradient: 'bg-gradient-to-br from-mu-green-500 to-mu-green-600',
+    shadow: 'shadow-mu-green-600/25',
   },
-];
+] as const;
 
 export function ProcessSection() {
   return (
-    <section className="py-16 relative z-10" id="process">
+    <section className="relative z-10 py-16 sm:py-20" id="process">
       <div className="container mx-auto px-4 lg:px-6">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
+        {/* Section title */}
+        <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
+          <h2 className="mb-4 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
             <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">
-              От{'\u00A0'}обращения до{'\u00A0'}результата{'\u00A0'}{'\u2014'}{' '}
-              4{'\u00A0'}шага
+              От&nbsp;обращения до&nbsp;результата&nbsp;— 4&nbsp;шага
             </span>
           </h2>
-          <p className="text-mu-text-700 text-lg max-w-2xl mx-auto font-medium">
-            Вы{'\u00A0'}занимаетесь здоровьем{'\u00A0'}{'\u2014'} мы{'\u00A0'}
-            берём на{'\u00A0'}себя всё остальное.
+          <p className="text-base font-medium leading-relaxed text-mu-text-700 sm:text-lg">
+            Вы&nbsp;занимаетесь здоровьем&nbsp;— мы&nbsp;берём на&nbsp;себя всё
+            остальное.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {STEPS.map((step, i) => (
-            <div
-              key={i}
-              className="group bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 p-8 flex flex-col overflow-hidden"
-            >
-              <div
-                className={`w-16 h-16 ${step.gradient} rounded-2xl flex items-center justify-center text-white shadow-lg ${step.shadow} mb-6 text-2xl font-extrabold transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
-              >
-                {step.number}
-              </div>
-              <h3 className="text-xl font-bold text-mu-text-900 mb-3">
-                {step.title}
-              </h3>
-              <p className="text-mu-text-700 font-medium leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+        {/* Steps with dotted connector */}
+        <div className="relative mx-auto max-w-6xl">
+          {/* Desktop horizontal dotted connector — sits behind the cards (md:768px+) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-[12%] right-[12%] top-[64px] hidden h-0 border-t-2 border-dotted border-mu-text-700/25 md:block"
+          />
+          <div className="relative grid gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+            {STEPS.map((step) => {
+              const { Icon } = step;
+              return (
+                <div
+                  key={step.number}
+                  className="group relative flex h-full flex-col rounded-[2rem] border border-glass-border bg-white/65 p-6 shadow-glass backdrop-blur-2xl transition-[background-color,border-color,box-shadow] duration-300 hover:border-glass-border-strong hover:shadow-glass-lg sm:p-7"
+                >
+                  {/* Number + icon row */}
+                  <div className="mb-5 flex items-center gap-3">
+                    <div
+                      className={`flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg ${step.gradient} ${step.shadow} text-xl font-extrabold tracking-tight`}
+                    >
+                      {step.number}
+                    </div>
+                    <div
+                      className="flex h-11 w-11 items-center justify-center rounded-xl border border-glass-border bg-white/55 text-mu-text-700 backdrop-blur-md"
+                      aria-hidden="true"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                  </div>
+                  <h3 className="mb-3 text-lg font-bold tracking-tight text-mu-text-900 sm:text-xl">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm font-medium leading-relaxed text-mu-text-700 sm:text-base">
+                    {step.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
