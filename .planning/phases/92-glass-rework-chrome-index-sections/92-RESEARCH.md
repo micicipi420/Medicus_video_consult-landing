@@ -557,24 +557,24 @@ All major claims in this research are sourced directly from files I read in this
 | A6 | Token math: Tier 2 hover on cards using `--glass-form-fill` (0.14 desktop / 0.18 mobile) doesn't violate anti-pattern #4 because the desktop value is ≤0.16 and the mobile 0.18 falls under the FORM-SAFETY family exception (per UI-SPEC clarification) | Anti-Patterns to Avoid; Pattern 1 | Low — UI-SPEC explicitly addresses this; planner verifies |
 | A7 | The 8 plans of Decision F are the right granularity (Wave 1 utility CSS / Wave 2 four parallel components / Wave 3 form + accordion / Wave 4 FinalCTA + verification) | Wave-able Decomposition | Low — already locked in CONTEXT.md Decision F |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should Phase 92 amend Decision E to apply `.liquid-card` utility wrapper to a couple of representative section card families (ServicesGrid cards, ProcessSection steps, FAQSection items)?**
    - What we know: Decision E says "class swap, NOT utility migration." Heat-leak rules ship on `.liquid-card`. Index components don't use `.liquid-card`. Optical blob response on `/` comes from `backdrop-filter`, not from heat-leak `radial-gradient`.
    - What's unclear: Whether the project intends "every glass card optically warms when blob is behind" as a requirement (radial-gradient mechanism) or as a behavior (any optical response, including via `backdrop-filter`). Success criterion 5 says the rule must "make glass surfaces optically respond" — `backdrop-filter` does respond.
-   - Recommendation: Treat as conservative — leave Decision E intact. Document the dual-mechanism in 92-08 verification. If the user wants explicit radial-gradient response on `/`, raise as a new Key Decision in a follow-up phase, not an amendment to Phase 92.
+   - **RESOLVED:** Treat as conservative — leave Decision E intact. Document the dual-mechanism in 92-08 verification. If the user wants explicit radial-gradient response on `/`, raise as a new Key Decision in a follow-up phase, not an amendment to Phase 92.
 
 2. **For ContactSection (Pitfall 2), Path A or Path B?**
    - What we know: Current ContactSection has an opaque blue gradient that occludes the blob. Decision B's localized-dimming step is architecturally awkward against this layout.
    - What's unclear: Whether the user expects the form to sit over the blob (Path B = drop the blue gradient) or over the blue gradient (Path A = preserve, dimming becomes n/a).
-   - Recommendation: Path A (preserve). Document as plan note in 92-07; flag for user attestation during 92-08 verification screenshots.
+   - **RESOLVED:** Path A (preserve). Document as plan note in 92-07; flag for user attestation during 92-08 verification screenshots. Recorded as **KD-v9-003** in CONTEXT.md (scope-reduces GLASS-07 "localized blob dimming" sub-clause to N/A under Path A).
 
 3. **`Header.tsx` — dead or alive?**
-   - Recommendation: Plan 92-02 first task is `grep -rn "from.*layout/Header[^C]"` (excluding `HeaderClient`). If 0 imports, exclude from sweep. If >0, include CTA grep on it.
+   - **RESOLVED:** Plan 92-02 first task is `grep -rn "from.*layout/Header[^C]"` (excluding `HeaderClient`). If 0 imports, exclude from sweep. If >0, include CTA grep on it.
 
 4. **FinalCTA `mix-blend-multiply` decoration — retire vs sanction?**
    - What we know: Anti-pattern #8 (DESIGN.md `## v9.0 Anti-Patterns`) bans `mix-blend-mode` on glass surfaces. FinalCTA line 14 has `mix-blend-multiply` on a decorative absolute-positioned blur blob INSIDE the glass frame.
-   - Recommendation: Retire in Plan 92-08. The decorative blur was a v8.0 ornament; v9.0 has the page-wide living blob to provide ambient. Document decision in 92-08 plan note.
+   - **RESOLVED:** Retire in Plan 92-08. The decorative blur was a v8.0 ornament; v9.0 has the page-wide living blob to provide ambient. Document decision in 92-08 plan note.
 
 ## Environment Availability
 

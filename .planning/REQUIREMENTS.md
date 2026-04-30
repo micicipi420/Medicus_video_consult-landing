@@ -117,7 +117,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [ ] **GLASS-04**: `ServicesGrid` — cards Tier 1 / hover Tier 2; ≤2 glass siblings per viewport rule respected
 - [ ] **GLASS-05**: `ProcessSection`, `ProblemSection`, `WhyUsSection`, `ClinicsSection`, `PlatformSection`, `ReviewsSection` — per-tier sweep aligned with new tokens
 - [ ] **GLASS-06**: `FAQSection` — closed Tier 1, open Tier 2; smooth-anim accordion preserved
-- [ ] **GLASS-07**: `ContactForm` + `ContactSection` — form panel uses `--glass-form-fill` (≥0.16 floor; escalate to 0.30 if WCAG AA fails); labels promoted from `text-muted` to `text-primary`; inputs `bg-white` opaque, NOT glass; localized blob dimming when blob centroid enters form bounds
+- [ ] **GLASS-07**: `ContactForm` + `ContactSection` — form panel uses default `--glass-form-fill` (currently 0.14 desktop / mobile per `next/src/app/globals.css:249`; blur clamps `clamp(12px, 1.4vw, 18px)` per `globals.css:253`); escalation path to 0.30 via `KD-v9-002` if WCAG AA contrast <4.5:1 on body copy at worst-case blob position; labels promoted from `text-muted` to `text-primary`; inputs `bg-white` opaque, NOT glass; localized blob dimming sub-clause `(deferred under KD-v9-003 — Path A; see 92-CONTEXT.md)`
 - [ ] **GLASS-08**: `FinalCTA` — Tier 0 frame; CTA opaque, gradient unchanged
 - [ ] **GLASS-09**: `Footer` — Tier 0 fill
 - [ ] **GLASS-10**: `liquid-glass.css` utility classes re-pointed from `--liquid-bg: rgba(255,255,255,0.42)` and similar to new tier tokens; heat-leak `radial-gradient` rules added to `.liquid-card` / `.liquid-regular` so glass surfaces optically respond to blob position

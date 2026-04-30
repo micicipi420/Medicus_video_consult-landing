@@ -2,7 +2,7 @@
 phase: 92
 slug: glass-rework-chrome-index-sections
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-04-30
 ---
@@ -88,7 +88,7 @@ created: 2026-04-30
 - [ ] Feedback latency < 60 s for `pnpm build`
 - [ ] `nyquist_compliant: true` set in frontmatter once planner confirms every Phase-92 task aligns with this map and the gate review passes
 
-**Approval:** pending
+**Approval:** approved 2026-04-30
 
 ---
 

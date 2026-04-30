@@ -12,7 +12,7 @@ Sweep all `/` route components and always-visible chrome (Header, MobileMenu, St
 Phase boundary (FIXED — no scope creep):
 - ✅ HeaderClient + MobileMenu + StickyBar + Footer chrome rework
 - ✅ All 14 `/` route sections opacity sweep to 4-tier system
-- ✅ ContactForm + ContactSection form-safety treatment (≥0.16 floor + escalation rule)
+- ✅ ContactForm + ContactSection form-safety treatment (default `--glass-form-fill` 0.14 + KD-v9-002 escalation rule)
 - ✅ Heat-leak `radial-gradient(... at var(--blob-x) var(--blob-y), ...)` on `.liquid-card` + `.liquid-regular`
 - ✅ `liquid-glass.css` utility re-pointing from `--liquid-bg` legacy values to `--glass-*` tier tokens
 - ✅ `data-blob-mode="dark"` glass fallback rules (preserve Phase 67.1 `backdrop-filter: none` on dark)
@@ -39,7 +39,7 @@ Phase boundary (FIXED — no scope creep):
 | `next/src/components/sections/StatsBar.tsx` | Responsive-glass-nesting from Phase 82 (mobile 1 wrapper / desktop 4 cards) — preserve |
 | `next/src/components/sections/ServicesGrid.tsx` | Cards Tier 1 / hover Tier 2 |
 | `next/src/components/sections/ProcessSection.tsx`, `ProblemSection.tsx`, `WhyUsSection.tsx`, `ClinicsSection.tsx`, `PlatformSection.tsx`, `ReviewsSection.tsx`, `FAQSection.tsx` | Per-tier sweep |
-| `next/src/components/sections/ContactForm.tsx`, `ContactSection.tsx` | FORM-SAFETY: `--glass-form-fill` floor + label promotion + opaque inputs |
+| `next/src/components/sections/ContactForm.tsx`, `ContactSection.tsx` | FORM-SAFETY: `--glass-form-fill` default + label promotion + opaque inputs |
 | `next/src/components/sections/FinalCTA.tsx` | Tier 0 frame + opaque CTA |
 | `next/src/components/layout/HeaderClient.tsx`, `MobileMenu.tsx`, `StickyBar.tsx`, `Footer.tsx` | Chrome — Tier 0 (≤0.16) |
 
@@ -52,10 +52,10 @@ Phase boundary (FIXED — no scope creep):
 
 **From Phase 90:**
 - 4-tier glass tokens registered: `--glass-section-{fill,blur}`, `--glass-card-{fill,blur}`, `--glass-form-{fill,blur}`, `--glass-button-{fill,blur}`.
-  - Tier 0 (section): fill 0.08, blur 24px desktop / 12px mobile
-  - Tier 1 (card): fill 0.12, blur 20px desktop / 12px mobile
-  - Tier 2 (form): fill 0.10, blur 18px desktop / 12px mobile
-  - Tier 3 (button): fill 0.16, blur 14px desktop / 12px mobile
+  - Tier 0 (section): fill 0.06 desktop, blur clamp(12px, 2vw, 24px)
+  - Tier 1 (card): fill 0.10 desktop, blur clamp(12px, 1.6vw, 20px)
+  - Tier 2 (form): fill 0.14 desktop (single value; mobile resolves same), blur clamp(12px, 1.4vw, 18px)
+  - Tier 3 (button): fill 0.12 desktop, blur clamp(12px, 1vw, 14px)
 - CTA opaque-forever 7-component master list in DESIGN.md (Phase 90).
 - 15 anti-patterns appendix in DESIGN.md — entry #4 (no fills > 0.16), #5 (no green tint on cards), #11 (no `backdrop-filter` on `.living-blob-field`), #14 (new glass class must be in `@a11y-layer-coverage`).
 
@@ -81,7 +81,7 @@ Strict mapping aligned with TZ §9 + ROADMAP success criteria:
 | `ServicesGrid` cards | Tier 1 | Tier 2 | — |
 | `ProcessSection`, `ProblemSection`, `WhyUsSection`, `ClinicsSection`, `PlatformSection`, `ReviewsSection` | Tier 1 cards or Tier 0 section | Tier 2 | Per-component judgment via in-browser tuning |
 | `FAQSection` items | closed Tier 1 | open Tier 2 | Smooth-anim accordion preserved |
-| `ContactForm` panel | Tier 2 form (`--glass-form-fill`, ≥0.16 floor) | — | Inputs `bg-white` opaque, NOT glass |
+| `ContactForm` panel | Tier 2 form (`--glass-form-fill` default 0.14) | — | Inputs `bg-white` opaque, NOT glass |
 | `ContactSection` chrome | Tier 0 | — | Encloses ContactForm |
 | `FinalCTA` frame | Tier 0 | — | CTA opaque (gradient #1AC67E → #0D9DB5 unchanged) |
 | `Footer` | Tier 0 | — | — |
@@ -93,10 +93,10 @@ Strict mapping aligned with TZ §9 + ROADMAP success criteria:
 
 ContactForm + ContactSection + LeadFormSection (Phase 93):
 
-1. **Panel fill:** start at `--glass-form-fill` (0.10). If WCAG AA contrast fails on body copy or labels at any blob position, escalate to 0.30 with **Key Decision logged in PROJECT.md** as `KD-v9-002`.
+1. **Panel fill:** start at `--glass-form-fill` (default 0.14 per globals.css). If WCAG AA contrast fails on body copy or labels at any blob position, escalate to 0.30 with **Key Decision logged in PROJECT.md** as `KD-v9-002`.
 2. **Label color:** promote from `text-muted` to `text-primary` (or equivalent — current `mu-text-900` darker variant).
 3. **Input fields:** `bg-white` (opaque), NOT glass. Existing `bg-white/50` → `bg-white` (or `--mu-surface-white` token).
-4. **Localized blob dimming:** when blob centroid `var(--blob-x/y)` enters form bounds, reduce blob opacity locally via `mask-image` or absolute-positioned dimmer overlay.
+4. **Localized blob dimming:** N/A under Path A (form sits over blue-gradient ContactSection wrapper which already occludes the blob). See KD-v9-003 below.
 5. **Body copy contrast:** ≥4.5:1 with blob parked at worst-case position; large text ≥3:1.
 
 ### Decision C: Heat-leak `radial-gradient` rules (GLASS-10 — LOCKED)
@@ -153,23 +153,25 @@ Per-component PRs (split across waves), each verified visually before next ships
 
 Phase 92 is large. Decomposition:
 
-| Plan | Wave | Scope |
-|------|------|-------|
-| 92-01 | 1 | `liquid-glass.css` utility re-pointing + heat-leak rules (touches 1 file, foundation for all components) |
-| 92-02 | 2 | Chrome (HeaderClient, MobileMenu, StickyBar, Footer) |
-| 92-03 | 2 | Hero + Stats (HeroHub, StatsBar) |
-| 92-04 | 2 | Mid sections part 1 (ServicesGrid, ProcessSection, ProblemSection) |
-| 92-05 | 2 | Mid sections part 2 (WhyUsSection, ClinicsSection, PlatformSection, ReviewsSection) |
-| 92-06 | 3 | FAQSection accordion |
-| 92-07 | 3 | ContactForm + ContactSection (FORM-SAFETY — possible KD-v9-002 escalation) |
-| 92-08 | 4 | FinalCTA + Phase 92 verification (Playwright DOM-evaluate per-component opacity check + WCAG contrast measurement) |
+| Plan | Wave | Scope                                                                  |
+|------|------|------------------------------------------------------------------------|
+| 92-01 | 1   | liquid-glass.css utility re-point + heat-leak verify                   |
+| 92-02 | 1   | Read-only audit: CTA invariants + Header.tsx render status + FinalCTA mix-blend |
+| 92-03 | 2   | Chrome sweep — HeaderClient + MobileMenu + StickyBar + Footer          |
+| 92-04 | 2   | HeroHub + StatsBar + ServicesGrid                                       |
+| 92-05 | 3   | Process / Problem / WhyUs / Clinics / Platform / Reviews                |
+| 92-06 | 3   | FAQSection + FinalCTA frame                                             |
+| 92-07 | 4   | ContactForm + ContactSection form-safety + WCAG                         |
+| 92-08 | 4   | FinalCTA mix-blend retirement + Header dead-code + phase-gate sweep    |
 
-Wave 1 (foundation) → Wave 2 (parallel components, no shared files) → Wave 3 (form-safety + accordion — slower) → Wave 4 (verification).
+> **Amended 2026-04-30 during plan-phase verification** — original Decision F predicted 8 plans / 4 waves with 92-02 as the chrome sweep at Wave 2; final plan layout shifted scope assignments forward by 1 step (audit became Wave 1 alongside utility CSS) so Wave 2 starts with no read dependency on still-pending audit results. Wave 3 absorbs the mid-section + FAQ/FinalCTA work originally projected for Wave 2; Wave 4 owns form-safety + final phase-gate sweep + mix-blend retirement.
+
+Wave 1 (foundation + audit) → Wave 2 (chrome + hero/stats/services parallel) → Wave 3 (mid-sections + FAQ/FinalCTA frame) → Wave 4 (form-safety + phase-gate).
 
 ### Decision G: KD-v9-002 escalation flow
 
-If Playwright WCAG contrast measurement on ContactForm body copy returns < 4.5:1 with blob parked at worst-case position:
-1. Escalate `--glass-form-fill` from 0.10 → 0.30 (or intermediate value)
+If Playwright (or DevTools manual) WCAG contrast measurement on ContactForm body copy returns < 4.5:1 with blob parked at worst-case position:
+1. Escalate `--glass-form-fill` from 0.14 → 0.30 (or intermediate value)
 2. Add `KD-v9-002` row to PROJECT.md Key Decisions: rationale, before/after contrast values, blob position screenshot
 3. Status: `approved` (no further user gate — auto-decided per delegation)
 
@@ -186,13 +188,33 @@ Phase 92 plans MUST grep DESIGN.md `## v9.0 Anti-Patterns` before generating tas
 
 - `next/src/styles/blob.css` — Phase 90/91 territory; Phase 92 consumes runtime vars only
 - `next/src/lib/blob-engine/*` — Phase 91 territory
-- `next/src/app/globals.css` token blocks — Phase 90 frozen
+- `next/src/app/globals.css` token blocks — Phase 90 frozen (single exception: KD-v9-002 escalation may bump `--glass-form-fill` 0.14 → 0.30)
 - `next/src/hooks/use-specular-highlight.ts` — orthogonal
 - `next/src/components/layout/SvgRefractionDefs.tsx` — frozen
 - `DESIGN.md` — Phase 90 finalized; Phase 92 doesn't add new tokens or anti-patterns
 - All service-page components in `sections/{checkup,consultations,treatment,contacts}` — Phase 93 territory
 - All `next/src/components/ui/` shadcn primitives — Phase 93 territory
 - `liquid-glass.css` `@a11y-layer-coverage` block (lines 79-158 from Phase 90) — Phase 92 only edits utility class internals OUTSIDE that block
+
+## <key_decisions>
+
+### KD-v9-003: Localized blob dimming N/A under Path A (added 2026-04-30 during plan-phase verification)
+
+**Decision:** GLASS-07 sub-clause "localized blob dimming when blob centroid enters form bounds" (Decision B step 4 / REQUIREMENTS.md GLASS-07) is **N/A under Path A** — the form sits over a blue-gradient ContactSection wrapper (`from-mu-blue via-mu-accent-blue to-mu-blue` at ContactSection.tsx:26) which already fully occludes the page-level blob field beneath it.
+
+**Architectural fact:** Dimming a blob that is already invisible behind an opaque blue gradient is a moot operation. Adding a `mask-image` overlay or absolute-positioned dimmer would consume compositing budget for no visible effect.
+
+**Decision: Path A — preserve blue gradient; mark sub-clause deferred.**
+
+**Verification:** Plan 92-08 phase-gate SWEEP-AUDIT must include a screenshot confirming no visible blob bleeds through the form panel under any blob mode (cursor / static / ambient).
+
+**Status:** approved (auto-decided per CONTEXT.md mode delegation; no further user gate).
+
+**Cross-references:**
+- REQUIREMENTS.md GLASS-07 — "localized blob dimming" sub-clause marked `(deferred under KD-v9-003 — Path A)`.
+- ROADMAP.md Phase 92 Success Criterion 3 — same `(deferred under KD-v9-003)` qualifier.
+- 92-RESEARCH.md §Pitfall 2 — Path A locked.
+- 92-07-PLAN.md — explicit Path A note + SUMMARY documentation requirement.
 
 ## <code_context>
 
@@ -232,15 +254,16 @@ Phase 92 ships when:
 
 1. ✅ HeaderClient + MobileMenu + StickyBar + Footer at Tier 0 (≤0.16 fill); HIG 44pt tap targets preserved; mobile blur ≤12px verified
 2. ✅ All 14 `/` route sections updated to v9.0 4-tier system (cards Tier 1 ≤0.12 / hover Tier 2 ≤0.16); ≤2 glass siblings per viewport rule respected; responsive-glass-nesting on StatsBar preserved
-3. ✅ ContactForm uses `--glass-form-fill` (≥0.16 floor escalated to 0.30 with KD-v9-002 if WCAG AA fails); labels promoted to `text-primary`; inputs `bg-white` opaque; localized blob dimming when centroid enters form bounds; body copy contrast ≥4.5:1
+3. ✅ ContactForm uses `--glass-form-fill` (default 0.14; escalated to 0.30 with KD-v9-002 if WCAG AA fails); labels promoted to `text-primary`; inputs `bg-white` opaque; localized blob dimming deferred under KD-v9-003 (Path A — blue gradient occludes blob); body copy contrast ≥4.5:1
 4. ✅ All CTAs verified opaque at all blob positions (grep on every CTA component; no `backdrop-filter`); FinalCTA Tier 0 frame; gradient unchanged
 5. ✅ `liquid-glass.css` utilities re-pointed from `--liquid-bg` to `--glass-*` tier tokens; heat-leak `radial-gradient(... at var(--blob-x) var(--blob-y), ...)` rules added to `.liquid-card` + `.liquid-regular`; visual confirmation of optical response to blob movement
 6. ✅ Page renders without runtime errors on `/`; `pnpm build` clean
 7. ✅ No new dependencies
 8. ✅ All 10 GLASS-NN requirements code-complete in REQUIREMENTS.md
-9. ✅ Frozen ranges respected (blob.css, blob-engine/*, globals.css tokens, useSpecularHighlight.ts, SvgRefractionDefs.tsx, DESIGN.md, service pages, shadcn primitives)
+9. ✅ Frozen ranges respected (blob.css, blob-engine/*, globals.css tokens [single exception: KD-v9-002 escalation], useSpecularHighlight.ts, SvgRefractionDefs.tsx, DESIGN.md, service pages, shadcn primitives)
 
 ---
 
 *Discussed: 2026-04-30 — claude-decided mode (user delegated all technical decisions).*
+*Amended: 2026-04-30 during plan-phase verification — Decision F table reconciled with actual 8-plan / 4-wave layout; KD-v9-003 added.*
 *Next: `/gsd-plan-phase 92 --skip-ui` — generates 8 PLAN.md files.*
