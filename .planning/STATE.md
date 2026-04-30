@@ -4,14 +4,14 @@ milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
 status: executing
 stopped_at: Phase 90 context gathered
-last_updated: "2026-04-30T06:15:50.415Z"
-last_activity: 2026-04-30 -- Phase 90 planning complete
+last_updated: "2026-04-30T06:42:19.629Z"
+last_activity: 2026-04-30
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 20
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ — и оставляет заявку.
-**Current focus:** Phase 90 — Foundation (Tokens, A11y Wiring, DOM Skeleton)
+**Current focus:** Phase 90 — foundation-tokens-a11y-wiring-dom-skeleton
 
 ## Current Position
 
-Phase: 90 — Foundation — Tokens, A11y Wiring, DOM Skeleton
-Plan: — (planning not yet started for Phase 90)
+Phase: 90 (foundation-tokens-a11y-wiring-dom-skeleton) — EXECUTING
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-04-30 -- Phase 90 planning complete
+Last activity: 2026-04-30
 
-Progress: [░░░░░░░░░░░░░░░░░░░░] 0/5 phases (0%)
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0/5 pha
 - Trend: shipping clean
 
 *Updated after each plan completion*
+| Phase 90 P01 | 9 minutes | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,7 @@ Recent decisions affecting current work:
 - [v8.0]: 7 phases derived from 22 requirements; Phase 79 (foundation) unblocks all others; Phase 85 (verification) must ship last
 - [v8.1]: 4 phases capturing v8.0 loose ends — service-page propagation, content placeholders, code hygiene, milestone closeout
 - [v9.0]: 5 phases derived from 44 requirements; ordering NON-NEGOTIABLE (Foundation → Engine → Glass — glass transparency cannot be verified without live blob); Phase 94 verification HARD GATE, no cheat-pass
+- [Phase ?]: v9.0 Phase 90 Plan 01 — registered --blob-* palette and --glass-* tier tokens in DESIGN.md YAML and globals.css :root (mirrored). Mobile blur clamp(12px,...) honored. blob.css @import shipped commented; Plan 90-02 uncomments.
 
 ### Pending Key Decisions for v9.0
 
@@ -112,6 +114,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T05:35:58.519Z
+Last session: 2026-04-30T06:42:05.930Z
 Stopped at: Phase 90 context gathered
-Resume file: .planning/phases/90-foundation-tokens-a11y-wiring-dom-skeleton/90-CONTEXT.md
+Resume file: None
