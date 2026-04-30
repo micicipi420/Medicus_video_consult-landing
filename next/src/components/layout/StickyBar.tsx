@@ -41,7 +41,7 @@ export function StickyBar() {
 
   return (
     <div
-      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-50 rounded-2xl border border-white/60 bg-white/68 p-3 shadow-glass-lg backdrop-blur-3xl transition-transform duration-300 lg:hidden ${isHidden ? 'translate-y-[calc(100%+24px)]' : ''}`}
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-50 rounded-2xl border border-white/60 bg-[var(--glass-section-fill)] p-3 shadow-glass-lg backdrop-blur-[var(--glass-section-blur)] transition-transform duration-300 lg:hidden ${isHidden ? 'translate-y-[calc(100%+24px)]' : ''}`}
       role="complementary"
       aria-label="Быстрые действия"
     >
