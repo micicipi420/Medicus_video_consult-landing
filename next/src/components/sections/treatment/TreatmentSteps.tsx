@@ -15,7 +15,7 @@ export function TreatmentSteps() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Step 1: Планирование */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
           <div className="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">01</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">Планирование</h3>
           <span className="inline-flex items-center bg-mu-blue/10 text-mu-blue font-bold text-sm px-3 py-1 rounded-full mb-4">
@@ -45,7 +45,7 @@ export function TreatmentSteps() {
         </div>
 
         {/* Step 2: Логистика */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
           <div className="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">02</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">Логистика</h3>
           <span className="inline-flex items-center bg-mu-accent-teal-bg text-mu-accent-teal font-bold text-sm px-3 py-1 rounded-full mb-4">
@@ -75,7 +75,7 @@ export function TreatmentSteps() {
         </div>
 
         {/* Step 3: Координация лечения */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
           <div className="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">03</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">Координация лечения</h3>
           <span className="inline-flex items-center bg-mu-accent-orange-bg text-mu-accent-orange font-bold text-sm px-3 py-1 rounded-full mb-4">
@@ -101,7 +101,7 @@ export function TreatmentSteps() {
         </div>
 
         {/* Step 4: Реабилитация */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
           <div className="text-6xl font-extrabold text-mu-blue/15 mb-4" aria-hidden="true">04</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">Реабилитация</h3>
           <span className="inline-flex items-center bg-mu-green-50 text-mu-green-600 font-bold text-sm px-3 py-1 rounded-full mb-4">

@@ -12,8 +12,8 @@ export function TreatmentAboutUs() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Card 1: 15+ лет практики */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
               <circle cx="24" cy="24" r="18" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.1)" />
               <polyline points="16,24 22,30 32,18" stroke="#35B678" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
@@ -28,8 +28,8 @@ export function TreatmentAboutUs() {
         </div>
 
         {/* Card 2: Выбор страны под задачу */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
               <circle cx="24" cy="24" r="18" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.1)" />
               <ellipse cx="24" cy="24" rx="8" ry="18" stroke="#38C6F4" strokeWidth="1.5" fill="none" />
@@ -46,8 +46,8 @@ export function TreatmentAboutUs() {
         </div>
 
         {/* Card 3: Прямые партнёрства */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
               <rect x="8" y="10" width="32" height="28" rx="4" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.1)" />
               <path d="M16 10V6" stroke="#38C6F4" strokeWidth="2.5" strokeLinecap="round" />
@@ -65,8 +65,8 @@ export function TreatmentAboutUs() {
         </div>
 
         {/* Card 4: Медицинская экспертиза */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-          <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="24" height="24">
               <rect x="10" y="8" width="28" height="34" rx="3" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.1)" />
               <rect x="17" y="4" width="14" height="8" rx="2" stroke="#38C6F4" strokeWidth="2.5" fill="rgba(56,198,244,0.1)" />
