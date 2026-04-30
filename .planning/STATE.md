@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v8.1
-milestone_name: Propagation & Loose Ends
-status: milestone_complete
-stopped_at: v8.1 roadmap created -- ready to plan Phase 86
-last_updated: "2026-04-30T00:00:00.000Z"
-last_activity: 2026-04-30 -- v8.0 shipped, v8.1 milestone created
+milestone: v9.0
+milestone_name: Living Blob Liquid Glass Scene
+status: planning
+last_updated: "2026-04-30T03:50:50.685Z"
+last_activity: 2026-04-30
 progress:
-  total_phases: 4
-  completed_phases: 4
+  total_phases: 0
+  completed_phases: 0
   total_plans: 0
   completed_plans: 0
-  percent: 100
+  percent: 0
 ---
 
 # Project State
@@ -25,12 +24,10 @@ See: .planning/PROJECT.md (updated 2026-04-23)
 
 ## Current Position
 
-Phase: 89
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-04-30
-
-Progress: [░░░░░░░░░░] 0% (0/4 phases)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-30 — Milestone v9.0 started
 
 ## Performance Metrics
 

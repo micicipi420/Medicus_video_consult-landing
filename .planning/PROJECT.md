@@ -71,18 +71,27 @@ Index-страница (`/`) — hub, представляющий все три
 
 ### Active
 
-## Current Milestone: v8.1 Propagation & Loose Ends
+## Current Milestone: v9.0 Living Blob Liquid Glass Scene
 
-**Goal:** Распространить визуальный язык v8.0 (chrome, glass, типографика) с index-страницы на остальные страницы сайта, закрыть оставшиеся хвосты v8.0 (плейсхолдеры контента, lint warnings, неиспользуемые файлы) и провести финальное закрытие milestone (live a11y UAT, stash triage, archival).
+**Goal:** Превратить страницу в полностью стеклянную медицинскую сцену, где blob — единственное плотное живое тело, а весь UI становится прозрачной оптической системой, проявляющей его свет, цвет и движение.
+
+**Source ТЗ:** `design/LIQUID_GLASS_BLOB_TZ.md` (20 разделов, 12 критериев приёмки)
 
 **Target features:**
-- Сервисные страницы (`/checkup`, `/consultations`, `/treatment-abroad`) на v8.0 chrome — header, ServiceHero, LeadFormSection
-- Замена плейсхолдера "Dr. Ferdinand K. · Vienna" в HeroHub на on-team имя
-- Восстановление координатор-присутствия в ContactSection (фото или дизайн-альтернатива)
-- Чистка кода: 2 lint warnings, удаление/использование `LiquidBlobLayer.tsx` + `liquid-depth.css`, решение по research-docs rewrite
-- Live UAT v8.0 a11y (7 браузерных проверок), triage `stash@{0}`, архивация v8.0 в `.planning/milestones/`
+- Living Blob field как fixed-слой под UI (core / body / halo / glint подслои)
+- Вязкое следование за курсором с разной инерцией для подслоёв; накопление тепла (heat) при задержке 1.5–3s
+- Glass UI rework — все крупные блоки максимально прозрачные (rgba 0.04–0.16); запрет молочно-белых заливок
+- Реакция glass-слоёв на blob (refraction/blur tiers; UI не подсвечивает blob — blob подсвечивает UI)
+- Глубинная иерархия: разные blur/shadow tiers для секций / карточек / форм / controls
+- Mobile: ambient blob без cursor-follow, без просадки скролла; tap → мягкий pulse
+- A11y: prefers-reduced-motion (ambient static), prefers-contrast (приглушение декора), high-contrast text
+- Performance: 60fps desktop, single pointermove + rAF, transform/opacity only, ≤12px blur on mobile
 
-## Previous Milestone: v8.0 Index Page Redesign (Shipped 2026-04-30)
+## Previous Milestone: v8.1 Propagation & Loose Ends (Shipped 2026-04-30)
+
+4 phases: service-page propagation (Phase 86), real content placeholders (Phase 87), code hygiene (Phase 88), milestone closeout incl. live a11y UAT (Phase 89). v8.0 index visual language extended to `/checkup`, `/consultations`, `/treatment-abroad`.
+
+## Earlier Milestone: v8.0 Index Page Redesign (Shipped 2026-04-30)
 
 Index page redesign per the new mockup. 7 phases shipped:
 - Phase 79: typography + mobile glass/motion budget tokens
@@ -195,4 +204,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-23 after v8.0 milestone start*
+*Last updated: 2026-04-30 after v9.0 milestone start (Living Blob Liquid Glass Scene)*
