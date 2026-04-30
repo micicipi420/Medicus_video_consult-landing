@@ -243,8 +243,8 @@ Plans:
 **Plans**: 8 plans
 
 Plans:
-- [ ] 92-01-PLAN.md — liquid-glass.css utility re-pointing to v9.0 tier tokens; heat-leak rules verified preserved (GLASS-10)
-- [ ] 92-02-PLAN.md — CTA invariant + Header.tsx render-status + FinalCTA mix-blend-multiply baseline AUDIT (read-only)
+- [x] 92-01-PLAN.md — liquid-glass.css utility re-pointing to v9.0 tier tokens; heat-leak rules verified preserved (GLASS-10)
+- [x] 92-02-PLAN.md — CTA invariant + Header.tsx render-status + FinalCTA mix-blend-multiply baseline AUDIT (read-only)
 - [ ] 92-03-PLAN.md — Chrome sweep (HeaderClient, MobileMenu, StickyBar, Footer) to Tier 0; HIG 44pt + ESC preserved (GLASS-01, GLASS-09)
 - [ ] 92-04-PLAN.md — HeroHub + StatsBar + ServicesGrid sweep; preserve Phase 82 responsive nesting + over-photo controls (GLASS-02, GLASS-03, GLASS-04)
 - [ ] 92-05-PLAN.md — Mid sections sweep: Process, Problem, WhyUs, Clinics, Platform, Reviews (GLASS-05)
@@ -385,7 +385,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 |-------|----------------|--------|-----------|
 | 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete   | 2026-04-30 |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
-| 92. Glass Rework — Chrome + Index Sections | 0/8 | Planned | — |
+| 92. Glass Rework — Chrome + Index Sections | 2/8 | In Progress|  |
 | 93. Per-Page Propagation — Sub-Routes | 0/0 | Not started | — |
 | 94. Verification — UAT, Performance, A11y, Brand Review | 0/0 | Not started | — |
 
