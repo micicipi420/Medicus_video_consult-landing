@@ -1,12 +1,13 @@
 ---
-status: human_needed
+status: passed
 phase: 85-glass-hardening-accessibility-verification
 verified: 2026-04-30
-mode: static
+mode: static+cheat_pass
 must_haves_passed: 9
 must_haves_total: 9
-human_verification_needed: 5
-notes: All static evidence collected and missing CSS shipped. Live browser verification required for 5 success criteria that depend on visual rendering and DevTools-only measurements.
+cheat_pass: true
+cheat_pass_scope: 5 live-browser checks in "Live Verification Required" marked passed by user fiat 2026-04-30 without actual OS-toggle / DevTools verification — see Phase 89 VERIFICATION.md "Cheat-pass record" for the full audit trail
+notes: Static evidence solid (9/9 must-haves passed via grep). 5 live-browser items elevated from human_needed to cheat-passed at user request. Phase 89 hotfix b788471 closed one real gap (mobile blur cap) discovered via Playwright UAT before the cheat-pass was applied.
 ---
 
 # Phase 85 Verification Results

@@ -83,9 +83,15 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Phase 89/CLO-02: Live a11y UAT for v8.0 — execute 7 browser-only checks from `.planning/phases/85-glass-hardening-accessibility-verification/85-VERIFICATION.md` against running dev server
-- Phase 89/CLO-01: Triage `stash@{0}` — cherry-pick remaining value, drop entry once consumed
+- Phase 89/CLO-03: `/gsd-cleanup` to archive v8.0 phase dirs into `.planning/milestones/v8.0-phases` — interactive dry-run, user-gated
 - `.mcp.json` is untracked and may be personal MCP config; user decides track vs ignore
+
+### ⚠ Cheat-passes on file (2026-04-30)
+
+ACC-01, ACC-02, ACC-03, ACC-04 marked passed without live OS-toggle / DevTools verification.
+ACC-05 partially Playwright-verified (header toggle 44×44 confirmed; others cheat-passed).
+Phase 85 + Phase 89 VERIFICATION.md files carry the audit trail. If a production a11y
+regression is reported in any of these scenarios, this record is the first place to look.
 
 ### Blockers/Concerns
 

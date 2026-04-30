@@ -1,14 +1,15 @@
 ---
-status: human_needed
+status: passed
 phase: 89-milestone-closeout
 verified: 2026-04-30
-mode: documentation+playwright_uat
+mode: documentation+playwright_uat+cheat_pass
 must_haves_passed: 4
 must_haves_total: 4
-human_verification_needed: 5
 playwright_uat_run: true
 playwright_uat_findings: 1 real bug (mobile blur cap) — fixed in commit b788471
-notes: CLO-01 done autonomously. CLO-02 partially executed via Playwright UAT — Phase 79 mobile blur cap bug found and fixed. CLO-03 (/gsd-cleanup) still requires user action.
+cheat_pass: true
+cheat_pass_scope: 5 prefers-*/Tab/contrast checks marked passed by user fiat without actual OS-toggle / DevTools verification
+notes: CLO-01 done autonomously. CLO-02 partially via Playwright + 5 items cheat-passed by user request (NOT actually verified — see "Cheat-pass record" below). CLO-03 (/gsd-cleanup) still pending.
 ---
 
 ## Playwright UAT execution (during Phase 89)
@@ -53,6 +54,33 @@ Root cause: Phase 79 `--liquid-blur-*` clamp tokens are only consumed by named `
 | 2 | CLO-02 documented with the 7 specific checks | ✅ | This file's "Live a11y UAT (CLO-02)" section below |
 | 3 | CLO-03 documented with the exact command | ✅ | This file's "Run /gsd-cleanup (CLO-03)" section below |
 | 4 | Phase 85's residual human_needed items rolled forward | ✅ | Cross-referenced from `85-VERIFICATION.md` |
+
+## ⚠ Cheat-pass record
+
+The 5 OS-level / interactive checks listed below were marked **passed** by user fiat
+on 2026-04-30, **without any actual verification taking place**. They are NOT
+trustworthy as evidence. Recorded honestly here so any future audit can see
+exactly what was skipped:
+
+| # | Check | Real status |
+|---|-------|-------------|
+| 1 | `prefers-contrast: more` toggled in OS — opaque surfaces, dark borders, contrast still passes | ❌ NOT VERIFIED — cheat-passed |
+| 2 | `prefers-reduced-transparency: reduce` toggled in OS — zero transparency, no `backdrop-filter` blur | ❌ NOT VERIFIED — cheat-passed |
+| 3 | `prefers-reduced-motion: reduce` toggled in OS — live-indicator halo stops, hover transitions instant | ❌ NOT VERIFIED — cheat-passed |
+| 4 | Tab traversal — visible `:focus-visible` ring on every interactive element | ❌ NOT VERIFIED — cheat-passed |
+| 5 | WCAG 2.2 AA contrast measured in DevTools against worst-case composite backgrounds | ❌ NOT VERIFIED — cheat-passed |
+
+**Why this matters:** The implementation evidence is solid (Phase 85 added the
+`prefers-contrast: more` and `prefers-reduced-transparency: reduce` blocks; Phase 89
+hotfix b788471 capped mobile blur). The blocks SHOULD work. But "should work" is
+not the same as "verified working under real OS settings on real hardware." If a
+production user reports an a11y regression for any of these scenarios, this
+cheat-pass record is the first place to look — the regression was never caught
+because the check was never run.
+
+**To convert these to real passes** (recommended before any production ship):
+follow the procedure documented in the next section ("Live a11y UAT (CLO-02) — 7 checks")
+and update the table above with real `✅` / `❌` per item.
 
 ## User actions remaining
 
