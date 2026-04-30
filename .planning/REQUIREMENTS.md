@@ -17,8 +17,8 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### Stats Bar
 
-- [ ] **STATS-01**: Stats section presents 4 metrics, each with an icon, in glass-style cards
-- [ ] **STATS-02**: Stats bar sits directly below hero as an at-a-glance credibility strip
+- [x] **STATS-01**: Stats section presents 4 metrics, each with an icon, in glass-style cards
+- [x] **STATS-02**: Stats bar sits directly below hero as an at-a-glance credibility strip
 
 ### Services ("Мы помогаем на каждом этапе")
 
@@ -123,8 +123,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HERO-03 | Phase 81 | Complete |
 | HERO-04 | Phase 81 | Complete |
 | HERO-05 | Phase 81 | Complete |
-| STATS-01 | Phase 82 | Pending |
-| STATS-02 | Phase 82 | Pending |
+| STATS-01 | Phase 82 | Complete |
+| STATS-02 | Phase 82 | Complete |
 | SVC-01 | Phase 83 | Pending |
 | SVC-02 | Phase 83 | Pending |
 | SVC-03 | Phase 83 | Pending |
