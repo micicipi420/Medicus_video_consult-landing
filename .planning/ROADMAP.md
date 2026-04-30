@@ -220,7 +220,14 @@ Plans:
   3. On `(pointer: coarse) and (hover: none)` viewports, blob performs autonomous Lissajous drift (period ≥12s) with no pointer/touch follow; tap on background pulses ≤400ms (rate-limited 1 per 600ms), only when tap is not on an interactive element; blob pauses during scroll.
   4. Under `prefers-reduced-motion: reduce`, no `pointermove` listener, no rAF, blob is a static CSS gradient. Under `prefers-reduced-transparency: reduce`, blob `display: none` and glass surfaces switch to opaque fallbacks. In `[data-theme="dark"]`, blob opacity ≤0.35, saturation ≤0.7, follow disabled (ambient drift only); existing `backdrop-filter: none` on dark glass preserved.
   5. After 5 route navigations (`/` → `/checkup` → `/consultations` → `/treatment-abroad` → `/`), `window.__blobDebug.rafCount === 1` and pointermove listener count === 1 (singleton-guarded against React Strict Mode double-invocation and App Router cleanup); `data-blob-mode` attribute on `<html>` correctly reflects current mode (cursor / ambient / static); rAF stops when `document.hidden` and restarts on visible.
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 91-01-PLAN.md — Skeleton + canvas mount: LivingBlobField.tsx + .blob-canvas CSS + layout.tsx wiring + stub engine entrypoint (BLOB-01)
+- [ ] 91-02-PLAN.md — Engine singleton: refcount + AbortController + single rAF + single pointermove + Page Visibility + Canvas 2D 4-sublayer renderer (BLOB-02, BLOB-03, BLOB-11)
+- [ ] 91-03-PLAN.md — Physics: heat accumulator + velocity tracker + 14 LOCKED constants in physics.ts (BLOB-04, BLOB-05)
+- [ ] 91-04-PLAN.md — Mode resolver + Lissajous + a11y branches + tap-pulse + dark theme dimming + manual a11y attestation (BLOB-06, BLOB-07, BLOB-08, BLOB-09, BLOB-10)
+- [ ] 91-05-PLAN.md — Dev __blobDebug surface (NODE_ENV-gated, tree-shaken in prod) + final phase verification (BLOB-12)
 **UI hint**: yes
 
 ### Phase 92: Glass Rework — Chrome + Index Sections
