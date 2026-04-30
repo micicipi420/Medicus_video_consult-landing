@@ -702,3 +702,39 @@ The v6 CTA gradient (`from-mu-cta-from-v6 → to-mu-cta-to-v6`, brand greens) is
 - Phase 90 locked decisions: `.planning/phases/90-foundation-tokens-a11y-wiring-dom-skeleton/90-CONTEXT.md`
 - Mobile blur cap (Phase 79 hard constraint, ≤12px): `.planning/research/PITFALLS.md` §1.1
 - Cheat-pass failure mode (Phase 89 ACC-01..05): `.planning/phases/89-milestone-closeout/89-VERIFICATION.md`
+
+## v9.0 Anti-Patterns
+
+Added 2026-04-30 (Phase 90, FND-05). Machine-readable mirror in YAML front matter `antiPatterns:` field. Each entry expands the YAML with: where it would manifest, what to do instead.
+
+Phase 91-94 planners MUST grep this section before generating tasks; any task that would violate an entry must be rewritten.
+
+1. **Multiple blobs.** Why: TZ §1 single-protagonist rule; multiple blobs read as decoration not protagonist. Where it manifests: tempting to add per-section accent blobs in `*Section.tsx` components or duplicate `.living-blob-field` per route. Do instead: single `.living-blob-field` in `layout.tsx`; section accents come via heat-leak `radial-gradient` on glass cards (Phase 92).
+
+2. **Cursor trail (N copies).** Why: TZ §14 explicit ban; trails read as gaming/playful, violate medical tone. Where it manifests: tempting to render N afterimages as the blob lerps. Do instead: 4 sublayers (core/body/halo/glint) with different lerp factors deliver the impression of a trail without the playful read.
+
+3. **Per-frame React useState from pointer events.** Why: TZ §16; consumes the React tree on every pointer move; causes scroll/INP regressions. Where it manifests: `onPointerMove` calling `setState` for blob position. Do instead: write directly to `document.documentElement.style.setProperty('--blob-x', ...)` inside a single `pointermove` listener and a single rAF loop; CSS consumes the var (Phase 91).
+
+4. **Solid-white / milky glass fills above 0.16.** Why: TZ §9; breaks the transparent register the blob is meant to inhabit. Where it manifests: copying pre-v9.0 `--liquid-bg: rgba(255,255,255,0.42)` into new components. Do instead: use the v9.0 `--glass-{section,card,form,button}-fill` tier tokens (≤0.16 desktop / ≤0.18 mobile) introduced in Phase 90 (FND-02).
+
+5. **Green tint on cards.** Why: TZ §9; brand parity violation; tint must come from blob behind glass. Where it manifests: applying `bg-mu-green-100/{n}` directly to a card. Do instead: leave card surface neutral; the `.liquid-card` heat-leak `radial-gradient(... at var(--blob-x) var(--blob-y), ...)` (Phase 92) tints the surface optically when the blob is behind it.
+
+6. **Animated `backdrop-filter` blur values.** Why: TZ §16; GPU-poison on mobile, especially Safari iOS. Where it manifests: tempting to ramp `backdrop-filter: blur(N)` from 8px to 24px on hover. Do instead: keep `backdrop-filter` value static; animate `opacity` or `transform` instead.
+
+7. **Animated `box-shadow` on dozens of elements.** Why: TZ §16; layer-thrash on mid-scroll. Where it manifests: card hover effects with `box-shadow` transitions across many cards simultaneously. Do instead: animate `transform: scale()` or `opacity`; use `box-shadow` as a static accent only.
+
+8. **`mix-blend-mode` on glass surfaces.** Why: TZ §16; unpredictable contrast under varied backgrounds (especially with the moving blob). Where it manifests: copy-paste from `MeshBackground.tsx` (deleted in Phase 90). Do instead: use solid alpha-channel colors; rely on the heat-leak `radial-gradient` for compositional response.
+
+9. **Spring physics with overshoot.** Why: tone violation; medical tone is calm and confident, not playful. Where it manifests: framer-motion springs with `stiffness > 200, damping < 15`. Do instead: lerp toward target each frame (linear interpolation, no overshoot — Phase 91 BLOB-02).
+
+10. **Heat-driven color shift toward red/orange.** Why: brand parity violation; v9.0 stays within brand greens (TZ §5). Where it manifests: tempting to drive `--blob-heat` toward red/orange to signal "high engagement." Do instead: let `--blob-hot: #4FE098` (KD-v9-001) be the only "hot" color — slightly cooler/brighter green than `--blob-core: #35B678`.
+
+11. **`backdrop-filter` on `.living-blob-field` itself.** Why: blob is BEHIND glass, not glass; applying `backdrop-filter` inverts the optical model. Where it manifests: copying glass-component CSS to the blob field. Do instead: `.living-blob-field` is `position: fixed; z-index: 0; pointer-events: none`. NO `backdrop-filter`. Verified by `grep -A 30 '.living-blob-field {' next/src/styles/blob.css | grep -v backdrop-filter`.
+
+12. **Mobile blur >12px.** Why: `DESIGN.md` hard constraint (Phase 79 cap); regressed historically. Where it manifests: hardcoded `filter: blur(40px)` or `backdrop-filter: blur(24px)` without a `clamp(12px, …)` mobile floor. Do instead: every blur value uses `clamp(12px, fluid-vw, desktop-ceiling)`; mobile media queries cap `filter: blur` at 12px (see `next/src/styles/blob.css` Phase 90 mobile media query).
+
+13. **>2 glass layers per viewport.** Why: `DESIGN.md` hard constraint; mobile-first ЦА 45+ readability + GPU budget. Where it manifests: nested glass cards inside a glass section inside a glass container. Do instead: respect responsive-glass-nesting (mobile = 1 wrapper, desktop = N cards). Phase 82 `StatsBar` is the reference implementation.
+
+14. **Adding a new glass class without registering it in `liquid-glass.css` `@a11y-layer-coverage` block.** Why: Phase 89 cheat-pass failure mode; coverage grep MUST find the new class between markers. Where it manifests: shipping a new `.glass-foo` utility for one component, forgetting to enumerate it under `prefers-reduced-motion` / `-transparency` / `prefers-contrast: more`. Do instead: every new `.liquid-*`, `.glass-*`, `.blob-*`, `.stats-*`, `.living-blob-*` class MUST be appended to all 3 `@media` blocks inside the `@a11y-layer-coverage:start/end` markers (CTA classes excepted: `.btn-primary`, `.liquid-btn-primary`).
+
+15. **Cheat-passing a11y verification (declaring rules without live OS-toggle test).** Why: Phase 89 ACC-01..05 lesson; v9.0 Phase 94 forbids cheat-pass — real-device UAT required. Where it manifests: marking ACC-* tasks complete because the CSS block exists, without toggling macOS / iOS accessibility settings and reloading the page. Do instead: Phase 94 hard gate — record screenshot/video evidence of `prefers-reduced-motion` / `-transparency` / `prefers-contrast: more` actually applied; phase blocked without artifacts.
