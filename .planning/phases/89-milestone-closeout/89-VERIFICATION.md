@@ -2,12 +2,46 @@
 status: human_needed
 phase: 89-milestone-closeout
 verified: 2026-04-30
-mode: documentation
+mode: documentation+playwright_uat
 must_haves_passed: 4
 must_haves_total: 4
-human_verification_needed: 8
-notes: CLO-01 done autonomously. CLO-02 (live a11y UAT, 7 checks) and CLO-03 (/gsd-cleanup with interactive approval) require user action with the exact commands documented below.
+human_verification_needed: 5
+playwright_uat_run: true
+playwright_uat_findings: 1 real bug (mobile blur cap) — fixed in commit b788471
+notes: CLO-01 done autonomously. CLO-02 partially executed via Playwright UAT — Phase 79 mobile blur cap bug found and fixed. CLO-03 (/gsd-cleanup) still requires user action.
 ---
+
+## Playwright UAT execution (during Phase 89)
+
+Ran headless Playwright against `http://localhost:3001/`:
+
+| Check | Result |
+|-------|--------|
+| Page renders, all 12 sections visible (1440px) | ✅ |
+| Phase 79 tokens resolve at runtime (--primary=#35B678, --fs-h1=clamp(2.5rem,5vw,3.5rem), --motion-fast=150ms) | ✅ |
+| Phase 80 h1 weight=800, letter-spacing=-1.5px on 60px (≈ -0.02em) | ✅ |
+| Phase 81 video-call frame: role=img + aria-label, name pill with "Vienna", animate-ping live indicator with motion-reduce:hidden | ✅ |
+| Phase 82 mobile glass strategy: outer wrapper has blur(12px), inner cells have backdrop-filter=none | ✅ |
+| Phase 84 contact gradient: linear-gradient(to right bottom in oklab, ...) on #contact section | ✅ |
+| Phase 80 mobile menu toggle = 44×44 (Apple HIG floor) | ✅ |
+| Phase 80 sticky bar bottom = 16px (max(1rem, env(safe-area-inset-bottom)) without notch) | ✅ |
+| Phase 86 ServiceHero variant prop wired to data-hero-variant DOM attr (verified on /checkup → "checkup") | ✅ |
+| **Phase 79 mobile blur ≤12px cap** | ❌ → ✅ (FIXED) |
+
+### Bug discovered + fixed mid-UAT
+
+At 375px viewport, multiple v8.0 surfaces violated the Phase 79 mobile budget:
+- Header: `backdrop-blur-[40px]` resolved to `blur(40px)` instead of ≤12px
+- StatsBar wrapper: `backdrop-blur-2xl` resolved to `blur(40px)`
+- Service cards, hero name pill, live indicator, etc. — all >12px
+
+Root cause: Phase 79 `--liquid-blur-*` clamp tokens are only consumed by named `.liquid-*` classes. v8.0 components use Tailwind `backdrop-blur-*` utilities which bypass those tokens entirely. Phase 79's verification missed this — it tested the tokens in isolation, not the runtime composition with Tailwind utilities.
+
+**Fix (commit `b788471`):** Added `@media (max-width: 767.98px)` block to `globals.css` capping every Tailwind `backdrop-blur-{md|lg|xl|2xl|3xl}` and `[class*="backdrop-blur-["]` (arbitrary value syntax) at `blur(12px) !important`.
+
+**Re-verified:** All 7 surfaces sampled at 375px now resolve to `blur(12px)`. At 1440px desktop, header still resolves to `blur(40px) saturate(1.5)` — desktop richness preserved.
+
+
 
 # Phase 89 Verification
 
