@@ -77,7 +77,7 @@ export function ServicesGrid() {
       <div className="container mx-auto px-4 lg:px-6">
         {/* Section title */}
         <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-glass-border bg-white/40 px-5 py-2.5 shadow-glass-inner backdrop-blur-xl">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-section-fill)] px-5 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)]">
             <span className="text-xs font-bold uppercase tracking-wider text-mu-accent-blue sm:text-sm">
               Наши Услуги
             </span>
@@ -101,7 +101,7 @@ export function ServicesGrid() {
               <Link
                 key={card.href}
                 href={card.href}
-                className="group flex h-full flex-col rounded-[2rem] border border-glass-border bg-white/60 p-6 shadow-glass backdrop-blur-2xl transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-glass-border-strong hover:bg-white/70 hover:shadow-glass-lg sm:p-7"
+                className="group flex h-full flex-col rounded-[2rem] border border-glass-border bg-[var(--glass-card-fill)] p-6 shadow-glass backdrop-blur-[var(--glass-card-blur)] transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-glass-border-strong hover:bg-[var(--glass-form-fill)] hover:shadow-glass-lg sm:p-7"
               >
                 {/* Icon */}
                 <div
@@ -112,7 +112,7 @@ export function ServicesGrid() {
                 </div>
 
                 {/* Price badge */}
-                <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-white/50 px-3 py-1 shadow-sm backdrop-blur-md">
+                <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-button-fill)] px-3 py-1 shadow-sm">
                   <span className={`text-xs font-bold ${card.badgeColor}`}>
                     {card.badge}
                   </span>
