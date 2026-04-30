@@ -9,11 +9,11 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### Hero (Video Call Frame)
 
-- [ ] **HERO-01**: Hero shows doctor photo framed as a video-call window (not a flat portrait)
-- [ ] **HERO-02**: Video-call frame displays mic, camera, and hangup control buttons (visual only, non-functional)
-- [ ] **HERO-03**: HD badge is visible on the video-call frame
-- [ ] **HERO-04**: Hero displays two CTAs (primary: заявка на консультацию; secondary: learn more / scroll)
-- [ ] **HERO-05**: Hero layout is mobile-first, readable for ЦА 45+, and preserves 3-second value comprehension
+- [x] **HERO-01**: Hero shows doctor photo framed as a video-call window (not a flat portrait)
+- [x] **HERO-02**: Video-call frame displays mic, camera, and hangup control buttons (visual only, non-functional)
+- [x] **HERO-03**: HD badge is visible on the video-call frame
+- [x] **HERO-04**: Hero displays two CTAs (primary: заявка на консультацию; secondary: learn more / scroll)
+- [x] **HERO-05**: Hero layout is mobile-first, readable for ЦА 45+, and preserves 3-second value comprehension
 
 ### Stats Bar
 
@@ -118,11 +118,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HDR-01 | Phase 80 | Complete |
 | HDR-02 | Phase 80 | Complete |
 | HDR-03 | Phase 80 | Complete |
-| HERO-01 | Phase 81 | Pending |
-| HERO-02 | Phase 81 | Pending |
-| HERO-03 | Phase 81 | Pending |
-| HERO-04 | Phase 81 | Pending |
-| HERO-05 | Phase 81 | Pending |
+| HERO-01 | Phase 81 | Complete |
+| HERO-02 | Phase 81 | Complete |
+| HERO-03 | Phase 81 | Complete |
+| HERO-04 | Phase 81 | Complete |
+| HERO-05 | Phase 81 | Complete |
 | STATS-01 | Phase 82 | Pending |
 | STATS-02 | Phase 82 | Pending |
 | SVC-01 | Phase 83 | Pending |
