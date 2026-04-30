@@ -96,7 +96,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 
 ### Blob Engine: Renderer, Physics, A11y Branches
 
-- [ ] **BLOB-01**: `LivingBlobField.tsx` shipped as `'use client'` + `dynamic({ ssr: false })`; Canvas 2D renderer with 4 sublayers (core, body, halo, glint) inside a single `position: fixed; inset: 0; z-index: 0; pointer-events: none` element
+- [x] **BLOB-01**: `LivingBlobField.tsx` shipped as `'use client'` + `dynamic({ ssr: false })`; Canvas 2D renderer with 4 sublayers (core, body, halo, glint) inside a single `position: fixed; inset: 0; z-index: 0; pointer-events: none` element
 - [ ] **BLOB-02**: Single `pointermove` listener on `window` (`{ passive: true }`) + single `requestAnimationFrame` loop; lerp factors per sublayer (core ~0.18, body ~0.08, halo ~0.04); writes runtime CSS vars (`--blob-x/y`, `--blob-body-x/y`, `--blob-halo-x/y`, `--blob-heat`, `--blob-velocity`) to `document.documentElement` each frame; zero React state on pointer move
 - [ ] **BLOB-03**: Singleton engine guard — `start()` is a no-op if already started; `useEffect` cleanup cancels rAF and removes listener; survives Strict Mode double-invocation and App Router route changes without leak
 - [ ] **BLOB-04**: Heat accumulator on cursor dwell — ramps over 1.5–3s, decays smoothly over ≥600ms when motion resumes, peak luminance/scale delta ≤1.4×; disabled under `prefers-reduced-motion`
@@ -277,7 +277,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FND-05 | Phase 90 | Complete |
 | FND-06 | Phase 90 | Complete |
 | FND-07 | Phase 90 | Complete |
-| BLOB-01 | Phase 91 | Pending |
+| BLOB-01 | Phase 91 | Complete |
 | BLOB-02 | Phase 91 | Pending |
 | BLOB-03 | Phase 91 | Pending |
 | BLOB-04 | Phase 91 | Pending |

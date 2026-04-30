@@ -223,7 +223,7 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 91-01-PLAN.md — Skeleton + canvas mount: LivingBlobField.tsx + .blob-canvas CSS + layout.tsx wiring + stub engine entrypoint (BLOB-01)
+- [x] 91-01-PLAN.md — Skeleton + canvas mount: LivingBlobField.tsx + .blob-canvas CSS + layout.tsx wiring + stub engine entrypoint (BLOB-01)
 - [ ] 91-02-PLAN.md — Engine singleton: refcount + AbortController + single rAF + single pointermove + Page Visibility + Canvas 2D 4-sublayer renderer (BLOB-02, BLOB-03, BLOB-11)
 - [ ] 91-03-PLAN.md — Physics: heat accumulator + velocity tracker + 14 LOCKED constants in physics.ts (BLOB-04, BLOB-05)
 - [ ] 91-04-PLAN.md — Mode resolver + Lissajous + a11y branches + tap-pulse + dark theme dimming + manual a11y attestation (BLOB-06, BLOB-07, BLOB-08, BLOB-09, BLOB-10)

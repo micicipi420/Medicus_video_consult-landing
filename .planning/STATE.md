@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
 status: executing
-stopped_at: Phase 90 P04 complete; manual UAT pending
-last_updated: "2026-04-30T08:59:18.144Z"
-last_activity: 2026-04-30 -- Phase 91 planning complete
+stopped_at: Phase 91 P01 code-complete; orchestrator manual smoke pending
+last_updated: "2026-04-30T09:04:19Z"
+last_activity: 2026-04-30 -- Phase 91 P01 (Skeleton + Canvas Mount) code-complete
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 10
-  completed_plans: 5
-  percent: 50
+  completed_plans: 6
+  percent: 60
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ — и оставляет заявку.
-**Current focus:** Phase 90 — foundation-tokens-a11y-wiring-dom-skeleton
+**Current focus:** Phase 91 — blob-engine-renderer-physics-a11y-branches
 
 ## Current Position
 
-Phase: 90 (foundation-tokens-a11y-wiring-dom-skeleton) — EXECUTING
-Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-04-30 -- Phase 91 planning complete
+Phase: 91 (blob-engine-renderer-physics-a11y-branches) — EXECUTING
+Plan: 2 of 5 (P01 code-complete; orchestrator manual UAT pending)
+Status: Executing Phase 91 — Plan 02 next
+Last activity: 2026-04-30 -- Phase 91 P01 (Skeleton + Canvas Mount) code-complete
 
 Progress: [██████████] 100%
 
@@ -61,6 +61,7 @@ Progress: [██████████] 100%
 | Phase 90 P05 | 1min | 2 tasks | 2 files |
 | Phase 90 P02 | 5 minutes | 2 tasks | 3 files |
 | Phase 90 P04 | 2 minutes | 2 tasks tasks | 1 file files |
+| Phase 91 P01 | 3 minutes | 2 tasks (+1 delegated) | 4 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Plan 90-02 — added .liquid-card-wrap defensive coverage entry to satisfy plan's coverage grep over-match into a Phase-52 frozen-comment ghost selector
 - [Phase ?]: Plan 90-02 — reworded executor docstrings in blob.css and liquid-glass.css to avoid bare class-prefix substrings that confused literal verification grep gates
 - [Phase ?]: [Phase 90 P04]: mounted .living-blob-field static skeleton + 8-var inline <style> seed in layout.tsx; hard-deleted MeshBackground.tsx; clean rebuild green; manual 5-route DevTools smoke pending user attestation
+- [Phase 91 P01]: stubbed lib/blob-engine/index.ts (startBlobEngine signature locked for Plan 02); LivingBlobField.tsx Client Component shell mounts <canvas class="blob-canvas"> as 5th child of .living-blob-field; appended .blob-canvas visibility CSS after frozen blob.css line 79; pnpm build clean (Rule 1 auto-fix removed an unused eslint-disable directive); BLOB-01 complete
 
 ### Pending Key Decisions for v9.0
 
@@ -123,6 +125,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T07:08:45.394Z
-Stopped at: Phase 90 P04 complete; manual UAT pending
+Last session: 2026-04-30T09:04:19Z
+Stopped at: Phase 91 P01 code-complete; orchestrator runs Playwright UAT after Plans 02–05 ship
 Resume file: None
