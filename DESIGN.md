@@ -658,3 +658,47 @@ Known gaps (target: close in v8.0 phase 85 *Glass Hardening & Accessibility Veri
 - Live sites — [medicusunion.com](https://medicusunion.com), [medicusunion.kz](https://medicusunion.kz)
 - [Google Labs DESIGN.md spec](https://github.com/google-labs-code/design.md) — format used by this file
 - Apple HIG — Materials, Color, Motion (URLs in the Liquid Glass section above)
+
+## v9.0 Custom Rules
+
+Added 2026-04-30 (Phase 90, FND-04 + FND-05). Reference: `.planning/REQUIREMENTS.md` v9.0 section, `design/LIQUID_GLASS_BLOB_TZ.md` §1, §5, §9, §11, §16, §17.
+
+### Z-index contract (FND-04)
+
+The v9.0 living-blob composition has a fixed z-stacking order. Every layer in the app MUST fit one of these bands:
+
+| Layer                                      | z-index   | Notes |
+|--------------------------------------------|-----------|-------|
+| `.living-blob-field` (blob field)          | `z-0`     | Always behind everything; `position: fixed; inset: 0`. Single instance, mounted in `layout.tsx`. |
+| `<main>` content + glass surfaces          | `z-1..10` | Page-content cards, sections, forms. Existing `<main className="relative z-10">` is the anchor. |
+| `Header`, `StickyBar`, sticky chrome       | `z-50+`   | Always-visible chrome rides above content; below modals. |
+| Modals, dialogs, popovers                  | `z-100+`  | Top of stack; backdrop sits above all other UI. |
+
+Any new component MUST declare its `z-index` (or use a Tailwind utility like `z-0`, `z-10`, `z-50`, `z-[100]`) within these bands. Numbers outside these bands require a Key Decision in `.planning/PROJECT.md`.
+
+### CTA opaque-forever rule (FND-05)
+
+The v6 CTA gradient (`from-mu-cta-from-v6 → to-mu-cta-to-v6`, brand greens) is the page's primary conversion signal. It MUST stay fully opaque under every condition — no `backdrop-filter`, no `bg-white/{n}` glass utilities, no transparency from the v9.0 4-tier glass system. Rationale: `.planning/research/PITFALLS.md` §3.1 — CTA disappears into the green blob ambient when glass is applied.
+
+**Master list of CTA-opaque components (every consumer of the v6 gradient or `.btn-primary`):**
+
+1. `HeroHub` primary CTA (заявка на консультацию)
+2. `FinalCTA` primary submit
+3. `ContactForm` submit button
+4. `StickyBar` primary action (mobile sticky CTA)
+5. `Header` phone CTA (where rendered with gradient)
+6. Service-page `LeadFormSection` submit
+7. Any future component using `.btn-primary` or v6 gradient utility classes (`from-mu-cta-from-v6`, `to-mu-cta-to-v6`)
+
+**Enforcement (Phase 90):**
+- `next/src/styles/liquid-glass.css` `@a11y-layer-coverage:start/end` block carries a comment block documenting the rule and excludes `.btn-primary` / `.liquid-btn-primary` from a11y enumeration.
+- `next/src/styles/blob.css` does NOT define any CTA-related class.
+- Phase 92 (Glass Rework) will physically verify each component matches the rule during the glass sweep.
+- Stylelint / ESLint enforcement is deferred to v9.1+ (per CONTEXT.md `<deferred>`).
+
+### Source artifacts
+
+- TZ §1 (single-protagonist), §5 (palette), §9 (alpha tiers), §11 (mobile compensation), §16 (anti-patterns), §17 (heat timing): `design/LIQUID_GLASS_BLOB_TZ.md`
+- Phase 90 locked decisions: `.planning/phases/90-foundation-tokens-a11y-wiring-dom-skeleton/90-CONTEXT.md`
+- Mobile blur cap (Phase 79 hard constraint, ≤12px): `.planning/research/PITFALLS.md` §1.1
+- Cheat-pass failure mode (Phase 89 ACC-01..05): `.planning/phases/89-milestone-closeout/89-VERIFICATION.md`
