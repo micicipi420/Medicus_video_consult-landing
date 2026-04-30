@@ -61,6 +61,102 @@
  */
 
 /* ================================================
+   v9.0 Phase 90 — A11y coverage block (FND-03)
+   Single-source enumeration of every glass class
+   under prefers-reduced-motion, prefers-reduced-transparency,
+   prefers-contrast: more.
+
+   CTA opaque-forever rule — see DESIGN.md v9.0 Custom Rules.
+   The primary CTA classes (gradient-painted submit/action buttons)
+   and v6 gradient utilities are intentionally EXCLUDED from this
+   block — they MUST remain opaque regardless of user preference.
+
+   Coverage is grep-verifiable (see 90-02-PLAN.md verify command).
+   Every glass selector defined in liquid-glass.css and blob.css
+   must also appear between the START / END markers below — except
+   the CTA gradient classes noted above.
+   ================================================ */
+/* @a11y-layer-coverage:start */
+/* CTA opaque-forever rule: primary CTA gradient classes are
+   intentionally EXCLUDED. See DESIGN.md v9.0 Custom Rules. */
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-card-wrap,
+  .liquid-btn-secondary,
+  .liquid-header-backdrop,
+  .stats-glass,
+  .glass-idle,
+  .blob-sublayer,
+  .blob-core,
+  .blob-body,
+  .blob-halo,
+  .blob-glint,
+  .living-blob-field {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-card-wrap,
+  .liquid-btn-secondary,
+  .liquid-header-backdrop,
+  .stats-glass,
+  .glass-idle {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+  }
+  .living-blob-field,
+  .blob-sublayer,
+  .blob-core,
+  .blob-body,
+  .blob-halo,
+  .blob-glint {
+    display: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .liquid-regular,
+  .liquid-card,
+  .liquid-nav,
+  .liquid-clear,
+  .liquid-fluted,
+  .liquid-card-wrap,
+  .liquid-btn-secondary,
+  .liquid-header-backdrop,
+  .stats-glass,
+  .glass-idle {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.85) !important;
+  }
+  .living-blob-field,
+  .blob-sublayer,
+  .blob-core,
+  .blob-body,
+  .blob-halo,
+  .blob-glint {
+    opacity: 0.4 !important;
+    filter: saturate(0.6) !important;
+  }
+}
+
+/* @a11y-layer-coverage:end */
+
+/* ================================================
    Section 1 -- Base material
    ================================================ */
 
