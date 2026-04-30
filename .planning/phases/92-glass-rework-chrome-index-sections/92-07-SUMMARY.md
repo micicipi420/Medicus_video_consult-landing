@@ -15,7 +15,8 @@ provides:
   - ContactSection form panel migrated from opaque-white to Tier 2 form-fill
   - ContactForm inputs flattened from animated-transparency glass to opaque bg-white
   - Path A locked: blue-gradient outer preserved (KD-v9-003 — localized blob dimming deferred as architecturally moot)
-  - WCAG AA measurement gate identified failure at default 0.14 (theoretical worst-case 2.80:1 body / 5.45:1 labels) — escalation decision deferred to user/orchestrator (Task 3 awaiting checkpoint)
+  - WCAG AA escalation per KD-v9-002: --glass-form-fill desktop 0.14 -> 0.50 (plan-proposed 0.30 mathematically insufficient at gradient worst-case)
+  - KD-v9-002 row logged in PROJECT.md (locked 2026-04-30)
 affects: [phase 93+, form-safety patterns, KD-v9-002 escalation log]
 
 tech-stack:
@@ -31,32 +32,35 @@ key-files:
   modified:
     - next/src/components/sections/ContactSection.tsx
     - next/src/components/sections/ContactForm.tsx
+    - next/src/app/globals.css  # KD-v9-002: --glass-form-fill 0.14 -> 0.50
+    - .planning/PROJECT.md      # KD-v9-002 row appended
 
 key-decisions:
   - "Path A locked per RESEARCH §Pitfall 2 + KD-v9-003: ContactSection blue-gradient outer preserved; localized blob dimming (Decision B step 4 / GLASS-07 sub-clause) deferred — form panel sits over opaque blue rectangle, not page blob field."
   - "Trust signal cards (lines 60, 63, 83) over the blue gradient: kept as-is per planner judgment (PATTERNS.md note). Migrating to --glass-button-fill would over-saturate against the white-on-blue contract."
   - "Task 2 WCAG measurement: theoretical contrast computation (no headless-browser tooling in worktree environment) shows default 0.14 fails AA at worst-case gradient point for body copy (text-mu-text-700) — see WCAG findings below. Escalation decision returned to orchestrator as structured checkpoint."
+  - "KD-v9-002 (locked 2026-04-30 by user/orchestrator): escalate --glass-form-fill desktop 0.14 -> 0.50 (NOT plan-proposed 0.30, which yielded 3.51:1 vs ≥4.5:1 needed at gradient worst-case). 0.50 is the smallest α satisfying WCAG AA across the full ContactSection gradient (worst-case 4.60:1 on body copy)."
 
 patterns-established:
   - "Theoretical-contrast computation as fallback when headless-browser tooling unavailable: computes alpha-over composite at gradient endpoints, applies WCAG luminance formula, reports worst-case ratio."
 
-requirements-completed: []  # GLASS-07 NOT yet complete — awaiting Task 3 escalation decision
+requirements-completed: [GLASS-07]
 
-duration: ~15min (Tasks 1+2; Task 3 pending)
+duration: ~25min (Tasks 1+2+3 across two executor invocations)
 completed: 2026-04-30
 ---
 
 # Phase 92 Plan 92-07: ContactForm/ContactSection Form-Safety Tier 2 Migration Summary
 
-**ContactForm panel migrated to Tier 2 form-fill (`bg-[var(--glass-form-fill)] backdrop-blur-[var(--glass-form-blur)]`); inputs flattened from `bg-white/50 backdrop-blur-md focus:bg-white/72` to opaque `bg-white`; submit gradient + success overlay preserved; theoretical WCAG measurement identifies AA failure at default 0.14 — escalation decision deferred to user.**
+**ContactForm panel migrated to Tier 2 form-fill (`bg-[var(--glass-form-fill)] backdrop-blur-[var(--glass-form-blur)]`); inputs flattened from `bg-white/50 backdrop-blur-md focus:bg-white/72` to opaque `bg-white`; submit gradient + success overlay preserved. Theoretical WCAG measurement identified AA failure at default 0.14 (and at plan-proposed 0.30); user/orchestrator authorized KD-v9-002 escalation to 0.50 — smallest α satisfying AA across the full section gradient (worst-case 4.60:1 body copy at mu-accent-blue endpoint).**
 
 ## Performance
 
-- **Duration:** ~15 min (Tasks 1 + 2; Task 3 pending checkpoint)
+- **Duration:** ~25 min total across two executor invocations (Tasks 1+2 first run; Task 3 after user-decision checkpoint resolved)
 - **Started:** 2026-04-30T11:40:00Z (approximate)
-- **Completed:** 2026-04-30T11:55:20Z (Tasks 1 + 2)
-- **Tasks completed:** 2 of 3 (Task 3 awaiting decision)
-- **Files modified:** 2 (ContactSection.tsx, ContactForm.tsx)
+- **Completed:** 2026-04-30 (Task 3 after KD-v9-002 user authorization)
+- **Tasks completed:** 3 of 3 (all complete)
+- **Files modified:** 4 (ContactSection.tsx, ContactForm.tsx, globals.css, PROJECT.md)
 
 ## Accomplishments
 
@@ -70,15 +74,17 @@ completed: 2026-04-30
 ## Task Commits
 
 1. **Task 1: ContactSection.tsx + ContactForm.tsx — form panel Tier 2 migration; inputs flattened** — `f1e87e1` (feat)
-2. **Task 2: WCAG AA measurement; conditional KD-v9-002 escalation** — _no commit_ (measurement-only task; structured checkpoint returned)
-3. **Task 3: KD-v9-002 escalation flow** — _PENDING_ (awaiting orchestrator/user decision per checkpoint below)
+2. **Task 2: WCAG AA measurement; conditional KD-v9-002 escalation** — _no commit_ (measurement-only task; structured checkpoint returned, user authorized 0.50 escalation)
+3. **Task 3: KD-v9-002 escalation — globals.css + PROJECT.md** — `5b1480d` (feat)
 
-**Plan metadata commit:** to be issued after Task 3 resolves.
+**Plan metadata commit:** issued after Task 3 SUMMARY update.
 
 ## Files Modified
 
 - `next/src/components/sections/ContactSection.tsx` — line 120 form panel wrapper migrated to Tier 2 form-fill + form-blur tokens. All other elements (lines 26, 35–36, 60–63, 83) unchanged per Path A and planner judgment.
 - `next/src/components/sections/ContactForm.tsx` — line 128 `inputBase` template: dropped `bg-white/50`, `backdrop-blur-md`, `focus:bg-white/72`, and `background-color` from transition list. Line 111 success overlay, line 247 submit gradient, lines 137/159/182/207 labels: untouched.
+- `next/src/app/globals.css` — line 249: `--glass-form-fill: rgba(255, 255, 255, 0.14)` → `rgba(255, 255, 255, 0.50)` per KD-v9-002 (Task 3). Single declaration in `:root`; no prefers-reduced-transparency / @supports / dark-mode override exists for this token. All other `--glass-*` tokens untouched (Decision I freeze respected; KD-v9-002 is the explicit single exception).
+- `.planning/PROJECT.md` — KD-v9-002 row appended to Key Decisions table immediately after KD-v9-001. Locked 2026-04-30 by user/orchestrator.
 
 ## Decisions Made
 
@@ -142,15 +148,30 @@ The computed worst-case is the conservative bound — actual perceived contrast 
 
 A follow-up live-DevTools measurement using VALIDATION.md Recipe 3 is recommended to confirm or correct the computed worst-case before committing to an escalation level.
 
-## Task 3 Status: AWAITING DECISION (Checkpoint Returned)
+## Task 3 Status: RESOLVED — KD-v9-002 EXECUTED
 
-The plan offered three responses: `passed`, `escalate <ratio>`, `defer <reason>`. Computed analysis says: **escalate** — but the planner-proposed 0.14 → 0.30 alone is mathematically insufficient at gradient worst-case. Returning a structured decision checkpoint per checkpoint_handling clause:
+**User/orchestrator decision (2026-04-30):** Apply **Option A — escalate `--glass-form-fill` desktop = 0.50** (NOT plan-proposed 0.30). Rationale: 0.30 yields 3.51:1 at gradient worst-case (mu-accent-blue endpoint), still below 4.5:1 AA threshold. 0.50 is the smallest α producing AA across the full gradient (4.60:1 body-copy worst-case; 5.05–5.15:1 mid- to mu-blue-end).
 
-- **Option A (recommended math-driven):** Escalate to `--glass-form-fill: 0.50` — minimal value that yields AA across the full gradient (4.60:1 worst-case, ~0.1 margin). Log KD-v9-002 with rationale "0.30 insufficient at gradient worst-case (3.51:1); 0.50 minimum for AA-across-gradient".
-- **Option B (planner-proposed):** Escalate to 0.30 as plan specifies. Risk: AA fails at mu-accent-blue end of gradient. Mitigation: combine with localized darken-tint of the form panel (vec via additional dark layer) — but Decision I freeze prevents this without further authorization.
-- **Option C (visual-design driven):** Escalate to 0.70 — comfortable AA margin (5.87:1 worst-case), still preserves Tier-2 visual presence (form panel reads as "tinted glass" not opaque card).
-- **Option D (conservative anti-pattern revert):** Revert form panel to opaque `bg-white` (Tier 0), accept that the form panel is the page's only opaque-white surface; document the form-safety override as a permanent exemption in PROJECT.md. Trade-off: visual continuity with the rest of v9.0 Liquid Glass system breaks at the conversion point.
-- **Option E (defer + live-measure):** Spin up dev server + manual DevTools measurement to confirm whether computed worst-case is actually realized in practice; the visible privacy-notice region may not actually overlap mu-accent-blue depending on responsive layout. Defer Task 3 until live measurement produces an empirical reading.
+**Action executed:**
+1. `next/src/app/globals.css` line 249: `--glass-form-fill: 0.14` → `0.50`. Single declaration; no other token touched (Decision I freeze respected).
+2. `.planning/PROJECT.md`: KD-v9-002 row appended to Key Decisions table — "ContactSection form-safety α escalation per WCAG AA — `--glass-form-fill` desktop = 0.50 (was 0.14; plan-proposed 0.30 insufficient)" with full rationale + computation method + Status: locked 2026-04-30 — Phase 92 Plan 92-07.
+3. Atomic commit `5b1480d`: `feat(92-07): escalate --glass-form-fill 0.14 -> 0.50 per KD-v9-002`.
+4. Re-verification: `pnpm --dir next build` exits 0; site compiles cleanly with the new α.
+
+**Mobile note:** globals.css contains a single `--glass-form-fill` declaration in `:root` (no `@media (max-width: 768px)` override exists in the token block). The desktop value escalation also serves mobile by inheritance. CONTEXT.md Decision A specifies "Tier 2 (form): fill 0.14 desktop (single value; mobile resolves same)" — confirms current single-declaration model is correct; no separate mobile bump required.
+
+**Empirical follow-up recommended:** A future spot-check with Chrome DevTools contrast picker (VALIDATION.md Recipe 3) once a dev server is available is recommended to confirm or refine the computed worst-case bound. The alpha-over computation is conservative — actual perceived contrast may be higher because backdrop-blur smooths the gradient over the small text region.
+
+### Re-measured contrast at α = 0.50 (computed, full gradient)
+
+| Element | Worst-case bg | Composite | Contrast | Result |
+|---------|---------------|-----------|----------|--------|
+| Body copy text-mu-text-700 (#4A4E5C) | mu-accent-blue (79,132,232) | rgb(167,194,244) | **4.60:1** | **PASS** (AA ≥4.5:1) |
+| Body copy text-mu-text-700 | mid-gradient (67,165,238) | rgb(161,210,247) | 5.15:1 | PASS |
+| Body copy text-mu-text-700 | mu-blue (56,198,244) | rgb(155,226,249) | 5.05:1 | PASS |
+| Labels text-mu-text-900 (#1B212C) | mu-accent-blue | rgb(167,194,244) | 8.30:1 | PASS |
+
+All body + label readings ≥4.5:1 across the entire ContactSection gradient. GLASS-07 WCAG AA gate satisfied.
 
 ## Path A & Trust Signal Notes
 
@@ -233,20 +254,24 @@ git log --oneline | grep -q f1e87e1 && echo FOUND                       → FOUN
 
 ## Self-Check: PASSED (Task 1 artifacts + commit verified; Task 2 measurement documented; Task 3 awaiting decision)
 
-## Awaiting
-
-User/orchestrator decision on Task 3 escalation level (Options A–E above). Recommended: **Option A (0.50)** — minimum value that satisfies AA across the full section gradient with a small margin, AND **Option E (live-measure)** as confirmation step before committing the globals.css edit.
-
-After decision: re-spawn executor with the chosen α value; it will perform the conditional Task 3 (globals.css edit + KD-v9-002 row in PROJECT.md + re-measurement), then commit metadata and complete the plan.
-
 ## Next Phase Readiness
 
-- Tasks 1 + 2 are stable and committed; the form panel is functionally on Tier 2 form-fill and inputs are flat opaque. The visual rework is in place.
-- GLASS-07 requirement is **NOT yet complete** until Task 3 resolves (either escalation logged or explicit accept-and-defer).
-- Wave 4 of Phase 92 cannot be marked complete until this checkpoint resolves.
+- All three tasks complete and committed. The form panel is on Tier 2 form-fill at α=0.50, inputs are flat opaque, KD-v9-002 logged.
+- **GLASS-07 requirement: COMPLETE** — WCAG AA satisfied across the full ContactSection gradient (theoretical computation; live spot-check recommended as future follow-up).
+- Wave 4 of Phase 92 unblocked for Plan 92-08 (FinalCTA mix-blend retirement + Header dead-code + phase-gate sweep).
+
+## Acceptance Criteria Verification (Task 3)
+
+| Check | Expected | Actual | Pass |
+|-------|----------|--------|------|
+| `pnpm --dir next build` | exits 0 | 0 | ✓ |
+| `grep -c 'KD-v9-002' .planning/PROJECT.md` | ≥1 | 1 | ✓ |
+| `grep 'glass-form-fill' globals.css` shows 0.50 | ≥1 | 1 | ✓ |
+| Re-measured WCAG body-copy contrast at worst-case | ≥4.5:1 | 4.60:1 | ✓ |
+| globals.css: only `--glass-form-fill` touched | yes | yes | ✓ |
+| Decision I freeze: KD-v9-002 single sanctioned exception | respected | respected | ✓ |
 
 ---
 *Phase: 92-glass-rework-chrome-index-sections*
 *Plan: 07*
-*Completed (Tasks 1+2): 2026-04-30*
-*Task 3: pending decision*
+*Completed: 2026-04-30 (all 3 tasks)*
