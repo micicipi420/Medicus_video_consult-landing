@@ -112,11 +112,11 @@ export function FAQSection() {
             return (
               <div
                 key={i}
-                className="bg-white/60 backdrop-blur-2xl rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden"
+                className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl border border-glass-border shadow-glass-sm overflow-hidden"
               >
                 <button
                   type="button"
-                  className="w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-white/80"
+                  className="w-full text-left px-6 py-5 font-bold text-mu-text-900 flex items-center justify-between transition-colors hover:bg-[var(--glass-form-fill)]"
                   aria-expanded={isOpen}
                   onClick={() => handleToggle(i)}
                 >
