@@ -185,7 +185,7 @@ Index page redesign per the new mockup. 7 phases shipped:
 | Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
 | translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
 | prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
-| KD-v9-001: --blob-hot #4FE098 | TZ §5 — heat-state highlight; brand parity check pending against medicusunion.com / medicusunion.kz | pending — user must view /test-glass and approve (or propose alternate hex) before /gsd-discuss-phase 91 |
+| KD-v9-001: --blob-hot #4FE098 | TZ §5 — heat-state highlight; brand parity verified via Playwright DOM sampling on medicusunion.com (`#35B678` primary CTA, `#78C3BF` accent) and medicusunion.kz (`#5EE9B5` hero-phrase + cookie-banner mint highlight). `#4FE098` (rgb 79,224,152) is HSL-adjacent to medicusunion.kz `#5EE9B5` (rgb 94,233,181) — same bright-mint family, hue shift ~12°, lightness/saturation near-identical. Distinct from primary CTA greens (`#35B678`, `#1AC67E`) so the heat-glow reads as ambient-highlight, not action affordance. | approved 2026-04-30 — Phase 91 unblocked |
 
 ## Evolution
 
