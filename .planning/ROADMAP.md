@@ -249,8 +249,8 @@ Plans:
 - [x] 92-04-PLAN.md — HeroHub + StatsBar + ServicesGrid sweep; preserve Phase 82 responsive nesting + over-photo controls (GLASS-02, GLASS-03, GLASS-04)
 - [x] 92-05-PLAN.md — Mid sections sweep: Process, Problem, WhyUs, Clinics, Platform, Reviews (GLASS-05)
 - [x] 92-06-PLAN.md — FAQSection accordion (D archetype) + FinalCTA frame/phone CTA sweep (GLASS-06, GLASS-08 partial)
-- [ ] 92-07-PLAN.md — ContactForm + ContactSection FORM-SAFETY: Tier 2 panel, opaque inputs, WCAG measurement, conditional KD-v9-002 escalation (GLASS-07)
-- [ ] 92-08-PLAN.md — FinalCTA mix-blend-multiply retirement + Header.tsx legacy handling + phase-gate SWEEP-AUDIT (GLASS-08)
+- [x] 92-07-PLAN.md — ContactForm + ContactSection FORM-SAFETY: Tier 2 panel, opaque inputs, WCAG measurement, conditional KD-v9-002 escalation (GLASS-07)
+- [x] 92-08-PLAN.md — FinalCTA mix-blend-multiply retirement + Header.tsx legacy handling + phase-gate SWEEP-AUDIT (GLASS-08)
 **UI hint**: yes
 
 ### Phase 93: Per-Page Propagation — Sub-Routes
@@ -385,7 +385,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 |-------|----------------|--------|-----------|
 | 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete   | 2026-04-30 |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
-| 92. Glass Rework — Chrome + Index Sections | 6/8 | In Progress|  |
+| 92. Glass Rework — Chrome + Index Sections | 8/8 | Complete   | 2026-04-30 |
 | 93. Per-Page Propagation — Sub-Routes | 0/0 | Not started | — |
 | 94. Verification — UAT, Performance, A11y, Brand Review | 0/0 | Not started | — |
 
