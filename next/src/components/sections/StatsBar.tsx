@@ -46,14 +46,14 @@ export function StatsBar() {
       <div className="container mx-auto px-4 lg:px-6">
         {/* Mobile: single glass container with a 2x2 grid inside (one glass layer — keeps page within Phase 79 mobile budget) */}
         {/* sm+: separate glass cards (4 layers acceptable on desktop) */}
-        <div className="rounded-[2rem] border border-glass-border bg-white/60 p-4 shadow-glass backdrop-blur-2xl sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
+        <div className="rounded-[2rem] border border-glass-border bg-[var(--glass-section-fill)] p-4 shadow-glass backdrop-blur-[var(--glass-section-blur)] sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-6">
             {STATS.map((stat) => {
               const { Icon } = stat;
               return (
                 <div
                   key={stat.label}
-                  className="group relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl px-3 py-5 text-center sm:rounded-[2.5rem] sm:border sm:border-glass-border sm:bg-white/60 sm:p-7 sm:shadow-glass sm:backdrop-blur-2xl sm:transition-[background-color,border-color,box-shadow] sm:duration-300 sm:hover:bg-white/70 sm:hover:border-glass-border-strong sm:hover:shadow-glass-lg"
+                  className="group relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl px-3 py-5 text-center sm:rounded-[2.5rem] sm:border sm:border-glass-border sm:bg-[var(--glass-card-fill)] sm:p-7 sm:shadow-glass sm:backdrop-blur-[var(--glass-card-blur)] sm:transition-[background-color,border-color,box-shadow] sm:duration-300 sm:hover:bg-[var(--glass-form-fill)] sm:hover:border-glass-border-strong sm:hover:shadow-glass-lg"
                 >
                   <div
                     className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl sm:h-14 sm:w-14 ${stat.iconBg} ${stat.iconText}`}
