@@ -22,15 +22,15 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### Services ("Мы помогаем на каждом этапе")
 
-- [ ] **SVC-01**: Services section shows 4 service cards with icons in glass style
-- [ ] **SVC-02**: Each card has an icon, title, and short scannable description
-- [ ] **SVC-03**: Cards link to their respective service pages without regression
+- [x] **SVC-01**: Services section shows 4 service cards with icons in glass style
+- [x] **SVC-02**: Each card has an icon, title, and short scannable description
+- [x] **SVC-03**: Cards link to their respective service pages without regression
 
 ### Process ("Как это работает")
 
-- [ ] **PROC-01**: Process section shows 4 numbered steps, each with an icon
-- [ ] **PROC-02**: Steps are visually connected by dotted connector lines on desktop
-- [ ] **PROC-03**: On mobile the dotted connectors collapse to a vertical variant or are hidden without breaking layout
+- [x] **PROC-01**: Process section shows 4 numbered steps, each with an icon
+- [x] **PROC-02**: Steps are visually connected by dotted connector lines on desktop
+- [x] **PROC-03**: On mobile the dotted connectors collapse to a vertical variant or are hidden without breaking layout
 
 ### CTA Form
 
@@ -125,12 +125,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HERO-05 | Phase 81 | Complete |
 | STATS-01 | Phase 82 | Complete |
 | STATS-02 | Phase 82 | Complete |
-| SVC-01 | Phase 83 | Pending |
-| SVC-02 | Phase 83 | Pending |
-| SVC-03 | Phase 83 | Pending |
-| PROC-01 | Phase 83 | Pending |
-| PROC-02 | Phase 83 | Pending |
-| PROC-03 | Phase 83 | Pending |
+| SVC-01 | Phase 83 | Complete |
+| SVC-02 | Phase 83 | Complete |
+| SVC-03 | Phase 83 | Complete |
+| PROC-01 | Phase 83 | Complete |
+| PROC-02 | Phase 83 | Complete |
+| PROC-03 | Phase 83 | Complete |
 | FORM-01 | Phase 84 | Pending |
 | FORM-02 | Phase 84 | Pending |
 | FORM-03 | Phase 84 | Pending |
