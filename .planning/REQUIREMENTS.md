@@ -78,7 +78,72 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [ ] **CLO-02**: Phase 85 live a11y UAT executed against running dev server (7 browser-only checks documented in `85-VERIFICATION.md`)
 - [ ] **CLO-03**: `/gsd-cleanup` archives v8.0 phase directories into `.planning/milestones/v8.0-phases`
 
-## v7.0 Requirements (Shipped 2026-04-14)
+## v9.0 Requirements
+
+**Living Blob Liquid Glass Scene.** Single cursor-following green blob beneath UI as the only opaque object on the page; entire UI becomes transparent glass that reacts to the blob. Source: `design/LIQUID_GLASS_BLOB_TZ.md` (20 sections, 12 acceptance criteria). Synthesized in `.planning/research/SUMMARY.md`.
+
+**REQ-ID namespaces:** `FND-*` (foundation), `BLOB-*` (engine), `GLASS-*` (chrome + index sweep), `ROUTE-*` (per-page propagation), `VER-*` (verification). Distinct from v8.1 `PROP-*` and v8.0 `FORM-*`.
+
+### Foundation: Tokens, A11y Wiring, DOM Skeleton
+
+- [ ] **FND-01**: New blob palette tokens registered in `DESIGN.md` YAML and `next/src/app/globals.css` — `--blob-core: #35B678`, `--blob-hot: #4FE098`, `--blob-halo: rgba(98,221,177,0.5)`, `--blob-edge: rgba(125,205,255,0.18)`, `--blob-glint: rgba(255,255,255,0.65)`
+- [ ] **FND-02**: Glass tier tokens defined for 4 surface depths — `--glass-{section,card,form,button}-{fill,blur}` with desktop and mobile values; mobile blur values ≤12px (Phase 79 cap honored)
+- [ ] **FND-03**: A11y `@layer` block in `liquid-glass.css` enumerates every glass class name (current + new) under `prefers-reduced-motion`, `prefers-reduced-transparency`, and `prefers-contrast: more` — single source of truth
+- [ ] **FND-04**: z-index contract documented in `DESIGN.md` — blob-field `z-0`, main content `z-1..10`, sticky/header `z-50+`, modals `z-100+`
+- [ ] **FND-05**: CTA opaque-forever rule + v9.0 anti-pattern appendix added to `DESIGN.md` (no trails, no particles, no `mix-blend-mode` on glass, no animated `backdrop-filter`, no green tint on cards, no parallax)
+- [ ] **FND-06**: `<div class="living-blob-field" aria-hidden="true">` skeleton mounted in `next/src/app/layout.tsx` with seeded `:root` CSS vars; `MeshBackground.tsx` removed
+- [ ] **FND-07**: Key Decision logged in `PROJECT.md` for `--blob-hot: #4FE098` (new brand color); approved against `medicusunion.com` reference before BLOB phase begins
+
+### Blob Engine: Renderer, Physics, A11y Branches
+
+- [ ] **BLOB-01**: `LivingBlobField.tsx` shipped as `'use client'` + `dynamic({ ssr: false })`; Canvas 2D renderer with 4 sublayers (core, body, halo, glint) inside a single `position: fixed; inset: 0; z-index: 0; pointer-events: none` element
+- [ ] **BLOB-02**: Single `pointermove` listener on `window` (`{ passive: true }`) + single `requestAnimationFrame` loop; lerp factors per sublayer (core ~0.18, body ~0.08, halo ~0.04); writes runtime CSS vars (`--blob-x/y`, `--blob-body-x/y`, `--blob-halo-x/y`, `--blob-heat`, `--blob-velocity`) to `document.documentElement` each frame; zero React state on pointer move
+- [ ] **BLOB-03**: Singleton engine guard — `start()` is a no-op if already started; `useEffect` cleanup cancels rAF and removes listener; survives Strict Mode double-invocation and App Router route changes without leak
+- [ ] **BLOB-04**: Heat accumulator on cursor dwell — ramps over 1.5–3s, decays smoothly over ≥600ms when motion resumes, peak luminance/scale delta ≤1.4×; disabled under `prefers-reduced-motion`
+- [ ] **BLOB-05**: Velocity-driven shape stretch along motion direction; halo lags more than core; on stop, blob recollects without snap
+- [ ] **BLOB-06**: Mobile branch (`(pointer: coarse) and (hover: none)`) — no pointer/touch follow; autonomous Lissajous ambient drift (period ≥12s); tap-pulse ≤400ms only on background (taps not in interactive elements), rate-limited 1 per 600ms; pauses during scroll
+- [ ] **BLOB-07**: `prefers-reduced-motion: reduce` branch — no listener, no rAF, CSS-driven static ambient gradient only
+- [ ] **BLOB-08**: `prefers-reduced-transparency: reduce` branch — blob hidden, glass surfaces switch to opaque fallbacks via existing `@layer` wiring
+- [ ] **BLOB-09**: Dark theme (`[data-theme="dark"]`) — blob opacity ≤0.35, saturation ≤0.7, follow disabled (ambient drift only); existing `backdrop-filter: none` on glass preserved
+- [ ] **BLOB-10**: Pointer-leave-window — smooth decay to last position then ambient drift; no snap-disappear; `data-blob-mode` attribute on `<html>` reflects current mode (cursor / ambient / static)
+- [ ] **BLOB-11**: Page Visibility API integration — rAF stops when `document.hidden`, restarts on visible
+- [ ] **BLOB-12**: Dev-only `window.__blobDebug.rafCount` exposed for Playwright leak assertions
+
+### Glass UI Rework: Chrome + Index Sections
+
+- [ ] **GLASS-01**: `HeaderClient`, `MobileMenu`, `StickyBar` reworked to v9.0 glass tiers; mobile blur cap (≤12px) preserved; HIG 44pt tap targets and ESC dismissal preserved
+- [ ] **GLASS-02**: `HeroHub` frame on Tier 0 fill (≤0.16); CTA gradient stays fully opaque, never receives `backdrop-filter`
+- [ ] **GLASS-03**: `StatsBar` — wrapper Tier 0, cards Tier 1 / hover Tier 2; respects responsive-glass-nesting (mobile 1 wrapper / desktop 4 cards) from Phase 82
+- [ ] **GLASS-04**: `ServicesGrid` — cards Tier 1 / hover Tier 2; ≤2 glass siblings per viewport rule respected
+- [ ] **GLASS-05**: `ProcessSection`, `ProblemSection`, `WhyUsSection`, `ClinicsSection`, `PlatformSection`, `ReviewsSection` — per-tier sweep aligned with new tokens
+- [ ] **GLASS-06**: `FAQSection` — closed Tier 1, open Tier 2; smooth-anim accordion preserved
+- [ ] **GLASS-07**: `ContactForm` + `ContactSection` — form panel uses `--glass-form-fill` (≥0.16 floor; escalate to 0.30 if WCAG AA fails); labels promoted from `text-muted` to `text-primary`; inputs `bg-white` opaque, NOT glass; localized blob dimming when blob centroid enters form bounds
+- [ ] **GLASS-08**: `FinalCTA` — Tier 0 frame; CTA opaque, gradient unchanged
+- [ ] **GLASS-09**: `Footer` — Tier 0 fill
+- [ ] **GLASS-10**: `liquid-glass.css` utility classes re-pointed from `--liquid-bg: rgba(255,255,255,0.42)` and similar to new tier tokens; heat-leak `radial-gradient` rules added to `.liquid-card` / `.liquid-regular` so glass surfaces optically respond to blob position
+
+### Per-Page Propagation: Sub-Routes
+
+- [ ] **ROUTE-01**: `/checkup` section components (8 files in `next/src/components/sections/checkup/`) — per-tier sweep
+- [ ] **ROUTE-02**: `/consultations` section components (8 files in `next/src/components/sections/consultations/`) — per-tier sweep
+- [ ] **ROUTE-03**: `/treatment-abroad` section components (4 files in `next/src/components/sections/treatment/`) — per-tier sweep
+- [ ] **ROUTE-04**: `/contacts` section components (2 files in `next/src/components/sections/contacts/`) — per-tier sweep
+- [ ] **ROUTE-05**: Service-page primitives (`ServiceHero`, `FAQ`, `SocialProof`, `LeadFormSection` in `next/src/components/sections/service/`) — `LeadFormSection` receives same form-safety treatment as `ContactForm` (≥0.16 alpha, opaque inputs)
+- [ ] **ROUTE-06**: shadcn primitives (`card`, `dialog`, `input`, `select`, `textarea` in `next/src/components/ui/`) updated last (highest blast-radius)
+- [ ] **ROUTE-07**: Per-route Playwright screenshot diff vs pre-v9.0 baseline before each route is signed off; form/CTA regions must be visually stable (blob area masked)
+
+### Verification: UAT, Performance, A11y, Brand Review
+
+- [ ] **VER-01**: Playwright UAT covers all 10 TZ §18 browser scenarios (desktop hero, mobile hero, cursor through hero/cards/form, 3s dwell, leave block, leave window, reduced motion, CTA/form readability)
+- [ ] **VER-02**: Playwright a11y emulation tests for `prefers-reduced-motion`, `prefers-reduced-transparency`, `prefers-contrast: more` — assert blob hidden / glass opaque / luminance dampened
+- [ ] **VER-03**: Playwright leak test — navigate `/` → `/checkup` → `/consultations` → `/treatment-abroad` → `/` and assert `window.__blobDebug.rafCount === 1` and pointermove listener count === 1
+- [ ] **VER-04**: Lighthouse CI gate configured with mobile-throttled budgets — LCP ≤2500ms, INP ≤200ms, CLS ≤0.1, TBT ≤200ms; PRs failing >10% regression vs baseline are blocked
+- [ ] **VER-05**: Real-device manual UAT signed off (NO cheat-pass): (a) iPhone iOS 16 or 17 Safari, (b) low-end Android 4GB RAM (Redmi 9-class or similar), (c) desktop Chrome + Firefox + Safari — each with checklist + screenshot/video attachment in phase report
+- [ ] **VER-06**: axe-core / Pa11y run against each route with blob parked in 3+ representative positions per page (under hero, under form, under CTA); zero new violations introduced
+- [ ] **VER-07**: Brand visual review — render heat-peak still frame side-by-side with `medicusunion.com` and `medicusunion.com/.kz` references; pull saturation/opacity back if frame reads as fitness/gaming
+- [ ] **VER-08**: All 12 TZ §19 acceptance criteria verified and recorded in phase report
+
+
 
 Requirements for UI/UX Design Excellence milestone. Each maps to roadmap phases.
 
@@ -203,4 +268,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-13*
-*Last updated: 2026-04-23 after v8.0 roadmap creation*
+*Last updated: 2026-04-30 after v9.0 milestone start (Living Blob Liquid Glass Scene)*
