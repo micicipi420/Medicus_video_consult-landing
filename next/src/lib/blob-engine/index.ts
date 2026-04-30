@@ -10,19 +10,13 @@ import {
   type DrawState,
   type LayerPos,
 } from './canvas-renderer';
-
-// LOCKED: TZ §17 lerp factors — DO NOT modify without phase replan.
-const LERP_CORE = 0.18;
-const LERP_BODY = 0.08;
-const LERP_HALO = 0.04;
-
-interface PointerRef {
-  x: number;
-  y: number;
-  lastX: number;
-  lastY: number;
-  lastT: number;
-}
+import {
+  updateLayers,
+  updateVelocity,
+  updateHeat,
+  type DwellSample,
+  type PointerRef,
+} from './physics';
 
 interface EngineState {
   refcount: number;
@@ -37,18 +31,17 @@ interface EngineState {
   core: LayerPos;
   body: LayerPos;
   halo: LayerPos;
-  heat: number;     // Plan 03 makes this real; Plan 02 holds 0
-  velocity: number; // Plan 03 makes this real; Plan 02 holds 0
-  mode: 'cursor';   // Plan 04 widens to BlobMode union
+  heat: number;                 // Plan 03 makes real (was 0 in Plan 02)
+  velocity: number;             // Plan 03 makes real (was 0 in Plan 02)
+  mode: 'cursor';               // Plan 04 widens to BlobMode union
   startedAt: number;
   frameCount: number;
+  dwellSamples: DwellSample[];  // Decision E — pruned to DWELL_WINDOW (250ms)
+  lastFrameAt: number;          // for deltaTime in updateHeat
+  lastTapAt: number;            // Plan 04 mobile tap-pulse rate-limit (Plan 03 inits to 0)
 }
 
 let state: EngineState | null = null;
-
-function lerp(current: number, target: number, factor: number): number {
-  return current + (target - current) * factor;
-}
 
 export interface StartBlobEngineOpts {
   canvas: HTMLCanvasElement;
@@ -98,6 +91,9 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
     mode: 'cursor',
     startedAt: performance.now(),
     frameCount: 0,
+    dwellSamples: [],
+    lastFrameAt: performance.now(),
+    lastTapAt: 0,
   };
 
   attachListeners(state);
@@ -161,20 +157,29 @@ function attachListeners(s: EngineState): void {
 function loop(): void {
   if (!state) return;
 
-  // Lerp targets: Plan 02 hardcodes pointer as the target (cursor mode only).
-  const targetX = state.pointer.x;
-  const targetY = state.pointer.y;
+  const now = performance.now();
+  const deltaTime = now - state.lastFrameAt;
+  state.lastFrameAt = now;
 
-  state.core.x = lerp(state.core.x, targetX, LERP_CORE);
-  state.core.y = lerp(state.core.y, targetY, LERP_CORE);
-  state.body.x = lerp(state.body.x, targetX, LERP_BODY);
-  state.body.y = lerp(state.body.y, targetY, LERP_BODY);
-  state.halo.x = lerp(state.halo.x, targetX, LERP_HALO);
-  state.halo.y = lerp(state.halo.y, targetY, LERP_HALO);
+  // Lerp targets — Plan 03 hardcodes pointer; Plan 04 introduces mode-dependent target selection.
+  const target = { x: state.pointer.x, y: state.pointer.y };
 
-  // Plan 03 fills these in:
-  // updateVelocity(state, performance.now());
-  // updateHeat(state, deltaTime, motionEnabled);
+  updateLayers(state.core, state.body, state.halo, target);
+
+  // Velocity (Decision D — low-pass α=0.15).
+  state.velocity = updateVelocity(state.pointer, state.velocity, now);
+
+  // Heat (Decision E). motionEnabled=true in Plan 03 (cursor mode only);
+  // Plan 04 will gate this on mode === 'cursor' (NOT 'static'/'hidden'/'dark').
+  const motionEnabled = true;
+  state.heat = updateHeat(
+    state.heat,
+    state.pointer,
+    state.dwellSamples,
+    now,
+    deltaTime,
+    motionEnabled,
+  );
 
   // Write 8 CSS vars to :root each frame.
   const root = document.documentElement.style;
