@@ -170,7 +170,16 @@
 .liquid-regular {
   isolation: isolate;
   position: relative;
+  /* v9.0 Phase 92 — heat-leak radial gradient (Decision C). Composes ABOVE the
+     base fill; intensity scaled by --blob-heat (0..1) written by Phase 91 engine.
+     Implicitly disabled in dark mode (existing backdrop-filter: none rule on
+     [data-theme="dark"]) and reduced-transparency (.living-blob-field display: none). */
   background:
+    radial-gradient(
+      ellipse 600px 400px at var(--blob-x, 50vw) var(--blob-y, 50vh),
+      hsla(150, 60%, 50%, calc(0.04 * var(--blob-heat, 0))),
+      transparent 70%
+    ),
     linear-gradient(
       to bottom,
       var(--liquid-bg),
@@ -328,7 +337,14 @@
 .liquid-card {
   isolation: isolate;
   position: relative;
+  /* v9.0 Phase 92 — heat-leak radial gradient (Decision C). Cards optically
+     warm where the blob centroid passes; intensity scaled by --blob-heat. */
   background:
+    radial-gradient(
+      ellipse 600px 400px at var(--blob-x, 50vw) var(--blob-y, 50vh),
+      hsla(150, 60%, 50%, calc(0.06 * var(--blob-heat, 0))),
+      transparent 70%
+    ),
     linear-gradient(
       to bottom,
       var(--liquid-bg),
