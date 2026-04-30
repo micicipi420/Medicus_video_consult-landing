@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
 status: verifying
-stopped_at: Phase 93 Plan 06 complete (Wave 3 shadcn audit — verify-only no-op + dialog.tsx:34 future-proof recipe)
-last_updated: "2026-04-30T15:54:17.499Z"
+stopped_at: Phase 93 Plan 07 complete (Wave 3 phase-closeout — visual baseline regen + submission E2E body + DESIGN.md anti-pattern #16 + 93-SWEEP-AUDIT)
+last_updated: "2026-04-30T16:08:47.707Z"
 last_activity: 2026-04-30
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 26
-  completed_plans: 25
-  percent: 96
+  completed_plans: 26
+  percent: 100
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 
 ## Current Position
 
-Phase: 93
-Plan: 07 (next — Wave 3 cross-route screenshot diff + Directus E2E submission test, FINAL plan of Phase 93)
-Status: Wave 3 audit complete (shadcn primitives verified zero-consumer no-op; dialog.tsx:34 future-proof recipe recorded); Plan 07 ready
+Phase: 93 (complete)
+Plan: 07 (complete — FINAL plan of Phase 93)
+Status: Phase 93 complete; ready for /gsd-verify-work and Phase 94 hand-off
 Last activity: 2026-04-30
 
-Progress: [██████████] 96%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -69,6 +69,7 @@ Progress: [██████████] 96%
 | Phase 93 P04 | 4 minutes | 3 tasks | 4 files |
 | Phase Phase 93 P05 P05 | 2 minutes | 2 tasks tasks | 0 files files |
 | Phase 93 P06 | 5min | 1 tasks | 1 files |
+| Phase 93 P07 | 18 minutes | 4 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,7 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 93 P04]: Wave 2C /treatment-abroad route swept to v9.0 4-tier glass tokens — 4 section components (TreatmentAboutUs, TreatmentClinics, TreatmentReviews, TreatmentSteps); 21 --glass-{card,button}-fill consumers across 4 files matching RESEARCH inventory exactly. No Archetype-J CTA in scope (route CTA delegated to shared LeadFormSection from Plan 01). TreatmentReviews data-driven review.gradient field UNTOUCHED — 4 avatar gradients preserved verbatim (line-level CTA invariant grep 0 hits). 8 TreatmentClinics country cards swept atomically via replace_all. Russian copy nbsp counts unchanged. Playwright /treatment-abroad visual diff 2/2 passed within maxDiffPixelRatio:0.01. Composition shell untouched. ROUTE-03 satisfied (Plan 01 primitives + Plan 04 sections together cover /treatment-abroad — the MAIN OFFER route).
 - [Phase ?]: [Phase 93 P05]: Wave 2D /contacts route audited as verify-only no-op for Phase 93 — produced 5-section read-only audit at 93-05-CONTACTS-AUDIT.md; page.tsx:23 cosmetic page-frame gradient bg-gradient-to-b from-[#F0F7FF] to-white preserved verbatim per Phase 92 ContactSection Path A precedent (non-glass, no backdrop-filter); LeadFormSection inherited automatically from Plan 01 sweep via ESM import on page.tsx:2 (Decision A flatten outer Tier 0 + KD-v9-002 inner Tier 2 alpha=0.50 + Tier 3 chip); 4 dead-code files (ContactsHero, ContactMethodGrid, CoordinatorCard, TrustBadges) skipped per Decision F — actual on-disk path is next/src/components/sections/contacts/ NOT next/src/app/contacts/ as the plan/CONTEXT/cleanup-todo state (path discrepancy documented; cleanup todo will need correction before deletion executes); zero source-file modifications (read-only contract honoured); CTA invariant grep returns 0 HIT lines; nbsp baseline preserved (5 lines / 12 occurrences); build + lint green (1 pre-existing blob-engine warning out of scope); Playwright /contacts visual diff produced EXPECTED non-zero deltas (desktop 20349px / 0.02 ratio, mobile-375 14560px / 0.06 ratio) diverging from Plans 02/03/04 because Plan 01 LeadFormSection flatten is structural rather than a token swap; structural deltas are visible regardless of blob state; baseline NOT regenerated, deferred to Plan 07. ROUTE-04 satisfied.
 - [Phase ?]: [Phase 93 P06]: Wave 3 shadcn audit — verify-only no-op (read-only contract honored, zero source modifications). Consumer-reach grep returned ZERO matches across 3 probe styles for all 5 primitives (card/dialog/input/select/textarea) — STRICTER than RESEARCH framing. dialog.tsx:34 future-proof Tier 0 swap recipe recorded verbatim (BEFORE bg-black/10 + backdrop-blur-xs → AFTER bg-[var(--glass-section-fill)] + backdrop-blur-[var(--glass-section-blur)]); execution conditional on first public-route Dialog import. Precision fix on plan claim: admin DOES inherit root layout LivingBlobField; opaque bg-background at admin/page.tsx:40 is the actual blob-occlusion mechanism. Build + lint green. ROUTE-06 satisfied as verify-only.
+- [Phase 93 P07]: Phase 93 closed (FINAL) — visual baseline regenerated 8/8 deterministic green (byte-identical PNGs because reducedMotion+addStyleTag already collapse the Plan 05 structural delta within maxDiffPixelRatio:0.01); submission E2E body implemented for 4 sub-routes with graceful-skip default (PLAYWRIGHT_E2E_RUN=1 opts-in to live exercise); DESIGN.md anti-pattern #16 appended in YAML+markdown (ContactForm honeypot/timing prohibition); 93-SWEEP-AUDIT produced with 0 unsanctioned bg-white/N residue across 23 IN-SCOPE files, 0 hardcoded backdrop-blur-* matches, 0 CTA gradient + backdrop co-location across 12 catalogued gradient hits, all 7 ROUTE-NN ✅. Plan-language reconciliation: 'Directus arrival check' → Postgres arrival check (project uses Drizzle/Postgres directly, not Directus REST — no Directus client in next/); LeadFormSection embeds ContactForm verbatim so honeypot/timing trap fires on all 4 routes (Decision C governs new fields only). Side improvement: PLAYWRIGHT_PORT env var added to playwright.config.ts so visual+E2E suites tolerate port-3000 collisions with sibling projects.
 
 ### Pending Key Decisions for v9.0
 
@@ -139,6 +141,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T15:53:59.292Z
+Last session: 2026-04-30T16:08:47.701Z
 Stopped at: Phase 93 Plan 05 complete (Wave 2D /contacts audit — verify-only no-op)
 Resume file: None
