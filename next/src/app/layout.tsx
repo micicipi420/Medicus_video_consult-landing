@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { StickyBar } from '@/components/layout/StickyBar';
 import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
+import { LivingBlobField } from '@/components/effects/LivingBlobField';
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider';
 
 const inter = localFont({
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="blob-sublayer blob-body" />
           <div className="blob-sublayer blob-halo" />
           <div className="blob-sublayer blob-glint" />
+          <LivingBlobField />
         </div>
         <Header />
         <LazyMotionProvider>

@@ -12,7 +12,6 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
   // Decision M — graceful degradation on Canvas 2D failure.
   const ctx = canvas.getContext('2d');
   if (!ctx) {
-    // eslint-disable-next-line no-console
     console.warn('[blob] Canvas 2D unavailable — falling back to static CSS');
     document.documentElement.setAttribute('data-blob-mode', 'static');
     return () => {};

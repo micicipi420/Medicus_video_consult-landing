@@ -77,3 +77,19 @@
 @media (prefers-reduced-transparency: reduce) {
   .living-blob-field { display: none !important; }
 }
+
+/* Phase 91 — canvas visibility contract (Plan 01).
+   Default hidden; engine flips data-engine-active="true" on .living-blob-field
+   to reveal the canvas. Static-state CSS sublayers continue to show in
+   data-engine-active="false" + reduced-motion / canvas-init-failure paths. */
+.blob-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  pointer-events: none;
+}
+.living-blob-field[data-engine-active="true"] .blob-canvas {
+  display: block;
+}
