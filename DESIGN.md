@@ -72,6 +72,29 @@ colors:
   primary-dark: "#1A4D80"
   secondary-dark: "#047857"
 
+  # ── v9.0 Living Blob palette (Phase 90, FND-01) ─────────────
+  blob-core: "#35B678"                       # alias of green-600 / mu-primary
+  blob-hot: "#4FE098"                        # KD-v9-001 — pending brand approval
+  blob-halo: "rgba(98, 221, 177, 0.5)"
+  blob-edge: "rgba(125, 205, 255, 0.18)"
+  blob-glint: "rgba(255, 255, 255, 0.65)"
+
+glass:
+  # v9.0 Phase 90 (FND-02) — 4 surface depths × {fill, blur} × {desktop, mobile}
+  # Mobile blur values capped at 12px per Phase 79 hard constraint.
+  section:
+    fill: { desktop: "rgba(255, 255, 255, 0.06)", mobile: "rgba(255, 255, 255, 0.10)" }
+    blur: { desktop: "24px", mobile: "12px" }
+  card:
+    fill: { desktop: "rgba(255, 255, 255, 0.10)", mobile: "rgba(255, 255, 255, 0.14)" }
+    blur: { desktop: "20px", mobile: "12px" }
+  form:
+    fill: { desktop: "rgba(255, 255, 255, 0.14)", mobile: "rgba(255, 255, 255, 0.18)" }
+    blur: { desktop: "18px", mobile: "12px" }
+  button:
+    fill: { desktop: "rgba(255, 255, 255, 0.12)", mobile: "rgba(255, 255, 255, 0.16)" }
+    blur: { desktop: "16px", mobile: "12px" }
+
 typography:
   display:
     fontFamily: "Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
