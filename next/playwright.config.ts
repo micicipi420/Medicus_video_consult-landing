@@ -13,9 +13,15 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   outputDir: './test-results',
-  // Snapshot file naming: tests/visual/baseline.spec.ts/__snapshots__/checkup-desktop.png
+  // Snapshot path: next/tests/visual/__snapshots__/baseline.spec.ts/checkup-desktop.png
+  //
+  // Plan-00 spec'd '{testFilePath}/__snapshots__/...' but {testFilePath} is
+  // a FILE path (e.g. tests/visual/baseline.spec.ts), so mkdir hits ENOTDIR.
+  // {testFileDir} resolves relative to testDir (= 'visual' here), losing the
+  // 'tests/' prefix. Anchor with {testDir} + {testFileDir} + {testFileName}
+  // to land snapshots co-located with the spec under a __snapshots__ subdir.
   snapshotPathTemplate:
-    '{testDir}/{testFilePath}/__snapshots__/{arg}-{projectName}{ext}',
+    '{testDir}/{testFileDir}/__snapshots__/{testFileName}/{arg}-{projectName}{ext}',
 
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
