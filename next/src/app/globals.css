@@ -481,6 +481,44 @@
   }
 }
 
+/* v8.0 a11y hardening (Phase 85)
+   Covers Tailwind utility-class glass surfaces shipped in Phases 80-84.
+   Existing v7.0 named classes (.liquid-card, .liquid-regular, etc.) are
+   covered separately in liquid-glass.css. This block extends coverage to
+   utility-class consumers. */
+
+@media (prefers-reduced-transparency: reduce) {
+  /* Kill all backdrop blur — surface becomes a flat opaque color */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Drop blur, force opaque background on translucent white tints,
+     strengthen borders. !important needed because Tailwind utilities
+     ship at the same specificity. */
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Translucent white surfaces -> opaque white */
+  [class*="bg-white/"] {
+    background-color: rgb(255 255 255) !important;
+  }
+
+  /* Translucent white borders -> opaque dark border for visibility */
+  [class*="border-white/"] {
+    border-color: rgba(0, 0, 0, 0.55) !important;
+  }
+}
+
 @layer components {
   .header--scrolled {
     --liquid-bg: rgba(255, 255, 255, 0.45);
