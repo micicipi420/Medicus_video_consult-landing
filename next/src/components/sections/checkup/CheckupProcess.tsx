@@ -45,7 +45,7 @@ export function CheckupProcess() {
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
           {steps.map((step) => (
-            <div key={step.number} className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass text-center">
+            <div key={step.number} className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass text-center">
               <div
                 className="text-4xl font-extrabold bg-gradient-to-r from-mu-blue to-mu-accent-blue bg-clip-text text-transparent mb-4"
                 aria-hidden="true"

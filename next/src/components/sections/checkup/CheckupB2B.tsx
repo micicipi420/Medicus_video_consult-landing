@@ -45,7 +45,7 @@ export function CheckupB2B() {
 
         {/* Two cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
             <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">
               Для ваших сотрудников
             </h3>
@@ -53,7 +53,7 @@ export function CheckupB2B() {
               Чек-ап для топ-менеджмента и{'\u00A0'}ключевых специалистов{'\u00A0'}{'\u2014'} как часть корпоративной программы заботы о{'\u00A0'}здоровье. Покрывает то, что не{'\u00A0'}покрывает стандартный ДМС: онкоскрининг, кардиодиагностику, МРТ, колоноскопию.
             </p>
           </div>
-          <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
             <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">
               Для ваших клиентов
             </h3>
@@ -64,7 +64,7 @@ export function CheckupB2B() {
         </div>
 
         {/* Trust section in glass card */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass mb-8">
+        <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass mb-8">
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-4">
             Почему компании выбирают MedicusUnion
           </h3>
