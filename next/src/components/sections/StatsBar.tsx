@@ -1,28 +1,78 @@
-const STATS = [
-  { number: '43', label: 'клиники', color: 'text-mu-accent-blue' },
-  { number: '11', label: 'стран', color: 'text-mu-accent-teal' },
-  { number: '500+', label: 'врачей', color: 'text-mu-accent-orange' },
-  { number: '15+', label: 'лет опыта', color: 'text-mu-green-600' },
+import { Building2, Globe, Stethoscope, Award } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+type Stat = {
+  number: string;
+  label: string;
+  Icon: LucideIcon;
+  iconBg: string;
+  iconText: string;
+};
+
+const STATS: readonly Stat[] = [
+  {
+    number: '43',
+    label: 'клиники',
+    Icon: Building2,
+    iconBg: 'bg-mu-accent-blue/12',
+    iconText: 'text-mu-accent-blue',
+  },
+  {
+    number: '11',
+    label: 'стран',
+    Icon: Globe,
+    iconBg: 'bg-mu-accent-teal/12',
+    iconText: 'text-mu-accent-teal',
+  },
+  {
+    number: '500+',
+    label: 'врачей',
+    Icon: Stethoscope,
+    iconBg: 'bg-mu-accent-orange/12',
+    iconText: 'text-mu-accent-orange',
+  },
+  {
+    number: '15+',
+    label: 'лет опыта',
+    Icon: Award,
+    iconBg: 'bg-mu-green-600/12',
+    iconText: 'text-mu-green-600',
+  },
 ] as const;
 
 export function StatsBar() {
   return (
-    <section className="relative py-12 z-20" aria-label="Ключевые цифры">
+    <section className="relative z-20 py-8 sm:py-12" aria-label="Ключевые цифры">
       <div className="container mx-auto px-4 lg:px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {STATS.map((stat) => (
-            <div
-              key={stat.label}
-              className="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-glass-border shadow-glass hover:shadow-glass-lg hover:bg-white/70 hover:border-glass-border-strong transition-all duration-500 overflow-hidden"
-            >
-              <div className={`text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm ${stat.color} relative z-10`}>
-                {stat.number}
-              </div>
-              <div className="text-mu-text-700 font-bold text-lg text-center uppercase tracking-wider relative z-10">
-                {stat.label}
-              </div>
-            </div>
-          ))}
+        {/* Mobile: single glass container with a 2x2 grid inside (one glass layer — keeps page within Phase 79 mobile budget) */}
+        {/* sm+: separate glass cards (4 layers acceptable on desktop) */}
+        <div className="rounded-[2rem] border border-glass-border bg-white/60 p-4 shadow-glass backdrop-blur-2xl sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-6">
+            {STATS.map((stat) => {
+              const { Icon } = stat;
+              return (
+                <div
+                  key={stat.label}
+                  className="group relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl px-3 py-5 text-center sm:rounded-[2.5rem] sm:border sm:border-glass-border sm:bg-white/60 sm:p-7 sm:shadow-glass sm:backdrop-blur-2xl sm:transition-[background-color,border-color,box-shadow] sm:duration-300 sm:hover:bg-white/70 sm:hover:border-glass-border-strong sm:hover:shadow-glass-lg"
+                >
+                  <div
+                    className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl sm:h-14 sm:w-14 ${stat.iconBg} ${stat.iconText}`}
+                    aria-hidden="true"
+                  >
+                    <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                  </div>
+                  <div
+                    className={`text-3xl font-extrabold leading-none tracking-tight drop-shadow-sm sm:text-5xl md:text-6xl ${stat.iconText}`}
+                  >
+                    {stat.number}
+                  </div>
+                  <div className="text-xs font-bold uppercase tracking-wider text-mu-text-700 sm:text-sm md:text-base">
+                    {stat.label}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
