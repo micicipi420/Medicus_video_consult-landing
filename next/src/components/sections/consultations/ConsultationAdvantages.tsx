@@ -11,10 +11,10 @@ export function ConsultationAdvantages() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {/* Advantage 1: Документы переведены */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="flex gap-5">
             <div className="flex-shrink-0">
-              <div className="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <div className="w-14 h-14 bg-mu-blue/10 backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
               </div>
             </div>
@@ -30,10 +30,10 @@ export function ConsultationAdvantages() {
         </div>
 
         {/* Advantage 2: Перевод во время консультации */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="flex gap-5">
             <div className="flex-shrink-0">
-              <div className="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <div className="w-14 h-14 bg-mu-accent-teal-bg backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-accent-teal shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               </div>
             </div>
@@ -49,10 +49,10 @@ export function ConsultationAdvantages() {
         </div>
 
         {/* Advantage 3: Всё в одном приложении */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="flex gap-5">
             <div className="flex-shrink-0">
-              <div className="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-orange shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <div className="w-14 h-14 bg-mu-accent-orange-bg backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-accent-orange shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
               </div>
             </div>
@@ -68,10 +68,10 @@ export function ConsultationAdvantages() {
         </div>
 
         {/* Advantage 4: Офис в Казахстане */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="flex gap-5">
             <div className="flex-shrink-0">
-              <div className="w-14 h-14 bg-mu-green-50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <div className="w-14 h-14 bg-mu-green-50 backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-green-600 shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
               </div>
             </div>
@@ -87,10 +87,10 @@ export function ConsultationAdvantages() {
         </div>
 
         {/* Advantage 5: Нужно больше — организуем */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500 md:col-span-2 lg:col-span-1">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass group hover:border-white/80 hover:shadow-glass-lg transition-all duration-500 md:col-span-2 lg:col-span-1">
           <div className="flex gap-5">
             <div className="flex-shrink-0">
-              <div className="w-14 h-14 bg-mu-blue/10 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+              <div className="w-14 h-14 bg-mu-blue/10 backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-accent-blue shadow-glass-sm border border-white/60 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
               </div>
             </div>

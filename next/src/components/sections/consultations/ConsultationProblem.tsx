@@ -4,7 +4,7 @@ export function ConsultationProblem() {
       <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8">
         <span className="bg-gradient-to-r from-mu-blue via-mu-accent-blue to-mu-green-600 bg-clip-text text-transparent">Знакомо?</span>
       </h2>
-      <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto space-y-6">
+      <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-3xl mx-auto space-y-6">
         <p className="text-mu-text-700 font-medium text-lg leading-relaxed">
           Получили диагноз{'\u00A0'}{'\u2014'} и{'\u00A0'}не{'\u00A0'}уверены, что он{'\u00A0'}правильный. Разные врачи говорят разное. Хочется услышать мнение врача, которому можно верить.
         </p>
