@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
-status: completed
-stopped_at: Phase 93 Plan 05 complete (Wave 2D /contacts audit — verify-only no-op)
-last_updated: "2026-04-30T15:47:24.953Z"
+status: verifying
+stopped_at: Phase 93 Plan 06 complete (Wave 3 shadcn audit — verify-only no-op + dialog.tsx:34 future-proof recipe)
+last_updated: "2026-04-30T15:54:17.499Z"
 last_activity: 2026-04-30
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 26
-  completed_plans: 24
-  percent: 92
+  completed_plans: 25
+  percent: 96
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 ## Current Position
 
 Phase: 93
-Plan: 06 (next — Wave 3 shadcn audit)
-Status: Wave 2 complete (/contacts audited as verify-only no-op — all 4 sub-routes processed); Wave 3 ready
+Plan: 07 (next — Wave 3 cross-route screenshot diff + Directus E2E submission test, FINAL plan of Phase 93)
+Status: Wave 3 audit complete (shadcn primitives verified zero-consumer no-op; dialog.tsx:34 future-proof recipe recorded); Plan 07 ready
 Last activity: 2026-04-30
 
-Progress: [█████████░] 92%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Progress: [█████████░] 92%
 | Phase 93 P03 | 4 minutes | 4 tasks | 7 files |
 | Phase 93 P04 | 4 minutes | 3 tasks | 4 files |
 | Phase Phase 93 P05 P05 | 2 minutes | 2 tasks tasks | 0 files files |
+| Phase 93 P06 | 5min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,7 @@ Recent decisions affecting current work:
 - [Phase 93 P03]: Wave 2B /consultations route swept to v9.0 4-tier glass tokens — 7 section components (ConsultationAdvantages, ConsultationBenefits, ConsultationDoctors, ConsultationPricing, ConsultationProblem, ConsultationProcess, ConsultationScenarios); 37 total --glass-*-{fill,blur} references matching RESEARCH inventory exactly (28 fill consumers + 9 distinct blur classes via shared style); Archetype J CTA invariant intact at ConsultationPricing:43 (cross-cutting grep returned 0 HIT lines); 10 brand-color decorative inner chips preserved (anti-pattern #5 NOT triggered — only blur swapped, brand fill unchanged); ConsultationProcess explicit Tier-1→Tier-2 hover ramp wired (hover:bg-white/80 → hover:bg-[var(--glass-form-fill)] on 3 cards); ConsultationDoctors 3-tier sibling stack (outer + 7 cards + spec-pills) documented as Phase 82 grandfathered exception (siblings, not nested) and preserved as-is; spec-pill semantic hover:bg-mu-green-50 preserved verbatim; secondary CTA glass at line 156 mirrors HeroHub.tsx:56 hover-ramp pattern. Russian copy nbsp counts unchanged (baseline 36 → post 36). Playwright /consultations visual diff 2/2 passed within maxDiffPixelRatio:0.01. Composition shell next/src/app/consultations/page.tsx untouched. ROUTE-02 satisfied (with Plan 01 primitives + Plan 03 sections together fully covering /consultations).
 - [Phase ?]: [Phase 93 P04]: Wave 2C /treatment-abroad route swept to v9.0 4-tier glass tokens — 4 section components (TreatmentAboutUs, TreatmentClinics, TreatmentReviews, TreatmentSteps); 21 --glass-{card,button}-fill consumers across 4 files matching RESEARCH inventory exactly. No Archetype-J CTA in scope (route CTA delegated to shared LeadFormSection from Plan 01). TreatmentReviews data-driven review.gradient field UNTOUCHED — 4 avatar gradients preserved verbatim (line-level CTA invariant grep 0 hits). 8 TreatmentClinics country cards swept atomically via replace_all. Russian copy nbsp counts unchanged. Playwright /treatment-abroad visual diff 2/2 passed within maxDiffPixelRatio:0.01. Composition shell untouched. ROUTE-03 satisfied (Plan 01 primitives + Plan 04 sections together cover /treatment-abroad — the MAIN OFFER route).
 - [Phase ?]: [Phase 93 P05]: Wave 2D /contacts route audited as verify-only no-op for Phase 93 — produced 5-section read-only audit at 93-05-CONTACTS-AUDIT.md; page.tsx:23 cosmetic page-frame gradient bg-gradient-to-b from-[#F0F7FF] to-white preserved verbatim per Phase 92 ContactSection Path A precedent (non-glass, no backdrop-filter); LeadFormSection inherited automatically from Plan 01 sweep via ESM import on page.tsx:2 (Decision A flatten outer Tier 0 + KD-v9-002 inner Tier 2 alpha=0.50 + Tier 3 chip); 4 dead-code files (ContactsHero, ContactMethodGrid, CoordinatorCard, TrustBadges) skipped per Decision F — actual on-disk path is next/src/components/sections/contacts/ NOT next/src/app/contacts/ as the plan/CONTEXT/cleanup-todo state (path discrepancy documented; cleanup todo will need correction before deletion executes); zero source-file modifications (read-only contract honoured); CTA invariant grep returns 0 HIT lines; nbsp baseline preserved (5 lines / 12 occurrences); build + lint green (1 pre-existing blob-engine warning out of scope); Playwright /contacts visual diff produced EXPECTED non-zero deltas (desktop 20349px / 0.02 ratio, mobile-375 14560px / 0.06 ratio) diverging from Plans 02/03/04 because Plan 01 LeadFormSection flatten is structural rather than a token swap; structural deltas are visible regardless of blob state; baseline NOT regenerated, deferred to Plan 07. ROUTE-04 satisfied.
+- [Phase ?]: [Phase 93 P06]: Wave 3 shadcn audit — verify-only no-op (read-only contract honored, zero source modifications). Consumer-reach grep returned ZERO matches across 3 probe styles for all 5 primitives (card/dialog/input/select/textarea) — STRICTER than RESEARCH framing. dialog.tsx:34 future-proof Tier 0 swap recipe recorded verbatim (BEFORE bg-black/10 + backdrop-blur-xs → AFTER bg-[var(--glass-section-fill)] + backdrop-blur-[var(--glass-section-blur)]); execution conditional on first public-route Dialog import. Precision fix on plan claim: admin DOES inherit root layout LivingBlobField; opaque bg-background at admin/page.tsx:40 is the actual blob-occlusion mechanism. Build + lint green. ROUTE-06 satisfied as verify-only.
 
 ### Pending Key Decisions for v9.0
 
@@ -137,6 +139,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T15:47:24.947Z
+Last session: 2026-04-30T15:53:59.292Z
 Stopped at: Phase 93 Plan 05 complete (Wave 2D /contacts audit — verify-only no-op)
 Resume file: None
