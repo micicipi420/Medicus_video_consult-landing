@@ -71,7 +71,7 @@ Index-страница (`/`) — hub, представляющий все три
 
 ### Active
 
-## Current Milestone: v8.1 v8.0 Propagation & Loose Ends
+## Current Milestone: v8.1 Propagation & Loose Ends
 
 **Goal:** Распространить визуальный язык v8.0 (chrome, glass, типографика) с index-страницы на остальные страницы сайта, закрыть оставшиеся хвосты v8.0 (плейсхолдеры контента, lint warnings, неиспользуемые файлы) и провести финальное закрытие milestone (live a11y UAT, stash triage, archival).
 

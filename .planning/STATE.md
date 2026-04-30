@@ -1,7 +1,7 @@
 ---
 gsd_state_version: 1.0
 milestone: v8.1
-milestone_name: v8.0 Propagation & Loose Ends
+milestone_name: Propagation & Loose Ends
 status: milestone_planned
 stopped_at: v8.1 roadmap created -- ready to plan Phase 86
 last_updated: "2026-04-30T00:00:00.000Z"
