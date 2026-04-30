@@ -76,25 +76,42 @@ export function ContactSection() {
               })}
             </ul>
 
-            {/* Coordinator quick-contact row */}
-            <div className="flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md sm:flex-row sm:items-center sm:gap-6 sm:p-5">
-              <div className="text-sm font-semibold uppercase tracking-wider text-white/70 sm:text-xs">
-                Или&nbsp;сразу&nbsp;—
+            {/* Coordinator card — designed presence (no external photo dependency).
+                TODO(content): swap initials avatar for a real on-team coordinator
+                photo when available; replace placeholder name "Айгерим" with the
+                actual coordinator's name. */}
+            <div className="flex flex-col gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+              {/* Initials avatar */}
+              <div
+                className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-white/30 bg-gradient-to-br from-white/35 to-white/15 text-lg font-extrabold text-white shadow-inner sm:h-16 sm:w-16 sm:text-xl"
+                aria-hidden="true"
+              >
+                АК
               </div>
-              <a
-                href={`tel:${PHONE_NUMBER}`}
-                className="flex min-h-11 items-center gap-2 text-base font-bold text-white transition-[color,background-color] duration-200 hover:text-white/90 sm:text-lg"
-              >
-                <Phone className="h-4 w-4" aria-hidden="true" />
-                {PHONE_DISPLAY}
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                className="flex min-h-11 items-center gap-2 text-sm font-bold text-white transition-[color,background-color] duration-200 hover:text-white/90 sm:text-base"
-              >
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                {EMAIL}
-              </a>
+              <div className="flex flex-1 flex-col gap-1">
+                <div className="text-base font-extrabold leading-tight text-white sm:text-lg">
+                  Айгерим
+                </div>
+                <div className="text-xs font-semibold leading-tight text-white/75 sm:text-sm">
+                  Старший медицинский координатор
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                  <a
+                    href={`tel:${PHONE_NUMBER}`}
+                    className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-white transition-[color] duration-200 hover:text-white/90 sm:text-base"
+                  >
+                    <Phone className="h-4 w-4" aria-hidden="true" />
+                    {PHONE_DISPLAY}
+                  </a>
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="inline-flex min-h-11 items-center gap-2 text-xs font-bold text-white transition-[color] duration-200 hover:text-white/90 sm:text-sm"
+                  >
+                    <Mail className="h-4 w-4" aria-hidden="true" />
+                    {EMAIL}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 

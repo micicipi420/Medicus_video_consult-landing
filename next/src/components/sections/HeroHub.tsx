@@ -94,7 +94,8 @@ export function HeroHub() {
               <div className="absolute left-3 top-3 flex items-center gap-2 rounded-full border border-white/15 bg-mu-text-900/55 px-3 py-1.5 backdrop-blur-md sm:left-4 sm:top-4 sm:px-4 sm:py-2">
                 <span className="h-2 w-2 flex-shrink-0 rounded-full bg-mu-green-500 shadow-[0_0_0_3px_rgba(53,182,120,0.25)]" />
                 <span className="text-xs font-semibold tracking-tight text-white sm:text-sm">
-                  Dr. Ferdinand&nbsp;K.&nbsp;&middot;&nbsp;Vienna
+                  {/* TODO(content): replace with real on-team doctor name when available */}
+                  Dr. Stefan&nbsp;Mayr&nbsp;&middot;&nbsp;Vienna
                 </span>
               </div>
 
