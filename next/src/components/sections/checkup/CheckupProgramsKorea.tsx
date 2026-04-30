@@ -10,12 +10,12 @@ interface ProgramCard {
 
 function GlassPricingCard({ name, featured, spanFull, price, description }: ProgramCard) {
   const cardClasses = featured
-    ? `bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] flex flex-col${spanFull ? ' md:col-span-2 lg:col-span-3' : ''}`
-    : 'bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 border border-white/60 shadow-glass flex flex-col';
+    ? `bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[3rem] p-8 border border-mu-blue/40 shadow-[0_16px_48px_color-mix(in_oklch,var(--color-mu-blue)_15%,transparent)] flex flex-col${spanFull ? ' md:col-span-2 lg:col-span-3' : ''}`
+    : 'bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[3rem] p-8 border border-white/60 shadow-glass flex flex-col';
 
   const badgeClasses = featured
     ? 'inline-flex items-center gap-2 bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-4 py-1.5 rounded-full shadow-sm w-fit mb-4'
-    : 'inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4';
+    : 'inline-flex items-center gap-2 bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] border border-glass-border px-4 py-1.5 rounded-full shadow-sm w-fit mb-4';
 
   const badgeTextClasses = featured
     ? 'text-sm font-bold'
