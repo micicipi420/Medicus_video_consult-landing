@@ -124,7 +124,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 
 ### Per-Page Propagation: Sub-Routes
 
-- [ ] **ROUTE-01**: `/checkup` section components (8 files in `next/src/components/sections/checkup/`) — per-tier sweep
+- [x] **ROUTE-01**: `/checkup` section components (8 files in `next/src/components/sections/checkup/`) — per-tier sweep
 - [ ] **ROUTE-02**: `/consultations` section components (8 files in `next/src/components/sections/consultations/`) — per-tier sweep
 - [ ] **ROUTE-03**: `/treatment-abroad` section components (4 files in `next/src/components/sections/treatment/`) — per-tier sweep
 - [ ] **ROUTE-04**: `/contacts` section components (2 files in `next/src/components/sections/contacts/`) — per-tier sweep
@@ -299,7 +299,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GLASS-08 | Phase 92 | Pending |
 | GLASS-09 | Phase 92 | Pending |
 | GLASS-10 | Phase 92 | Pending |
-| ROUTE-01 | Phase 93 | Pending |
+| ROUTE-01 | Phase 93 | Complete |
 | ROUTE-02 | Phase 93 | Pending |
 | ROUTE-03 | Phase 93 | Pending |
 | ROUTE-04 | Phase 93 | Pending |

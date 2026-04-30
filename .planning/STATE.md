@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
 status: in-progress
-stopped_at: Phase 93 Plan 01 complete (Wave 1 service primitives swept)
-last_updated: "2026-04-30T14:31:35.270Z"
+stopped_at: Phase 93 Plan 02 complete (Wave 2A /checkup route swept)
+last_updated: "2026-04-30T14:39:31Z"
 last_activity: 2026-04-30
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 26
-  completed_plans: 20
-  percent: 77
+  completed_plans: 21
+  percent: 81
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 ## Current Position
 
 Phase: 93
-Plan: 02 (next — Wave 2A /checkup sweep)
-Status: Wave 1 complete; Wave 2 ready
+Plan: 03 (next — Wave 2B /consultations sweep)
+Status: Wave 2A complete (/checkup); Wave 2B/2C/2D ready (parallel-safe — disjoint file ownership)
 Last activity: 2026-04-30
 
-Progress: [███████▓░░] 77%
+Progress: [████████░░] 81%
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Progress: [███████▓░░] 77%
 | Phase 91 P01 | 3 minutes | 2 tasks (+1 delegated) | 4 files |
 | Phase 93 P00 | 8 minutes | 3 tasks | 11 files |
 | Phase 93 P01 | 5 minutes | 4 tasks | 4 files |
+| Phase 93 P02 | 5 minutes | 4 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -87,6 +88,7 @@ Recent decisions affecting current work:
 - [Phase 91 P01]: stubbed lib/blob-engine/index.ts (startBlobEngine signature locked for Plan 02); LivingBlobField.tsx Client Component shell mounts <canvas class="blob-canvas"> as 5th child of .living-blob-field; appended .blob-canvas visibility CSS after frozen blob.css line 79; pnpm build clean (Rule 1 auto-fix removed an unused eslint-disable directive); BLOB-01 complete
 - [Phase ?]: Phase 93 Plan 00: Wave 0 baseline locked — Playwright 1.59.1 + Chromium; 8 PNGs at next/tests/visual/__snapshots__/; STRATEGY=reducedMotion (Phase 91 __blobDebug.setMode not implemented); blob exclusion via addStyleTag display:none NOT Playwright mask (mask painted full-viewport magenta); next/tests/e2e/submission.spec.ts shipped as .skip skeleton for Plan 07
 - [Phase 93 P01]: Wave 1 service primitives swept to v9.0 4-tier glass tokens — ServiceHero (Archetype B + J preserve), SocialProof (C with Tier-2 hover), FAQ (D with text-gradient preserve), LeadFormSection (Decision A flatten outer Tier 0, KD-v9-002 inner α=0.50, Tier 3 chip); anti-pattern #13 cleared on LeadFormSection; ContactForm.tsx untouched; Decision C honored (no honeypot/timing). Visual-diff finding: 8/8 Wave 0 tests passed because blob is hidden via addStyleTag — token swap is sub-pixel over bare page-frame; live-blob deltas captured at runtime, baseline regeneration deferred to Plan 07.
+- [Phase 93 P02]: Wave 2A /checkup route swept to v9.0 4-tier glass tokens — 7 section components (CheckupAdvantages, CheckupB2B, CheckupProblem, CheckupProcess, CheckupProgramsKorea, CheckupProgramsTurkey, CheckupWhyUs), 26 token consumers across all files matching RESEARCH inventory exactly; Archetype J CTA invariant intact at CheckupB2B:85 + CheckupProgramsTurkey:132 (cross-cutting grep returned zero HIT lines); featured-variant brand-color badge pills preserved as decorative non-CTA pattern; static-Tier-1 default (no hover ramp added per planner discretion); Russian copy nbsp counts unchanged across all 7 files. Playwright /checkup visual diff 2/2 passed (consistent with Plan 01 finding — blob hidden via addStyleTag → token swap sub-pixel within maxDiffPixelRatio:0.01). Composition shell next/src/app/checkup/page.tsx untouched. ROUTE-01 satisfied (with Plan 01 primitives + Plan 02 sections together fully covering /checkup).
 
 ### Pending Key Decisions for v9.0
 
@@ -129,6 +131,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T14:30:00.000Z
-Stopped at: Phase 93 Plan 01 complete (Wave 1 service primitives swept)
-Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-02-PLAN.md
+Last session: 2026-04-30T14:39:31Z
+Stopped at: Phase 93 Plan 02 complete (Wave 2A /checkup route swept)
+Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-03-PLAN.md
