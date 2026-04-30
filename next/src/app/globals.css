@@ -246,7 +246,7 @@
   /* v9.0 Glass tier tokens (Phase 90, FND-02) — clamp(12px, fluid-vw, desktop-ceiling); 12px is mobile floor (Phase 79 hard cap) */
   --glass-section-fill: rgba(255, 255, 255, 0.06);
   --glass-card-fill:    rgba(255, 255, 255, 0.10);
-  --glass-form-fill:    rgba(255, 255, 255, 0.14);
+  --glass-form-fill:    rgba(255, 255, 255, 0.50);
   --glass-button-fill:  rgba(255, 255, 255, 0.12);
   --glass-section-blur: clamp(12px, 2vw,   24px);
   --glass-card-blur:    clamp(12px, 1.6vw, 20px);
