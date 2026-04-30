@@ -99,10 +99,10 @@ export function ProblemSection() {
             const Icon = card.icon;
             return (
               <div key={i} className="group cursor-pointer flex flex-col h-full">
-                <div className="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
+                <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[3rem] shadow-glass border border-glass-border hover:border-glass-border-strong hover:bg-[var(--glass-form-fill)] hover:shadow-glass-lg transition-all duration-500 h-full flex flex-col overflow-hidden p-3">
                   <div className="p-8 pt-8 flex flex-col flex-grow relative">
                     <div
-                      className={`w-14 h-14 ${card.iconBg} backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 ${card.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
+                      className={`w-14 h-14 ${card.iconBg} backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center shadow-glass-sm border border-glass-border mb-6 ${card.iconColor} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}
                     >
                       <Icon size={28} />
                     </div>
