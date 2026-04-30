@@ -18,8 +18,8 @@ export function ConsultationPricing() {
         Стоимость зависит от{'\u00A0'}специализации врача и{'\u00A0'}сложности случая. Вы{'\u00A0'}узнаете точную цену до{'\u00A0'}оплаты.
       </p>
 
-      <div className="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-8 md:p-12 border border-white/60 shadow-glass-lg max-w-xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-glass-inner mb-6 text-sm font-bold text-mu-text-900">
+      <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[3rem] p-8 md:p-12 border border-white/60 shadow-glass-lg max-w-xl mx-auto">
+        <div className="inline-flex items-center gap-2 bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] border border-white/60 px-5 py-2.5 rounded-full shadow-glass-inner mb-6 text-sm font-bold text-mu-text-900">
           Все включено
         </div>
 

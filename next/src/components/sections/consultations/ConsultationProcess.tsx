@@ -8,7 +8,7 @@ export function ConsultationProcess() {
       </h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Step 1 */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-[var(--glass-form-fill)] hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="text-6xl font-extrabold text-mu-accent-blue opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500" aria-hidden="true">01</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">
             Загрузите документы
@@ -19,7 +19,7 @@ export function ConsultationProcess() {
         </div>
 
         {/* Step 2 */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-[var(--glass-form-fill)] hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="text-6xl font-extrabold text-mu-green-500 opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500" aria-hidden="true">02</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">
             Врач изучает ваш случай
@@ -30,7 +30,7 @@ export function ConsultationProcess() {
         </div>
 
         {/* Step 3 */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-white/80 hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass relative group hover:bg-[var(--glass-form-fill)] hover:border-white/80 hover:shadow-glass-lg transition-all duration-500">
           <div className="text-6xl font-extrabold text-mu-accent-teal opacity-20 mb-4 group-hover:opacity-40 group-hover:-translate-y-2 group-hover:scale-105 origin-left transition-all duration-500" aria-hidden="true">03</div>
           <h3 className="text-xl font-extrabold text-mu-text-900 mb-3">
             Видеоконсультация
