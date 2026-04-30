@@ -182,17 +182,17 @@
     ),
     linear-gradient(
       to bottom,
-      var(--liquid-bg),
-      var(--liquid-bg)
+      var(--glass-section-fill),
+      var(--glass-section-fill)
     ),
     linear-gradient(
       to bottom,
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
     );
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--glass-section-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback -- vars fail in -webkit-backdrop-filter */
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-section-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   /* No border -- use .border-inset-glass for squircle-safe borders (see squircles.css). */
   box-shadow:
     var(--liquid-shadow-inset-top),
@@ -214,17 +214,17 @@
   background:
     linear-gradient(
       to bottom,
-      var(--liquid-nav-bg),
-      var(--liquid-nav-bg)
+      var(--glass-section-fill),
+      var(--glass-section-fill)
     ),
     linear-gradient(
       to bottom,
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
     );
-  backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--glass-section-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(108%);
-  -webkit-backdrop-filter: blur(var(--liquid-nav-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-section-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -347,17 +347,17 @@
     ),
     linear-gradient(
       to bottom,
-      var(--liquid-bg),
-      var(--liquid-bg)
+      var(--glass-card-fill),
+      var(--glass-card-fill)
     ),
     linear-gradient(
       to bottom,
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
     );
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--glass-card-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-card-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
@@ -420,17 +420,17 @@
   background:
     linear-gradient(
       to bottom,
-      var(--liquid-bg),
-      var(--liquid-bg)
+      var(--glass-button-fill),
+      var(--glass-button-fill)
     ),
     linear-gradient(
       to bottom,
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
     );
-  backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--glass-button-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(108%); /* Safari fallback */
-  -webkit-backdrop-filter: blur(var(--liquid-blur-md)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-button-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom);
@@ -461,17 +461,17 @@
   background:
     linear-gradient(
       to bottom,
-      var(--liquid-bg),
-      var(--liquid-bg)
+      var(--glass-card-fill),
+      var(--glass-card-fill)
     ),
     linear-gradient(
       to bottom,
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a)),
       hsla(var(--liquid-tint-h), var(--liquid-tint-s), var(--liquid-tint-l), var(--liquid-tint-a))
     );
-  backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  backdrop-filter: blur(var(--glass-card-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(108%); /* Safari fallback -- uses blur-lg */
-  -webkit-backdrop-filter: blur(var(--liquid-blur-lg)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-card-blur)) saturate(var(--liquid-saturate)) brightness(var(--liquid-brightness));
   box-shadow:
     var(--liquid-shadow-inset-top),
     var(--liquid-shadow-inset-bottom),
