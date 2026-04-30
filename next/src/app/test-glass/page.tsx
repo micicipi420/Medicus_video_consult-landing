@@ -122,6 +122,41 @@ export default function TestGlassPage() {
         </div>
       </div>
 
+      {/* v9.0 Phase 90 — Blob palette comparison (KD-v9-001 brand approval surface) */}
+      <div>
+        <h2 className="text-xl font-heading mb-4">v9.0 Blob Palette — KD-v9-001 Comparison</h2>
+        <p className="text-sm text-mu-text-500 mb-4">
+          Compare <code>--blob-hot</code> against current brand greens.
+          User must approve <code>KD-v9-001</code> in <code>.planning/PROJECT.md</code> before Phase 91.
+        </p>
+        <div className="flex gap-4 flex-wrap">
+          <div
+            className="w-32 h-32 flex items-end justify-center text-xs text-white p-2"
+            style={{ background: '#35B678' }}
+          >
+            --mu-primary
+            <br />
+            #35B678
+          </div>
+          <div
+            className="w-32 h-32 flex items-end justify-center text-xs text-white p-2"
+            style={{ background: '#4FE098' }}
+          >
+            --blob-hot
+            <br />
+            #4FE098 (KD-v9-001)
+          </div>
+          <div
+            className="w-32 h-32 flex items-end justify-center text-xs text-white p-2"
+            style={{ background: '#1AC67E' }}
+          >
+            cta-gradient-from
+            <br />
+            #1AC67E (medicusunion.kz ref)
+          </div>
+        </div>
+      </div>
+
       <footer className="text-sm text-mu-text-300 pt-4 border-t border-mu-text-200">
         Phase 59: Next.js Scaffold &amp; CSS Foundation — Glass test page
       </footer>
