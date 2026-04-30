@@ -108,24 +108,24 @@ export function ContactForm() {
 
   if (formState === 'success') {
     return (
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-3xl z-20 flex flex-col items-center justify-center p-8">
-        <div className="w-24 h-24 bg-white/80 border border-white/60 rounded-full flex items-center justify-center mb-6 shadow-glass-sm">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-[inherit] bg-white/82 p-8 text-center shadow-glass-lg backdrop-blur-3xl">
+        <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-white/70 bg-white/80 shadow-glass-sm">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mu-green-600)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
-        <h3 className="text-3xl font-extrabold text-mu-text-900 mb-3">
+        <h3 className="mb-3 text-3xl font-extrabold text-mu-text-900">
           Спасибо!
         </h3>
-        <p className="text-mu-text-700 font-medium text-center">
+        <p className="font-medium text-mu-text-700">
           Мы{'\u00A0'}свяжемся с{'\u00A0'}вами в{'\u00A0'}течение 24{'\u00A0'}часов.
         </p>
       </div>
     );
   }
 
-  const inputBase = 'w-full px-5 py-4 rounded-2xl border bg-white/50 backdrop-blur-md focus:bg-white/70 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-all placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner';
+  const inputBase = 'w-full min-h-14 px-5 py-4 rounded-2xl border bg-white/50 backdrop-blur-md focus:bg-white/72 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-[background-color,border-color,box-shadow,transform] duration-200 placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner';
   const inputNormal = `${inputBase} border-white/40`;
   const inputError = `${inputBase} border-red-400`;
 
@@ -151,7 +151,7 @@ export function ContactForm() {
             }}
             className={errors.name ? inputError : inputNormal}
           />
-          {errors.name && <span className="text-sm text-red-500 mt-1 block" role="alert">{errors.name}</span>}
+          {errors.name && <span className="mt-2 block rounded-xl bg-red-50/80 px-3 py-2 text-sm font-semibold text-red-600" role="alert">{errors.name}</span>}
         </div>
 
         {/* Phone */}
@@ -174,7 +174,7 @@ export function ContactForm() {
             }}
             className={errors.phone ? inputError : inputNormal}
           />
-          {errors.phone && <span className="text-sm text-red-500 mt-1 block" role="alert">{errors.phone}</span>}
+          {errors.phone && <span className="mt-2 block rounded-xl bg-red-50/80 px-3 py-2 text-sm font-semibold text-red-600" role="alert">{errors.phone}</span>}
         </div>
 
         {/* Interest */}
@@ -199,7 +199,7 @@ export function ContactForm() {
             <option value="checkup">Чек-ап</option>
             <option value="not-sure">Пока не определился</option>
           </select>
-          {errors.interest && <span className="text-sm text-red-500 mt-1 block" role="alert">{errors.interest}</span>}
+          {errors.interest && <span className="mt-2 block rounded-xl bg-red-50/80 px-3 py-2 text-sm font-semibold text-red-600" role="alert">{errors.interest}</span>}
         </div>
 
         {/* Description */}
@@ -234,7 +234,7 @@ export function ContactForm() {
 
         {/* Form-level error */}
         {formError && (
-          <div className="text-sm text-red-500 text-center p-3 bg-red-50 rounded-lg" role="alert">
+          <div className="rounded-2xl border border-red-200 bg-red-50/90 p-3 text-center text-sm font-semibold text-red-600" role="alert">
             {formError}
           </div>
         )}
@@ -242,8 +242,9 @@ export function ContactForm() {
         {/* Submit */}
         <button
           type="submit"
+          aria-busy={formState === 'submitting'}
           disabled={formState === 'submitting'}
-          className="w-full bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white py-4 rounded-2xl font-bold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] shadow-glass-inner hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-lg mt-8"
+          className="mt-8 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-mu-blue to-mu-accent-blue py-4 text-lg font-extrabold text-white shadow-[0_20px_44px_color-mix(in_oklch,var(--color-mu-blue)_32%,transparent)] transition-[transform,box-shadow,filter,opacity] duration-200 hover:shadow-[0_24px_56px_color-mix(in_oklch,var(--color-mu-blue)_42%,transparent)] active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {formState === 'submitting' ? 'Отправка...' : 'Отправить заявку'}
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

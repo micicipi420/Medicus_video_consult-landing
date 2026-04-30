@@ -9,7 +9,6 @@ import { TreatmentClinics } from '@/components/sections/treatment/TreatmentClini
 import { TreatmentSteps } from '@/components/sections/treatment/TreatmentSteps';
 import { TreatmentReviews } from '@/components/sections/treatment/TreatmentReviews';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
-import { PHONE_NUMBER } from '@/lib/navigation';
 
 export const metadata: Metadata = {
   title: 'Лечение за рубежом',
@@ -164,7 +163,7 @@ export default function TreatmentAbroadPage() {
             </>
           }
           trustItems={LEAD_FORM_TRUST_ITEMS}
-          privacyText="Отправляя данные, вы\u00A0даёте согласие на\u00A0их\u00A0обработку и\u00A0подтверждаете, что ознакомились с\u00A0Политикой конфиденциальности ТОО\u00A0\u00ABMedicus Union KZ\u00BB."
+          privacyText={'Отправляя данные, вы\u00A0даёте согласие на\u00A0их\u00A0обработку и\u00A0подтверждаете, что ознакомились с\u00A0Политикой конфиденциальности ТОО\u00A0\u00ABMedicus Union KZ\u00BB.'}
           id="form-abroad"
         />
       </ScrollReveal>

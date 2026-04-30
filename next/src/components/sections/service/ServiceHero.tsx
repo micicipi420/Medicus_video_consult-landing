@@ -22,28 +22,32 @@ export function ServiceHero({
   variant = 'default',
 }: ServiceHeroProps) {
   return (
-    <section className="pt-32 pb-16" id="hero">
+    <section
+      className="pt-28 pb-12 lg:pt-32 lg:pb-16"
+      id="hero"
+      data-hero-variant={variant}
+    >
       <div className="container mx-auto px-4 lg:px-6">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Content side */}
           <div>
             {eyebrow && (
-              <div className="inline-flex items-center gap-2 bg-white/40 backdrop-blur-xl border border-white/60 px-5 py-2.5 rounded-full shadow-glass-inner mb-6">
-                <span className="text-sm font-bold text-mu-blue uppercase tracking-wider">
+              <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/60 bg-white/40 px-4 py-2.5 shadow-glass-inner backdrop-blur-xl sm:px-5">
+                <span className="text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue sm:text-sm">
                   {eyebrow}
                 </span>
               </div>
             )}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-[1.1] text-balance">
+            <h1 className="mb-5 text-4xl font-extrabold leading-[1.08] text-balance sm:text-5xl md:text-6xl lg:text-6xl">
               {title}
             </h1>
-            <p className="text-xl text-mu-text-700 font-medium leading-relaxed mb-8 max-w-xl">
+            <p className="mb-7 max-w-xl text-lg font-medium leading-relaxed text-mu-text-700 sm:text-xl lg:mb-8">
               {subtitle}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mb-12">
               <a
                 href={primaryCta.href}
-                className="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-8 py-4 rounded-3xl font-semibold shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] transition-all flex items-center justify-center gap-2 group text-lg"
+                className="group flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-8 py-4 text-center text-lg font-semibold text-white shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] transition-[transform,box-shadow,filter] duration-200 hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] sm:w-auto"
               >
                 {primaryCta.text}
                 <svg
@@ -66,7 +70,7 @@ export function ServiceHero({
               {secondaryCta && (
                 <a
                   href={secondaryCta.href}
-                  className="bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg text-center"
+                  className="w-full rounded-3xl border border-white/60 bg-white/50 px-8 py-4 text-center text-lg font-semibold text-mu-text-900 shadow-glass backdrop-blur-xl transition-[background-color,border-color,box-shadow,transform] duration-200 hover:bg-white/60 sm:w-auto"
                 >
                   {secondaryCta.text}
                 </a>

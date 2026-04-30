@@ -43,15 +43,15 @@ export function LeadFormSection({
   id = 'form',
 }: LeadFormSectionProps) {
   return (
-    <section className="container mx-auto px-4 lg:px-6 mb-16" id={id}>
-      <div className="bg-white/60 backdrop-blur-3xl rounded-[3.5rem] p-8 md:p-12 border border-white/60 shadow-glass-lg">
+    <section className="container mx-auto mb-16 px-4 lg:px-6" id={id}>
+      <div className="rounded-[3.5rem] border border-white/60 bg-white/60 p-6 shadow-glass-lg backdrop-blur-3xl md:p-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
           {/* Left column: info + trust items */}
           <div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-mu-text-900 mb-4 leading-[1.2] text-balance">
+            <h2 className="mb-4 text-4xl font-extrabold leading-[1.12] text-mu-text-900 text-balance md:text-5xl">
               {heading}
             </h2>
-            <div className="text-lg text-mu-text-700 font-medium leading-relaxed mb-8">
+            <div className="mb-8 text-lg font-medium leading-relaxed text-mu-text-700">
               {subtext}
             </div>
             <ul className="space-y-3">
@@ -69,7 +69,7 @@ export function LeadFormSection({
 
           {/* Right column: form wrapper */}
           <div>
-            <div className="bg-white/40 backdrop-blur-2xl border border-white/60 rounded-[2.5rem] shadow-glass p-8 md:p-10">
+            <div className="rounded-[2.5rem] border border-white/60 bg-white/42 p-5 shadow-glass backdrop-blur-2xl sm:p-7 md:p-9">
               <ContactForm />
             </div>
             {privacyText && (

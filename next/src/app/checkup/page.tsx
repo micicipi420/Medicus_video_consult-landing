@@ -149,7 +149,7 @@ export default function CheckupPage() {
   return (
     <>
       <ServiceHero
-        eyebrow="Чек-ап за\u00A0рубежом"
+        eyebrow={'Чек-ап за\u00A0рубежом'}
         title={
           <>
             Проверьте здоровье в{'\u00A0'}Samsung Medical Center и{'\u00A0'}Severance Hospital{'\u00A0'}{'\u2014'} за{'\u00A0'}1{'\u2013'}2{'\u00A0'}дня
@@ -162,7 +162,7 @@ export default function CheckupPage() {
         }
         primaryCta={{ text: 'Подобрать программу', href: '#form-checkup' }}
         secondaryCta={{ text: 'Смотреть программы', href: '#programs-korea' }}
-        trustLine="MedicusUnion GmbH, Австрия \u00B7 ISO\u00A027001 \u00B7 43\u00A0клиники \u00B7 11\u00A0стран"
+        trustLine={'MedicusUnion GmbH, Австрия \u00B7 ISO\u00A027001 \u00B7 43\u00A0клиники \u00B7 11\u00A0стран'}
         illustration={<CheckupIllustration />}
         variant="checkup"
       />
@@ -208,7 +208,7 @@ export default function CheckupPage() {
 
       <ScrollReveal>
         <LeadFormSection
-          heading="Узнайте всё о\u00A0своём здоровье за\u00A01\u20132\u00A0дня"
+          heading={'Узнайте всё о\u00A0своём здоровье за\u00A01\u20132\u00A0дня'}
           subtext={
             <>
               Оставьте заявку{'\u00A0'}{'\u2014'} мы{'\u00A0'}свяжемся с{'\u00A0'}вами, поможем выбрать программу и{'\u00A0'}направление, и{'\u00A0'}организуем чек-ап полностью. Бесплатная консультация, без обязательств.

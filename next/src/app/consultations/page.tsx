@@ -213,7 +213,7 @@ export default function ConsultationsPage() {
             { text: 'Бесплатно и без обязательств' },
             { text: 'Ваши данные защищены' },
           ]}
-          privacyText="Мы\u00A0перезвоним в\u00A0течение 24\u00A0часов. Ваши данные защищены."
+          privacyText={'Мы\u00A0перезвоним в\u00A0течение 24\u00A0часов. Ваши данные защищены.'}
         />
       </ScrollReveal>
       <ScrollReveal delay={0.05}>
