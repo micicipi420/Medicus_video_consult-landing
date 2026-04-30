@@ -101,11 +101,11 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [x] **BLOB-03**: Singleton engine guard — `start()` is a no-op if already started; `useEffect` cleanup cancels rAF and removes listener; survives Strict Mode double-invocation and App Router route changes without leak
 - [x] **BLOB-04**: Heat accumulator on cursor dwell — ramps over 1.5–3s, decays smoothly over ≥600ms when motion resumes, peak luminance/scale delta ≤1.4×; disabled under `prefers-reduced-motion`
 - [x] **BLOB-05**: Velocity-driven shape stretch along motion direction; halo lags more than core; on stop, blob recollects without snap
-- [ ] **BLOB-06**: Mobile branch (`(pointer: coarse) and (hover: none)`) — no pointer/touch follow; autonomous Lissajous ambient drift (period ≥12s); tap-pulse ≤400ms only on background (taps not in interactive elements), rate-limited 1 per 600ms; pauses during scroll
-- [ ] **BLOB-07**: `prefers-reduced-motion: reduce` branch — no listener, no rAF, CSS-driven static ambient gradient only
-- [ ] **BLOB-08**: `prefers-reduced-transparency: reduce` branch — blob hidden, glass surfaces switch to opaque fallbacks via existing `@layer` wiring
-- [ ] **BLOB-09**: Dark theme (`[data-theme="dark"]`) — blob opacity ≤0.35, saturation ≤0.7, follow disabled (ambient drift only); existing `backdrop-filter: none` on glass preserved
-- [ ] **BLOB-10**: Pointer-leave-window — smooth decay to last position then ambient drift; no snap-disappear; `data-blob-mode` attribute on `<html>` reflects current mode (cursor / ambient / static)
+- [x] **BLOB-06**: Mobile branch (`(pointer: coarse) and (hover: none)`) — no pointer/touch follow; autonomous Lissajous ambient drift (period ≥12s); tap-pulse ≤400ms only on background (taps not in interactive elements), rate-limited 1 per 600ms; pauses during scroll
+- [x] **BLOB-07**: `prefers-reduced-motion: reduce` branch — no listener, no rAF, CSS-driven static ambient gradient only
+- [x] **BLOB-08**: `prefers-reduced-transparency: reduce` branch — blob hidden, glass surfaces switch to opaque fallbacks via existing `@layer` wiring
+- [x] **BLOB-09**: Dark theme (`[data-theme="dark"]`) — blob opacity ≤0.35, saturation ≤0.7, follow disabled (ambient drift only); existing `backdrop-filter: none` on glass preserved
+- [x] **BLOB-10**: Pointer-leave-window — smooth decay to last position then ambient drift; no snap-disappear; `data-blob-mode` attribute on `<html>` reflects current mode (cursor / ambient / static)
 - [x] **BLOB-11**: Page Visibility API integration — rAF stops when `document.hidden`, restarts on visible
 - [ ] **BLOB-12**: Dev-only `window.__blobDebug.rafCount` exposed for Playwright leak assertions
 
@@ -282,11 +282,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOB-03 | Phase 91 | Complete |
 | BLOB-04 | Phase 91 | Complete |
 | BLOB-05 | Phase 91 | Complete |
-| BLOB-06 | Phase 91 | Pending |
-| BLOB-07 | Phase 91 | Pending |
-| BLOB-08 | Phase 91 | Pending |
-| BLOB-09 | Phase 91 | Pending |
-| BLOB-10 | Phase 91 | Pending |
+| BLOB-06 | Phase 91 | Complete |
+| BLOB-07 | Phase 91 | Complete |
+| BLOB-08 | Phase 91 | Complete |
+| BLOB-09 | Phase 91 | Complete |
+| BLOB-10 | Phase 91 | Complete |
 | BLOB-11 | Phase 91 | Complete |
 | BLOB-12 | Phase 91 | Pending |
 | GLASS-01 | Phase 92 | Pending |
