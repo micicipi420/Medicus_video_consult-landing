@@ -322,6 +322,9 @@ antiPatterns:
   - name: "Cheat-passing a11y verification (declaring rules without live OS-toggle test)"
     why: "Phase 89 ACC-01..05 lesson; v9.0 Phase 94 forbids cheat-pass — real-device UAT required"
     addedIn: "v9.0 Phase 90"
+  - name: "Propagating ContactForm honeypot + 3-second timing trap to new form components without an explicit anti-bot decision phase"
+    why: "BL-04 silent-drop pattern (sub-3s submissions + filled honeypot return fake-success UI) breaks legitimate slow typists and accessibility-aided users; ContactForm grandfathered for v8.0 only, deferred for separate triage; new forms must use a non-silent-drop strategy"
+    addedIn: "v9.0 Phase 93"
 ---
 
 # DESIGN.md — MedicusUnion KZ
@@ -738,3 +741,5 @@ Phase 91-94 planners MUST grep this section before generating tasks; any task th
 14. **Adding a new glass class without registering it in `liquid-glass.css` `@a11y-layer-coverage` block.** Why: Phase 89 cheat-pass failure mode; coverage grep MUST find the new class between markers. Where it manifests: shipping a new `.glass-foo` utility for one component, forgetting to enumerate it under `prefers-reduced-motion` / `-transparency` / `prefers-contrast: more`. Do instead: every new `.liquid-*`, `.glass-*`, `.blob-*`, `.stats-*`, `.living-blob-*` class MUST be appended to all 3 `@media` blocks inside the `@a11y-layer-coverage:start/end` markers (CTA classes excepted: `.btn-primary`, `.liquid-btn-primary`).
 
 15. **Cheat-passing a11y verification (declaring rules without live OS-toggle test).** Why: Phase 89 ACC-01..05 lesson; v9.0 Phase 94 forbids cheat-pass — real-device UAT required. Where it manifests: marking ACC-* tasks complete because the CSS block exists, without toggling macOS / iOS accessibility settings and reloading the page. Do instead: Phase 94 hard gate — record screenshot/video evidence of `prefers-reduced-motion` / `-transparency` / `prefers-contrast: more` actually applied; phase blocked without artifacts.
+
+16. **Propagating the ContactForm honeypot + 3-second timing trap pattern to new form components without an explicit anti-bot decision phase.** Why: ContactForm (Phase 92, BL-04) silently drops sub-3 s submissions and honeypot-tripped submissions while showing a fake-success UI. The pattern was grandfathered for the v8.0 ContactSection only and remains DEFERRED for separate triage — it breaks legitimate slow typists and accessibility-aided users. Where it manifests: copy-pasting `loadTimeRef` + `if (Date.now() - loadTime < 3000) return success` from `ContactForm.tsx` into a new form component, or adding a hidden `name="website"` honeypot field with the same silent-success branch. Do instead: leave anti-bot for new forms OUT OF SCOPE until a future explicit anti-bot decision phase designs a non-silent-drop strategy (reCAPTCHA v3, hCaptcha, server-side rate-limiting, or accessible challenge UI). Phase 93 honors this — `LeadFormSection` ships without honeypot/timing per Decision C in `93-CONTEXT.md`. Verification grep (any new form component MUST NOT match): `grep -irE '(honeypot|loadTimeRef|Date\.now\(\) - loadTime|name="website")' next/src/components/sections/`.
