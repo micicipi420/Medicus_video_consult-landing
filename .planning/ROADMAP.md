@@ -200,7 +200,14 @@ See `.planning/milestones/` for full details per milestone.
   3. `<div class="living-blob-field" aria-hidden="true">` skeleton mounted in `next/src/app/layout.tsx` with 4 static sublayer children; `:root` seeded server-side via inline `<style>` with `--blob-x: 50vw; --blob-y: 50vh; --blob-heat: 0`; `MeshBackground.tsx` deleted from repo and removed from layout.
   4. `DESIGN.md` documents the z-index contract (blob-field `z-0`, main `z-1..10`, header/sticky `z-50+`, modals `z-100+`), the CTA opaque-forever rule, and the v9.0 anti-patterns appendix (no trails/particles/`mix-blend-mode` on glass/animated `backdrop-filter`/green tint on cards/parallax).
   5. Key Decision logged in `PROJECT.md` for `--blob-hot: #4FE098` after a brand approval session vs `medicusunion.com`; index `/` renders identically to v8.1 baseline (visual diff = 0 outside the blob area).
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 90-01-PLAN.md — Token registration: --blob-* palette + 4-tier --glass-* tokens in DESIGN.md YAML and globals.css :root
+- [ ] 90-02-PLAN.md — A11y @a11y-layer-coverage block in liquid-glass.css; new blob.css with sublayer base styles
+- [ ] 90-03-PLAN.md — DESIGN.md doc edits: antiPatterns: YAML (15) + ## v9.0 Custom Rules (z-index + CTA opaque-forever) + ## v9.0 Anti-Patterns body
+- [ ] 90-04-PLAN.md — layout.tsx skeleton: inline <style> seed + .living-blob-field; hard-delete MeshBackground.tsx; 5-route smoke
+- [ ] 90-05-PLAN.md — KD-v9-001 row in PROJECT.md + /test-glass comparison swatch (--mu-primary / --blob-hot / medicusunion.kz ref)
 **UI hint**: yes
 
 ### Phase 91: Blob Engine — Renderer, Physics, A11y Branches
@@ -359,7 +366,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 0/0 | Not started | — |
+| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 0/5 | Not started | — |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
 | 92. Glass Rework — Chrome + Index Sections | 0/0 | Not started | — |
 | 93. Per-Page Propagation — Sub-Routes | 0/0 | Not started | — |
