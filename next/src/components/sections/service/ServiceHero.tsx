@@ -32,7 +32,7 @@ export function ServiceHero({
           {/* Content side */}
           <div>
             {eyebrow && (
-              <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/60 bg-white/40 px-4 py-2.5 shadow-glass-inner backdrop-blur-xl sm:px-5">
+              <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/60 bg-[var(--glass-section-fill)] px-4 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)] sm:px-5">
                 <span className="text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue sm:text-sm">
                   {eyebrow}
                 </span>
@@ -70,7 +70,7 @@ export function ServiceHero({
               {secondaryCta && (
                 <a
                   href={secondaryCta.href}
-                  className="w-full rounded-3xl border border-white/60 bg-white/50 px-8 py-4 text-center text-lg font-semibold text-mu-text-900 shadow-glass backdrop-blur-xl transition-[background-color,border-color,box-shadow,transform] duration-200 hover:bg-white/60 sm:w-auto"
+                  className="w-full rounded-3xl border border-white/60 bg-[var(--glass-section-fill)] px-8 py-4 text-center text-lg font-semibold text-mu-text-900 shadow-glass backdrop-blur-[var(--glass-section-blur)] transition-[background-color,border-color,box-shadow,transform] duration-200 hover:bg-[var(--glass-card-fill)] sm:w-auto"
                 >
                   {secondaryCta.text}
                 </a>

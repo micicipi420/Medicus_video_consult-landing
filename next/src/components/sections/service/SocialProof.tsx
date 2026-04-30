@@ -16,7 +16,7 @@ export function SocialProof({ items }: SocialProofProps) {
         {items.map((item) => (
           <div
             key={item.label}
-            className="relative group flex flex-col items-center justify-center p-8 bg-white/60 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 shadow-glass hover:shadow-glass-lg hover:bg-white/70 transition-all duration-500 overflow-hidden"
+            className="relative group flex flex-col items-center justify-center p-8 bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] border border-white/60 shadow-glass hover:shadow-glass-lg hover:bg-[var(--glass-form-fill)] transition-all duration-500 overflow-hidden"
           >
             <div className="text-5xl md:text-6xl font-extrabold mb-3 drop-shadow-sm text-mu-accent-blue relative z-10">
               {item.number}
