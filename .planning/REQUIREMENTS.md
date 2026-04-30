@@ -46,10 +46,10 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### Visual System
 
-- [ ] **VIS-01**: Glassmorphism strengthened across index page per mockup
+- [x] **VIS-01**: Glassmorphism strengthened across index page per mockup
 - [x] **VIS-02**: Typography updated to modern scale used in new design direction
 - [x] **VIS-03**: Mobile budget respected (≤2 glass elements/viewport, blur ≤12px, ЦА 45+ simplicity)
-- [ ] **VIS-04**: Existing accessibility guarantees preserved (prefers-contrast, prefers-reduced-transparency, prefers-reduced-motion, focus-visible, 44×44 touch targets)
+- [x] **VIS-04**: Existing accessibility guarantees preserved (prefers-contrast, prefers-reduced-transparency, prefers-reduced-motion, focus-visible, 44×44 touch targets)
 
 ## v7.0 Requirements (Shipped 2026-04-14)
 
@@ -134,8 +134,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FORM-01 | Phase 84 | Complete |
 | FORM-02 | Phase 84 | Complete |
 | FORM-03 | Phase 84 | Complete |
-| VIS-01 | Phase 85 | Pending |
-| VIS-04 | Phase 85 | Pending |
+| VIS-01 | Phase 85 | Complete |
+| VIS-04 | Phase 85 | Complete |
 
 **v8.0 Coverage:**
 - v8.0 requirements: 22 total
