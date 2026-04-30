@@ -12,7 +12,7 @@ export function PlatformSection() {
           </h2>
         </div>
 
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-glass-border shadow-glass max-w-3xl mx-auto">
+        <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[3rem] p-8 md:p-12 border border-glass-border shadow-glass max-w-3xl mx-auto">
           <p className="text-mu-text-700 font-medium text-lg leading-relaxed mb-8">
             У{'\u00A0'}MedicusUnion есть то, чего нет ни{'\u00A0'}у{'\u00A0'}одного медицинского агентства{'\u00A0'}{'\u2014'} собственная цифровая платформа. Это защищённый личный кабинет, где вы{'\u00A0'}видите:
           </p>

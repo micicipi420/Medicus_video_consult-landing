@@ -127,7 +127,7 @@ export function ClinicsSection() {
           {COUNTRIES.map((item) => (
             <div
               key={item.country}
-              className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] shadow-glass border border-glass-border p-8 hover:shadow-glass-lg hover:border-glass-border-strong transition-all duration-300"
+              className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] shadow-glass border border-glass-border p-8 hover:bg-[var(--glass-form-fill)] hover:shadow-glass-lg hover:border-glass-border-strong transition-all duration-300"
             >
               <h3 className="font-extrabold text-mu-text-900 text-lg mb-2 flex items-center gap-2">
                 {FLAGS[item.country]}
