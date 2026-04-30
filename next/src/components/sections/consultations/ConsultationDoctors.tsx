@@ -27,7 +27,7 @@ export function ConsultationDoctors() {
       </div>
 
       {/* Description card */}
-      <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-4xl mx-auto mb-12 space-y-4">
+      <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[2.5rem] p-8 md:p-12 border border-white/60 shadow-glass max-w-4xl mx-auto mb-12 space-y-4">
         <p className="text-mu-text-700 font-medium text-lg leading-relaxed">
           На{'\u00A0'}платформе MedicusUnion{'\u00A0'}{'\u2014'} врачи из{'\u00A0'}клиник и{'\u00A0'}медицинских университетов Германии, Израиля, Швейцарии, Австрии, ОАЭ, Южной Кореи и{'\u00A0'}Турции.
         </p>
@@ -42,7 +42,7 @@ export function ConsultationDoctors() {
       {/* Country cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
         {/* Германия */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#000" />
@@ -55,7 +55,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* Израиль */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#fff" />
@@ -70,7 +70,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* Швейцария */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#DA291C" />
@@ -83,7 +83,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* Австрия */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#ED2939" />
@@ -95,7 +95,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* ОАЭ */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#000" />
@@ -110,7 +110,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* Южная Корея */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#fff" />
@@ -123,7 +123,7 @@ export function ConsultationDoctors() {
         </div>
 
         {/* Турция */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-2xl shadow-glass-sm border border-white/60 p-5 text-center hover:shadow-glass hover:border-white/80 transition-all duration-300">
           <div className="mb-2" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#E30A17" />
@@ -138,11 +138,11 @@ export function ConsultationDoctors() {
       </div>
 
       {/* Specializations card */}
-      <div className="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/60 shadow-glass-lg max-w-4xl mx-auto mb-8">
+      <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[3rem] p-12 border border-white/60 shadow-glass-lg max-w-4xl mx-auto mb-8">
         <h3 className="text-3xl md:text-4xl font-extrabold text-mu-text-900 mb-8 text-center">Доступные специализации</h3>
         <div className="flex flex-wrap gap-3 justify-center">
           {specializations.map((spec) => (
-            <span key={spec} className="bg-white/50 backdrop-blur-md border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">
+            <span key={spec} className="bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] border border-white/60 px-6 py-3 rounded-full font-bold text-mu-text-900 shadow-glass-inner hover:bg-mu-green-50 hover:text-mu-green-700 transition-colors cursor-default">
               {spec}
             </span>
           ))}
@@ -153,7 +153,7 @@ export function ConsultationDoctors() {
       <div className="text-center">
         <a
           href="https://medicusunion.com/doctors"
-          className="inline-flex items-center gap-2 bg-white/50 backdrop-blur-xl text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-white/60 transition-all border border-white/60 text-lg"
+          className="inline-flex items-center gap-2 bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] text-mu-text-900 px-8 py-4 rounded-3xl font-semibold shadow-glass hover:bg-[var(--glass-card-fill)] transition-all border border-white/60 text-lg"
           target="_blank"
           rel="noopener noreferrer"
         >
