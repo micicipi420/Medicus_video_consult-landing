@@ -34,9 +34,9 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### CTA Form
 
-- [ ] **FORM-01**: Final CTA section uses a blue gradient background behind the form
-- [ ] **FORM-02**: Form includes trust signals (privacy, response time, europe-based doctors)
-- [ ] **FORM-03**: Form submits to existing Directus endpoint without regression
+- [x] **FORM-01**: Final CTA section uses a blue gradient background behind the form
+- [x] **FORM-02**: Form includes trust signals (privacy, response time, europe-based doctors)
+- [x] **FORM-03**: Form submits to existing Directus endpoint without regression
 
 ### Header
 
@@ -131,9 +131,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROC-01 | Phase 83 | Complete |
 | PROC-02 | Phase 83 | Complete |
 | PROC-03 | Phase 83 | Complete |
-| FORM-01 | Phase 84 | Pending |
-| FORM-02 | Phase 84 | Pending |
-| FORM-03 | Phase 84 | Pending |
+| FORM-01 | Phase 84 | Complete |
+| FORM-02 | Phase 84 | Complete |
+| FORM-03 | Phase 84 | Complete |
 | VIS-01 | Phase 85 | Pending |
 | VIS-04 | Phase 85 | Pending |
 
