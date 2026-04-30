@@ -266,6 +266,67 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Mapped to phases: 18
 - Unmapped: 0
 
+### v9.0 Living Blob Liquid Glass Scene (Phases 90-94)
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| FND-01 | Phase 90 | Pending |
+| FND-02 | Phase 90 | Pending |
+| FND-03 | Phase 90 | Pending |
+| FND-04 | Phase 90 | Pending |
+| FND-05 | Phase 90 | Pending |
+| FND-06 | Phase 90 | Pending |
+| FND-07 | Phase 90 | Pending |
+| BLOB-01 | Phase 91 | Pending |
+| BLOB-02 | Phase 91 | Pending |
+| BLOB-03 | Phase 91 | Pending |
+| BLOB-04 | Phase 91 | Pending |
+| BLOB-05 | Phase 91 | Pending |
+| BLOB-06 | Phase 91 | Pending |
+| BLOB-07 | Phase 91 | Pending |
+| BLOB-08 | Phase 91 | Pending |
+| BLOB-09 | Phase 91 | Pending |
+| BLOB-10 | Phase 91 | Pending |
+| BLOB-11 | Phase 91 | Pending |
+| BLOB-12 | Phase 91 | Pending |
+| GLASS-01 | Phase 92 | Pending |
+| GLASS-02 | Phase 92 | Pending |
+| GLASS-03 | Phase 92 | Pending |
+| GLASS-04 | Phase 92 | Pending |
+| GLASS-05 | Phase 92 | Pending |
+| GLASS-06 | Phase 92 | Pending |
+| GLASS-07 | Phase 92 | Pending |
+| GLASS-08 | Phase 92 | Pending |
+| GLASS-09 | Phase 92 | Pending |
+| GLASS-10 | Phase 92 | Pending |
+| ROUTE-01 | Phase 93 | Pending |
+| ROUTE-02 | Phase 93 | Pending |
+| ROUTE-03 | Phase 93 | Pending |
+| ROUTE-04 | Phase 93 | Pending |
+| ROUTE-05 | Phase 93 | Pending |
+| ROUTE-06 | Phase 93 | Pending |
+| ROUTE-07 | Phase 93 | Pending |
+| VER-01 | Phase 94 | Pending |
+| VER-02 | Phase 94 | Pending |
+| VER-03 | Phase 94 | Pending |
+| VER-04 | Phase 94 | Pending |
+| VER-05 | Phase 94 | Pending |
+| VER-06 | Phase 94 | Pending |
+| VER-07 | Phase 94 | Pending |
+| VER-08 | Phase 94 | Pending |
+
+**v9.0 Coverage:**
+- v9.0 requirements: 44 total
+- Pending: 44
+- Mapped to phases: 44
+- Unmapped: 0
+
+**Phase distribution:**
+- Phase 90 (Foundation): 7 (FND-01..07)
+- Phase 91 (Blob Engine): 12 (BLOB-01..12)
+- Phase 92 (Glass Index + Chrome): 10 (GLASS-01..10)
+- Phase 93 (Per-Page Propagation): 7 (ROUTE-01..07)
+- Phase 94 (Verification): 8 (VER-01..08)
 ---
 *Requirements defined: 2026-04-13*
 *Last updated: 2026-04-30 after v9.0 milestone start (Living Blob Liquid Glass Scene)*
