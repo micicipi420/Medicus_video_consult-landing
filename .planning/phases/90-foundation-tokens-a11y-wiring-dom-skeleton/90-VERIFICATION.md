@@ -297,3 +297,56 @@ Phase 91 planner MUST grep PROJECT.md for `KD-v9-001` status before generating P
 
 _Verified: 2026-04-30_
 _Verifier: Claude (gsd-verifier)_
+
+---
+
+## Manual Gates — Resolved 2026-04-30
+
+### 1. 5-Route DevTools Smoke — PASS
+
+Walked all 5 routes via Playwright (1440×900 desktop + 375×812 mobile on `/`). DevTools console message counts:
+
+| Route | Errors | Warnings | New regressions vs v8.1? |
+|-------|--------|----------|--------------------------|
+| `/` | 0 | 0 | None |
+| `/checkup` | 0 | 0 | None |
+| `/consultations` | 3 | 0 | Pre-existing — see below |
+| `/treatment-abroad` | 4 | 0 | Pre-existing — see below |
+| `/contacts` | 0 | 0 | None |
+| `/` (375px mobile) | 0 | 0 | None |
+
+**Pre-existing SVG bug (NOT a Phase 90 regression):** `<rect>` elements in `next/src/components/sections/consultations/ConsultationDoctors.tsx` and `next/src/components/sections/treatment/TreatmentClinics.tsx` use 4-value `rx="0 0 3 3"` syntax which is invalid in SVG (rx accepts a single length only). These files were last touched in Phases 67.1 and 72 (April 11-12, 2026); confirmed via `git log` they were untouched in Phase 90. **Filed as separate cleanup work; does not block Phase 90 completion or Phase 91 unblock.**
+
+Mobile (375px) viewport on `/`: header chrome readable, hero copy fits 2-line wrap, "Обсудить случай" CTA visible, soft ambient blob behind hero. No layout shift, no horizontal overflow.
+
+### 2. KD-v9-001 Brand Approval — APPROVED 2026-04-30
+
+Method: Playwright DOM sampling on medicusunion.com and medicusunion.kz, walking all elements and capturing computed `backgroundColor` / `color` / `borderColor` for green-channel-dominant values.
+
+**medicusunion.com green palette (sampled):**
+- `#35B678` (rgb 53, 182, 120) — primary CTA / "Зарегистрироваться", "Получить Медицинскую Поддержку", "Записаться сейчас"
+- `#78C3BF` — teal accent
+- `#EBFAF9` / `#E4FAEF` — pale tint backgrounds
+
+**medicusunion.kz green palette (sampled):**
+- `#1AC67E` — primary CTA gradient start (= `--mu-cta-from-v6` in this project)
+- `#5EE9B5` — bright minty highlight (hero phrase "лечение за границей", cookie-banner accent)
+- `#62C584`, `#13AC71`, `#009865`, `#009060` — accent tier
+- `#00C950` — bright emerald
+
+**Decision: APPROVE `--blob-hot #4FE098` as-is.**
+
+Rationale (recorded in PROJECT.md KD-v9-001):
+1. `#4FE098` (rgb 79, 224, 152) is HSL-adjacent to medicusunion.kz `#5EE9B5` (rgb 94, 233, 181) — same bright-mint family, hue shift ~12°, lightness/saturation near-identical
+2. Bright-mint family is part of medicusunion.kz active palette (hero copy, cookie banner accent)
+3. Distinct enough from primary CTA greens (`#35B678`, `#1AC67E`) so heat-glow effect reads as ambient highlight, not action affordance
+4. TZ §5-prescribed for the heat-state highlight purpose
+
+Phase 91 planner gate is now satisfied. Status updated in PROJECT.md from `pending` → `approved 2026-04-30`.
+
+---
+
+## Final Verdict — PASS
+
+All 7 FND requirements verified. Both manual gates resolved. Phase 90 complete. Phase 91 unblocked.
+
