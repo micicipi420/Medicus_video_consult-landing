@@ -92,7 +92,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [x] **FND-04**: z-index contract documented in `DESIGN.md` — blob-field `z-0`, main content `z-1..10`, sticky/header `z-50+`, modals `z-100+`
 - [x] **FND-05**: CTA opaque-forever rule + v9.0 anti-pattern appendix added to `DESIGN.md` (no trails, no particles, no `mix-blend-mode` on glass, no animated `backdrop-filter`, no green tint on cards, no parallax)
 - [ ] **FND-06**: `<div class="living-blob-field" aria-hidden="true">` skeleton mounted in `next/src/app/layout.tsx` with seeded `:root` CSS vars; `MeshBackground.tsx` removed
-- [ ] **FND-07**: Key Decision logged in `PROJECT.md` for `--blob-hot: #4FE098` (new brand color); approved against `medicusunion.com` reference before BLOB phase begins
+- [x] **FND-07**: Key Decision logged in `PROJECT.md` for `--blob-hot: #4FE098` (new brand color); approved against `medicusunion.com` reference before BLOB phase begins
 
 ### Blob Engine: Renderer, Physics, A11y Branches
 
@@ -276,7 +276,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FND-04 | Phase 90 | Complete |
 | FND-05 | Phase 90 | Complete |
 | FND-06 | Phase 90 | Pending |
-| FND-07 | Phase 90 | Pending |
+| FND-07 | Phase 90 | Complete |
 | BLOB-01 | Phase 91 | Pending |
 | BLOB-02 | Phase 91 | Pending |
 | BLOB-03 | Phase 91 | Pending |
