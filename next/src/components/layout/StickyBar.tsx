@@ -41,21 +41,21 @@ export function StickyBar() {
 
   return (
     <div
-      className={`fixed bottom-4 left-4 right-4 z-50 bg-white/60 backdrop-blur-3xl rounded-2xl border border-white/60 shadow-glass-lg p-3 lg:hidden transition-transform duration-300 ${isHidden ? 'translate-y-[calc(100%+16px)]' : ''}`}
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-4 z-50 rounded-2xl border border-white/60 bg-white/68 p-3 shadow-glass-lg backdrop-blur-3xl transition-transform duration-300 lg:hidden ${isHidden ? 'translate-y-[calc(100%+24px)]' : ''}`}
       role="complementary"
       aria-label="Быстрые действия"
     >
       <div className="flex items-center justify-between gap-3">
         <a
           href={`tel:${PHONE_NUMBER}`}
-          className="text-mu-text-900 font-medium text-sm"
+          className="flex min-h-11 items-center text-sm font-semibold text-mu-text-900"
           aria-label={`Позвонить ${PHONE_DISPLAY}`}
         >
           {PHONE_DISPLAY}
         </a>
         <a
           href={ctaHref}
-          className="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-3 rounded-xl font-extrabold shadow-lg shadow-mu-blue/30 text-sm"
+          className="flex min-h-11 items-center rounded-xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-mu-blue/30 transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
         >
           Обсудить случай
         </a>

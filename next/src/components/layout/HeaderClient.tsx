@@ -9,7 +9,7 @@ export function HeaderClient({ children }: { children: React.ReactNode }) {
   return (
     <header
       className={cn(
-        'fixed z-50 transition-all duration-500 top-4 left-4 right-4 mx-auto max-w-7xl',
+        'fixed z-50 transition-[padding,background-color,box-shadow,backdrop-filter] duration-300 top-4 left-4 right-4 mx-auto max-w-7xl',
         'rounded-[2.5rem] px-4 md:px-8 border-[0.5px] border-white/50',
         'shadow-glass-header',
         'flex items-center',

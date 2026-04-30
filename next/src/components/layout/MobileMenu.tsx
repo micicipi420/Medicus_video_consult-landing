@@ -10,13 +10,21 @@ export function MobileMenu() {
 
   // Body scroll lock
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = '';
     }
     return () => {
       document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -27,7 +35,7 @@ export function MobileMenu() {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
-        className="lg:hidden p-2 text-mu-text-700 bg-white/50 rounded-full backdrop-blur-xl backdrop-saturate-[180%] border border-white/50"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/55 bg-white/55 text-mu-text-700 shadow-glass-sm backdrop-blur-xl backdrop-saturate-[180%] transition-[transform,background-color,box-shadow] duration-200 active:scale-[0.96] lg:hidden"
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -36,20 +44,20 @@ export function MobileMenu() {
         <div className="fixed inset-0 z-40 lg:hidden">
           {/* Backdrop overlay */}
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-mu-text-900/35 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Glass nav panel */}
-          <nav className="absolute top-24 left-4 right-4 bg-white/60 backdrop-blur-[80px] backdrop-saturate-[200%] shadow-glass-lg rounded-3xl overflow-hidden border-[0.5px] border-white/50">
-            <div className="flex flex-col p-6 gap-2">
+          <nav className="absolute left-4 right-4 top-24 overflow-hidden rounded-3xl border-[0.5px] border-white/55 bg-white/68 shadow-glass-lg backdrop-blur-[80px] backdrop-saturate-[200%]">
+            <div className="flex flex-col gap-2 p-5">
               {NAV_LINKS.map((link) =>
                 link.href.startsWith('/') && !link.href.includes('#') ? (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight"
+                    className="min-h-12 rounded-2xl px-4 py-3 font-semibold tracking-tight text-mu-text-900 transition-[background-color,color] duration-200 hover:bg-white/45"
                   >
                     {link.label}
                   </Link>
@@ -58,7 +66,7 @@ export function MobileMenu() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-mu-text-900 hover:bg-white/40 rounded-2xl px-4 py-3 transition-colors font-medium tracking-tight"
+                    className="min-h-12 rounded-2xl px-4 py-3 font-semibold tracking-tight text-mu-text-900 transition-[background-color,color] duration-200 hover:bg-white/45"
                   >
                     {link.label}
                   </a>
@@ -71,7 +79,7 @@ export function MobileMenu() {
               {/* Phone link with icon */}
               <a
                 href={`tel:${PHONE_NUMBER}`}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-white/40 transition-colors"
+                className="flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3 transition-[background-color,color] duration-200 hover:bg-white/45"
               >
                 <Phone size={20} className="text-mu-blue" />
                 <span className="text-mu-text-900 font-medium tracking-tight">
@@ -83,7 +91,7 @@ export function MobileMenu() {
               <a
                 href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-4 rounded-2xl font-extrabold tracking-tight shadow-lg mt-4 w-full text-center block"
+                className="mt-4 block min-h-14 w-full rounded-2xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-6 py-4 text-center font-extrabold tracking-tight text-white shadow-lg transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
               >
                 Обсудить случай
               </a>
