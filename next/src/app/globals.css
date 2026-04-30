@@ -7,7 +7,7 @@
 /* 2. Design system layers — MUST be after tailwindcss */
 @import "../styles/liquid-glass.css";
 @import "../styles/squircles.css";
-/* @import "../styles/blob.css"; — wired in 90-02 */
+@import "../styles/blob.css";
 @import "shadcn/tailwind.css";
 
 /* 3. Root tokens (ported verbatim from src/styles/theme.css :root) */
