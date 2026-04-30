@@ -16,7 +16,7 @@ interface LeadFormSectionProps {
 
 function GlassCheckmark() {
   return (
-    <span className="w-6 h-6 bg-white/60 backdrop-blur-md border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 shadow-glass-inner-strong">
+    <span className="w-6 h-6 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] border border-white/60 rounded-full flex items-center justify-center flex-shrink-0 shadow-glass-inner-strong">
       <svg
         className="w-3.5 h-3.5 text-mu-green-600"
         fill="none"
@@ -44,7 +44,7 @@ export function LeadFormSection({
 }: LeadFormSectionProps) {
   return (
     <section className="container mx-auto mb-16 px-4 lg:px-6" id={id}>
-      <div className="rounded-[3.5rem] border border-white/60 bg-white/60 p-6 shadow-glass-lg backdrop-blur-3xl md:p-12">
+      <div className="rounded-[3.5rem] p-6 md:p-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
           {/* Left column: info + trust items */}
           <div>
@@ -69,7 +69,7 @@ export function LeadFormSection({
 
           {/* Right column: form wrapper */}
           <div>
-            <div className="rounded-[2.5rem] border border-white/60 bg-white/42 p-5 shadow-glass backdrop-blur-2xl sm:p-7 md:p-9">
+            <div className="rounded-[2.5rem] border border-white/60 bg-[var(--glass-form-fill)] p-5 shadow-glass backdrop-blur-[var(--glass-form-blur)] sm:p-7 md:p-9">
               <ContactForm />
             </div>
             {privacyText && (
