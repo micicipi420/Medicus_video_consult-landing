@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v8.1
 milestone_name: Propagation & Loose Ends
-status: milestone_planned
+status: milestone_complete
 stopped_at: v8.1 roadmap created -- ready to plan Phase 86
 last_updated: "2026-04-30T00:00:00.000Z"
 last_activity: 2026-04-30 -- v8.0 shipped, v8.1 milestone created
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 0
   completed_plans: 0
-  percent: 0
+  percent: 25
 ---
 
 # Project State
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-04-23)
 
 ## Current Position
 
-Phase: 86 (next to plan)
+Phase: 86
 Plan: Not started
-Status: Milestone planned, awaiting Phase 86 plan
+Status: Milestone complete
 Last activity: 2026-04-30
 
 Progress: [░░░░░░░░░░] 0% (0/4 phases)
@@ -36,7 +36,7 @@ Progress: [░░░░░░░░░░] 0% (0/4 phases)
 
 **Velocity:**
 
-- Total plans completed: 15 (v7.0)
+- Total plans completed: 16 (v7.0)
 - Average duration: --
 - Total execution time: 0 hours
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0% (0/4 phases)
 | 83 | 1 | - | - |
 | 84 | 1 | - | - |
 | 85 | 1 | - | - |
+| 86 | 1 | - | - |
 
 **Recent Trend:**
 
