@@ -12,8 +12,8 @@ export function CheckupProblem() {
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {/* Card 1: AlertCircle */}
-          <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-            <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+          <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+            <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><circle cx="12" cy="16" r="1"/></svg>
             </div>
             <h3 className="text-xl font-extrabold text-mu-text-900 mb-2">
@@ -25,8 +25,8 @@ export function CheckupProblem() {
           </div>
 
           {/* Card 2: Clock */}
-          <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-            <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+          <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+            <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <h3 className="text-xl font-extrabold text-mu-text-900 mb-2">
@@ -38,8 +38,8 @@ export function CheckupProblem() {
           </div>
 
           {/* Card 3: HelpCircle */}
-          <div className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
-            <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
+          <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+            <div className="w-14 h-14 bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] rounded-2xl flex items-center justify-center text-mu-blue border border-white/60 mb-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
             </div>
             <h3 className="text-xl font-extrabold text-mu-text-900 mb-2">
