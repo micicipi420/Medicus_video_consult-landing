@@ -386,7 +386,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 | 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete   | 2026-04-30 |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
 | 92. Glass Rework — Chrome + Index Sections | 8/8 | Complete    | 2026-04-30 |
-| 93. Per-Page Propagation — Sub-Routes | 4/8 | In Progress|  |
+| 93. Per-Page Propagation — Sub-Routes | 5/8 | In Progress|  |
 | 94. Verification — UAT, Performance, A11y, Brand Review | 0/0 | Not started | — |
 
 ### v8.0 Index Page Redesign
