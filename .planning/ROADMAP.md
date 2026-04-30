@@ -240,7 +240,17 @@ Plans:
   3. `ContactForm` + `ContactSection` form panel uses `--glass-form-fill` (≥0.16 floor; escalated to 0.30 with logged Key Decision in PROJECT.md if WCAG AA fails); labels promoted from `text-muted` to `text-primary`; inputs `bg-white` opaque (NOT glass); localized blob dimming when blob centroid enters form bounds; body copy contrast ≥4.5:1 and large text ≥3:1 verified with blob parked at worst-case position.
   4. CTA buttons (gradient `#1AC67E → #0D9DB5`) verified opaque at all blob positions — no `backdrop-filter` ever applied, never glass-styled (grep on every CTA component); `FinalCTA` Tier 0 frame with opaque CTA preserved; gradient unchanged from v8.0.
   5. `liquid-glass.css` utilities re-pointed from `--liquid-bg: rgba(255,255,255,0.42)` and similar legacy values to new `--glass-*` tier tokens; heat-leak `radial-gradient(... at var(--blob-x) var(--blob-y), ...)` rules added to `.liquid-card` and `.liquid-regular` so glass surfaces optically respond to blob position; visual confirmation of optical response.
-**Plans**: TBD
+**Plans**: 8 plans
+
+Plans:
+- [ ] 92-01-PLAN.md — liquid-glass.css utility re-pointing to v9.0 tier tokens; heat-leak rules verified preserved (GLASS-10)
+- [ ] 92-02-PLAN.md — CTA invariant + Header.tsx render-status + FinalCTA mix-blend-multiply baseline AUDIT (read-only)
+- [ ] 92-03-PLAN.md — Chrome sweep (HeaderClient, MobileMenu, StickyBar, Footer) to Tier 0; HIG 44pt + ESC preserved (GLASS-01, GLASS-09)
+- [ ] 92-04-PLAN.md — HeroHub + StatsBar + ServicesGrid sweep; preserve Phase 82 responsive nesting + over-photo controls (GLASS-02, GLASS-03, GLASS-04)
+- [ ] 92-05-PLAN.md — Mid sections sweep: Process, Problem, WhyUs, Clinics, Platform, Reviews (GLASS-05)
+- [ ] 92-06-PLAN.md — FAQSection accordion (D archetype) + FinalCTA frame/phone CTA sweep (GLASS-06, GLASS-08 partial)
+- [ ] 92-07-PLAN.md — ContactForm + ContactSection FORM-SAFETY: Tier 2 panel, opaque inputs, WCAG measurement, conditional KD-v9-002 escalation (GLASS-07)
+- [ ] 92-08-PLAN.md — FinalCTA mix-blend-multiply retirement + Header.tsx legacy handling + phase-gate SWEEP-AUDIT (GLASS-08)
 **UI hint**: yes
 
 ### Phase 93: Per-Page Propagation — Sub-Routes
@@ -375,7 +385,7 @@ Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Light
 |-------|----------------|--------|-----------|
 | 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete   | 2026-04-30 |
 | 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
-| 92. Glass Rework — Chrome + Index Sections | 0/0 | Not started | — |
+| 92. Glass Rework — Chrome + Index Sections | 0/8 | Planned | — |
 | 93. Per-Page Propagation — Sub-Routes | 0/0 | Not started | — |
 | 94. Verification — UAT, Performance, A11y, Brand Review | 0/0 | Not started | — |
 
