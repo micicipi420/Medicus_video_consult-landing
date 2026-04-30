@@ -125,7 +125,7 @@ export function ContactForm() {
     );
   }
 
-  const inputBase = 'w-full min-h-14 px-5 py-4 rounded-2xl border bg-white/50 backdrop-blur-md focus:bg-white/72 focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-[background-color,border-color,box-shadow,transform] duration-200 placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner';
+  const inputBase = 'w-full min-h-14 px-5 py-4 rounded-2xl border bg-white focus:border-mu-blue focus:ring-4 focus:ring-mu-blue/20 outline-none transition-[border-color,box-shadow,transform] duration-200 placeholder:text-mu-text-500 font-medium text-mu-text-900 shadow-glass-inner';
   const inputNormal = `${inputBase} border-white/40`;
   const inputError = `${inputBase} border-red-400`;
 
