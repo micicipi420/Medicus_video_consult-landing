@@ -260,7 +260,7 @@ Phase 85 is a verification phase and must be last.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 79. Visual Foundation (Typography & Mobile Budget) | 1/1 | Complete    | 2026-04-29 |
-| 80. Glass Header Chrome | 0/TBD | Not started | - |
+| 80. Glass Header Chrome | 1/1 | Complete    | 2026-04-30 |
 | 81. Hero Video-Call Frame | 0/TBD | Not started | - |
 | 82. Stats Bar | 0/TBD | Not started | - |
 | 83. Services & Process Sections | 0/TBD | Not started | - |

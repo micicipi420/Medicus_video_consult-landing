@@ -40,9 +40,9 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 
 ### Header
 
-- [ ] **HDR-01**: Header uses updated glass style aligned with new design direction
-- [ ] **HDR-02**: Navigation links to all existing sections/pages without regression
-- [ ] **HDR-03**: Mobile header behavior (menu toggle, sticky positioning) preserved
+- [x] **HDR-01**: Header uses updated glass style aligned with new design direction
+- [x] **HDR-02**: Navigation links to all existing sections/pages without regression
+- [x] **HDR-03**: Mobile header behavior (menu toggle, sticky positioning) preserved
 
 ### Visual System
 
@@ -115,9 +115,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | VIS-02 | Phase 79 | Complete |
 | VIS-03 | Phase 79 | Complete |
-| HDR-01 | Phase 80 | Pending |
-| HDR-02 | Phase 80 | Pending |
-| HDR-03 | Phase 80 | Pending |
+| HDR-01 | Phase 80 | Complete |
+| HDR-02 | Phase 80 | Complete |
+| HDR-03 | Phase 80 | Complete |
 | HERO-01 | Phase 81 | Pending |
 | HERO-02 | Phase 81 | Pending |
 | HERO-03 | Phase 81 | Pending |
