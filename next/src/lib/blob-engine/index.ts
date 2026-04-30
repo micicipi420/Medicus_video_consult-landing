@@ -33,6 +33,7 @@ import {
   leaveWindowDecayTarget,
   LEAVE_DECAY_MS,
 } from './lissajous';
+import { attachDebug, detachDebug } from './debug';
 
 interface EngineState {
   refcount: number;
@@ -175,6 +176,34 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
 
   state.modeHandles = attachModeListeners(state.abort, recomputeMode, onPointerOut, onPointerOver);
 
+  // Dev-only debug surface (BLOB-12). Tree-shaken in prod via NODE_ENV guard.
+  if (process.env.NODE_ENV !== 'production') {
+    attachDebug(() => {
+      if (!state) {
+        return {
+          rafId: null,
+          abort: null,
+          mode: 'unstarted',
+          pointer: { x: 0, y: 0 },
+          heat: 0,
+          velocity: 0,
+          startedAt: 0,
+          frameCount: 0,
+        };
+      }
+      return {
+        rafId: state.rafId,
+        abort: state.abort,
+        mode: state.mode,
+        pointer: { x: state.pointer.x, y: state.pointer.y },
+        heat: state.heat,
+        velocity: state.velocity,
+        startedAt: state.startedAt,
+        frameCount: state.frameCount,
+      };
+    });
+  }
+
   // Initial mode read.
   recomputeMode();
 
@@ -203,6 +232,9 @@ function makeStopFn(): () => void {
       state.modeHandles.themeObserver.disconnect();
     }
     state.modeHandles = null;
+    if (process.env.NODE_ENV !== 'production') {
+      detachDebug();
+    }
     state.parent.dataset.engineActive = 'false';
     document.documentElement.removeAttribute('data-blob-mode');
     state = null;

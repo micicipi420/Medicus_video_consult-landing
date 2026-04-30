@@ -107,7 +107,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [x] **BLOB-09**: Dark theme (`[data-theme="dark"]`) — blob opacity ≤0.35, saturation ≤0.7, follow disabled (ambient drift only); existing `backdrop-filter: none` on glass preserved
 - [x] **BLOB-10**: Pointer-leave-window — smooth decay to last position then ambient drift; no snap-disappear; `data-blob-mode` attribute on `<html>` reflects current mode (cursor / ambient / static)
 - [x] **BLOB-11**: Page Visibility API integration — rAF stops when `document.hidden`, restarts on visible
-- [ ] **BLOB-12**: Dev-only `window.__blobDebug.rafCount` exposed for Playwright leak assertions
+- [x] **BLOB-12**: Dev-only `window.__blobDebug.rafCount` exposed for Playwright leak assertions
 
 ### Glass UI Rework: Chrome + Index Sections
 
@@ -288,7 +288,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOB-09 | Phase 91 | Complete |
 | BLOB-10 | Phase 91 | Complete |
 | BLOB-11 | Phase 91 | Complete |
-| BLOB-12 | Phase 91 | Pending |
+| BLOB-12 | Phase 91 | Complete |
 | GLASS-01 | Phase 92 | Pending |
 | GLASS-02 | Phase 92 | Pending |
 | GLASS-03 | Phase 92 | Pending |
