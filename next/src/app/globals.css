@@ -541,6 +541,22 @@
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
+
+  /* Phase 92 a11y hardening: chrome + index sections migrated from
+     bg-white/N to bg-[var(--glass-{section,card,form,button}-fill)]
+     arbitrary-value classes. Without backdrop-filter, the underlying
+     low-alpha fills (0.06–0.50) leave content sitting on a near-empty
+     rectangle. Rewrite the tokens themselves to fully-opaque white so
+     every consumer of these custom properties — utility classes AND
+     named .liquid-* classes — picks up the readable fill in the cascade.
+     This is more robust than per-selector matching against the
+     `bg-[var(--glass-*-fill)]` literal class string. */
+  :root {
+    --glass-section-fill: rgba(255, 255, 255, 0.92);
+    --glass-card-fill:    rgba(255, 255, 255, 0.92);
+    --glass-form-fill:    rgba(255, 255, 255, 0.92);
+    --glass-button-fill:  rgba(255, 255, 255, 0.92);
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -561,6 +577,26 @@
 
   /* Translucent white borders -> opaque dark border for visibility */
   [class*="border-white/"] {
+    border-color: rgba(0, 0, 0, 0.55) !important;
+  }
+
+  /* Phase 92 a11y hardening: every chrome + index section glass surface
+     now consumes bg-[var(--glass-{section,card,form,button}-fill)]
+     instead of bg-white/N. Override the token values themselves to
+     fully-opaque white so the high-contrast cascade actually flips
+     the fill. This covers utility-class consumers AND any named
+     .liquid-* class that resolves the same custom properties. */
+  :root {
+    --glass-section-fill: rgb(255 255 255);
+    --glass-card-fill:    rgb(255 255 255);
+    --glass-form-fill:    rgb(255 255 255);
+    --glass-button-fill:  rgb(255 255 255);
+  }
+
+  /* Token-based borders (border-glass-border / border-glass-border-strong)
+     resolve to translucent white via @theme inline; force opaque dark
+     borders for visibility in the same way as [class*="border-white/"]. */
+  [class*="border-glass-border"] {
     border-color: rgba(0, 0, 0, 0.55) !important;
   }
 }
