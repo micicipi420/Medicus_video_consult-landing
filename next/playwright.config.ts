@@ -10,6 +10,14 @@
 
 import { defineConfig } from '@playwright/test';
 
+// Port override: PLAYWRIGHT_PORT defaults to 3000 but can be set when port 3000
+// is occupied by another local Next dev server (Phase 93 Plan 07 ran into this
+// collision with a sibling project — unrelated next-server squatting on :3000).
+// Both `webServer.command` and `use.baseURL` consume the same value so reuseExistingServer
+// detection lines up with the spawned server.
+const PORT = process.env.PLAYWRIGHT_PORT || '3000';
+const BASE_URL = `http://localhost:${PORT}`;
+
 export default defineConfig({
   testDir: './tests',
   outputDir: './test-results',
@@ -29,13 +37,13 @@ export default defineConfig({
   reporter: [['list']],
 
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE_URL,
     trace: 'retain-on-failure',
   },
 
   webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:3000',
+    command: `pnpm dev --port ${PORT}`,
+    url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
