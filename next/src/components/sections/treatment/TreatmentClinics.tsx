@@ -12,7 +12,7 @@ export function TreatmentClinics() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Австрия */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#ED2939" />
@@ -29,7 +29,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Германия */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#000" />
@@ -47,7 +47,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Швейцария */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#DA291C" />
@@ -63,7 +63,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Израиль */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#fff" />
@@ -83,7 +83,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Индия */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#fff" />
@@ -102,7 +102,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* ОАЭ */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#000" />
@@ -120,7 +120,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Турция */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#E30A17" />
@@ -139,7 +139,7 @@ export function TreatmentClinics() {
         </div>
 
         {/* Южная Корея */}
-        <div className="bg-white/60 backdrop-blur-2xl rounded-[2rem] p-6 border border-white/60 shadow-glass">
+        <div className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2rem] p-6 border border-white/60 shadow-glass">
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#fff" />

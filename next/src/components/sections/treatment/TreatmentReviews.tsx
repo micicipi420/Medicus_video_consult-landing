@@ -40,7 +40,7 @@ export function TreatmentReviews() {
 
       <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {REVIEWS.map((review) => (
-          <div key={review.name} className="bg-white/60 backdrop-blur-2xl rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
+          <div key={review.name} className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[2.5rem] p-8 border border-white/60 shadow-glass">
             <div className="flex items-center gap-4 mb-5">
               <span
                 className={`w-12 h-12 bg-gradient-to-br ${review.gradient} rounded-full flex items-center justify-center text-white font-bold text-lg`}
