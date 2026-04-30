@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
-status: completed
-stopped_at: Phase 93 Plan 00 complete (Wave 0 test infrastructure)
-last_updated: "2026-04-30T14:23:00.858Z"
+status: in-progress
+stopped_at: Phase 93 Plan 01 complete (Wave 1 service primitives swept)
+last_updated: "2026-04-30T14:31:35.270Z"
 last_activity: 2026-04-30
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 26
-  completed_plans: 19
-  percent: 73
+  completed_plans: 20
+  percent: 77
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 
 ## Current Position
 
-Phase: 92
-Plan: Not started
-Status: Milestone complete
+Phase: 93
+Plan: 02 (next — Wave 2A /checkup sweep)
+Status: Wave 1 complete; Wave 2 ready
 Last activity: 2026-04-30
 
-Progress: [███████░░░] 73%
+Progress: [███████▓░░] 77%
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ Progress: [███████░░░] 73%
 | Phase 90 P04 | 2 minutes | 2 tasks tasks | 1 file files |
 | Phase 91 P01 | 3 minutes | 2 tasks (+1 delegated) | 4 files |
 | Phase 93 P00 | 8 minutes | 3 tasks | 11 files |
+| Phase 93 P01 | 5 minutes | 4 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,7 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 90 P04]: mounted .living-blob-field static skeleton + 8-var inline <style> seed in layout.tsx; hard-deleted MeshBackground.tsx; clean rebuild green; manual 5-route DevTools smoke pending user attestation
 - [Phase 91 P01]: stubbed lib/blob-engine/index.ts (startBlobEngine signature locked for Plan 02); LivingBlobField.tsx Client Component shell mounts <canvas class="blob-canvas"> as 5th child of .living-blob-field; appended .blob-canvas visibility CSS after frozen blob.css line 79; pnpm build clean (Rule 1 auto-fix removed an unused eslint-disable directive); BLOB-01 complete
 - [Phase ?]: Phase 93 Plan 00: Wave 0 baseline locked — Playwright 1.59.1 + Chromium; 8 PNGs at next/tests/visual/__snapshots__/; STRATEGY=reducedMotion (Phase 91 __blobDebug.setMode not implemented); blob exclusion via addStyleTag display:none NOT Playwright mask (mask painted full-viewport magenta); next/tests/e2e/submission.spec.ts shipped as .skip skeleton for Plan 07
+- [Phase 93 P01]: Wave 1 service primitives swept to v9.0 4-tier glass tokens — ServiceHero (Archetype B + J preserve), SocialProof (C with Tier-2 hover), FAQ (D with text-gradient preserve), LeadFormSection (Decision A flatten outer Tier 0, KD-v9-002 inner α=0.50, Tier 3 chip); anti-pattern #13 cleared on LeadFormSection; ContactForm.tsx untouched; Decision C honored (no honeypot/timing). Visual-diff finding: 8/8 Wave 0 tests passed because blob is hidden via addStyleTag — token swap is sub-pixel over bare page-frame; live-blob deltas captured at runtime, baseline regeneration deferred to Plan 07.
 
 ### Pending Key Decisions for v9.0
 
@@ -127,6 +129,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T14:22:55.187Z
-Stopped at: Phase 93 Plan 00 complete (Wave 0 test infrastructure)
-Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-01-PLAN.md
+Last session: 2026-04-30T14:30:00.000Z
+Stopped at: Phase 93 Plan 01 complete (Wave 1 service primitives swept)
+Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-02-PLAN.md
