@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
-status: milestone_complete
-stopped_at: Phase 92 UI-SPEC approved + FLAGs addressed
-last_updated: "2026-04-30T11:23:22.487Z"
-last_activity: 2026-04-30 -- Phase 92 execution started
+status: completed
+stopped_at: Phase 93 Plan 00 complete (Wave 0 test infrastructure)
+last_updated: "2026-04-30T14:23:00.858Z"
+last_activity: 2026-04-30
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 18
-  completed_plans: 10
-  percent: 100
+  total_plans: 26
+  completed_plans: 19
+  percent: 73
 ---
 
 # Project State
@@ -30,7 +30,7 @@ Plan: Not started
 Status: Milestone complete
 Last activity: 2026-04-30
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 73%
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Progress: [██████████] 100%
 | Phase 90 P02 | 5 minutes | 2 tasks | 3 files |
 | Phase 90 P04 | 2 minutes | 2 tasks tasks | 1 file files |
 | Phase 91 P01 | 3 minutes | 2 tasks (+1 delegated) | 4 files |
+| Phase 93 P00 | 8 minutes | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Plan 90-02 — reworded executor docstrings in blob.css and liquid-glass.css to avoid bare class-prefix substrings that confused literal verification grep gates
 - [Phase ?]: [Phase 90 P04]: mounted .living-blob-field static skeleton + 8-var inline <style> seed in layout.tsx; hard-deleted MeshBackground.tsx; clean rebuild green; manual 5-route DevTools smoke pending user attestation
 - [Phase 91 P01]: stubbed lib/blob-engine/index.ts (startBlobEngine signature locked for Plan 02); LivingBlobField.tsx Client Component shell mounts <canvas class="blob-canvas"> as 5th child of .living-blob-field; appended .blob-canvas visibility CSS after frozen blob.css line 79; pnpm build clean (Rule 1 auto-fix removed an unused eslint-disable directive); BLOB-01 complete
+- [Phase ?]: Phase 93 Plan 00: Wave 0 baseline locked — Playwright 1.59.1 + Chromium; 8 PNGs at next/tests/visual/__snapshots__/; STRATEGY=reducedMotion (Phase 91 __blobDebug.setMode not implemented); blob exclusion via addStyleTag display:none NOT Playwright mask (mask painted full-viewport magenta); next/tests/e2e/submission.spec.ts shipped as .skip skeleton for Plan 07
 
 ### Pending Key Decisions for v9.0
 
@@ -125,6 +127,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T10:03:29.116Z
-Stopped at: Phase 92 UI-SPEC approved + FLAGs addressed
-Resume file: .planning/phases/92-glass-rework-chrome-index-sections/92-UI-SPEC.md
+Last session: 2026-04-30T14:22:55.187Z
+Stopped at: Phase 93 Plan 00 complete (Wave 0 test infrastructure)
+Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-01-PLAN.md

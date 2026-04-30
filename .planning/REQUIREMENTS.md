@@ -130,7 +130,7 @@ Loose ends from v8.0 + propagation of v8.0 design language to service pages.
 - [ ] **ROUTE-04**: `/contacts` section components (2 files in `next/src/components/sections/contacts/`) — per-tier sweep
 - [ ] **ROUTE-05**: Service-page primitives (`ServiceHero`, `FAQ`, `SocialProof`, `LeadFormSection` in `next/src/components/sections/service/`) — `LeadFormSection` receives same form-safety treatment as `ContactForm` (≥0.16 alpha, opaque inputs)
 - [ ] **ROUTE-06**: shadcn primitives (`card`, `dialog`, `input`, `select`, `textarea` in `next/src/components/ui/`) updated last (highest blast-radius)
-- [ ] **ROUTE-07**: Per-route Playwright screenshot diff vs pre-v9.0 baseline before each route is signed off; form/CTA regions must be visually stable (blob area masked)
+- [x] **ROUTE-07**: Per-route Playwright screenshot diff vs pre-v9.0 baseline before each route is signed off; form/CTA regions must be visually stable (blob area masked)
 
 ### Verification: UAT, Performance, A11y, Brand Review
 
@@ -305,7 +305,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ROUTE-04 | Phase 93 | Pending |
 | ROUTE-05 | Phase 93 | Pending |
 | ROUTE-06 | Phase 93 | Pending |
-| ROUTE-07 | Phase 93 | Pending |
+| ROUTE-07 | Phase 93 | Complete |
 | VER-01 | Phase 94 | Pending |
 | VER-02 | Phase 94 | Pending |
 | VER-03 | Phase 94 | Pending |
