@@ -74,7 +74,7 @@ export function ReviewsSection() {
           {REVIEWS.map((card, i) => (
             <div
               key={i}
-              className="bg-white/60 backdrop-blur-2xl rounded-[3rem] shadow-glass border border-glass-border p-8 hover:shadow-glass-lg hover:border-glass-border-strong transition-all duration-300"
+              className="bg-[var(--glass-card-fill)] backdrop-blur-[var(--glass-card-blur)] rounded-[3rem] shadow-glass border border-glass-border p-8 hover:bg-[var(--glass-form-fill)] hover:shadow-glass-lg hover:border-glass-border-strong transition-all duration-300"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div
