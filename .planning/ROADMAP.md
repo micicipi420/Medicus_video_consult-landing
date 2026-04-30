@@ -16,19 +16,30 @@
 - v6.0 Next.js Stack Migration -- Phases 59-67.1 (shipped 2026-04-11)
 - v6.1 New Design Port -- Phases 68-72 (shipped 2026-04-12)
 - v7.0 UI/UX Design Excellence -- Phases 73-78 (shipped 2026-04-14)
-- v8.0 Index Page Redesign -- Phases 79-85
+- v8.0 Index Page Redesign -- Phases 79-85 (shipped 2026-04-30)
+- v8.1 v8.0 Propagation & Loose Ends -- Phases 86-89
 
 ## Phases
 
-### v8.0 Index Page Redesign (In Progress)
+### v8.1 v8.0 Propagation & Loose Ends (In Progress)
 
-- [ ] **Phase 79: Visual Foundation (Typography & Mobile Budget)** - Establish modern type scale and responsive glass/motion budget tokens that every subsequent phase consumes
-- [ ] **Phase 80: Glass Header Chrome** - Ship the new glass-style header with navigation parity and preserved mobile behavior
-- [ ] **Phase 81: Hero Video-Call Frame** - Replace hero with doctor photo framed as a video-call window (mic/camera/hangup controls, HD badge, dual CTAs)
-- [ ] **Phase 82: Stats Bar** - At-a-glance credibility strip below hero: 4 icon metrics in glass cards
-- [ ] **Phase 83: Services & Process Sections** - "Мы помогаем" 4 glass service cards plus "Как это работает" 4 numbered steps with dotted connectors
-- [ ] **Phase 84: CTA Form on Blue Gradient** - Final CTA section with blue gradient background, trust signals, and preserved Directus submission
-- [ ] **Phase 85: Glass Hardening & Accessibility Verification** - Strengthen glassmorphism across index per mockup and verify accessibility/mobile budget guarantees still hold
+- [ ] **Phase 86: Service Pages v8.0 Propagation** - Apply Phase 80–84 design language to `/checkup`, `/consultations`, `/treatment-abroad` (header chrome, ServiceHero + LeadFormSection chrome polish, scoped transitions, ≥44pt tap targets); consume relevant `stash@{0}` content; preserve Directus submission
+- [ ] **Phase 87: Real Content** - Replace "Dr. Ferdinand K. · Vienna" placeholder in HeroHub with on-team or stable name; restore coordinator presence on ContactSection (real photo or designed alternative — was removed in Phase 84 to drop the Unsplash dependency)
+- [ ] **Phase 88: Code Hygiene** - Fix 2 pre-existing lint warnings (`PHONE_NUMBER` unused in `/treatment-abroad/page.tsx`, `variant` unused in `ServiceHero.tsx`); decide fate of unused `LiquidBlobLayer.tsx` + `liquid-depth.css` (wire in or remove); resolve `.planning/research/{ARCHITECTURE,FEATURES,PITFALLS,STACK}.md` stash rewrites (apply or discard)
+- [ ] **Phase 89: Milestone Closeout** - Stash@{0} triage (cherry-pick remaining value, drop entry); live a11y UAT (7 browser-only checks from `85-VERIFICATION.md`); `/gsd-cleanup` to archive v8.0 phase directories into `.planning/milestones/v8.0-phases`
+
+<details>
+<summary>v8.0 Index Page Redesign (Phases 79-85) -- SHIPPED 2026-04-30</summary>
+
+- [x] Phase 79: Visual Foundation (Typography & Mobile Budget) (1/1 plan) -- completed 2026-04-29
+- [x] Phase 80: Glass Header Chrome (1/1 plan) -- completed 2026-04-30
+- [x] Phase 81: Hero Video-Call Frame (1/1 plan) -- completed 2026-04-30
+- [x] Phase 82: Stats Bar (1/1 plan) -- completed 2026-04-30
+- [x] Phase 83: Services & Process Sections (1/1 plan) -- completed 2026-04-30
+- [x] Phase 84: CTA Form on Blue Gradient (1/1 plan) -- completed 2026-04-30
+- [x] Phase 85: Glass Hardening & Accessibility Verification (1/1 plan) -- completed 2026-04-30 (status: human_needed for live UAT — tracked in Phase 89)
+
+</details>
 
 <details>
 <summary>v7.0 UI/UX Design Excellence (Phases 73-78) -- SHIPPED 2026-04-14</summary>

@@ -51,6 +51,33 @@ Requirements for Index Page Redesign milestone. Each maps to roadmap phases.
 - [x] **VIS-03**: Mobile budget respected (≤2 glass elements/viewport, blur ≤12px, ЦА 45+ simplicity)
 - [x] **VIS-04**: Existing accessibility guarantees preserved (prefers-contrast, prefers-reduced-transparency, prefers-reduced-motion, focus-visible, 44×44 touch targets)
 
+## v8.1 Requirements
+
+Loose ends from v8.0 + propagation of v8.0 design language to service pages.
+
+### Service Page Propagation (Phase 86)
+
+- [ ] **PROP-01**: `/checkup`, `/consultations`, and `/treatment-abroad` adopt the v8.0 glass-header chrome and consume the same Phase 79 typography + motion + mobile-blur tokens
+- [ ] **PROP-02**: Service-page hero (`ServiceHero`) and lead-capture form (`LeadFormSection`) match the v8.0 chrome language — scoped transitions, ≥44pt tap targets, mobile-budget compliant
+- [ ] **PROP-03**: Service-page submission paths still reach the existing Directus endpoint — no regression in form behavior
+
+### Real Content (Phase 87)
+
+- [ ] **CNT-01**: HeroHub video-call frame uses a real on-team doctor name (or culturally-appropriate stable placeholder), not "Dr. Ferdinand K. · Vienna"
+- [ ] **CNT-02**: ContactSection has a coordinator presence (real photo or designed visual element) — coordinator was removed in Phase 84 to drop the Unsplash dependency
+
+### Code Hygiene (Phase 88)
+
+- [ ] **HYG-01**: Zero lint warnings on `pnpm build` for v8.0/v8.1 components
+- [ ] **HYG-02**: Decide fate of `next/src/components/layout/LiquidBlobLayer.tsx` and `next/src/styles/liquid-depth.css` — either wire them in (with a phase plan) or remove them
+- [ ] **HYG-03**: `.planning/research/{ARCHITECTURE,FEATURES,PITFALLS,STACK}.md` stash rewrites are either applied or explicitly discarded — no half-applied research drift
+
+### Milestone Closeout (Phase 89)
+
+- [ ] **CLO-01**: `stash@{0}` resolved — anything still relevant cherry-picked into a tracked commit; the stash entry dropped
+- [ ] **CLO-02**: Phase 85 live a11y UAT executed against running dev server (7 browser-only checks documented in `85-VERIFICATION.md`)
+- [ ] **CLO-03**: `/gsd-cleanup` archives v8.0 phase directories into `.planning/milestones/v8.0-phases`
+
 ## v7.0 Requirements (Shipped 2026-04-14)
 
 Requirements for UI/UX Design Excellence milestone. Each maps to roadmap phases.

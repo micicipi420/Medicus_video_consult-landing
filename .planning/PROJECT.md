@@ -71,17 +71,27 @@ Index-страница (`/`) — hub, представляющий все три
 
 ### Active
 
-## Current Milestone: v8.0 Index Page Redesign
+## Current Milestone: v8.1 v8.0 Propagation & Loose Ends
 
-**Goal:** Редизайн главной страницы по визуальному направлению из макета — новая структура секций, усиленный glassmorphism, современная типографика.
+**Goal:** Распространить визуальный язык v8.0 (chrome, glass, типографика) с index-страницы на остальные страницы сайта, закрыть оставшиеся хвосты v8.0 (плейсхолдеры контента, lint warnings, неиспользуемые файлы) и провести финальное закрытие milestone (live a11y UAT, stash triage, archival).
 
 **Target features:**
-- Hero с фото врача в рамке видеозвонка (mic/camera/hangup controls, HD badge) + два CTA
-- Stats bar: 4 метрики с иконками в glass-карточках
-- «Мы помогаем на каждом этапе»: 4 карточки-услуги с иконками в glass-стиле
-- «Как это работает»: 4 нумерованных шага с иконками и пунктирными соединительными линиями
-- CTA-форма на синем градиенте с trust-сигналами
-- Обновлённый glass-header с навигацией
+- Сервисные страницы (`/checkup`, `/consultations`, `/treatment-abroad`) на v8.0 chrome — header, ServiceHero, LeadFormSection
+- Замена плейсхолдера "Dr. Ferdinand K. · Vienna" в HeroHub на on-team имя
+- Восстановление координатор-присутствия в ContactSection (фото или дизайн-альтернатива)
+- Чистка кода: 2 lint warnings, удаление/использование `LiquidBlobLayer.tsx` + `liquid-depth.css`, решение по research-docs rewrite
+- Live UAT v8.0 a11y (7 браузерных проверок), triage `stash@{0}`, архивация v8.0 в `.planning/milestones/`
+
+## Previous Milestone: v8.0 Index Page Redesign (Shipped 2026-04-30)
+
+Index page redesign per the new mockup. 7 phases shipped:
+- Phase 79: typography + mobile glass/motion budget tokens
+- Phase 80: glass header chrome (HeaderClient, MobileMenu, StickyBar — HIG 44pt tap targets, ESC dismissal, iOS safe-area)
+- Phase 81: hero video-call frame metaphor with name pill + live indicator + control row
+- Phase 82: stats bar with icons + responsive-glass-nesting (mobile 1 wrapper / desktop 4 cards)
+- Phase 83: 4-card services + 4-step process with desktop dotted connector
+- Phase 84: blue-gradient CTA section with 3 trust signals (form preserved unmodified)
+- Phase 85: a11y hardening — added missing prefers-contrast block + utility-class reduced-transparency coverage
 
 ### Out of Scope
 

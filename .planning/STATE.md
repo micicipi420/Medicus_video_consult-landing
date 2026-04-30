@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v8.0
-milestone_name: Index Page Redesign
-status: milestone_complete
-stopped_at: v8.0 roadmap created -- ready to plan Phase 79
-last_updated: "2026-04-29T16:46:02.152Z"
-last_activity: 2026-04-29 -- Phase 79 execution started
+milestone: v8.1
+milestone_name: v8.0 Propagation & Loose Ends
+status: milestone_planned
+stopped_at: v8.1 roadmap created -- ready to plan Phase 86
+last_updated: "2026-04-30T00:00:00.000Z"
+last_activity: 2026-04-30 -- v8.0 shipped, v8.1 milestone created
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 1
+  total_phases: 4
+  completed_phases: 0
+  total_plans: 0
   completed_plans: 0
-  percent: 100
+  percent: 0
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-23)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома -- и оставляет заявку.
-**Current focus:** Phase 79 — visual-foundation-typography-mobile-budget
+**Current focus:** Phase 86 — service-pages-v8-propagation
 
 ## Current Position
 
-Phase: 85
+Phase: 86 (next to plan)
 Plan: Not started
-Status: Milestone complete
+Status: Milestone planned, awaiting Phase 86 plan
 Last activity: 2026-04-30
 
-Progress: [░░░░░░░░░░] 0% (0/7 phases)
+Progress: [░░░░░░░░░░] 0% (0/4 phases)
 
 ## Performance Metrics
 
@@ -75,16 +75,20 @@ Recent decisions affecting current work:
 - [v6.1]: New design source of truth is vanilla HTML at commit d450232 on feat/new-design branch
 - [v7.0]: 6 phases derived from 18 requirements; Phases 74/75/76 parallelizable after 73
 - [v8.0]: 7 phases derived from 22 requirements; Phase 79 (foundation) unblocks all others; Phase 85 (verification) must ship last
+- [v8.1]: 4 phases capturing v8.0 loose ends — service-page propagation, content placeholders, code hygiene, milestone closeout
 
 ### Pending Todos
 
-None yet.
+- Phase 89/CLO-02: Live a11y UAT for v8.0 — execute 7 browser-only checks from `.planning/phases/85-glass-hardening-accessibility-verification/85-VERIFICATION.md` against running dev server
+- Phase 89/CLO-01: Triage `stash@{0}` — cherry-pick remaining value, drop entry once consumed
+- `.mcp.json` is untracked and may be personal MCP config; user decides track vs ignore
 
 ### Blockers/Concerns
 
 - Turbopack backdrop-filter bug (#78302) -- OPEN, must use Webpack for prod
 - CSS import order divergence dev/prod (#79531, #79535) -- mitigated by single entry point
-- Strengthened glassmorphism in v8.0 must stay within v7.0 mobile budget (≤2 glass layers / ≤12px blur on <768px)
+- v8.1 service pages must respect Phase 79 mobile glass budget (≤2 layers / ≤12px blur on <768px)
+- 2 pre-existing lint warnings on build (PHONE_NUMBER unused, variant unused) — tracked under HYG-01
 
 ### Quick Tasks Completed
 
@@ -97,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-23
-Stopped at: v8.0 roadmap created -- ready to plan Phase 79
+Last session: 2026-04-30
+Stopped at: v8.1 roadmap created -- ready to plan Phase 86
 Resume file: None
