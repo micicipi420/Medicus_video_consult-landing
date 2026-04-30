@@ -7,6 +7,7 @@
 /* 2. Design system layers — MUST be after tailwindcss */
 @import "../styles/liquid-glass.css";
 @import "../styles/squircles.css";
+/* @import "../styles/blob.css"; — wired in 90-02 */
 @import "shadcn/tailwind.css";
 
 /* 3. Root tokens (ported verbatim from src/styles/theme.css :root) */
@@ -234,6 +235,33 @@
   --space-8: 4rem;     /* 64px */
   --space-10: 5rem;    /* 80px */
   --section-padding-desktop: 6.25rem; /* 100px */
+
+  /* v9.0 Living Blob palette (Phase 90, FND-01) — see DESIGN.md > v9.0 Custom Rules */
+  --blob-core: #35B678;       /* alias of --mu-green-600 / mu-primary */
+  --blob-hot: #4FE098;        /* KD-v9-001 — pending brand approval (see PROJECT.md Key Decisions) */
+  --blob-halo: rgba(98, 221, 177, 0.5);
+  --blob-edge: rgba(125, 205, 255, 0.18);
+  --blob-glint: rgba(255, 255, 255, 0.65);
+
+  /* v9.0 Glass tier tokens (Phase 90, FND-02) — clamp(12px, fluid-vw, desktop-ceiling); 12px is mobile floor (Phase 79 hard cap) */
+  --glass-section-fill: rgba(255, 255, 255, 0.06);
+  --glass-card-fill:    rgba(255, 255, 255, 0.10);
+  --glass-form-fill:    rgba(255, 255, 255, 0.14);
+  --glass-button-fill:  rgba(255, 255, 255, 0.12);
+  --glass-section-blur: clamp(12px, 2vw,   24px);
+  --glass-card-blur:    clamp(12px, 1.6vw, 20px);
+  --glass-form-blur:    clamp(12px, 1.4vw, 18px);
+  --glass-button-blur:  clamp(12px, 1.2vw, 16px);
+
+  /* v9.0 runtime CSS-var defaults (Phase 90 seed; Phase 91 engine writes per-frame) */
+  --blob-x: 50vw;
+  --blob-y: 50vh;
+  --blob-body-x: 50vw;
+  --blob-body-y: 50vh;
+  --blob-halo-x: 50vw;
+  --blob-halo-y: 50vh;
+  --blob-heat: 0;
+  --blob-velocity: 0;
 }
 
 /* 5. Tailwind theme extensions (ported from theme.css @theme inline) */
