@@ -12,7 +12,7 @@ export function HeroHub() {
           {/* Left Content */}
           <div className="w-full min-w-0 max-w-[calc(100vw-2rem)] lg:max-w-2xl">
             {/* Glass pill badge */}
-            <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-glass-border bg-white/40 px-4 py-2.5 shadow-glass-sm backdrop-blur-[20px] sm:px-5">
+            <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-section-fill)] px-4 py-2.5 shadow-glass-sm backdrop-blur-[var(--glass-section-blur)] sm:px-5">
               <Sparkles className="h-4 w-4 flex-shrink-0 text-mu-blue" />
               <span className="text-xs font-semibold leading-snug text-mu-text-900 sm:text-sm">
                 Австрийская медицинская компания с&nbsp;офисом в&nbsp;Казахстане
@@ -53,7 +53,7 @@ export function HeroHub() {
               {/* Secondary CTA - glass */}
               <a
                 href="#services"
-                className="w-full rounded-3xl border border-glass-border bg-white/50 px-8 py-4 text-center text-lg font-semibold text-mu-text-900 shadow-glass backdrop-blur-[20px] transition-[background-color,border-color,box-shadow] duration-200 hover:bg-white/60 sm:w-auto"
+                className="w-full rounded-3xl border border-glass-border bg-[var(--glass-section-fill)] px-8 py-4 text-center text-lg font-semibold text-mu-text-900 shadow-glass backdrop-blur-[var(--glass-section-blur)] transition-[background-color,border-color,box-shadow] duration-200 hover:bg-[var(--glass-card-fill)] sm:w-auto"
               >
                 Узнать больше
               </a>
@@ -136,7 +136,7 @@ export function HeroHub() {
             </div>
 
             {/* Floating credibility badge — single, repositioned to avoid chrome */}
-            <div className="absolute -right-3 -top-3 z-10 flex items-center gap-3 rounded-3xl border border-glass-border-strong bg-white/75 p-3 shadow-glass backdrop-blur-[40px] sm:-right-6 sm:-top-6 sm:gap-4 sm:rounded-[2rem] sm:p-4">
+            <div className="absolute -right-3 -top-3 z-10 flex items-center gap-3 rounded-3xl border border-glass-border-strong bg-[var(--glass-card-fill)] p-3 shadow-glass backdrop-blur-[var(--glass-card-blur)] sm:-right-6 sm:-top-6 sm:gap-4 sm:rounded-[2rem] sm:p-4">
               <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-mu-green-500 to-mu-green-600 text-white shadow-inner sm:h-14 sm:w-14">
                 <Globe className="h-5 w-5 sm:h-7 sm:w-7" />
               </div>
