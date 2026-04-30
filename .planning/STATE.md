@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v9.0
 milestone_name: Living Blob Liquid Glass Scene
 status: in-progress
-stopped_at: Phase 93 Plan 02 complete (Wave 2A /checkup route swept)
-last_updated: "2026-04-30T14:39:31Z"
+stopped_at: Phase 93 Plan 03 complete (Wave 2B /consultations route swept)
+last_updated: "2026-04-30T14:51:26Z"
 last_activity: 2026-04-30
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 26
-  completed_plans: 21
-  percent: 81
+  completed_plans: 22
+  percent: 85
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 ## Current Position
 
 Phase: 93
-Plan: 03 (next — Wave 2B /consultations sweep)
-Status: Wave 2A complete (/checkup); Wave 2B/2C/2D ready (parallel-safe — disjoint file ownership)
+Plan: 04 (next — Wave 2C /treatment-abroad sweep)
+Status: Wave 2B complete (/consultations); Wave 2C/2D ready (parallel-safe — disjoint file ownership)
 Last activity: 2026-04-30
 
-Progress: [████████░░] 81%
+Progress: [█████████░] 85%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [████████░░] 81%
 | Phase 93 P00 | 8 minutes | 3 tasks | 11 files |
 | Phase 93 P01 | 5 minutes | 4 tasks | 4 files |
 | Phase 93 P02 | 5 minutes | 4 tasks | 7 files |
+| Phase 93 P03 | 4 minutes | 4 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Phase 93 Plan 00: Wave 0 baseline locked — Playwright 1.59.1 + Chromium; 8 PNGs at next/tests/visual/__snapshots__/; STRATEGY=reducedMotion (Phase 91 __blobDebug.setMode not implemented); blob exclusion via addStyleTag display:none NOT Playwright mask (mask painted full-viewport magenta); next/tests/e2e/submission.spec.ts shipped as .skip skeleton for Plan 07
 - [Phase 93 P01]: Wave 1 service primitives swept to v9.0 4-tier glass tokens — ServiceHero (Archetype B + J preserve), SocialProof (C with Tier-2 hover), FAQ (D with text-gradient preserve), LeadFormSection (Decision A flatten outer Tier 0, KD-v9-002 inner α=0.50, Tier 3 chip); anti-pattern #13 cleared on LeadFormSection; ContactForm.tsx untouched; Decision C honored (no honeypot/timing). Visual-diff finding: 8/8 Wave 0 tests passed because blob is hidden via addStyleTag — token swap is sub-pixel over bare page-frame; live-blob deltas captured at runtime, baseline regeneration deferred to Plan 07.
 - [Phase 93 P02]: Wave 2A /checkup route swept to v9.0 4-tier glass tokens — 7 section components (CheckupAdvantages, CheckupB2B, CheckupProblem, CheckupProcess, CheckupProgramsKorea, CheckupProgramsTurkey, CheckupWhyUs), 26 token consumers across all files matching RESEARCH inventory exactly; Archetype J CTA invariant intact at CheckupB2B:85 + CheckupProgramsTurkey:132 (cross-cutting grep returned zero HIT lines); featured-variant brand-color badge pills preserved as decorative non-CTA pattern; static-Tier-1 default (no hover ramp added per planner discretion); Russian copy nbsp counts unchanged across all 7 files. Playwright /checkup visual diff 2/2 passed (consistent with Plan 01 finding — blob hidden via addStyleTag → token swap sub-pixel within maxDiffPixelRatio:0.01). Composition shell next/src/app/checkup/page.tsx untouched. ROUTE-01 satisfied (with Plan 01 primitives + Plan 02 sections together fully covering /checkup).
+- [Phase 93 P03]: Wave 2B /consultations route swept to v9.0 4-tier glass tokens — 7 section components (ConsultationAdvantages, ConsultationBenefits, ConsultationDoctors, ConsultationPricing, ConsultationProblem, ConsultationProcess, ConsultationScenarios); 37 total --glass-*-{fill,blur} references matching RESEARCH inventory exactly (28 fill consumers + 9 distinct blur classes via shared style); Archetype J CTA invariant intact at ConsultationPricing:43 (cross-cutting grep returned 0 HIT lines); 10 brand-color decorative inner chips preserved (anti-pattern #5 NOT triggered — only blur swapped, brand fill unchanged); ConsultationProcess explicit Tier-1→Tier-2 hover ramp wired (hover:bg-white/80 → hover:bg-[var(--glass-form-fill)] on 3 cards); ConsultationDoctors 3-tier sibling stack (outer + 7 cards + spec-pills) documented as Phase 82 grandfathered exception (siblings, not nested) and preserved as-is; spec-pill semantic hover:bg-mu-green-50 preserved verbatim; secondary CTA glass at line 156 mirrors HeroHub.tsx:56 hover-ramp pattern. Russian copy nbsp counts unchanged (baseline 36 → post 36). Playwright /consultations visual diff 2/2 passed within maxDiffPixelRatio:0.01. Composition shell next/src/app/consultations/page.tsx untouched. ROUTE-02 satisfied (with Plan 01 primitives + Plan 03 sections together fully covering /consultations).
 
 ### Pending Key Decisions for v9.0
 
@@ -131,6 +133,6 @@ regression is reported in any of these scenarios, this record is the first place
 
 ## Session Continuity
 
-Last session: 2026-04-30T14:39:31Z
-Stopped at: Phase 93 Plan 02 complete (Wave 2A /checkup route swept)
-Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-03-PLAN.md
+Last session: 2026-04-30T14:51:26Z
+Stopped at: Phase 93 Plan 03 complete (Wave 2B /consultations route swept)
+Resume file: .planning/phases/93-per-page-propagation-sub-routes/93-04-PLAN.md
