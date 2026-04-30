@@ -15,7 +15,7 @@ export function Footer() {
     <footer className="relative overflow-hidden z-10 py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* Glass card container */}
-        <div className="bg-white/60 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/60 shadow-glass-lg">
+        <div className="bg-[var(--glass-section-fill)] backdrop-blur-[var(--glass-section-blur)] rounded-[3rem] p-12 border border-white/60 shadow-glass-lg">
           {/* 4-column grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Column 1: Company */}
@@ -86,7 +86,7 @@ export function Footer() {
                   href={`tel:${PHONE_NUMBER}`}
                   className="flex items-center gap-3 group"
                 >
-                  <span className="bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                  <span className="bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
                     <Phone size={16} className="text-mu-blue" />
                   </span>
                   <span className="text-mu-text-900 font-medium group-hover:text-mu-blue transition-colors">
@@ -97,7 +97,7 @@ export function Footer() {
                   href={`mailto:${EMAIL}`}
                   className="flex items-center gap-3 group"
                 >
-                  <span className="bg-white/60 backdrop-blur-md p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
+                  <span className="bg-[var(--glass-button-fill)] backdrop-blur-[var(--glass-button-blur)] p-2.5 rounded-xl border border-white/60 shadow-glass-inner-strong">
                     <Mail size={16} className="text-mu-blue" />
                   </span>
                   <span className="text-mu-text-900 font-medium group-hover:text-mu-blue transition-colors">

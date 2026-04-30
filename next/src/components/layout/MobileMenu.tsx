@@ -35,7 +35,7 @@ export function MobileMenu() {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/55 bg-white/55 text-mu-text-700 shadow-glass-sm backdrop-blur-xl backdrop-saturate-[180%] transition-[transform,background-color,box-shadow] duration-200 active:scale-[0.96] lg:hidden"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/55 bg-[var(--glass-section-fill)] text-mu-text-700 shadow-glass-sm backdrop-blur-[var(--glass-section-blur)] backdrop-saturate-[180%] transition-[transform,background-color,box-shadow] duration-200 active:scale-[0.96] lg:hidden"
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -49,7 +49,7 @@ export function MobileMenu() {
           />
 
           {/* Glass nav panel */}
-          <nav className="absolute left-4 right-4 top-24 overflow-hidden rounded-3xl border-[0.5px] border-white/55 bg-white/68 shadow-glass-lg backdrop-blur-[80px] backdrop-saturate-[200%]">
+          <nav className="absolute left-4 right-4 top-24 overflow-hidden rounded-3xl border-[0.5px] border-white/55 bg-[var(--glass-section-fill)] shadow-glass-lg backdrop-blur-[var(--glass-section-blur)] backdrop-saturate-[200%]">
             <div className="flex flex-col gap-2 p-5">
               {NAV_LINKS.map((link) =>
                 link.href.startsWith('/') && !link.href.includes('#') ? (
