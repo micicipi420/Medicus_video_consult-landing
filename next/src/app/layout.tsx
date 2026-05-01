@@ -6,25 +6,33 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { StickyBar } from '@/components/layout/StickyBar';
 import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
-import { LivingBlobField } from '@/components/effects/LivingBlobField';
+import { LivingBlobFieldDynamic } from '@/components/effects/LivingBlobFieldDynamic';
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider';
 
+// AUDIT-01 fix (98-01): site is Russian-only — load cyrillic subset first so it
+// gets preload priority. adjustFontFallback aligns Arial fallback metrics to the
+// webfont, eliminating font-swap repaint that was driving the 2.7s LCP render
+// delay on text-LCP routes (all 5 routes had P/H1 as the LCP element).
 const inter = localFont({
   src: [
-    { path: '../fonts/inter-latin-wght-normal.woff2', weight: '100 900', style: 'normal' },
     { path: '../fonts/inter-cyrillic-wght-normal.woff2', weight: '100 900', style: 'normal' },
+    { path: '../fonts/inter-latin-wght-normal.woff2', weight: '100 900', style: 'normal' },
   ],
   variable: '--font-family-body-next',
   display: 'swap',
+  adjustFontFallback: 'Arial',
+  preload: true,
 });
 
 const manrope = localFont({
   src: [
-    { path: '../fonts/manrope-latin-wght-normal.woff2', weight: '100 900', style: 'normal' },
     { path: '../fonts/manrope-cyrillic-wght-normal.woff2', weight: '100 900', style: 'normal' },
+    { path: '../fonts/manrope-latin-wght-normal.woff2', weight: '100 900', style: 'normal' },
   ],
   variable: '--font-family-heading-next',
   display: 'swap',
+  adjustFontFallback: 'Arial',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -56,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="blob-sublayer blob-body" />
           <div className="blob-sublayer blob-halo" />
           <div className="blob-sublayer blob-glint" />
-          <LivingBlobField />
+          <LivingBlobFieldDynamic />
         </div>
         <Header />
         <LazyMotionProvider>
