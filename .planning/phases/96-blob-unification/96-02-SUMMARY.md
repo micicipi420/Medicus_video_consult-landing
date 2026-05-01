@@ -1,9 +1,10 @@
 # Plan 96-02 Summary — Correlated motion (BR-02)
 
-**Status:** PARTIAL (parametric tuning did not reach the 8px ceiling under
-1500ms diagonal sweep — escalation path documented below)
+**Status:** COMPLETE (Option B structural refactor — see "Option B Outcome"
+section below; parametric tuning did not reach the ceiling but the
+follow-up structural change did, with significant headroom)
 **Wave:** 2
-**Date:** 2026-05-01
+**Date:** 2026-05-01 (parametric attempt) → 2026-04-30 (Option B refactor)
 
 ## What changed
 
@@ -138,3 +139,100 @@ unchanged from Phase 91 Plan 05.
 - `next/src/app/globals.css`
 - `next/tests/e2e/blob-correlated-motion.spec.ts` (new — currently failing
   by design at 88px > 8px ceiling)
+
+---
+
+## Option B Outcome (post-escalation, 2026-04-30)
+
+User pre-approved structural refactor per ROADMAP. Implemented Option B:
+velocity-low-pass capped offsets.
+
+### Model
+
+- `LERP_CORE = 0.20` — only the core lerps to the target
+- `LERP_BODY / LERP_HALO / LERP_GLINT` exports — REMOVED (no longer apply)
+- `OFFSET_CAP_BODY = 6`, `OFFSET_CAP_HALO = 8`, `OFFSET_CAP_GLINT = 4` (px)
+- `VELOCITY_LP_ALPHA = 0.15` — vector-velocity low-pass smoothing
+- `VELOCITY_MAX = 1500` (unchanged) — saturation point of the offset curve
+
+Per frame:
+
+```
+velocityLP ← velocityLP * 0.85 + targetDelta_per_sec * 0.15      (vector)
+core.{x,y} ← lerp(core.{x,y}, target.{x,y}, 0.20)
+f          ← clamp(|velocityLP| / VELOCITY_MAX, 0, 1)
+unit       ← velocityLP / |velocityLP|
+layer.{x,y} ← core.{x,y} - unit.{x,y} * f * cap_layer            (trail)
+```
+
+The negative sign makes layers trail BEHIND core in the direction the cursor
+came from (organic streamline). At rest (f=0), all three layers collapse to
+core; at peak velocity, halo offset caps at 8px.
+
+### Why this works mathematically
+
+Per-layer LERP cluster had a steady-state lag of `v_per_frame * (1-k)/k`
+which scales LINEARLY with velocity — at 1500 px/s the gap between
+`k=0.16` halo and `k=0.20` core was tens of px (see "Why parametric tuning
+fell short" above). Inter-layer separation was unbounded above.
+
+Option B's offset is `f × cap_layer`, where `f` saturates at 1. The
+separation between any two layers is therefore `|cap_a - cap_b| × f ≤
+max(caps) - min(caps) = 4px`, and any layer to core is `cap_layer × f ≤ 8px`.
+**Inter-layer separation is hard-bounded to 8px regardless of velocity.**
+
+### Achieved numbers
+
+| Test                                     | Target  | Before (LERP)  | After (Option B) | Headroom |
+|------------------------------------------|---------|----------------|------------------|----------|
+| Desktop fast sweep (1500ms diagonal)     | ≤ 8px   | 88.83px (FAIL) | **2.17px** (PASS)| 5.83px   |
+| Desktop slow drift (~200 px/s)           | ≤ 2px   | n/a (new)      | **1.20px** (PASS)| 0.80px   |
+| Mobile Lissajous drift (5s)              | ≤ 8px   | 15.11px (FAIL) | **0.28px** (PASS)| 7.72px   |
+
+41× improvement on the desktop fast-sweep number. Mobile Lissajous max
+velocity is far below VELOCITY_MAX, so `f` stays near zero and all four
+layers track core within sub-pixel distance — easily satisfies BR-03's
+≤8px ceiling and the more aspirational ≤4px target.
+
+### Side benefits observed
+
+- "Calm cluster" feel at slow cursor speeds is preserved AND amplified —
+  layers fully collapse to core at f=0 (whereas LERP cluster always had
+  some steady-state lag at any motion).
+- Layer order (core leads, halo trails farthest) is consistent — no more
+  body/halo/glint passing each other during direction reversals.
+- Velocity-LP smoothing damps mouse jitter, so micro-tremors don't shake
+  the trail.
+
+### Verification
+
+- `pnpm tsc --noEmit` — clean
+- `pnpm lint` — clean (3 pre-existing warnings on unrelated test files)
+- `tests/e2e/blob-correlated-motion.spec.ts` — both desktop tests PASS
+- `tests/e2e/blob-mobile-correlated-motion.spec.ts` — PASS (0.28px)
+- `tests/visual/blob-mobile-ambient.spec.ts` — PASS (snapshot still matches)
+- `tests/visual/baseline.spec.ts` — 8/8 PASS (Phase 95 baselines preserved;
+  blob is masked there anyway)
+- `tests/visual/blob-halo-feather.spec.ts` — 2/2 PASS (Plan 96-01 snapshots
+  unaffected by position-model change since they use static-mode determinism)
+
+### Files changed in Option B refactor
+
+- `next/src/lib/blob-engine/physics.ts` — model rewrite (removed
+  LERP_BODY/HALO/GLINT, added OFFSET_CAP_* + VELOCITY_LP_ALPHA + new
+  VelocityLPState type + updateVelocityVector + reworked updateLayers)
+- `next/src/lib/blob-engine/index.ts` — added velocityLP state, lastTarget
+  tracking; passes velocityLP to updateLayers; exposes velocityLP in debug
+  snapshot
+- `next/src/lib/blob-engine/debug.ts` — added velocityLP to
+  DebugStateSnapshot + window.__blobDebug surface
+- `next/tests/e2e/blob-correlated-motion.spec.ts` — added low-velocity
+  drift test; existing fast-sweep test unchanged in assertions
+
+### Files NOT changed in Option B
+
+- `next/src/lib/blob-engine/canvas-renderer.ts` — DrawState shape unchanged;
+  glint x/y already wired in Plan 96-02 parametric attempt
+- `next/src/app/globals.css` — `--blob-glint-x/y` defaults from prior pass
+  remain
+- `next/src/lib/blob-engine/lissajous.ts`, `modes.ts` — untouched

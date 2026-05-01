@@ -1,9 +1,10 @@
 # Plan 96-03 Summary — Mobile ambient verification (BR-03)
 
-**Status:** PARTIAL (verification-only plan — visual baseline captured; e2e
-separation assertion fails for the same root cause as 96-02)
+**Status:** COMPLETE (mobile separation assertion now PASSES via Plan
+96-02's Option B structural refactor — see "Option B Inheritance" section
+below)
 **Wave:** 3
-**Date:** 2026-05-01
+**Date:** 2026-05-01 (initial PARTIAL) → 2026-04-30 (closed via 96-02 fix)
 
 ## What this plan delivers
 
@@ -89,3 +90,46 @@ Document in `/gsd-debug 96` before implementing.
 
 Chromium (Playwright `mobile-375` project) only. Safari iOS / Chrome
 Android parity inherited from Phase 95 cross-browser pass.
+
+---
+
+## Option B Inheritance (post-escalation, 2026-04-30)
+
+Plan 96-02's structural refactor (velocity-LP capped offsets) was
+implemented per the escalation note. Because both desktop cursor mode and
+mobile ambient mode call the same `updateLayers()` from `index.ts:loop()`,
+mobile ambient automatically inherits the new model — no source changes
+needed in this plan.
+
+### Mobile separation result under Option B
+
+```
+[BR-03] mobile ambient maxAngularSeparation over 5s: 0.28px
+Expected: <= 8 → PASS (with 7.72px headroom)
+```
+
+**Achieved 0.28px** under 5s of Lissajous drift, vs 15.11px previously —
+a 54× improvement. This easily clears both the BR-03 ≤8px ceiling and the
+aspirational ≤4px target.
+
+### Why so far below the cap
+
+Lissajous max velocity (~0.7px/frame ≈ 42 px/s on mobile-375) is ~36× below
+VELOCITY_MAX (1500 px/s). With `f = clamp(velocityLP / VELOCITY_MAX, 0, 1)`,
+that gives `f ≈ 0.028`. Halo offset = `f × 8 = 0.22px`; the ~0.28px reading
+includes velocity-LP transients during direction reversals at orbit
+extrema. All four layers effectively render at `core ± sub-pixel`, which
+matches the desired "calm cluster" feel for mobile ambient.
+
+### Visual baseline
+
+Re-ran `tests/visual/blob-mobile-ambient.spec.ts` after the refactor:
+PASS, 0 diffs from the baseline PNG. The Decision K scroll-freeze path is
+unchanged, and at the frozen orbit point velocity-LP decays toward zero so
+all four layers converge to the same render position — identical pixels to
+the baseline captured under the old model.
+
+### No files modified by 96-03 in this iteration
+
+This plan remains verification-only. The fix lived in Plan 96-02. Only
+this SUMMARY changes (status: PARTIAL → COMPLETE, results section appended).
