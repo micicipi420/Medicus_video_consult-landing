@@ -5,10 +5,12 @@
 
 import type { LayerPos } from './canvas-renderer';
 
-// --- TZ §17 lerp factors (Decision D) — LOCKED ---
-export const LERP_CORE = 0.18;
-export const LERP_BODY = 0.08;
-export const LERP_HALO = 0.04;
+// --- TZ §17 lerp factors — Phase 96 BR-02 unified cluster
+// (was 0.18/0.08/0.04, ratio 4.5x; now 1.25x core/halo + glint leads slightly).
+export const LERP_CORE = 0.20;
+export const LERP_BODY = 0.18;
+export const LERP_HALO = 0.16;
+export const LERP_GLINT = 0.22;
 
 // --- Velocity tracker (Decision D) — LOCKED ---
 export const VELOCITY_ALPHA = 0.15;
@@ -43,13 +45,15 @@ export function lerp(current: number, target: number, factor: number): number {
 }
 
 /**
- * Apply lerp factors per Decision D to all 3 visible sublayers.
- * Pure — mutates layer fields in place; no side effects.
+ * Apply lerp factors to all 4 sublayers (core, body, halo, glint).
+ * Phase 96 BR-02: glint now has its own lerp instead of being hard-locked
+ * to core. Pure — mutates layer fields in place; no side effects.
  */
 export function updateLayers(
   core: LayerPos,
   body: LayerPos,
   halo: LayerPos,
+  glint: LayerPos,
   target: { x: number; y: number },
 ): void {
   core.x = lerp(core.x, target.x, LERP_CORE);
@@ -58,6 +62,8 @@ export function updateLayers(
   body.y = lerp(body.y, target.y, LERP_BODY);
   halo.x = lerp(halo.x, target.x, LERP_HALO);
   halo.y = lerp(halo.y, target.y, LERP_HALO);
+  glint.x = lerp(glint.x, target.x, LERP_GLINT);
+  glint.y = lerp(glint.y, target.y, LERP_GLINT);
 }
 
 /**

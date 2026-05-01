@@ -20,6 +20,7 @@ export interface DrawState {
   core: LayerPos;       // lerped layer positions in CSS px
   body: LayerPos;
   halo: LayerPos;
+  glint: LayerPos;      // Phase 96 BR-02 — own lerped position, no longer locked to core
   heat: number;         // 0..1
   velocity: number;     // px/s — Plan 02 stub: 0; Plan 03 real value
 }
@@ -52,7 +53,7 @@ export function readColors(): BlobColors {
 
 /** Frame draw orchestrator. Plan 02 paints with stub heat=0 + stub velocity=0. */
 export function drawFrame(s: DrawState): void {
-  const { ctx, width, height, colors, core, body, halo, heat, velocity } = s;
+  const { ctx, width, height, colors, core, body, halo, glint, heat, velocity } = s;
 
   ctx.clearRect(0, 0, width, height);
   ctx.globalCompositeOperation = 'screen';
@@ -63,7 +64,7 @@ export function drawFrame(s: DrawState): void {
 
   ctx.globalCompositeOperation = 'source-over';
   if (heat > 0.6 || velocity < 50) {
-    drawGlint(ctx, core.x, core.y, colors.glint);
+    drawGlint(ctx, glint.x, glint.y, colors.glint);
   }
 }
 

@@ -1,5 +1,7 @@
 // next/src/lib/blob-engine/debug.ts
 // v9.0 Phase 91 Plan 05 — Dev-only window.__blobDebug introspection surface (BLOB-12).
+// v9.0.1 Phase 96 Plan 02 — Extended with per-layer positions + maxAngularSeparation
+// (BR-02 verification surface for Playwright fast-cursor sweep).
 // Wrapped in process.env.NODE_ENV !== 'production' so Next.js webpack DefinePlugin
 // tree-shakes this module's side effects out of production bundles entirely.
 // Phase 94 Playwright leak assertion target: window.__blobDebug.rafCount === 1
@@ -16,6 +18,12 @@ declare global {
       velocity: number;
       startedAt: number;
       frameCount: number;
+      core: { x: number; y: number };
+      body: { x: number; y: number };
+      halo: { x: number; y: number };
+      glint: { x: number; y: number };
+      maxAngularSeparation: number;
+      resetMaxSeparation: () => void;
     };
   }
 }
@@ -33,14 +41,25 @@ export interface DebugStateSnapshot {
   velocity: number;
   startedAt: number;
   frameCount: number;
+  core: { x: number; y: number };
+  body: { x: number; y: number };
+  halo: { x: number; y: number };
+  glint: { x: number; y: number };
+  maxAngularSeparation: number;
 }
 
 /**
  * Attach window.__blobDebug as a live getter that reads from the engine
  * state object passed by reference. Caller must invoke from a NODE_ENV
  * guard so prod bundles tree-shake this entirely.
+ *
+ * `resetMaxSeparation` is exposed as a callable so Playwright can zero the
+ * rolling window before driving cursor input.
  */
-export function attachDebug(getSnapshot: () => DebugStateSnapshot): void {
+export function attachDebug(
+  getSnapshot: () => DebugStateSnapshot,
+  resetMaxSeparation: () => void,
+): void {
   if (process.env.NODE_ENV === 'production') return;
   Object.defineProperty(window, '__blobDebug', {
     configurable: true,
@@ -55,6 +74,12 @@ export function attachDebug(getSnapshot: () => DebugStateSnapshot): void {
         velocity: s.velocity,
         startedAt: s.startedAt,
         frameCount: s.frameCount,
+        core: { x: s.core.x, y: s.core.y },
+        body: { x: s.body.x, y: s.body.y },
+        halo: { x: s.halo.x, y: s.halo.y },
+        glint: { x: s.glint.x, y: s.glint.y },
+        maxAngularSeparation: s.maxAngularSeparation,
+        resetMaxSeparation,
       };
     },
   });
