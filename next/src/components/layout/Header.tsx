@@ -50,7 +50,7 @@ export function Header() {
           </a>
           <a
             href="#contact"
-            className="bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-6 py-2.5 rounded-full font-extrabold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow tracking-tight"
+            className="bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to text-white px-6 py-2.5 rounded-full font-extrabold shadow-lg shadow-mu-blue/25 hover:shadow-xl hover:shadow-mu-blue/30 transition-shadow tracking-tight"
           >
             Обсудить случай
           </a>

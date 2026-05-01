@@ -45,7 +45,7 @@ export function HeroHub() {
               {/* Primary CTA - gradient */}
               <a
                 href="#contact"
-                className="group flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-mu-blue/30 transition-[transform,box-shadow,filter] duration-200 hover:shadow-xl hover:shadow-mu-blue/40 active:scale-[0.98] sm:w-auto"
+                className="group flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-mu-blue/30 transition-[transform,box-shadow,filter] duration-200 hover:shadow-xl hover:shadow-mu-blue/40 active:scale-[0.98] sm:w-auto"
               >
                 Обсудить мой случай
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

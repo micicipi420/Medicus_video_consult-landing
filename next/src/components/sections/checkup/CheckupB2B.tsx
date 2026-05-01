@@ -82,7 +82,7 @@ export function CheckupB2B() {
         <div className="text-center">
           <a
             href="#form-checkup"
-            className="btn-primary bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2"
+            className="btn-primary bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to text-white px-10 py-5 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 text-lg inline-flex items-center gap-2"
           >
             Обсудить корпоративную программу
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>

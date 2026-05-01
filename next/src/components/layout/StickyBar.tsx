@@ -55,7 +55,7 @@ export function StickyBar() {
         </a>
         <a
           href={ctaHref}
-          className="flex min-h-11 items-center rounded-xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-mu-blue/30 transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
+          className="flex min-h-11 items-center rounded-xl bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-mu-blue/30 transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
         >
           Обсудить случай
         </a>

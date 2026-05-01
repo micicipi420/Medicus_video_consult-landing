@@ -244,7 +244,7 @@ export function ContactForm() {
           type="submit"
           aria-busy={formState === 'submitting'}
           disabled={formState === 'submitting'}
-          className="mt-8 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-mu-blue to-mu-accent-blue py-4 text-lg font-extrabold text-white shadow-[0_20px_44px_color-mix(in_oklch,var(--color-mu-blue)_32%,transparent)] transition-[transform,box-shadow,filter,opacity] duration-200 hover:shadow-[0_24px_56px_color-mix(in_oklch,var(--color-mu-blue)_42%,transparent)] active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-70"
+          className="mt-8 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to py-4 text-lg font-extrabold text-white shadow-[0_20px_44px_color-mix(in_oklch,var(--color-mu-blue)_32%,transparent)] transition-[transform,box-shadow,filter,opacity] duration-200 hover:shadow-[0_24px_56px_color-mix(in_oklch,var(--color-mu-blue)_42%,transparent)] active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {formState === 'submitting' ? 'Отправка...' : 'Отправить заявку'}
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

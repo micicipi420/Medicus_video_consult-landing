@@ -57,9 +57,14 @@
   --mu-accent-orange-text: #B5621D;
   --mu-green-text: #1F7A4F;
 
-  /* Accessible CTA gradient */
+  /* Accessible CTA gradient (v6+ teal-to-blue, used on hero/full-width sections only) */
   --mu-cta-from: #0E8FB5;
   --mu-cta-to: #3B6DD0;
+
+  /* Brand CTA gradient (v1.3 canonical green-to-teal, matches medicusunion.kz reference) */
+  /* DESIGN.md tokens: cta-gradient-from / cta-gradient-to */
+  --mu-cta-brand-from: #1AC67E;
+  --mu-cta-brand-to: #0D9DB5;
 
   /* Vertical rhythm tokens */
   --section-h-hero-rich: clamp(560px, 75svh, 760px);
@@ -301,6 +306,8 @@
   --color-mu-green-text: var(--mu-green-text);
   --color-mu-cta-from: var(--mu-cta-from);
   --color-mu-cta-to: var(--mu-cta-to);
+  --color-mu-cta-brand-from: var(--mu-cta-brand-from);
+  --color-mu-cta-brand-to: var(--mu-cta-brand-to);
   --min-height-section-hero-rich: var(--section-h-hero-rich);
   --min-height-section-hero-medium: var(--section-h-hero-medium);
   --min-height-section-hero-compact: var(--section-h-hero-compact);
