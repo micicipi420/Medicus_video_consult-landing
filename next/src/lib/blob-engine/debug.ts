@@ -16,6 +16,7 @@ declare global {
       pointer: { x: number; y: number };
       heat: number;
       velocity: number;
+      velocityLP: { vx: number; vy: number };
       startedAt: number;
       frameCount: number;
       core: { x: number; y: number };
@@ -39,6 +40,7 @@ export interface DebugStateSnapshot {
   pointer: { x: number; y: number };
   heat: number;
   velocity: number;
+  velocityLP: { vx: number; vy: number };
   startedAt: number;
   frameCount: number;
   core: { x: number; y: number };
@@ -72,6 +74,7 @@ export function attachDebug(
         pointer: { x: s.pointer.x, y: s.pointer.y },
         heat: s.heat,
         velocity: s.velocity,
+        velocityLP: { vx: s.velocityLP.vx, vy: s.velocityLP.vy },
         startedAt: s.startedAt,
         frameCount: s.frameCount,
         core: { x: s.core.x, y: s.core.y },

@@ -13,11 +13,13 @@ import {
 import {
   updateLayers,
   updateVelocity,
+  updateVelocityVector,
   updateHeat,
   applyTapPulse,
   TAP_PULSE_RATE_LIMIT_MS,
   type DwellSample,
   type PointerRef,
+  type VelocityLPState,
 } from './physics';
 import {
   resolveMode,
@@ -51,6 +53,9 @@ interface EngineState {
   glint: LayerPos;
   heat: number;
   velocity: number;
+  velocityLP: VelocityLPState;
+  lastTarget: { x: number; y: number };
+  hasLastTarget: boolean;
   mode: BlobMode;
   startedAt: number;
   frameCount: number;
@@ -115,6 +120,9 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
     glint: { ...initial },
     heat: 0,
     velocity: 0,
+    velocityLP: { vx: 0, vy: 0 },
+    lastTarget: { ...initial },
+    hasLastTarget: false,
     mode: 'cursor',
     startedAt: performance.now(),
     frameCount: 0,
@@ -192,6 +200,7 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
             pointer: { x: 0, y: 0 },
             heat: 0,
             velocity: 0,
+            velocityLP: { vx: 0, vy: 0 },
             startedAt: 0,
             frameCount: 0,
             core: { x: 0, y: 0 },
@@ -208,6 +217,7 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
           pointer: { x: state.pointer.x, y: state.pointer.y },
           heat: state.heat,
           velocity: state.velocity,
+          velocityLP: { vx: state.velocityLP.vx, vy: state.velocityLP.vy },
           startedAt: state.startedAt,
           frameCount: state.frameCount,
           core: { x: state.core.x, y: state.core.y },
@@ -355,7 +365,26 @@ function loop(): void {
     return;
   }
 
-  updateLayers(state.core, state.body, state.halo, state.glint, target);
+  // Phase 96 BR-02 Option B: velocity-LP vector drives layer offsets.
+  // Derive from frame-to-frame target deltas so cursor mode (target = pointer)
+  // and ambient/dark modes (target = Lissajous orbit) both feed the same
+  // mechanism. First frame: skip update (no prev target → undefined velocity).
+  if (state.hasLastTarget) {
+    updateVelocityVector(
+      state.velocityLP,
+      state.lastTarget.x,
+      state.lastTarget.y,
+      target.x,
+      target.y,
+      deltaTime,
+    );
+  } else {
+    state.hasLastTarget = true;
+  }
+  state.lastTarget.x = target.x;
+  state.lastTarget.y = target.y;
+
+  updateLayers(state.core, state.body, state.halo, state.glint, target, state.velocityLP);
 
   // Phase 96 BR-02: rolling max angular separation across the 4 sublayers.
   // 6 hypot calls/frame ~ <100ns total at 60fps; well within budget.
