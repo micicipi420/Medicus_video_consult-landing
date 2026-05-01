@@ -20,7 +20,7 @@ export function FinalCTA() {
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <a
                   href="#contact"
-                  className="w-full sm:w-auto bg-gradient-to-r from-mu-blue to-mu-accent-blue text-white px-8 py-4 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 shadow-glass-inner hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 group text-lg"
+                  className="w-full sm:w-auto bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to text-white px-8 py-4 rounded-3xl font-bold shadow-lg shadow-mu-blue/30 shadow-glass-inner hover:shadow-xl hover:shadow-mu-blue/40 transition-all flex items-center justify-center gap-2 group text-lg"
                 >
                   Обсудить мой случай
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>

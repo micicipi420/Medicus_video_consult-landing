@@ -91,7 +91,7 @@ export function MobileMenu() {
               <a
                 href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="mt-4 block min-h-14 w-full rounded-2xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-6 py-4 text-center font-extrabold tracking-tight text-white shadow-lg transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
+                className="mt-4 block min-h-14 w-full rounded-2xl bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to px-6 py-4 text-center font-extrabold tracking-tight text-white shadow-lg transition-[transform,box-shadow,filter] duration-200 active:scale-[0.96]"
               >
                 Обсудить случай
               </a>

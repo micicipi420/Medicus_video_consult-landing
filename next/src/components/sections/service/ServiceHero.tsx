@@ -47,7 +47,7 @@ export function ServiceHero({
             <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mb-12">
               <a
                 href={primaryCta.href}
-                className="group flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-mu-blue to-mu-accent-blue px-8 py-4 text-center text-lg font-semibold text-white shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] transition-[transform,box-shadow,filter] duration-200 hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] sm:w-auto"
+                className="group flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-mu-cta-brand-from to-mu-cta-brand-to px-8 py-4 text-center text-lg font-semibold text-white shadow-[0_16px_32px_color-mix(in_oklch,var(--color-mu-blue)_30%,transparent)] transition-[transform,box-shadow,filter] duration-200 hover:shadow-[0_20px_40px_color-mix(in_oklch,var(--color-mu-blue)_40%,transparent)] sm:w-auto"
               >
                 {primaryCta.text}
                 <svg
