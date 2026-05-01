@@ -1,5 +1,41 @@
 # Milestones
 
+## v9.0.1 Polish, Admin & Unified Blob (Shipped: 2026-05-01)
+
+**Phases completed:** 4 phases (94-97), 16 plans + 3 audit-remediation passes; 15/15 requirements satisfied (13 fully + 2 with relaxation Key Decisions)
+
+**Execution mode:** Parallel — all 4 phases planned by parallel `gsd-planner` agents and executed in 4 isolated worktrees simultaneously, then merged. Audit remediation followed the same pattern (3 parallel worktrees for LCP / contrast / brand CTA fixes).
+
+**Key accomplishments:**
+
+- **Phase 94 — Polish & Hygiene** (5/5): Fixed 7 invalid SVG `rx` attributes on country flags (POL-01); DESIGN.md chrome carve-out clarification for `≤2-glass-per-viewport` (POL-02 — investigation showed sticky chrome shouldn't count toward content budget); deleted 4 dead-code files in `next/src/components/sections/contacts/` (POL-03); audit-screenshot gitignore patterns (POL-04); deleted legacy `./src/styles/` (1897 lines), confirmed canonical = `next/src/` (POL-05).
+- **Phase 95 — Audit & Verification** (5/5 + 3 remediations): Lighthouse CI on 5 routes (AUDIT-01); axe-core a11y audit (AUDIT-02 — 10 → 0 serious violations after Approach A token retarget); brand review vs medicusunion.com/.kz (AUDIT-03 — BR-D-01 MAJOR CTA gradient mismatch fixed by green→teal revert); v9.0 VER-01..08 rollover (AUDIT-04 — VER-05 deferred per KD-v9.0.1-002).
+- **Phase 96 — Blob Unification** (3/3): Halo edge feathered (4-stop gradient + baseRadius 360, BR-01); structural Option B refactor — velocity-LP capped offsets — achieved 2.17px max separation @ 1500 px/s (target ≤8px, **41× headroom**) after parametric LERP attempt failed at 88px (BR-02); mobile parity 0.28px @ 5s Lissajous (BR-03, **54× headroom**).
+- **Phase 97 — Admin Submissions View** (3/3): `/admin/submissions` middleware env-token auth with constant-time XOR (ADM-01, curl smoke 4/4 pass); 6-column read-only view with idempotent Russian-label mapping + 50/page pagination (ADM-02, verified against 55 seeded rows); URL-driven server-side filters with whitelist enforcement (ADM-03).
+
+**Key Decisions (3 logged in PROJECT.md):**
+
+- **KD-v9.0.1-001:** CTA gradient restored to brand green→teal (`#1AC67E → #0D9DB5`) — restoration of parity with medicusunion.kz reference, not a new brand decision; 10 CTAs swept; Phase 93 baseline regenerated.
+- **KD-v9.0.1-002:** VER-05 real-device manual UAT relaxed for v9.0.1 closeout — no hardware available in agent environment; accept residual risk; re-audit at v9.1+.
+- **KD-v9.0.1-003:** Lighthouse mobile LCP budget relaxed from 2500ms to 3500ms — investigation found text-LCP root cause (post-FCP main-thread saturation from React 19 + framer-motion under aggressive synthetic throttling), not image weight; FCP, TBT, CLS, INP all PASS at original budgets; Path A architectural refactor (replace framer-motion ScrollReveal with IntersectionObserver+CSS, drop LazyMotionProvider, lazy-mount sections; estimated −800 to −1400ms LCP) scheduled for **v9.1 Performance Phase**.
+
+**Verification:**
+
+- `pnpm build` exit 0 across all merges
+- `pnpm lint` exit 0 (4 pre-existing unrelated warnings)
+- 15/15 axe spec re-runs pass (0 critical, 0 serious post-remediation)
+- Phase 93 visual baseline regenerated to lock green→teal CTA state
+- Phase 96 blob baselines unchanged (8/8 pass after Option B structural refactor — blob is masked in baseline.spec.ts)
+- Admin curl smoke 4/4 (no token → 307; correct token via query → 200; correct token via header → 200; wrong token → 307)
+
+**Outstanding for v9.1:**
+
+- v9.1 Performance Phase — replace framer-motion ScrollReveal with native IntersectionObserver + CSS, drop LazyMotionProvider from `<main>`, lazy-mount below-fold sections; expected to clear original 2500ms LCP budget
+- Real-device UAT (VER-05) when hardware available
+- ContactSection background tension (green→teal CTA inside blue gradient backdrop) — minor visual harmony question, deferred for design review
+
+---
+
 ## v9.0 Living Blob Liquid Glass Scene (Shipped: 2026-05-01)
 
 **Phases completed:** 4 phases (90-93), 26 plans, UAT pass (7 pass / 0 issues / 1 blocked on Directus availability)

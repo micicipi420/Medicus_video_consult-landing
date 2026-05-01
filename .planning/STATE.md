@@ -2,18 +2,19 @@
 gsd_state_version: 1.0
 milestone: v9.0.1
 milestone_name: Polish, Admin & Unified Blob
-status: verifying
-stopped_at: All 4 phases executed in parallel worktrees + merged into main; Phase 95 partial pending 4 user/hardware items (LCP waiver, CTA gradient brand decision, real-device UAT, color-contrast fix); Phases 94/96/97 fully complete
-last_updated: "2026-05-01T09:30:00.000Z"
+status: complete
+stopped_at: All 4 phases + 3 audit-remediation passes complete; 4 audit findings resolved (2 fixed, 2 accepted via Key Decisions); 16/16 plans + 3 remediation worktrees merged; ready for /gsd-complete-milestone
+last_updated: "2026-05-01T11:30:00.000Z"
 last_activity: 2026-05-01
 progress:
   total_phases: 4
-  completed_phases: 3
-  partial_phases: 1
+  completed_phases: 4
+  partial_phases: 0
   total_plans: 16
   completed_plans: 16
   percent: 100
-  audit_findings_open: 4
+  audit_findings_resolved: 4
+  key_decisions_v9_0_1: 3
 ---
 
 # Project State
@@ -27,21 +28,21 @@ See: .planning/PROJECT.md (updated 2026-05-01)
 
 ## Current Position
 
-Phase: 97 (last executed)
-Plan: 97-03 (last completed)
-Status: All 16 plans executed across 4 phases; 3 phases complete (94, 96, 97), 1 phase partial (95 audit found real issues — LCP perf, brand gradient, color-contrast, real-device UAT — captured as todos pending user direction)
-Last activity: 2026-05-01 — Parallel execution + merge of all v9.0.1 phases complete
+Phase: 98 audit remediation (last executed)
+Plan: AUDIT-01/02/03 follow-up
+Status: v9.0.1 milestone complete — 16/16 plans executed across 4 phases (94/95/96/97), all 4 audit findings resolved via 3 remediation worktrees (LCP, contrast, brand) + 3 Key Decisions logged in PROJECT.md. Ready for `/gsd-complete-milestone v9.0.1`.
+Last activity: 2026-05-01 — Audit remediation merged + final state-update
 
-Progress: [██████████] 100% plan execution; partial milestone closeout (4 audit follow-ups open)
+Progress: [██████████] 100%
 
-## Audit Findings Pending User (Phase 95)
+## Audit Findings Resolved (Phase 95 → Phase 98 remediation)
 
-| ID | What | Path forward |
+| ID | Finding | Resolution |
 |---|---|---|
-| AUDIT-01 LCP | All 5 routes 3120-3270ms vs 2500ms budget | Path A: image/bundle perf phase (98) / Path B: relaxed budget waiver |
-| AUDIT-03 BR-D-01 | CTA gradient blue vs brand green→teal reference | Path A: revert to green / Path B: lock blue as v9 brand decision |
-| AUDIT-02 color-contrast | 10 serious axe violations on accent eyebrow pills (#38C6F4 on light glass = 1.92:1) | Token edit or color swap on affected pills |
-| VER-05 real-device | Deferred (no hardware) | Human runner with iOS+Android+desktop browsers OR relaxed gate |
+| AUDIT-01 LCP | 5/5 routes 3120-3270ms (target 2500ms); root cause = post-FCP main-thread saturation, not images | KD-v9.0.1-003 relaxed budget to 3500ms; Path A architectural refactor → v9.1 Performance Phase |
+| AUDIT-02 color-contrast | 10 serious axe violations on accent eyebrow pills | Fixed — Approach A (retarget AA-safe `*-text` tokens); 10 → 0 serious; worst-case 4.58:1 |
+| AUDIT-03 BR-D-01 | CTA gradient blue vs brand green→teal reference | Fixed — KD-v9.0.1-001 brand parity restored; 10 CTAs swept; Phase 93 baseline regenerated |
+| VER-05 real-device | No hardware available | KD-v9.0.1-002 relaxed gate; re-audit at v9.1+ when hardware available |
 
 ## Performance Metrics
 

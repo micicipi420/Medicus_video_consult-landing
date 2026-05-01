@@ -370,10 +370,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | POL-03 | Phase 94 | Complete |
 | POL-04 | Phase 94 | Complete |
 | POL-05 | Phase 94 | Complete |
-| AUDIT-01 | Phase 95 | Partial — LCP fails 5/5 routes (3120-3270ms vs 2500ms); waiver-or-fix todo filed |
-| AUDIT-02 | Phase 95 | Partial — 0 critical, 10 serious color-contrast on accent eyebrow pills; todo filed |
-| AUDIT-03 | Phase 95 | Partial — 1 MAJOR (BR-D-01 CTA gradient palette); todo filed pending user direction |
-| AUDIT-04 | Phase 95 | Partial — VER-01/03 pass; VER-02/06/08 partial; VER-04/05/07 pending user/hardware |
+| AUDIT-01 | Phase 95 + 98-01 remediation | Complete (relaxed) — KD-v9.0.1-003 relaxed LCP budget to 3500ms; investigation found text-LCP root cause is post-FCP main-thread saturation; Path A architectural refactor scheduled for v9.1; TBT/CLS/INP/FCP all PASS at original budgets |
+| AUDIT-02 | Phase 95 + 98-02 remediation | Complete — 10 → 0 serious color-contrast violations across 15 audits; Approach A (retarget AA-safe text tokens, per-service brand identity preserved); worst-case 4.58:1 |
+| AUDIT-03 | Phase 95 + 98-03 remediation | Complete — KD-v9.0.1-001 brand parity restored; CTA gradient reverted to green→teal across 10 components; Phase 93 baseline regenerated; brand-capture spec confirms parity with medicusunion.kz |
+| AUDIT-04 | Phase 95 | Complete (relaxed) — KD-v9.0.1-002 VER-05 real-device UAT relaxed (no hardware); VER-01/02/03/04/06/07/08 executed with concrete evidence; re-audit at v9.1+ |
 | BR-01 | Phase 96 | Complete |
 | BR-02 | Phase 96 | Complete (Option B structural — 2.17px max separation @ 1500px/s, 41× headroom) |
 | BR-03 | Phase 96 | Complete (0.28px @ 5s Lissajous mobile, 54× headroom) |
@@ -383,11 +383,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **v9.0.1 Coverage:**
 - v9.0.1 requirements: 15 total
-- Complete: 11
-- Partial: 4 (all in Phase 95 audit — findings captured as pending todos)
+- Complete: 13 (all POL-*, BR-*, ADM-*, plus AUDIT-02 + AUDIT-03 fully remediated)
+- Complete-with-relaxation: 2 (AUDIT-01 LCP budget relaxed via KD-v9.0.1-003; AUDIT-04 VER-05 deferred via KD-v9.0.1-002)
 - Pending: 0
 - Mapped to phases: 15
 - Unmapped: 0
+- Key Decisions logged: 3 (KD-v9.0.1-001 brand revert, KD-v9.0.1-002 VER-05 relax, KD-v9.0.1-003 LCP relax)
 
 **Phase distribution:**
 - Phase 94 (Polish & Hygiene): 5 (POL-01..05)
