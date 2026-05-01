@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Build the Hero and Problem sections of the landing page. Hero must grab attention in 3 seconds with the value proposition. Problem section creates emotional recognition ("this is about me"). Both sections use the design system from Phase 1.
+Build the Hero and Problem sections of the site. Hero must grab attention in 3 seconds with the value proposition. Problem section creates emotional recognition ("this is about me"). Both sections use the design system from Phase 1.
 
 </domain>
 

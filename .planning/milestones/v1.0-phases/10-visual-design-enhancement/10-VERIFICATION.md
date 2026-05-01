@@ -27,7 +27,7 @@ human_verification:
 
 # Phase 10: Visual Design Enhancement — Verification Report
 
-**Phase Goal:** The landing page has polished visual design with SVG icons, scroll animations, hero imagery, and decorative elements that create a professional, trustworthy impression without heavy assets or aggressive motion.
+**Phase Goal:** The site has polished visual design with SVG icons, scroll animations, hero imagery, and decorative elements that create a professional, trustworthy impression without heavy assets or aggressive motion.
 **Verified:** 2026-03-23T07:00:00Z
 **Status:** PASSED
 **Re-verification:** No — initial verification

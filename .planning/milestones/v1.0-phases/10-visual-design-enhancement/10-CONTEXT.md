@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Add visual richness to the existing landing page: hero imagery, SVG icons instead of emoji, scroll-triggered animations, decorative elements, gradient backgrounds, and card enhancements. All within vanilla HTML/CSS/JS — no build tools, no frameworks. Must respect 45+ audience (no aggressive motion) and prefers-reduced-motion.
+Add visual richness to the existing site: hero imagery, SVG icons instead of emoji, scroll-triggered animations, decorative elements, gradient backgrounds, and card enhancements. All within vanilla HTML/CSS/JS — no build tools, no frameworks. Must respect 45+ audience (no aggressive motion) and prefers-reduced-motion.
 
 </domain>
 

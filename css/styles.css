@@ -333,11 +333,12 @@ a:hover {
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-normal);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
 }
 
 .card__title {
@@ -1250,12 +1251,6 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
-.faq__question:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
 .faq__icon {
   flex-shrink: 0;
   width: 24px;
@@ -1561,6 +1556,53 @@ a:hover {
 .button:active {
   transform: scale(0.97);
   transition: transform 100ms ease;
+}
+
+/* -- Accessibility: Focus-visible system (ACC-04) -- */
+/* 3px solid cyan ring, 2px offset -- visible on light AND dark backgrounds.
+   Uses :focus-visible (not :focus) to avoid ring on mouse clicks. */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Override the existing .lead-form__input:focus to use :focus-visible instead */
+.lead-form__input:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  border-color: #38C6F4;
+  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.2);
+}
+
+/* Keep the existing .faq__question:focus-visible but update color to cyan */
+.faq__question:focus-visible {
+  outline: 3px solid #38C6F4;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* -- Accessibility: Touch target enforcement (ACC-05) -- */
+/* All interactive elements must be at least 44x44px per WCAG 2.2 SC 2.5.8.
+   Applied on ALL viewports per CONTEXT.md decision (not mobile-only).
+   Elements already meeting 44px (e.g., .button at 48px) are unaffected. */
+
+.site-header__link,
+.footer__link,
+.footer__app-link,
+.site-header__brand-link,
+.hub-guide__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 0.5rem;
 }
 
 /* -- FAQ smooth height transition (per D-15) -- */
@@ -2667,4 +2709,359 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
   .advantages__card:hover .advantages__icon svg { transform: none; }
 }
+
+/* -- Accessibility: High contrast mode (ACC-01) -- */
+
+@media (prefers-contrast: more) {
+  .card,
+  .pricing__card,
+  .lead-form__wrapper {
+    border: 2px solid var(--color-text-primary);
+    box-shadow: none;
+  }
+
+  .button,
+  .button--primary,
+  .button--outline {
+    border: 2px solid currentColor;
+  }
+
+  .advantages__icon {
+    border: 2px solid var(--color-text-primary);
+  }
+}
+
+/* -- Accessibility: Reduced transparency mode (ACC-02) -- */
+/* Chrome/Edge 118+ only (progressive enhancement -- other browsers unaffected).
+   Strips radial-gradient rgba overlays from section backgrounds and hides
+   the decorative lead-form-section halo pseudo-element.
+   Solid background-color (var(--color-light)) is preserved on all sections. */
+
+@media (prefers-reduced-transparency: reduce) {
+  .problem,
+  [data-theme="dark"] .problem {
+    background: var(--color-light);
+  }
+
+  .benefits,
+  [data-theme="dark"] .benefits {
+    background: var(--color-light);
+  }
+
+  .lead-form-section::before {
+    display: none;
+  }
+}
+
+/* ================================================
+   Phase 75 (PERF-03): content-visibility: auto for below-fold sections
+   Applied to all section classes that are guaranteed to start below the fold.
+   Skipped: .hero, .social-proof (always above fold — must render immediately).
+
+   contain-intrinsic-size format: `auto Xpx` where:
+   - `auto` = remember real size after first paint (Chrome 105+)
+   - `Xpx` = fallback estimate for initial layout (used for scrollbar sizing)
+   ================================================ */
+
+.hub-services {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
+}
+
+.hub-guide {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.advantages {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.lead-form-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.final-cta {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
+.problem {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.why-us {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+.programs {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.process {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+.b2b {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+.faq {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+.benefits {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+.doctors {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+.about-us {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* ==========================================================================
+   16. PHASE 76 — INTERACTION POLISH
+   ========================================================================== */
+
+/* -- INT-02: Form submit button loading spinner -- */
+
+@keyframes mu-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.lead-form__submit.is-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.lead-form__submit.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: mu-spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead-form__submit.is-loading::after {
+    animation: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    border-top-color: #ffffff;
+  }
+}
+
+/* -- INT-03: Non-card surface hover brightness shift -- */
+
+/* Nav brightness — desktop only (nav is display:none on mobile) */
+@media (min-width: 768px) {
+  .site-header__link:hover {
+    color: var(--color-primary);
+    filter: brightness(1.06);
+  }
+}
+
+/* Site header brand link: subtle brightness on hover */
+.site-header__brand-link:hover {
+  filter: brightness(0.85);
+}
+
+/* Sticky bar phone: subtle brightness shift matching non-card surfaces */
+.sticky-bar__phone:hover {
+  color: var(--color-dark);
+  filter: brightness(0.9);
+}
+
+/* -- INT-05: Text readability on dark/gradient surfaces -- */
+
+/* Social proof numbers on dark navy background */
+.social-proof__number {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.social-proof__label {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Final CTA on dark navy */
+.final-cta__heading {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.final-cta__text {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Pricing card — light gradient background */
+.pricing__amount {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Footer on dark navy — reinforce legibility */
+.footer__link,
+.footer__app-link {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* -- INT-04: prefers-reduced-motion — phase 76 complete coverage -- */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+
+  .hub-service:hover {
+    transform: none;
+  }
+
+  .about-us__card:hover .about-us__icon svg {
+    transform: none;
+  }
+
+  .lead-form__submit.is-loading::after {
+    animation: none;
+  }
+
+  .site-header__link:hover,
+  .site-header__brand-link:hover,
+  .sticky-bar__phone:hover {
+    filter: none;
+  }
+}
+
+/* ==========================================================================
+   PHASE 77: Progressive Enhancement — Scroll-Driven Animations (PERF-04)
+   @supports gate: only Chrome 115+ and future engines see this.
+   Firefox/Safari continue using the IntersectionObserver + .is-visible path.
+   ========================================================================== */
+
+@supports (animation-timeline: scroll()) {
+
+  /* Keyframe: fade in + slide up, driven by element scroll position */
+  @keyframes scroll-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Override the IO-based transition with scroll-driven animation.
+     animation-range: entry 0% entry 30% means the animation plays
+     as the element scrolls from 0% to 30% of its entry into the viewport.
+     fill: both ensures opacity:0 before entry and opacity:1 after. */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: none;
+    animation: scroll-fade-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+
+  /* Glass variant: same scroll-driven fade but also scales from 0.98 */
+  @keyframes scroll-fade-in--glass {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-on-scroll.animate-on-scroll--glass {
+    animation-name: scroll-fade-in--glass;
+  }
+
+  /* .is-visible added by JS IO is now a no-op — the scroll-driven
+     animation already resolved opacity/transform. */
+  .animate-on-scroll.is-visible {
+    /* intentionally empty — scroll-driven animation handles final state */
+  }
+
+  /* Stagger: shift animation-range start per child */
+  .stagger-children > .animate-on-scroll:nth-child(1) { animation-range: entry 0%  entry 30%; }
+  .stagger-children > .animate-on-scroll:nth-child(2) { animation-range: entry 5%  entry 35%; }
+  .stagger-children > .animate-on-scroll:nth-child(3) { animation-range: entry 10% entry 40%; }
+  .stagger-children > .animate-on-scroll:nth-child(4) { animation-range: entry 15% entry 45%; }
+  .stagger-children > .animate-on-scroll:nth-child(5) { animation-range: entry 20% entry 50%; }
+  .stagger-children > .animate-on-scroll:nth-child(6) { animation-range: entry 25% entry 55%; }
+  .stagger-children > .animate-on-scroll:nth-child(7) { animation-range: entry 30% entry 60%; }
+
+  /* prefers-reduced-motion: disable scroll-driven animations entirely */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll,
+    .animate-on-scroll.animate-on-scroll--glass {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ==========================================================================
+     PHASE 77: Scroll Progress Bar (PERF-05)
+     3px bar at bottom edge of site-header, grows left→right as page scrolls.
+     Completely absent on non-supporting browsers.
+     ========================================================================== */
+
+  .site-header {
+    position: relative;
+  }
+
+  .site-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: var(--color-cta);
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: scroll-progress-bar linear both;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes scroll-progress-bar {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* prefers-reduced-motion: hide the progress bar entirely */
+  @media (prefers-reduced-motion: reduce) {
+    .site-header::after {
+      display: none;
+    }
+  }
+
+} /* end @supports (animation-timeline: scroll()) */
 

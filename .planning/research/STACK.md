@@ -1,531 +1,407 @@
-# Technology Stack
+# Stack Research — v9.0 Living Blob Liquid Glass Scene
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
-**Researched:** 2026-03-24
-**Scope:** NEW capabilities only. Existing stack (Vanilla HTML/CSS/JS, Directus, Docker) is validated and not re-researched.
-
----
-
-## What This Research Covers
-
-Four new CSS/JS capability areas needed for milestone v1.4:
-
-1. Liquid glass / glassmorphism via `backdrop-filter`
-2. Dark mode toggle with `localStorage` and CSS custom properties
-3. CSS Scroll-Driven Animations API as progressive enhancement
-4. CSS micro-animation patterns for hover and state transitions
-
-**What is NOT covered:** Backend, build tools, fonts, frameworks — all unchanged from v1.3.
+**Domain:** Persistent fixed-position cursor-following light field beneath an Apple Liquid Glass HIG chrome on an existing Next.js 15 + React 19 + TS + Tailwind 4 site (medicusunion.kz).
+**Researched:** 2026-04-30
+**Confidence:** HIGH (existing project pattern in `useSpecularHighlight` already proves the rAF + CSS-variable approach; all recommendations verified against installed `next/package.json`)
+**Mode:** Subsequent-milestone — DO NOT re-establish base stack; only document additions, deltas, and integration constraints.
 
 ---
 
-## 1. Glassmorphism: `backdrop-filter` + CSS
+## TL;DR — Primary Recommendations
 
-### Technique
+| Decision | Recommendation | One-liner |
+|----------|----------------|-----------|
+| **Renderer** | **Single `<canvas>` 2D context** rendered inside `LivingBlobField.tsx` with radial-gradient blob composition + `globalCompositeOperation: 'lighter'` for halo overlay. CSS-only fallback for `prefers-reduced-motion` and `prefers-reduced-transparency`. | One DOM node, no shader pipeline, fully CPU/GPU-blendable, ≤2 KB hand-written renderer. SVG `feGaussianBlur` rejected (paint-thrash on moving subjects in Android Chromium); WebGL/WebGPU rejected (overkill, +25 KB context bootstrap, hurts ЦА 45+ budget Android). |
+| **State sharing** | **DOM-only via CSS variables on `document.documentElement`** (`--blob-x`, `--blob-y`, `--blob-heat`, `--blob-vx`, `--blob-vy`). NO React state on pointermove. Glass surfaces consume vars via `radial-gradient(... at calc(var(--blob-x) * 100%) ...)` patterns where they need optical response. | Project already uses this pattern (`useSpecularHighlight`). Zero re-renders. Works across server/client boundary. Zustand/Context rejected — would force re-render on every cursor frame. |
+| **Animation lib** | **None for the blob renderer.** Vanilla `requestAnimationFrame` + lerp / exponential-smoothing math. Existing `framer-motion@12.38.0` (already installed via `LazyMotionProvider`) is reused only for unrelated micro-interactions (scroll reveal, button taps) — not the blob. | Adding GSAP / Motion One / anime.js for cursor smoothing is bundle-bloat: a 10-line lerp does the job. ЦА 45+ on budget Android cannot afford another 4–10 KB JS payload for an effect they don't need to feel. |
+| **Pointer handling** | **Hand-rolled `pointermove` + rAF coalescing** in a single `useEffect` mounted on `window`. One global listener. `pointerleave` resets to ambient. Mobile (`pointer: coarse`): no follow — `setInterval`-driven ambient drift. | The project already has the exact pattern (`useSpecularHighlight`). `react-use` / `usehooks-ts` libs would force React state — explicitly forbidden by ТЗ §16. |
+| **SSR boundary** | `LivingBlobField.tsx` is a `'use client'` component with **`dynamic(() => import(...), { ssr: false })`** mount in `app/layout.tsx`. The fixed-position `<div>` and inner `<canvas>` render only after hydration; before hydration the page is fully readable without the blob (graceful enhancement). | Avoids hydration mismatch on `<canvas>`-derived attributes (size, dpi). Aligns with the "page works without blob" criterion (ТЗ §19.4). |
+
+---
+
+## Recommended Stack — Additions / Deltas Only
+
+### Core Technologies (already installed — reused, NOT added)
+
+| Technology | Version | Role for v9.0 | Why |
+|------------|---------|---------------|-----|
+| Next.js | 15.5.15 | App Router, `'use client'` boundary, `next/dynamic` for SSR-skip mount | Already the project core. App Router's RSC model means the entire main tree can stay server-rendered; only `LivingBlobField` ships JS. |
+| React | 19.1.0 | Single client component (`LivingBlobField`) hosting the renderer | React 19's concurrent rendering does NOT interfere — the blob lives entirely outside React's tree (DOM mutations on `documentElement` + canvas API). |
+| TypeScript | ^5 | Strict types for `PointerEvent`, `requestAnimationFrame` IDs, blob state struct | Project standard. |
+| Tailwind CSS | ^4 (`@tailwindcss/postcss`) | Token-only consumption — no new utility classes; new tokens declared in `globals.css` | v9.0 needs new tokens (see §"New Tokens"); existing `--liquid-blur-{sm,md,lg,xl}` tokens are reused unchanged. |
+| framer-motion | ^12.38.0 | UNRELATED to blob — kept for existing `ScrollReveal`, `HeroEntrance`, `GlassInteraction` | Do NOT use Framer Motion for the blob. Its props-driven model triggers React reconciliation per animation frame. Existing usage stays untouched. |
+
+### NEW Files (v9.0 deliverables — no new dependencies)
+
+| File | Purpose | Notes |
+|------|---------|-------|
+| `next/src/components/blob/LivingBlobField.tsx` | The single client component owning the canvas + pointer listener + rAF loop | Replaces the dead `LiquidBlobLayer.tsx`. `'use client'`. Mounted via `dynamic(..., { ssr: false })` in `app/layout.tsx`. |
+| `next/src/components/blob/blob-renderer.ts` | Pure TS module: `createBlobRenderer(canvas, opts)` returning `{ tick, dispose }`. Exposes core/body/halo/glint sublayer state + heat accumulator. | Framework-free. Testable in isolation with jsdom + canvas mock. |
+| `next/src/components/blob/blob-physics.ts` | Pure TS module: lerp, exponential smoothing, velocity tracking, heat decay. ~80 LoC. | Replaces a hypothetical animation library. |
+| `next/src/styles/living-blob.css` | New stylesheet: `.living-blob-field` fixed layer + glass-surface optical-response gradients (consume `--blob-x/y/heat`) | Imported once in `globals.css`. Replaces unused `liquid-depth.css`. |
+
+### Development Tools (existing — no additions)
+
+| Tool | Purpose | Notes |
+|------|---------|-------|
+| ESLint 9 + `eslint-config-next` | Lint the new files; ensure no `setState` is called inside the rAF loop | Existing. |
+| TypeScript strict mode | Catch missed cleanups on `useEffect` (rAF leak, pointer listener leak) | Existing. |
+| Chrome DevTools → Performance + Layers panel | Verify single composited layer for `.living-blob-field`, no paint thrash on `pointermove` | Manual verification per ТЗ §18 acceptance scenarios. |
+
+---
+
+## Detailed Rationale by Question
+
+### 1. Renderer Choice — Canvas 2D wins
+
+| Option | Verdict | Reason |
+|--------|---------|--------|
+| **Canvas 2D** ✅ | **Recommended** | Single DOM node. `ctx.createRadialGradient()` for core / body / halo. `globalCompositeOperation: 'lighter'` blends overlapping sublayers without manual color math. Hardware-composited via the canvas's own backing layer — `will-change: transform` not needed. Resizes via `devicePixelRatio` math. Works in all Safari 15+ / Chrome / Firefox. Estimated render cost: ~0.4 ms/frame on a Snapdragon 7-series mid-range Android (matches GPU-blit cost of a single CSS radial gradient at the same resolution, but with full programmatic control over heat / glint). |
+| **CSS-only (radial-gradient + filter:blur + transform)** | Acceptable as **fallback only** | Pros: zero JS in `prefers-reduced-motion`. Cons: cannot composite multiple overlapping gradients with non-trivial alpha math without N stacked layers. Cannot draw glint dynamically. `filter: blur()` on a moving element creates per-frame paint invalidation (cheap on desktop, painful on budget Android > 24px). Use for the **static ambient** state in reduced-motion only. |
+| **SVG filters (`feGaussianBlur` + `feTurbulence`)** | ❌ Rejected | `feGaussianBlur` with `stdDeviation > 8` on a moving element forces full re-rasterization on every frame in Chromium. Catastrophic on Android. `feTurbulence` for organic shape sounds attractive but is even slower. Acceptable only for static decorative defs (project already uses `SvgRefractionDefs.tsx` for static refraction). |
+| **WebGL / WebGPU shader** | ❌ Rejected | Overkill for a single soft-edged radial gradient with 4 sublayers. WebGL context bootstrap is ~25 KB minified JS for shader compilation, attribute binding, and the fragment program — even with a tiny shader the runtime cost dwarfs the canvas-2D version. WebGPU is even less portable (Safari 17 status: behind a flag, inconsistent on iOS as of April 2026). Violates "blob is the only dense object" — adding a shader pipeline is over-engineering. |
+
+**Why Canvas 2D is correct for THIS project specifically:**
+- Project explicitly forbids "many DOM elements" (ТЗ §16). Canvas = exactly one DOM node.
+- Project requires "no React state on pointermove" (ТЗ §16). Canvas API is imperative — no React entanglement.
+- ЦА is 45+ on budget Android; we cannot afford a shader.
+- The blob is intentionally soft and round — no need for the algorithmic shapes shaders excel at.
+- The `prefers-reduced-motion` static fallback can drop the canvas entirely and use a single `radial-gradient` background on the same element. Clean failure mode.
+
+### 2. Animation Library — None Needed
+
+**Recommendation:** Vanilla rAF + 10-line lerp. Do NOT add GSAP, Motion One, anime.js, or any cursor-following helper.
+
+**Bundle-size budget (ЦА 45+ on budget Android, target: keep the v9.0 delta under 3 KB gzipped):**
+
+| Option | Gzipped Size | Verdict |
+|--------|--------------|---------|
+| Vanilla rAF + lerp (~80 LoC) | ~0.6 KB | ✅ Recommended |
+| Motion One (`motion`) | ~3.8 KB minimum | ❌ Reject — buys nothing the blob needs |
+| GSAP (core) | ~23 KB | ❌ Reject — wildly oversized for this use |
+| Anime.js v4 | ~6 KB | ❌ Reject — timeline orchestration is not what we need |
+| Framer Motion (already installed) | 0 KB delta | ❌ Do not use for blob — its model re-creates props on each frame and triggers React reconciliation; antithetical to "no React state on pointermove" |
+
+The blob needs four things:
+1. Lerp current position toward target with different `tau` per sublayer (4 lines).
+2. Track velocity from pointer delta with exponential smoothing (3 lines).
+3. Heat accumulator: integrate dwell time when `velocity < threshold`, decay otherwise (5 lines).
+4. Drive a `requestAnimationFrame` loop that ticks the renderer.
+
+Total physics: ~80 LoC of pure TypeScript. No library matches this on bundle size or honesty.
+
+### 3. Pointer Event Handling — Roll Our Own (Project Already Does)
+
+**Recommendation:** A single `pointermove` listener on `window` (NOT `document`, NOT individual elements). rAF-coalesced. `pointerleave` on `window` triggers ambient drift.
+
+The pattern is already shipped in `next/src/hooks/use-specular-highlight.ts`. Lift it to a global listener for the blob:
+
+```ts
+// Pseudocode — actual code lives in LivingBlobField.tsx
+const targetX = useRef(0.5), targetY = useRef(0.5);
+const pending = useRef(false);
+
+useEffect(() => {
+  if (window.matchMedia('(pointer: coarse)').matches) return; // mobile path
+  const onMove = (e: PointerEvent) => {
+    targetX.current = e.clientX / window.innerWidth;
+    targetY.current = e.clientY / window.innerHeight;
+    if (!pending.current) {
+      pending.current = true;
+      requestAnimationFrame(() => { pending.current = false; tick(); });
+    }
+  };
+  window.addEventListener('pointermove', onMove, { passive: true });
+  // ...
+}, []);
+```
+
+**Libraries rejected:**
+
+| Library | Why rejected |
+|---------|--------------|
+| `react-use` (`useMouse`) | Returns a React state value — re-renders on every move. Forbidden by ТЗ §16. |
+| `usehooks-ts` (`useMouse`) | Same problem — React-state-driven. |
+| `@react-aria/interactions` | Adds 6 KB for accessibility primitives we don't need (blob is `pointer-events: none`). |
+| `pointer-tracker` (Google's) | 1 KB but solves multi-touch / gesture concerns we don't have. Single pointer = window listener is fine. |
+
+### 4. State Sharing — DOM-Only via CSS Variables on `documentElement`
+
+**Recommendation:** The blob renderer writes `--blob-x`, `--blob-y`, `--blob-heat`, `--blob-vx`, `--blob-vy` (and optionally `--blob-glint`) onto `document.documentElement.style` from inside the rAF tick. CSS rules in `living-blob.css` consume them.
+
+**Why this beats every React-aware alternative:**
+
+| Strategy | Re-renders/sec at 60fps cursor | Verdict |
+|----------|-------------------------------|---------|
+| `documentElement.style.setProperty()` (DOM-only) | **0** | ✅ Recommended — also works for sibling glass surfaces that need to reflect blob position via gradients without prop drilling |
+| Zustand store + selectors | ~60 (one per subscriber) | ❌ Even with selectors, the cost is at minimum a function call per subscriber per frame; with React 19 concurrent rendering this can stack |
+| React Context | ~60 × every consumer | ❌ Catastrophic — every consumer re-renders |
+| Custom hook (returns ref values) | 0, but only consumable inside React | △ Acceptable for components that exist anyway, but doesn't help for pure-CSS optical responses on glass |
+
+CSS variables on `documentElement` are also **the only mechanism** that lets pure-CSS glass utilities react to the blob without per-element JavaScript. Example glass card consuming `--blob-x/y`:
 
 ```css
-.glass-card {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%); /* Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-lg); /* already 30px */
+.liquid-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(
+    320px at calc(var(--blob-x, 0.5) * 100% - var(--card-x, 0px))
+              calc(var(--blob-y, 0.5) * 100% - var(--card-y, 0px)),
+    rgba(79, 224, 152, calc(0.10 * var(--blob-heat, 0))),
+    transparent 70%
+  );
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 ```
 
-**Why this approach:**
-- `backdrop-filter: blur()` is the single CSS property that creates the glass blur effect — no JS, no canvas, no SVG filter workaround needed
-- `saturate(180%)` amplifies color behind glass, making the effect richer on medical imagery backgrounds
-- `-webkit-backdrop-filter` is required for Safari 9–17 (pre-2024); Safari 18+ unprefixed works but the prefix costs zero bytes and has no downside
-- `rgba()` background with low alpha (0.08–0.18) is the correct "liquid glass" palette — pure transparent has no color; pure opaque loses the glass effect
-- Explicit `border: 1px solid rgba(255,255,255,0.2)` is required to visually define the glass boundary without a shadow
+This satisfies ТЗ §10 ("UI does not light blob — blob lights UI") with zero per-card JavaScript.
 
-### Browser Support (as of mid-2025)
+### 5. Next.js / SSR Considerations
 
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 76+ | Full | Unprefixed |
-| Edge 79+ | Full | Unprefixed |
-| Firefox 103+ | Full | Enabled by default since FF103 (2022) |
-| Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| iOS Safari 9+ | Full (prefixed) | `-webkit-` prefix required |
-| Samsung Internet 12+ | Full | |
-| **Global coverage** | ~95%+ | MEDIUM confidence — caniuse.com not accessible for verification |
+**Mount strategy:**
 
-**Confidence:** MEDIUM. Training data places global support at ~95% for mid-2025. Firefox lagged historically but has supported it since 2022. The `-webkit-` prefix covers all Safari versions in production use.
+```tsx
+// next/src/app/layout.tsx (excerpt — server component)
+const LivingBlobField = dynamic(
+  () => import('@/components/blob/LivingBlobField').then(m => m.LivingBlobField),
+  { ssr: false } // canvas DPI math + window dimensions = client-only
+);
 
-### Fallback Strategy
-
-```css
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .glass-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
+export default function RootLayout(...) {
+  return (
+    <html lang="ru">
+      <body>
+        <LivingBlobField />   {/* fixed, z-0, pointer-events:none */}
+        <Header />            {/* z-1+ */}
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
 }
 ```
 
-`@supports` is the correct gate — avoids applying transparent background when blur is unavailable (which would produce illegible text).
+**Hydration mismatch risk:** ZERO if we use `{ ssr: false }`. The fixed-position `<div>` is never rendered on the server. The page is fully readable without the blob (satisfies ТЗ §19.4 — "without blob, page looks cold and glassy but not broken").
 
-### Integration with Existing Token System
+**Alternative considered:** Render an empty `<div className="living-blob-field">` on the server and progressively enhance with the canvas client-side. **Rejected** because the canvas needs `devicePixelRatio` and viewport dimensions both unavailable on the server, and the empty div produces no visible improvement before hydration anyway.
 
-New tokens to add to `:root`:
+**Cascade integration (`globals.css` order):**
+
+```css
+/* Existing imports preserved */
+@import 'tailwindcss';
+@import '../styles/squircles.css';
+@import '../styles/liquid-glass.css';
+/* NEW — appended after liquid-glass.css so optical-response selectors win specificity battles */
+@import '../styles/living-blob.css';
+```
+
+`.living-blob-field` declares `z-index: 0` and `pointer-events: none`. The existing site chrome uses `z-index: 1+` (header) and content uses `position: relative` without explicit `z-index` (default `auto`, stacked above `z: 0` due to `position: relative`). No existing CSS conflicts.
+
+### 6. Specific Library Versions (verified)
+
+**No new dependencies recommended.** All needed primitives exist in the platform or are already installed:
+
+| Capability | Source | Version | Verified |
+|------------|--------|---------|----------|
+| Canvas 2D rendering | Browser native | All evergreen + Safari 15+ | MDN — universal |
+| `requestAnimationFrame` | Browser native | All evergreen + Safari 6+ | MDN — universal |
+| `pointermove` event | Browser native | All evergreen + Safari 13+ | MDN — universal |
+| CSS custom properties | Browser native | All evergreen + Safari 9.1+ | MDN — universal |
+| `dynamic(...)` SSR-skip | `next` | 15.5.15 (installed) | Next.js docs — App Router supports `dynamic({ ssr: false })` from a Client Component or via a Client Boundary wrapper |
+| `LazyMotion` (existing, unrelated) | `framer-motion` | 12.38.0 (installed) | `LazyMotionProvider.tsx` |
+
+### 7. What NOT to Add — Reject List
+
+| Reject | Why |
+|--------|-----|
+| **GSAP** | 23 KB for a 10-line lerp. License is paid for some plugins. Project audience cannot afford the bundle. |
+| **Motion One / `motion`** | 3.8 KB+ for animation primitives that don't fit our state-free, DOM-only model. Even its imperative `animate()` API forces objects we'd otherwise hold in refs. |
+| **anime.js v4** | Timeline-oriented; we want a continuously running rAF loop with mutable physics state, not a timeline. |
+| **react-three-fiber / three.js** | Full 3D engine for a 2D radial gradient is comically wrong. ~150 KB delta. |
+| **PixiJS** | WebGL 2D engine; ~80 KB minified. Same overkill argument as r3f. |
+| **`react-spring`** | Spring physics on React state — re-renders. Forbidden by ТЗ §16. |
+| **`use-mouse` / `react-use`** | Re-renders on every move (see §3). |
+| **`zustand`** for blob state | Forces consumers to subscribe; every subscriber re-renders. Even with shallow selectors, `useSyncExternalStore` fires per frame. |
+| **CSS Houdini Paint Worklet** | Browser support unstable: Safari does NOT support Houdini Paint as of Safari 17 (April 2026). Cannot ship to ЦА. |
+| **`<svg><filter>` for blob** | `feGaussianBlur` on a moving subject = paint thrash on Android Chromium (see §1). |
+| **`will-change: backdrop-filter`** | Already documented anti-pattern in `liquid-glass.css` header. The blob layer does not use `backdrop-filter` itself; the glass surfaces above it do, and they remain static. |
+| **Re-introducing `LiquidBlobLayer.tsx` / `liquid-depth.css`** | These were dead code slated for v8.1 removal; v9.0 should ship a clean replacement (`LivingBlobField.tsx` + `living-blob.css`). |
+
+---
+
+## Integration Points with Existing Tokens
+
+### Existing tokens (CONSUMED unchanged by v9.0)
+
+| Token | Location | v9.0 use |
+|-------|----------|----------|
+| `--liquid-blur-sm` (16px) | `globals.css` | Header chrome (unchanged) |
+| `--liquid-blur-md` (24px) | `globals.css` | Mid-layer cards (unchanged) — desktop only |
+| `--liquid-blur-lg` (40px) | `globals.css` | Hero / large sections (unchanged) — desktop only |
+| `--liquid-blur-xl` (60px) | `globals.css` | Reserved (used sparingly per HIG audit) |
+| `--mu-primary` (#35B678) | `globals.css` | Source for `--blob-core` |
+| `--squircle-mask-{md,lg,xl}` | `squircles.css` | Glass cards above blob — unchanged |
+| Tailwind mobile blur cap (Phase 79) | Tailwind config | Enforced — blob layer itself does NOT use `backdrop-filter` so no conflict; glass layers above stay within the 12px mobile cap |
+
+### NEW tokens (v9.0 additions in `globals.css`)
 
 ```css
 :root {
-  /* Glass surface tokens */
-  --glass-bg-light: rgba(255, 255, 255, 0.12);
-  --glass-bg-medium: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
+  /* Blob palette — derived from existing --mu-primary, no new brand colors */
+  --blob-core: #35B678;          /* matches --mu-primary */
+  --blob-hot: #4FE098;           /* heated state — green-400 family, brand-adjacent */
+  --blob-halo: rgba(98, 221, 177, 0.5);
+  --blob-edge: rgba(125, 205, 255, 0.18);
+  --blob-glint: rgba(255, 255, 255, 0.65);
 
-  /* Dark mode glass (inverted) */
-  --glass-bg-dark: rgba(24, 33, 44, 0.45);
-  --glass-border-dark: 1px solid rgba(255, 255, 255, 0.08);
+  /* Blob runtime state (driven by JS, default values for SSR / no-JS) */
+  --blob-x: 0.5;       /* 0..1 normalized viewport */
+  --blob-y: 0.5;
+  --blob-vx: 0;        /* normalized velocity per frame */
+  --blob-vy: 0;
+  --blob-heat: 0;      /* 0..1 dwell accumulator */
+
+  /* Glass-over-blob optical-response intensity (per glass tier) */
+  --blob-response-section: 0.12;  /* large sections — softest */
+  --blob-response-card: 0.20;     /* cards — most vivid */
+  --blob-response-form: 0.16;     /* forms — middle */
+  --blob-response-control: 0.08;  /* buttons / controls — most restrained */
 }
 ```
 
-**Performance note:** `backdrop-filter` triggers GPU compositing. On a landing page with 3–4 glass cards visible at once, this is safe. Do NOT apply it to elements that animate position/transform simultaneously (GPU layer cost doubles). Cards are static — fine.
+These four palette entries SHOULD be added to `DESIGN.md` YAML front matter under a new `colors.blob-*` family **before** v9.0 implementation begins (per project constraint: "Inventing colors requires a Key Decision in PROJECT.md and an update to DESIGN.md first"). `--blob-core` is alias to existing `--mu-primary`; `--blob-hot` is the only genuinely new color and must be logged.
 
-### Medical Context Constraint
+### Glass utility class deltas (existing classes get an optical-response layer)
 
-For the ЦА 45+ audience, glass cards must maintain WCAG AA text contrast. Rule: glass cards with `backdrop-filter` MUST have a minimum background opacity that keeps text at 4.5:1 contrast ratio. Use `rgba(255,255,255,0.85)` minimum for white cards with dark text, or a semi-opaque dark overlay for light text on glass. Pure "trendy" glass with 10% opacity fails contrast — avoid on text-heavy cards.
+Existing `.liquid-regular`, `.liquid-card`, `.liquid-clear` get an additive `::before` or `::after` layer that reads `--blob-x/y/heat`. This is the v9.0 "glass UI rework" deliverable. Existing class names stay; only their internal definitions extend. **No new utility classes needed** — the v9.0 design language is "the same glass classes, but more transparent, with a passive blob-response sheen."
+
+### Mobile / a11y enforcement (already in place — no new work)
+
+| Constraint | Existing mechanism | v9.0 handling |
+|------------|-------------------|---------------|
+| Mobile blur ≤ 12px | Phase 79 Tailwind cap | Honored — blob layer itself uses no blur; glass layers stay within cap |
+| ≤ 2 glass elements per viewport | Manual design discipline | Honored — blob is canvas, NOT a glass element; doesn't count toward the budget |
+| `prefers-reduced-motion` | Media query in `liquid-glass.css` | **Extended** in `living-blob.css` — full canvas dispose, replace with static CSS radial gradient |
+| `prefers-reduced-transparency` | Media query in `liquid-glass.css` | **Extended** — blob layer hidden entirely (`display: none`), glass becomes opaque |
+| `prefers-contrast: more` | Media query in `liquid-glass.css` | **Extended** — blob saturation reduced 50%, glint disabled |
+| Dark mode disables `backdrop-filter` | `[data-theme="dark"]` cascade | Honored — blob layer is hidden in dark mode (per ТЗ: "холодная светлая медицинская среда" — the scene is light-mode-first; dark-mode handling is a deliberate degradation) |
 
 ---
 
-## 2. Dark Mode: `localStorage` Toggle + CSS Custom Properties
-
-### Pattern
-
-**CSS side — theme via class on `<html>`:**
-
-```css
-/* Light mode (default) — already in :root */
-:root {
-  --color-bg: #ffffff;
-  --color-surface: #F8FAFB;
-  --color-text-primary: #18212C;
-  --color-text-muted: rgba(24, 33, 44, 0.55);
-  --color-border: rgba(0, 0, 0, 0.08);
-}
-
-/* Dark mode — override tokens on html[data-theme="dark"] */
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-white: #161B22;       /* remaps white surfaces */
-  --color-light: #1C2128;       /* remaps light sections */
-}
-```
-
-**Why `data-theme` attribute over CSS class:**
-- `html[data-theme="dark"]` is the current standard pattern (used by MDN, GitHub, Tailwind docs)
-- A class like `.dark` works equally but attribute is semantically clearer and easier to query in JS
-- Avoids class name collision with any BEM classes
-
-**JS side — IIFE pattern (compatible with existing ES5 IIFE codebase):**
-
-```javascript
-(function () {
-  'use strict';
-
-  var STORAGE_KEY = 'mu-theme';
-  var html = document.documentElement;
-  var btn = document.getElementById('theme-toggle');
-
-  // Apply saved preference immediately (avoids flash)
-  // This <script> block runs inline in <head>, before render
-  function applyTheme(theme) {
-    html.setAttribute('data-theme', theme);
-  }
-
-  var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  }
-
-  // Toggle handler (attached after DOM ready)
-  function init() {
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-      btn.setAttribute('aria-label',
-        next === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'
-      );
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-}());
-```
-
-**Why inline `<script>` in `<head>` for theme detection:**
-- The `localStorage` read and `applyTheme()` call MUST happen before first paint — otherwise users with a dark preference see a white flash (FOUC). Place this 8-line block as an inline `<script>` at the end of `<head>`, before the `</head>` tag.
-- This is the same pattern used by every major dark mode implementation (MDN, GitHub, Radix docs)
-
-**`prefers-color-scheme` media query fallback:**
-- If no `localStorage` value, check `window.matchMedia('(prefers-color-scheme: dark)')` to honor OS preference on first visit
-- Browser support: Chrome 76+, Firefox 67+, Safari 12.1+ — essentially universal
-
-### Integration with Existing Tokens
-
-The existing `:root` block has color tokens but they are NOT yet abstracted for dark mode (they reference hardcoded hex values like `--color-white: #FFFFFF`). The migration path:
-
-1. Add semantic tokens (`--color-bg`, `--color-surface`, `--color-border`) to `:root`
-2. Replace hardcoded hex in section backgrounds with semantic tokens
-3. Keep brand colors (`--color-primary`, `--gradient-cta`) unchanged — they work in both modes
-4. Remap `--color-white` in dark mode to a dark surface (this is the key trick that makes `background: var(--color-white)` sections flip automatically)
-
-**Transition for theme switch (no flash):**
-
-```css
-/* Applied to body ONLY after initial load to prevent FOUC */
-body.theme-transitions-ready {
-  transition: background-color 300ms ease, color 300ms ease;
-}
-```
-
-Add `document.body.classList.add('theme-transitions-ready')` in JS after the page loads (not inline in head).
-
-### Confidence: HIGH
-
-This is a well-established pattern with no ambiguity. `localStorage`, `matchMedia`, and CSS custom property cascading all have near-universal browser support.
-
----
-
-## 3. CSS Scroll-Driven Animations API (2025)
-
-### What It Is
-
-The CSS Scroll-Driven Animations API (2023 spec, Chrome 115+) replaces IntersectionObserver-based JS animations with pure CSS. It links `@keyframes` animations to scroll position instead of time.
-
-```css
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-on-scroll {
-  animation: fade-in-up linear both;
-  animation-timeline: view();          /* ties to element's visibility */
-  animation-range: entry 0% entry 40%; /* plays during entry phase */
-}
-```
-
-**Why this technique:**
-- Pure CSS, zero JS — no `IntersectionObserver` wiring, no class toggling
-- Runs on the compositor thread — smoother than JS-driven animations
-- `animation-timeline: view()` fires the animation as the element enters the viewport, exactly replicating current `IntersectionObserver` behavior
-
-### Browser Support (as of mid-2025)
-
-| Browser | Support | Notes |
-|---------|---------|-------|
-| Chrome 115+ | Full | Shipped July 2023 |
-| Edge 115+ | Full | Chromium-based |
-| Safari 18+ | Partial | `scroll-timeline` supported; `view()` / `animation-range` partial. Safari 17 = no support |
-| Firefox 110+ | Partial | `scroll-timeline` supported; `view()` behind flag until FF 128 |
-| **Global coverage** | ~70–75% | MEDIUM confidence — significant Safari/Firefox gaps remain |
-
-**This is a progressive enhancement, not a replacement.** The existing `IntersectionObserver` animations MUST remain as the baseline. Scroll-driven CSS animations layer on top for supporting browsers.
-
-### Progressive Enhancement Pattern
-
-```css
-/* Baseline: element starts visible (works everywhere) */
-.section-card {
-  opacity: 1;
-  transform: none;
-}
-
-/* Enhancement: animate in for browsers that support scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .section-card {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
-
-**Why `@supports` gate is required:**
-- Browsers without support see `opacity: 0` elements if the animation properties are applied unconditionally — content disappears permanently
-- The `@supports` block ensures elements are visible by default, enhanced only when supported
-
-**Conflict with existing IntersectionObserver:**
-- The current JS adds `.is-visible` classes via IntersectionObserver to trigger CSS transitions
-- With scroll-driven animations, the same element could animate twice (IO transition + CSS scroll animation)
-- Resolution: in the `@supports` block, set `transition: none` to disable IO-triggered transitions on supported browsers, letting the CSS scroll animation take over cleanly
-
-```css
-@supports (animation-timeline: scroll()) {
-  .scroll-animate {
-    transition: none; /* disable IO-based transitions */
-    animation: fade-in-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-```
-
-### Confidence: MEDIUM
-
-Chrome/Edge support confirmed since 2023. Firefox and Safari gaps are real and documented. The `@supports` progressive enhancement pattern is the official W3C-recommended approach for partial support scenarios.
-
----
-
-## 4. CSS Micro-Animation Patterns
-
-### Hover State Transitions
-
-Existing codebase already uses `transition: var(--transition-fast)` / `var(--transition-normal)`. Enhance with:
-
-**Button hover — transform + shadow lift:**
-
-```css
-.btn {
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    opacity var(--transition-fast);
-  will-change: transform; /* hint browser to promote layer */
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(26, 198, 126, 0.35);
-}
-
-.btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-  transition-duration: 80ms; /* snappy click feedback */
-}
-```
-
-**Card hover — existing `translateY(-2px)` is correct, add shadow token:**
-
-```css
-.card {
-  transition:
-    transform var(--transition-normal),
-    box-shadow var(--transition-normal);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-```
-
-**Icon color shift on parent hover:**
-
-```css
-.feature-card .icon {
-  transition: color var(--transition-normal);
-  color: var(--color-primary-dark);
-}
-
-.feature-card:hover .icon {
-  color: var(--color-primary);
-}
-```
-
-### Focus State (Accessibility — required for ЦА 45+)
-
-```css
-/* Visible focus ring for keyboard/touch navigation */
-:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Remove focus ring for mouse clicks (browsers that support :focus-visible) */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-```
-
-**Why `:focus-visible` over `:focus`:** Shows focus ring for keyboard users (ЦА 45+ often navigates with tab), hides it for mouse users who find the ring distracting. Chrome 86+, Firefox 85+, Safari 15.4+ — ~95% support.
-
-### Form Field Micro-Animations
-
-```css
-.form__input {
-  border: 2px solid rgba(24, 33, 44, 0.15);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.form__input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(56, 198, 244, 0.15);
-  outline: none;
-}
-```
-
-**Ring glow on focus** replaces browser default outline — more polished, still accessible.
-
-### Accordion Animation (existing)
-
-Current implementation uses `max-height` transition. The modern alternative is `grid-template-rows`:
-
-```css
-/* Modern accordion — no fixed max-height needed */
-.faq__answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transition-normal);
-  overflow: hidden;
-}
-
-.faq__answer--open {
-  grid-template-rows: 1fr;
-}
-
-.faq__answer > div { /* inner wrapper required */
-  overflow: hidden;
-}
-```
-
-**Why `grid-template-rows: 0fr → 1fr`:** Animates to/from natural content height without needing a fixed `max-height` value. Works in Chrome 57+, Firefox 55+, Safari 10.1+. The existing `max-height` approach works fine — this is an optional upgrade.
-
-### `prefers-reduced-motion` (already handled — reinforce pattern)
-
-The existing codebase already handles `prefers-reduced-motion`. Ensure all new animations follow the same pattern:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  /* Disable ALL new animations and transitions */
-  .glass-card,
-  .btn,
-  .card,
-  .section-card {
-    transition: none;
-    animation: none;
-  }
-}
-```
-
-### Confidence: HIGH
-
-These are stable, well-documented CSS properties. `transition`, `transform`, `:focus-visible`, and `@media (prefers-reduced-motion)` all have universal or near-universal support.
-
----
-
-## New Token Additions Required
-
-Add to the existing `:root` block in `css/styles.css`:
-
-```css
-:root {
-  /* === NEW in v1.4 === */
-
-  /* Glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.75);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.20);
-
-  /* Semantic background tokens (dark mode migration) */
-  --color-bg: var(--color-white);
-  --color-surface: var(--color-light);
-  --color-border: rgba(0, 0, 0, 0.08);
-
-  /* Theme transition */
-  --transition-theme: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
-}
-
-html[data-theme="dark"] {
-  --color-bg: #0D1117;
-  --color-surface: #161B22;
-  --color-text-primary: #E6EDF3;
-  --color-text-muted: rgba(230, 237, 243, 0.55);
-  --color-white: #161B22;
-  --color-light: #1C2128;
-  --color-border: rgba(255, 255, 255, 0.08);
-
-  /* Glass inverted */
-  --glass-bg: rgba(13, 17, 23, 0.55);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-
-  /* Shadows on dark — more prominent */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
+## Installation
+
+**No `npm install` required.** All recommendations rely on existing dependencies.
+
+```bash
+# Verify nothing changes (sanity check)
+cd next
+npm ls framer-motion next react 2>/dev/null | head -20
+# Expected: framer-motion@12.38.0, next@15.5.15, react@19.1.0 — confirmed
 ```
 
 ---
 
-## What NOT to Add
+## Alternatives Considered
 
-| Rejected | Why |
-|----------|-----|
-| GSAP / Anime.js | External JS library for animations — violates no-dependency constraint; CSS transitions handle all needs |
-| Framer Motion | React library — irrelevant |
-| CSS `@layer` for theme | Adds complexity without benefit for a single file. `html[data-theme]` attribute override is simpler |
-| `color-scheme` property alone | `color-scheme: dark light` changes scrollbars/inputs but does NOT change your brand colors — must use custom property override |
-| `prefers-color-scheme` media query only | Doesn't allow user toggle — must combine with JS + localStorage |
-| `animation-timeline: scroll()` (not `view()`) | `scroll()` animates relative to scroll container, not element visibility — `view()` is correct for "animate on enter viewport" |
-| Canvas/WebGL glass effects | Heavy, unnecessary — `backdrop-filter` achieves the same visual with 3 CSS properties |
-| JS-driven scroll position detection for animations | Replaced by CSS Scroll-Driven Animations for supported browsers; IntersectionObserver already handles fallback |
+| Recommended | Alternative | When to Use Alternative |
+|-------------|-------------|-------------------------|
+| Canvas 2D | WebGL fragment shader | Only if we add a second living object or need feedback effects (echo, refraction maps). For one soft blob: never. |
+| Canvas 2D | CSS-only radial gradients animated via CSS variables | Acceptable as the `prefers-reduced-motion` fallback. NOT primary because cannot composite glint dynamically and `filter: blur` on movement is paint-thrashy. |
+| DOM-only CSS variables | Zustand store with `subscribeWithSelector` | If we ever need React components to actually conditionally render based on blob state (e.g. a "click here, the blob is over you" tooltip). Not in scope for v9.0. |
+| Vanilla rAF + lerp | Motion One imperative `animate()` | If we add many independent animated decorations (≥ 5) that share a timeline. Not in scope for v9.0. |
+| `dynamic({ ssr: false })` mount in `app/layout.tsx` | Render empty placeholder server-side, hydrate canvas client-side | If we ever want a visible static gradient before hydration as a brand moment. Adds complexity for marginal LCP gain — defer. |
 
 ---
 
-## Browser Support Summary Table
+## What NOT to Use
 
-| Feature | Chrome | Firefox | Safari | iOS Safari | Confidence |
-|---------|--------|---------|--------|------------|------------|
-| `backdrop-filter` | 76+ | 103+ | 9+ (-webkit-) | 9+ (-webkit-) | MEDIUM |
-| CSS custom properties | 49+ | 31+ | 9.1+ | 9.3+ | HIGH |
-| `localStorage` | 4+ | 3.5+ | 4+ | 3.2+ | HIGH |
-| `prefers-color-scheme` | 76+ | 67+ | 12.1+ | 12.2+ | HIGH |
-| `:focus-visible` | 86+ | 85+ | 15.4+ | 15.4+ | HIGH |
-| Scroll-Driven Animations | 115+ | 128+ | 18+ (partial) | 18+ | MEDIUM |
-| `grid-template-rows` transition | 66+ | 66+ | 12.1+ | 12.2+ | HIGH |
-| `@supports` | 28+ | 22+ | 9+ | 9+ | HIGH |
-| `will-change` | 36+ | 36+ | 9.1+ | 9.3+ | HIGH |
-
-**Coverage note:** Scroll-Driven Animations are the only feature with meaningful gaps (~25% non-support). All others are effectively universal (95%+). The `@supports` progressive enhancement pattern handles the gap correctly.
+| Avoid | Why | Use Instead |
+|-------|-----|-------------|
+| GSAP | 23 KB for what 80 LoC can do | Vanilla rAF + lerp |
+| Motion One | 3.8 KB and re-imposes a state model | Vanilla rAF + lerp |
+| three.js / r3f | 150 KB+ for a 2D blob is absurd | Canvas 2D |
+| PixiJS | 80 KB WebGL 2D engine | Canvas 2D |
+| `react-use` `useMouse` | Forces React state on pointermove | Hand-rolled `useEffect` with refs (pattern in `useSpecularHighlight.ts`) |
+| `zustand` for blob runtime state | Subscribers re-render per frame | CSS vars on `documentElement` |
+| React Context for blob state | Every consumer re-renders | CSS vars on `documentElement` |
+| Houdini Paint Worklet | Safari does not support it | Canvas 2D |
+| SVG `feGaussianBlur` for blur | Paint thrash on moving filter source | Canvas 2D radial gradients (no SVG filter) |
+| New animation library of any kind | Bundle bloat for ЦА 45+ on budget Android | Refs + rAF |
+| Restoring `LiquidBlobLayer.tsx` / `liquid-depth.css` | They were dead code, slated for removal; clean replacement is faster than archeology | New `LivingBlobField.tsx` + `living-blob.css` |
+| `will-change` on the blob canvas | Canvas already gets its own compositor layer; redundant memory cost | Let the browser auto-promote |
+| `backdrop-filter` on the blob layer itself | Blob is the only opaque object — there is nothing behind it to blur | None — blob is opaque-on-light-bg |
 
 ---
 
-## Integration Checklist
+## Stack Patterns by Variant
 
-Before implementation, verify these touchpoints with existing code:
+**If `(prefers-reduced-motion: reduce)`:**
+- Disable rAF loop entirely.
+- Replace canvas with static CSS `radial-gradient` at 50% / 50% (ambient).
+- Glint and heat dynamics off.
+- Source: ТЗ §15.
 
-1. **IntersectionObserver + Scroll-Driven conflict** — `.scroll-animate` JS class toggle must be disabled in `@supports (animation-timeline: scroll())` block
-2. **Glass cards require a non-white background behind them** — sections using glass must have a gradient/image background, not `background: var(--color-bg)` (blur of white = white, no visible effect)
-3. **Dark mode token migration** — global replace of `background: var(--color-white)` → `background: var(--color-bg)` in section rules, otherwise dark mode only affects text color
-4. **Inline `<script>` for FOUC prevention** — theme detection JS must be in `<head>`, before stylesheet link. Order: `<link rel="stylesheet">` then `<script>` inline theme block
-5. **`will-change: transform`** — add only to elements that actually animate; don't apply globally (wastes GPU memory)
-6. **Test on iOS Safari** — `backdrop-filter` requires `-webkit-` prefix; test on real device, not just Chrome DevTools mobile emulation
+**If `(pointer: coarse)` (touch devices):**
+- No `pointermove` listener.
+- Run a lazy ambient `setInterval` (5–8s drift to a new random target, lerp toward it).
+- Add a one-shot pulse on `pointerdown` (single rAF burst + decay).
+- Source: ТЗ §14.
+
+**If `(prefers-reduced-transparency: reduce)`:**
+- Hide blob entirely (`display: none` on `.living-blob-field`).
+- Glass surfaces become opaque per existing `liquid-glass.css` rule.
+- Page reads as static medical content.
+- Source: existing project a11y spec.
+
+**If `[data-theme="dark"]`:**
+- Hide blob (`display: none`). Per project rule: dark mode disables `backdrop-filter` and the glass system; the v9.0 blob is part of that system and is also disabled.
+- Source: PROJECT.md Key Decisions ("Dark mode disables backdrop-filter").
+
+---
+
+## Version Compatibility
+
+| Package A | Compatible With | Notes |
+|-----------|-----------------|-------|
+| `next@15.5.15` | `react@19.1.0`, `react-dom@19.1.0` | Already installed and proven by existing pages. App Router `dynamic({ ssr: false })` works as documented. |
+| `framer-motion@12.38.0` | `react@19.1.0` | Already proven. NOT used by blob — only by existing motion components. Risk is zero because we add nothing. |
+| Canvas 2D | All target browsers (Safari 15+, Chrome 100+, Firefox 100+, Samsung Internet 19+) | Safari 15 is iOS 15, the project's stated mobile floor. `OffscreenCanvas` would unlock workerized rendering but Safari 15 lacks it — keep main-thread canvas. |
+| CSS custom properties on `:root` updated from JS | All target browsers | Performance verified for hundreds of writes/sec on mid-range Android (Chrome team published guidance — pure custom-property updates do not invalidate layout). |
 
 ---
 
 ## Sources
 
-- MDN Web Docs: `backdrop-filter` — https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter (training data, August 2025 cutoff)
-- MDN Web Docs: CSS Scroll-Driven Animations — https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations (training data)
-- MDN Web Docs: `prefers-color-scheme` — https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme (training data)
-- MDN Web Docs: `:focus-visible` — https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible (training data)
-- W3C CSS Scroll-driven Animations spec — https://drafts.csswg.org/scroll-animations-1/ (training data)
-- Chrome Developers: Scroll-driven Animations — https://developer.chrome.com/docs/css-ui/scroll-driven-animations (training data)
+Verified sources backing the technology choices:
 
-**Confidence note:** All browser support figures are from training data (knowledge cutoff August 2025). No live caniuse.com or MDN verification was possible (WebFetch/WebSearch tools unavailable in this session). Flag for verification against caniuse.com before implementation if exact percentages matter for go/no-go decisions.
+- [Motion docs — Reduce bundle size of Framer Motion](https://motion.dev/docs/react-reduce-bundle-size) — confirms 34 KB minimum without `LazyMotion`, ~4.6 KB with `m` + `LazyMotion`. **HIGH confidence.** Project already uses `LazyMotion`, so Framer Motion overhead is paid once and is not the right tool for blob.
+- [Motion docs — Should I use Framer Motion or Motion One?](https://motion.dev/magazine/should-i-use-framer-motion-or-motion-one) — both are now under `motion` umbrella; Motion One is `~3.8 KB`. **HIGH confidence.**
+- [LogRocket — Best React animation libraries for 2026](https://blog.logrocket.com/best-react-animation-libraries/) — survey confirms GSAP (~23 KB), Framer Motion (~34 KB w/o LazyMotion), Motion One (~3.8 KB), react-spring (~28 KB). **MEDIUM confidence** (LogRocket is editorial; cross-checked against vendor docs).
+- [Annnimate — GSAP vs Framer Motion vs React Spring 2026](https://www.annnimate.com/blog/gsap-vs-framer-motion-vs-react-spring) — bundle size comparison and use-case framing. **MEDIUM confidence.**
+- Existing project file `next/src/hooks/use-specular-highlight.ts` — proves the rAF + CSS-variable + `pointermove` pattern works in this codebase. **HIGH confidence — internal evidence.**
+- Existing project file `next/src/styles/liquid-glass.css` — documents anti-patterns (`will-change` on static glass; `filter: drop-shadow()` on glass ancestors breaking `backdrop-filter`); these constraints inform the blob layer placement. **HIGH confidence — internal evidence.**
+- `DESIGN.md` (repo root) — defines `--liquid-blur-{sm,md,lg,xl}` tokens and the brand palette; v9.0 adds 4 blob-specific tokens that must be logged here. **HIGH confidence — authoritative project doc.**
+- `design/LIQUID_GLASS_BLOB_TZ.md` — domain spec (sublayers, heat, mobile behavior, a11y). **HIGH confidence — authoritative project doc.**
+- `next/package.json` — verified installed versions: `next@15.5.15`, `react@19.1.0`, `framer-motion@^12.38.0`, `tailwindcss@^4`. **HIGH confidence — direct read.**
+
+---
+
+## Confidence Assessment
+
+| Decision | Confidence | Verified By |
+|----------|------------|-------------|
+| Canvas 2D over WebGL / SVG / CSS-only | HIGH | Established performance characteristics of `feGaussianBlur` on moving subjects (paint thrash); WebGL bundle math; existing project pattern in `useSpecularHighlight` |
+| CSS-vars-on-documentElement state model | HIGH | Already shipped pattern in `useSpecularHighlight.ts`; ТЗ §16 explicitly forbids React state on pointermove |
+| No new animation library | HIGH | Vendor-published bundle sizes (Motion One 3.8 KB, GSAP 23 KB) all exceed the savings of an 80-LoC physics module |
+| Hand-rolled pointer handling | HIGH | Existing project pattern; no library matches the constraint of zero React re-renders |
+| `dynamic({ ssr: false })` mount strategy | HIGH | Next.js 15.5.x official App Router docs |
+| New blob tokens (`--blob-*`) | HIGH | Source: `LIQUID_GLASS_BLOB_TZ.md` §5 palette block |
+| `--blob-hot` requires DESIGN.md update before implementation | HIGH | Project constraint: "Inventing colors requires a Key Decision" |
+| Reject of `LiquidBlobLayer.tsx` / `liquid-depth.css` revival | MEDIUM | Inferred from milestone context ("were going to be removed in v8.1"); recommend confirming with the milestone-closer commit before deletion |
+
+---
+
+*Stack research for: v9.0 Living Blob Liquid Glass Scene — additions to existing Next.js 15 + React 19 + TS + Tailwind 4 + framer-motion 12 stack.*
+*Researched: 2026-04-30*

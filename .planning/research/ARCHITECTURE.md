@@ -1,510 +1,527 @@
-# Architecture Patterns: v1.4 Visual Redesign Integration
+# Architecture: Living Blob Liquid Glass Scene (v9.0)
 
-**Domain:** Visual enhancement integration into existing vanilla CSS single-file architecture
-**Researched:** 2026-03-24
-**Milestone:** v1.4 — Dark mode, glassmorphism, bold typography, micro-animations
-
----
-
-## Context: What We Are Working With
-
-The existing codebase is a single-file architecture that is fully operational:
-
-- `css/styles.css` — ~1,640 lines, 11 numbered sections, CSS custom properties at `:root`
-- `index.html` — ~762 lines, single page, `<html lang="ru" class="no-js">`
-- `js/main.js` — ~488 lines, IIFE pattern, ES5 syntax, IntersectionObserver for scroll animations
-
-Key existing patterns that constrain integration:
-
-1. All color references are already CSS tokens (`--color-*`, `--gradient-cta`, etc.)
-2. Animation states use `.is-visible` / `.is-open` class toggles, not inline styles
-3. JS uses `document.documentElement.classList` for the `no-js` toggle — the same mechanism dark mode will use
-4. `prefers-reduced-motion` is already handled at the CSS level (section 10 of styles.css)
-5. Section backgrounds alternate between `--color-white` (#ffffff) and `--color-light` (#F8FAFB) with one dark section (`.section--dark` using `--color-dark` #18212C)
+**Domain:** Global animated background layer + glass UI rework on a Next.js App Router multi-page site
+**Researched:** 2026-04-30
+**Milestone:** v9.0 — Living Blob Liquid Glass Scene
+**Confidence:** HIGH (verified against actual repo state — all referenced files inspected)
 
 ---
 
-## Question 1: Dark Mode Token Architecture
+## Executive summary
 
-### The Strategy: `data-theme` Attribute on `<html>`
+The Living Blob is a **single, globally-mounted, fixed-position client component** that runs **one** pointermove listener and **one** rAF loop, writing four-to-five CSS custom properties (`--blob-x`, `--blob-y`, `--blob-heat`, `--blob-velocity`, `--blob-mode`) to `document.documentElement.style`. **Zero React state** for blob position. Existing glass utilities in `next/src/styles/liquid-glass.css` and component-level Tailwind classes consume those CSS vars passively (no React subscription). All four routes (`/`, `/treatment-abroad`, `/consultations`, `/checkup`) inherit the blob automatically because they share `next/src/app/layout.tsx`.
 
-Do NOT use `@media (prefers-color-scheme: dark)` as the primary mechanism. The v1.4 requirement is a **user toggle** (stored in localStorage), not a system-automatic toggle. The correct pattern:
+The pre-existing `MeshBackground.tsx` (3 static blurred circles + frosted overlay) is the thing being **replaced**. The prompt mentioned `LiquidBlobLayer.tsx` and `liquid-depth.css` but **neither file exists in the current repo** (verified via filesystem search) — they are not blockers and need not be deleted.
 
-```
-<html lang="ru" data-theme="light">    <!-- default -->
-<html lang="ru" data-theme="dark">     <!-- after user toggle -->
-```
-
-**How to extend `:root` tokens without refactoring everything:**
-
-Step 1 — Add dark-mode overrides as a second token block, scoped to `[data-theme="dark"]`. The existing `:root` block stays completely unchanged.
-
-```css
-/* In styles.css, immediately AFTER the existing :root block — insert new block */
-
-[data-theme="dark"] {
-  /* Backgrounds */
-  --color-white:          #0F1923;   /* page background */
-  --color-light:          #1A2533;   /* alternating section background */
-  --color-dark:           #E8F4FF;   /* inverted: was dark text, now light */
-
-  /* Text */
-  --color-text-primary:   #E0ECF8;
-  --color-text-on-dark:   #18212C;   /* inverted: text on "dark" (now light) sections */
-  --color-text-muted:     rgba(224, 236, 248, 0.55);
-
-  /* Interactive */
-  --color-primary:        #5FD5F9;   /* brighter cyan for dark bg contrast */
-  --color-primary-dark:   #38C6F4;   /* restore original as "dark variant" on dark bg */
-  --color-secondary:      #3FCF88;
-  --color-secondary-dark: #1AC67E;
-
-  /* CTA remains gradient — works on both themes */
-  /* --gradient-cta: unchanged */
-
-  /* Badges */
-  --color-badge-bg:       #0D3324;
-  --color-badge-text:     #3FCF88;
-
-  /* Shadows (less visible on dark bg — use glow instead) */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.5);
-
-  /* Glass surface tokens (new, dark mode only) */
-  --glass-bg:             rgba(255, 255, 255, 0.06);
-  --glass-border:         rgba(255, 255, 255, 0.12);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Why this works without refactoring:** Every existing CSS rule that references `var(--color-white)`, `var(--color-text-primary)`, etc. automatically gets the dark value when `data-theme="dark"` is on `<html>`. Zero existing rules need to change.
-
-**Light mode glass tokens (also add to `:root`):**
-
-```css
-:root {
-  /* ... existing tokens ... */
-
-  /* Glass surface tokens (light mode) */
-  --glass-bg:             rgba(255, 255, 255, 0.65);
-  --glass-border:         rgba(255, 255, 255, 0.9);
-  --glass-blur:           blur(12px);
-}
-```
-
-**Theme color meta tag:** Update to use JS — on dark mode activation, set:
-```html
-<meta name="theme-color" content="#0F1923">
-```
-
-### System Preference Respect (bonus — no extra code)
-
-Add this at the END of the `[data-theme="dark"]` block:
-
-```css
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    /* same token overrides as [data-theme="dark"] */
-  }
-}
-```
-
-This means: if no explicit choice has been made yet, follow the OS. Once the user clicks the toggle (localStorage sets `data-theme`), the explicit attribute wins.
-
-### What NOT to do
-
-- Do NOT use CSS variables with `-light` / `-dark` suffixes (e.g., `--color-white-dark`). This requires touching every existing rule.
-- Do NOT use a `.dark` class on `<body>`. The `data-theme` attribute on `<html>` covers the full cascade including `<body>` default styles.
-- Do NOT try to scope dark mode per-section. The token cascade handles it globally.
+The dominant integration risk is **opacity inflation in 45 components**: every existing glass surface ships `bg-white/40` to `bg-white/75` (milky), which violates the v9.0 ТЗ ceiling of `rgba(255,255,255,0.16)`. The build order must therefore put the renderer first (so we can see the blob through reduced opacities) and then sweep components in tiers.
 
 ---
 
-## Question 2: Glassmorphism — Where to Apply It
+## 1. Mount point — global, in `layout.tsx`
 
-### Browser Support Note
+**Decision:** Mount the blob renderer **once** in `next/src/app/layout.tsx`, not per-page.
 
-`backdrop-filter: blur()` is supported in Chrome 76+, Firefox 70+, Safari 9+ (with `-webkit-` prefix). **Confidence: HIGH** (well-established by 2026). Must add `-webkit-backdrop-filter` alongside `backdrop-filter`. Always provide a solid fallback background for browsers that don't support it.
+**Rationale:**
+- All four routes (`/`, `/treatment-abroad`, `/consultations`, `/checkup`) share the same root layout — verified by inspecting `app/{page,checkup/page,consultations/page,treatment-abroad/page}.tsx`. Each `page.tsx` returns only section components; chrome (Header, Footer, StickyBar, MeshBackground, SvgRefractionDefs) lives in `layout.tsx`.
+- A per-page mount would re-create the listener and rAF loop on every client-side route transition, leak the previous listener if cleanup is imperfect, and produce a one-frame flash of "no blob" between routes.
+- Mounting in `layout.tsx` means the blob persists across `next/link` navigations as a stable subtree (App Router preserves layout subtrees during route changes) — the blob never "blinks" between pages.
 
-### Sections That Benefit Most
+**SSR plan:**
+- The renderer is a `'use client'` component. It must render a deterministic, empty-ish DOM during SSR (`<div class="living-blob-field" aria-hidden="true" />` plus the four sub-layer `<div>`s with seeded transforms) so server HTML and first-client-render HTML match (no hydration mismatch).
+- Initial CSS-var values are seeded by an inline `<style>` on `:root` in `layout.tsx` (e.g. `--blob-x: 50vw; --blob-y: 50vh; --blob-heat: 0; --blob-velocity: 0; --blob-mode: ambient;`). This ensures glass surfaces have valid var values during the first paint, before the client component mounts and starts updating them.
+- The `useEffect` inside the renderer attaches the pointermove listener and starts rAF only on the client — so SSR runs zero animation work.
 
-Glassmorphism only creates visual depth when there is something behind the glass element to blur. In the current page:
+**Hydration plan:**
+- Server emits `<div class="living-blob-field" aria-hidden="true">` with four sub-layer children, all deterministic.
+- Client hydrates the same DOM. After hydration, the renderer's `useEffect` (a) starts writing `:root` CSS vars on each rAF tick and (b) toggles `document.documentElement.dataset.blobMode` based on `pointer:coarse` and `prefers-reduced-motion` checks.
+- `prefers-reduced-motion` and mobile checks happen inside `useEffect`, not during render — mode switches cause CSS-var/data-attribute updates only, not DOM reshape.
 
-| Component | Current Background Behind | Glass Viable? | Priority |
-|-----------|--------------------------|---------------|----------|
-| `.pricing__card` | `.pricing` section (white/light) | Low contrast | MEDIUM — add gradient to section first |
-| `.site-header` (scrolled) | Page content scrolling behind | YES | HIGH — header glass on scroll |
-| Hero stat badges (social proof numbers) | Hero background | YES if hero gets gradient | HIGH |
-| `.doctors__card` | `.doctors` section (light bg) | MEDIUM — subtle | LOW |
-| `.lead-form__wrapper` | `.lead-form-section` with existing radial halo | YES | HIGH |
-| FAQ items | Plain white — nothing behind | NO | Skip |
-| `.final-cta` (dark section) | Gradient dark bg | YES — light glass | MEDIUM |
-| Process step cards | White — nothing behind | NO unless bg changes | LOW |
-
-**Recommended glass targets (in priority order):**
-
-**1. Sticky header when scrolled (`.site-header.is-scrolled`)**
-The `.is-scrolled` state already exists in JS. Currently adds `box-shadow`. Replace that with glass:
-
-```css
-/* MODIFY existing .site-header.is-scrolled */
-.site-header.is-scrolled {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: none;  /* remove the old shadow */
-}
-
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(1px)) {
-  .site-header.is-scrolled {
-    background: var(--color-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-```
-
-**2. Pricing card**
-The pricing section needs a gradient background first, then the card gets glass:
-
-```css
-/* ADD to pricing section */
-.pricing {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
-}
-
-[data-theme="dark"] .pricing {
-  background: linear-gradient(135deg, #0c1a2e 0%, #0f2137 50%, #0c1f18 100%);
-}
-
-/* ADD .pricing__card--glass modifier */
-.pricing__card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-```
-
-**3. Lead form wrapper**
-The form section already has a radial gradient halo (`.lead-form-section::before`). Glass the form wrapper:
-
-```css
-/* ADD .lead-form__wrapper--glass modifier */
-.lead-form__wrapper--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-}
-```
-
-**4. Social proof stats on the hero (if hero gets gradient)**
-If the hero background is changed to a gradient (part of bold typography redesign), the social proof numbers can float as glass pills.
-
-### What NOT to glass
-
-- FAQ items — no background content to blur, looks broken
-- `.section--dark` text paragraphs — glass on text containers hurts readability for 45+ audience
-- The sticky mobile bar at the bottom — always needs high contrast for CTA readability
-
-### Glass Token Implementation Pattern
-
-Use the `--glass-*` tokens established in `:root` and `[data-theme="dark"]`. Never hardcode `rgba(255,255,255,0.65)` directly in component rules — this breaks dark mode.
-
-```css
-/* Good */
-.card--glass {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-}
-
-/* Bad — hardcoded, breaks in dark mode */
-.card--glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(12px);
-}
-```
+**Z-index contract (already partially in place):**
+- `.living-blob-field`: `position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;`
+- `<main>` already has `relative z-10` in `layout.tsx` line 55 — **no change needed**.
+- `Header` is `fixed z-50` and `StickyBar` is `fixed z-50` — **no change needed**.
+- `MeshBackground` currently sits at `z-0` and must be **removed or replaced** (see §8).
 
 ---
 
-## Question 3: Scroll-Driven Animations Alongside IntersectionObserver
+## 2. Single pointermove pipeline
 
-### Browser Support Assessment
+**Decision:** Exactly one `pointermove` listener attached to `window`, exactly one rAF loop alive at a time. Both live inside the renderer component's `useEffect`.
 
-CSS Scroll-Driven Animations (`animation-timeline: scroll()`) — Chrome 115+, Edge 115+. **Firefox support was behind a flag until Firefox 129 (August 2024) where it shipped.** Safari support shipped in Safari 18 (September 2024). As of early 2026, baseline support is solid in modern browsers. **Confidence: MEDIUM** (confirmed in training data through mid-2025, assume stable in 2026).
+**Pattern:**
 
-The existing IntersectionObserver animations are **class-toggle based** (add `.is-visible` to trigger a CSS transition). Scroll-driven animations are **pure CSS keyframe** based. They do not conflict — they operate on different CSS properties through different mechanisms.
+```text
+useEffect(mount):
+  rawX = window.innerWidth / 2
+  rawY = window.innerHeight / 2
+  // smoothed targets, one per sub-layer, with different lerp factors
+  coreX, bodyX, haloX = rawX  (and Y)
+  heat = 0
+  lastMoveTs = performance.now()
+  lastSampleTs = lastMoveTs
 
-### How to Layer Without Conflict
+  onPointerMove(e):
+    rawX = e.clientX
+    rawY = e.clientY
+    velocity = distance(prev, raw) / dt   // for stretch/heat reset
+    lastMoveTs = performance.now()
 
-**Rule 1: Don't touch existing `.animate-on-scroll` / `.is-visible` patterns.** The IntersectionObserver adds `.is-visible` which triggers a `transition`. Leave that intact. It works and has IE11-era compatibility.
+  rafTick(now):
+    dt = now - lastSampleTs
+    coreX = lerp(coreX, rawX, 0.18)        // core: snappy
+    bodyX = lerp(bodyX, rawX, 0.08)        // body: viscous
+    haloX = lerp(haloX, rawX, 0.04)        // halo: lazy
+    idleMs = now - lastMoveTs
+    heat   = clamp(idleMs / 2500, 0, 1)    // 0..1 over ~2.5s of stillness
+    setCSSVar('--blob-x',        coreX + 'px')
+    setCSSVar('--blob-y',        coreY + 'px')
+    setCSSVar('--blob-body-x',   bodyX + 'px')
+    setCSSVar('--blob-body-y',   bodyY + 'px')
+    setCSSVar('--blob-halo-x',   haloX + 'px')
+    setCSSVar('--blob-halo-y',   haloY + 'px')
+    setCSSVar('--blob-heat',     heat.toFixed(3))
+    setCSSVar('--blob-velocity', velocity.toFixed(3))
+    raf = requestAnimationFrame(rafTick)
 
-**Rule 2: Use Scroll-Driven Animations only for NEW visual effects** that are additive, not replacements. Good candidates:
+  window.addEventListener('pointermove', onPointerMove, { passive: true })
+  raf = requestAnimationFrame(rafTick)
 
-- Progress bar in the header (shows how far down the page you are)
-- Parallax-style fade on section dividers (subtle opacity shift as you scroll past)
-- Hero title scale effect that plays once as page loads and user begins scrolling
+  cleanup:
+    window.removeEventListener('pointermove', onPointerMove)
+    cancelAnimationFrame(raf)
+```
 
-**Rule 3: Gate scroll-driven animations with `@supports`:**
+**Why `window`, not `document` or a child element:**
+- `window` captures pointermove even when the cursor crosses scrollbars or hovers over fixed-positioned chrome; matches user expectation that the blob keeps moving until cursor truly leaves.
+- `pointer-events: none` on `.living-blob-field` itself ensures the renderer never swallows clicks.
+
+**How React components opt-in:**
+Components do **not** subscribe via React. They consume the vars purely through CSS:
 
 ```css
-/* Only applies if browser supports scroll-driven animations */
-@supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    animation: grow-width linear;
-    animation-timeline: scroll(root);
-    animation-range: 0 100%;
-  }
-
-  @keyframes grow-width {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
+.liquid-card {
+  /* light leak: brightens when blob is near */
+  background-image: radial-gradient(
+    600px circle at var(--blob-x) var(--blob-y),
+    rgba(53, 182, 120, calc(0.06 + 0.10 * var(--blob-heat))),
+    transparent 60%
+  );
 }
 ```
 
-**Rule 4: Respect existing `prefers-reduced-motion` — it already blanket-disables all animations.** The existing rule at section 10 of styles.css covers both transition-based AND keyframe-based animations:
+The browser repaints affected layers automatically when `:root` vars change. **Zero React renders triggered**.
 
+**Cleanup:**
+- The renderer's `useEffect` returns a cleanup function that removes the listener and cancels rAF.
+- React Strict Mode double-mount in dev is safe: cleanup unwires the first instance before the second mounts, so we never have two listeners.
+- Page Visibility API: when `document.hidden`, the rAF loop pauses (browsers already throttle rAF to 0Hz on hidden tabs, but we should also explicitly skip work to avoid CPU on resume).
+
+**Coexistence with `useSpecularHighlight`:** The repo already has `next/src/hooks/use-specular-highlight.ts` (used by `GlassInteraction.tsx`) writing per-element `--mouse-x`/`--mouse-y` for cursor-tracking specular highlights on individual glass cards. This is **per-element** and uses `mousemove` on the card itself (event-delegated, scoped). The new global blob renderer uses `--blob-x`/`--blob-y` on `:root`. **Different namespaces, both can run** — the per-element hook is opt-in (only fires when cursor is over that card), the blob renderer is always-on. Both should coexist for v9.0; consider consolidating in a future milestone.
+
+---
+
+## 3. State boundary — CSS vars only, optional `useBlobAware()` for measurement
+
+**Hard rule:** Blob position, heat, and velocity are **not** React state. Storing them in `useState` would re-render every consumer 60×/s, which is exactly what the ТЗ §16 forbids ("нельзя обновлять React state на каждый pointermove").
+
+**The boundary:**
+
+| Concern | Where it lives | Why |
+|---|---|---|
+| `--blob-x`, `--blob-y` (current core position, px in viewport) | `:root` CSS var | 60Hz updates, GPU repaint only |
+| `--blob-body-x/y`, `--blob-halo-x/y` (sub-layer positions) | `:root` CSS var | Same — no React subscribe |
+| `--blob-heat` (0..1, idle accumulation) | `:root` CSS var | Read by `radial-gradient`, opacity, filter |
+| `--blob-velocity` (px/ms or normalized 0..1) | `:root` CSS var | Read by stretch/blur modulation |
+| `--blob-mode` (`cursor` / `ambient` / `static`) | `:root` CSS var **+** `<html data-blob-mode="…">` | CSS can't branch on a string-typed custom property without `@property + style()` queries. Mirror as `data-*` attribute for selectors; keep as CSS var for debugging |
+| Whether dark mode is active | `[data-theme="dark"]` attribute (existing) | Already in repo |
+| `prefers-reduced-motion` / `prefers-reduced-transparency` | `@media` queries in CSS | No JS branch needed for most rules |
+
+**`useBlobAware()` — only when truly needed:**
+
+This optional hook exists for the rare case where a single component needs **per-element reactive distance** to the blob (e.g. one premium card whose 3D tilt magnitude depends on how close the blob is). Plan:
+
+```text
+useBlobAware(ref) -> { distancePx, isUnderBlob }
+  - subscribes to a single shared "blob bus" that emits at most every Nth rAF tick (throttled to ~30Hz)
+  - reads element's bounding rect (cached, refreshed on resize)
+  - computes distance from blob position to element center
+  - returns React state — accepts the re-render cost intentionally
+```
+
+**Use sparingly.** Default path is "consume CSS vars from CSS only." `useBlobAware` is for one-off premium effects, max ~3 components on the whole site.
+
+---
+
+## 4. Component refactor map
+
+Every glass surface in the repo currently uses `bg-white/40` to `bg-white/75` (milky), which **violates** the v9.0 ТЗ §9 ceiling of `rgba(255,255,255,0.16)`. Each component below must be re-tiered.
+
+**Tier system (proposed CSS classes — see §5 for tokens):**
+
+- **Tier 0 — Section frame** (`--glass-section-fill`, target `rgba(255,255,255,0.04..0.08)`, blur 24..40px desktop / 12px mobile)
+- **Tier 1 — Card** (`--glass-card-fill`, target `rgba(255,255,255,0.08..0.12)`, blur 16..24px desktop / 12px mobile)
+- **Tier 2 — Form / input field** (`--glass-form-fill`, target `rgba(255,255,255,0.12..0.16)`, sharper border)
+- **Tier 3 — Button / control / nav** (`--glass-button-fill`, target `rgba(255,255,255,0.10..0.14)` + brighter inner highlight, sharpest)
+
+**Per-component refactor table:**
+
+| Component (modified file) | Current opacity | Current blur | Target tier | Notes |
+|---|---|---|---|---|
+| `next/src/components/layout/HeaderClient.tsx` | `bg-white/30` → `bg-white/50` (scrolled) | `40px` → `60px` | Tier 3 (chrome) | Reduce to `bg-white/14` rest, `bg-white/22` scrolled. Cap blur at 24px. Keep `shadow-glass-header`. |
+| `next/src/components/layout/MobileMenu.tsx` (toggle button) | `bg-white/55` | `xl` (~24px) | Tier 3 | Reduce to `bg-white/16`, blur 20px. |
+| `next/src/components/layout/MobileMenu.tsx` (dropdown panel) | `bg-white/68` | `80px` | Tier 0 | Reduce to `bg-white/14`, blur 24px (mobile budget cap 12px applies on small screens — needs media-query override). |
+| `next/src/components/layout/StickyBar.tsx` | `bg-white/68` | `3xl` (~64px) | Tier 0 | Reduce to `bg-white/14`, blur ≤12px (mobile-only component). Keep `shadow-glass-lg`. |
+| `next/src/components/sections/HeroHub.tsx` (frame card) | `bg-white/75` | `40px` | Tier 0 + accent | Reduce to `bg-white/16`. The "hero frame" is the densest legitimate glass on the page — give it the highest tier-0 ceiling. Keep `shadow-glass`. |
+| `HeroHub.tsx` (control buttons row, `bg-white/15`) | `bg-white/15` | n/a | Tier 3 | Already in range; just verify against tokens. |
+| `HeroHub.tsx` (badge `bg-white/40`) | `bg-white/40` | `20px` | Tier 3 | Reduce to `bg-white/14`. |
+| `next/src/components/sections/StatsBar.tsx` (mobile wrapper) | `bg-white/60` | `2xl` (~40px) | Tier 0 | Reduce to `bg-white/08`, blur 24px desktop / 12px mobile. |
+| `StatsBar.tsx` (desktop cards) | `bg-white/60` → `bg-white/70` (hover) | `2xl` | Tier 1 | Reduce to `bg-white/10` rest, `bg-white/14` hover, blur 20px. |
+| `next/src/components/sections/ServicesGrid.tsx` (cards) | `bg-white/60` → `bg-white/70` (hover) | `2xl` | Tier 1 | Reduce to `bg-white/10` / `bg-white/14`. Keep `hover:-translate-y-0.5`. |
+| `ServicesGrid.tsx` (badge inside card) | `bg-white/50` | `md` | Tier 3 | Reduce to `bg-white/14`. |
+| `next/src/components/sections/ProcessSection.tsx` (steps) | check & port | check & port | Tier 1 | Same treatment as ServicesGrid cards. |
+| `next/src/components/sections/FinalCTA.tsx` / `ContactSection.tsx` | check & port | check & port | Tier 0 | Section frame, low opacity, accept gradient CTA inside as opaque (CTA stays solid by ТЗ §13). |
+| `next/src/components/sections/FAQSection.tsx` (accordion) | check & port | check & port | Tier 1 (closed) → Tier 2 (open) | Closed items low opacity; open item slightly denser for readability. |
+| `next/src/components/sections/ContactForm.tsx` / `service/LeadFormSection.tsx` | check & port | check & port | Tier 2 (form), Tier 1 (frame) | Form fields keep `.squircle-sm`. Inputs use `--glass-form-fill` (~0.14) with a stronger inset highlight for legibility. |
+| `next/src/components/layout/Footer.tsx` | check & port | check & port | Tier 0 | Reduce to `bg-white/06`. |
+| `next/src/components/sections/{WhyUsSection,ClinicsSection,PlatformSection,ReviewsSection,ProblemSection,AdvantagesGrid,GuideGrid}.tsx` | various `bg-white/40..70` | `xl..3xl` | Tier 0 / Tier 1 (per cards) | Sweep in Phase 3 of build order. |
+| `next/src/components/sections/checkup/*.tsx` (8 files) | various | various | Per-tier | `/checkup` route — sweep in same phase. |
+| `next/src/components/sections/consultations/*.tsx` (8 files) | various | various | Per-tier | `/consultations` route. |
+| `next/src/components/sections/treatment/*.tsx` (4 files) | various | various | Per-tier | `/treatment-abroad` route. |
+| `next/src/components/sections/contacts/*.tsx` (2 files) | various | various | Per-tier | `/contacts` route. |
+| `next/src/components/sections/service/{ServiceHero,FAQ,SocialProof}.tsx` | various | various | Per-tier | Shared service sub-pages. |
+| `next/src/components/ui/{card,dialog,input,select,textarea,button,badge}.tsx` | various | various | Per-tier | shadcn primitives — touch carefully, they are reused everywhere. |
+| `next/src/components/sections/HeroHub.tsx` (CTA button gradient) | gradient (opaque) | n/a | **stays opaque** | ТЗ §13: CTA must not disappear into glass. Keep `bg-gradient-to-r from-mu-blue to-mu-accent-blue`. |
+| `next/src/components/layout/Header.tsx` (CTA "Обсудить случай") | gradient (opaque) | n/a | **stays opaque** | Same — CTA exception. |
+
+**What stays unchanged on every component:**
+- `.squircle-md` / `.squircle-lg` / `.squircle-xl` utilities (shape system is independent of glass tier).
+- `shadow-glass*` shadow tokens (define depth — adjust values per tier in `liquid-glass.css`, don't remove shadows).
+- `border border-glass-border` thin highlights (the bright edge is what makes glass *read* as glass at low opacity — keep it).
+- All copy, all layout (grid, flex, gap), all responsive breakpoints, all `prefers-reduced-*` guards.
+
+**What's removed:**
+- `MeshBackground` rendered in `layout.tsx` line 9 — replace with `<LivingBlobField />` (see §8).
+- `bg-mu-text-50` body background in `layout.tsx` line 50 — likely keep as fallback but the blob renderer's own gradient base-layer takes over visually.
+
+---
+
+## 5. CSS variable contract
+
+**Blob runtime vars (set by renderer, read by everything else):**
+
+| Var | Type / unit | Range | Set by | Read by |
+|---|---|---|---|---|
+| `--blob-x` | px (viewport) | `0..100vw` | rAF loop, every frame | `radial-gradient at`, `translate3d` of core layer |
+| `--blob-y` | px (viewport) | `0..100vh` | rAF loop, every frame | same as above |
+| `--blob-body-x` | px | viewport | rAF loop | `translate3d` of body layer |
+| `--blob-body-y` | px | viewport | rAF loop | `translate3d` of body layer |
+| `--blob-halo-x` | px | viewport | rAF loop | `translate3d` of halo layer |
+| `--blob-halo-y` | px | viewport | rAF loop | `translate3d` of halo layer |
+| `--blob-heat` | unitless number | `0..1` | rAF loop (idle accumulation) | core opacity, glint opacity, glass tint depth |
+| `--blob-velocity` | unitless number | `0..1` (normalized) | rAF loop | body stretch (`scaleX`), halo lag, glint kill |
+| `--blob-mode` | string | `cursor` \| `ambient` \| `static` | once per mode change | dev-mode debugging only — for behavior, use `<html data-blob-mode="…">` + attribute selectors |
+
+**Glass tier tokens (proposed, define in `next/src/styles/liquid-glass.css`):**
+
+| Token | Default | Mobile (≤768px) | Use |
+|---|---|---|---|
+| `--glass-section-fill` | `rgba(255, 255, 255, 0.06)` | `rgba(255, 255, 255, 0.10)` | Section frames (Tier 0). Slightly denser on mobile because there's no blur boost from cursor proximity. |
+| `--glass-card-fill` | `rgba(255, 255, 255, 0.10)` | `rgba(255, 255, 255, 0.14)` | Cards, panels (Tier 1). |
+| `--glass-form-fill` | `rgba(255, 255, 255, 0.14)` | `rgba(255, 255, 255, 0.18)` | Form fields, inputs (Tier 2). |
+| `--glass-button-fill` | `rgba(255, 255, 255, 0.12)` | `rgba(255, 255, 255, 0.16)` | Nav, controls, secondary buttons (Tier 3). Primary CTAs stay opaque. |
+| `--glass-section-blur` | `28px` | `12px` | mobile cap enforced. |
+| `--glass-card-blur` | `20px` | `12px` | mobile cap enforced. |
+| `--glass-form-blur` | `16px` | `10px` | |
+| `--glass-button-blur` | `18px` | `12px` | |
+| `--glass-edge-light` | `inset 0 1px 0 rgba(255, 255, 255, 0.65)` | unchanged | top inner highlight, the "glass" tell |
+| `--glass-edge-bottom` | `inset 0 -1px 0 rgba(200, 210, 225, 0.18)` | unchanged | bottom darken |
+
+**Existing tokens to retain unchanged:** `--liquid-blur-sm/md/lg/xl`, `--liquid-saturate`, `--liquid-brightness`, all `--mu-*` color tokens, all `--squircle-mask-*` tokens, all `shadow-glass*` tokens. The existing `--liquid-bg: rgba(255,255,255,0.42)` is **decommissioned** — replace its usages with the per-tier tokens above.
+
+**Where to define:** the new `--glass-*-fill/blur` tokens and `--blob-*` seed values go in `next/src/app/globals.css` `:root { ... }` (the existing single source of truth). The `liquid-glass.css` utility classes are updated to consume the new tokens.
+
+---
+
+## 6. Build order
+
+**Recommended order: Renderer first → glass redesign in tiers → polish & a11y last.** Justification: you cannot visually verify a transparent glass surface unless something with light is moving behind it. Building glass first means working blind.
+
+**Phase 1 — Renderer + tokens (unblocks everything else)**
+- New file: `next/src/components/effects/LivingBlobField.tsx` — the renderer (client component, sub-layers, rAF loop, mode detection).
+- New file: `next/src/styles/blob.css` — keyframes for ambient mode, sub-layer base styles, `prefers-reduced-motion` and `prefers-reduced-transparency` handling.
+- Modified: `next/src/app/layout.tsx` — replace `<MeshBackground />` with `<LivingBlobField />`. Add seed inline `<style>` for initial CSS vars.
+- Modified: `next/src/app/globals.css` — add `--blob-*` seed defaults and `--glass-*-fill/blur` tokens at `:root`.
+- Modified: `next/src/styles/liquid-glass.css` — `.living-blob-field` rule (fixed, z-0, pointer-events: none, overflow: hidden), and re-point existing `.liquid-regular`/`.liquid-card`/etc. rules to consume new `--glass-*` tokens (still leaving them functional with old visuals if transitional).
+- New file (optional, for §3): `next/src/hooks/use-blob-aware.ts`.
+- Deleted (or reduced to a stub for back-compat): `next/src/components/layout/MeshBackground.tsx`. See §8.
+
+**Output of Phase 1:** Blob is alive on every page. Existing components still look milky-white (unchanged), but you can already eyeball that the blob *is* moving behind them.
+
+**Phase 2 — Sweep chrome (Header, MobileMenu, StickyBar)**
+- Modified: `HeaderClient.tsx`, `MobileMenu.tsx`, `StickyBar.tsx`. Drop opacity to Tier 0/3 levels per §4.
+- Verify: the chrome is the *most visible* glass on the page (always in viewport). Get this right before sweeping sections.
+- Verify mobile cap (≤12px blur) holds.
+
+**Phase 3 — Sweep index sections (`/`)**
+- Modified: every component in `next/src/components/sections/*.tsx` (12 files at section root).
+- Order within phase: HeroHub → StatsBar → ServicesGrid → ProcessSection → ContactForm/ContactSection → FAQSection → FinalCTA → others.
+- Reason for that order: top-of-page first (highest user value to verify), then form (highest legibility risk).
+
+**Phase 4 — Sweep service routes**
+- Modified: `next/src/components/sections/checkup/*` (8), `consultations/*` (8), `treatment/*` (4), `contacts/*` (2), `service/*` (3).
+- Tokens already defined; this is mechanical class swapping.
+
+**Phase 5 — Sweep UI primitives**
+- Modified: `next/src/components/ui/{card,dialog,input,select,textarea}.tsx`.
+- High-impact, high-blast-radius — do last so rest of page is stable when something breaks.
+
+**Phase 6 — A11y and performance hardening**
+- Verify `prefers-reduced-motion` → blob freezes to static ambient gradient (no rAF, no listener).
+- Verify `prefers-reduced-transparency` → all glass becomes opaque surfaces; blob layer reduces to a faint static tint.
+- Verify `prefers-contrast: more` → glass borders bump to ≥0.85 alpha, text contrast bumps to AAA.
+- Verify dark mode (`[data-theme="dark"]`) → backdrop-filter disabled, blob fades to ~30% (or hidden), surfaces become opaque dark.
+- Performance UAT: Chrome perf trace on desktop (target 60fps), DevTools throttled CPU + mid-range Android profile (target no scroll jank).
+- Visual UAT against ТЗ §18 ten checklist scenarios.
+
+**Why not parallel:** the renderer and the glass sweep share token namespace (`--glass-*`, `--blob-*`). Touching tokens in both directions concurrently produces merge conflicts and drift. Sequential is cleaner. The glass sweep itself within Phase 3-5 is parallelizable across multiple agents per route.
+
+---
+
+## 7. Cross-page consistency
+
+All 4 routes (`/`, `/treatment-abroad`, `/consultations`, `/checkup`, plus `/contacts` and `/admin`) inherit `<LivingBlobField />` automatically because they share `next/src/app/layout.tsx`. **Zero duplication.** No per-route mount needed.
+
+The blob's behavior is identical on every route. Per-route theming (e.g. tinting the blob blue on `/consultations`) would be a future enhancement — not in v9.0 scope. If needed, it would route through a CSS var override on a route-level wrapper class (e.g. `body[data-route="consultations"] { --blob-core: var(--mu-accent-blue); }`).
+
+Client-side route transitions in App Router preserve the layout subtree, so the blob continues animating uninterrupted between pages — no listener teardown, no rAF restart, no flash. This is a key reason to prefer App Router layout-mount over a Pages Router approach.
+
+---
+
+## 8. Removal of unused components and stale references
+
+**Searched the repo (verified):** `LiquidBlobLayer.tsx` and `liquid-depth.css` **do not exist** in this codebase. The prompt mentioned them as "currently unused" but they are not present. Nothing to remove.
+
+**What does exist and conflicts:**
+
+- `next/src/components/layout/MeshBackground.tsx` (17 lines) — the **current** background: 3 static `rounded-full bg-mu-*/30` blurred circles + a `bg-white/40 backdrop-blur-[40px]` frosted overlay. This is the visual *replacement target*. Recommended: **delete** the file and remove its import from `layout.tsx` line 9 and usage on line 53. The blob renderer fully supersedes it.
+- `next/src/components/layout/SvgRefractionDefs.tsx` (referenced in `layout.tsx` line 8/52) — defines SVG `<filter>` definitions for refraction effects. Inspect before deleting; if unused by any glass surface, remove. If referenced by `liquid-glass.css` or a section component, **keep** — it's reusable infra and may be useful for blob refraction overlays.
+- `next/src/components/motion/GlassInteraction.tsx` + `next/src/hooks/use-specular-highlight.ts` — currently writes per-element `--mouse-x`/`--mouse-y` for cursor-tracking specular highlights on individual glass cards. **Keep** — this is a *complementary* effect (per-card highlight), independent of the global blob, and useful even after v9.0 ships. It can coexist with the blob field.
+- `next/src/styles/liquid-glass.css` — 1037 lines of utility classes. **Modify in-place** — re-point internal var refs from `--liquid-bg` (the milky 0.42) to the new `--glass-*-fill` tokens. Do not delete.
+
+---
+
+## 9. Data flow diagram
+
+```text
+┌────────────────────────────────────────────────────────────────────┐
+│  USER DEVICE                                                       │
+│                                                                    │
+│   pointer / touch                                                  │
+│        │                                                           │
+│        ▼                                                           │
+│   window.addEventListener('pointermove', …)                        │
+│        │  (one listener, attached in LivingBlobField useEffect)    │
+│        ▼                                                           │
+│   rawX, rawY  ──► velocity, idleMs                                 │
+│                                                                    │
+│                        rAF loop (one)                              │
+│                            │                                       │
+│                            ▼                                       │
+│                  lerp(coreXY, bodyXY, haloXY)                      │
+│                  heat = clamp(idleMs / 2500, 0, 1)                 │
+│                            │                                       │
+│                            ▼                                       │
+│           document.documentElement.style.setProperty(              │
+│             '--blob-x' | '--blob-body-x' | '--blob-halo-x' |       │
+│             '--blob-y' | '--blob-body-y' | '--blob-halo-y' |       │
+│             '--blob-heat' | '--blob-velocity'                      │
+│           )                                                        │
+│                            │                                       │
+│  ──────────────────────────┴───────────────────────────────────    │
+│   (CSS vars on :root — no React state, no re-render)               │
+│                            │                                       │
+│   ┌────────────────────────┼────────────────────────┐              │
+│   ▼                        ▼                        ▼              │
+│  .living-blob-field   .liquid-card,          Components reading    │
+│  sub-layers            .liquid-regular,        var(--blob-*) via   │
+│  (core/body/halo/      .liquid-nav, …          radial-gradient,    │
+│   glint) read           in liquid-glass.css     filter, opacity    │
+│  --blob-*-x/y for       — already attached     in their own CSS    │
+│  translate3d           to glass surfaces       (no re-render)      │
+│   │                     site-wide               │                  │
+│   │                                             │                  │
+│   ▼                                             ▼                  │
+│  GPU compositor paints transformed sub-layers  GPU repaints        │
+│  + repaints glass surfaces with new gradient   affected layers     │
+│  positions / heat-modulated opacity            only                │
+│                                                                    │
+│  Result: 60fps, no React renders, single source of truth on :root  │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+**Mobile branch (`pointer: coarse` or `(max-width: 768px)`):**
+- No pointermove listener attached. rAF loop runs `--blob-mode = ambient`: blob position follows a slow, scripted Lissajous-style path (or pure CSS `@keyframes` with no JS at all).
+- On `tap`: a one-shot CSS animation triggers a soft pulse (`@keyframes blob-pulse` on `:root`, removed after duration).
+- Scroll performance is preserved because there's no per-frame JS competing with scroll.
+
+**`prefers-reduced-motion: reduce` branch:**
+- No listener, no rAF. CSS sets `--blob-x: 50vw; --blob-y: 38vh; --blob-heat: 0.4; --blob-velocity: 0;` once and forgets. Glass surfaces still light up; just no movement.
+
+---
+
+## 10. New vs modified files (Roadmapper checklist)
+
+**New files:**
+
+| Path | Type | Purpose |
+|---|---|---|
+| `next/src/components/effects/LivingBlobField.tsx` | client component | Renderer: sub-layers, listener, rAF loop |
+| `next/src/styles/blob.css` | stylesheet | `.living-blob-field`, sub-layer styles, ambient keyframes, reduced-motion guards |
+| `next/src/hooks/use-blob-aware.ts` | hook (optional) | Per-element distance subscription for premium effects |
+
+**Modified files:**
+
+| Path | Change |
+|---|---|
+| `next/src/app/layout.tsx` | Remove `MeshBackground` import + render; add `LivingBlobField` import + render; seed `--blob-*` defaults via inline `<style>` on `:root` |
+| `next/src/app/globals.css` | Add `--blob-*` seed defaults; add `--glass-section-fill`, `--glass-card-fill`, `--glass-form-fill`, `--glass-button-fill`, matching blur tokens; deprecate (or repurpose) `--liquid-bg` |
+| `next/src/styles/liquid-glass.css` | Re-point `.liquid-regular`, `.liquid-card`, `.liquid-nav`, `.liquid-clear`, `.liquid-fluted`, `.liquid-btn-secondary`, `.liquid-header-backdrop` to consume new `--glass-*` tokens; add `radial-gradient` heat-leak rules driven by `--blob-x/y/heat`; tighten mobile blur cap |
+| `next/src/components/layout/Header.tsx` | (no change — only chrome inside `HeaderClient` changes) |
+| `next/src/components/layout/HeaderClient.tsx` | Reduce opacity, blur per Tier 3 |
+| `next/src/components/layout/MobileMenu.tsx` | Reduce opacity (toggle + dropdown) |
+| `next/src/components/layout/StickyBar.tsx` | Reduce opacity, cap blur 12px |
+| `next/src/components/layout/Footer.tsx` | Reduce opacity to Tier 0 |
+| `next/src/components/sections/HeroHub.tsx` | Reduce frame, badge, and pill opacities |
+| `next/src/components/sections/StatsBar.tsx` | Reduce wrapper + card opacities |
+| `next/src/components/sections/ServicesGrid.tsx` | Reduce card + badge opacities |
+| `next/src/components/sections/ProcessSection.tsx` | Reduce step opacities |
+| `next/src/components/sections/{ProblemSection,WhyUsSection,ClinicsSection,PlatformSection,ReviewsSection,FAQSection,ContactSection,ContactForm,FinalCTA,AdvantagesGrid,GuideGrid}.tsx` | Per-tier opacity sweep |
+| `next/src/components/sections/checkup/*.tsx` (8) | Per-tier sweep |
+| `next/src/components/sections/consultations/*.tsx` (8) | Per-tier sweep |
+| `next/src/components/sections/treatment/*.tsx` (4) | Per-tier sweep |
+| `next/src/components/sections/contacts/*.tsx` (2) | Per-tier sweep |
+| `next/src/components/sections/service/{ServiceHero,FAQ,SocialProof,LeadFormSection}.tsx` | Per-tier sweep |
+| `next/src/components/ui/{card,dialog,input,select,textarea}.tsx` | Per-tier sweep at primitive level |
+
+**Deleted files:**
+
+| Path | Reason |
+|---|---|
+| `next/src/components/layout/MeshBackground.tsx` | Replaced by `LivingBlobField` |
+
+**Files NOT touched (keep as-is):**
+
+- `next/src/components/layout/SvgRefractionDefs.tsx` (reusable infra; verify usage before removing)
+- `next/src/components/motion/GlassInteraction.tsx` + `use-specular-highlight.ts` (per-element specular, complementary)
+- `next/src/components/motion/{HeroEntrance,LazyMotionProvider,ScrollReveal}.tsx` (entrance animations, unrelated)
+- `next/src/styles/squircles.css` (shape system, unrelated)
+- All `next/src/lib/*` and `next/src/app/api/*`
+
+---
+
+## 11. Patterns to follow
+
+### Pattern 1: Read CSS vars from CSS, never from JS
+
+**What:** Every consumer of blob state reads `var(--blob-x)`, `var(--blob-heat)`, etc. directly in CSS — in `radial-gradient`, `translate3d`, `opacity`, `filter`. No React hook subscribes.
+
+**When:** Default for all 45+ glass surfaces.
+
+**Example:**
 ```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+.liquid-card {
+  background-color: var(--glass-card-fill);
+  backdrop-filter: blur(var(--glass-card-blur));
+  background-image: radial-gradient(
+    480px circle at var(--blob-x) var(--blob-y),
+    rgba(53, 182, 120, calc(0.05 + 0.12 * var(--blob-heat))),
+    transparent 55%
+  );
 }
 ```
 
-This already handles CSS scroll-driven animations too. No change needed.
+### Pattern 2: Sub-layer transforms via `translate3d(var(--blob-*-x), var(--blob-*-y), 0)`
 
-### Practical Scroll-Driven Additions for v1.4
+**What:** Each blob sub-layer (core, body, halo, glint) is a `<div>` inside `.living-blob-field` with its own `--blob-*-x/y` consumed via `transform: translate3d(...) translate(-50%, -50%)`.
 
-| Effect | Mechanism | Where |
-|--------|-----------|-------|
-| Scroll progress bar in header | `animation-timeline: scroll(root)` on a 3px bar | Inside `.site-header` |
-| Section background parallax | `animation-timeline: view()` on section `::before` pseudo-elements | Hero, social-proof |
-| Counter number animation (social proof) | `animation-timeline: view()` — triggered when element enters viewport | `.social-proof__number` |
+**When:** Inside `LivingBlobField.tsx`'s rendered DOM only.
 
-**The counter animation is particularly high-value:** The social proof section shows "200+ врачей", "15 стран", etc. Animating these numbers counting up as the section enters viewport is high-impact for ЦА 45+. The scroll-driven version is cleaner than IntersectionObserver for this because it ties the animation timing to viewport entry:
+### Pattern 3: Mode switching via `data-blob-mode`
 
-```css
-@supports (animation-timeline: scroll()) {
-  @keyframes count-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+**What:** Renderer sets `document.documentElement.dataset.blobMode = 'cursor' | 'ambient' | 'static'`. CSS branches via attribute selector.
 
-  .social-proof__number {
-    animation: count-up 0.4s ease-out both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
-  }
-}
-```
-
-Without `@supports`, `.social-proof__number` falls through to the existing IntersectionObserver pattern which already adds `animate-on-scroll` to section children.
-
-### Interaction Between IntersectionObserver and Scroll-Driven Animations
-
-No conflict exists because:
-- IntersectionObserver mutates `.classList` → triggers CSS `transition`
-- Scroll-driven animations are `@keyframe` based, no JS involvement
-- They can both apply to the same element if needed (different properties)
-
-The only case to watch: if IntersectionObserver adds `.is-visible` which changes `opacity: 0 → 1` via transition, AND a scroll-driven animation also animates `opacity`, the last applied wins. **Avoid targeting the same property with both mechanisms on the same element.**
+**Why not via CSS var:** CSS can't branch on string-typed custom properties without `@property` + `style()` queries (limited browser support).
 
 ---
 
-## Question 4: Build Order (Minimum Risk Sequence)
+## 12. Anti-patterns to avoid
 
-Each step is independently deployable and does not break the step before it.
+### Anti-pattern 1: `useState` for blob position
 
-### Step 1: Dark Mode Token Infrastructure (Zero Visual Change)
+**Why bad:** 60Hz `setState` triggers 60Hz React renders across the entire subtree. Kills perf, contradicts ТЗ §16 explicitly.
+**Instead:** Write to `:root` style via `setProperty`. CSS does the rest.
 
-**Risk: NONE — no existing styles change.**
+### Anti-pattern 2: Per-page mount of `LivingBlobField`
 
-- Add `--glass-bg`, `--glass-border`, `--glass-blur` to existing `:root` block
-- Add `[data-theme="dark"] { ... }` block immediately after `:root`
-- Add `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { ... } }` at end
-- Add `initDarkMode()` to `js/main.js` inside the existing IIFE (reads localStorage, sets `data-theme`, wires toggle button)
-- Add dark mode toggle button to `index.html` (inside `.site-header__container`, after nav)
+**Why bad:** Re-creates listener and rAF on every route transition. Blob "blinks" between pages.
+**Instead:** Mount in `app/layout.tsx` once. App Router preserves the subtree.
 
-Deliverable: Fully functional dark mode toggle. All existing colors correct in both themes. No visual change in light mode.
+### Anti-pattern 3: Stacking glass-on-glass
 
-### Step 2: Bold Typography Scale
+**Why bad:** ТЗ + DESIGN.md hard rule: ≤2 glass elements per viewport. Stacked glass kills GPU on budget Android.
+**Instead:** When a "card inside section" pattern appears, only the card is glass; the section is transparent (fill: 0 or near-0).
 
-**Risk: LOW — token changes, no structural changes.**
+### Anti-pattern 4: Borders on glass
 
-- Update font size tokens in `:root`: increase `--font-size-h1`, `--font-size-h2`, `--font-size-h3`
-- Optionally add display heading variant: `--font-size-display: clamp(2.5rem, 5vw, 4rem)`
-- Apply `--font-size-display` to `.hero__title` only (hero is the high-impact area)
-- Increase font weight on headings from 700 to 800 (Manrope Variable supports 800)
+**Why bad:** DESIGN.md anti-pattern — `border` clips against `mask-image` squircles.
+**Instead:** `box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5)`.
 
-Deliverable: Visually bolder hero and section headings. No structural HTML changes.
+### Anti-pattern 5: Forgetting `pointer-events: none` on `.living-blob-field`
 
-### Step 3: Glassmorphism (Header First, Then Cards)
+**Why bad:** Renderer swallows clicks; CTAs become unclickable.
+**Instead:** Set `pointer-events: none` on the field and every sub-layer. Listener is on `window`, not on the field.
 
-**Risk: MEDIUM — modifies visual surface of 2-3 components.**
+### Anti-pattern 6: Heavy `filter: blur()` on the blob layer itself
 
-- **Header glass (lowest risk):** Modify `.site-header.is-scrolled` to use glass tokens. Add `@supports` fallback. Test in Firefox, Safari, Chrome.
-- **Section gradient backgrounds:** Add gradient backgrounds to `.pricing` and `.lead-form-section` (the sections that will host glass cards). These sections currently have flat background colors, so this is purely additive.
-- **Glass cards:** Add `.card--glass` modifier class to pricing card and form wrapper in HTML. Add CSS for the modifier. Do NOT change the base `.card` rule — glass is a modifier only.
-
-Deliverable: Header glass effect on scroll, pricing card and form wrapper with glass surface. All other cards unchanged.
-
-### Step 4: Micro-Animations Enhancement
-
-**Risk: LOW — purely additive CSS, gated by `@supports`.**
-
-- Add scroll progress bar to header (CSS only, no JS)
-- Add social proof counter animation via scroll-driven API (inside `@supports` gate)
-- Add hover micro-interactions: `scale(1.02)` on card hover (replace current `translateY(-2px)` — or add scale on top)
-- Add `transition` on dark mode toggle (smooth color shift): add `transition: background-color 0.3s ease, color 0.3s ease` to `body`
-
-**Important:** All scroll-driven additions go inside `@supports (animation-timeline: scroll())`. They are invisible to browsers that don't support it, and the existing IntersectionObserver animations remain the fallback.
-
-Deliverable: Page feels noticeably more alive without any breaking changes to existing behavior.
+**Why bad:** Stacking large blur on a fixed full-viewport element triggers full-screen recomposite per frame. ≥40fps drop common.
+**Instead:** Use `radial-gradient` + soft alpha edges to fake the haze; reserve `backdrop-filter` for glass surfaces (which are smaller).
 
 ---
 
-## Component Boundaries for New Features
+## 13. Scalability considerations
 
-| New Feature | Where in CSS | Where in HTML | Where in JS | What to MODIFY vs ADD |
-|-------------|-------------|----------------|-------------|----------------------|
-| Dark mode tokens | After `:root` block | `<html data-theme>` attribute | New `initDarkMode()` in IIFE | ADD token block; MODIFY `<html>` tag |
-| Glass header | Modify `.site-header.is-scrolled` | No change | No change | MODIFY existing rule |
-| Glass card modifier | ADD `.card--glass` rule | ADD class to 2 elements | No change | ADD rule; MODIFY 2 HTML elements |
-| Bold typography | Modify token values in `:root` | No change | No change | MODIFY token values |
-| Scroll progress | ADD `.scroll-progress` in section 11 | ADD element in header | No change | ADD only |
-| Scroll-driven animations | ADD inside `@supports` block in section 10 | No change | No change | ADD only |
-| Dark mode toggle button | No change | ADD `<button>` in header | ADD `initDarkMode()` | ADD only |
+| Concern | Behaviour at desktop / 60fps target | Behaviour at low-end mobile / scroll target | Behaviour with 3+ glass surfaces in viewport |
+|---|---|---|---|
+| Listener count | 1 (window) | 0 (ambient mode skips listener) | unaffected |
+| rAF loop count | 1 | 1 (ambient) or 0 (reduced motion) | unaffected |
+| GPU layers | ~6 (4 sub-layers + chrome + body) | same, but with smaller blur radii | each glass surface is ~1 extra compositing layer |
+| Per-frame writes to `:root` | 8 CSS vars × 60Hz = 480 var writes/s | 4 vars × 30Hz throttled | unaffected |
+| Repaint cost | bounded to surfaces that read `--blob-*` (most glass surfaces) | bounded; smaller blur, less paint area | linear in glass count → enforce ≤2 per viewport rule |
+| React renders triggered | 0 | 0 | 0 |
 
----
-
-## CSS File Organization for New Code
-
-The existing `styles.css` uses numbered sections. New code for v1.4 goes:
-
-```
-Section 2 (Design Tokens)  → ADD glass tokens to :root, ADD [data-theme="dark"] block
-Section 6 (Components)     → ADD .card--glass modifier
-Section 7 (Sections)       → MODIFY .site-header.is-scrolled, ADD gradient to .pricing
-Section 10 (Animations)    → ADD @supports block for scroll-driven animations
-Section 11 (Decorative)    → ADD .scroll-progress element styles
-```
-
-Do NOT create a separate CSS file. The constraint is single-file delivery with no build step. Adding a separate `dark.css` or `glass.css` creates a sequencing problem (flash of unstyled content if the file loads late) and splits the token context.
-
-**Size impact estimate:** Dark mode tokens ~40 lines, glass modifiers ~30 lines, animation additions ~50 lines. Total addition: ~120 lines bringing the file to ~1,760 lines. Well within maintainable range for a single-file approach.
+**Scaling triggers:**
+- If blob proves expensive on >5 glass surfaces in viewport, the ≤2 budget rule (already in DESIGN.md) absorbs this.
+- If `pointermove` event rate is too high (some trackpads emit at 250Hz), throttle internally inside the handler — store last sample only; rAF loop reads at 60Hz max.
 
 ---
 
-## Patterns to Follow
+## 14. Sources and verification
 
-### Pattern 1: Token Override Architecture for Themes
+- **`design/LIQUID_GLASS_BLOB_TZ.md`** (read in full, 416 lines) — the v9.0 specification. All numerical opacity targets (0.04..0.16), heat timing (1.5–3s), sub-layer hierarchy (core/body/halo/glint), accessibility opt-outs, and performance constraints (single pointermove + rAF, transform/opacity only, ≤12px mobile blur) trace to this document. Confidence: HIGH.
+- **`.planning/PROJECT.md`** — confirms v9.0 milestone is active, target features match ТЗ. Confidence: HIGH.
+- **`DESIGN.md`** — confirms hard constraints: ≤2 glass per viewport, mobile blur ≤12px, `prefers-reduced-*` mandatory, dark mode disables `backdrop-filter`. Confidence: HIGH.
+- **`CLAUDE.md`** — repo conventions: GSD workflow gating, brand color parity, design-contract two-rules. Confidence: HIGH.
+- **Inspected actual repo state:**
+  - `next/src/app/layout.tsx` (62 lines) — confirmed all routes share this layout; current children include `SvgRefractionDefs`, `MeshBackground`, `Header`, `LazyMotionProvider > main`, `Footer`, `StickyBar`.
+  - `next/src/app/page.tsx` (68 lines) — confirmed top page composition.
+  - `next/src/app/{checkup,consultations,treatment-abroad}/page.tsx` exist as separate route folders, all inherit root layout.
+  - `next/src/components/layout/MeshBackground.tsx` (17 lines) — confirmed it's the static-blobs background being replaced.
+  - `next/src/components/layout/HeaderClient.tsx` — confirmed current opacity/blur values.
+  - `next/src/components/layout/{StickyBar,MobileMenu}.tsx` — confirmed current opacity values.
+  - `next/src/components/sections/{HeroHub,StatsBar,ServicesGrid}.tsx` — confirmed current opacity values.
+  - `next/src/components/motion/GlassInteraction.tsx` + `next/src/hooks/use-specular-highlight.ts` — confirmed existing per-element cursor-track infra (reusable, complementary, not the same as global blob).
+  - `next/src/styles/liquid-glass.css` (1037 lines) — confirmed existing utilities (`.liquid-regular`, `.liquid-card`, `.liquid-nav`, `.liquid-clear`, `.liquid-fluted`, `.liquid-btn-{primary,secondary}`, `.liquid-header-backdrop`, `.glass-idle`) and current token state (`--liquid-bg: rgba(255,255,255,0.42)` — currently milky, must be replaced).
+  - `next/src/app/globals.css` (689 lines) — confirmed `--liquid-blur-{sm,md,lg,xl}` already exists, brand color tokens already exist.
+  - **Verified via filesystem search**: `LiquidBlobLayer.tsx` and `liquid-depth.css` **do not exist** in the repo. The prompt's mention of them was inaccurate.
 
-**What:** Define all theme variants as overrides of the same token names, not as parallel naming schemes.
-**When:** Any theming feature.
-**Why it works here:** All 1,640 existing lines already use `var(--color-*)`. No search-and-replace needed.
-
-```css
-:root { --color-white: #ffffff; }
-[data-theme="dark"] { --color-white: #0F1923; }
-/* Every rule using var(--color-white) now respects theme automatically */
-```
-
-### Pattern 2: Modifier Classes for Visual Variants (Never Change Base)
-
-**What:** Add `.component--glass` as an opt-in modifier. Never modify the base `.card` rule to add glass.
-**When:** Any time glass or visual variant applies to only some instances of a component.
-**Why:** The card component is used in benefits, doctors, advantages, process steps. Only pricing and form get glass. Using a modifier keeps all other cards untouched.
-
-### Pattern 3: `@supports` Gating for New CSS APIs
-
-**What:** Wrap scroll-driven animations and advanced backdrop-filter effects in `@supports`.
-**When:** Any CSS feature with partial browser support.
-**Why:** The target audience (Kazakhstan, 45+) may be on older browsers or older Android WebViews. `@supports` provides the fallback naturally.
-
-### Pattern 4: `initDarkMode()` Registration Pattern (JS)
-
-**What:** Dark mode JS function reads localStorage, sets `data-theme` on `document.documentElement` before DOM paint to prevent flash.
-**When:** Page load — must run before first paint.
-**Why:** If `initDarkMode()` runs at DOMContentLoaded (as all other init functions do), there will be a flash of light mode. The fix: extract just the `data-theme` setter into an inline `<script>` in `<head>`, before the CSS link.
-
-```html
-<head>
-  <!-- Run BEFORE CSS loads to prevent flash -->
-  <script>
-    (function() {
-      var theme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-```
-
-The toggle button wiring and localStorage update can live in `initDarkMode()` inside the IIFE as normal. The inline script is only for the initial load state.
-
----
-
-## Anti-Patterns to Avoid
-
-### Anti-Pattern 1: Creating Separate CSS Files for Dark Mode or Glass
-
-**What goes wrong:** A `dark.css` or `glass.css` loaded via a separate `<link>` causes FOUC (flash of unstyled content) if JS toggles the class before the second stylesheet loads.
-**Consequence:** User sees light mode for ~100ms before dark mode applies. Looks broken.
-**Prevention:** Keep all tokens in the single `styles.css`. The inline `<script>` pattern in `<head>` prevents the flash.
-
-### Anti-Pattern 2: Applying Glassmorphism Without Background Content
-
-**What goes wrong:** Glass on elements that sit on a plain white background looks like a dirty semi-transparent rectangle.
-**Consequence:** The visual effect is worse than a solid background, not better.
-**Prevention:** Only apply glass where gradient, photo, or deep-color content exists behind the element. Add gradient backgrounds to sections first; apply glass to cards second.
-
-### Anti-Pattern 3: Adding `transition` to `:root` Token Changes
-
-**What goes wrong:** Adding `transition: all 0.3s` to `:root` to animate theme switches sounds appealing but creates performance issues — every CSS property on every element animates simultaneously.
-**Consequence:** 1,640 lines of CSS all transition at once, causing jank especially on lower-end Android devices (ЦА 45+ may use budget phones).
-**Prevention:** Add `transition: background-color 0.3s ease, color 0.3s ease` only to `body` and specific components that need smooth transitions (header, cards). Never on `:root`.
-
-### Anti-Pattern 4: Using `animation-timeline: scroll()` for Elements That Already Have IntersectionObserver Animations
-
-**What goes wrong:** If `.animate-on-scroll` elements get a scroll-driven animation that also controls `opacity` or `transform`, both mechanisms fire. The IntersectionObserver adds `.is-visible` (which overrides `opacity: 0 → 1`), but the scroll-driven animation may conflict by also trying to control opacity.
-**Consequence:** Elements may flicker or snap to wrong state.
-**Prevention:** Pick one mechanism per element. IntersectionObserver stays on existing elements. Scroll-driven animations go on NEW elements or new properties only.
-
-### Anti-Pattern 5: ES6+ Syntax in the Dark Mode Toggle
-
-**What goes wrong:** The existing JS uses ES5 throughout (decision logged in PROJECT.md: "ES5 syntax for JS — ЦА 45+ может использовать старые браузеры").
-**Consequence:** Using `const`, arrow functions, template literals in the new `initDarkMode()` function creates inconsistency and may break on the same old browsers the rest of the code was written for.
-**Prevention:** Write `initDarkMode()` in ES5. Use `var`, function declarations, string concatenation. The inline `<script>` in `<head>` must also use ES5.
-
----
-
-## Confidence Assessment
-
-| Topic | Confidence | Basis |
-|-------|-----------|-------|
-| `data-theme` dark mode token architecture | HIGH | Established pattern, CSS spec stable |
-| `backdrop-filter` browser support | HIGH | Widely supported since 2020, confirmed through training data |
-| CSS Scroll-Driven Animations browser support | MEDIUM | Chrome/Edge 115+ stable; Firefox 129 (Aug 2024) shipped; Safari 18 (Sep 2024) shipped — assumed stable in 2026 but not verified against current caniuse |
-| IntersectionObserver + scroll-driven coexistence | HIGH | They operate on different mechanisms (class mutations vs pure CSS keyframes) |
-| FOUC prevention with inline script | HIGH | Established pattern used by all major theming libraries |
-| `@supports` gating | HIGH | CSS spec, widely supported |
-
----
-
-## Sources
-
-- MDN: CSS Custom Properties (`var()`) — token cascade behavior — HIGH confidence
-- MDN: `backdrop-filter` — browser support table — HIGH confidence (as of Aug 2025)
-- MDN: CSS Scroll-Driven Animations — `animation-timeline: scroll()` and `view()` — MEDIUM confidence (verify Firefox/Safari current support at caniuse.com before implementation)
-- CSS-Tricks: "A Complete Guide to Dark Mode on the Web" — `data-theme` attribute pattern — HIGH confidence
-- web.dev: "Building a theme switch component" — inline script FOUC prevention — HIGH confidence
-- Existing codebase analysis: `css/styles.css`, `js/main.js`, `index.html` — direct inspection — HIGH confidence
+Confidence: HIGH on all architectural claims. The single LOW-confidence point is the exact lerp factors (0.18 / 0.08 / 0.04) and heat timing constant (2500ms) — these are visual-tuning numbers, not architecture; they will be tuned in-browser per ТЗ §17 ("конкретные значения должны подбираться визуально на реальной странице").

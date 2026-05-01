@@ -5,7 +5,7 @@ status: passed
 score: 4/4 must-haves verified
 gaps: []
 human_verification:
-  - test: "Run docker compose up -d and execute scripts/setup-directus.sh, then submit the landing page form"
+  - test: "Run docker compose up -d and execute scripts/setup-directus.sh, then submit the site form"
     expected: "Submission appears as a new row in Directus admin panel at /admin/content/consultation_requests"
     why_human: "Requires a live Docker environment; cannot verify runtime API connectivity programmatically"
 ---
@@ -84,7 +84,7 @@ No blockers or warnings found. The catch-block success pattern is a deliberate U
 
 #### 1. End-to-end submission flow
 
-**Test:** Start Directus with `docker compose up -d`, run `./scripts/setup-directus.sh`, open the landing page, fill the form with valid data, and submit.
+**Test:** Start Directus with `docker compose up -d`, run `./scripts/setup-directus.sh`, open the site, fill the form with valid data, and submit.
 **Expected:** The row appears in the Directus admin panel at `/admin/content/consultation_requests` with the correct name, phone, specialty, and description fields.
 **Why human:** Requires a live Docker + Directus environment; network connectivity and database writes cannot be verified statically.
 

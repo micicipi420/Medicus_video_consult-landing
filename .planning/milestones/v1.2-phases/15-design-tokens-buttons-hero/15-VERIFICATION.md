@@ -8,7 +8,7 @@ re_verification: false
 
 # Phase 15: Design Tokens, Buttons & Hero Verification Report
 
-**Phase Goal:** Кнопки и цветовая палитра лендинга визуально совпадают с основным сайтом medicusunion.com
+**Phase Goal:** Кнопки и цветовая палитра сайта визуально совпадают с основным сайтом medicusunion.com
 **Verified:** 2026-03-23T11:00:00Z
 **Status:** PASSED
 **Re-verification:** No — initial verification

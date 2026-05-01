@@ -1,32 +1,36 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-25T03:14:10.831Z",
-  "phase": "24",
-  "phase_name": "liquid-glass-enhancement",
-  "phase_dir": ".planning/phases/24-liquid-glass-enhancement",
-  "plan": 2,
-  "task": 2,
-  "total_tasks": 2,
-  "status": "phase_complete",
+  "timestamp": "2026-04-23T18:53:25.764Z",
+  "phase": "79",
+  "phase_name": "Visual Foundation (Typography & Mobile Budget)",
+  "phase_dir": ".planning/phases/79-visual-foundation-typography-mobile-budget",
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "milestone": "v8.0",
+  "milestone_name": "Index Page Redesign",
   "completed_tasks": [
-    {"id": 1, "name": "24-01: Glass token upgrade, dark mode glass, gradient mesh", "status": "done", "commit": "98c5309"},
-    {"id": 2, "name": "24-02: Sticky bar, social proof, lead form glass + HTML wiring", "status": "done", "commit": "39372a2"},
-    {"id": 3, "name": "Ad-hoc: problem + benefits section cards glass (outside formal plan)", "status": "done", "commit": "acb921d"}
+    {"id": "setup-1", "name": "Define v8.0 requirements (22 reqs, 7 categories)", "status": "done", "commit": "d4379e1"},
+    {"id": "setup-2", "name": "Create v8.0 roadmap (Phases 79-85, 100% coverage)", "status": "done", "commit": "ecf54f8"},
+    {"id": "79-discuss", "name": "Phase 79 smart-discuss context written", "status": "done", "commit": "58bc9d5"}
   ],
-  "remaining_tasks": [],
+  "remaining_tasks": [
+    {"id": "79-plan", "name": "Phase 79 plan-phase (produces PLAN.md)", "status": "not_started"},
+    {"id": "79-ui-spec", "name": "Phase 79 UI-SPEC generation (optional per autonomous workflow)", "status": "not_started"},
+    {"id": "79-execute", "name": "Phase 79 execute-phase — token-level edits to next/src/app/globals.css", "status": "not_started"},
+    {"id": "79-review", "name": "Phase 79 code review + fix", "status": "not_started"},
+    {"id": "79-verify", "name": "Phase 79 verification (success criteria check)", "status": "not_started"},
+    {"id": "80-85", "name": "Phases 80 through 85 (header, hero, stats, services+process, CTA form, glass hardening)", "status": "not_started"}
+  ],
   "blockers": [],
-  "human_actions_pending": [
-    {
-      "action": "Visual QA in real browser — glass effect quality, sticky bar on desktop, dark mode glass contrast",
-      "context": "VERIFICATION.md lists 5 human verification items that require visual inspection in Safari/Chrome",
-      "blocking": false
-    }
-  ],
+  "human_actions_pending": [],
   "decisions": [
-    {"decision": "Glass cards applied to problem/benefits sections", "rationale": "User request: make these cards glass. Added gradient mesh to problem section so glass is visible.", "phase": "24"},
-    {"decision": "ROADMAP.md Phase 24 plan checkboxes not updated", "rationale": "Ad-hoc work outside formal plan execution — checkboxes still show [ ]", "phase": "24"}
+    {"decision": "Skipped upfront research for v8.0", "rationale": "Pure UI redesign of existing pages — no new domain, no new stack. Existing v6.0/v7.0 patterns cover the substrate.", "phase": "milestone-setup"},
+    {"decision": "Phase 79 is token-layer-only (no component markup edits)", "rationale": "Keeps the phase boundary crisp: tokens ship first, downstream phases consume them. Prevents Phase 79 from ballooning into a full visual rework.", "phase": "79"},
+    {"decision": "Stopped before invoking gsd-plan-phase 79", "rationale": "Running plan+execute+review+ui-review for 7 phases in one session would exhaust context. Fresh session gives each phase a clean budget.", "phase": "milestone-setup"}
   ],
-  "uncommitted_files": [".planning/config.json"],
-  "next_action": "Phase 24 is complete. Update ROADMAP.md to mark Phase 24 plans as done, then decide: complete-milestone for v1.5 or plan next phase.",
-  "context_notes": "Phase 24 (liquid glass) is fully shipped — 17/17 decisions verified. The last action was an ad-hoc user request to add glass to problem/benefits cards (outside the formal plan). ROADMAP.md plan checkboxes for Phase 24 still show [ ] and need updating. STATE.md is stale (shows Phase 24 executing, Plan 1/2)."
+  "uncommitted_files": [],
+  "next_action": "Run /gsd-autonomous (or /gsd-autonomous --only 79 for single-phase mode). Phase 79 CONTEXT.md already exists so the workflow will skip discuss and go straight to UI-SPEC/plan/execute.",
+  "context_notes": "User invoked /gsd-autonomous on a milestone that was mid-transition: v7.0 was shipped but v8.0 had only STATE.md updated — no requirements, no roadmap. Ran /gsd-new-milestone to fill the gap (requirements + roadmap committed). Then wrote Phase 79 context and stopped at the plan-phase boundary rather than blow through context on a 7-phase autonomous run. User chose 'Fully autonomous' mode — on resume, smart_discuss still asks per-area AskUserQuestion prompts per workflow; Phase 79 has CONTEXT.md pre-written so that step is skipped for 79 only. Phases 80-85 will still go through smart_discuss on resume."
 }

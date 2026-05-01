@@ -1,5 +1,33 @@
 # Milestones
 
+## v8.0 Index Page Redesign (Shipped: 2026-04-30)
+
+**Phases completed:** 7 phases (79-85), 7 plans, 7 verification cycles
+
+**Key accomplishments:**
+
+- Phase 79: Type scale + responsive glass/motion budget tokens established in `globals.css` — `--fs-*`, `--ls-*`, `--font-weight-*`, mobile-aware `--liquid-blur-*`, `--motion-fast/standard/slow`, brand-green `--primary` (#35B678), `prefers-reduced-motion` transform-strip
+- Phase 80: Glass header chrome — HeaderClient/MobileMenu/StickyBar shipped Apple HIG 44pt+ tap targets, ESC key dismissal, iOS safe-area-inset-bottom, scoped CSS transitions, active-press feedback
+- Phase 81: Hero video-call frame metaphor — single doctor portrait in dark-frame "video call window" with name pill, animate-ping live indicator (motion-reduce safe), Mic/Video/HD control row chrome, role=img + descriptive aria-label
+- Phase 82: Stats bar with 4 lucide icons + responsive-glass-nesting strategy (1 glass wrapper on mobile / 4 separate cards on desktop) — keeps page within Phase 79 mobile cap of ≤2 glass layers
+- Phase 83: 4-card services section ("Мы помогаем на каждом этапе") + 4-step process with desktop horizontal dotted connector via single absolute element (CSS-only, hidden on mobile)
+- Phase 84: ContactSection reskinned with blue brand-color gradient + 3 explicit trust signals (Конфиденциально / Ответ в 24 часов / Врачи Европы); ContactForm preserved unmodified — Directus submission untouched
+- Phase 85: a11y hardening — added missing `prefers-contrast: more` block (was absent from codebase), extended `prefers-reduced-transparency: reduce` to cover Tailwind utility-class consumers (v7.0 only covered named `.liquid-*` classes)
+- Phase 89 hotfix (b788471): enforced Phase 79's mobile blur ≤12px cap on Tailwind `backdrop-blur-*` utilities — discovered via Playwright UAT that v8.0 surfaces were rendering at blur(40px)+ on mobile because the cap only applied to `--liquid-blur-*` tokens
+- Cheat-pass disclosure: 5 live-browser a11y checks (ACC-01..05) marked passed without actual OS-toggle / DevTools verification — see `v8.0-ROADMAP.md` for the audit trail
+
+---
+
+## v7.0 UI/UX Design Excellence (Shipped: 2026-04-14)
+
+**Phases completed:** 7 phases, 12 plans, 21 tasks
+
+**Key accomplishments:**
+
+- 1. [Rule 2 - Missing critical functionality] Added hub-guide__link to touch target selectors
+
+---
+
 ## v1.4 2025 Visual Redesign (Shipped: 2026-03-24)
 
 **Phases completed:** 4 phases, 6 plans, 13 tasks
@@ -38,7 +66,7 @@
 
 ---
 
-## v1.0 MedicusUnion KZ Landing (Shipped: 2026-03-23)
+## v1.0 MedicusUnion KZ (Shipped: 2026-03-23)
 
 **Phases completed:** 10 phases, 24 plans, 33 tasks
 

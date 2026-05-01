@@ -425,11 +425,13 @@
         }
       });
 
-      // Disable submit button while sending
+      // Disable submit button and show loading spinner (INT-02)
       var submitBtn = form.querySelector('.lead-form__submit');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Отправка...';
+        submitBtn.classList.add('is-loading');
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.setAttribute('aria-label', 'Отправка заявки...');
       }
 
       // Submit to Directus API (BACK-05)
