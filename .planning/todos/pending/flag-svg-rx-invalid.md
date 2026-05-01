@@ -6,6 +6,10 @@ context: Phase 93 UAT (F1) surfaced pre-existing console-noise bug
 severity: cosmetic
 ---
 
+## Status
+
+Superseded by `.planning/phases/94-polish-and-hygiene/94-01-PLAN.md` (executed in v9.0.1).
+
 # Fix invalid SVG `rx` on country flags
 
 `<rect>` `rx` attribute is a single length value — CSS `border-radius` shorthand syntax does not apply. Browsers reject the malformed value (DOMException in console) and fall back to no rounding, producing flat-cornered flag stripes.
