@@ -1,17 +1,20 @@
-# Project Research Summary
+# Research Summary — v9.0 Living Blob Liquid Glass Scene
 
-**Project:** MedicusUnion KZ Landing — v1.4 2025 Visual Redesign
-**Domain:** Medical landing page visual enhancement (glassmorphism, dark mode, bold typography, micro-animations)
-**Researched:** 2026-03-24
-**Confidence:** HIGH (CSS/browser specs), MEDIUM (UX patterns for 45+ audience)
+**Project:** MedicusUnion KZ (medicusunion.kz)
+**Milestone:** v9.0 — Living Blob Liquid Glass Scene
+**Researched:** 2026-04-30
+**Supersedes:** stale v7.0 summary (2026-04-13)
+**Confidence:** HIGH
 
-## Executive Summary
+---
 
-The v1.4 milestone is a visual enhancement layer on top of a fully working product. The existing architecture — vanilla HTML/CSS/JS, ~1,640 lines of CSS with a complete custom property token system, ES5 JavaScript with IntersectionObserver scroll animations — is the right foundation. All four new capability areas (glassmorphism, dark mode, bold typography, micro-animations) integrate cleanly without structural changes, provided a strict sequencing discipline is followed: token infrastructure first, visual effects second, progressive enhancement third. No new dependencies are needed; every required technique is achievable with native CSS and vanilla JS.
+## TL;DR
 
-The most important research finding is that the 45+ Kazakhstani medical audience acts as the decisive design filter. This is a 45+ audience evaluating a 450 EUR medical service in Kazakhstan. Every visual decision must pass two tests: does it maintain WCAG AA contrast (ideally AAA for this demographic), and does it reinforce rather than erode medical trust? These filters eliminate most 2025 visual trend temptations: parallax is out (PROJECT.md constraint, vestibular risk), full-page glassmorphism is out (Android performance failure, visual noise for older readers), animated statistics counters are out (distracting, cognitively disorienting for this audience), and dark mode as the default is explicitly out (the 45+ medical audience associates white/light interfaces with clinical credibility — a dark-defaulting page reads as broken or untrustworthy to this demographic). What remains after applying these filters is a targeted, disciplined set of enhancements: selective glassmorphism on 2 components, bold typography via token changes, and purposeful micro-animations that confirm actions rather than entertain.
+v9.0 transforms the existing milky-glass UI into a full liquid-glass scene where a single cursor-following green blob is the only opaque object on the page. Every glass surface must drop from the current `bg-white/40–75` range to the TZ-mandated `rgba(255,255,255,0.04–0.16)` tier system. The blob is a `<canvas>` 2D renderer — a single DOM node — driven by a vanilla `requestAnimationFrame` loop that writes five CSS custom properties to `:root`. No new dependencies. No React state on pointer move. Glass surfaces consume blob position passively via CSS `radial-gradient` rules. The dominant build risk is the glass opacity sweep across ~45 component files; it must be done after the blob is visible, not before.
 
-The primary technical risks are well-defined and avoidable. Glassmorphism on mid-range Android (the dominant device in the KZ 45+ market) requires limiting glass to 1-2 elements per viewport with blur radius no higher than 12px — enforced by a Chrome DevTools 4x CPU throttle test as a mandatory phase exit criterion. Dark mode flash-of-unstyled-content (FOUC) is prevented by a single synchronous inline `<script>` in `<head>` that reads localStorage before the first paint. CSS regression across the 11-section structure is mitigated by strict token namespacing (`--glass-*` prefix for all new v1.4 tokens) and verifying form submission end-to-end after every phase.
+The five highest-impact pitfalls: form readability collapse under transparent glass; CTA disappearing into green-on-green; mobile blur regression past 12px cap; accessibility media-query bypass on new code paths; and rAF/listener leaks under React Strict Mode.
+
+Build order is non-negotiable: Foundation (tokens + a11y wiring) → Blob Engine → Glass rework per surface → Per-page propagation → Verification.
 
 ---
 
@@ -19,182 +22,310 @@ The primary technical risks are well-defined and avoidable. Glassmorphism on mid
 
 ### Recommended Stack
 
-No new dependencies. All four v1.4 capability areas are native CSS and vanilla JS. The new capability surface:
+No new npm dependencies are required. The entire v9.0 implementation relies on browser primitives already available in the project's installed stack (Next.js 15.5.15, React 19.1.0, TypeScript, Tailwind 4, framer-motion 12.38.0).
 
-**Core new CSS techniques:**
-- `backdrop-filter: blur(8-12px) saturate(180%)` + `-webkit-backdrop-filter` — glassmorphism; Baseline 2024 (September 2024); ~95% browser coverage; GPU compositing cost requires restraint on mobile
-- `html[data-theme="dark"]` attribute selector + CSS custom property cascade — dark mode theming; established pattern used by MDN, GitHub, Radix docs; HIGH confidence
-- `localStorage` + `window.matchMedia('prefers-color-scheme')` — theme persistence and FOUC prevention; universal browser support; HIGH confidence
-- `clamp()` for responsive font sizing — bold display typography; universal support; HIGH confidence
-- `@supports (animation-timeline: scroll())` — progressive scroll-driven enhancement only; Chrome/Edge 115+, Firefox 128+, Safari 18+; ~70-75% coverage; must be additive enhancement, never a replacement for IntersectionObserver
+The renderer is a Canvas 2D context inside `LivingBlobField.tsx` (`'use client'`, mounted via `next/dynamic({ ssr: false })` from `app/layout.tsx`). Blob position, heat, and velocity are published as CSS custom properties on `document.documentElement` — the same pattern already proven by `useSpecularHighlight.ts`. The physics module is ~80 lines of vanilla lerp math. Framer Motion is not used for the blob loop (it would trigger React reconciliation per frame); it remains in place for existing scroll-reveal and entrance animations only.
 
-**Critical implementation constraints from the existing codebase:**
-- All new JS must use ES5 syntax (`var`, function declarations, no arrow functions) — explicit project decision for 45+ browser compatibility
-- No separate CSS files — all tokens stay in `css/styles.css` to avoid FOUC and cascade fragmentation
-- New v1.4 tokens use `--glass-*` namespace — never redefine existing `--color-*` or `--gradient-*` tokens outside the scoped `[data-theme="dark"]` block
+**New files (no new dependencies):**
+
+| File | Type | Role |
+|------|------|------|
+| `next/src/components/effects/LivingBlobField.tsx` | new — client component | Canvas renderer, pointer listener, rAF loop, mode detection |
+| `next/src/styles/blob.css` | new — stylesheet | Sub-layer base styles, ambient keyframes, reduced-motion guards |
+| `next/src/hooks/use-blob-aware.ts` | new — optional hook | Per-element blob-distance for max 3 premium components |
+
+**Modified files:**
+
+| File | Change |
+|------|--------|
+| `next/src/app/layout.tsx` | Remove `MeshBackground`, add `LivingBlobField`, seed `:root` CSS vars |
+| `next/src/app/globals.css` | Add `--blob-*` palette tokens and `--glass-*-fill/blur` tier tokens |
+| `next/src/styles/liquid-glass.css` | Re-point `.liquid-*` utilities to new tokens; add heat-leak gradients |
+| `next/src/components/layout/MeshBackground.tsx` | Delete — replaced by `LivingBlobField` |
+
+**New CSS tokens required in `globals.css`:**
+
+Blob palette: `--blob-core: #35B678` (alias of `--mu-primary`), `--blob-hot: #4FE098` (NEW color — requires Key Decision in PROJECT.md and DESIGN.md update before implementation begins), `--blob-halo: rgba(98,221,177,0.5)`, `--blob-edge: rgba(125,205,255,0.18)`, `--blob-glint: rgba(255,255,255,0.65)`.
+
+Runtime vars written by the rAF loop: `--blob-x`, `--blob-y`, `--blob-body-x/y`, `--blob-halo-x/y`, `--blob-heat`, `--blob-velocity`.
+
+Glass tier tokens: `--glass-section-fill` (0.06 desktop / 0.10 mobile), `--glass-card-fill` (0.10 / 0.14), `--glass-form-fill` (0.14 / 0.18), `--glass-button-fill` (0.12 / 0.16), plus matching `--glass-*-blur` vars with mobile cap at 12px.
+
+**Existing pattern that confirms viability:** `next/src/hooks/use-specular-highlight.ts` already ships the rAF + CSS-variable + pointer-listener pattern. v9.0 lifts it to global scope. Confidence HIGH based on internal evidence, not theory.
+
+**What NOT to add (reject list):**
+
+| Reject | Why |
+|--------|-----|
+| GSAP | 23 KB for what 80 LoC of lerp does |
+| Motion One | 3.8 KB; wrong model for a continuously-running rAF loop |
+| three.js / r3f / PixiJS | 80–150 KB for a 2D radial gradient |
+| `react-use` or `usehooks-ts` `useMouse` | Forces React state — re-renders on every move |
+| Zustand / Context for blob state | Subscribers re-render per frame |
+| SVG `feGaussianBlur` on moving subject | Paint thrash on Android Chromium |
+| CSS Houdini Paint Worklet | Safari does not support |
+| `will-change` on all glass cards | GPU OOM on budget Android |
 
 ### Expected Features
 
-**Must have (v1.4 launch):**
-- Dark mode toggle in sticky navigation — the anchor feature; all other theming depends on it
-- `[data-theme="dark"]` CSS token block — prerequisite for all dark mode component styling
-- FOUC-prevention inline `<script>` in `<head>` — without this, dark mode is broken for return visitors (white flash on every load)
-- Bold display typography: h1 `clamp(40px, 5vw, 56px)` / 800 weight, h2 `clamp(28px, 3.5vw, 44px)` / 800 weight — highest visual impact per implementation effort; Manrope Variable already supports weight 800
-- Hero section CSS gradient mesh background — enables glassmorphism on hero and adds visual depth with no image files
-- Glassmorphism on sticky header (`.is-scrolled` state) and pricing card only (2 elements maximum) — selective application avoids performance and contrast failures
-- Enhanced scroll animations: `translateY(20px → 0)` added to existing `.animate-on-scroll` system — extends what already works
-- Button `:active` micro-interaction: `scale(0.97)` on CTA buttons — 100ms tactile click confirmation; particularly valuable for 45+ users uncertain about touch input
+**Table stakes — TZ-mandated, non-negotiable:**
 
-**Should have (v1.4.x patch after validation):**
-- Smooth theme transition: 300ms fade on `color` and `background-color` scoped to `body` only (never on `:root` — causes full-page jank on theme switch)
-- Dark mode OLED refinement pass after real-device testing
-- Card hover shadow depth increase in light mode
+| Feature | TZ ref |
+|---------|--------|
+| Single fixed-position canvas blob, `z-index: 0`, `pointer-events: none` | §17 |
+| 4 sublayers: core (snappy), body (viscous), halo (slow), glint (dwell-reactive) | §5 |
+| Brand-locked palette: green family only, no neon, no gaming aesthetics | §5 |
+| Viscous exponential-smoothed cursor follow, different `k` per sublayer | §6 |
+| Velocity-driven shape stretch along motion vector | §6 |
+| Heat accumulation: 1.5–3s dwell — core brightens, halo expands, glint appears | §7 |
+| Heat decay on movement: smooth, 600ms minimum, no jump | §7 |
+| Glass opacity tier system: 0.04 / 0.08 / 0.12 / 0.16 per surface depth | §9 |
+| Every glass surface gets passive optical blob-response via CSS `radial-gradient` | §10 |
+| Per-tier blur depth hierarchy (section wider blur, card medium, form tighter, control tightest) | §11 |
+| Mobile: no pointer follow; autonomous slow drift; tap pulse; no scroll jank | §14 |
+| `prefers-reduced-motion`: static ambient gradient, no rAF, no listener | §15 |
+| `prefers-reduced-transparency`: blob hidden, glass becomes opaque | §15 |
+| `prefers-contrast: more`: halo dimmed, text contrast verified WCAG AA minimum | §15 |
+| CTA buttons always opaque, never glass | §13 |
+| Text, form, and CTA readable at all blob positions | §12, §13 |
+| Single `pointermove` listener, single rAF loop, transform/opacity-only animation | §16 |
+| pointer-leave triggers smooth decay to last position + ambient drift, not snap-disappear | §6, §8 |
 
-**Defer to v2+:**
-- CSS Scroll-Driven Animations as primary animation mechanism — not Baseline-stable; IntersectionObserver is the reliable baseline for this audience
-- View Transitions API for theme switching — adds complexity for marginal gain
-- Animated number counters on social proof statistics — FEATURES.md and PITFALLS.md both flag these as cognitively disorienting for 45+ users; defer or eliminate entirely
+**Differentiators (should-have, above TZ minimum):**
 
-**Anti-features confirmed — do not build:**
-- Full-page glassmorphism (all 11 sections) — GPU performance failure on mid-range Android; visual noise overwhelms older readers
-- Dark mode as default or OS-preference-driven automatic — reduces medical trust signals; the 45+ audience expects clinical white
-- Parallax scroll effects — PROJECT.md out-of-scope; vestibular risk for 35%+ of the 45+ demographic
-- Animated statistics counters — distracting, delays trust signal perception, vestibular risk
-- Pure `#000000` dark background — causes halation (halos around text) for astigmatic users; high prevalence at 45+; use `#0F1923` instead
+| Feature | Notes |
+|---------|-------|
+| Per-section visibility weighting (header = restrained response) | Via CSS region-aware opacity; medium complexity |
+| Heat-driven glass saturation lift via `backdrop-filter: saturate(...)` | Test perf cost before committing |
+| Glint micro-shimmer cycle at peak heat | Must respect `prefers-reduced-motion` |
+| Page Visibility API pause (tab hidden — rAF pauses) | 1-line addition; nice for laptop battery |
+| `data-blob-mode` attribute on `<html>` for CSS branching | Cleaner than CSS var string branching |
+
+**Anti-features — hard reject:**
+
+| Anti-feature | Reason |
+|--------------|--------|
+| Multiple blobs | TZ §1: single protagonist rule |
+| WebGL / three.js / PixiJS renderer | Bundle overkill; canvas 2D is sufficient |
+| Spring physics with overshoot | Tone violation: not medical |
+| Cursor trail (N copies) | TZ §14 explicit ban |
+| Per-frame React `useState` | TZ §16 explicit ban |
+| Solid-white / milky glass fills above 0.16 | TZ §9 |
+| Green tint on cards | TZ §9 |
+| Animated `backdrop-filter` blur values | GPU-poison on mobile |
+| Animated `box-shadow` on dozens of elements | TZ §16 |
+| Parallax | PROJECT.md out-of-scope; 45+ audience |
+| Tilt / gyroscope drift | Permission prompts; not in TZ |
+| Section-scoped blob color shift | Brand parity violation |
+| Heat-driven color shift toward red or orange | Brand parity violation |
+| `backdrop-filter` on the blob layer itself | Blob is behind glass, not glass itself |
+| Blur above 12px on mobile | DESIGN.md hard constraint |
+| 3+ glass layers per viewport | DESIGN.md hard constraint |
+
+**Defer to v10+:**
+
+- Scroll-velocity coupling (differentiator that risks medical tone)
+- Per-route blob color theming
+- Consolidating `useSpecularHighlight` into the global blob system
+- `OffscreenCanvas` workerized rendering (Safari 15 lacks it)
+- Tilt/gyroscope ambient (not in TZ, needs permission flow)
 
 ### Architecture Approach
 
-All v1.4 changes integrate into the existing single-file architecture following four established patterns that research confirmed as correct for this codebase:
+The blob renderer is a globally-mounted singleton in `app/layout.tsx`, preserved across all App Router route transitions without teardown. It writes to `:root` CSS vars from inside a vanilla rAF loop. Zero React renders are triggered by blob state. Glass surfaces in `liquid-glass.css` consume blob position as passive CSS consumers via `radial-gradient(... at var(--blob-x) var(--blob-y), ...)`.
 
-1. **Token override pattern** — `[data-theme="dark"]` block immediately after the existing `:root` block in `styles.css` overrides the same token names. All 1,640 existing lines auto-update to dark mode without modification. Zero search-and-replace needed.
-2. **Modifier class pattern** — `.card--glass` is an opt-in CSS modifier; the base `.card` rule is never changed. Glass applies only to the 2 targeted elements; all other cards are untouched.
-3. **`@supports` gating** — scroll-driven animation additions wrapped in `@supports (animation-timeline: scroll())`; glass cards wrapped in `@supports not (backdrop-filter: blur(1px))` fallback. Elements stay visible and accessible on non-supporting browsers.
-4. **Inline `<script>` FOUC prevention** — synchronous ES5 script in `<head>` before `<link rel="stylesheet">` reads localStorage and sets `data-theme` attribute before first paint. Toggle wiring stays in the existing IIFE.
+The key architectural insight: the CSS-variables-on-`documentElement` pattern is the only mechanism that lets pure-CSS glass utilities respond to the blob without per-element JavaScript or React subscriptions. It is already the project's own pattern (`useSpecularHighlight`).
 
-**Component change map:**
+**Key data flow:**
 
-| Feature | CSS file location | HTML change | JS change |
-|---------|------------------|-------------|-----------|
-| Dark mode tokens | Section 2 (after `:root`) | `data-theme` attribute on `<html>` | New `initDarkMode()` in IIFE + inline head script |
-| Bold typography | Section 2 (token value changes) | None | None |
-| Glass header | Modify Section 7 `.site-header.is-scrolled` | None | None |
-| Glass pricing card | Add `.card--glass` rule in Section 6; gradient to Section 7 `.pricing` | Add class to 1 element | None |
-| Scroll animations enhancement | Add inside Section 10 `@supports` block | None | None |
-| Dark mode toggle button | None | Add `<button>` in `.site-header__container` | Wired in `initDarkMode()` |
+```
+window pointermove
+  → ref write (no React state)
+    → rAF tick
+      → lerp per sublayer (core 0.18, body 0.08, halo 0.04)
+        → document.documentElement.style.setProperty(--blob-*)
+          → browser CSS repaint on consumers
+            → 0 React renders
+```
 
-**Estimated file impact:** ~120 lines added to `styles.css` (dark mode ~40 lines, glass modifiers ~30 lines, animation additions ~50 lines). File grows from ~1,640 to ~1,760 lines — well within maintainable range for single-file approach.
+**Component responsibilities:**
+
+| Component | Responsibility |
+|-----------|----------------|
+| `LivingBlobField.tsx` | Canvas renderer, 1 pointer listener, 1 rAF loop, mode detection, CSS var writes |
+| `blob.css` | Sub-layer styles, ambient keyframes, reduced-motion/transparency guards |
+| `globals.css` | All token definitions: `--blob-*` palette, `--glass-*-fill/blur` tiers, runtime var seeds |
+| `liquid-glass.css` | Glass utility classes re-pointed to new tier tokens + heat-leak gradients |
+| `app/layout.tsx` | Mount point; replaces `MeshBackground`; seeds `:root` vars via inline `<style>` |
+| ~45 component files | Opacity/blur class swaps to align with 4-tier system; CTA stays opaque |
+
+**Mode branches:**
+
+| Context | Behavior |
+|---------|----------|
+| `pointer: fine` + motion allowed | Full cursor-follow with heat accumulation |
+| `pointer: coarse` | Autonomous Lissajous drift, tap pulse on background only, scroll-pause |
+| `prefers-reduced-motion: reduce` | No listener, no rAF, static CSS ambient gradient |
+| `prefers-reduced-transparency: reduce` | Blob `display: none`, glass becomes opaque |
+| `[data-theme="dark"]` | Blob dimmed to ~35% opacity, follow disabled |
+
+**SSR / hydration:** `dynamic({ ssr: false })` eliminates hydration mismatch. `:root` vars seeded server-side via inline `<style>` so glass surfaces have valid values during first paint.
+
+**Confirmed repo state (all verified by filesystem inspection):**
+
+- `LiquidBlobLayer.tsx` and `liquid-depth.css` do NOT exist in the repo — no removal needed
+- `MeshBackground.tsx` IS the replacement target (17 lines, static blurred circles)
+- `<main>` already has `relative z-10` in `layout.tsx` — no z-index conflict
+- `GlassInteraction.tsx` + `useSpecularHighlight.ts` coexist safely (different namespace: `--mouse-x/y` vs `--blob-x/y`)
 
 ### Critical Pitfalls
 
-Seven pitfalls have meaningful probability of causing launch failure or conversion damage. In priority order:
+Full detail in `.planning/research/PITFALLS.md`. Top 5 by conversion and stability impact:
 
-1. **Glassmorphism text contrast failure** — Glass cards sit over dynamically shifting blurred backgrounds; contrast ratio at any scroll position cannot be predicted from a static mockup. Prevention: set glass card minimum background opacity at `rgba(255,255,255,0.75)` for light mode; test contrast against the darkest content that will ever appear behind the card; target 7:1 (AAA) for the 45+ audience, not just 4.5:1 (AA). A contrast check on the design-intent background only is insufficient.
+**1. Form readability collapse (PITFALLS 3.2 + 9.1) — HIGH, conversion-critical.**
+Dropping form glass to 0.04–0.08 with `text-muted` labels and a green blob bleeding through can push contrast below WCAG AA (4.5:1). Prevention: lock form panel to `--glass-form-fill` (0.16 minimum), promote labels from `text-muted` to `text-primary`, keep input chrome `bg-white` (opaque). Log as Key Decision in PROJECT.md before Phase G.
 
-2. **`backdrop-filter` performance on mid-range Android** — More than 2 glass elements simultaneously cause frame drops to 20-25fps on Samsung Galaxy A-series and Xiaomi Redmi (dominant KZ market devices). Prevention: strict limit of 1-2 glass elements per viewport; blur radius maximum 8-12px (not 20px+); mandatory Chrome DevTools 4x CPU throttle scroll test before Phase 3 sign-off; `@supports` fallback renders a solid near-white card.
+**2. CTA disappears into blob (PITFALLS 3.1) — HIGH, conversion-critical.**
+The gradient CTA (`#1AC67E → #0D9DB5`) overlaps spectrally with `--blob-core (#35B678)`. When blob halo bleeds through a section containing a CTA, the result is green-on-green visual blur. Prevention: CTAs are always opaque, never receive `backdrop-filter`. Verify by grep on every CTA component.
 
-3. **Dark mode FOUC (flash of unstyled content)** — Without synchronous localStorage read in `<head>`, users with a saved dark preference see a white flash on every page load. Prevention: inline `<script>` before the CSS `<link>` tag, ES5 syntax, reads localStorage and sets `data-theme` attribute before any rendering occurs.
+**3. Mobile blur regression past 12px (PITFALLS 1.1) — HIGH, UX-critical.**
+Phase 79 shipped the 12px cap. v9.0 adds a blob layer that could multiply mobile GPU cost. The blob layer itself uses no `backdrop-filter` (radial gradient + transform only), but glass rework must not relax the cap on any component. All `--glass-*-blur` mobile values must be 12px or less. Add CI lint rule.
 
-4. **Dark mode default erodes medical trust** — The 45+ medical audience treats light/white interfaces as clinical authority. OS-preference-driven dark mode or dark-as-default violates this expectation. Prevention: always load in light mode; `localStorage` absent means light; `prefers-color-scheme: dark` is a secondary hint for first visit only, not the primary trigger.
+**4. A11y media-query bypass on new code paths (PITFALLS 2.1, 2.4, 2.5, 11.1) — HIGH.**
+Phase 85 wired `prefers-reduced-motion`, `prefers-reduced-transparency`, and `prefers-contrast` for existing surfaces. `LivingBlobField` and any new glass classes are a fresh code path that can bypass that wiring. Prevention: use `@layer` with a single enumerated block covering all glass class names. Blob engine reads MQ at init and on `change`. Playwright tests must emulate all three preferences.
 
-5. **Dark mode WCAG contrast failures in secondary text** — Secondary text, form placeholders, and disabled states that borderline-pass in light mode will fail in dark mode when colours are naively inverted. Grey-on-dark is the most common silent failure (`#888` on `#1a1a1a` is only 3.6:1). Prevention: full token-pair contrast audit before any dark component styling; explicit token values for every dark pair, never derived by opacity or `filter: invert()`.
-
-6. **CSS regression across 11 sections** — Dark mode tokens, glass modifiers, and animation additions all touch `styles.css`; cascade conflicts and token name collisions can silently break form validation states, sticky header, wave dividers, or accordion. Prevention: `--glass-*` namespace for all new tokens; visual regression screenshots at 390px and 1440px before starting; form submission flow tested end-to-end after every phase.
-
-7. **Mobile typography line-break failures** — 56px+ headlines without proper `clamp()` minimum values force single-word Cyrillic orphan lines on 390px screens. Prevention: verify every headline at 320px and 390px before Phase 2 closes; use `text-wrap: balance`; no `letter-spacing` adjustment on Cyrillic (only Latin benefits from tracking reduction at display sizes).
+**5. rAF and listener leaks across route navigation (PITFALLS 1.5, 8.3) — HIGH, stability-critical.**
+React Strict Mode double-invokes effects in dev. App Router keeps `layout.tsx` mounted across route changes. If the engine is not idempotent, two rAF loops accumulate and produce stutter. Prevention: singleton engine module with `start()` / `stop()` where `start()` is a no-op if already started; `useEffect` cleanup always calls both `cancelAnimationFrame` and `removeEventListener`; expose `window.__blobDebug.rafCount` in dev and assert == 1 in Playwright after 5 route navigations.
 
 ---
 
 ## Implications for Roadmap
 
-Research establishes a clear sequential dependency chain: token infrastructure must precede all visual effects; gradient backgrounds must precede glass cards; FOUC prevention must precede any dark mode toggle; the `prefers-reduced-motion` guard must precede any new animation. A 4-phase structure emerges naturally from these dependencies, where each phase is independently deployable.
+### Phase 1: Foundation — Tokens, A11y Wiring, DOM Skeleton
 
-### Phase 1: Dark Mode Token Infrastructure
+**Rationale:** Nothing else can be verified without the token system and accessibility gates. The glass rework cannot be tuned visually until `--glass-*-fill/blur` tokens exist. The blob engine cannot be tested for reduced-motion compliance until the MQ wiring is defined. This phase ships no visible change — the page looks identical to v8.0 — but establishes the contract every subsequent phase builds on.
 
-**Rationale:** The foundational prerequisite. All other v1.4 features depend on the `[data-theme="dark"]` token block existing and the `--glass-*` tokens being defined. This phase has zero visual change in light mode — it is entirely additive and carries no regression risk. Starting here means the page is deployable after this phase with a functional, tested dark mode before any glass or typography work begins.
+**Delivers:**
+- DESIGN.md YAML updated with `colors.blob.*` tokens (required before any `--blob-hot` usage per brand-parity rule); Key Decision logged for `#4FE098`
+- `globals.css`: `--blob-*` seed defaults and tier tokens; `--glass-section/card/form/button-fill/blur`; `--blob-response-*` intensity vars
+- `liquid-glass.css`: `@layer` block enumerating all glass class names under all three a11y media queries (`prefers-reduced-motion`, `prefers-reduced-transparency`, `prefers-contrast: more`)
+- `layout.tsx`: `<div class="living-blob-field" aria-hidden="true">` with 4 static sub-layer children; seed `<style>:root{--blob-x:50vw;--blob-y:50vh;--blob-heat:0}</style>`; `MeshBackground` removed
+- `blob.css`: sub-layer base styles, `prefers-reduced-motion` static-fallback CSS, `prefers-reduced-transparency` hide rule
+- z-index contract documented in DESIGN.md (blob-field: 0, main: 1–10, header/sticky: 50+, modals: 100+)
+- CTA opaque-forever rule added to DESIGN.md v9.0 custom section
+- v9.0 anti-patterns appendix in DESIGN.md mirroring TZ §16 forbids list plus new discoveries
 
-**Delivers:** Fully functional dark mode toggle with localStorage persistence and FOUC-free experience; all token values contrast-audited before any component uses them; `--glass-*` tokens ready for Phase 3.
-
-**Addresses:** Dark mode toggle (navigation button), `[data-theme="dark"]` CSS block, FOUC-prevention inline script, `aria-pressed` toggle accessibility, minimum 44px touch target on toggle, visible text label alongside icon.
-
-**Avoids:**
-- Pitfall 3 (FOUC) — inline `<script>` pattern established
-- Pitfall 4 (dark mode trust erosion) — default-light policy built into the token architecture; `prefers-color-scheme` is secondary only
-- Pitfall 5 (dark mode WCAG failures) — full token-pair contrast audit is the exit criterion for this phase; no component receives dark styling until all token pairs pass
-- Pitfall 6 (CSS regression) — `--glass-*` namespace policy established here
-
-**Phase exit criteria:** Dark mode toggle works; localStorage persists between sessions; FOUC test passes (hard refresh with OS dark mode set shows correct theme immediately); every new `[data-theme="dark"]` token pair documented and contrast-checked.
-
----
-
-### Phase 2: Bold Typography Scale
-
-**Rationale:** High visual impact, lowest implementation risk. Typography is token-value changes only — no new HTML structure, no new CSS classes, no new JS, no new APIs. Manrope Variable (already loaded, already supporting weight 800) is the only dependency. Building this second means typographic sizes are finalized before gradient backgrounds in Phase 3 are proportioned around the hero layout.
-
-**Delivers:** h1 at `clamp(40px, 5vw, 56px)` / 800 weight, h2 at `clamp(28px, 3.5vw, 44px)` / 800 weight; line-height tightened to 1.1 for display-size headings; `text-wrap: balance` on all section headings; every headline verified at 320px and 390px.
-
-**Addresses:** Bold display headings with `clamp()` responsive scaling; font-weight policy (minimum 400 for any informational text); Cyrillic mobile line-break testing.
-
-**Avoids:**
-- Pitfall 7 (mobile typography orphan lines) — 320px/390px viewport review is the exit criterion
-- Pitfall 6 (thin weight text contrast) — weight-to-contrast policy defined: no `font-weight` below 400 for any text conveying information; pricing and statistics checked explicitly at every weight used
-
-**Phase exit criteria:** Every headline reviewed at 320px and 390px; no single-word Russian orphan lines; contrast ratio verified for all heading colour combinations in both light and dark mode (dark mode tokens from Phase 1 are available for testing).
+**Pitfalls addressed:** 2.1, 2.4, 2.5, 10.1, 10.2, 14.1, 14.2
+**Research flag:** Standard patterns — all token values sourced directly from TZ §5, §9, §11, §17. No additional research needed.
 
 ---
 
-### Phase 3: Glassmorphism
+### Phase 2: Blob Engine — Renderer, Physics, Mobile Ambient
 
-**Rationale:** Depends on Phase 1 (glass tokens established, dark mode available for testing glass in dark context) and Phase 2 (hero layout finalized at bold type sizes before gradient backgrounds are designed around it). Glass is the highest visual risk of the milestone — both for Android performance and for contrast compliance — so it runs after the lower-risk phases are stable and deployed. If glassmorphism fails in production, it is removed by reverting 2 CSS modifier classes and one gradient background; Phases 1 and 2 are unaffected.
+**Rationale:** The renderer must exist before any glass opacity can be verified visually. Building glass first means working blind.
 
-**Delivers:** CSS gradient mesh background on hero section; glass effect on `.site-header.is-scrolled`; gradient background on `.pricing` section; `.card--glass` modifier on pricing card; solid-colour fallback via `@supports not (backdrop-filter: blur(1px))` for non-supporting browsers.
+**Delivers:**
+- `LivingBlobField.tsx`: `'use client'`, `dynamic({ ssr: false })`. Canvas 2D with 4 sublayers. Single `pointermove` listener on `window` (`{ passive: true }`). Single rAF loop with lerp per sublayer. Heat accumulator (`idleMs / 2500`, clamped 0..1). Writes 8 CSS vars to `:root` each frame.
+- Singleton engine guard: `start()` no-op if already started; cleanup cancels rAF + removes listener
+- Mobile branch (`pointer: coarse`): no listener; slow Lissajous ambient drift; tap pulse 400ms maximum on background only, rate-limited 1 per 600ms; scroll-pause via passive scroll listener
+- `prefers-reduced-motion` branch: no listener, no rAF, CSS static ambient only
+- `data-blob-mode` attribute on `<html>` updated on mode change
+- `blob.css`: ambient drift `@keyframes`, reduced-motion static state
+- Dev-only `window.__blobDebug.rafCount` for Playwright assertion
+- Page Visibility API pause (hidden tab)
 
-**Addresses:** Hero gradient mesh; glassmorphism on sticky header; glassmorphism on pricing card; `@supports` fallback; glass tokens in both light and dark variants (dark mode disables `backdrop-filter` and uses opaque dark surface instead — glass over dark backgrounds renders poorly).
-
-**Avoids:**
-- Pitfall 1 (glass contrast failure) — contrast tested against worst-case background (darkest content that will ever scroll behind the card), not design-intent background; minimum 75% opacity background floor on glass elements
-- Pitfall 2 (Android performance failure) — maximum 2 glass elements per viewport; blur radius 8-12px; Chrome DevTools 4x CPU throttle scroll test is a mandatory exit criterion (FPS must stay above 50fps)
-- Anti-pattern: glass in dark mode — `[data-theme="dark"]` disables `backdrop-filter` on glass modifiers; replaces with opaque near-black surface
-
-**Phase exit criteria:** 4x CPU throttle scroll test passes at 50fps+ with both glass elements visible; contrast checked against darkest scroll context; `@supports` fallback verified on a browser with `backdrop-filter` disabled; form submission flow tested end-to-end.
+**Pitfalls addressed:** 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.3, 5.1, 5.2, 5.3, 8.1, 8.2, 8.3, 12.3, 12.4, 13.4
+**Research flag:** Standard patterns. One LOW-confidence area: lerp factors and heat timing are TZ-informed starting points, not final values — must be tuned in-browser per TZ §17. Plan 1–2 visual iteration sessions after this phase ships.
 
 ---
 
-### Phase 4: Micro-Animations Enhancement
+### Phase 3: Glass Rework — Chrome and Index Sections
 
-**Rationale:** Purely additive over stable Phase 1-3 surfaces. The existing IntersectionObserver system stays intact. New additions go inside `@supports` blocks or extend existing `.animate-on-scroll` / `.is-visible` patterns with new properties. The animation catalogue is defined upfront and capped at 4-5 distinct types to prevent cognitive overload for the 45+ audience. The `prefers-reduced-motion` guard rule is written first — before any `@keyframes` is created.
+**Rationale:** Chrome (Header, MobileMenu, StickyBar, Footer) is always visible and establishes the visual register for the whole site. Complete chrome + index sections first for a fully verifiable baseline before sweeping sub-pages.
 
-**Delivers:** `translateY(20px → 0)` added to `.animate-on-scroll` initial state (existing `opacity` fade becomes fade + slide); button `:active` `scale(0.97)` feedback; `:focus-visible` ring enhancement; optional CSS scroll progress bar in header via `animation-timeline: scroll(root)` behind `@supports` gate; smooth theme transition (300ms `background-color, color` on `body` only — if not already landed in Phase 1 patch).
+**Delivers:** Opacity sweep of all components visible on the `/` index route:
 
-**Addresses:** Enhanced scroll reveal; button active feedback; focus ring accessibility; smooth theme transition; optional scroll progress indicator.
+| Component | Current (approx) | Target |
+|-----------|-----------------|--------|
+| `HeaderClient.tsx` | `bg-white/30–50` | `bg-white/14` rest / `bg-white/22` scrolled, blur 24px max |
+| `MobileMenu.tsx` dropdown | `bg-white/68`, 80px blur | `bg-white/14`, 24px desktop / 12px mobile |
+| `StickyBar.tsx` | `bg-white/68`, `3xl` blur | `bg-white/14`, 12px max |
+| `Footer.tsx` | varies | `bg-white/06`, Tier 0 |
+| `HeroHub.tsx` frame | `bg-white/75` | `bg-white/16`, Tier 0; CTA gradient stays opaque |
+| `StatsBar.tsx` | `bg-white/60–70` | wrapper `bg-white/08`, cards `bg-white/10` / hover `bg-white/14` |
+| `ServicesGrid.tsx` | `bg-white/60–70` | cards `bg-white/10` / hover `bg-white/14` |
+| `ProcessSection`, `ProblemSection`, `WhyUsSection`, `ClinicsSection`, `PlatformSection`, `ReviewsSection` | various | per-tier sweep |
+| `FAQSection.tsx` | varies | closed Tier 1, open Tier 2 |
+| `ContactForm.tsx`, `ContactSection.tsx` | varies | form panel `--glass-form-fill` (0.16 minimum), labels `text-primary`, inputs `bg-white` opaque |
+| `FinalCTA.tsx` | varies | Tier 0 section frame; CTA opaque |
 
-**Avoids:**
-- Pitfall 7 (vestibular disorder triggers) — `prefers-reduced-motion` rule written first; new `transform: translateY()` additions also reset `transform: none` in the reduced-motion block (not just zeroing duration — a duration-zero transform from `translateY(20px)` still snaps)
-- Pitfall 8 (animation cognitive overload) — animation catalogue defined upfront: scroll reveal, button active, focus ring, theme transition, optional progress bar = 5 types maximum; no looping animations; no animated counters; no scale above `scale(1.02)` on hover
-- IntersectionObserver + scroll-driven conflict — scroll-driven animations only on new elements or new CSS properties; never applied to existing `.animate-on-scroll` elements that already control `opacity`
+`liquid-glass.css` updated: all `.liquid-*` utility classes re-pointed to `--glass-*` tokens; deprecated `--liquid-bg: rgba(255,255,255,0.42)` replaced; heat-leak `radial-gradient` rules added to `.liquid-card` and `.liquid-regular`.
 
-**Phase exit criteria:** `prefers-reduced-motion` verified globally; total distinct animation types on page counted and capped at 5; stagger delay between card grid children confirmed at ≤100ms; no looping or continuous animations visible in the resting viewport state.
+**Pitfalls addressed:** 3.1, 3.2, 3.3, 9.2, 9.3, 10.1, 10.2, 10.3
+**Research flag:** No research needed — mechanical class swaps against defined tokens. Judgment call: if form contrast at 0.16 fails WCAG AA in testing, escalate form fill to 0.30 and log Key Decision.
+
+---
+
+### Phase 4: Per-Page Propagation — Sub-Routes
+
+**Rationale:** All 4 routes share `layout.tsx` so the blob is already live on sub-pages after Phase 2. This phase applies Phase 3 patterns to service-specific components. Token and utility work is already done — mechanical class swapping with per-page visual verification.
+
+**Delivers:**
+- `next/src/components/sections/checkup/*.tsx` (8 files): per-tier sweep
+- `next/src/components/sections/consultations/*.tsx` (8 files): per-tier sweep
+- `next/src/components/sections/treatment/*.tsx` (4 files): per-tier sweep
+- `next/src/components/sections/contacts/*.tsx` (2 files): per-tier sweep
+- `next/src/components/sections/service/{ServiceHero,FAQ,SocialProof,LeadFormSection}.tsx` — `LeadFormSection` gets same form-safety treatment as `ContactForm`
+- `next/src/components/ui/{card,dialog,input,select,textarea}.tsx` — shadcn primitives done last within this phase (highest blast-radius)
+
+Each sub-route gets a visual diff vs pre-v9.0 screenshot baseline before marking done.
+
+**Pitfalls addressed:** 9.1 (service-page form readability collapse)
+**Research flag:** No research needed. Watch: shadcn primitives touch everything — do them last.
+
+---
+
+### Phase 5: Verification — UAT, Performance, A11y, Brand Review
+
+**Rationale:** Verification is a gate, not an afterthought. Phase 89 history (cheat-pass on a11y) makes this a hard-gated phase. Nothing ships to production without all checklist items signed off.
+
+**Delivers:**
+- Playwright UAT: all 10 TZ §18 browser scenarios. Key assertions: blob transform changes on pointer move (assert value changed, not specific value); blob transform static under `prefers-reduced-motion`; `window.__blobDebug.rafCount === 1` after 5 route navigations; form + CTA screenshot regions stable vs pre-v9.0 baseline (blob area masked)
+- A11y emulation tests: all three MQ preferences asserted in Playwright
+- Lighthouse CI gate: LCP 2500ms max, INP 200ms max, CLS 0.1 max, TBT 200ms max (mobile throttled). Fail PR if regression > 10%
+- Chrome DevTools performance trace: desktop 60fps on hero scroll; single composited layer for `.living-blob-field` confirmed in Layers panel
+- Real-device manual UAT (hard gate, no trust-me pass): (a) iPhone iOS 16 or 17 Safari, (b) low-end Android 4GB RAM max (Redmi 9-class), (c) desktop Chrome + Firefox + Safari — each with signed-off checklist + screenshot or video attached to the phase report
+- Firefox `backdrop-filter` stutter check — document any fallback threshold
+- axe-core / Pa11y run against each route
+- Brand visual review: still frame at heat-peak side-by-side with `medicusunion.com` — if it reads as a fitness app, saturation pulled back
+- TZ §19 acceptance criteria checklist: all 12 criteria verified
+
+**Pitfalls addressed:** 1.1, 2.1–2.5, 3.1–3.3, 6.1, 6.2, 6.3, 7.1, 7.2, 12.2, 15.1–15.3
+**Research flag:** No research needed. Execution-heavy, checklist-driven. Contingency: if real-device testing reveals mobile fps still degraded despite the 12px blur cap and canvas renderer, reduce ambient blob opacity on mobile by 50% — a single CSS token change with no architectural impact.
 
 ---
 
 ### Phase Ordering Rationale
 
-The dependency chain is strictly linear:
+The ordering is dictated by one constraint: you cannot verify glass transparency until the blob exists behind it. Foundation → Engine → Glass is non-negotiable.
 
-- **Token infrastructure first** — CSS cascade is unforgiving; any component using `var(--glass-*)` before that token exists silently falls to `initial`. Dark mode toggle must exist before any section's dark mode styling can be verified.
-- **Typography before glassmorphism** — heading sizes affect vertical layout metrics that gradient background proportions should be designed around. Build the hero at its final type scale before adding the gradient behind it.
-- **Glassmorphism before animations** — micro-animations layer on stable visual surfaces. Animating elements whose background will later be changed by glass styling creates double rework.
-- **Each phase independently deployable** — this is the regression safety net. Phase 3 failure (Android performance) means reverting Phase 3 only; Phases 1 and 2 remain live and stable.
+The glass sweep is split into Phases 3 and 4 (index vs sub-routes) for manageable PR size and blast-radius control, not for technical reasons. Within each phase, parallel execution across components is safe once tokens and `liquid-glass.css` utilities are finalized (different files, no merge conflicts).
+
+A11y must be designed-in at Foundation (Phase 1), not retrofitted. The `@layer` block enumerating all glass class names is the mechanism. Adding a new glass class in Phase 3 without updating that block is the primary failure mode. Code review checklist item for every Phase 3/4 PR: any new CSS class beginning with `glass-` or `liquid-` must appear in the reduced-transparency `@layer` block.
 
 ### Research Flags
 
-**Standard patterns — no research phase needed:**
-- **Phase 1 (Dark Mode Tokens):** `data-theme` + localStorage FOUC prevention pattern is HIGH confidence; fully specified in ARCHITECTURE.md with exact code patterns. Implementation is mechanical.
-- **Phase 2 (Bold Typography):** `clamp()` and Manrope Variable weight 800 are HIGH confidence. Specific `clamp()` midpoints require viewport testing, not research.
-- **Phase 4 (Micro-Animations):** All techniques are standard CSS with HIGH confidence. Pre-implementation check: read lines 182-189 of `styles.css` to confirm the existing `prefers-reduced-motion` rule scope and whether `transform` reset needs to be added.
+**Needs no additional research (standard patterns):**
+- Phase 1 (Foundation): all token values are TZ-prescriptive
+- Phase 2 (Engine): Canvas 2D + rAF + CSS vars is well-documented; internal `useSpecularHighlight` is the codebase proof-of-concept
+- Phase 3/4 (Glass rework): mechanical class swaps against defined tokens
+- Phase 5 (Verification): checklist execution
 
-**Targeted verification required (not a full research phase — just a task before sign-off):**
-- **Phase 3 (Glassmorphism):** Browser API is HIGH confidence. Android performance on this specific codebase cannot be predicted from specs. Run Chrome DevTools 4x CPU throttle scroll test before phase sign-off. If FPS drops below 50fps, reduce blur from 12px to 8px, then if still failing, remove the pricing card glass and keep only the header glass.
-- **Phase 4 pre-check:** Verify current `animation-timeline` Firefox/Safari support at caniuse.com before implementation (training data cutoff is August 2025; the scroll progress bar enhancement depends on whether `@supports` covers the actual gap).
+**Needs validation during execution (judgment calls, not research):**
+- Visual tuning constants (lerp factors, heat timing 2500ms): calibrate in-browser per TZ §17 — not researchable up-front
+- Form glass alpha floor: start at 0.16; escalate to 0.30 if body copy contrast fails testing
+- Firefox `backdrop-filter` performance: if stutter observed, document the fallback blur-reduction threshold
+- `--blob-hot: #4FE098` brand approval: one visual comparison session against `medicusunion.com` before Phase 2 begins
 
 ---
 
@@ -202,56 +333,53 @@ The dependency chain is strictly linear:
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All four new capabilities use native CSS/JS APIs with MDN-verified, Baseline-stable documentation. No new dependencies. Scroll-driven animations are the only area with meaningful browser gaps (~25% non-support), correctly addressed by `@supports` progressive enhancement. |
-| Features | HIGH (CSS), MEDIUM (UX) | CSS feature list and browser support are HIGH confidence from MDN primary sources. UX guidance for the 45+ audience (dark mode medical trust damage, animation cognitive overload, halation on pure black) is MEDIUM confidence from WCAG 2.1, NNGroup, and research consensus — no Kazakhstan-specific clinical data found. |
-| Architecture | HIGH | Token override architecture, modifier class pattern, FOUC prevention, and `@supports` gating are established patterns. Integration plan was validated against the actual codebase structure via direct file inspection — section numbering, token names, and existing class names are confirmed. |
-| Pitfalls | HIGH (technical), MEDIUM (audience-specific) | CSS performance and WCAG pitfalls are grounded in WCAG 2.1 specifications and MDN browser behaviour. Audience-specific claims (vestibular disorder prevalence at 45+, medical trust association with light interfaces) are MEDIUM confidence from research consensus without a single authoritative clinical source. |
+| Stack | HIGH | Zero new dependencies; all primitives verified in installed packages; `useSpecularHighlight.ts` proves the pattern ships in this codebase |
+| Features | HIGH | TZ is unusually prescriptive (20 sections, 12 acceptance criteria); category decomposition maps 1:1 to TZ sections; anti-features are TZ-enumerated |
+| Architecture | HIGH | All referenced files inspected in actual repo; `LiquidBlobLayer.tsx` / `liquid-depth.css` non-existence verified; `MeshBackground.tsx` confirmed as replacement target; z-index contract confirmed against `layout.tsx` line 55 |
+| Pitfalls | HIGH | Grounded in Phase 79/85/89 project history + DESIGN.md hard constraints + well-documented WebKit/Blink behaviors |
 
-**Overall confidence:** HIGH for technical implementation decisions. MEDIUM for predicting the audience-specific UX impact of dark mode and glassmorphism on the 45+ Kazakhstan demographic (no local data available).
+**Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **Dark mode ROI for this audience:** Whether dark mode meaningfully improves the experience for 45+ KZ users is unproven. If the product decision is uncertain, Phase 1 can be scoped as "CSS token semantic refactor only" (adding `--color-bg`, `--color-surface` semantic tokens without a dark toggle), which still benefits Phase 3 glassmorphism architecture without the full dark mode QA surface. Monitor dark mode toggle usage post-launch.
-
-- **Dark mode treatment of hero illustration:** The existing SVG hero illustration uses duotone colours optimised for a light background. In dark mode it will appear washed-out or desaturated. The correct treatment — CSS `filter`, dark-mode SVG variant, or dark overlay — was not researched. Must be decided during Phase 1 execution.
-
-- **Exact `clamp()` values per headline:** The research provides ranges (h1: 40-56px, h2: 28-44px) but specific midpoints depend on actual Russian headline lengths at the breakpoint widths. This is a Phase 2 implementation testing task, not a research gap.
-
-- **caniuse.com verification for `animation-timeline`:** Browser support figures are from training data (August 2025 cutoff). Verify current Firefox/Safari support before Phase 4 to determine whether the scroll progress bar enhancement covers enough users to be worth building.
-
-- **Kazakhstan market device performance baseline:** The recommendation to limit glass elements and blur radius is based on general mid-range Android characteristics, not a measured baseline on this codebase on this device class. The Phase 3 DevTools throttle test is the proxy validation. If performance issues appear in production on real devices, the recovery path is: reduce blur from 12px to 8px → remove pricing card glass → keep only header glass.
+- **`--blob-hot` color approval.** `#4FE098` is a genuinely new brand color. It must be logged as a Key Decision in PROJECT.md and added to DESIGN.md YAML before Phase 2 begins. One visual comparison session against `medicusunion.com` will resolve whether the saturation reads as medical or neon.
+- **Visual tuning constants.** Lerp factors (`k_core ~0.18`, `k_body ~0.08`, `k_halo ~0.04`) and heat timing (2500ms ramp, 600–900ms decay) are TZ-informed starting points. TZ §17 explicitly states they "must be chosen visually on a real page." Plan 1–2 in-browser tuning sessions after Phase 2 ships.
+- **Form glass alpha floor.** 0.16 is the research recommendation, but the actual floor depends on the specific background visible behind each form. If axe-core testing reveals body copy drops below 4.5:1, escalate to 0.30 and log Key Decision.
+- **Firefox performance threshold.** No Firefox-specific profiling done in research. If `backdrop-filter` combined with the blob causes stutter, the mitigation (reduced blur tier) is known but the trigger threshold must be established empirically in Phase 5.
+- **`SvgRefractionDefs.tsx` usage map.** The file exists in `layout.tsx` and provides SVG filter definitions, but research did not map every component that consumes its filter IDs. Verify before Phase 3 touches components that may reference it.
 
 ---
 
 ## Sources
 
-### Primary (HIGH confidence)
-- MDN Web Docs: `backdrop-filter` (Baseline 2024, September 2024) — glassmorphism support and GPU compositing behaviour
-- MDN Web Docs: `animation-timeline` — NOT Baseline; limited availability; `@supports` progressive enhancement required
-- MDN Web Docs: `prefers-reduced-motion` — Baseline Widely Available since January 2020
-- MDN Web Docs: `prefers-color-scheme` — Baseline Widely Available since January 2020
-- MDN Web Docs: `color-scheme` property — Baseline Widely Available since January 2022
-- MDN Web Docs: CSS Scroll-Driven Animations — draft spec, browser support
-- MDN Web Docs: `:focus-visible` — Chrome 86+, Firefox 85+, Safari 15.4+
-- WCAG 2.1 SC 1.4.3 Contrast Minimum (4.5:1 normal text, 3:1 large text)
-- WCAG 2.1 SC 2.3.3 Animation from Interactions (AAA) — vestibular motion guidelines
-- WCAG 2.1 SC 2.5.5 Target Size — 44x44px minimum touch target
-- CSS `text-wrap: balance` — Baseline 2023
-- Existing codebase: `css/styles.css` (~1,640 lines), `js/main.js` (~488 lines), `index.html` (~762 lines) — direct inspection for integration constraints and token names
+### Primary — HIGH confidence (direct project files, all inspected)
 
-### Secondary (MEDIUM confidence)
-- CSS-Tricks: "A Complete Guide to Dark Mode on the Web" — `data-theme` attribute pattern and localStorage approach
-- web.dev: "Building a theme switch component" — inline `<script>` FOUC prevention pattern
-- W3C WAI: Developing Websites for Older People — accessibility patterns for aging users
-- Nielsen Norman Group: Dark Mode Research — dark mode UX patterns and reading contexts
-- Chrome Developers: Scroll-driven Animations documentation — `animation-timeline: view()` usage patterns
-- Design community consensus on 2025 display typography (Vercel, Stripe, Linear landing pages) — heading scale 56-72px / 800 weight convention
+- `design/LIQUID_GLASS_BLOB_TZ.md` — primary spec (20 sections, 12 acceptance criteria). All numerical targets trace here.
+- `DESIGN.md` (repo root) — hard constraints: 2 glass per viewport max, mobile blur 12px max, `prefers-reduced-*` mandatory, dark mode disables `backdrop-filter`, brand-color parity rule.
+- `.planning/PROJECT.md` — v9.0 milestone active; project constraints; out-of-scope list.
+- `next/src/hooks/use-specular-highlight.ts` — internal proof-of-concept for rAF + CSS-var + pointer-listener pattern.
+- `next/src/styles/liquid-glass.css` (1037 lines) — existing utility class names, `--liquid-bg: rgba(255,255,255,0.42)` token (to be replaced), anti-patterns in header.
+- `next/src/app/globals.css` (689 lines) — `--liquid-blur-{sm,md,lg,xl}` and brand color tokens already present.
+- `next/src/app/layout.tsx` (62 lines) — all routes share this layout; `MeshBackground` is current background; z-index state.
+- `next/src/components/layout/MeshBackground.tsx` — confirmed replacement target (17 lines).
+- `next/package.json` — verified: `next@15.5.15`, `react@19.1.0`, `framer-motion@^12.38.0`, `tailwindcss@^4`.
 
-### Tertiary (LOW confidence — needs validation)
-- Ophthalmology UX literature on halation (pure black backgrounds causing halos for astigmatic users) — referenced in NNGroup and design literature; primary clinical sources not located
-- 45+ vestibular disorder prevalence (~35% of adults over 40) — audiological/neurological research consensus; no single authoritative source cited
-- Kazakhstan-specific 45+ device distribution — not found; mid-range Android assumption based on general KZ market data
+### Secondary — HIGH confidence (official vendor documentation)
+
+- [Next.js App Router — dynamic with ssr false](https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading) — confirmed for App Router.
+- [Apple HIG — Materials](https://developer.apple.com/design/human-interface-guidelines/materials) — glass-surface composition model.
+- [Apple HIG — Motion](https://developer.apple.com/design/human-interface-guidelines/motion) — reduced-motion compliance.
+- [MDN — Canvas 2D API](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D) — browser support: all evergreen + Safari 15+.
+
+### Secondary — MEDIUM confidence (editorial, cross-checked against vendor docs)
+
+- [Bram.us — Stripe gradient effect](https://www.bram.us/2021/10/13/how-to-create-the-stripe-website-gradient-effect/) — autonomous mesh gradient pattern; mobile ambient inspiration.
+- [Motion docs — bundle size](https://motion.dev/docs/react-reduce-bundle-size) — confirms Motion One ~3.8 KB; Framer Motion ~34 KB without `LazyMotion`.
+- [LogRocket — React animation libraries 2026](https://blog.logrocket.com/best-react-animation-libraries/) — bundle size survey for rejection rationale.
 
 ---
-*Research completed: 2026-03-24*
+
+*Research completed: 2026-04-30*
+*Supersedes: stale v7.0 SUMMARY.md (2026-04-13)*
+*Ready for requirements definition: yes*
 *Ready for roadmap: yes*

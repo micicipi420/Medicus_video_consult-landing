@@ -1,14 +1,20 @@
-# MedicusUnion KZ Landing
+# MedicusUnion KZ
 
 ## What This Is
 
-Лендинг для medicusunion.kz — сервис онлайн-видеоконсультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+. Конверсия: заявка на консультацию через форму. Полностью рабочий лендинг с 11 секциями, формой заявки, Directus-бэкендом, SVG-иконками, анимациями, SEO-оптимизацией, sticky-навигацией, и визуальной полировкой второго уровня.
+Сайт **medicusunion.kz** — многостраничный hub для жителей Казахстана, обеспечивающий доступ к европейской и азиатской медицине через **три сервиса**:
 
-Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
+1. **Treatment abroad** (`/treatment-abroad`) — **главный оффер**. Лечение за рубежом под ключ: подбор клиники, документы, перевод, логистика, сопровождение. Спектр: онкология, кардиология, неврология, ортопедия, офтальмология, пластическая хирургия, стоматология, ЭКО, детская медицина. **43 клиники, 11 стран.**
+2. **Checkup abroad** (`/checkup`) — комплексное обследование за 1–2 дня в Samsung Medical Center и Severance Hospital (Корея), клиниках Стамбула (Турция). Под ключ: виза, трансфер, переводчик, сопровождение. От **$350**. Включает **B2B-направление** (корпоративные чек-апы).
+3. **Online consultations** (`/consultations`) — видеоконсультация с европейским врачом, второе мнение по диагнозу, перевод документов, письменное заключение. От **450€**, за 5 дней.
+
+Index-страница (`/`) — hub, представляющий все три сервиса. Treatment abroad и checkup физически возят пациента за границу; consultations — entry point с низким коммитментом, ведущий к двум более дорогим сервисам.
+
+Бэкенд на Directus — приём и хранение заявок со всех форм, с перспективой замены AmoCRM на собственную CRM.
 
 ## Core Value
 
-Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома — и оставляет заявку.
+Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ, — и оставляет заявку.
 
 ## Current State
 
@@ -20,7 +26,7 @@
 
 ### Validated
 
-- ✓ Лендинг из 11 секций по ТЗ — v1.0
+- ✓ Сайт из 11 секций по ТЗ — v1.0
 - ✓ Mobile-first дизайн (ЦА 45+) — v1.0
 - ✓ Форма заявки с валидацией и спам-защитой — v1.0
 - ✓ Directus как бэкенд: приём и хранение заявок — v1.0
@@ -65,13 +71,43 @@
 
 ### Active
 
+## Current Milestone: v9.0 Living Blob Liquid Glass Scene
+
+**Goal:** Превратить страницу в полностью стеклянную медицинскую сцену, где blob — единственное плотное живое тело, а весь UI становится прозрачной оптической системой, проявляющей его свет, цвет и движение.
+
+**Source ТЗ:** `design/LIQUID_GLASS_BLOB_TZ.md` (20 разделов, 12 критериев приёмки)
+
+**Target features:**
+- Living Blob field как fixed-слой под UI (core / body / halo / glint подслои)
+- Вязкое следование за курсором с разной инерцией для подслоёв; накопление тепла (heat) при задержке 1.5–3s
+- Glass UI rework — все крупные блоки максимально прозрачные (rgba 0.04–0.16); запрет молочно-белых заливок
+- Реакция glass-слоёв на blob (refraction/blur tiers; UI не подсвечивает blob — blob подсвечивает UI)
+- Глубинная иерархия: разные blur/shadow tiers для секций / карточек / форм / controls
+- Mobile: ambient blob без cursor-follow, без просадки скролла; tap → мягкий pulse
+- A11y: prefers-reduced-motion (ambient static), prefers-contrast (приглушение декора), high-contrast text
+- Performance: 60fps desktop, single pointermove + rAF, transform/opacity only, ≤12px blur on mobile
+
+## Previous Milestone: v8.1 Propagation & Loose Ends (Shipped 2026-04-30)
+
+4 phases: service-page propagation (Phase 86), real content placeholders (Phase 87), code hygiene (Phase 88), milestone closeout incl. live a11y UAT (Phase 89). v8.0 index visual language extended to `/checkup`, `/consultations`, `/treatment-abroad`.
+
+## Earlier Milestone: v8.0 Index Page Redesign (Shipped 2026-04-30)
+
+Index page redesign per the new mockup. 7 phases shipped:
+- Phase 79: typography + mobile glass/motion budget tokens
+- Phase 80: glass header chrome (HeaderClient, MobileMenu, StickyBar — HIG 44pt tap targets, ESC dismissal, iOS safe-area)
+- Phase 81: hero video-call frame metaphor with name pill + live indicator + control row
+- Phase 82: stats bar with icons + responsive-glass-nesting (mobile 1 wrapper / desktop 4 cards)
+- Phase 83: 4-card services + 4-step process with desktop dotted connector
+- Phase 84: blue-gradient CTA section with 3 trust signals (form preserved unmodified)
+- Phase 85: a11y hardening — added missing prefers-contrast block + utility-class reduced-transparency coverage
+
 ### Out of Scope
 
 - Казахский язык — только русский в v1
 - Интеграция с AmoCRM — заменяем на Directus
-- Медтуризм-лендинг — отдельный проект
-- Оплата онлайн — заявка только на консультацию
-- Профили врачей на лендинге — ссылка на medicusunion.com/doctors
+- Оплата онлайн — заявка только, оплата через офис
+- Профили врачей на сайте — ссылка на medicusunion.com/doctors
 - Параллакс / тяжёлые анимации — ЦА 45+, предпочитаем простоту
 - Чат-бот / live chat — медицинские вопросы через чат = ответственность
 - Видео в hero — тяжёлый ресурс, ухудшает загрузку на мобильных
@@ -79,26 +115,46 @@
 
 ## Context
 
-- Shipped v1.3 with ~2,890 LOC (HTML 762 + CSS ~1,640 + JS 488)
-- Stack: Vanilla HTML + CSS + JS, Directus 11 + PostgreSQL 16 via Docker
-- Self-hosted Inter + Manrope variable fonts (WOFF2)
-- No build tools, no frameworks, no external dependencies
+### Audience
+
+- **Primary:** жители Казахстана 45+, ищущие доступ к европейской/азиатской медицине (для себя или близких).
+- **Secondary B2B:** компании КЗ, заказывающие корпоративные чек-апы для сотрудников (направление checkup).
+
+### Service offerings
+
+- **Treatment abroad** — primary offer. Сеть: **43 клиники, 11 стран**. 15+ лет практики, 10 000+ пациентов, 500+ врачей-экспертов.
+- **Checkup abroad** — Samsung Medical Center, Severance Hospital, клиники Стамбула. От $350. Включает B2B.
+- **Online consultations** — 7 стран, 50+ врачей, 15+ специализаций. От 450€, за 5 дней.
+
+### Stack history
+
+- **v1.0–v5.0** (2026-03-23 → 2026-04-10): vanilla HTML + CSS + JS — простота деплоя.
+- **v6.0+** (2026-04-11 → текущий): миграция на **Next.js + React + TypeScript + Tailwind**. Directus 11 + PostgreSQL 16 в Docker. Self-hosted Inter + Manrope (WOFF2).
+
+### Milestone progression
+
 - v1.0: 36 requirements, 10 phases, 24 plans
 - v1.1: 12 requirements, 4 phases, 5 plans
 - v1.2: 9 requirements, 2 phases, 2 plans — brand visual alignment with medicusunion.com
 - v1.3: 10 requirements, 3 phases, 3 plans — KZ design alignment with medicusunion.kz
 - v1.4: 13 requirements, 4 phases, 6 plans — 2025 visual redesign (dark mode, glassmorphism, bold typography, micro-animations)
-- Бренд MedicusUnion: международный медицинский сервис, Австрия + Казахстан
+- v6.1: 5 phases, 14 plans — New Design Port (Liquid Glass design system, squircles, service pages)
+- Liquid Glass audit score: ~85% compliance with Apple guidelines. Main gaps: mobile blur budget, glass layer count, prefers-contrast, shimmer limits
+- Бренд MedicusUnion: международный медицинский сервис, HQ в Vienna (Австрия), офис в Казахстане. Корневой проект: medicusunion.com.
 - Контакты: +7 701 532 24 78, kz@medicusunion.com
-- Стоимость консультации: от 450€
+- Цены: видеоконсультация от **450€**, чек-ап от **$350**, лечение под ключ — индивидуальная смета.
+
+### Known TODOs
+
+- На страницах `/treatment-abroad` и `/consultations` цифры сети расходятся с canonical (43 клиник / 11 стран). На treatment-abroad сейчас стоит «100+ клиник / 6 стран», на consultations — «7 стран». Адресовать в отдельном copy-полировочном таске.
 
 ## Constraints
 
-- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
-- **Backend**: Directus (self-hosted) — приём заявок с формы
-- **Language**: Только русский
-- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
-- **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
+- **Stack**: Next.js + React + TypeScript + Tailwind (с v6.0). Vanilla HTML/CSS/JS — историческая база v1.0–v5.0.
+- **Backend**: Directus 11 + PostgreSQL 16 (self-hosted в Docker) — приём заявок со всех форм.
+- **Language**: Только русский.
+- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст. Mobile blur ≤12px, ≤2 glass elements per viewport.
+- **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии.
 
 ## Key Decisions
 
@@ -129,6 +185,8 @@
 | Dark mode disables backdrop-filter (glass-off) | Murky smear on navy #0F1923; opaque surface better on dark backgrounds | ✓ Good — v1.4 |
 | translateY(20px) not 40px+ for scroll-reveal | 20px is within safe vestibular parameters for 45+ audience | ✓ Good — v1.4 |
 | prefers-reduced-motion: transform: none, not just duration:0 | Duration-zero still causes snap from offset — explicit reset prevents any motion | ✓ Good — v1.4 |
+| KD-v9-001: --blob-hot #4FE098 | TZ §5 — heat-state highlight; brand parity verified via Playwright DOM sampling on medicusunion.com (`#35B678` primary CTA, `#78C3BF` accent) and medicusunion.kz (`#5EE9B5` hero-phrase + cookie-banner mint highlight). `#4FE098` (rgb 79,224,152) is HSL-adjacent to medicusunion.kz `#5EE9B5` (rgb 94,233,181) — same bright-mint family, hue shift ~12°, lightness/saturation near-identical. Distinct from primary CTA greens (`#35B678`, `#1AC67E`) so the heat-glow reads as ambient-highlight, not action affordance. | approved 2026-04-30 — Phase 91 unblocked |
+| KD-v9-002: ContactSection form-safety α escalation per WCAG AA — `--glass-form-fill` desktop = 0.50 (was 0.14; plan-proposed 0.30 insufficient) | GLASS-07 form-safety gate. Theoretical-contrast computation (alpha-over composite + WCAG luminance, per VALIDATION.md — used because no headless-browser tooling available in worktree environment) showed default 0.14 fails AA on body copy (`text-mu-text-700` #4A4E5C) at the mu-accent-blue end of the ContactSection gradient (worst-case 2.80:1). Plan's proposed 0.30 escalation also fails (3.51:1 vs ≥4.5:1 required). 0.50 is the smallest α that satisfies WCAG AA across the full gradient (worst-case 4.60:1 on body copy at mu-accent-blue endpoint; 5.15:1 mid-gradient; 5.05:1 at mu-blue endpoint). Method: alpha-over composite + WCAG relative-luminance ratio at gradient endpoints (conservative bound vs blur-smoothed actual composite). Empirical re-measurement via Chrome DevTools contrast picker recommended as a future spot-check. Mobile: no separate token override exists in globals.css (single declaration); desktop value migrated. Anti-pattern #4 (fills > 0.16) is sanctioned for the form-safety exception family per CONTEXT.md Decision G + Decision H. | locked 2026-04-30 — Phase 92 Plan 92-07 |
 
 ## Evolution
 
@@ -148,4 +206,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-24 after v1.4 milestone completion*
+*Last updated: 2026-04-30 after v9.0 milestone start (Living Blob Liquid Glass Scene)*

@@ -2,7 +2,7 @@
 phase: 04-trust-authority-sections
 plan: 02
 subsystem: ui
-tags: [html, css, bem, responsive, grid, landing-sections]
+tags: [html, css, bem, responsive, grid, site-sections]
 
 requires:
   - phase: 04-trust-authority-sections/01

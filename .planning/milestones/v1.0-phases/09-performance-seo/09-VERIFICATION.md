@@ -38,7 +38,7 @@ human_verification:
 
 | Artifact | Expected | Status | Details |
 |----------|----------|--------|---------|
-| `index.html` | Complete landing page with SEO meta tags and semantic HTML | VERIFIED | 28,641 bytes. Contains all required meta tags, correct heading hierarchy, landmark regions, deferred JS, single stylesheet link, font preloads with crossorigin |
+| `index.html` | Complete site with SEO meta tags and semantic HTML | VERIFIED | 28,641 bytes. Contains all required meta tags, correct heading hierarchy, landmark regions, deferred JS, single stylesheet link, font preloads with crossorigin |
 | `css/styles.css` | Single stylesheet (no extra stylesheets) | VERIFIED | 24,183 bytes. Referenced once via `<link rel="stylesheet">`. No other stylesheets in index.html |
 | `js/main.js` | Non-render-blocking script | VERIFIED | 11,293 bytes. Referenced with `defer` attribute on line 446 of index.html |
 

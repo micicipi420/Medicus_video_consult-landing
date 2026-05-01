@@ -1,0 +1,104 @@
+/* next/src/styles/blob.css — v9.0 Phase 90 (NEW FILE)
+   Static sublayer baseline for .living-blob-field. Phase 91 hides these
+   when canvas mounts (data-engine-active="true").
+
+   Anti-patterns enforced here (see DESIGN.md > v9.0 Anti-Patterns):
+     - NO backdrop blur on .living-blob-field itself (blob is BEHIND glass, not glass)
+     - NO blend modes (anti-pattern #8)
+     - NO Tailwind utility classes mixed in (Phase 91 handoff brittleness)
+     - NO pointer listeners / rAF (Phase 91 owns those)
+*/
+
+.living-blob-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.blob-sublayer {
+  position: absolute;
+  pointer-events: none;
+  will-change: auto;
+}
+
+.blob-core {
+  top: 50%; left: 50%;
+  width: 160px; height: 160px;
+  margin: -80px 0 0 -80px;
+  background: radial-gradient(circle, var(--blob-core) 0%, transparent 70%);
+  opacity: 0.18;
+  filter: blur(24px);
+}
+
+.blob-body {
+  top: 50%; left: 50%;
+  width: 480px; height: 480px;
+  margin: -240px 0 0 -240px;
+  background: radial-gradient(circle, var(--blob-halo) 0%, transparent 75%);
+  opacity: 0.35;
+  filter: blur(40px);
+}
+
+.blob-halo {
+  top: 50%; left: 50%;
+  width: 800px; height: 800px;
+  margin: -400px 0 0 -400px;
+  background: radial-gradient(circle, var(--blob-edge) 0%, transparent 80%);
+  opacity: 0.5;
+  filter: blur(60px);
+}
+
+.blob-glint {
+  top: 50%; left: 50%;
+  width: 80px; height: 80px;
+  margin: -40px 0 0 -40px;
+  background: radial-gradient(circle, var(--blob-glint) 0%, transparent 60%);
+  opacity: 0;
+}
+
+/* Phase 91 handoff: when canvas mounts, divs hide. */
+.living-blob-field[data-engine-active="true"] .blob-sublayer { display: none; }
+
+/* Mobile blur cap (Phase 79 hard constraint, ≤12px) */
+@media (max-width: 767.98px) {
+  .blob-core { filter: blur(12px); width: 120px; height: 120px; margin: -60px 0 0 -60px; }
+  .blob-body { filter: blur(12px); width: 320px; height: 320px; margin: -160px 0 0 -160px; opacity: 0.28; }
+  .blob-halo { filter: blur(12px); width: 480px; height: 480px; margin: -240px 0 0 -240px; opacity: 0.36; }
+}
+
+/* Defense in depth — central a11y block in liquid-glass.css covers this; restated for self-containment */
+@media (prefers-reduced-motion: reduce) {
+  .living-blob-field { animation: none !important; }
+  .blob-sublayer { transition: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .living-blob-field { display: none !important; }
+}
+
+/* Phase 91 — canvas visibility contract (Plan 01).
+   Default hidden; engine flips data-engine-active="true" on .living-blob-field
+   to reveal the canvas. Static-state CSS sublayers continue to show in
+   data-engine-active="false" + reduced-motion / canvas-init-failure paths. */
+.blob-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  pointer-events: none;
+}
+.living-blob-field[data-engine-active="true"] .blob-canvas {
+  display: block;
+}
+
+/* Phase 91 Plan 04 — dark theme dimming (Decision H).
+   opacity 0.30, saturate 0.65; engine forces ambient mode in dark theme so
+   follow is disabled (Lissajous orbit only). Mobile blur cap NOT exceeded
+   — saturate filter does not introduce blur. */
+[data-theme="dark"] .living-blob-field[data-engine-active="true"] .blob-canvas {
+  opacity: 0.30;
+  filter: saturate(0.65);
+}

@@ -23,7 +23,7 @@ human_verification:
 
 # Phase 02: Hero & Problem Sections Verification Report
 
-**Phase Goal:** A visitor landing on the page immediately understands the service and feels emotionally recognized
+**Phase Goal:** A visitor arriving on the page immediately understands the service and feels emotionally recognized
 **Verified:** 2026-03-23
 **Status:** human_needed (all automated checks passed)
 **Re-verification:** No — initial verification
@@ -120,7 +120,7 @@ Scanned for: TODO/FIXME/XXX/HACK, placeholder text, `return null`, empty handler
 
 No gaps found. All 12 observable truths verified, all required artifacts exist and are substantive and wired, all three requirement IDs (STRUC-02, STRUC-03, UX-06) are satisfied with direct codebase evidence, and no anti-patterns were detected.
 
-The phase goal — "A visitor landing on the page immediately understands the service and feels emotionally recognized" — is structurally complete. The exact Russian copy specified in the ТЗ is in place, both sections use the Phase 1 design system correctly, and no urgency or aggressive marketing patterns exist.
+The phase goal — "A visitor arriving on the page immediately understands the service and feels emotionally recognized" — is structurally complete. The exact Russian copy specified in the ТЗ is in place, both sections use the Phase 1 design system correctly, and no urgency or aggressive marketing patterns exist.
 
 Five human verification items remain to confirm visual rendering quality and emotional tone, which cannot be assessed programmatically.
 

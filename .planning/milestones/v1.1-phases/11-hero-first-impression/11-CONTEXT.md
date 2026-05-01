@@ -69,7 +69,7 @@ Upgrade the hero section with a professional medical SVG illustration, enlarged 
 <specifics>
 ## Specific Ideas
 
-- Social proof numbers derived from actual landing page content: 7 countries listed, specializations listed, doctors referenced
+- Social proof numbers derived from actual site content: 7 countries listed, specializations listed, doctors referenced
 - Dark bar (#0e7490) creates strong visual break between hero and content — acts as trust anchor
 
 </specifics>

@@ -2,7 +2,7 @@
 phase: 05-pricing-faq-final-cta-footer
 plan: 01
 subsystem: ui
-tags: [html, css, bem, pricing, landing-section]
+tags: [html, css, bem, pricing, site-section]
 
 requires:
   - phase: 04-advantages-scenarios

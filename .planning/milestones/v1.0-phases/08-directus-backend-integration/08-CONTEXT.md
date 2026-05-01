@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Set up Directus 11 via Docker Compose with PostgreSQL 16. Create consultation_requests collection, configure public create-only permissions, set up CORS, and wire the landing page form to submit to the Directus REST API.
+Set up Directus 11 via Docker Compose with PostgreSQL 16. Create consultation_requests collection, configure public create-only permissions, set up CORS, and wire the site form to submit to the Directus REST API.
 
 </domain>
 

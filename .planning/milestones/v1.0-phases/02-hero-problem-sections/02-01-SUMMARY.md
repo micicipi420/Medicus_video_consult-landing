@@ -2,7 +2,7 @@
 phase: 02-hero-problem-sections
 plan: 01
 subsystem: ui
-tags: [html, css, hero, landing, bem, responsive]
+tags: [html, css, hero, website, bem, responsive]
 
 # Dependency graph
 requires:

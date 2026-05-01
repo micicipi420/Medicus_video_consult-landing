@@ -1,20 +1,26 @@
 <!-- GSD:project-start source:PROJECT.md -->
 ## Project
 
-**MedicusUnion KZ Landing**
+**MedicusUnion KZ**
 
-Лендинг для medicusunion.kz — сервиса онлайн-консультаций с европейскими врачами. Целевая аудитория: жители Казахстана 45+, которые хотят получить второе мнение от врача из Германии, Израиля, Швейцарии и других стран. Конверсия: заявка на консультацию через форму.
+Сайт **medicusunion.kz** — многостраничный hub для жителей Казахстана с тремя сервисами:
 
-Бэкенд на Directus — приём и хранение заявок с формы, с перспективой замены AmoCRM на собственную CRM.
+1. **Treatment abroad** (`/treatment-abroad`) — **главный оффер**. Лечение за рубежом под ключ. 43 клиники, 11 стран.
+2. **Checkup abroad** (`/checkup`) — комплексное обследование (Samsung Medical Center, Severance Hospital, Стамбул). От $350. Есть B2B-направление (корпоративные чек-апы).
+3. **Online consultations** (`/consultations`) — видеоконсультация с европейским врачом. От 450€. Entry-point в воронку.
 
-**Core Value:** Человек за 3 секунды понимает: здесь можно получить мнение европейского врача не выходя из дома — и оставляет заявку.
+Целевая аудитория: жители КЗ 45+ (primary), компании КЗ для B2B-чек-апов (secondary). Конверсия — заявка через форму.
+
+Бэкенд на Directus — приём и хранение заявок со всех форм, с перспективой замены AmoCRM на собственную CRM.
+
+**Core Value:** Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ — и оставляет заявку.
 
 ### Constraints
 
-- **Stack**: HTML + CSS + JS (чистый, без фреймворков) — простота деплоя и поддержки
-- **Backend**: Directus (self-hosted) — приём заявок с формы
+- **Stack**: Next.js + React + TypeScript + Tailwind (с v6.0). Vanilla HTML/CSS/JS — историческая база v1.0–v5.0.
+- **Backend**: Directus 11 + PostgreSQL 16 (self-hosted в Docker) — приём заявок со всех форм.
 - **Language**: Только русский
-- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст
+- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст. Mobile blur ≤12px, ≤2 glass elements per viewport.
 - **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
 <!-- GSD:project-end -->
 
@@ -22,11 +28,11 @@
 ## Technology Stack
 
 ## Recommended Stack
-### Frontend (Static Landing Page)
+### Frontend (Static Multi-Page Site)
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
 | HTML5 | Current | Page structure | Semantic HTML for accessibility and SEO; no build step needed | HIGH |
-| Vanilla CSS | Current | Styling | Project constraint: no frameworks. Modern CSS (custom properties, grid, flexbox) covers all needs for a single landing page | HIGH |
+| Vanilla CSS | Current | Styling | Project constraint: no frameworks. Modern CSS (custom properties, grid, flexbox) covers all needs for a multi-page site | HIGH |
 | Vanilla JS (ES6+) | Current | Form handling, UI interactions | No framework overhead for a single page with one form and a few interactions (accordion, smooth scroll) | HIGH |
 ### Backend / CMS
 | Technology | Version | Purpose | Why | Confidence |
@@ -37,7 +43,7 @@
 | Technology | Version | Purpose | Why | Confidence |
 |------------|---------|---------|-----|------------|
 | Docker + Docker Compose | Latest | Directus + PostgreSQL orchestration | Single `docker compose up` deploys the entire backend. Reproducible, portable | HIGH |
-| Nginx | Latest | Reverse proxy, static file serving | Serves the landing page HTML/CSS/JS and proxies `/api` to Directus. SSL termination | HIGH |
+| Nginx | Latest | Reverse proxy, static file serving | Serves the site HTML/CSS/JS and proxies `/api` to Directus. SSL termination | HIGH |
 ### Supporting Tools (Development)
 | Tool | Purpose | When to Use |
 |------|---------|-------------|
@@ -55,7 +61,7 @@
 | Bootstrap | Heavy bundle; opinionated component styles fight custom brand design |
 | CSS-in-JS | No JS framework to host it; irrelevant for static HTML |
 | Sass/SCSS | CSS custom properties replace variables; nesting now native in CSS; adds build step for marginal benefit |
-| Container queries | Incomplete Firefox support; media queries are simpler and sufficient for a landing page with known breakpoints |
+| Container queries | Incomplete Firefox support; media queries are simpler and sufficient for a site with known breakpoints |
 ## JavaScript Approach: Vanilla ES6+ with Fetch API
 ### What JS Needs to Do
 ### Form Submission Pattern
@@ -66,7 +72,7 @@
 | jQuery | Dead weight; `fetch()` and `querySelector()` replace it entirely |
 | Axios | `fetch()` is native and sufficient for one POST endpoint |
 | Alpine.js | Tempting for accordion/reactivity, but adds a dependency for 20 lines of vanilla JS |
-| Any SPA framework (React, Vue, Svelte) | This is a static marketing page, not an application |
+| Any SPA framework (React, Vue, Svelte) | This is a static marketing site, not an application |
 | `@directus/sdk` | Pulls in a full SDK for one `fetch` call. Unnecessary |
 ## Directus Setup for Form Submissions
 ### Collection Schema: `submissions`
@@ -140,6 +146,17 @@ Conventions not yet established. Will populate as patterns emerge during develop
 
 Architecture not yet mapped. Follow existing patterns found in the codebase.
 <!-- GSD:architecture-end -->
+
+## Design Contract
+
+**Mandatory reading:** `DESIGN.md` (repo root). Follows the [Google Labs DESIGN.md spec](https://github.com/google-labs-code/design.md) — YAML front matter for machine-readable tokens (`colors`, `typography`, `rounded`, `spacing`, `components`), markdown body for rationale.
+
+Two non-negotiable rules govern all UI work:
+
+1. **Brand color parity** — every color must trace to `medicusunion.com` or `medicusunion.kz`. Use defined tokens (`{colors.X}` references in YAML; `--mu-*` mirror in `next/src/app/globals.css`). Inventing colors requires a Key Decision in `PROJECT.md` and an update to `DESIGN.md` first.
+2. **Apple Liquid Glass HIG compliance** — all glass surfaces must follow Apple's Materials guidelines. Token scale: `--liquid-blur-{sm,md,lg,xl}` = 16/24/40/60px. Hard project constraints stricter than HIG: mobile blur ≤12px, ≤2 glass layers per viewport, dark mode disables `backdrop-filter`, `@supports` fallbacks required, `prefers-reduced-{transparency,motion}` and `prefers-contrast` must be honored.
+
+When implementing UI, validate every color, every component shape, and every glass surface against `DESIGN.md` before considering the work done. The YAML front matter is the contract; CSS in `globals.css` mirrors it.
 
 <!-- GSD:workflow-start source:GSD defaults -->
 ## GSD Workflow Enforcement

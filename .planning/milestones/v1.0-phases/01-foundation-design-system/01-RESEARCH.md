@@ -6,7 +6,7 @@
 
 ## Summary
 
-This phase establishes the CSS design system, self-hosted typography, and base HTML structure for a Russian-language medical landing page targeting users aged 45+. The stack is pure HTML/CSS/JS with no build tooling -- all design tokens live in CSS custom properties, fonts are self-hosted WOFF2 variable files, and the layout uses mobile-first media queries with BEM naming.
+This phase establishes the CSS design system, self-hosted typography, and base HTML structure for a Russian-language medical website targeting users aged 45+. The stack is pure HTML/CSS/JS with no build tooling -- all design tokens live in CSS custom properties, fonts are self-hosted WOFF2 variable files, and the layout uses mobile-first media queries with BEM naming.
 
 A critical finding: the brand colors #38C6F4 (blue) and #35B678 (green) fail WCAG AA contrast on white backgrounds (ratios of 1.99:1 and 2.59:1 respectively). These colors work well as button backgrounds with dark text (#18212C), or as accents on dark backgrounds, but must never be used as text color on light backgrounds. The design system must encode this constraint in its token naming and usage documentation.
 
@@ -76,7 +76,7 @@ None -- discussion stayed within phase scope.
 ### Recommended Project Structure
 ```
 /
-├── index.html              # Main landing page
+├── index.html              # Main page
 ├── css/
 │   └── styles.css          # Single CSS file with all design system + component styles
 ├── js/
