@@ -71,23 +71,37 @@ Index-страница (`/`) — hub, представляющий все три
 
 ### Active
 
-## Current Milestone: v9.0 Living Blob Liquid Glass Scene
+## Current Milestone: v9.0.1 Polish, Admin & Unified Blob
 
-**Goal:** Превратить страницу в полностью стеклянную медицинскую сцену, где blob — единственное плотное живое тело, а весь UI становится прозрачной оптической системой, проявляющей его свет, цвет и движение.
-
-**Source ТЗ:** `design/LIQUID_GLASS_BLOB_TZ.md` (20 разделов, 12 критериев приёмки)
+**Goal:** Закрыть полировочные хвосты v9.0, дать оператору простой read-only admin для просмотра submissions, и довести Living Blob до состояния «единого 2D организма» без видимых краёв свечения halo-слоя.
 
 **Target features:**
-- Living Blob field как fixed-слой под UI (core / body / halo / glint подслои)
-- Вязкое следование за курсором с разной инерцией для подслоёв; накопление тепла (heat) при задержке 1.5–3s
-- Glass UI rework — все крупные блоки максимально прозрачные (rgba 0.04–0.16); запрет молочно-белых заливок
-- Реакция glass-слоёв на blob (refraction/blur tiers; UI не подсвечивает blob — blob подсвечивает UI)
-- Глубинная иерархия: разные blur/shadow tiers для секций / карточек / форм / controls
-- Mobile: ambient blob без cursor-follow, без просадки скролла; tap → мягкий pulse
-- A11y: prefers-reduced-motion (ambient static), prefers-contrast (приглушение декора), high-contrast text
-- Performance: 60fps desktop, single pointermove + rAF, transform/opacity only, ≤12px blur on mobile
 
-## Previous Milestone: v8.1 Propagation & Loose Ends (Shipped 2026-04-30)
+*Polish & hygiene (Phase 94)*
+- Fix 7 invalid SVG `rx="0 0 3 3"` attributes on country flags (Russia/Germany/Italy/India) — eliminates console errors on `/consultations` and `/treatment-abroad`
+- Resolve mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` (either UI fix or DESIGN.md clarification on whether sticky chrome counts)
+- Remove 4 dead-code files in `components/sections/contacts/` (carried from v9.0 Decision F)
+- Untracked screenshots in repo root → gitignore patterns (`90-*.png`, `91-*.png`, `93-uat-*.png` etc.)
+- Resolve duplicate Next.js app at root vs `next/` — single canonical location
+
+*Verification (Phase 95)*
+- Lighthouse / Core Web Vitals on 4 sub-routes + index — fail-on-regression budget
+- axe-core a11y audit — contrast, ARIA, focus management, keyboard traversal
+- Brand review against medicusunion.com / medicusunion.kz — colors, typography, tone
+
+*Blob unification (Phase 96)*
+- Halo edges feathered — no visible gradient stop boundary, smooth alpha falloff
+- Correlated motion: 4 sublayers (core/body/halo/glint) move as a single 2D organism — params first (unified inertia / micro-delays 10–30ms), structural refactor only if parametric tuning insufficient
+- Mobile blob review — same unification on ambient mode
+
+*Admin (Phase 97)*
+- `/admin/submissions` read-only view — list of all submissions from Postgres `submissions` table with date, name, phone, specialization, status; basic filter (date / specialization / status)
+
+## Previous Milestone: v9.0 Living Blob Liquid Glass Scene (Shipped 2026-05-01)
+
+4 phases: foundation tokens (Phase 90), Living Blob renderer (Phase 91), glass rework chrome+index (Phase 92), per-page propagation across 4 sub-routes (Phase 93). DESIGN.md as canonical contract, Playwright visual-regression baseline, 0 `bg-white/N` residue, mobile blur ≤12px enforced. Squash-merged into main as `a67deb6` (PR #3).
+
+## Earlier Milestone: v8.1 Propagation & Loose Ends (Shipped 2026-04-30)
 
 4 phases: service-page propagation (Phase 86), real content placeholders (Phase 87), code hygiene (Phase 88), milestone closeout incl. live a11y UAT (Phase 89). v8.0 index visual language extended to `/checkup`, `/consultations`, `/treatment-abroad`.
 
@@ -206,4 +220,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-30 after v9.0 milestone start (Living Blob Liquid Glass Scene)*
+*Last updated: 2026-05-01 after v9.0.1 milestone start (Polish, Admin & Unified Blob); v9.0 shipped 2026-05-01 via PR #3 squash-merge*

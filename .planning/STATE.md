@@ -1,36 +1,36 @@
 ---
 gsd_state_version: 1.0
-milestone: v9.0
-milestone_name: Living Blob Liquid Glass Scene
-status: verifying
-stopped_at: Phase 93 Plan 07 complete (Wave 3 phase-closeout — visual baseline regen + submission E2E body + DESIGN.md anti-pattern #16 + 93-SWEEP-AUDIT)
-last_updated: "2026-04-30T16:08:47.707Z"
-last_activity: 2026-04-30
+milestone: v9.0.1
+milestone_name: Polish, Admin & Unified Blob
+status: planning
+stopped_at: v9.0 shipped (PR #3 squash-merge into main `a67deb6`); v9.0.1 milestone artifacts written; first phase = Phase 94 Polish & Hygiene
+last_updated: "2026-05-01T00:45:00.000Z"
+last_activity: 2026-05-01
 progress:
   total_phases: 4
-  completed_phases: 4
-  total_plans: 26
-  completed_plans: 26
-  percent: 100
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-30)
+See: .planning/PROJECT.md (updated 2026-05-01)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ — и оставляет заявку.
-**Current focus:** Phase 92 — glass-rework-chrome-index-sections
+**Current focus:** Phase 94 — polish-and-hygiene (POL-01..05)
 
 ## Current Position
 
-Phase: 93 (complete)
-Plan: 07 (complete — FINAL plan of Phase 93)
-Status: Phase 93 complete; ready for /gsd-verify-work and Phase 94 hand-off
-Last activity: 2026-04-30
+Phase: Not started (defining plans)
+Plan: —
+Status: Defining plans for v9.0.1 — first phase Phase 94 Polish & Hygiene
+Last activity: 2026-05-01 — Milestone v9.0.1 started
 
-Progress: [██████████] 100%
+Progress: [          ] 0%
 
 ## Performance Metrics
 

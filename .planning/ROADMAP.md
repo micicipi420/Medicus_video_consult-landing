@@ -22,15 +22,31 @@
 
 ## Phases
 
-### v9.0 Living Blob Liquid Glass Scene (In Progress)
+### v9.0.1 Polish, Admin & Unified Blob (In Progress)
 
-Source TZ: `design/LIQUID_GLASS_BLOB_TZ.md` (20 sections, 12 acceptance criteria). Synthesized: `.planning/research/SUMMARY.md`. **Phase ordering is non-negotiable: Foundation → Engine → Glass is sequential because glass transparency cannot be verified without a live blob.**
+Closeout of v9.0 polish hangovers, simple read-only operator admin for submissions, and Living Blob refinement so the 4 sublayers (core/body/halo/glint) read as a single 2D organism with no visible halo edge boundary. Continues phase numbering from v9.0 (94, 95, 96, 97).
 
-- [ ] **Phase 90: Foundation — Tokens, A11y Wiring, DOM Skeleton** — Register `--blob-*` palette + 4-tier `--glass-*` tokens in DESIGN.md YAML and `globals.css`; single-source `@layer` a11y block in `liquid-glass.css`; mount `<div class="living-blob-field">` skeleton in `layout.tsx`; remove `MeshBackground.tsx`; document z-index contract + CTA opaque-forever rule + v9.0 anti-patterns; log `--blob-hot: #4FE098` Key Decision. **No visible change** — page renders identically to v8.1.
-- [ ] **Phase 91: Blob Engine — Renderer, Physics, A11y Branches** — `LivingBlobField.tsx` with Canvas 2D renderer (4 sublayers: core/body/halo/glint), single `pointermove` listener + single rAF loop, lerp-driven viscous follow, heat accumulator (1.5–3s dwell ramp, ≥600ms decay), velocity-driven shape stretch, mode branches (mobile ambient Lissajous / `prefers-reduced-motion` static / `prefers-reduced-transparency` hidden / dark theme dimmed), Page Visibility pause, dev-only `__blobDebug.rafCount`, singleton-guard against React Strict Mode + App Router leaks.
-- [ ] **Phase 92: Glass Rework — Chrome + Index Sections** — Opacity sweep on `/` route components (HeroHub, StatsBar, ServicesGrid, ProcessSection, ProblemSection, WhyUsSection, ClinicsSection, PlatformSection, ReviewsSection, FAQSection, ContactForm, ContactSection, FinalCTA, Footer) + always-visible chrome (HeaderClient, MobileMenu, StickyBar). Repoint `liquid-glass.css` utilities to new tier tokens; add heat-leak `radial-gradient` rules. Form-safety floor (≥0.16 → 0.30 if WCAG AA fails) + opaque CTA enforced. Mobile blur ≤12px preserved.
-- [ ] **Phase 93: Per-Page Propagation — Sub-Routes** — Apply validated tier patterns to `/checkup` (8 files), `/consultations` (8 files), `/treatment-abroad` (4 files), `/contacts` (2 files); service primitives (`ServiceHero`, `FAQ`, `SocialProof`, `LeadFormSection` — same form-safety as `ContactForm`); shadcn primitives (`card`, `dialog`, `input`, `select`, `textarea`) updated last (highest blast-radius). Per-route Playwright screenshot diff vs pre-v9.0 baseline.
-- [ ] **Phase 94: Verification — UAT, Performance, A11y, Brand Review** — Playwright UAT (10 TZ §18 scenarios), a11y emulation (3 MQ prefs), leak test (`rafCount === 1` after 5 nav), Lighthouse CI gate (LCP ≤2500 / INP ≤200 / CLS ≤0.1 / TBT ≤200, mobile throttled), axe-core / Pa11y across 4 routes × 3 blob positions, real-device manual UAT (HARD GATE — iOS 16/17 Safari + low-end Android 4GB + desktop Chrome/Firefox/Safari, NO cheat-pass), brand visual review vs medicusunion.com, all 12 TZ §19 acceptance criteria signed off.
+**Execution order:** 94 → 95 → 96 → 97. Phase 94 is the cheapest set of clean-ups (low risk, fast). Phase 95 verifies after the polish lands. Phase 96 is the most subjective work (blob feel) and benefits from the cleaner baseline. Phase 97 is independent of the others (read-only admin) and could move earlier if business need spikes.
+
+- [ ] **Phase 94: Polish & Hygiene** — Fix 7 invalid SVG `rx` attributes on country-flag stripes (POL-01); resolve mobile hero `≤2-glass-per-viewport` contract on `/treatment-abroad` either by UI fix or DESIGN.md clarification (POL-02); remove 4 dead-code files in `components/sections/contacts/` (POL-03); gitignore / relocate untracked screenshots (POL-04); resolve duplicate Next.js app at root vs `next/` to a single canonical location (POL-05). Closes 3 v9.0 UAT-flagged todos.
+- [ ] **Phase 95: Audit & Verification** — Lighthouse CI on 5 routes with mobile-throttled budgets (LCP 2500 / INP 200 / CLS 0.1 / TBT 200) (AUDIT-01); axe-core a11y audit, 0 critical/serious violations (AUDIT-02); brand review against medicusunion.com / medicusunion.kz — color tokens, typography, tone (AUDIT-03); execute leftover v9.0 `VER-01..08` Playwright UAT scenarios + leak test (AUDIT-04). Reports committed to phase dir.
+- [ ] **Phase 96: Blob Unification** — Halo edge feathered (no visible gradient stop boundary, smooth alpha falloff) (BR-01); 4 sublayers move as single 2D organism — max angular separation under fast cursor motion ≤8px (vs ~80px in v9.0); parametric solution preferred (unified inertia / 10–30ms micro-delays), structural refactor only if parametric fails (BR-02); mobile ambient mode mirrors desktop unification (BR-03).
+- [ ] **Phase 97: Admin Submissions View** — `/admin/submissions` Next.js route, env-token authenticated (no full Auth this milestone) (ADM-01); Drizzle-backed list view with Russian-labeled columns, pagination 50/page (ADM-02); URL-encoded filter UI by date / specialization / status (ADM-03).
+
+### v9.0 Living Blob Liquid Glass Scene (Shipped 2026-05-01)
+
+<details>
+<summary>v9.0 detail (4 phases, 26 plans, squash-merged via PR #3)</summary>
+
+Source TZ: `design/LIQUID_GLASS_BLOB_TZ.md` (20 sections, 12 acceptance criteria). Synthesized: `.planning/research/SUMMARY.md`. **Phase ordering was non-negotiable: Foundation → Engine → Glass sequential because glass transparency cannot be verified without a live blob.**
+
+- [x] **Phase 90: Foundation — Tokens, A11y Wiring, DOM Skeleton** — `--blob-*` palette + 4-tier `--glass-*` tokens in DESIGN.md YAML + `globals.css`; single-source `@layer` a11y block; `<div class="living-blob-field">` skeleton; `MeshBackground.tsx` removed; z-index contract + CTA opaque-forever rule + v9.0 anti-patterns documented.
+- [x] **Phase 91: Blob Engine — Renderer, Physics, A11y Branches** — `LivingBlobField.tsx` Canvas 2D renderer (4 sublayers), single `pointermove` + rAF, lerp-driven viscous follow, heat accumulator, velocity-driven stretch, mode branches (mobile ambient / reduced-motion / reduced-transparency / dark), Page Visibility pause, dev-only `__blobDebug` surface.
+- [x] **Phase 92: Glass Rework — Chrome + Index Sections** — Opacity sweep on `/` route components + chrome (HeaderClient, MobileMenu, StickyBar). `liquid-glass.css` utilities re-pointed to tier tokens; heat-leak gradient rules added. Form-safety floor + opaque CTA enforced. Mobile blur ≤12px preserved.
+- [x] **Phase 93: Per-Page Propagation — Sub-Routes** — Tier sweep across `/checkup` (7 files), `/consultations` (7 files), `/treatment-abroad` (4 files), `/contacts` audit-only (Decision F). Service primitives + LeadFormSection structural flatten (Decision A). shadcn admin-only audit. Phase closeout: regenerated baselines, DESIGN.md anti-pattern #16, 93-SWEEP-AUDIT.
+- [→] **Phase 94: Verification — UAT, Performance, A11y, Brand Review** — *Originally planned as v9.0 closeout phase. Scope rolled forward into v9.0.1 Phase 95 as `AUDIT-04` (Playwright UAT + a11y emulation + leak test) plus new `AUDIT-01..03` (Lighthouse + axe + brand). v9.0 ROUTE-07 Playwright visual baseline already shipped in Phase 93.*
+
+</details>
 
 ### v8.1 Propagation & Loose Ends (Shipped 2026-04-30)
 
@@ -266,18 +282,52 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 94: Verification — UAT, Performance, A11y, Brand Review
-**Goal**: All 12 TZ §19 acceptance criteria verified, Lighthouse mobile budgets met, real-device sign-off across iOS + low-end Android + 3 desktop browsers, axe-core clean, brand-aligned with medicusunion.com. **HARD GATE — no cheat-pass.** Phase 89 history (cheat-pass on a11y) makes this gate explicit: nothing ships to production without all checklist items signed off with concrete evidence.
-**Depends on**: Phase 93 (verification spans all routes + all glass + blob engine; nothing earlier is shippable until verification clears)
-**Requirements**: VER-01, VER-02, VER-03, VER-04, VER-05, VER-06, VER-07, VER-08
+### Phase 94: Polish & Hygiene (v9.0.1)
+**Goal**: Close out v9.0 polish tail — invalid-SVG console errors gone, mobile glass-budget contract resolved on `/treatment-abroad`, dead code removed, repo cleanliness restored (untracked screenshots + duplicate Next.js app at root vs `next/`). Smallest, lowest-risk phase of v9.0.1; quick wins land first to establish a clean baseline for Phase 95 audits.
+**Depends on**: v9.0 shipped (PR #3 merged into main `a67deb6`)
+**Requirements**: POL-01, POL-02, POL-03, POL-04, POL-05
 **Success Criteria** (what must be TRUE):
-  1. Playwright UAT covers all 10 TZ §18 browser scenarios (desktop hero, mobile hero, cursor through hero/cards/form, 3s dwell, leave block, leave window, reduced motion, CTA/form readability) and passes on CI; a11y emulation tests for `prefers-reduced-motion`, `prefers-reduced-transparency`, `prefers-contrast: more` assert blob hidden / glass opaque / luminance dampened correctly.
-  2. Playwright leak test passes — `window.__blobDebug.rafCount === 1` and `pointermove` listener count === 1 after route cycle `/` → `/checkup` → `/consultations` → `/treatment-abroad` → `/`.
-  3. Lighthouse CI gate green on mobile-throttled budgets — LCP ≤2500ms, INP ≤200ms, CLS ≤0.1, TBT ≤200ms; PRs failing >10% regression vs baseline are blocked; axe-core / Pa11y zero new violations across all 4 routes with blob parked in 3+ representative positions per page (under hero, under form, under CTA).
-  4. Real-device manual UAT signed off with screenshot/video evidence in phase report — (a) iPhone iOS 16 or 17 Safari, (b) low-end Android 4GB RAM (Redmi 9-class or similar), (c) desktop Chrome + Firefox + Safari. **NO cheat-pass** — phase is blocked without artifacts attached.
-  5. Brand visual review complete (heat-peak still frame side-by-side with `medicusunion.com` and `medicusunion.com/.kz`; saturation pulled back if frame reads as fitness/gaming); all 12 TZ §19 acceptance criteria recorded as pass in phase report with concrete evidence per criterion.
+  1. POL-01: 7 invalid SVG `rx` attributes (4-value form like `"0 0 3 3"`) on country-flag stripes in `ConsultationDoctors.tsx` and `TreatmentClinics.tsx` replaced with valid single-length values; `<rect> attribute rx` console errors are 0 on `/consultations` and `/treatment-abroad` (Playwright-verified).
+  2. POL-02: Mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` resolved — either by UI fix (drop eyebrow pill OR sticky bottom CTA wrapper to non-glass on mobile) or by clarifying in `DESIGN.md` that sticky chrome surfaces (header, FAB) do not count toward the per-viewport glass budget; resolution method documented in commit message.
+  3. POL-03: 4 dead-code files in `components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx`) removed; `grep -r` across canonical `src/` returns 0 references to any of the deleted symbols; `pnpm build` and `pnpm lint` exit 0 after removal.
+  4. POL-04: Untracked screenshots in repo root (`90-*.png`, `91-*.png`, `93-uat-*.png`, `v8-*.png`) either added to `.gitignore` patterns or relocated to `.planning/audit-screenshots/`; `git status` working tree clean except for legitimately-tracked changes.
+  5. POL-05: Exactly ONE canonical Next.js source location remains in the repo (either repo-root `src/` or `next/src/`, not both); duplicate deleted; build still passes; dev server starts cleanly; planning docs updated to reference the canonical path; commit message documents which side was kept and why.
 **Plans**: TBD
-**UI hint**: yes
+**UI hint**: low (POL-02 may produce a small visual change on mobile hero, otherwise hygiene-only)
+
+### Phase 95: Audit & Verification (v9.0.1)
+**Goal**: Land the verification work originally planned for v9.0 Phase 94 (Playwright UAT + a11y emulation + leak test) plus the new external audits (Lighthouse CI, axe-core, brand review) on the now-clean baseline established by Phase 94. **Same hard-gate posture as v9.0 Phase 94 had — no cheat-pass on a11y.**
+**Depends on**: Phase 94 (audits run against polished/cleaned state, not against the residual console errors POL-01 fixes)
+**Requirements**: AUDIT-01, AUDIT-02, AUDIT-03, AUDIT-04 — and rollover of v9.0 VER-01..08
+**Success Criteria** (what must be TRUE):
+  1. AUDIT-01: Lighthouse CI run on `/`, `/checkup`, `/consultations`, `/treatment-abroad`, `/contacts` with mobile-throttled budgets (LCP ≤2500ms, INP ≤200ms, CLS ≤0.1, TBT ≤200ms); per-route HTML/JSON report committed to `.planning/phases/95-*/lighthouse/`; any budget breach explicitly waived in the phase summary with rationale.
+  2. AUDIT-02: axe-core a11y audit run on all 5 routes; 0 critical or serious violations; moderate/minor violations documented with severity rationale and either fixed or marked as accepted-risk in `.planning/phases/95-*/axe/`.
+  3. AUDIT-03: Brand review against `medicusunion.com` and `medicusunion.kz` — DESIGN.md YAML color tokens cross-referenced visually with live sites, typography (Inter/Manrope) compared, tone-of-voice spot-checked on 3 sub-routes; deviations either fixed or logged with rationale in `.planning/phases/95-*/brand-review.md`.
+  4. AUDIT-04: v9.0 `VER-01..08` Playwright UAT scenarios + leak test (`__blobDebug.rafCount === 1` after 5-route cycle) executed; results in `95-VERIFICATION.md`; matches the same hard-gate posture as the original v9.0 Phase 94 plan (concrete evidence per criterion, NO cheat-pass).
+**Plans**: TBD
+**UI hint**: no (audit-only; no source changes unless audits surface fixable issues)
+
+### Phase 96: Blob Unification (v9.0.1)
+**Goal**: Refine the Living Blob so it reads as a single 2D organism without visible halo edges. Currently the 4 sublayers (core / body / halo / glint) lag behind each other on fast cursor motion (per-layer inertia 80–200ms) creating a "multiple things" feel; halo edges show a visible gradient stop boundary. This phase tunes parametrically first; structural refactor only if needed to hit acceptance.
+**Depends on**: Phase 95 (Lighthouse + a11y audits run on clean v9.0 first; refinement should not regress those)
+**Requirements**: BR-01, BR-02, BR-03
+**Success Criteria** (what must be TRUE):
+  1. BR-01: Halo edge feathered — no visible gradient stop boundary at any zoom level; smooth alpha falloff verified via desktop 1280×800 zoom-in screenshot AND mobile 375×667; subjective UAT: user confirms "no visible glow border".
+  2. BR-02: 4 blob sublayers move as a single 2D organism — max angular separation between sublayers during fast cursor motion ≤ 8px (instrument via `__blobDebug` and Playwright); parametric solution preferred (unified inertia coefficients with micro-variations 10–30ms instead of cascading 80–200ms); structural refactor (e.g., merging halo+glint into one sublayer) acceptable only if parametric tuning fails to hit target.
+  3. BR-03: Mobile ambient blob mirrors desktop unification — Lissajous drift uses same correlated-motion model; no visible per-layer drift on slow ambient motion; Playwright screenshot at 375×667 with reduced-motion off confirms.
+**Plans**: TBD
+**UI hint**: yes (visual refinement at the heart of the blob; before/after screenshots required in phase summary)
+
+### Phase 97: Admin Submissions View (v9.0.1)
+**Goal**: Give the operator a simple read-only `/admin/submissions` view to read incoming form submissions from the Postgres `submissions` table. Auth via env-token check (no full Auth this milestone). Independent of Phases 94–96; can move earlier if business need spikes.
+**Depends on**: Nothing (independent — runs on existing Drizzle schema and Postgres backend; could overlap with any other v9.0.1 phase)
+**Requirements**: ADM-01, ADM-02, ADM-03
+**Success Criteria** (what must be TRUE):
+  1. ADM-01: `/admin/submissions` Next.js route exists and is server-side authenticated via `ADMIN_TOKEN` env var compared to a `?token=` query param OR `X-Admin-Token` header; 401/redirect on failure; `.env.example` updated with `ADMIN_TOKEN` placeholder; documented in README or `.planning/PROJECT.md`.
+  2. ADM-02: View renders all submissions from Postgres `submissions` via Drizzle — columns `date_created` (formatted), `name`, `phone`, `specialization` (mapped to Russian labels), `description` (truncated to 80 chars), `status`; default sort `date_created DESC`; pagination at 50 rows/page via `LIMIT/OFFSET`; loading state for SSR.
+  3. ADM-03: Filter UI — date range picker, specialization dropdown (4 values + ANY), status dropdown (3 values + ANY); filter state encoded in URL query params (`?from=...&to=...&spec=...&status=...`) so views are shareable/bookmarkable; empty-state copy when filter returns 0 rows; filtering done via server component / loader (no client-side fetch needed).
+**Plans**: TBD
+**UI hint**: yes (small but distinct admin UI — should not consume v9.0 glass tokens; opaque utility styling per shadcn primitives)
 
 <details>
 <summary>v8.0 Phase Details (Phases 79-85) -- SHIPPED 2026-04-30</summary>
@@ -370,24 +420,35 @@ Plans:
 
 ## Progress
 
-### v9.0 Living Blob Liquid Glass Scene
+### v9.0.1 Polish, Admin & Unified Blob
 
 **Execution Order:**
-90 -> 91 -> 92 -> 93 -> 94
-Sequential. Phase ordering is non-negotiable: glass transparency cannot be verified without a live blob (Foundation → Engine → Glass).
-Phase 90 (Foundation) is the contract every later phase consumes — tokens + a11y `@layer` + DOM skeleton.
-Phase 91 (Engine) makes the blob alive across all mode branches.
-Phase 92 (Glass Index + Chrome) sweeps `/` + always-visible chrome with live blob behind it.
-Phase 93 (Sub-Routes) propagates validated patterns mechanically.
-Phase 94 (Verification) is a HARD GATE — no cheat-pass. Real-device UAT, Lighthouse, axe-core, brand review, all 12 TZ §19 criteria.
+94 -> 95 -> 96 -> 97
+Phase 94 (Polish & Hygiene) is cheapest and lowest-risk; ships first to establish a clean baseline.
+Phase 95 (Audit & Verification) runs against the clean baseline — Lighthouse + axe + brand + rolled-over v9.0 VER-* checks.
+Phase 96 (Blob Unification) refines the blob feel parametrically (with structural fallback if needed).
+Phase 97 (Admin Submissions) is independent of 94–96 and can move earlier if business need spikes.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete   | 2026-04-30 |
-| 91. Blob Engine — Renderer, Physics, A11y Branches | 0/0 | Not started | — |
+| 94. Polish & Hygiene | 0/0 | Not started | — |
+| 95. Audit & Verification | 0/0 | Not started | — |
+| 96. Blob Unification | 0/0 | Not started | — |
+| 97. Admin Submissions View | 0/0 | Not started | — |
+
+### v9.0 Living Blob Liquid Glass Scene (Shipped 2026-05-01)
+
+**Execution Order:**
+90 -> 91 -> 92 -> 93 -> [94 rolled into v9.0.1 Phase 95]
+Sequential. Phase ordering was non-negotiable: glass transparency cannot be verified without a live blob (Foundation → Engine → Glass).
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 90. Foundation — Tokens, A11y Wiring, DOM Skeleton | 5/5 | Complete    | 2026-04-30 |
+| 91. Blob Engine — Renderer, Physics, A11y Branches | 6/6 | Complete    | 2026-04-30 |
 | 92. Glass Rework — Chrome + Index Sections | 8/8 | Complete    | 2026-04-30 |
-| 93. Per-Page Propagation — Sub-Routes | 8/8 | Complete   | 2026-04-30 |
-| 94. Verification — UAT, Performance, A11y, Brand Review | 0/0 | Not started | — |
+| 93. Per-Page Propagation — Sub-Routes | 8/8 | Complete    | 2026-05-01 |
+| 94. Verification — UAT, Performance, A11y, Brand Review | — | Rolled into v9.0.1 Phase 95 (AUDIT-04) | — |
 
 ### v8.0 Index Page Redesign
 

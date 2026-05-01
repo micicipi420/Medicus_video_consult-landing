@@ -1,5 +1,37 @@
 # Milestones
 
+## v9.0 Living Blob Liquid Glass Scene (Shipped: 2026-05-01)
+
+**Phases completed:** 4 phases (90-93), 26 plans, UAT pass (7 pass / 0 issues / 1 blocked on Directus availability)
+
+**PR:** [#3](https://github.com/micicipi420/Medicus_video_consult-landing/pull/3) — squash-merged into `main` as `a67deb6`
+
+**Key accomplishments:**
+
+- **Phase 90 — Foundation:** v9.0 4-tier glass token system in `globals.css` (`--glass-section/card/form/button-fill/blur`), DESIGN.md as canonical contract (YAML front matter for machine-readable tokens), a11y wiring (`prefers-reduced-transparency`, `prefers-contrast`, `prefers-reduced-motion`), DOM skeleton for `<LivingBlobField />`
+- **Phase 91 — Blob Engine:** procedural `LivingBlobField` renderer with 4 sublayers (core / body / halo / glint), pointermove + rAF physics, viscous cursor-following with per-layer inertia, heat accumulation on dwell (1.5–3s), mobile ambient-only (no cursor-follow), tap → soft pulse, `__blobDebug` dev surface
+- **Phase 92 — Glass Rework (chrome + index):** 8 plans — header / hero / stats bar / services / process / pricing / contact / lead form swept to v9.0 tokens; opaque-forever CTA invariant established; nested-glass anti-pattern #13 surfaced
+- **Phase 93 — Per-Page Propagation:** 8 plans — Playwright visual-regression baseline (4 routes × 2 viewports), service primitives swept (LeadFormSection structural flatten resolves anti-pattern #13), per-route sweeps for `/checkup` (7 components, 26 token consumers), `/consultations` (7 components, 37 consumers, hover ramp on 3-step process), `/treatment-abroad` (4 components, 21 consumers — main offer), `/contacts` (audit-only per Decision F), shadcn admin-only audit, phase closeout (regenerated baselines, DESIGN.md anti-pattern #16, 93-SWEEP-AUDIT, submission E2E body)
+- **Negative gates green:** 0 `bg-white/N` residue across 23 in-scope files, 0 hardcoded blur literals, 0 mix-blend introductions, 0 CTA opaque-forever invariant breaks, mobile blur ≤12px enforced (max measured: exactly 12px)
+- **Verification:** `pnpm build` exit 0, `pnpm lint` exit 0 (1 pre-existing unrelated warning in Phase 91 blob-engine), Playwright `tests/visual` 8/8 deterministic green on re-run, `/gsd-verify-work` UAT 7 pass / 0 issues / 1 blocked
+- **Decisions:** Decision A (LeadFormSection outer flatten + inner Tier-2 form panel KD-v9-002), Decision C (NO honeypot/timing anti-bot pattern — DESIGN.md anti-pattern #16), Decision F (`/contacts` dead-code cleanup deferred), determinism via `reducedMotion` (Phase 91 `__blobDebug.setMode` was read-only fallback)
+- **Outstanding (captured as pending todos):** `flag-svg-rx-invalid`, `mobile-hero-glass-layer-count`, `contacts-route-dead-code-cleanup` — all carry into v9.0.1
+
+---
+
+## v8.1 Propagation & Loose Ends (Shipped: 2026-04-30)
+
+**Phases completed:** 4 phases (86-89), service-page propagation, real content placeholders, code hygiene, milestone closeout incl. live a11y UAT
+
+**Key accomplishments:**
+
+- Phase 86: v8.0 index visual language extended to `/checkup`, `/consultations`, `/treatment-abroad` service pages — same glass tokens, header chrome, motion budget, mobile blur cap
+- Phase 87: real content placeholders replaced lorem-ipsum on all 3 service routes (47 sections total)
+- Phase 88: code hygiene — dead-code audit, eslint cleanup, redundant import removal
+- Phase 89: milestone closeout — live a11y UAT (the b788471 Tailwind backdrop-blur-* mobile cap hotfix landed here when Playwright UAT exposed v8.0 surfaces rendering at blur(40px)+ on mobile despite the `--liquid-blur-*` token cap)
+
+---
+
 ## v8.0 Index Page Redesign (Shipped: 2026-04-30)
 
 **Phases completed:** 7 phases (79-85), 7 plans, 7 verification cycles
