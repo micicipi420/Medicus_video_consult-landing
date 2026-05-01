@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-05-01T02:13:07.832Z",
-  "url": "http://localhost:3110/contacts",
+  "timestamp": "2026-05-01T02:41:06.269Z",
+  "url": "http://localhost:3211/contacts",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -1777,7 +1777,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.4011472106309687; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -1980,7 +1980,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.4011472106309687; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -2451,7 +2451,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+          "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
           "target": [
             "label[for=\"contact-description\"]"
           ]
@@ -2461,24 +2461,24 @@
             {
               "id": "color-contrast",
               "data": {
-                "fgColor": "#6b6f80",
+                "fgColor": "#4a4e5c",
                 "bgColor": "#fdfdfd",
-                "contrastRatio": 4.9,
+                "contrastRatio": 8.14,
                 "fontSize": "10.5pt (14px)",
                 "fontWeight": "normal",
                 "expectedContrastRatio": "4.5:1"
               },
               "relatedNodes": [],
               "impact": "serious",
-              "message": "Element has sufficient color contrast of 4.9"
+              "message": "Element has sufficient color contrast of 8.14"
             }
           ],
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<span class=\"text-mu-text-500 font-medium\">(необязательно)</span>",
+          "html": "<span class=\"text-mu-text-700 font-medium\">(необязательно)</span>",
           "target": [
-            ".text-mu-text-500"
+            "label[for=\"contact-description\"] > span"
           ]
         },
         {
@@ -3135,7 +3135,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.4011472106309687; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -3352,7 +3352,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]
@@ -3402,7 +3402,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.4011472106309687; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -3441,7 +3441,7 @@
             }
           ],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.4011472106309687; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -3562,7 +3562,7 @@
               },
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]

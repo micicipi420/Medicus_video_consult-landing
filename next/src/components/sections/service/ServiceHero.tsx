@@ -33,7 +33,7 @@ export function ServiceHero({
           <div>
             {eyebrow && (
               <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/60 bg-[var(--glass-section-fill)] px-4 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)] sm:px-5">
-                <span className="text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue sm:text-sm">
+                <span className="text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue-text sm:text-sm">
                   {eyebrow}
                 </span>
               </div>

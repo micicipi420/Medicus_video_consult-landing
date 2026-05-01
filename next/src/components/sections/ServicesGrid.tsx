@@ -26,7 +26,7 @@ const SERVICES: readonly ServiceCard[] = [
     iconBg: 'bg-mu-accent-blue/10',
     iconColor: 'text-mu-accent-blue',
     badge: 'от\u00A0450\u00A0\u20AC',
-    badgeColor: 'text-mu-accent-blue',
+    badgeColor: 'text-mu-accent-blue-text',
     title: 'Онлайн-консультация',
     description:
       'Видеовстреча с\u00A0европейским врачом\u00A0— Германия, Австрия, Швейцария. Перевод документов и\u00A0письменное заключение.',
@@ -38,7 +38,7 @@ const SERVICES: readonly ServiceCard[] = [
     iconBg: 'bg-mu-green-50',
     iconColor: 'text-mu-green-600',
     badge: 'от\u00A0$350',
-    badgeColor: 'text-mu-green-700',
+    badgeColor: 'text-mu-green-text',
     title: 'Чек-ап в\u00A0мировой клинике',
     description:
       'Комплексное обследование за\u00A01–2\u00A0дня. Samsung Medical Center, Severance, клиники Стамбула. Виза, трансфер, переводчик включены.',
@@ -50,7 +50,7 @@ const SERVICES: readonly ServiceCard[] = [
     iconBg: 'bg-mu-accent-teal-bg',
     iconColor: 'text-mu-accent-teal',
     badge: 'план бесплатно',
-    badgeColor: 'text-mu-accent-teal',
+    badgeColor: 'text-mu-accent-teal-text',
     title: 'Лечение за\u00A0границей под\u00A0ключ',
     description:
       'Подбор клиники из\u00A0сети 43\u00A0партнёров в\u00A011\u00A0странах. Полная организация: виза, логистика, переводчик, координация до\u00A0выздоровления.',
@@ -62,7 +62,7 @@ const SERVICES: readonly ServiceCard[] = [
     iconBg: 'bg-mu-accent-orange/10',
     iconColor: 'text-mu-accent-orange',
     badge: 'для\u00A0компаний',
-    badgeColor: 'text-mu-accent-orange',
+    badgeColor: 'text-mu-accent-orange-text',
     title: 'Корпоративные чек-апы',
     description:
       'B2B-программа здоровья для\u00A0сотрудников: чек-ап в\u00A0Сеуле или\u00A0Стамбуле, индивидуальный план для\u00A0каждого участника, отчётность для\u00A0HR.',
@@ -78,7 +78,7 @@ export function ServicesGrid() {
         {/* Section title */}
         <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-section-fill)] px-5 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)]">
-            <span className="text-xs font-bold uppercase tracking-wider text-mu-accent-blue sm:text-sm">
+            <span className="text-xs font-bold uppercase tracking-wider text-mu-accent-blue-text sm:text-sm">
               Наши Услуги
             </span>
           </div>

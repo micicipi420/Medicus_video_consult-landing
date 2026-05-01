@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-05-01T02:13:21.405Z",
-  "url": "http://localhost:3110/checkup",
+  "timestamp": "2026-05-01T02:41:16.314Z",
+  "url": "http://localhost:3211/checkup",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -4191,7 +4191,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.3864876311345374; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -4686,7 +4686,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.3864876311345374; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -4860,6 +4860,31 @@
           "html": "<a href=\"tel:+77015322478\" class=\"flex items-center gap-2 text-mu-text-700 hover:text-mu-blue transition-colors font-medium tracking-tight\">",
           "target": [
             ".tracking-tight.hover\\:text-mu-blue[href=\"tel:+77015322478\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#0b7a9a",
+                "bgColor": "#fbfbfb",
+                "contrastRatio": 4.75,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.75"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue-text sm:text-sm\">Чек-ап за&nbsp;рубежом</span>",
+          "target": [
+            ".text-xs"
           ]
         },
         {
@@ -5646,7 +5671,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.3864876311345374; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -5863,7 +5888,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]
@@ -5913,7 +5938,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.3864876311345374; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -5952,7 +5977,7 @@
             }
           ],
           "impact": null,
-          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __variable_e5fc73\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --blob-y: 400px; --blob-body-x: 640px; --blob-body-y: 400px; --blob-halo-x: 640px; --blob-halo-y: 400px; --blob-heat: 0.3864876311345374; --blob-velocity: 0;\">",
+          "html": "<html lang=\"ru\" class=\"__variable_a1a9bb __...\" data-blob-mode=\"cursor\" style=\"--blob-x: 640px; --b...\">",
           "target": [
             "html"
           ]
@@ -6117,7 +6142,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]
@@ -8886,67 +8911,5 @@
       ]
     }
   ],
-  "violations": [
-    {
-      "id": "color-contrast",
-      "impact": "serious",
-      "tags": [
-        "cat.color",
-        "wcag2aa",
-        "wcag143",
-        "TTv5",
-        "TT13.c",
-        "EN-301-549",
-        "EN-9.1.4.3",
-        "ACT",
-        "RGAAv4",
-        "RGAA-3.2.1"
-      ],
-      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-      "help": "Elements must meet minimum color contrast ratio thresholds",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
-      "nodes": [
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#38c6f4",
-                "bgColor": "#fbfbfb",
-                "contrastRatio": 1.92,
-                "fontSize": "10.5pt (14px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/60 bg-[var(--glass-section-fill)] px-4 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)] sm:px-5\">",
-                  "target": [
-                    ".max-w-full"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 1.92 (foreground color: #38c6f4, background color: #fbfbfb, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold uppercase leading-snug tracking-wide text-mu-blue sm:text-sm\">Чек-ап за&nbsp;рубежом</span>",
-          "target": [
-            ".text-xs"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.92 (foreground color: #38c6f4, background color: #fbfbfb, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
-        }
-      ]
-    }
-  ]
+  "violations": []
 }

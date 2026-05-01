@@ -205,7 +205,7 @@ export function ContactForm() {
         {/* Description */}
         <div>
           <label htmlFor="contact-description" className="block text-sm font-bold text-mu-text-900 mb-2">
-            Кратко о{'\u00A0'}вашем случае <span className="text-mu-text-500 font-medium">(необязательно)</span>
+            Кратко о{'\u00A0'}вашем случае <span className="text-mu-text-700 font-medium">(необязательно)</span>
           </label>
           <textarea
             id="contact-description"
