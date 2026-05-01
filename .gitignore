@@ -41,6 +41,19 @@ github-pages-target.png
 screenshots/
 .playwright-mcp/
 
+# v9.0 / v9.0.1 audit & UAT screenshots at repo root (per phase prefix)
+90-*.png
+91-*.png
+92-*.png
+93-uat-*.png
+93-*.png
+94-*.png
+95-*.png
+v8-*.png
+v9-*.png
+# Sweep glob for any 9{N}-*.png at root, future-proofs Phase 96+ work
+9?-*.png
+
 # Playwright (Phase 93 Wave 0) — local test outputs, never committed
 next/test-results/
 next/playwright-report/

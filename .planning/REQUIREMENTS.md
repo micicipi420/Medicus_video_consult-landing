@@ -336,11 +336,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ### Polish & Hygiene (Phase 94)
 
-- [ ] **POL-01**: 7 invalid SVG `rx="0 0 3 3"` / `rx="3 0 0 3"` / `rx="3 3 0 0"` attributes on country-flag stripes fixed in `src/components/sections/consultations/ConsultationDoctors.tsx` (lines 50, 104, 105) and `src/components/sections/treatment/TreatmentClinics.tsx` (lines 37, 90, 91, 112); 0 `<rect> attribute rx` console errors on `/consultations` and `/treatment-abroad` (verified with Playwright)
+- [ ] **POL-01**: 7 invalid SVG `rx="0 0 3 3"` / `rx="3 0 0 3"` / `rx="3 3 0 0"` attributes on country-flag stripes fixed in `next/src/components/sections/consultations/ConsultationDoctors.tsx` (lines 50, 104, 105) and `next/src/components/sections/treatment/TreatmentClinics.tsx` (lines 37, 90, 91, 112); 0 `<rect> attribute rx` console errors on `/consultations` and `/treatment-abroad` (verified with Playwright)
 - [ ] **POL-02**: Mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` resolved — either by dropping eyebrow pill OR sticky bottom CTA wrapper to non-glass on mobile, OR by clarifying in `DESIGN.md` that sticky chrome surfaces (header, FAB) do not count toward the per-viewport budget; resolution documented and CLAUDE.md updated if contract changes
-- [ ] **POL-03**: 4 dead-code files in `src/components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx` — exact set per `93-RESEARCH.md`) removed; `grep -r` across `src/` returns 0 references; `pnpm build` and `pnpm lint` exit 0 after removal
+- [ ] **POL-03**: 4 dead-code files in `next/src/components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx` — exact set per `93-RESEARCH.md`) removed; `grep -r` across `next/src/` returns 0 references; `pnpm build` and `pnpm lint` exit 0 after removal
 - [ ] **POL-04**: Untracked screenshots in repo root (`90-*.png`, `91-*.png`, `93-uat-*.png`, `v8-*.png`) either added to `.gitignore` patterns or relocated to `.planning/audit-screenshots/`; `git status` shows clean working tree (or only the new design/ + .mcp.json which are out of scope)
-- [ ] **POL-05**: Duplicate Next.js application directories resolved — exactly ONE canonical Next.js source location (either repo-root `src/` or `next/src/`, not both); duplicate deleted; build still passes; dev server starts cleanly; planning docs updated to reference the canonical path
+- [ ] **POL-05**: Exactly ONE canonical Next.js source location confirmed at `next/src/`; legacy `./src/styles/` (pre-Next vanilla CSS) deleted/relocated/kept (per Plan 05 user decision); build still passes; dev server starts cleanly; planning docs reference `next/src/...` uniformly
 
 ### Audit & Verification (Phase 95)
 

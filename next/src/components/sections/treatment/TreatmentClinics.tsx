@@ -34,7 +34,7 @@ export function TreatmentClinics() {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#000" />
               <rect y="11" width="48" height="10" fill="#DD0000" />
-              <rect y="21" width="48" height="11" rx="0 0 3 3" fill="#FFCC00" />
+              <rect y="21" width="48" height="11" rx="3" fill="#FFCC00" />
             </svg>
           </div>
           <h3 className="text-lg font-extrabold text-mu-text-900 mb-1">Германия</h3>
@@ -87,8 +87,8 @@ export function TreatmentClinics() {
           <div className="w-12 h-8 mb-4" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
               <rect width="48" height="32" rx="3" fill="#fff" />
-              <rect width="48" height="11" rx="3 3 0 0" fill="#FF9933" />
-              <rect y="21" width="48" height="11" rx="0 0 3 3" fill="#138808" />
+              <rect width="48" height="11" rx="3" fill="#FF9933" />
+              <rect y="21" width="48" height="11" rx="3" fill="#138808" />
               <circle cx="24" cy="16" r="4" stroke="#000080" strokeWidth="1" fill="none" />
             </svg>
           </div>
@@ -109,7 +109,7 @@ export function TreatmentClinics() {
               <rect x="12" width="36" height="11" fill="#00732F" />
               <rect x="12" y="11" width="36" height="10" fill="#fff" />
               <rect x="12" y="21" width="36" height="11" fill="#000" />
-              <rect width="12" height="32" rx="3 0 0 3" fill="#FF0000" />
+              <rect width="12" height="32" rx="3" fill="#FF0000" />
             </svg>
           </div>
           <h3 className="text-lg font-extrabold text-mu-text-900 mb-1">ОАЭ</h3>
