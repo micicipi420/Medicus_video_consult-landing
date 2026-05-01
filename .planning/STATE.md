@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v9.0.1
 milestone_name: Polish, Admin & Unified Blob
-status: complete
-stopped_at: All 4 phases + 3 audit-remediation passes complete; 4 audit findings resolved (2 fixed, 2 accepted via Key Decisions); 16/16 plans + 3 remediation worktrees merged; ready for /gsd-complete-milestone
-last_updated: "2026-05-01T11:30:00.000Z"
+status: milestone_complete
+stopped_at: v9.0.1 shipped 2026-05-01 — milestone closeout via /gsd-complete-milestone; archived to .planning/milestones/v9.0.1-{ROADMAP,REQUIREMENTS}.md + v9.0.1-phases/; tagged v9.0.1 in git
+last_updated: "2026-05-01T12:00:00.000Z"
 last_activity: 2026-05-01
 progress:
   total_phases: 4
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-05-01)
 
 ## Current Position
 
-Phase: 98 audit remediation (last executed)
-Plan: AUDIT-01/02/03 follow-up
-Status: v9.0.1 milestone complete — 16/16 plans executed across 4 phases (94/95/96/97), all 4 audit findings resolved via 3 remediation worktrees (LCP, contrast, brand) + 3 Key Decisions logged in PROJECT.md. Ready for `/gsd-complete-milestone v9.0.1`.
-Last activity: 2026-05-01 — Audit remediation merged + final state-update
+Phase: — (milestone v9.0.1 archived)
+Plan: —
+Status: Milestone v9.0.1 shipped + archived; awaiting `/gsd-new-milestone` for v9.1 (Performance Phase pencilled in per KD-v9.0.1-003)
+Last activity: 2026-05-01 — `/gsd-complete-milestone v9.0.1` archived roadmap + requirements + 4 phase dirs; tag `v9.0.1` created
 
-Progress: [██████████] 100%
+Progress: [milestone closed]
 
 ## Audit Findings Resolved (Phase 95 → Phase 98 remediation)
 

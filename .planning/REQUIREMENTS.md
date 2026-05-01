@@ -328,73 +328,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Phase 93 (Per-Page Propagation): 7 (ROUTE-01..07)
 - Phase 94 (Verification): 8 (VER-01..08) — *carried into v9.0.1 as `AUDIT-*`*
 
-## v9.0.1 Requirements
+## v9.0.1 Requirements (Shipped 2026-05-01)
 
-**Polish, Admin & Unified Blob.** Closeout of v9.0 polish hangovers, simple read-only operator admin for submissions, and Living Blob refinement so the 4 sublayers (core/body/halo/glint) read as a single 2D organism with no visible halo edge boundary.
+15 requirements across 4 phases (94-97); 13 fully complete + 2 complete-with-relaxation (Key Decisions logged in PROJECT.md). Full archive: [`milestones/v9.0.1-REQUIREMENTS.md`](./milestones/v9.0.1-REQUIREMENTS.md).
 
-**REQ-ID namespaces:** `POL-*` (polish & hygiene), `AUDIT-*` (verification — Lighthouse / axe / brand), `BR-*` (blob refinement, distinct from v9.0 `BLOB-*`), `ADM-*` (admin).
-
-### Polish & Hygiene (Phase 94)
-
-- [x] **POL-01**: 7 invalid SVG `rx="0 0 3 3"` / `rx="3 0 0 3"` / `rx="3 3 0 0"` attributes on country-flag stripes fixed in `next/src/components/sections/consultations/ConsultationDoctors.tsx` (lines 50, 104, 105) and `next/src/components/sections/treatment/TreatmentClinics.tsx` (lines 37, 90, 91, 112); 0 `<rect> attribute rx` console errors on `/consultations` and `/treatment-abroad` (verified with Playwright)
-- [x] **POL-02**: Mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` resolved — either by dropping eyebrow pill OR sticky bottom CTA wrapper to non-glass on mobile, OR by clarifying in `DESIGN.md` that sticky chrome surfaces (header, FAB) do not count toward the per-viewport budget; resolution documented and CLAUDE.md updated if contract changes
-- [x] **POL-03**: 4 dead-code files in `next/src/components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx` — exact set per `93-RESEARCH.md`) removed; `grep -r` across `next/src/` returns 0 references; `pnpm build` and `pnpm lint` exit 0 after removal
-- [x] **POL-04**: Untracked screenshots in repo root (`90-*.png`, `91-*.png`, `93-uat-*.png`, `v8-*.png`) either added to `.gitignore` patterns or relocated to `.planning/audit-screenshots/`; `git status` shows clean working tree (or only the new design/ + .mcp.json which are out of scope)
-- [x] **POL-05**: Exactly ONE canonical Next.js source location confirmed at `next/src/`; legacy `./src/styles/` (pre-Next vanilla CSS) deleted/relocated/kept (per Plan 05 user decision); build still passes; dev server starts cleanly; planning docs reference `next/src/...` uniformly
-
-### Audit & Verification (Phase 95)
-
-- [ ] **AUDIT-01**: Lighthouse CI run on `/`, `/checkup`, `/consultations`, `/treatment-abroad`, `/contacts`; mobile-throttled (4×CPU slowdown, slow 4G); per-route budgets — LCP ≤2500ms, INP ≤200ms, CLS ≤0.1, TBT ≤200ms; report committed to `.planning/phases/95-*/lighthouse/`
-- [ ] **AUDIT-02**: axe-core a11y audit run on all 5 routes; 0 critical or serious violations; moderate violations documented with severity rationale; report committed to `.planning/phases/95-*/axe/`
-- [ ] **AUDIT-03**: Brand review against `medicusunion.com` and `medicusunion.kz` — DESIGN.md YAML color tokens compared visually to live sites, typography (Inter/Manrope) compared, tone-of-voice spot-checked on 3 sub-routes; deviations either fixed or logged in `.planning/phases/95-*/brand-review.md` with rationale
-- [ ] **AUDIT-04**: Existing v9.0 `VER-01..08` requirements (Playwright UAT scenarios, a11y emulation, leak test) executed in Phase 95 alongside the new audits; results in `95-VERIFICATION.md`
-
-### Blob Refinement (Phase 96)
-
-- [x] **BR-01**: Halo edge feathered — no visible gradient stop boundary at any zoom level; smooth alpha falloff from inner halo to transparent verified via desktop 1280×800 zoom-in screenshot AND mobile 375×667; subjective UAT: user confirms "no visible glow border"
-- [x] **BR-02**: 4 blob sublayers (core / body / halo / glint) move as a single 2D organism — max angular separation between sublayers during fast cursor motion ≤ 8px (vs ~80px lag in v9.0 baseline); parametric solution preferred (unified inertia coefficients with micro-variations 10–30ms instead of 80–200ms cascading); structural refactor (e.g., merging halo+glint into one sublayer) acceptable only if parametric tuning fails to hit the ≤8px target
-- [x] **BR-03**: Mobile ambient blob mirrors desktop unification — Lissajous drift uses same correlated-motion model; no visible per-layer drift on slow ambient motion; verified at 375×667 with Playwright screenshot
-
-### Admin (Phase 97)
-
-- [x] **ADM-01**: `/admin/submissions` read-only Next.js route exists; server-side authenticated via simple env-token check (`ADMIN_TOKEN` env var matches `?token=` query OR an `X-Admin-Token` header); no full Auth system this milestone (deferred to a future Auth phase if/when needed)
-- [x] **ADM-02**: View renders all submissions from Postgres `submissions` table via Drizzle — columns: `date_created` (formatted), `name`, `phone`, `specialization` (mapped to Russian label: "Чек-ап" / "Лечение" / "Консультация" / "Не уверен"), `description` (truncated to 80 chars), `status`; default sort `date_created DESC`; pagination at 50 rows per page
-- [x] **ADM-03**: Filter UI on the admin view — date range, specialization, status; filter state encoded in URL query params (shareable / bookmarkable); empty-state copy when filter returns 0 rows; no client-side fetch (filtering done via server component / loader for simplicity)
-
-### v9.0.1 Coverage Summary
-
-| REQ-ID | Phase | Status |
-|---|---|---|
-| POL-01 | Phase 94 | Complete |
-| POL-02 | Phase 94 | Complete |
-| POL-03 | Phase 94 | Complete |
-| POL-04 | Phase 94 | Complete |
-| POL-05 | Phase 94 | Complete |
-| AUDIT-01 | Phase 95 + 98-01 remediation | Complete (relaxed) — KD-v9.0.1-003 relaxed LCP budget to 3500ms; investigation found text-LCP root cause is post-FCP main-thread saturation; Path A architectural refactor scheduled for v9.1; TBT/CLS/INP/FCP all PASS at original budgets |
-| AUDIT-02 | Phase 95 + 98-02 remediation | Complete — 10 → 0 serious color-contrast violations across 15 audits; Approach A (retarget AA-safe text tokens, per-service brand identity preserved); worst-case 4.58:1 |
-| AUDIT-03 | Phase 95 + 98-03 remediation | Complete — KD-v9.0.1-001 brand parity restored; CTA gradient reverted to green→teal across 10 components; Phase 93 baseline regenerated; brand-capture spec confirms parity with medicusunion.kz |
-| AUDIT-04 | Phase 95 | Complete (relaxed) — KD-v9.0.1-002 VER-05 real-device UAT relaxed (no hardware); VER-01/02/03/04/06/07/08 executed with concrete evidence; re-audit at v9.1+ |
-| BR-01 | Phase 96 | Complete |
-| BR-02 | Phase 96 | Complete (Option B structural — 2.17px max separation @ 1500px/s, 41× headroom) |
-| BR-03 | Phase 96 | Complete (0.28px @ 5s Lissajous mobile, 54× headroom) |
-| ADM-01 | Phase 97 | Complete |
-| ADM-02 | Phase 97 | Complete |
-| ADM-03 | Phase 97 | Complete |
-
-**v9.0.1 Coverage:**
-- v9.0.1 requirements: 15 total
-- Complete: 13 (all POL-*, BR-*, ADM-*, plus AUDIT-02 + AUDIT-03 fully remediated)
-- Complete-with-relaxation: 2 (AUDIT-01 LCP budget relaxed via KD-v9.0.1-003; AUDIT-04 VER-05 deferred via KD-v9.0.1-002)
-- Pending: 0
-- Mapped to phases: 15
-- Unmapped: 0
-- Key Decisions logged: 3 (KD-v9.0.1-001 brand revert, KD-v9.0.1-002 VER-05 relax, KD-v9.0.1-003 LCP relax)
-
-**Phase distribution:**
-- Phase 94 (Polish & Hygiene): 5 (POL-01..05)
-- Phase 95 (Audit & Verification): 4 (AUDIT-01..04)
-- Phase 96 (Blob Refinement): 3 (BR-01..03)
-- Phase 97 (Admin Submissions): 3 (ADM-01..03)
 ---
 *Requirements defined: 2026-04-13*
-*Last updated: 2026-05-01 after v9.0.1 milestone start (Polish, Admin & Unified Blob); v9.0 shipped 2026-05-01 via PR #3*
+*Last updated: 2026-05-01 after v9.0.1 milestone closeout (Polish, Admin & Unified Blob); v9.0.1 archived to `milestones/`*

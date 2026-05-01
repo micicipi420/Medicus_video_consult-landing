@@ -71,7 +71,13 @@ Index-страница (`/`) — hub, представляющий все три
 
 ### Active
 
-## Current Milestone: v9.0.1 Polish, Admin & Unified Blob
+## Current State
+
+**Last shipped:** v9.0.1 Polish, Admin & Unified Blob (2026-05-01) — 4 phases, 16 plans, 3 Key Decisions logged. Archive: `.planning/milestones/v9.0.1-*`.
+**Stack:** Next.js 15.5 + React 19 + TypeScript + Tailwind v4 (canonical at `next/`), Drizzle ORM + Postgres 16 (Docker container `medicus-pg`), Playwright + Lighthouse CI + axe-core for verification.
+**Next milestone (pencilled):** v9.1 Performance Phase — Path A LCP refactor (drop `LazyMotionProvider`, replace `ScrollReveal` with IntersectionObserver+CSS, lazy-mount sections; estimated −800 to −1400ms LCP), real-device UAT (VER-05) when hardware available.
+
+## Previous Milestone: v9.0.1 Polish, Admin & Unified Blob (Shipped 2026-05-01)
 
 **Goal:** Закрыть полировочные хвосты v9.0, дать оператору простой read-only admin для просмотра submissions, и довести Living Blob до состояния «единого 2D организма» без видимых краёв свечения halo-слоя.
 
