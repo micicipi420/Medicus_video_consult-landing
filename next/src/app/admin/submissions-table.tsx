@@ -13,6 +13,11 @@ import {
 } from '@/components/ui/table';
 
 import type { SubmissionRow } from './page';
+import {
+  STATUS_LABELS,
+  labelForSpecialization,
+  truncate,
+} from './submission-mappings';
 
 interface SubmissionsTableProps {
   submissions: SubmissionRow[];
@@ -24,12 +29,6 @@ const STATUS_OPTIONS = [
   { value: 'contacted', label: 'Связались' },
   { value: 'completed', label: 'Завершено' },
 ] as const;
-
-const STATUS_LABELS: Record<string, string> = {
-  new: 'Новая',
-  contacted: 'Связались',
-  completed: 'Завершено',
-};
 
 function getStatusVariant(
   status: string
@@ -54,6 +53,8 @@ function formatDate(date: Date): string {
     d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
   );
 }
+
+const DESCRIPTION_MAX = 80;
 
 export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
   const [statusFilter, setStatusFilter] = useState('all');
@@ -87,7 +88,7 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
 
   return (
     <div>
-      {/* Filter bar */}
+      {/* Filter bar (plan 02: preserved as-is; plan 03 replaces with URL-driven server filters) */}
       <div className="mb-6 flex flex-wrap items-end gap-4">
         <div>
           <label
@@ -160,15 +161,16 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
         </p>
       )}
 
-      {/* Table */}
+      {/* Table — 6 columns: Дата заявки | Имя | Телефон | Направление | Описание | Статус */}
       <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Дата</TableHead>
+              <TableHead>Дата заявки</TableHead>
               <TableHead>Имя</TableHead>
               <TableHead>Телефон</TableHead>
               <TableHead>Направление</TableHead>
+              <TableHead>Описание</TableHead>
               <TableHead>Статус</TableHead>
             </TableRow>
           </TableHeader>
@@ -176,7 +178,7 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
             {filtered.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={6}
                   className="h-24 text-center text-muted-foreground"
                 >
                   {submissions.length === 0
@@ -190,7 +192,12 @@ export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
                   <TableCell>{formatDate(row.dateCreated)}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.phone}</TableCell>
-                  <TableCell>{row.specialization}</TableCell>
+                  <TableCell>
+                    {labelForSpecialization(row.specialization)}
+                  </TableCell>
+                  <TableCell title={row.description ?? ''}>
+                    {truncate(row.description, DESCRIPTION_MAX)}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={getStatusVariant(row.status)}>
                       {STATUS_LABELS[row.status] ?? row.status}

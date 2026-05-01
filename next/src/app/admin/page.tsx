@@ -1,8 +1,9 @@
-import { desc } from 'drizzle-orm';
+import { desc, sql } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
 import { submissions } from '@/lib/db/schema';
 
+import { Pagination } from './pagination';
 import { SubmissionsTable } from './submissions-table';
 
 export const dynamic = 'force-dynamic';
@@ -22,26 +23,54 @@ export type SubmissionRow = {
   dateCreated: Date;
 };
 
-export default async function AdminPage() {
-  let allSubmissions: SubmissionRow[] = [];
+const PAGE_SIZE = 50;
+
+function parsePage(raw: string | string[] | undefined): number {
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  const n = Number.parseInt(v ?? '', 10);
+  if (Number.isNaN(n) || n < 1) return 1;
+  return n;
+}
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = await searchParams;
+  const page = parsePage(sp.page);
+  const offset = (page - 1) * PAGE_SIZE;
+
+  let rows: SubmissionRow[] = [];
+  let totalCount = 0;
   let error: string | null = null;
 
   try {
-    allSubmissions = await db
-      .select()
-      .from(submissions)
-      .orderBy(desc(submissions.dateCreated));
+    const [rowsResult, totalsResult] = await Promise.all([
+      db
+        .select()
+        .from(submissions)
+        .orderBy(desc(submissions.dateCreated))
+        .limit(PAGE_SIZE)
+        .offset(offset),
+      db.select({ count: sql<number>`count(*)::int` }).from(submissions),
+    ]);
+    rows = rowsResult;
+    totalCount = totalsResult[0]?.count ?? 0;
   } catch (e) {
     error =
       e instanceof Error ? e.message : 'Failed to connect to the database';
   }
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const clampedPage = Math.min(Math.max(1, page), totalPages);
 
   return (
     <main className="mx-auto min-h-screen max-w-7xl bg-background px-4 py-8 text-foreground">
       <div className="mb-6 flex items-baseline justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Заявки</h1>
         <span className="text-sm text-muted-foreground">
-          Всего: {allSubmissions.length}
+          Страница {clampedPage} из {totalPages} · Всего: {totalCount}
         </span>
       </div>
 
@@ -51,7 +80,19 @@ export default async function AdminPage() {
           <p className="mt-1 text-xs opacity-75">{error}</p>
         </div>
       ) : (
-        <SubmissionsTable submissions={allSubmissions} />
+        <>
+          <Pagination
+            currentPage={clampedPage}
+            pageSize={PAGE_SIZE}
+            totalCount={totalCount}
+          />
+          <SubmissionsTable submissions={rows} />
+          <Pagination
+            currentPage={clampedPage}
+            pageSize={PAGE_SIZE}
+            totalCount={totalCount}
+          />
+        </>
       )}
     </main>
   );
