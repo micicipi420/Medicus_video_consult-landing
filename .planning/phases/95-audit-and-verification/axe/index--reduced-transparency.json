@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-05-01T02:13:17.204Z",
-  "url": "http://localhost:3110/",
+  "timestamp": "2026-05-01T02:41:13.283Z",
+  "url": "http://localhost:3211/",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -5515,6 +5515,31 @@
             {
               "id": "color-contrast",
               "data": {
+                "fgColor": "#3b6dd0",
+                "bgColor": "#ffffff",
+                "contrastRatio": 4.9,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.9"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold uppercase tracking-wider text-mu-accent-blue-text sm:text-sm\">Наши Услуги</span>",
+          "target": [
+            ".text-mu-accent-blue-text.uppercase.tracking-wider"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
                 "fgColor": "#4a4e5c",
                 "bgColor": "#fbfbfb",
                 "contrastRatio": 8,
@@ -5533,6 +5558,31 @@
           "html": "<p class=\"text-base font-medium leading-relaxed text-mu-text-700 sm:text-lg\">От&nbsp;первой консультации до&nbsp;возвращения домой&nbsp;— четыре направления под&nbsp;вашу задачу.</p>",
           "target": [
             "#services > .container.lg\\:px-6.px-4 > .sm\\:mb-16.mb-12.max-w-3xl > .text-base.sm\\:text-lg.leading-relaxed"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#3b6dd0",
+                "bgColor": "#ffffff",
+                "contrastRatio": 4.9,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.9"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold text-mu-accent-blue-text\">от&nbsp;450&nbsp;€</span>",
+          "target": [
+            ".w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\] > .text-mu-accent-blue-text.text-xs"
           ]
         },
         {
@@ -5615,6 +5665,31 @@
             {
               "id": "color-contrast",
               "data": {
+                "fgColor": "#1f7a4f",
+                "bgColor": "#ffffff",
+                "contrastRatio": 5.3,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 5.3"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold text-mu-green-text\">от&nbsp;$350</span>",
+          "target": [
+            ".text-mu-green-text"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
                 "fgColor": "#1b212c",
                 "bgColor": "#ffffff",
                 "contrastRatio": 16.14,
@@ -5690,6 +5765,31 @@
             {
               "id": "color-contrast",
               "data": {
+                "fgColor": "#3d7e7a",
+                "bgColor": "#ffffff",
+                "contrastRatio": 4.7,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.7"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold text-mu-accent-teal-text\">план бесплатно</span>",
+          "target": [
+            ".text-mu-accent-teal-text"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
                 "fgColor": "#1b212c",
                 "bgColor": "#ffffff",
                 "contrastRatio": 16.14,
@@ -5758,6 +5858,31 @@
           "html": "<div class=\"mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-mu-text-900 sm:text-base\">",
           "target": [
             ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"treatment-abroad\"] > .mt-auto.gap-1\\.5.inline-flex"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#a55e1b",
+                "bgColor": "#ffffff",
+                "contrastRatio": 4.98,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "bold",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 4.98"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-xs font-bold text-mu-accent-orange-text\">для&nbsp;компаний</span>",
+          "target": [
+            ".text-mu-accent-orange-text"
           ]
         },
         {
@@ -6736,7 +6861,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]
@@ -7094,7 +7219,7 @@
               "data": null,
               "relatedNodes": [
                 {
-                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-500 font-medium\">(необязательно)</span></label>",
+                  "html": "<label for=\"contact-description\" class=\"block text-sm font-bold text-mu-text-900 mb-2\">Кратко о<!-- -->&nbsp;<!-- -->вашем случае <span class=\"text-mu-text-700 font-medium\">(необязательно)</span></label>",
                   "target": [
                     "label[for=\"contact-description\"]"
                   ]
@@ -10461,251 +10586,5 @@
       ]
     }
   ],
-  "violations": [
-    {
-      "id": "color-contrast",
-      "impact": "serious",
-      "tags": [
-        "cat.color",
-        "wcag2aa",
-        "wcag143",
-        "TTv5",
-        "TT13.c",
-        "EN-301-549",
-        "EN-9.1.4.3",
-        "ACT",
-        "RGAAv4",
-        "RGAA-3.2.1"
-      ],
-      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-      "help": "Elements must meet minimum color contrast ratio thresholds",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
-      "nodes": [
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#4f84e8",
-                "bgColor": "#ffffff",
-                "contrastRatio": 3.62,
-                "fontSize": "10.5pt (14px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-5 inline-flex items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-section-fill)] px-5 py-2.5 shadow-glass-inner backdrop-blur-[var(--glass-section-blur)]\">",
-                  "target": [
-                    ".sm\\:mb-16.mb-12.max-w-3xl > .py-2\\.5.px-5.shadow-glass-inner"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 3.62 (foreground color: #4f84e8, background color: #ffffff, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold uppercase tracking-wider text-mu-accent-blue sm:text-sm\">Наши Услуги</span>",
-          "target": [
-            ".py-2\\.5.px-5.shadow-glass-inner > .uppercase.tracking-wider.sm\\:text-sm"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.62 (foreground color: #4f84e8, background color: #ffffff, font size: 10.5pt (14px), font weight: bold). Expected contrast ratio of 4.5:1"
-        },
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#4f84e8",
-                "bgColor": "#ffffff",
-                "contrastRatio": 3.62,
-                "fontSize": "9.0pt (12px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-button-fill)] px-3 py-1 shadow-sm\"><span class=\"text-xs font-bold text-mu-accent-blue\">от&nbsp;450&nbsp;€</span></div>",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"consultations\"] > .w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\]"
-                  ]
-                },
-                {
-                  "html": "<a class=\"group flex h-full fl...\" href=\"/consultations\">",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"consultations\"]"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 3.62 (foreground color: #4f84e8, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold text-mu-accent-blue\">от&nbsp;450&nbsp;€</span>",
-          "target": [
-            ".w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\] > .text-mu-accent-blue.text-xs"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.62 (foreground color: #4f84e8, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-        },
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#2d9e68",
-                "bgColor": "#ffffff",
-                "contrastRatio": 3.38,
-                "fontSize": "9.0pt (12px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-button-fill)] px-3 py-1 shadow-sm\"><span class=\"text-xs font-bold text-mu-green-700\">от&nbsp;$350</span></div>",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"checkup\"] > .w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\]"
-                  ]
-                },
-                {
-                  "html": "<a class=\"group flex h-full fl...\" href=\"/checkup\">",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"checkup\"]"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 3.38 (foreground color: #2d9e68, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold text-mu-green-700\">от&nbsp;$350</span>",
-          "target": [
-            ".text-mu-green-700"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.38 (foreground color: #2d9e68, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-        },
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#78c3bf",
-                "bgColor": "#ffffff",
-                "contrastRatio": 2.02,
-                "fontSize": "9.0pt (12px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-button-fill)] px-3 py-1 shadow-sm\"><span class=\"text-xs font-bold text-mu-accent-teal\">план бесплатно</span></div>",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"treatment-abroad\"] > .w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\]"
-                  ]
-                },
-                {
-                  "html": "<a class=\"group flex h-full fl...\" href=\"/treatment-abroad\">",
-                  "target": [
-                    ".transition-\\[background-color\\,border-color\\,box-shadow\\,transform\\].hover\\:-translate-y-0\\.5[href$=\"treatment-abroad\"]"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 2.02 (foreground color: #78c3bf, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold text-mu-accent-teal\">план бесплатно</span>",
-          "target": [
-            ".text-mu-accent-teal.text-xs"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #78c3bf, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-        },
-        {
-          "any": [
-            {
-              "id": "color-contrast",
-              "data": {
-                "fgColor": "#ffa25c",
-                "bgColor": "#ffffff",
-                "contrastRatio": 1.98,
-                "fontSize": "9.0pt (12px)",
-                "fontWeight": "bold",
-                "messageKey": null,
-                "expectedContrastRatio": "4.5:1"
-              },
-              "relatedNodes": [
-                {
-                  "html": "<div class=\"mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-glass-border bg-[var(--glass-button-fill)] px-3 py-1 shadow-sm\"><span class=\"text-xs font-bold text-mu-accent-orange\">для&nbsp;компаний</span></div>",
-                  "target": [
-                    "a[href$=\"checkup#b2b\"] > .w-fit.py-1.bg-\\[var\\(--glass-button-fill\\)\\]"
-                  ]
-                },
-                {
-                  "html": "<a class=\"group flex h-full fl...\" href=\"/checkup#b2b\">",
-                  "target": [
-                    "a[href$=\"checkup#b2b\"]"
-                  ]
-                },
-                {
-                  "html": "<body class=\"bg-mu-text-50 text-mu-text-900 overflow-x-clip\">",
-                  "target": [
-                    "body"
-                  ]
-                }
-              ],
-              "impact": "serious",
-              "message": "Element has insufficient color contrast of 1.98 (foreground color: #ffa25c, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-            }
-          ],
-          "all": [],
-          "none": [],
-          "impact": "serious",
-          "html": "<span class=\"text-xs font-bold text-mu-accent-orange\">для&nbsp;компаний</span>",
-          "target": [
-            ".text-mu-accent-orange.text-xs"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.98 (foreground color: #ffa25c, background color: #ffffff, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
-        }
-      ]
-    }
-  ]
+  "violations": []
 }
