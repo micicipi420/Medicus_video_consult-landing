@@ -47,7 +47,7 @@ export function ConsultationDoctors() {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" className="w-10 h-7 mx-auto" aria-hidden="true">
               <rect width="48" height="32" rx="3" fill="#000" />
               <rect y="11" width="48" height="10" fill="#DD0000" />
-              <rect y="21" width="48" height="11" rx="0 0 3 3" fill="#FFCC00" />
+              <rect y="21" width="48" height="11" rx="3" fill="#FFCC00" />
             </svg>
           </div>
           <h3 className="font-bold text-mu-text-900 mb-1">Германия</h3>
@@ -101,8 +101,8 @@ export function ConsultationDoctors() {
               <rect width="48" height="32" rx="3" fill="#000" />
               <rect x="12" width="36" height="11" fill="#00732F" />
               <rect x="12" y="11" width="36" height="10" fill="#fff" />
-              <rect x="12" y="21" width="36" height="11" rx="0 0 3 3" fill="#000" />
-              <rect width="12" height="32" rx="3 0 0 3" fill="#FF0000" />
+              <rect x="12" y="21" width="36" height="11" rx="3" fill="#000" />
+              <rect width="12" height="32" rx="3" fill="#FF0000" />
             </svg>
           </div>
           <h3 className="font-bold text-mu-text-900 mb-1">ОАЭ</h3>
