@@ -1,0 +1,13 @@
+{
+  "rafCount": 1,
+  "blobDebugListenerCount": 1,
+  "pointermoveListenerCount": 1,
+  "routes": [
+    "/",
+    "/checkup",
+    "/consultations",
+    "/treatment-abroad",
+    "/"
+  ],
+  "ts": "2026-05-01T02:20:09.449Z"
+}

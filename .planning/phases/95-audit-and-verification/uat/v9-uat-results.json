@@ -1,0 +1,69 @@
+{
+  "scenarios": {
+    "TZ-18-02": {
+      "status": "pass",
+      "evidence": "mobile-375 hero loaded; overflow=false; blob mode=cursor",
+      "ts": "2026-05-01T02:19:38.868Z"
+    },
+    "TZ-18-01": {
+      "status": "pass",
+      "evidence": "desktop hero loaded; overflow=false; blobMounted=2",
+      "ts": "2026-05-01T02:19:38.986Z"
+    },
+    "TZ-18-03": {
+      "status": "pass",
+      "evidence": "pointer before={\"x\":640,\"y\":400} after={\"x\":800,\"y\":400} moved=true",
+      "ts": "2026-05-01T02:19:39.624Z"
+    },
+    "TZ-18-04": {
+      "status": "pass",
+      "evidence": "mouse traversal across card grid; no errors",
+      "ts": "2026-05-01T02:19:39.665Z"
+    },
+    "TZ-18-08": {
+      "status": "pass",
+      "evidence": "pointerleave dispatched; no exception",
+      "ts": "2026-05-01T02:19:45.489Z"
+    },
+    "TZ-18-05": {
+      "status": "pass",
+      "evidence": "form label color=rgb(27, 33, 44); mouse traversed form",
+      "ts": "2026-05-01T02:19:45.740Z"
+    },
+    "TZ-18-06": {
+      "status": "pass",
+      "evidence": "after 3s park: heat=0.8353656363060554",
+      "ts": "2026-05-01T02:19:46.109Z"
+    },
+    "TZ-18-07": {
+      "status": "pass",
+      "evidence": "cursor moved to header; blob drift behavior runs (no errors)",
+      "ts": "2026-05-01T02:19:46.492Z"
+    },
+    "VER-02-B": {
+      "status": "skip",
+      "evidence": "no .liquid-card found on /",
+      "ts": "2026-05-01T02:19:48.494Z"
+    },
+    "VER-02-A": {
+      "status": "pass",
+      "evidence": "rafCount=0 fieldHidden=false",
+      "ts": "2026-05-01T02:19:48.514Z"
+    },
+    "TZ-18-09": {
+      "status": "pass",
+      "evidence": "rafCount=0 fieldHidden=false",
+      "ts": "2026-05-01T02:19:48.515Z"
+    },
+    "TZ-18-10": {
+      "status": "pass",
+      "evidence": "CTA opaque (gradient bg); backdropFilter=none; bgImage=linear-gradient(to right in oklab, rgb(56, 198, 244) 0%, rgb(79, 132, 232) 100%)…",
+      "ts": "2026-05-01T02:19:49.983Z"
+    },
+    "VER-02-C": {
+      "status": "pass",
+      "evidence": "prefers-contrast: more emulation accepted; manual visual check deferred to VER-05 device UAT",
+      "ts": "2026-05-01T02:19:50.030Z"
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "medicusunion.com home": {
+    "primaryCta": null,
+    "heroHeading": {
+      "color": "rgb(24, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "Inter, \"Inter Fallback\", sans-serif",
+      "fontWeight": "700",
+      "fontSize": "40px",
+      "letterSpacing": "normal"
+    },
+    "bodyText": {
+      "color": "rgb(24, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "Inter, \"Inter Fallback\", sans-serif",
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "letterSpacing": "normal"
+    }
+  },
+  "medicusunion.kz home": {
+    "primaryCta": {
+      "color": "rgb(255, 255, 255)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(90deg, rgb(26, 198, 126) 0%, rgb(13, 157, 181) 100%)",
+      "fontFamily": "TildaSans, Arial, sans-serif, Arial, sans-serif",
+      "fontWeight": "600",
+      "fontSize": "16px",
+      "letterSpacing": "normal"
+    },
+    "heroHeading": {
+      "color": "rgba(0, 0, 0, 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(90deg, rgb(26, 198, 126) 0%, rgb(13, 157, 181) 100%)",
+      "fontFamily": "TildaSans, Arial, sans-serif",
+      "fontWeight": "900",
+      "fontSize": "46px",
+      "letterSpacing": "normal"
+    },
+    "bodyText": null
+  },
+  "local /": {
+    "primaryCta": {
+      "color": "rgba(0, 0, 0, 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(to right in oklab, rgb(56, 198, 244) 0%, rgb(79, 132, 232) 100%)",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "24px",
+      "letterSpacing": "-0.6px"
+    },
+    "heroHeading": {
+      "color": "rgb(27, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "60px",
+      "letterSpacing": "-1.5px"
+    },
+    "bodyText": {
+      "color": "rgb(74, 78, 92)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "inter, \"inter Fallback\"",
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "letterSpacing": "normal"
+    }
+  },
+  "local /checkup": {
+    "primaryCta": {
+      "color": "rgba(0, 0, 0, 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(to right in oklab, rgb(56, 198, 244) 0%, rgb(79, 132, 232) 100%)",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "24px",
+      "letterSpacing": "-0.6px"
+    },
+    "heroHeading": {
+      "color": "rgb(27, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "60px",
+      "letterSpacing": "-1.2px"
+    },
+    "bodyText": {
+      "color": "rgb(74, 78, 92)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "inter, \"inter Fallback\"",
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "letterSpacing": "normal"
+    }
+  },
+  "local /consultations": {
+    "primaryCta": {
+      "color": "rgba(0, 0, 0, 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(to right in oklab, rgb(56, 198, 244) 0%, rgb(79, 132, 232) 100%)",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "24px",
+      "letterSpacing": "-0.6px"
+    },
+    "heroHeading": {
+      "color": "rgb(27, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "60px",
+      "letterSpacing": "-1.2px"
+    },
+    "bodyText": {
+      "color": "rgb(74, 78, 92)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "inter, \"inter Fallback\"",
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "letterSpacing": "normal"
+    }
+  },
+  "local /treatment-abroad": {
+    "primaryCta": {
+      "color": "rgba(0, 0, 0, 0)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(to right in oklab, rgb(56, 198, 244) 0%, rgb(79, 132, 232) 100%)",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "24px",
+      "letterSpacing": "-0.6px"
+    },
+    "heroHeading": {
+      "color": "rgb(27, 33, 44)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "manrope, \"manrope Fallback\"",
+      "fontWeight": "800",
+      "fontSize": "60px",
+      "letterSpacing": "-1.2px"
+    },
+    "bodyText": {
+      "color": "rgb(74, 78, 92)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none",
+      "fontFamily": "inter, \"inter Fallback\"",
+      "fontWeight": "500",
+      "fontSize": "20px",
+      "letterSpacing": "normal"
+    }
+  }
+}
