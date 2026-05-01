@@ -20,7 +20,7 @@
 - **Stack**: Next.js + React + TypeScript + Tailwind (с v6.0). Vanilla HTML/CSS/JS — историческая база v1.0–v5.0.
 - **Backend**: Directus 11 + PostgreSQL 16 (self-hosted в Docker) — приём заявок со всех форм.
 - **Language**: Только русский
-- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст. Mobile blur ≤12px, ≤2 glass elements per viewport.
+- **Design**: Mobile-first, ЦА 45+ — крупный шрифт, понятная навигация, высокий контраст. Mobile blur ≤12px, ≤2 glass CONTENT elements per viewport (sticky chrome — header, FAB — excluded; see DESIGN.md § "Project-specific hard constraints").
 - **Tone**: Спокойный, уверенный, медицинский — без маркетинговой агрессии
 <!-- GSD:project-end -->
 
@@ -154,7 +154,7 @@ Architecture not yet mapped. Follow existing patterns found in the codebase.
 Two non-negotiable rules govern all UI work:
 
 1. **Brand color parity** — every color must trace to `medicusunion.com` or `medicusunion.kz`. Use defined tokens (`{colors.X}` references in YAML; `--mu-*` mirror in `next/src/app/globals.css`). Inventing colors requires a Key Decision in `PROJECT.md` and an update to `DESIGN.md` first.
-2. **Apple Liquid Glass HIG compliance** — all glass surfaces must follow Apple's Materials guidelines. Token scale: `--liquid-blur-{sm,md,lg,xl}` = 16/24/40/60px. Hard project constraints stricter than HIG: mobile blur ≤12px, ≤2 glass layers per viewport, dark mode disables `backdrop-filter`, `@supports` fallbacks required, `prefers-reduced-{transparency,motion}` and `prefers-contrast` must be honored.
+2. **Apple Liquid Glass HIG compliance** — all glass surfaces must follow Apple's Materials guidelines. Token scale: `--liquid-blur-{sm,md,lg,xl}` = 16/24/40/60px. Hard project constraints stricter than HIG: mobile blur ≤12px, ≤2 glass CONTENT layers per viewport (sticky chrome excluded — see DESIGN.md § "Project-specific hard constraints"), dark mode disables `backdrop-filter`, `@supports` fallbacks required, `prefers-reduced-{transparency,motion}` and `prefers-contrast` must be honored.
 
 When implementing UI, validate every color, every component shape, and every glass surface against `DESIGN.md` before considering the work done. The YAML front matter is the contract; CSS in `globals.css` mirrors it.
 

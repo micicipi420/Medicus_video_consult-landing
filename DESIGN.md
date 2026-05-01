@@ -313,9 +313,10 @@ antiPatterns:
   - name: "Mobile blur >12px"
     why: "DESIGN.md hard constraint (Phase 79 cap); regressed historically; GPU + readability budget"
     addedIn: "v9.0 Phase 90"
-  - name: ">2 glass layers per viewport"
-    why: "DESIGN.md hard constraint; mobile-first ЦА 45+ readability + GPU budget"
+  - name: ">2 glass content layers per viewport"
+    why: "DESIGN.md hard constraint; mobile-first ЦА 45+ readability + GPU budget. Chrome surfaces (sticky header, sticky FAB) are excluded — see Project-specific hard constraints."
     addedIn: "v9.0 Phase 90"
+    refinedIn: "v9.0.1 Phase 94 Plan 04 (chrome carve-out)"
   - name: "Adding a new glass class without registering it in liquid-glass.css @a11y-layer-coverage block"
     why: "Phase 89 cheat-pass failure mode; coverage grep MUST find the new class between markers"
     addedIn: "v9.0 Phase 90"
@@ -630,7 +631,7 @@ Defined in `next/src/styles/liquid-glass.css`:
 ### Project-specific hard constraints (stricter than HIG floor)
 
 - **Mobile blur budget:** ≤ 12px on viewports < 768px. `Regular` (40px) and `Thick` (60px) are **not used** on mobile.
-- **Glass layer count:** ≤ 2 glass elements per viewport. Stacked glass-on-glass is forbidden — kills GPU on budget Android devices that dominate the KZ market.
+- **Glass layer count (content):** ≤ 2 glass content surfaces per viewport. Stacked glass-on-glass is forbidden — kills GPU on budget Android devices that dominate the KZ market. **Sticky chrome surfaces** (`<header>`, sticky bottom FAB / `StickyBar`, modal backdrops) are excluded from this budget — they're at most 2 chrome layers in any viewport, are positioned outside the content flow, and were measured stable on real-device UAT (v9.0 Phase 93). The constraint targets content-glass nesting (the Phase 82 services-grid/sticky-bar overlap lesson), not chrome co-presence.
 - **Dark mode glass-off:** When `[data-theme="dark"]` is active, `backdrop-filter` is disabled on most surfaces. Glass on `#0F1923` reads as a murky smear; opaque dark surfaces are clearer.
 - **`@supports` fallbacks required:** Every `backdrop-filter` rule must have a fallback for browsers without support.
 
@@ -736,7 +737,7 @@ Phase 91-94 planners MUST grep this section before generating tasks; any task th
 
 12. **Mobile blur >12px.** Why: `DESIGN.md` hard constraint (Phase 79 cap); regressed historically. Where it manifests: hardcoded `filter: blur(40px)` or `backdrop-filter: blur(24px)` without a `clamp(12px, …)` mobile floor. Do instead: every blur value uses `clamp(12px, fluid-vw, desktop-ceiling)`; mobile media queries cap `filter: blur` at 12px (see `next/src/styles/blob.css` Phase 90 mobile media query).
 
-13. **>2 glass layers per viewport.** Why: `DESIGN.md` hard constraint; mobile-first ЦА 45+ readability + GPU budget. Where it manifests: nested glass cards inside a glass section inside a glass container. Do instead: respect responsive-glass-nesting (mobile = 1 wrapper, desktop = N cards). Phase 82 `StatsBar` is the reference implementation.
+13. **>2 glass content layers per viewport.** Why: `DESIGN.md` hard constraint; mobile-first ЦА 45+ readability + GPU budget. Where it manifests: nested CONTENT-glass cards inside a CONTENT-glass section inside a CONTENT-glass container. Chrome (sticky header, sticky FAB) is excluded — see `Project-specific hard constraints` in the Liquid Glass section. Do instead: respect responsive-glass-nesting (mobile = 1 wrapper, desktop = N cards). Phase 82 `StatsBar` is the reference implementation.
 
 14. **Adding a new glass class without registering it in `liquid-glass.css` `@a11y-layer-coverage` block.** Why: Phase 89 cheat-pass failure mode; coverage grep MUST find the new class between markers. Where it manifests: shipping a new `.glass-foo` utility for one component, forgetting to enumerate it under `prefers-reduced-motion` / `-transparency` / `prefers-contrast: more`. Do instead: every new `.liquid-*`, `.glass-*`, `.blob-*`, `.stats-*`, `.living-blob-*` class MUST be appended to all 3 `@media` blocks inside the `@a11y-layer-coverage:start/end` markers (CTA classes excepted: `.btn-primary`, `.liquid-btn-primary`).
 
