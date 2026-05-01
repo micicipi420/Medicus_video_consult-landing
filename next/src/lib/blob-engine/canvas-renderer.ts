@@ -63,8 +63,13 @@ export function drawFrame(s: DrawState): void {
   drawCore(ctx, core.x, core.y, heat, colors.core, colors.hot);
 
   ctx.globalCompositeOperation = 'source-over';
-  if (heat > 0.6 || velocity < 50) {
-    drawGlint(ctx, glint.x, glint.y, colors.glint);
+  // Phase 96 follow-up: drop the `velocity < 50` trigger. The OR clause meant
+  // the glint flashed on whenever the cursor was still — i.e. exactly when the
+  // user's looking at the blob. That made the bright center read as an
+  // unwanted "nipple" artefact at rest. Heat-only keeps glint as a true
+  // specular highlight for warmed-up dwell states (heat ramps over 1.5–3s).
+  if (heat > 0.6) {
+    drawGlint(ctx, glint.x, glint.y, colors.glint, heat);
   }
 }
 
@@ -81,15 +86,22 @@ function drawHalo(
   // Velocity-driven stretch — Plan 02 stub leaves velocity=0 so radius is base; Plan 03 makes this real.
   const radius = baseRadius * (1 + Math.min(0.6, velocity / 1500));
   const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  // Phase 96 BR-01: 4-stop feather to eliminate visible halo edge ring.
-  // Old chain (3 stops at 0 / 0.7 / 1.0) produced a perceptible ring at the
-  // 0.7 transition. New chain holds the inner color longer and adds a
-  // mid-feather so the gradient reads as continuous alpha falloff at all
-  // zoom levels.
-  grad.addColorStop(0.00, haloColor);
-  grad.addColorStop(0.35, haloColor);
-  grad.addColorStop(0.65, edgeColor);
-  grad.addColorStop(1.00, 'rgba(0,0,0,0)');
+  // Phase 96 follow-up: replace plateau-then-fade with monotonic exponential-
+  // ish alpha decay. The previous 4-stop chain held haloColor solid through
+  // 0.0–0.35 (a uniform plateau) and then ramped into edgeColor — the human
+  // eye reads the plateau-to-ramp boundary as a perceptible ring. New chain
+  // has 6 stops with continuously decreasing alpha across the full radius,
+  // no plateau anywhere, so the gradient looks like a smooth glow without a
+  // visible "stop" in it. Colors are computed manually because canvas
+  // `addColorStop` can't easily multiply a parsed string's alpha — but the
+  // halo (rgba α=0.5) and edge (rgba α=0.18) tokens give us the natural
+  // bookends, and we hand-blend three intermediate steps.
+  grad.addColorStop(0.00, haloColor);                       // halo @ α=0.50
+  grad.addColorStop(0.20, 'rgba(98,221,177,0.36)');         // halo dimmed
+  grad.addColorStop(0.40, 'rgba(110,213,205,0.24)');        // halo ↔ edge mix
+  grad.addColorStop(0.60, edgeColor);                       // edge @ α=0.18
+  grad.addColorStop(0.80, 'rgba(125,205,255,0.07)');        // edge fading
+  grad.addColorStop(1.00, 'rgba(0,0,0,0)');                 // gone
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
@@ -129,11 +141,23 @@ function drawGlint(
   ctx: CanvasRenderingContext2D,
   x: number, y: number,
   glintColor: string,
+  heat: number,
 ): void {
-  const radius = 12;
+  // Phase 96 follow-up: glint was 12px hard radius with full α=0.65 at center
+  // → read as a sharp "nipple" artefact. Now: 28px radius with heat-scaled
+  // peak alpha and a soft 3-stop falloff so it blends as ambient sheen,
+  // not a point light. Caller now only invokes when heat > 0.6, so peak
+  // alpha (heat 0.6→1.0 maps to ~0.30→0.65 scale of glintColor's α=0.65)
+  // and the 3-stop curve dies completely at the edge.
+  const radius = 28;
+  // Heat already > 0.6 at call site; remap 0.6..1.0 → 0..1 for soft ramp-in
+  const heatNorm = Math.max(0, Math.min(1, (heat - 0.6) / 0.4));
+  const alphaScale = 0.4 + 0.6 * heatNorm; // 0.4..1.0 of glintColor alpha
+  const peak = glintColor.replace(/[\d.]+\)$/, `${(0.65 * alphaScale).toFixed(2)})`);
   const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  grad.addColorStop(0, glintColor);
-  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  grad.addColorStop(0.0, peak);
+  grad.addColorStop(0.5, glintColor.replace(/[\d.]+\)$/, `${(0.18 * alphaScale).toFixed(2)})`));
+  grad.addColorStop(1.0, 'rgba(255,255,255,0)');
   ctx.fillStyle = grad;
   ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
 }
