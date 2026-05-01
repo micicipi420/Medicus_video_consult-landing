@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -21,14 +19,8 @@ import {
 
 interface SubmissionsTableProps {
   submissions: SubmissionRow[];
+  anyFilterActive: boolean;
 }
-
-const STATUS_OPTIONS = [
-  { value: 'all', label: 'Все статусы' },
-  { value: 'new', label: 'Новые' },
-  { value: 'contacted', label: 'Связались' },
-  { value: 'completed', label: 'Завершено' },
-] as const;
 
 function getStatusVariant(
   status: string
@@ -56,159 +48,64 @@ function formatDate(date: Date): string {
 
 const DESCRIPTION_MAX = 80;
 
-export function SubmissionsTable({ submissions }: SubmissionsTableProps) {
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
-
-  const filtered = useMemo(() => {
-    return submissions.filter((s) => {
-      if (statusFilter !== 'all' && s.status !== statusFilter) return false;
-      if (dateFrom) {
-        const from = new Date(dateFrom);
-        if (new Date(s.dateCreated) < from) return false;
-      }
-      if (dateTo) {
-        const to = new Date(dateTo);
-        to.setHours(23, 59, 59, 999);
-        if (new Date(s.dateCreated) > to) return false;
-      }
-      return true;
-    });
-  }, [submissions, statusFilter, dateFrom, dateTo]);
-
-  const hasActiveFilters =
-    statusFilter !== 'all' || dateFrom !== '' || dateTo !== '';
-
-  function resetFilters() {
-    setStatusFilter('all');
-    setDateFrom('');
-    setDateTo('');
-  }
-
+/**
+ * Render-only submissions table. Plan 03 removed the local useState filter UI;
+ * filtering now happens server-side via URL params (see filters.tsx + page.tsx).
+ *
+ * Empty-state copy is filter-aware: "Нет заявок по выбранным фильтрам" when
+ * filters are active, "Заявок пока нет" when the table is genuinely empty.
+ */
+export function SubmissionsTable({
+  submissions,
+  anyFilterActive,
+}: SubmissionsTableProps) {
   return (
-    <div>
-      {/* Filter bar (plan 02: preserved as-is; plan 03 replaces with URL-driven server filters) */}
-      <div className="mb-6 flex flex-wrap items-end gap-4">
-        <div>
-          <label
-            htmlFor="status-filter"
-            className="mb-1 block text-xs font-medium text-muted-foreground"
-          >
-            Статус
-          </label>
-          <select
-            id="status-filter"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-3 text-sm"
-          >
-            {STATUS_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="date-from"
-            className="mb-1 block text-xs font-medium text-muted-foreground"
-          >
-            С
-          </label>
-          <input
-            id="date-from"
-            type="date"
-            value={dateFrom}
-            onChange={(e) => setDateFrom(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-3 text-sm"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="date-to"
-            className="mb-1 block text-xs font-medium text-muted-foreground"
-          >
-            По
-          </label>
-          <input
-            id="date-to"
-            type="date"
-            value={dateTo}
-            onChange={(e) => setDateTo(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-3 text-sm"
-          />
-        </div>
-
-        {hasActiveFilters && (
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="h-9 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-          >
-            Сбросить
-          </button>
-        )}
-      </div>
-
-      {/* Filtered count */}
-      {hasActiveFilters && (
-        <p className="mb-4 text-sm text-muted-foreground">
-          Показано: {filtered.length} из {submissions.length}
-        </p>
-      )}
-
-      {/* Table — 6 columns: Дата заявки | Имя | Телефон | Направление | Описание | Статус */}
-      <div className="overflow-x-auto rounded-md border">
-        <Table>
-          <TableHeader>
+    <div className="overflow-x-auto rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Дата заявки</TableHead>
+            <TableHead>Имя</TableHead>
+            <TableHead>Телефон</TableHead>
+            <TableHead>Направление</TableHead>
+            <TableHead>Описание</TableHead>
+            <TableHead>Статус</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {submissions.length === 0 ? (
             <TableRow>
-              <TableHead>Дата заявки</TableHead>
-              <TableHead>Имя</TableHead>
-              <TableHead>Телефон</TableHead>
-              <TableHead>Направление</TableHead>
-              <TableHead>Описание</TableHead>
-              <TableHead>Статус</TableHead>
+              <TableCell
+                colSpan={6}
+                className="h-24 text-center text-muted-foreground"
+              >
+                {anyFilterActive
+                  ? 'Нет заявок по выбранным фильтрам'
+                  : 'Заявок пока нет'}
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="h-24 text-center text-muted-foreground"
-                >
-                  {submissions.length === 0
-                    ? 'Заявок пока нет'
-                    : 'Нет заявок по выбранным фильтрам'}
+          ) : (
+            submissions.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>{formatDate(row.dateCreated)}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.phone}</TableCell>
+                <TableCell>
+                  {labelForSpecialization(row.specialization)}
+                </TableCell>
+                <TableCell title={row.description ?? ''}>
+                  {truncate(row.description, DESCRIPTION_MAX)}
+                </TableCell>
+                <TableCell>
+                  <Badge variant={getStatusVariant(row.status)}>
+                    {STATUS_LABELS[row.status] ?? row.status}
+                  </Badge>
                 </TableCell>
               </TableRow>
-            ) : (
-              filtered.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{formatDate(row.dateCreated)}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell>
-                    {labelForSpecialization(row.specialization)}
-                  </TableCell>
-                  <TableCell title={row.description ?? ''}>
-                    {truncate(row.description, DESCRIPTION_MAX)}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusVariant(row.status)}>
-                      {STATUS_LABELS[row.status] ?? row.status}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }
