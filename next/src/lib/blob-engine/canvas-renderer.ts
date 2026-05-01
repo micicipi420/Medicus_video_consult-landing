@@ -20,6 +20,7 @@ export interface DrawState {
   core: LayerPos;       // lerped layer positions in CSS px
   body: LayerPos;
   halo: LayerPos;
+  glint: LayerPos;      // Phase 96 BR-02 — own lerped position, no longer locked to core
   heat: number;         // 0..1
   velocity: number;     // px/s — Plan 02 stub: 0; Plan 03 real value
 }
@@ -52,7 +53,7 @@ export function readColors(): BlobColors {
 
 /** Frame draw orchestrator. Plan 02 paints with stub heat=0 + stub velocity=0. */
 export function drawFrame(s: DrawState): void {
-  const { ctx, width, height, colors, core, body, halo, heat, velocity } = s;
+  const { ctx, width, height, colors, core, body, halo, glint, heat, velocity } = s;
 
   ctx.clearRect(0, 0, width, height);
   ctx.globalCompositeOperation = 'screen';
@@ -63,7 +64,7 @@ export function drawFrame(s: DrawState): void {
 
   ctx.globalCompositeOperation = 'source-over';
   if (heat > 0.6 || velocity < 50) {
-    drawGlint(ctx, core.x, core.y, colors.glint);
+    drawGlint(ctx, glint.x, glint.y, colors.glint);
   }
 }
 
@@ -73,13 +74,22 @@ function drawHalo(
   heat: number, velocity: number,
   haloColor: string, edgeColor: string,
 ): void {
-  const baseRadius = 300 + 100 * heat;
+  // Phase 96 BR-01: extended baseRadius from 300 -> 360 to give the outer
+  // alpha falloff ~20% more room to die smoothly (max ~580px at full heat
+  // + max velocity stretch).
+  const baseRadius = 360 + 100 * heat;
   // Velocity-driven stretch — Plan 02 stub leaves velocity=0 so radius is base; Plan 03 makes this real.
   const radius = baseRadius * (1 + Math.min(0.6, velocity / 1500));
   const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  grad.addColorStop(0, haloColor);
-  grad.addColorStop(0.7, edgeColor);
-  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  // Phase 96 BR-01: 4-stop feather to eliminate visible halo edge ring.
+  // Old chain (3 stops at 0 / 0.7 / 1.0) produced a perceptible ring at the
+  // 0.7 transition. New chain holds the inner color longer and adds a
+  // mid-feather so the gradient reads as continuous alpha falloff at all
+  // zoom levels.
+  grad.addColorStop(0.00, haloColor);
+  grad.addColorStop(0.35, haloColor);
+  grad.addColorStop(0.65, edgeColor);
+  grad.addColorStop(1.00, 'rgba(0,0,0,0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }

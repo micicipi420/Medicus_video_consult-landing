@@ -260,6 +260,8 @@
   --blob-body-y: 50vh;
   --blob-halo-x: 50vw;
   --blob-halo-y: 50vh;
+  --blob-glint-x: 50vw;
+  --blob-glint-y: 50vh;
   --blob-heat: 0;
   --blob-velocity: 0;
 }

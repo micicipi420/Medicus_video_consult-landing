@@ -1,14 +1,30 @@
 // next/src/lib/blob-engine/physics.ts
 // v9.0 Phase 91 Plan 03 — Pure-math physics for the blob engine.
 // All exports are pure functions over EngineState fields; no DOM access, no listeners, no rAF.
-// Constants are LOCKED per Decisions D, E, F (TZ §6, §7, §14, §17). Phase 92 may tune via in-browser session.
+//
+// v9.0.1 Phase 96 Plan 02 (Option B — structural refactor):
+// Per-layer LERP cluster (LERP_BODY/HALO/GLINT) replaced by a velocity-low-pass
+// capped-offset model. Only `core` lerps to the target. body/halo/glint render
+// at `core - velUnit * f(velocity) * cap_layer`, which hard-bounds inter-layer
+// separation to `cap_halo` = 8px regardless of cursor speed. Preserves organic
+// trail at low velocity (f → 0 ⇒ all layers collapse to core); enforces the
+// BR-02 ≤8px ceiling at high velocity (f saturates at 1).
 
 import type { LayerPos } from './canvas-renderer';
 
-// --- TZ §17 lerp factors (Decision D) — LOCKED ---
-export const LERP_CORE = 0.18;
-export const LERP_BODY = 0.08;
-export const LERP_HALO = 0.04;
+// --- Phase 96 BR-02 Option B — capped offset model ---
+// Only the core lerps to the target. body/halo/glint are computed offsets.
+export const LERP_CORE = 0.20;
+
+// Per-layer offset caps (px) — max trail distance behind core at peak velocity.
+// halo at 8px is the BR-02 ceiling for the rolling max angular separation.
+export const OFFSET_CAP_BODY = 6;
+export const OFFSET_CAP_HALO = 8;
+export const OFFSET_CAP_GLINT = 4;
+
+// Velocity-LP smoothing α — used to damp instantaneous noise on the velocity
+// vector so layer offsets don't jitter on a noisy pointer signal.
+export const VELOCITY_LP_ALPHA = 0.15;
 
 // --- Velocity tracker (Decision D) — LOCKED ---
 export const VELOCITY_ALPHA = 0.15;
@@ -37,27 +53,95 @@ export interface PointerRef {
   lastT: number;
 }
 
+/**
+ * Vector velocity-low-pass state. Kept on the engine so it persists across
+ * frames; mutated in place by `updateVelocityVector`.
+ */
+export interface VelocityLPState {
+  vx: number; // smoothed x-component, px/s
+  vy: number; // smoothed y-component, px/s
+}
+
 /** Pure lerp — current toward target by factor. */
 export function lerp(current: number, target: number, factor: number): number {
   return current + (target - current) * factor;
 }
 
 /**
- * Apply lerp factors per Decision D to all 3 visible sublayers.
- * Pure — mutates layer fields in place; no side effects.
+ * Update the smoothed (low-pass) velocity vector from a per-frame core
+ * position delta. Mutates `lp` in place.
+ *
+ * Filter: lp ← lp * (1 - α) + instant * α   (α = VELOCITY_LP_ALPHA = 0.15)
+ *
+ * Components are clamped to ±VELOCITY_MAX so a single noisy frame can't
+ * push the smoothed magnitude beyond the saturation point of the offset
+ * curve.
+ */
+export function updateVelocityVector(
+  lp: VelocityLPState,
+  prevX: number,
+  prevY: number,
+  currX: number,
+  currY: number,
+  deltaTimeMs: number,
+): void {
+  const dt = Math.max(deltaTimeMs, 1); // ms; guard against 0 / negative
+  const instantVx = ((currX - prevX) / dt) * 1000; // px/s
+  const instantVy = ((currY - prevY) / dt) * 1000;
+  const clampedVx = Math.max(-VELOCITY_MAX, Math.min(VELOCITY_MAX, instantVx));
+  const clampedVy = Math.max(-VELOCITY_MAX, Math.min(VELOCITY_MAX, instantVy));
+  lp.vx = lp.vx * (1 - VELOCITY_LP_ALPHA) + clampedVx * VELOCITY_LP_ALPHA;
+  lp.vy = lp.vy * (1 - VELOCITY_LP_ALPHA) + clampedVy * VELOCITY_LP_ALPHA;
+}
+
+/**
+ * Apply Option B model to all 4 sublayers.
+ *
+ * - `core`: lerps to `target` with LERP_CORE (k = 0.20).
+ * - `body / halo / glint`: rendered as `core - velUnit * f * cap_layer`,
+ *   where:
+ *     - `velUnit` = unit vector along the smoothed velocity LP
+ *     - `f` = clamp(|velLP| / VELOCITY_MAX, 0, 1)
+ *     - `cap_layer` is OFFSET_CAP_{BODY|HALO|GLINT}
+ *   Sign is negative so layers trail BEHIND core in the direction the
+ *   cursor came from (organic streamline).
+ *
+ * Inter-layer separation is hard-bounded: max pairwise distance equals
+ * `cap_halo` = 8px regardless of velocity, satisfying BR-02. At low
+ * velocity (f → 0) all three layers collapse to core, preserving the
+ * "calm cluster" feel for slow cursor motion.
+ *
+ * Pure: mutates layer fields in place; no side effects.
  */
 export function updateLayers(
   core: LayerPos,
   body: LayerPos,
   halo: LayerPos,
+  glint: LayerPos,
   target: { x: number; y: number },
+  velocityLP: VelocityLPState,
 ): void {
+  // 1. Core lerps to target.
   core.x = lerp(core.x, target.x, LERP_CORE);
   core.y = lerp(core.y, target.y, LERP_CORE);
-  body.x = lerp(body.x, target.x, LERP_BODY);
-  body.y = lerp(body.y, target.y, LERP_BODY);
-  halo.x = lerp(halo.x, target.x, LERP_HALO);
-  halo.y = lerp(halo.y, target.y, LERP_HALO);
+
+  // 2. Compute trail offset for body/halo/glint.
+  const vMag = Math.hypot(velocityLP.vx, velocityLP.vy);
+  let ux = 0;
+  let uy = 0;
+  let f = 0;
+  if (vMag > 1e-3) {
+    ux = velocityLP.vx / vMag;
+    uy = velocityLP.vy / vMag;
+    f = Math.min(vMag / VELOCITY_MAX, 1);
+  }
+  // Negative sign — trail BEHIND in direction of motion.
+  body.x = core.x - ux * f * OFFSET_CAP_BODY;
+  body.y = core.y - uy * f * OFFSET_CAP_BODY;
+  halo.x = core.x - ux * f * OFFSET_CAP_HALO;
+  halo.y = core.y - uy * f * OFFSET_CAP_HALO;
+  glint.x = core.x - ux * f * OFFSET_CAP_GLINT;
+  glint.y = core.y - uy * f * OFFSET_CAP_GLINT;
 }
 
 /**

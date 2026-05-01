@@ -13,11 +13,13 @@ import {
 import {
   updateLayers,
   updateVelocity,
+  updateVelocityVector,
   updateHeat,
   applyTapPulse,
   TAP_PULSE_RATE_LIMIT_MS,
   type DwellSample,
   type PointerRef,
+  type VelocityLPState,
 } from './physics';
 import {
   resolveMode,
@@ -48,11 +50,16 @@ interface EngineState {
   core: LayerPos;
   body: LayerPos;
   halo: LayerPos;
+  glint: LayerPos;
   heat: number;
   velocity: number;
+  velocityLP: VelocityLPState;
+  lastTarget: { x: number; y: number };
+  hasLastTarget: boolean;
   mode: BlobMode;
   startedAt: number;
   frameCount: number;
+  maxAngularSeparation: number;
   dwellSamples: DwellSample[];
   lastFrameAt: number;
   lastTapAt: number;
@@ -110,11 +117,16 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
     core: { ...initial },
     body: { ...initial },
     halo: { ...initial },
+    glint: { ...initial },
     heat: 0,
     velocity: 0,
+    velocityLP: { vx: 0, vy: 0 },
+    lastTarget: { ...initial },
+    hasLastTarget: false,
     mode: 'cursor',
     startedAt: performance.now(),
     frameCount: 0,
+    maxAngularSeparation: 0,
     dwellSamples: [],
     lastFrameAt: performance.now(),
     lastTapAt: 0,
@@ -176,32 +188,47 @@ export function startBlobEngine(opts: StartBlobEngineOpts): () => void {
 
   state.modeHandles = attachModeListeners(state.abort, recomputeMode, onPointerOut, onPointerOver);
 
-  // Dev-only debug surface (BLOB-12). Tree-shaken in prod via NODE_ENV guard.
+  // Dev-only debug surface (BLOB-12 + Phase 96 BR-02). Tree-shaken in prod via NODE_ENV guard.
   if (process.env.NODE_ENV !== 'production') {
-    attachDebug(() => {
-      if (!state) {
+    attachDebug(
+      () => {
+        if (!state) {
+          return {
+            rafId: null,
+            abort: null,
+            mode: 'unstarted',
+            pointer: { x: 0, y: 0 },
+            heat: 0,
+            velocity: 0,
+            velocityLP: { vx: 0, vy: 0 },
+            startedAt: 0,
+            frameCount: 0,
+            core: { x: 0, y: 0 },
+            body: { x: 0, y: 0 },
+            halo: { x: 0, y: 0 },
+            glint: { x: 0, y: 0 },
+            maxAngularSeparation: 0,
+          };
+        }
         return {
-          rafId: null,
-          abort: null,
-          mode: 'unstarted',
-          pointer: { x: 0, y: 0 },
-          heat: 0,
-          velocity: 0,
-          startedAt: 0,
-          frameCount: 0,
+          rafId: state.rafId,
+          abort: state.abort,
+          mode: state.mode,
+          pointer: { x: state.pointer.x, y: state.pointer.y },
+          heat: state.heat,
+          velocity: state.velocity,
+          velocityLP: { vx: state.velocityLP.vx, vy: state.velocityLP.vy },
+          startedAt: state.startedAt,
+          frameCount: state.frameCount,
+          core: { x: state.core.x, y: state.core.y },
+          body: { x: state.body.x, y: state.body.y },
+          halo: { x: state.halo.x, y: state.halo.y },
+          glint: { x: state.glint.x, y: state.glint.y },
+          maxAngularSeparation: state.maxAngularSeparation,
         };
-      }
-      return {
-        rafId: state.rafId,
-        abort: state.abort,
-        mode: state.mode,
-        pointer: { x: state.pointer.x, y: state.pointer.y },
-        heat: state.heat,
-        velocity: state.velocity,
-        startedAt: state.startedAt,
-        frameCount: state.frameCount,
-      };
-    });
+      },
+      () => { if (state) state.maxAngularSeparation = 0; },
+    );
   }
 
   // Initial mode read.
@@ -338,7 +365,39 @@ function loop(): void {
     return;
   }
 
-  updateLayers(state.core, state.body, state.halo, target);
+  // Phase 96 BR-02 Option B: velocity-LP vector drives layer offsets.
+  // Derive from frame-to-frame target deltas so cursor mode (target = pointer)
+  // and ambient/dark modes (target = Lissajous orbit) both feed the same
+  // mechanism. First frame: skip update (no prev target → undefined velocity).
+  if (state.hasLastTarget) {
+    updateVelocityVector(
+      state.velocityLP,
+      state.lastTarget.x,
+      state.lastTarget.y,
+      target.x,
+      target.y,
+      deltaTime,
+    );
+  } else {
+    state.hasLastTarget = true;
+  }
+  state.lastTarget.x = target.x;
+  state.lastTarget.y = target.y;
+
+  updateLayers(state.core, state.body, state.halo, state.glint, target, state.velocityLP);
+
+  // Phase 96 BR-02: rolling max angular separation across the 4 sublayers.
+  // 6 hypot calls/frame ~ <100ns total at 60fps; well within budget.
+  const dist = (a: LayerPos, b: LayerPos) => Math.hypot(a.x - b.x, a.y - b.y);
+  const sep = Math.max(
+    dist(state.core, state.body),
+    dist(state.core, state.halo),
+    dist(state.core, state.glint),
+    dist(state.body, state.halo),
+    dist(state.body, state.glint),
+    dist(state.halo, state.glint),
+  );
+  if (sep > state.maxAngularSeparation) state.maxAngularSeparation = sep;
 
   // Velocity (Decision D — low-pass α=0.15).
   state.velocity = updateVelocity(state.pointer, state.velocity, now);
@@ -362,6 +421,8 @@ function loop(): void {
   root.setProperty('--blob-body-y', `${state.body.y}px`);
   root.setProperty('--blob-halo-x', `${state.halo.x}px`);
   root.setProperty('--blob-halo-y', `${state.halo.y}px`);
+  root.setProperty('--blob-glint-x', `${state.glint.x}px`);
+  root.setProperty('--blob-glint-y', `${state.glint.y}px`);
   root.setProperty('--blob-heat', `${state.heat}`);
   root.setProperty('--blob-velocity', `${state.velocity}`);
 
@@ -374,6 +435,7 @@ function loop(): void {
     core: state.core,
     body: state.body,
     halo: state.halo,
+    glint: state.glint,
     heat: state.heat,
     velocity: state.velocity,
   };
