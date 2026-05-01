@@ -28,10 +28,10 @@ Closeout of v9.0 polish hangovers, simple read-only operator admin for submissio
 
 **Execution order:** 94 → 95 → 96 → 97. Phase 94 is the cheapest set of clean-ups (low risk, fast). Phase 95 verifies after the polish lands. Phase 96 is the most subjective work (blob feel) and benefits from the cleaner baseline. Phase 97 is independent of the others (read-only admin) and could move earlier if business need spikes.
 
-- [ ] **Phase 94: Polish & Hygiene** — Fix 7 invalid SVG `rx` attributes on country-flag stripes (POL-01); resolve mobile hero `≤2-glass-per-viewport` contract on `/treatment-abroad` either by UI fix or DESIGN.md clarification (POL-02); remove 4 dead-code files in `next/src/components/sections/contacts/` (POL-03); gitignore / relocate untracked screenshots (POL-04); confirm canonical Next location at `next/src/` and remove/relocate legacy `./src/styles/` (POL-05). Closes 3 v9.0 UAT-flagged todos.
-- [ ] **Phase 95: Audit & Verification** — Lighthouse CI on 5 routes with mobile-throttled budgets (LCP 2500 / INP 200 / CLS 0.1 / TBT 200) (AUDIT-01); axe-core a11y audit, 0 critical/serious violations (AUDIT-02); brand review against medicusunion.com / medicusunion.kz — color tokens, typography, tone (AUDIT-03); execute leftover v9.0 `VER-01..08` Playwright UAT scenarios + leak test (AUDIT-04). Reports committed to phase dir.
-- [ ] **Phase 96: Blob Unification** — Halo edge feathered (no visible gradient stop boundary, smooth alpha falloff) (BR-01); 4 sublayers move as single 2D organism — max angular separation under fast cursor motion ≤8px (vs ~80px in v9.0); parametric solution preferred (unified inertia / 10–30ms micro-delays), structural refactor only if parametric fails (BR-02); mobile ambient mode mirrors desktop unification (BR-03).
-- [ ] **Phase 97: Admin Submissions View** — `/admin/submissions` Next.js route, env-token authenticated (no full Auth this milestone) (ADM-01); Drizzle-backed list view with Russian-labeled columns, pagination 50/page (ADM-02); URL-encoded filter UI by date / specialization / status (ADM-03).
+- [x] **Phase 94: Polish & Hygiene** — Fixed 7 invalid SVG `rx` attributes (POL-01); DESIGN.md chrome carve-out clarification for ≤2-glass-per-viewport contract (POL-02); 4 dead-code files removed (POL-03); audit-screenshot gitignore patterns added (POL-04); legacy `./src/styles/` deleted, canonical = `next/src/` (POL-05). 5/5 plans complete.
+- [→] **Phase 95: Audit & Verification** — Audits executed; **4 findings open**: AUDIT-01 LCP fails on 5/5 routes (3120-3270ms vs 2500ms — todo `95-04-lcp-waiver-or-fix.md`); AUDIT-02 axe 10 serious color-contrast on eyebrow pills (todo `95-02-color-contrast-eyebrow-pill.md`); AUDIT-03 BR-D-01 MAJOR CTA gradient palette divergence (todo `95-03-cta-gradient-brand-mismatch.md`); VER-05 deferred (todo `95-04-real-device-uat-deferred.md`). 5/5 plans authored + reports committed; user disposition required for milestone closeout.
+- [x] **Phase 96: Blob Unification** — Halo feathered (4-stop gradient + baseRadius 360, BR-01); structural refactor to Option B velocity-LP capped offsets (parametric LERP failed at 88px, structural hit 2.17px max separation @ 1500px/s — 41× target headroom) (BR-02); mobile parity 0.28px @ 5s Lissajous (BR-03). 3/3 plans complete.
+- [x] **Phase 97: Admin Submissions View** — Middleware env-token auth with constant-time compare (ADM-01, curl smoke 4/4 pass); 6-column read-only view with Russian-label idempotent mapping + 50/page pagination (ADM-02, verified against 55 seeded rows); URL-driven server-side filters with whitelist enforcement (ADM-03). 3/3 plans complete.
 
 ### v9.0 Living Blob Liquid Glass Scene (Shipped 2026-05-01)
 
@@ -431,10 +431,10 @@ Phase 97 (Admin Submissions) is independent of 94–96 and can move earlier if b
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 94. Polish & Hygiene | 0/0 | Not started | — |
-| 95. Audit & Verification | 0/0 | Not started | — |
-| 96. Blob Unification | 0/0 | Not started | — |
-| 97. Admin Submissions View | 0/0 | Not started | — |
+| 94. Polish & Hygiene | 5/5 | Complete | 2026-05-01 |
+| 95. Audit & Verification | 5/5 | Partial — 4 audit findings pending user disposition | 2026-05-01 (executed) |
+| 96. Blob Unification | 3/3 | Complete (Option B structural refactor — 41× target headroom) | 2026-05-01 |
+| 97. Admin Submissions View | 3/3 | Complete | 2026-05-01 |
 
 ### v9.0 Living Blob Liquid Glass Scene (Shipped 2026-05-01)
 

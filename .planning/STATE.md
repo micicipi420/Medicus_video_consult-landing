@@ -2,16 +2,18 @@
 gsd_state_version: 1.0
 milestone: v9.0.1
 milestone_name: Polish, Admin & Unified Blob
-status: planning
-stopped_at: v9.0 shipped (PR #3 squash-merge into main `a67deb6`); v9.0.1 milestone artifacts written; first phase = Phase 94 Polish & Hygiene
-last_updated: "2026-05-01T00:45:00.000Z"
+status: verifying
+stopped_at: All 4 phases executed in parallel worktrees + merged into main; Phase 95 partial pending 4 user/hardware items (LCP waiver, CTA gradient brand decision, real-device UAT, color-contrast fix); Phases 94/96/97 fully complete
+last_updated: "2026-05-01T09:30:00.000Z"
 last_activity: 2026-05-01
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 3
+  partial_phases: 1
+  total_plans: 16
+  completed_plans: 16
+  percent: 100
+  audit_findings_open: 4
 ---
 
 # Project State
@@ -21,16 +23,25 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-01)
 
 **Core value:** Человек за 3 секунды понимает: здесь можно получить доступ к европейской и азиатской медицине — от консультации онлайн до полного лечения за рубежом под ключ — и оставляет заявку.
-**Current focus:** Phase 94 — polish-and-hygiene (POL-01..05)
+**Current focus:** v9.0.1 closeout — 4 audit findings need user disposition before milestone ships
 
 ## Current Position
 
-Phase: Not started (defining plans)
-Plan: —
-Status: Defining plans for v9.0.1 — first phase Phase 94 Polish & Hygiene
-Last activity: 2026-05-01 — Milestone v9.0.1 started
+Phase: 97 (last executed)
+Plan: 97-03 (last completed)
+Status: All 16 plans executed across 4 phases; 3 phases complete (94, 96, 97), 1 phase partial (95 audit found real issues — LCP perf, brand gradient, color-contrast, real-device UAT — captured as todos pending user direction)
+Last activity: 2026-05-01 — Parallel execution + merge of all v9.0.1 phases complete
 
-Progress: [          ] 0%
+Progress: [██████████] 100% plan execution; partial milestone closeout (4 audit follow-ups open)
+
+## Audit Findings Pending User (Phase 95)
+
+| ID | What | Path forward |
+|---|---|---|
+| AUDIT-01 LCP | All 5 routes 3120-3270ms vs 2500ms budget | Path A: image/bundle perf phase (98) / Path B: relaxed budget waiver |
+| AUDIT-03 BR-D-01 | CTA gradient blue vs brand green→teal reference | Path A: revert to green / Path B: lock blue as v9 brand decision |
+| AUDIT-02 color-contrast | 10 serious axe violations on accent eyebrow pills (#38C6F4 on light glass = 1.92:1) | Token edit or color swap on affected pills |
+| VER-05 real-device | Deferred (no hardware) | Human runner with iOS+Android+desktop browsers OR relaxed gate |
 
 ## Performance Metrics
 

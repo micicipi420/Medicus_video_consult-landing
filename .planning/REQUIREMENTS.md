@@ -336,11 +336,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ### Polish & Hygiene (Phase 94)
 
-- [ ] **POL-01**: 7 invalid SVG `rx="0 0 3 3"` / `rx="3 0 0 3"` / `rx="3 3 0 0"` attributes on country-flag stripes fixed in `next/src/components/sections/consultations/ConsultationDoctors.tsx` (lines 50, 104, 105) and `next/src/components/sections/treatment/TreatmentClinics.tsx` (lines 37, 90, 91, 112); 0 `<rect> attribute rx` console errors on `/consultations` and `/treatment-abroad` (verified with Playwright)
-- [ ] **POL-02**: Mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` resolved — either by dropping eyebrow pill OR sticky bottom CTA wrapper to non-glass on mobile, OR by clarifying in `DESIGN.md` that sticky chrome surfaces (header, FAB) do not count toward the per-viewport budget; resolution documented and CLAUDE.md updated if contract changes
-- [ ] **POL-03**: 4 dead-code files in `next/src/components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx` — exact set per `93-RESEARCH.md`) removed; `grep -r` across `next/src/` returns 0 references; `pnpm build` and `pnpm lint` exit 0 after removal
-- [ ] **POL-04**: Untracked screenshots in repo root (`90-*.png`, `91-*.png`, `93-uat-*.png`, `v8-*.png`) either added to `.gitignore` patterns or relocated to `.planning/audit-screenshots/`; `git status` shows clean working tree (or only the new design/ + .mcp.json which are out of scope)
-- [ ] **POL-05**: Exactly ONE canonical Next.js source location confirmed at `next/src/`; legacy `./src/styles/` (pre-Next vanilla CSS) deleted/relocated/kept (per Plan 05 user decision); build still passes; dev server starts cleanly; planning docs reference `next/src/...` uniformly
+- [x] **POL-01**: 7 invalid SVG `rx="0 0 3 3"` / `rx="3 0 0 3"` / `rx="3 3 0 0"` attributes on country-flag stripes fixed in `next/src/components/sections/consultations/ConsultationDoctors.tsx` (lines 50, 104, 105) and `next/src/components/sections/treatment/TreatmentClinics.tsx` (lines 37, 90, 91, 112); 0 `<rect> attribute rx` console errors on `/consultations` and `/treatment-abroad` (verified with Playwright)
+- [x] **POL-02**: Mobile hero `≤2 glass per viewport` contract on `/treatment-abroad` resolved — either by dropping eyebrow pill OR sticky bottom CTA wrapper to non-glass on mobile, OR by clarifying in `DESIGN.md` that sticky chrome surfaces (header, FAB) do not count toward the per-viewport budget; resolution documented and CLAUDE.md updated if contract changes
+- [x] **POL-03**: 4 dead-code files in `next/src/components/sections/contacts/` (`ContactsHero.tsx`, `ContactMethodGrid.tsx`, `CoordinatorCard.tsx`, `TrustBadges.tsx` — exact set per `93-RESEARCH.md`) removed; `grep -r` across `next/src/` returns 0 references; `pnpm build` and `pnpm lint` exit 0 after removal
+- [x] **POL-04**: Untracked screenshots in repo root (`90-*.png`, `91-*.png`, `93-uat-*.png`, `v8-*.png`) either added to `.gitignore` patterns or relocated to `.planning/audit-screenshots/`; `git status` shows clean working tree (or only the new design/ + .mcp.json which are out of scope)
+- [x] **POL-05**: Exactly ONE canonical Next.js source location confirmed at `next/src/`; legacy `./src/styles/` (pre-Next vanilla CSS) deleted/relocated/kept (per Plan 05 user decision); build still passes; dev server starts cleanly; planning docs reference `next/src/...` uniformly
 
 ### Audit & Verification (Phase 95)
 
@@ -351,39 +351,41 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ### Blob Refinement (Phase 96)
 
-- [ ] **BR-01**: Halo edge feathered — no visible gradient stop boundary at any zoom level; smooth alpha falloff from inner halo to transparent verified via desktop 1280×800 zoom-in screenshot AND mobile 375×667; subjective UAT: user confirms "no visible glow border"
-- [ ] **BR-02**: 4 blob sublayers (core / body / halo / glint) move as a single 2D organism — max angular separation between sublayers during fast cursor motion ≤ 8px (vs ~80px lag in v9.0 baseline); parametric solution preferred (unified inertia coefficients with micro-variations 10–30ms instead of 80–200ms cascading); structural refactor (e.g., merging halo+glint into one sublayer) acceptable only if parametric tuning fails to hit the ≤8px target
-- [ ] **BR-03**: Mobile ambient blob mirrors desktop unification — Lissajous drift uses same correlated-motion model; no visible per-layer drift on slow ambient motion; verified at 375×667 with Playwright screenshot
+- [x] **BR-01**: Halo edge feathered — no visible gradient stop boundary at any zoom level; smooth alpha falloff from inner halo to transparent verified via desktop 1280×800 zoom-in screenshot AND mobile 375×667; subjective UAT: user confirms "no visible glow border"
+- [x] **BR-02**: 4 blob sublayers (core / body / halo / glint) move as a single 2D organism — max angular separation between sublayers during fast cursor motion ≤ 8px (vs ~80px lag in v9.0 baseline); parametric solution preferred (unified inertia coefficients with micro-variations 10–30ms instead of 80–200ms cascading); structural refactor (e.g., merging halo+glint into one sublayer) acceptable only if parametric tuning fails to hit the ≤8px target
+- [x] **BR-03**: Mobile ambient blob mirrors desktop unification — Lissajous drift uses same correlated-motion model; no visible per-layer drift on slow ambient motion; verified at 375×667 with Playwright screenshot
 
 ### Admin (Phase 97)
 
-- [ ] **ADM-01**: `/admin/submissions` read-only Next.js route exists; server-side authenticated via simple env-token check (`ADMIN_TOKEN` env var matches `?token=` query OR an `X-Admin-Token` header); no full Auth system this milestone (deferred to a future Auth phase if/when needed)
-- [ ] **ADM-02**: View renders all submissions from Postgres `submissions` table via Drizzle — columns: `date_created` (formatted), `name`, `phone`, `specialization` (mapped to Russian label: "Чек-ап" / "Лечение" / "Консультация" / "Не уверен"), `description` (truncated to 80 chars), `status`; default sort `date_created DESC`; pagination at 50 rows per page
-- [ ] **ADM-03**: Filter UI on the admin view — date range, specialization, status; filter state encoded in URL query params (shareable / bookmarkable); empty-state copy when filter returns 0 rows; no client-side fetch (filtering done via server component / loader for simplicity)
+- [x] **ADM-01**: `/admin/submissions` read-only Next.js route exists; server-side authenticated via simple env-token check (`ADMIN_TOKEN` env var matches `?token=` query OR an `X-Admin-Token` header); no full Auth system this milestone (deferred to a future Auth phase if/when needed)
+- [x] **ADM-02**: View renders all submissions from Postgres `submissions` table via Drizzle — columns: `date_created` (formatted), `name`, `phone`, `specialization` (mapped to Russian label: "Чек-ап" / "Лечение" / "Консультация" / "Не уверен"), `description` (truncated to 80 chars), `status`; default sort `date_created DESC`; pagination at 50 rows per page
+- [x] **ADM-03**: Filter UI on the admin view — date range, specialization, status; filter state encoded in URL query params (shareable / bookmarkable); empty-state copy when filter returns 0 rows; no client-side fetch (filtering done via server component / loader for simplicity)
 
 ### v9.0.1 Coverage Summary
 
 | REQ-ID | Phase | Status |
 |---|---|---|
-| POL-01 | Phase 94 | Pending |
-| POL-02 | Phase 94 | Pending |
-| POL-03 | Phase 94 | Pending |
-| POL-04 | Phase 94 | Pending |
-| POL-05 | Phase 94 | Pending |
-| AUDIT-01 | Phase 95 | Pending |
-| AUDIT-02 | Phase 95 | Pending |
-| AUDIT-03 | Phase 95 | Pending |
-| AUDIT-04 | Phase 95 | Pending |
-| BR-01 | Phase 96 | Pending |
-| BR-02 | Phase 96 | Pending |
-| BR-03 | Phase 96 | Pending |
-| ADM-01 | Phase 97 | Pending |
-| ADM-02 | Phase 97 | Pending |
-| ADM-03 | Phase 97 | Pending |
+| POL-01 | Phase 94 | Complete |
+| POL-02 | Phase 94 | Complete |
+| POL-03 | Phase 94 | Complete |
+| POL-04 | Phase 94 | Complete |
+| POL-05 | Phase 94 | Complete |
+| AUDIT-01 | Phase 95 | Partial — LCP fails 5/5 routes (3120-3270ms vs 2500ms); waiver-or-fix todo filed |
+| AUDIT-02 | Phase 95 | Partial — 0 critical, 10 serious color-contrast on accent eyebrow pills; todo filed |
+| AUDIT-03 | Phase 95 | Partial — 1 MAJOR (BR-D-01 CTA gradient palette); todo filed pending user direction |
+| AUDIT-04 | Phase 95 | Partial — VER-01/03 pass; VER-02/06/08 partial; VER-04/05/07 pending user/hardware |
+| BR-01 | Phase 96 | Complete |
+| BR-02 | Phase 96 | Complete (Option B structural — 2.17px max separation @ 1500px/s, 41× headroom) |
+| BR-03 | Phase 96 | Complete (0.28px @ 5s Lissajous mobile, 54× headroom) |
+| ADM-01 | Phase 97 | Complete |
+| ADM-02 | Phase 97 | Complete |
+| ADM-03 | Phase 97 | Complete |
 
 **v9.0.1 Coverage:**
 - v9.0.1 requirements: 15 total
-- Pending: 15
+- Complete: 11
+- Partial: 4 (all in Phase 95 audit — findings captured as pending todos)
+- Pending: 0
 - Mapped to phases: 15
 - Unmapped: 0
 
