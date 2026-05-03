@@ -30,6 +30,16 @@ export default function GlassScintillationSpikePage() {
   });
   const [enabled, setEnabled] = useState(true);
   const [compareRightOn, setCompareRightOn] = useState(false);
+  const [diag, setDiag] = useState<{ rt: boolean; rm: boolean }>({ rt: false, rm: false });
+
+  // Diagnostic — detect OS-level a11y settings that would otherwise silently
+  // turn the spike off. Production component honors these; the spike bypasses
+  // via forceMount so user can evaluate the visual.
+  useEffect(() => {
+    const rt = window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches ?? false;
+    const rm = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    setDiag({ rt, rm });
+  }, []);
 
   // Mouse-move → drive blob position (LivingBlobField will overwrite next frame, but
   // for this spike we want immediate cursor coupling so user can see scintillation react).
@@ -71,7 +81,26 @@ export default function GlassScintillationSpikePage() {
 
   return (
     <>
-      <GlassScintillationField />
+      <GlassScintillationField forceMount />
+
+      {/* Diagnostic banner — visible if OS a11y settings would otherwise hide the effect */}
+      {(diag.rt || diag.rm) && (
+        <div style={{
+          position: 'fixed', top: 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 100, padding: '10px 16px', borderRadius: 12,
+          background: 'rgba(252, 230, 163, 0.95)', color: '#5a4400',
+          fontSize: 13, fontFamily: 'Inter, system-ui, sans-serif',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.15)', maxWidth: 720,
+        }}>
+          <strong style={{ fontWeight: 700 }}>Note:</strong> Your OS has{' '}
+          {diag.rt && <span><code>Reduce Transparency</code></span>}
+          {diag.rt && diag.rm && ' and '}
+          {diag.rm && <span><code>Reduce Motion</code></span>}
+          {' '}enabled. The spike is <strong>force-mounted for evaluation</strong>{' '}
+          (production component will respect these settings). Disable in
+          System Settings → Accessibility → Display to test natural behavior.
+        </div>
+      )}
 
       <div style={{ position: 'relative', zIndex: 10, color: '#0d2a3a' }}>
         {/* Hero */}

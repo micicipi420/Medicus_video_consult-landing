@@ -19,6 +19,13 @@ let engineRefcount = 0;
 interface Props {
   /** Selector to scan the DOM for glass surfaces. Default: '[data-glass-scintillation]'. */
   selector?: string;
+  /**
+   * Spike-only escape hatch — bypass `prefers-reduced-transparency` for
+   * visual evaluation when the user happens to have the OS-level Reduce
+   * Transparency accessibility setting enabled. Production milestone must
+   * NOT pass this prop (a11y compliance).
+   */
+  forceMount?: boolean;
 }
 
 function readSurfacesFromDOM(selector: string): { elements: HTMLElement[]; descriptors: SurfaceDescriptor[] } {
@@ -35,17 +42,17 @@ function readSurfacesFromDOM(selector: string): { elements: HTMLElement[]; descr
   return { elements: els, descriptors };
 }
 
-export function GlassScintillationField({ selector = '[data-glass-scintillation]' }: Props) {
+export function GlassScintillationField({ selector = '[data-glass-scintillation]', forceMount = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const skipRender = useRef(false);
 
-  if (typeof window !== 'undefined' && skipRender.current === false) {
+  if (typeof window !== 'undefined' && skipRender.current === false && !forceMount) {
     skipRender.current = window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches ?? false;
   }
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches) return;
+    if (!forceMount && window.matchMedia?.('(prefers-reduced-transparency: reduce)').matches) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
