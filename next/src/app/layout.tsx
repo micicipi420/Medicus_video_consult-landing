@@ -6,7 +6,6 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { StickyBar } from '@/components/layout/StickyBar';
 import { SvgRefractionDefs } from '@/components/layout/SvgRefractionDefs';
-import { LivingBlobFieldDynamic } from '@/components/effects/LivingBlobFieldDynamic';
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider';
 
 // AUDIT-01 fix (98-01): site is Russian-only — load cyrillic subset first so it
@@ -56,16 +55,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${inter.variable} ${manrope.variable}`}>
       <body className="bg-mu-text-50 text-mu-text-900 overflow-x-clip">
-        {/* v9.0 Phase 90 — seed blob runtime vars before .living-blob-field paints (FND-06) */}
-        <style>{`:root{--blob-x:50vw;--blob-y:50vh;--blob-body-x:50vw;--blob-body-y:50vh;--blob-halo-x:50vw;--blob-halo-y:50vh;--blob-heat:0;--blob-velocity:0;}`}</style>
+        {/* Living Blob removed 2026-05-03 — full v9.0 blob experiment preserved on
+            branch `experimental/blob-spikes`; renderer + spike pages + glass-edge
+            scintillation/light-bending prototypes live there. Background reverts
+            to v8.1 plain body bg (`bg-mu-text-50`). */}
         <SvgRefractionDefs />
-        <div className="living-blob-field" aria-hidden="true" data-engine-active="false">
-          <div className="blob-sublayer blob-core" />
-          <div className="blob-sublayer blob-body" />
-          <div className="blob-sublayer blob-halo" />
-          <div className="blob-sublayer blob-glint" />
-          <LivingBlobFieldDynamic />
-        </div>
         <Header />
         <LazyMotionProvider>
           <main className="relative z-10 pt-24 flex flex-col gap-8 md:gap-16 pb-8">{children}</main>
